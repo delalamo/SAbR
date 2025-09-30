@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sabr"
-version = "0.1.0"
+version = "0.1.1.dev2"  # bump for TestPyPI re-upload
 description = "Structure-based Antibody Renumbering"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -13,16 +13,15 @@ authors = [
   { name = "Diego del Alamo" }
 ]
 
-# SoftAlign is vendored as a submodule, so no external dependency
 dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/delalamo/SAbR"
 
-[tool.setuptools.packages.find]
-where = ["src", "external/SoftAlign"]
-include = ["sabr*", "softalign*"]
-exclude = ["external/SoftAlign/models*"]
-
 [tool.setuptools]
+packages = ["sabr", "softalign"]
 include-package-data = true
+
+[tool.setuptools.package-dir]
+sabr = "src/sabr"
+softalign = "external/SoftAlign/softalign"
