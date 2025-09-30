@@ -1,0 +1,3 @@
+[submodule "external/SoftAlign"]
+	path = external/SoftAlign
+	url = https://github.com/delalamo/SoftAlign.git

@@ -13,9 +13,16 @@ authors = [
   { name = "Diego del Alamo" }
 ]
 
-dependencies = [
-  "softalign @ git+https://github.com/delalamo/SoftAlign.git@main"
-]
+# SoftAlign is vendored as a submodule, so no external dependency
+dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/delalamo/SAbR"
+
+[tool.setuptools.packages.find]
+where = ["src", "external/SoftAlign"]
+include = ["sabr*", "softalign*"]
+exclude = ["external/SoftAlign/models*"]
+
+[tool.setuptools]
+include-package-data = true
