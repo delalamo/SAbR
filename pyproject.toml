@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sabr"
+version = "0.1.0"
+description = "Structure-based Antibody Renumbering"
+readme = "README.md"
+requires-python = ">=3.9"
+
+authors = [
+  { name = "Diego del Alamo" }
+]
+
+dependencies = [
+  "softalign @ git+https://github.com/delalamo/SoftAlign.git@main"
+]
+
+[project.urls]
+Homepage = "https://github.com/delalamo/SAbR"

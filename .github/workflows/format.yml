@@ -1,0 +1,48 @@
+name: Code Formatting
+
+on:
+  push:
+    branches:
+      - main
+      - "**"
+  pull_request:
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install formatters
+        run: |
+          pip install black isort
+          # or npm install -g prettier
+          # or apt-get install clang-format
+
+      - name: Run black
+        run: black --check .
+
+      - name: Run isort
+        run: isort --check-only .
+
+      - name: Run prettier
+        run: prettier --check "**/*.{js,ts,css,md}"
+
+      - name: Run clang-format
+        run: clang-format --dry-run --Werror **/*.c
+
+      - name: Auto-fix with black
+        run: black .
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'actions@github.com'
+          git commit -am "Apply code formatting"
+          git push
