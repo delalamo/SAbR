@@ -20,10 +20,16 @@ jobs:
         with:
           python-version: '3.11'
 
+      # Add Node so we can run Prettier
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install formatters
         run: |
           pip install black isort
-          # or npm install -g prettier
+          npm install -g prettier
           # or apt-get install clang-format
 
       - name: Run black
@@ -38,11 +44,15 @@ jobs:
       - name: Run clang-format
         run: clang-format --dry-run --Werror **/*.c
 
+      # Optional auto-fix + push (be careful on PRs)
       - name: Auto-fix with black
+        if: github.event_name == 'push'
         run: black .
+
       - name: Commit changes
+        if: github.event_name == 'push'
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'actions@github.com'
-          git commit -am "Apply code formatting"
+          git commit -am "Apply code formatting" || echo "No changes to commit"
           git push
