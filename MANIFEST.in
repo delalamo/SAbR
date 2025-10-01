@@ -2,11 +2,9 @@ include LICENSE
 include README.md
 
 recursive-include src/sabr/assets *.npz
+recursive-include external/SoftAlign/softalign/models *
 
 prune dist
 prune build
 prune sabr.egg-info
 prune src/sabr.egg-info
-
-prune external/SoftAlign/models
-prune external/SoftAlign/Colab

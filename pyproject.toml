@@ -49,3 +49,4 @@ softalign = "external/SoftAlign/softalign"
 
 [tool.setuptools.package-data]
 sabr = ["assets/embeddings.npz"]
+softalign = ["models/*"]
