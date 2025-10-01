@@ -30,23 +30,11 @@ jobs:
           pip install black isort
           npm install -g prettier
 
-      - name: Run black
+      - name: Run black (check only)
         run: black --check .
 
-      - name: Run isort
+      - name: Run isort (check only)
         run: isort --check-only .
 
-      - name: Run prettier
+      - name: Run prettier (check only)
         run: prettier --check "**/*.{js,ts,css,md}"
-
-      - name: Auto-fix with black
-        if: github.event_name == 'push'
-        run: black .
-
-      - name: Commit changes
-        if: github.event_name == 'push'
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'actions@github.com'
-          git commit -am "Apply code formatting" || echo "No changes to commit"
-          git push
