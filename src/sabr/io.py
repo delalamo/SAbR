@@ -1,9 +1,13 @@
 from importlib.resources import as_file, files
+from typing import Optional
 
 import numpy as np
 
 
-def load_data(name: str) -> np.ndarray:
-    """Load a data file from the package's data directory."""
-    with as_file(files("sabr.assets.embeddings") / name) as path:
+def load_data(
+    name: str, package: Optional[str] = "sabr.assets.embeddings"
+) -> np.ndarray:
+    """Load a numpy array from the package's assets."""
+    root = files(package) if isinstance(package, str) else package
+    with as_file(root / name) as path:
         return np.load(path, allow_pickle=True)
