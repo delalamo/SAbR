@@ -15,6 +15,9 @@ authors = [
 
 dependencies = []
 
+[project.scripts]
+sabr = "sabr.cli:main"
+
 [project.urls]
 Homepage = "https://github.com/delalamo/SAbR"
 
@@ -25,3 +28,6 @@ include-package-data = true
 [tool.setuptools.package-dir]
 sabr = "src/sabr"
 softalign = "external/SoftAlign/softalign"
+
+[tool.setuptools.package-data]
+sabr = ["assets/embeddings.npz"]
