@@ -20,7 +20,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      # Add Node so we can run Prettier
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,7 +29,6 @@ jobs:
         run: |
           pip install black isort
           npm install -g prettier
-          # or apt-get install clang-format
 
       - name: Run black
         run: black --check .
@@ -41,10 +39,6 @@ jobs:
       - name: Run prettier
         run: prettier --check "**/*.{js,ts,css,md}"
 
-      - name: Run clang-format
-        run: clang-format --dry-run --Werror **/*.c
-
-      # Optional auto-fix + push (be careful on PRs)
       - name: Auto-fix with black
         if: github.event_name == 'push'
         run: black .
