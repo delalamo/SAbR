@@ -38,14 +38,22 @@ class SoftAlignOutput:
 
 
 def align_fn(
-    input_array: np.ndarray,
-    target_array: np.ndarray,
-    temperature: float,
-    e2e_model: END_TO_END_MODELS.END_TO_END = constants.E2E_MODEL,
+    input_array: np.ndarray, target_array: np.ndarray, temperature: float
 ) -> SoftAlignOutput:
     """
     Compute the alignment for the given input array using the SoftAlign model.
     """
+    e2e_model = END_TO_END_MODELS.END_TO_END(
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.N_MPNN_LAYERS,
+        constants.EMBED_DIM,
+        affine=True,
+        soft_max=False,
+        dropout=0.0,
+        augment_eps=0.0,
+    )
     if input_array.ndim != 2 or target_array.ndim != 2:
         raise ValueError(
             "align_fn expects 2D arrays; got shapes "
@@ -68,20 +76,27 @@ def align_fn(
     )
 
 
-def embed_fn(
-    pdbfile: str,
-    chains: str,
-    e2e_model: END_TO_END_MODELS.END_TO_END = constants.E2E_MODEL,
-) -> MPNNEmbeddings:
+def embed_fn(pdbfile: str, chains: str) -> MPNNEmbeddings:
     """
     Embed a PDB file using the softaligner
     """
+    e2e_model = END_TO_END_MODELS.END_TO_END(
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.N_MPNN_LAYERS,
+        constants.EMBED_DIM,
+        affine=True,
+        soft_max=False,
+        dropout=0.0,
+        augment_eps=0.0,
+    )
     if len(chains) > 1:
         raise NotImplementedError("Only single chain embedding is supported")
     X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
         pdbfile, chain=chains
     )
-    embeddings = constants.E2E_MODEL.MPNN(X1, mask1, chain1, res1)[0]
+    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
     return MPNNEmbeddings(name="INPUT_PDB", embeddings=embeddings, idxs=ids)
 
 
@@ -140,6 +155,7 @@ class SoftAligner:
         with as_file(path) as path:
             data = np.load(path, allow_pickle=True)
             for species, embeddings_dict in data.items():
+                print(embeddings_dict.shape)
                 out_embeddings.append(
                     MPNNEmbeddings(
                         name=species,

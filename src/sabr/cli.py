@@ -62,28 +62,28 @@ def parse_args() -> argparse.Namespace:
     Parse arguments
     """
     argparser = argparse.ArgumentParser(prog="sabr", description="SAbR CLI")
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-i", "--input_pdb", required=True, help="input pdb file"
     )
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-c", "--input_chain", help="input chain", required=True
     )
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-o", "--output_pdb", help="output pdb file", required=True
     )
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-n",
         "--numbering_scheme",
         help="numbering scheme, default is imgt",
         default="imgt",
     )
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-d",
         "--cdr_definition",
         help="cdr definition, default is imgt",
         default="imgt",
     )
-    argparser = argparse.ArgumentParser(
+    argparser.add_argument(
         "-v", "--verbose", help="verbose output", action="store_true"
     )
     args = argparser.parse_args()
