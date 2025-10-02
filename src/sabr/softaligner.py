@@ -10,6 +10,8 @@ import jax.numpy as jnp
 import numpy as np
 from softalign import END_TO_END_MODELS as ete
 
+from sabr import constants
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -18,6 +20,14 @@ class ReferenceEmbeddings:
     species: str
     embeddings: np.ndarray
     idxs: List[str]
+
+    def __post_init__(self) -> None:
+        if self.embeddings.shape[0] != len(self.idxs):
+            raise ValueError(
+                f"embeddings.shape[0] ({self.embeddings.shape[0]}) must match "
+                f"len(idxs) ({len(self.idxs)}). "
+                f"Error raised for {self.species}"
+            )
 
 
 @dataclass(frozen=True)
@@ -38,20 +48,21 @@ def align_fn(
             "align_fn expects 2D arrays; got shapes "
             f"{input_array.shape} and {target_array.shape}"
         )
-    if input_array.shape[1] != 64 or target_array.shape[1] != 64:
-        raise ValueError(
-            f"last dim must be 64; got "
-            f"{input_array.shape} and {target_array.shape}"
-        )
+    for array_shape in (input_array.shape, target_array.shape):
+        if array_shape[1] != constants.EMBED_DIM:
+            raise ValueError(
+                f"last dim must be {constants.EMBED_DIM}; got "
+                f"{input_array.shape} and {target_array.shape}"
+            )
     lens = jnp.array([input_array.shape[0], target_array.shape[0]])[None, :]
     batched_input = jnp.array(input_array[None, :])
     batched_target = jnp.array(target_array[None, :])
     e2e_model = ete.END_TO_END(
-        64,
-        64,
-        64,
-        3,
-        64,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.N_MPNN_LAYERS,
+        constants.EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
@@ -74,17 +85,21 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
         temperature: float = 10**-4,
         random_seed: int = 0,
+        DEBUG: bool = False,
     ) -> None:
-        # need boilerplate code here
         """
         Initialize the SoftAligner by loading model parameters and embeddings.
         """
-        self.all_embeddings: List[ReferenceEmbeddings] = self.read_embeddings(
-            embeddings_name=embeddings_name, embeddings_path=embeddings_path
-        )
-        self.model_params: Dict[str, Any] = self.read_softalign_params(
-            params_name=params_name, params_path=params_path
-        )
+        if not DEBUG:
+            self.all_embeddings: List[ReferenceEmbeddings] = (
+                self.read_embeddings(
+                    embeddings_name=embeddings_name,
+                    embeddings_path=embeddings_path,
+                )
+            )
+            self.model_params: Dict[str, Any] = self.read_softalign_params(
+                params_name=params_name, params_path=params_path
+            )
         self.temperature: float = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(align_fn)
