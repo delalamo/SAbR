@@ -1,0 +1,40 @@
+name: Code Formatting
+
+on:
+  push:
+    branches:
+      - main
+      - "**"
+  pull_request:
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install formatters
+        run: |
+          pip install black isort
+          npm install -g prettier
+
+      - name: Run black (check only)
+        run: black --check .
+
+      - name: Run isort (check only)
+        run: isort --check-only .
+
+      - name: Run prettier (check only)
+        run: prettier --check "**/*.{js,ts,css,md}"

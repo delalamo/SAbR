@@ -1,0 +1,6 @@
+[submodule "external/SoftAlign"]
+	path = external/SoftAlign
+	url = https://github.com/delalamo/SoftAlign.git
+[submodule "external/ANARCI"]
+	path = external/ANARCI
+	url = https://github.com/delalamo/ANARCI.git
