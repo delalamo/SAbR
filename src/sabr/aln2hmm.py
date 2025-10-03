@@ -12,6 +12,8 @@ def alignment_matrix_to_state_vector(
     matrix: np.ndarray,
 ) -> List[Tuple[Tuple[int, str], Optional[int]]]:
     """
+    WARNING: This code was written in large part by ChatGPT. Use with caution.
+
     Convert a binary alignment matrix into an HMMER state vector (m, i, d),
     returning entries as ((seqB_index, code), seqA_index).
 

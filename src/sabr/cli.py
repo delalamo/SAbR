@@ -1,5 +1,6 @@
 import argparse
 import logging
+import os
 import sys
 
 from ANARCI import anarci
@@ -23,30 +24,40 @@ def parse_args() -> argparse.Namespace:
     """
     Parse arguments
     """
-    argparser = argparse.ArgumentParser(prog="sabr", description="SAbR CLI")
+    description = (
+        "Structure-based Antibody Renumbering (SAbR) renumbers antibody "
+        "PDB files using the 3D coordinate of backbone atoms."
+    )
+    argparser = argparse.ArgumentParser(prog="sabr", description=description)
     argparser.add_argument(
-        "-i", "--input_pdb", required=True, help="input pdb file"
+        "-i", "--input_pdb", required=True, help="Input pdb file"
     )
     argparser.add_argument(
-        "-c", "--input_chain", help="input chain", required=True
+        "-c", "--input_chain", help="Input chain", required=True
     )
     argparser.add_argument(
-        "-o", "--output_pdb", help="output pdb file", required=True
+        "-o", "--output_pdb", help="Output pdb file", required=True
     )
     argparser.add_argument(
         "-n",
         "--numbering_scheme",
-        help="numbering scheme, default is imgt",
+        help=(
+            "Numbering scheme, default is IMGT. Supports IMGT, Chothia, "
+            "Kabat, Martin, AHo, and Wolfguy."
+        ),
         default="imgt",
     )
     argparser.add_argument(
         "-t",
         "--trim",
-        help="Remove regions outside V-region",
+        help="Remove regions outside aligned V-region",
         action="store_true",
     )
     argparser.add_argument(
-        "-v", "--verbose", help="verbose output", action="store_true"
+        "--overwrite", help="Overwrite output PDB", action="store_true"
+    )
+    argparser.add_argument(
+        "-v", "--verbose", help="Verbose output", action="store_true"
     )
     args = argparser.parse_args()
     return args
@@ -59,6 +70,10 @@ def main():
         logging.basicConfig(level=logging.INFO)
     else:
         logging.basicConfig(level=logging.WARNING)
+    if os.path.exists(args.output_pdb) and not args.overwrite:
+        raise RuntimeError(
+            f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
+        )
     sequence = fetch_sequence_from_pdb(args.input_pdb, args.input_chain)
     soft_aligner = softaligner.SoftAligner()
     best_match, alignment = soft_aligner(args.input_pdb, args.input_chain)
@@ -80,6 +95,7 @@ def main():
         args.output_pdb,
         start_res,
         end_res,
+        trim=args.trim,
     )
 
     sys.exit(0)

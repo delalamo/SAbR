@@ -11,6 +11,7 @@ def thread_onto_chain(
     anarci_out: dict[str, str],
     start_res: int,
     end_res: int,
+    trim: bool = False,
 ) -> Chain.Chain:
     """
     Thread the alignment onto a given chain object.
@@ -38,7 +39,8 @@ def thread_onto_chain(
             )
             new_id = (res.get_id()[0], new_id, icode)
         else:
-            new_id = (" ", (i - start_res) + 1, " ")
+            if not trim:
+                new_id = (" ", (i - start_res) + 1, " ")
         new_res.id = new_id
         print("OLD", res.get_id(), "NEW", new_res.get_id())
         new_chain.add(new_res)
@@ -54,6 +56,7 @@ def thread_alignment(
     output_pdb: str,
     start_res: int,
     end_res: int,
+    trim: bool = False,
 ) -> PDB.Structure.Structure:
     """
     Thread the alignment onto the PDB structure.
@@ -68,7 +71,9 @@ def thread_alignment(
         if ch.id != chain:
             new_model.add(ch)
         else:
-            new_model.add(thread_onto_chain(ch, alignment, start_res, end_res))
+            new_model.add(
+                thread_onto_chain(ch, alignment, start_res, end_res, trim=trim)
+            )
 
     new_structure.add(new_model)
     io = PDB.PDBIO()
