@@ -1,6 +1,5 @@
 import logging
 import pickle
-from dataclasses import dataclass
 from importlib.resources import as_file, files
 from typing import Any, Dict, List, Tuple
 
@@ -8,96 +7,10 @@ import haiku as hk
 import jax
 import jax.numpy as jnp
 import numpy as np
-from softalign import END_TO_END_MODELS, Input_MPNN
 
-from sabr import constants
+from sabr import constants, ops, types
 
 LOGGER = logging.getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class MPNNEmbeddings:
-    name: str
-    embeddings: np.ndarray
-    idxs: List[str]
-
-    def __post_init__(self) -> None:
-        if self.embeddings.shape[0] != len(self.idxs):
-            raise ValueError(
-                f"embeddings.shape[0] ({self.embeddings.shape[0]}) must match "
-                f"len(idxs) ({len(self.idxs)}). "
-                f"Error raised for {self.name}"
-            )
-
-
-@dataclass(frozen=True)
-class SoftAlignOutput:
-    alignment: jnp.ndarray
-    sim_matrix: jnp.ndarray
-    score: float
-
-
-def align_fn(
-    input_array: np.ndarray, target_array: np.ndarray, temperature: float
-) -> SoftAlignOutput:
-    """
-    Compute the alignment for the given input array using the SoftAlign model.
-    """
-    e2e_model = END_TO_END_MODELS.END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
-        affine=True,
-        soft_max=False,
-        dropout=0.0,
-        augment_eps=0.0,
-    )
-    if input_array.ndim != 2 or target_array.ndim != 2:
-        raise ValueError(
-            "align_fn expects 2D arrays; got shapes "
-            f"{input_array.shape} and {target_array.shape}"
-        )
-    for array_shape in (input_array.shape, target_array.shape):
-        if array_shape[1] != constants.EMBED_DIM:
-            raise ValueError(
-                f"last dim must be {constants.EMBED_DIM}; got "
-                f"{input_array.shape} and {target_array.shape}"
-            )
-    lens = jnp.array([input_array.shape[0], target_array.shape[0]])[None, :]
-    batched_input = jnp.array(input_array[None, :])
-    batched_target = jnp.array(target_array[None, :])
-    alignment, sim_matrix, score = e2e_model.apply(
-        batched_input, batched_target, lens, temperature
-    )
-    return SoftAlignOutput(
-        alignment=alignment[0], sim_matrix=sim_matrix[0], score=float(score[0])
-    )
-
-
-def embed_fn(pdbfile: str, chains: str) -> MPNNEmbeddings:
-    """
-    Embed a PDB file using the softaligner
-    """
-    e2e_model = END_TO_END_MODELS.END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
-        affine=True,
-        soft_max=False,
-        dropout=0.0,
-        augment_eps=0.0,
-    )
-    if len(chains) > 1:
-        raise NotImplementedError("Only single chain embedding is supported")
-    X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
-        pdbfile, chain=chains
-    )
-    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
-    return MPNNEmbeddings(name="INPUT_PDB", embeddings=embeddings, idxs=ids)
 
 
 class SoftAligner:
@@ -115,17 +28,17 @@ class SoftAligner:
         Initialize the SoftAligner by loading model parameters and embeddings.
         """
         if not DEBUG:
-            self.all_embeddings: List[MPNNEmbeddings] = self.read_embeddings(
+            self.all_embeddings = self.read_embeddings(
                 embeddings_name=embeddings_name,
                 embeddings_path=embeddings_path,
             )
-            self.model_params: Dict[str, Any] = self.read_softalign_params(
+            self.model_params = self.read_softalign_params(
                 params_name=params_name, params_path=params_path
             )
-        self.temperature: float = temperature
+        self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
-        self.transformed_align_fn = hk.transform(align_fn)
-        self.transformed_embed_fn = hk.transform(embed_fn)
+        self.transformed_align_fn = hk.transform(ops.align_fn)
+        self.transformed_embed_fn = hk.transform(ops.embed_fn)
 
     def read_softalign_params(
         self,
@@ -141,11 +54,20 @@ class SoftAligner:
         LOGGER.info(f"Loaded model parameters from {path}")
         return params
 
+    def normalize(self, mp: types.MPNNEmbeddings) -> types.MPNNEmbeddings:
+        idxs_int = [int(x) for x in mp.idxs]
+        order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
+        return types.MPNNEmbeddings(
+            name=mp.name,
+            embeddings=mp.embeddings[order, ...],
+            idxs=[idxs_int[i] for i in order],
+        )
+
     def read_embeddings(
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ) -> List[MPNNEmbeddings]:
+    ) -> List[types.MPNNEmbeddings]:
         """
         Read the embeddings from a .npz file in the package.
         """
@@ -153,14 +75,15 @@ class SoftAligner:
         path = root / embeddings_name
         out_embeddings = []
         with as_file(path) as path:
-            data = np.load(path, allow_pickle=True)
+            data = np.load(path, allow_pickle=True)["arr_0"].item()
             for species, embeddings_dict in data.items():
-                print(embeddings_dict.shape)
                 out_embeddings.append(
-                    MPNNEmbeddings(
-                        name=species,
-                        embeddings=embeddings_dict.get("array"),
-                        idxs=embeddings_dict.get("idxs"),
+                    self.normalize(
+                        types.MPNNEmbeddings(
+                            name=species,
+                            embeddings=embeddings_dict.get("array"),
+                            idxs=embeddings_dict.get("idxs"),
+                        )
                     )
                 )
         if len(out_embeddings) == 0:
@@ -189,11 +112,19 @@ class SoftAligner:
                 f"alignment.shape[1] ({aln.shape[1]}) must match "
                 f"len(target_residues) ({len(res2)})"
             )
-        return {res1[i]: res2[j] for i, j in np.argwhere(np.array(aln) == 1)}
+        matches = {}
+        aln_array = np.array(aln)
+        indices = np.argwhere(aln_array == 1)
+        for i, j in indices:
+            if (
+                str(j) not in constants.CDR_RESIDUES
+            ):  # skip CDR residues in target
+                matches[str(res1[i])] = str(res2[j])
+        return matches
 
     def __call__(
         self, input_pdb: str, input_chain: str
-    ) -> Tuple[str, SoftAlignOutput]:
+    ) -> Tuple[str, types.SoftAlignOutput, List[str], List[str]]:
         """
         Compute alignment of input array against all species embeddings
         """
@@ -217,7 +148,10 @@ class SoftAligner:
             emb.idxs for emb in self.all_embeddings if emb.name == best_match
         )
         best_alignment = outputs[best_match].alignment
-        alignment = self.calc_matches(
-            best_alignment, input_data.idxs, best_match_idxs
+
+        print(
+            self.calc_matches(best_alignment, input_data.idxs, best_match_idxs)
         )
-        return alignment
+        for i, j in enumerate(best_match_idxs):
+            print(i, j)
+        return best_match, best_alignment, input_data.idxs, best_match_idxs

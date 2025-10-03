@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sabr"
-version = "0.1.1.dev2"  # bump for TestPyPI re-upload
+version = "0.1.1.dev2"
 description = "Structure-based Antibody Renumbering"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -57,12 +57,13 @@ testpaths = ["tests"]
 addopts = "-q"
 
 [tool.setuptools]
-packages = ["sabr", "softalign"]
+packages = ["sabr", "softalign", "ANARCI"]
 include-package-data = true
 
 [tool.setuptools.package-dir]
 sabr = "src/sabr"
 softalign = "external/SoftAlign/softalign"
+ANARCI = "external/ANARCI/src/ANARCI"
 
 [tool.setuptools.package-data]
 sabr = ["assets/embeddings.npz"]
