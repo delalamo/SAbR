@@ -1,8 +1,11 @@
+import logging
 from typing import List, Optional, Tuple
 
 import numpy as np
 
 State = Tuple[Tuple[int, str], Optional[int]]
+
+LOGGER = logging.getLogger(__name__)
 
 
 def alignment_matrix_to_state_vector(
@@ -81,22 +84,8 @@ def alignment_matrix_to_state_vector(
     for idx, st in enumerate(out):
         (seqB, code), seqA = st
         if seqA is None:
-            print(f"{idx} (({seqB}, '{code}'), None)")
+            LOGGER.info(f"{idx} (({seqB}, '{code}'), None)")
         else:
-            print(f"{idx} (({seqB}, '{code}'), {seqA})")
+            LOGGER.info(f"{idx} (({seqB}, '{code}'), {seqA})")
 
     return out
-
-
-def print_state_vector(
-    states: List[State], header: str = "STATE_VECTOR"
-) -> None:
-    print(header)
-    for idx, st in enumerate(states):
-        # st is ((seqB, code), seqA_or_None)
-        (seqB, code), seqA = st
-        # match your exact quoting/None style
-        if seqA is None:
-            print(f"{idx} (({seqB}, '{code}'), None)")
-        else:
-            print(f"{idx} (({seqB}, '{code}'), {seqA})")

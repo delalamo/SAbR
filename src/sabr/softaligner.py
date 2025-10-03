@@ -142,4 +142,4 @@ class SoftAligner:
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
         )
-        return best_match, np.ndarray(outputs[best_match].alignment)
+        return best_match, np.array(outputs[best_match].alignment)

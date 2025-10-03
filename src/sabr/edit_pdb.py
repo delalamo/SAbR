@@ -7,8 +7,8 @@ from sabr import constants
 
 
 def thread_onto_chain(
-    chain_obj: Chain.Chain,
-    anarci_output: dict[str, str],
+    chain: Chain.Chain,
+    anarci_out: dict[str, str],
     start_res: int,
     end_res: int,
 ) -> Chain.Chain:
@@ -16,14 +16,23 @@ def thread_onto_chain(
     Thread the alignment onto a given chain object.
     """
 
-    new_chain = Chain.Chain(chain_obj.id)
+    new_chain = Chain.Chain(chain.id)
+
+    n_res = sum(1 for r in chain.get_residues() if r.get_resname() != "HOH")
+    if len(anarci_out) != n_res:
+        msg = (
+            "ANARCI output does not match sequence length. "
+            "This could be due to nonstandard residues in the PDB. "
+            f"Chain has {n_res} residues, ANARCI output has {len(anarci_out)}"
+        )
+        raise ValueError(msg)
 
     chain_res = []
-    for i, res in enumerate(chain_obj.get_residues()):
+    for i, res in enumerate(chain.get_residues()):
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
         if i >= start_res and i <= end_res:
-            (new_id, icode), aa = anarci_output[i - start_res]
+            (new_id, icode), aa = anarci_out[i - start_res]
             assert aa == constants.AA_3TO1[new_res.get_resname()], print(
                 i, start_res, res.get_id(), aa, new_res.get_resname()
             )

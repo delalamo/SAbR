@@ -1,27 +1,11 @@
 import argparse
+import logging
 import sys
-from typing import List, Tuple
 
 from ANARCI import anarci
 from Bio import SeqIO
 
 from sabr import aln2hmm, edit_pdb, softaligner
-
-State = Tuple[Tuple[int, str], int]
-
-
-def verify_output(anarci_out: List[Tuple[State, str]], sequence: str) -> None:
-    """
-    Verify that the ANARCI output matches the input sequence.
-    """
-    anarci_seq = "".join([a_entry for (_, a_entry) in anarci_out]).replace(
-        "-", ""
-    )
-    if anarci_seq != sequence:
-        raise ValueError(
-            f"ANARCI output sequence does not match input sequence! "
-            f"({anarci_seq} != {sequence})"
-        )
 
 
 def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
@@ -71,12 +55,15 @@ def parse_args() -> argparse.Namespace:
 def main():
 
     args = parse_args()
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.WARNING)
     sequence = fetch_sequence_from_pdb(args.input_pdb, args.input_chain)
     soft_aligner = softaligner.SoftAligner()
     best_match, alignment = soft_aligner(args.input_pdb, args.input_chain)
     state_vector = aln2hmm.alignment_matrix_to_state_vector(alignment)
 
-    print(args.numbering_scheme)
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         state_vector,
         sequence,
@@ -85,14 +72,7 @@ def main():
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
-    if len(anarci_out) != len(sequence):
-        raise ValueError(
-            (
-                f"ANARCI output length does not match sequence length!"
-                f" ({len(anarci_out)} != {len(sequence)})"
-            )
-        )
-    print(anarci_out)
+
     edit_pdb.thread_alignment(
         args.input_pdb,
         args.input_chain,
@@ -103,12 +83,6 @@ def main():
     )
 
     sys.exit(0)
-
-    # check if file ends with pdb
-    # transform chain to arrays
-    # run softaligner
-    # replace residue IDs as appropriate
-    # save to output PDB
 
 
 if __name__ == "__main__":
