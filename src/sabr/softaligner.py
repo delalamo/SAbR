@@ -116,15 +116,13 @@ class SoftAligner:
         aln_array = np.array(aln)
         indices = np.argwhere(aln_array == 1)
         for i, j in indices:
-            if (
-                str(j) not in constants.CDR_RESIDUES
-            ):  # skip CDR residues in target
+            if str(j) not in constants.CDR_RESIDUES:
                 matches[str(res1[i])] = str(res2[j])
         return matches
 
     def __call__(
         self, input_pdb: str, input_chain: str
-    ) -> Tuple[str, types.SoftAlignOutput, List[str], List[str]]:
+    ) -> Tuple[str, types.SoftAlignOutput]:
         """
         Compute alignment of input array against all species embeddings
         """
@@ -144,14 +142,4 @@ class SoftAligner:
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
         )
-        best_match_idxs = next(
-            emb.idxs for emb in self.all_embeddings if emb.name == best_match
-        )
-        best_alignment = outputs[best_match].alignment
-
-        print(
-            self.calc_matches(best_alignment, input_data.idxs, best_match_idxs)
-        )
-        for i, j in enumerate(best_match_idxs):
-            print(i, j)
-        return best_match, best_alignment, input_data.idxs, best_match_idxs
+        return best_match, np.ndarray(outputs[best_match].alignment)
