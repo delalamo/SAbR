@@ -1,9 +1,12 @@
 import copy
+import logging
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
 
 from sabr import constants
+
+LOGGER = logging.getLogger(__name__)
 
 
 def thread_onto_chain(
@@ -19,17 +22,10 @@ def thread_onto_chain(
 
     new_chain = Chain.Chain(chain.id)
 
-    n_res = sum(1 for r in chain.get_residues() if r.get_resname() != "HOH")
-    if len(anarci_out) != n_res:
-        msg = (
-            "ANARCI output does not match sequence length. "
-            "This could be due to nonstandard residues in the PDB. "
-            f"Chain has {n_res} residues, ANARCI output has {len(anarci_out)}"
-        )
-        raise ValueError(msg)
-
     chain_res = []
     for i, res in enumerate(chain.get_residues()):
+        if res.get_id()[0] != " ":
+            continue  # Skip non-standard residues (e.g., heteroatoms, waters)
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
         if i >= start_res and i <= end_res:
@@ -40,12 +36,16 @@ def thread_onto_chain(
             new_id = (res.get_id()[0], new_id, icode)
         else:
             if not trim:
-                new_id = (" ", (i - start_res) + 1, " ")
+                if i < start_res:
+                    new_id = (" ", (i - start_res) + 1, " ")
+                else:
+                    new_id = (" ", (i - end_res) + anarci_out[-1][0][0], " ")
         new_res.id = new_id
-        print("OLD", res.get_id(), "NEW", new_res.get_id())
-        new_chain.add(new_res)
-        new_res.parent = new_chain
-        chain_res.append(res.get_id()[1:])
+        LOGGER.info(f"OLD: {res.get_id()}; NEW: {new_res.get_id()}")
+        if not trim or (i >= start_res and i <= end_res):
+            new_chain.add(new_res)
+            new_res.parent = new_chain
+            chain_res.append(res.get_id()[1:])
     return new_chain
 
 

@@ -8,6 +8,8 @@ from Bio import SeqIO
 
 from sabr import aln2hmm, edit_pdb, softaligner
 
+LOGGER = logging.getLogger(__name__)
+
 
 def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
     """
@@ -67,21 +69,28 @@ def main():
 
     args = parse_args()
     if args.verbose:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.INFO, force=True)
     else:
-        logging.basicConfig(level=logging.WARNING)
+        logging.basicConfig(level=logging.WARNING, force=True)
     if os.path.exists(args.output_pdb) and not args.overwrite:
         raise RuntimeError(
             f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
         )
     sequence = fetch_sequence_from_pdb(args.input_pdb, args.input_chain)
+    LOGGER.info(
+        f"Fetched sequence of length {len(sequence)} from "
+        f"{args.input_pdb} chain {args.input_chain}"
+    )
     soft_aligner = softaligner.SoftAligner()
-    best_match, alignment = soft_aligner(args.input_pdb, args.input_chain)
-    state_vector = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    best_match, aln = soft_aligner(args.input_pdb, args.input_chain)
+    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
+
+    subsequence = sequence[start:end]
+    LOGGER.info(f">input_sequence (len {len(subsequence)})\n{subsequence}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        state_vector,
-        sequence,
+        sv,
+        subsequence,
         scheme=args.numbering_scheme,
         chain_type=best_match[-1],
     )
