@@ -1,8 +1,12 @@
+import logging
+
 import numpy as np
 from jax import numpy as jnp
 from softalign import END_TO_END_MODELS, Input_MPNN
 
 from sabr import constants, types
+
+LOGGER = logging.getLogger(__name__)
 
 
 def align_fn(
@@ -65,6 +69,15 @@ def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
         pdbfile, chain=chains
     )
     embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
+    if len(ids) != embeddings.shape[0]:
+        LOGGER.info(
+            (
+                f"IDs length ({len(ids)}) does not match embeddings rows"
+                f" ({embeddings.shape[0]})"
+            )
+        )
+        for i, id_ in enumerate(ids):
+            LOGGER.info(f"{i}: {id_}")
     return types.MPNNEmbeddings(
         name="INPUT_PDB", embeddings=embeddings, idxs=ids
     )

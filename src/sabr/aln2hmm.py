@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 def alignment_matrix_to_state_vector(
     matrix: np.ndarray,
-) -> List[Tuple[Tuple[int, str], Optional[int]]]:
+) -> Tuple[List[State], int, int]:
     """
     WARNING: This code was written in large part by ChatGPT. Use with caution.
 
@@ -25,15 +25,10 @@ def alignment_matrix_to_state_vector(
       - A-only  (b,a)->(b,a+1):   emit ((b+1,'i'), a)
       - B-only  (b,a)->(b+1,a):   emit ((b+1,'d'), None)
 
-    Parameters
-    ----------
-    matrix : np.ndarray
-        2D binary numpy array with 1s indicating alignment path.
-
-    Returns
-    -------
-    List[Tuple[Tuple[int, str], Optional[int]]]
-        List of state vector entries as ((seqB_index, code), seqA_index).
+    Premature termination rule:
+      If the alignment hits the end of SeqB and attempts to continue with
+      insertions ('i') only (i.e., trailing inserts beyond the final SeqB row),
+      raise RuntimeError to abort early.
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
@@ -49,8 +44,10 @@ def alignment_matrix_to_state_vector(
     path = sorted(path.tolist())  # [(b, a), ...]
     out: List[Tuple[Tuple[int, str], Optional[int]]] = []
 
-    # Track the last MATCH position emitted in post-move coordinates (b+1, a+1)
-    last_emitted_match_post: Optional[Tuple[int, int]] = None
+    # Determine the final SeqB row present in the alignment path.
+    # Any attempt to emit 'i' while b == b_end implies trailing
+    # inserts past end of SeqB.
+    b_end = max(b for b, _ in path)
 
     for (b, a), (b2, a2) in zip(path[:-1], path[1:]):
         db, da = b2 - b, a2 - a
@@ -62,10 +59,19 @@ def alignment_matrix_to_state_vector(
             db -= 1
             da -= 1
             out.append(((b, "m"), a - 1))  # report pre-move A index
-            last_emitted_match_post = (b, a)  # post-move (b, a)
 
         # 2) A-only steps -> inserts (emit current A, then advance A)
         while da > 0:
+            # Premature termination condition: we've reached final SeqB row,
+            # and continuing would produce trailing insertions beyond SeqB
+            if b == b_end:
+                out.append(((path[-1][0] + 1, "m"), a))
+                report_output(out)
+                return out, path[0][0], a + 1
+                # raise RuntimeError(
+                #     f"Trailing insertions beyond end of SeqB detected "
+                #     f"(b_end={b_end}, starting at A index {a}). Aborting."
+                # )
             out.append(((b + 1, "i"), a))  # emit CURRENT 'a'
             a += 1
             da -= 1
@@ -76,18 +82,16 @@ def alignment_matrix_to_state_vector(
             db -= 1
             out.append(((b, "d"), None))
 
-    # ---- Explicitly handle the terminal node (b_last, a_last) ----
-    b_last, a_last = path[-1]
-    terminal_match_post = (b_last + 1, a_last + 1)
-    if last_emitted_match_post != terminal_match_post:
-        # Emit the final match row representing arrival at the terminal node
-        out.append(((b_last + 1, "m"), a_last))
+    report_output(out)
+    return out, path[0][0], path[-1][1]
 
+
+def report_output(
+    out: List[Tuple[Tuple[int, str], Optional[int]]],
+) -> None:
     for idx, st in enumerate(out):
         (seqB, code), seqA = st
         if seqA is None:
             LOGGER.info(f"{idx} (({seqB}, '{code}'), None)")
         else:
             LOGGER.info(f"{idx} (({seqB}, '{code}'), {seqA})")
-
-    return out
