@@ -77,6 +77,7 @@ def main():
             f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
         )
     sequence = fetch_sequence_from_pdb(args.input_pdb, args.input_chain)
+    LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
     LOGGER.info(
         f"Fetched sequence of length {len(sequence)} from "
         f"{args.input_pdb} chain {args.input_chain}"
@@ -86,7 +87,7 @@ def main():
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
 
     subsequence = sequence[start:end]
-    LOGGER.info(f">input_sequence (len {len(subsequence)})\n{subsequence}")
+    LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
