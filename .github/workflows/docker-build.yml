@@ -53,7 +53,7 @@ jobs:
 
       - name: Test sabr-kit inside container
         run: |
-          docker run --rm ${{ steps.repo_name.outputs.image_name }}:latest bash -c "
+          docker run --rm --entrypoint bash ${{ steps.repo_name.outputs.image_name }}:latest -c "
             python -c 'import sabr, softalign, ANARCI; print(\"✅ All imports OK\")' &&
             sabr --help
           "
