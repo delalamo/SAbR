@@ -3,6 +3,8 @@ include README.md
 
 recursive-include src/sabr/assets *.npz
 recursive-include external/SoftAlign/softalign/models *
+recursive-include external/SoftAlign/softalign *
+recursive-include external/ANARCI/src/ANARCI *
 
 prune dist
 prune build
