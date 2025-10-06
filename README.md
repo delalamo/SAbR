@@ -2,7 +2,13 @@
 
 SAbR (<u>S</U>tructure-based <u>A</u>nti<u>b</u>ody <u>R</u>enumbering) renumbers antibody PDB files using the 3D coordinate of backbone atoms. It uses custom forked versions of [SoftAlign](https://github.com/delalamo/SoftAlign) and [ANARCI](https://github.com/delalamo/ANARCI/tree/master) to align structures to SAbDaB-derived consensus embeddings and renumber to various antibody schemes, respectively.
 
-To install:
+To install from PyPI:
+
+```bash
+pip install sabr-kit
+```
+
+Or to install the latest version:
 
 ```bash
 git clone --recursive https://github.com/delalamo/SAbR.git

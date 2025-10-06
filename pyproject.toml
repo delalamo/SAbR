@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sabr"
+name = "sabr-kit"
 version = "0.1.0"
 description = "Structure-based Antibody Renumbering"
 readme = "README.md"
@@ -57,13 +57,11 @@ testpaths = ["tests"]
 addopts = "-q"
 
 [tool.setuptools]
-packages = ["sabr", "softalign", "ANARCI"]
 include-package-data = true
 
-[tool.setuptools.package-dir]
-sabr = "src/sabr"
-softalign = "external/SoftAlign/softalign"
-ANARCI = "external/ANARCI/src/ANARCI"
+[tool.setuptools.packages.find]
+where = ["src", "external/SoftAlign", "external/ANARCI/src"]
+include = ["sabr*", "softalign*", "ANARCI*"]
 
 [tool.setuptools.package-data]
 sabr = ["assets/embeddings.npz"]
