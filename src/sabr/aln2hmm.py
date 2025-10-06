@@ -67,7 +67,7 @@ def alignment_matrix_to_state_vector(
             if b == b_end:
                 out.append(((path[-1][0] + 1, "m"), a))
                 report_output(out)
-                return out, path[0][0], a + 1
+                return out, path[0][0], a + 1 + path[0][0]
                 # raise RuntimeError(
                 #     f"Trailing insertions beyond end of SeqB detected "
                 #     f"(b_end={b_end}, starting at A index {a}). Aborting."
@@ -83,7 +83,7 @@ def alignment_matrix_to_state_vector(
             out.append(((b, "d"), None))
 
     report_output(out)
-    return out, path[0][0], path[-1][1]
+    return out, path[0][0], path[-1][1] + path[0][0]
 
 
 def report_output(
