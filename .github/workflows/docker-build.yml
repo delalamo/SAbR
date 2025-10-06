@@ -22,6 +22,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Compute lowercase image name
+        id: repo_name
+        run: |
+          IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}"
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -33,11 +39,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ steps.repo_name.outputs.image_name }}
           tags: |
             type=raw,value=latest
             type=sha,format=short
-            type=ref,event=branch  # adds branch-specific tag
+            type=ref,event=branch
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -49,7 +55,7 @@ jobs:
 
       - name: Test installation inside container
         run: |
-          docker run --rm ghcr.io/${{ github.repository }}:latest bash -c "
+          docker run --rm ${{ steps.repo_name.outputs.image_name }}:latest bash -c "
             git clone --recursive https://github.com/delalamo/SAbR.git &&
             cd SAbR &&
             pip install -e . &&
