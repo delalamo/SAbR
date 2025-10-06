@@ -116,7 +116,7 @@ class SoftAligner:
         aln_array = np.array(aln)
         indices = np.argwhere(aln_array == 1)
         for i, j in indices:
-            if str(j) not in constants.CDR_RESIDUES:
+            if j + 1 not in constants.CDR_RESIDUES + constants.ADDITIONAL_GAPS:
                 matches[str(res1[i])] = str(res2[j])
         return matches
 
