@@ -1,17 +1,18 @@
-FROM python:3.11-slim AS base
+FROM python:3.11-slim AS build
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    build-essential \
+    git build-essential \
     && rm -rf /var/lib/apt/lists/*
-WORKDIR /app
-COPY . .
 RUN pip install --upgrade pip setuptools wheel && \
-    pip install -e .
+    pip install sabr-kit
+
+# -----------------------
+# Stage 2: Runtime image
+# -----------------------
 FROM python:3.11-slim
-COPY --from=base /usr/local /usr/local
+COPY --from=build /usr/local /usr/local
 RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace
 ENTRYPOINT ["sabr"]
