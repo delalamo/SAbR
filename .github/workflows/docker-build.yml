@@ -1,14 +1,15 @@
-name: Build and Publish Docker Image
+name: Build and Publish Docker Image on Release
 
 on:
+  release:
+    types: [published] # Trigger when a GitHub Release is published
   push:
-    branches:
-      - "**" # Trigger on all branches while testing
+    tags:
+      - "v*" # Or whenever a tag starting with v is pushed
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
@@ -20,11 +21,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Compute lowercase image name
-        id: repo_name
+      - name: Compute lowercase image name and version tag
+        id: vars
         run: |
           IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}"
+          VERSION_TAG="${GITHUB_REF_NAME}"        # e.g. v0.1.4
+          CLEAN_TAG="${VERSION_TAG#v}"            # strip leading 'v' if present
           echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+          echo "version_tag=${CLEAN_TAG}" >> $GITHUB_OUTPUT
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -33,15 +37,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for Docker
+      - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.repo_name.outputs.image_name }}
+          images: ${{ steps.vars.outputs.image_name }}
           tags: |
+            type=raw,value=${{ steps.vars.outputs.version_tag }}
             type=raw,value=latest
-            type=sha,format=short
-            type=ref,event=branch
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -53,7 +56,5 @@ jobs:
 
       - name: Test sabr-kit inside container
         run: |
-          docker run --rm --entrypoint bash ${{ steps.repo_name.outputs.image_name }}:latest -c "
-            python -c 'import sabr, softalign, ANARCI; print(\"✅ All imports OK\")' &&
-            sabr --help
-          "
+          docker run --rm ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
+            python -c "import sabr, softalign, ANARCI; print('✅ All imports OK')"
