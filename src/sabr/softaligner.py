@@ -101,7 +101,7 @@ class SoftAligner:
         Calculate the residue matches from the alignment matrix.
         """
         if aln.ndim != 2:
-            raise ValueError(f"alignment must be 2D; got shape {aln.shape}")
+            raise ValueError(f"Alignment must be 2D; got shape {aln.shape}")
         if aln.shape[0] != len(res1):
             raise ValueError(
                 f"alignment.shape[0] ({aln.shape[0]}) must match "

@@ -52,7 +52,7 @@ def thread_onto_chain(
                     " ",
                 )
         new_res.id = new_id
-        LOGGER.info(f"OLD: {res.get_id()}; NEW: {new_res.get_id()}")
+        LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
         if i >= anarci_start and i <= anarci_end:
             new_chain.add(new_res)
             new_res.parent = new_chain
