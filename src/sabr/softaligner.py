@@ -101,7 +101,7 @@ class SoftAligner:
         Calculate the residue matches from the alignment matrix.
         """
         if aln.ndim != 2:
-            raise ValueError(f"alignment must be 2D; got shape {aln.shape}")
+            raise ValueError(f"Alignment must be 2D; got shape {aln.shape}")
         if aln.shape[0] != len(res1):
             raise ValueError(
                 f"alignment.shape[0] ({aln.shape[0]}) must match "
@@ -116,7 +116,7 @@ class SoftAligner:
         aln_array = np.array(aln)
         indices = np.argwhere(aln_array == 1)
         for i, j in indices:
-            if str(j) not in constants.CDR_RESIDUES:
+            if j + 1 not in constants.CDR_RESIDUES + constants.ADDITIONAL_GAPS:
                 matches[str(res1[i])] = str(res2[j])
         return matches
 

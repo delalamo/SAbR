@@ -12,9 +12,9 @@ LOGGER = logging.getLogger(__name__)
 def thread_onto_chain(
     chain: Chain.Chain,
     anarci_out: dict[str, str],
-    start_res: int,
-    end_res: int,
-    trim: bool = False,
+    anarci_start: int,
+    anarci_end: int,
+    alignment_start: int,
 ) -> Chain.Chain:
     """
     Thread the alignment onto a given chain object.
@@ -23,26 +23,38 @@ def thread_onto_chain(
     new_chain = Chain.Chain(chain.id)
 
     chain_res = []
-    for i, res in enumerate(chain.get_residues()):
-        if res.get_id()[0] != " ":
-            continue  # Skip non-standard residues (e.g., heteroatoms, waters)
+
+    i = -1
+    for j, res in enumerate(chain.get_residues()):
+        if res.get_id()[0].strip() != "" or j < alignment_start:
+            continue
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
-        if i >= start_res and i <= end_res:
-            (new_id, icode), aa = anarci_out[i - start_res]
-            assert aa == constants.AA_3TO1[new_res.get_resname()], print(
-                i, start_res, res.get_id(), aa, new_res.get_resname()
-            )
+        i += 1
+        if i >= anarci_start and i < anarci_end:
+            try:
+                (new_id, icode), aa = anarci_out[i - anarci_start]
+                new_id += alignment_start
+            except IndexError:
+                raise IndexError(anarci_start, anarci_end, len(anarci_out), i)
+            if aa == "-":
+                i -= 1
+                continue
+            if aa != constants.AA_3TO1[res.get_resname()]:
+                raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
             new_id = (res.get_id()[0], new_id, icode)
         else:
-            if not trim:
-                if i < start_res:
-                    new_id = (" ", (i - start_res) + 1, " ")
-                else:
-                    new_id = (" ", (i - end_res) + anarci_out[-1][0][0], " ")
+            if i < (anarci_start):
+                new_id = (" ", (i - (anarci_start + alignment_start)) + 1, " ")
+            else:
+                new_id = (
+                    " ",
+                    (i - anarci_end + alignment_start) + anarci_out[-1][0][0],
+                    " ",
+                )
         new_res.id = new_id
-        LOGGER.info(f"OLD: {res.get_id()}; NEW: {new_res.get_id()}")
-        if not trim or (i >= start_res and i <= end_res):
+        LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
+        if i >= anarci_start and i <= anarci_end:
             new_chain.add(new_res)
             new_res.parent = new_chain
             chain_res.append(res.get_id()[1:])
@@ -53,8 +65,9 @@ def identify_deviations(
     pdb_file: str,
     chain_id: str,
     anarci_out: dict[str, str],
-    start_res: int,
-    end_res: int,
+    anarci_start: int,
+    anarci_end: int,
+    alignment_start: int,
 ) -> Chain.Chain:
     """
     Thread the alignment onto a given chain object.
@@ -65,24 +78,31 @@ def identify_deviations(
 
     deviations = []
     i = -1
-    for res in chain.get_residues():
+    for j, res in enumerate(chain.get_residues()):
+        if res.get_id()[0].strip() != "" or j < alignment_start:
+            continue
         i += 1
-        if res.get_id()[0] != " ":
-            continue  # Skip non-standard residues (e.g., heteroatoms, waters)
-        if i >= start_res and i <= end_res:
-            (new_id, icode), aa = anarci_out[i - start_res]
+        if i >= anarci_start and i < anarci_end:
+            try:
+                (new_id, icode), aa = anarci_out[i - anarci_start]
+                new_id += alignment_start
+            except IndexError:
+                raise IndexError(anarci_start, anarci_end, len(anarci_out), i)
             if aa == "-":
                 i -= 1
                 continue
-            assert aa == constants.AA_3TO1[res.get_resname()], print(
-                i, start_res, res.get_id(), aa, res.get_resname()
-            )
+            if aa != constants.AA_3TO1[res.get_resname()]:
+                raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
             new_id = (res.get_id()[0], new_id, icode)
         else:
-            if i < start_res:
-                new_id = (" ", (i - start_res) + 1, " ")
+            if i < (anarci_start):
+                new_id = (" ", (i - (anarci_start + alignment_start)) + 1, " ")
             else:
-                new_id = (" ", (i - end_res) + anarci_out[-1][0][0], " ")
+                new_id = (
+                    " ",
+                    (i - anarci_end + alignment_start) + anarci_out[-1][0][0],
+                    " ",
+                )
         if new_id[1] != res.get_id()[1] or new_id[2] != res.get_id()[2]:
             deviations.append((res.get_id(), new_id))
     return deviations
