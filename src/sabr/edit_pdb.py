@@ -27,7 +27,6 @@ def thread_onto_chain(
     i = -1
     for j, res in enumerate(chain.get_residues()):
 
-        # need to fix this so residues aren't skipped during writing
         if res.get_id()[0].strip() != "":
             continue
         if j < alignment_start:
