@@ -50,4 +50,4 @@ options:
 
 - SAbR currently struggles with scFvs for two reasons. First, it is unclear how to assign canonical numbering to multiple domains within a single chain, unless we accept a spacer (e.g., starting chain #2 at 201 instead of 1). Second, it will sometimes align across both chains, introducing a massive insertion in between. It is unclear how to prevent this; please see [issue #2](https://github.com/delalamo/SAbR/issues/2) for details.
 - There are two regions that show persistent errors: loops 72/73 residues 82-84. This is extremely common and needs to be looked into, perhaps warranted splitting of V-gene family structures into different sets of embeddings.
-- There is also quite a bit of CDR misnumbering going on. 
+- There is also quite a bit of CDR misnumbering going on.

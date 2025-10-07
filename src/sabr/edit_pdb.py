@@ -24,6 +24,7 @@ def thread_onto_chain(
 
     chain_res = []
 
+    i = -1
     for j, res in enumerate(chain.get_residues()):
         if res.get_id()[0].strip() != "" or j < alignment_start:
             continue

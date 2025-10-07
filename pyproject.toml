@@ -13,25 +13,6 @@ authors = [
   { name = "Diego del Alamo" }
 ]
 
-dependencies = [
-  "absl-py==2.2.2",
-  "biopython==1.85",
-  "chex==0.1.89",
-  "dm-haiku==0.0.14",
-  "etils==1.12.2",
-  "flax==0.10.6",
-  "jax==0.6.0",
-  "jaxlib==0.6.0",
-  "numpy==2.2.6",
-  "optax==0.2.4",
-  "orbax-checkpoint==0.11.13",
-  "pandas==2.2.3",
-  "protobuf==6.31.0",
-  "scipy==1.15.3",
-  "tensorstore==0.1.75",
-  "treescope==0.1.9",
-]
-
 [project.optional-dependencies]
 test = ["pytest>=8.0", "pytest-cov>=5.0", "numpy>=1.24"]
 
