@@ -131,13 +131,22 @@ class SoftAligner:
         )
         outputs = {}
         for species_embedding in self.all_embeddings:
-            outputs[species_embedding.name] = self.transformed_align_fn.apply(
+            name = species_embedding.name
+            out = self.transformed_align_fn.apply(
                 self.model_params,
                 self.key,
                 input_data.embeddings,
                 species_embedding.embeddings,
                 self.temperature,
             )
+            old_aln = out.alignment
+            aln = np.zeros((old_aln.shape[0], 128))
+            for i, idx in enumerate(species_embedding.idxs):
+                aln[:, idx - 1] = old_aln[:, i]
+            outputs[name] = types.SoftAlignOutput(
+                alignment=aln, sim_matrix=out.sim_matrix, score=out.score
+            )
+
         best_match = max(outputs, key=lambda k: outputs[k].score)
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
