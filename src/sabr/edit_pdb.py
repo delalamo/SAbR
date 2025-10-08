@@ -26,11 +26,8 @@ def thread_onto_chain(
 
     i = -1
     for j, res in enumerate(chain.get_residues()):
-
-        if res.get_id()[0].strip() != "":
+        if res.get_id()[0].strip() != "" or j < alignment_start:
             continue
-        if j < alignment_start:
-            i -= 1
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
         i += 1
