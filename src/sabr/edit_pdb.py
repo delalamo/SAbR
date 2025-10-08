@@ -94,8 +94,11 @@ def identify_deviations(
             if aa == "-":
                 i -= 1
                 continue
-            if aa != constants.AA_3TO1[res.get_resname()]:
-                raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
+            resname = res.get_resname()
+            if aa != constants.AA_3TO1[resname]:
+                raise ValueError(
+                    f"Residue mismatch {res.get_id()[1]}! {aa} {resname}"
+                )
             new_id = (res.get_id()[0], new_id, icode)
         else:
             if i < (anarci_start):
