@@ -142,4 +142,20 @@ class SoftAligner:
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
         )
-        return best_match, np.array(outputs[best_match].alignment)
+        aln = np.array(outputs[best_match].alignment)
+
+        # correct 72/73
+        if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
+            aln[:, 71] = aln[:, 72]
+            aln[:, 72] = 0
+
+        # correct 81/82 (light chain)
+        if (
+            aln[:, 80].sum() > 0
+            and aln[:, 81].sum() > 0
+            and aln[:, 82:84].sum() == 0
+        ):
+            aln[:, 82:84] = aln[:, 80:82]
+            aln[:, 80:82] = 0
+
+        return best_match, aln
