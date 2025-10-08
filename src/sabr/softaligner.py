@@ -78,12 +78,10 @@ class SoftAligner:
             data = np.load(path, allow_pickle=True)["arr_0"].item()
             for species, embeddings_dict in data.items():
                 out_embeddings.append(
-                    self.normalize(
-                        types.MPNNEmbeddings(
-                            name=species,
-                            embeddings=embeddings_dict.get("array"),
-                            idxs=embeddings_dict.get("idxs"),
-                        )
+                    types.MPNNEmbeddings(
+                        name=species,
+                        embeddings=embeddings_dict.get("array"),
+                        idxs=embeddings_dict.get("idxs"),
                     )
                 )
         if len(out_embeddings) == 0:
@@ -140,7 +138,12 @@ class SoftAligner:
         for i in range(min(sub_aln.shape)):
             pos = ((i + 1) // 2) * ((-1) ** i)
             new_aln[pos, pos] = 1
+        print(new_aln)
+
         return new_aln
+        # This led me to conclude that this is a problem with ANARCI
+        # and not with my code
+        # return np.flip(np.flip(new_aln, 1), 0)
 
     def __call__(
         self, input_pdb: str, input_chain: str, correct_loops: bool = True
@@ -164,7 +167,7 @@ class SoftAligner:
             old_aln = out.alignment
             aln = np.zeros((old_aln.shape[0], 128))
             for i, idx in enumerate(species_embedding.idxs):
-                aln[:, idx - 1] = old_aln[:, i]
+                aln[:, int(idx) - 1] = old_aln[:, i]
             outputs[name] = types.SoftAlignOutput(
                 alignment=aln, sim_matrix=out.sim_matrix, score=out.score
             )
