@@ -120,8 +120,30 @@ class SoftAligner:
                 matches[str(res1[i])] = str(res2[j])
         return matches
 
+    def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
+        """
+        Generate an N×M binary matrix following the IMGT CDR2-like pattern.
+
+        Parameters
+        ----------
+        N : int
+            Number of residues (loop length)
+        M : int
+            Reference region length
+
+        Returns
+        -------
+        np.ndarray
+            An (N, M) binary matrix where ones represent aligned residues.
+        """
+        new_aln = np.zeros_like(sub_aln)
+        for i in range(min(sub_aln.shape)):
+            pos = ((i + 1) // 2) * ((-1) ** i)
+            new_aln[pos, pos] = 1
+        return new_aln
+
     def __call__(
-        self, input_pdb: str, input_chain: str
+        self, input_pdb: str, input_chain: str, correct_loops: bool = True
     ) -> Tuple[str, types.SoftAlignOutput]:
         """
         Compute alignment of input array against all species embeddings
@@ -151,4 +173,44 @@ class SoftAligner:
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
         )
-        return best_match, np.array(outputs[best_match].alignment)
+        aln = np.array(outputs[best_match].alignment, dtype=int)
+
+        if correct_loops:
+            # correct 72/73
+            for name, (startres, endres) in constants.IMGT_LOOPS.items():
+                # starting from flanking residues
+                # startres = startres - 1
+                # endres = endres + 1
+                startres_idx = startres - 1
+                loop_start = np.where(aln[:, startres - 1] == 1)[0]
+                loop_end = np.where(aln[:, endres - 1] == 1)[0]
+                if len(loop_start) == 0 or len(loop_end) == 0:
+                    LOGGER.info(f"Loop {name} not found")
+                    for arr, r in [(loop_start, startres), (loop_end, endres)]:
+                        if len(arr) == 0:
+                            LOGGER.info(f"Residue {r} not found")
+                    LOGGER.info("Skipping...")
+                    continue
+                elif len(loop_start) > 1 or len(loop_end) > 1:
+                    raise RuntimeError(f"Multiple start/end for loop {name}")
+                loop_start = loop_start[0]
+                loop_end = loop_end[0]
+                sub_aln = aln[loop_start:loop_end, startres_idx:endres]
+                LOGGER.info(f"Found {name} from {loop_start} to {loop_end}")
+                LOGGER.info(f"IMGT positions from {startres} to {endres}")
+                LOGGER.info(f"Sub-alignment shape: {sub_aln.shape}")
+                aln[loop_start:loop_end, startres_idx:endres] = (
+                    self.correct_gap_numbering(sub_aln)
+                )
+
+            if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
+                LOGGER.info("Correcting 72/73 gap")
+                aln[:, 71] = aln[:, 72]
+                aln[:, 72] = 0
+
+            # Residue 10, heavy chains only
+            if aln[:, 9].sum() == 1 and aln[:, 10].sum() == 0:
+                aln[:, 10] = aln[:, 9]
+                aln[:, 9] = 0
+
+        return best_match, aln

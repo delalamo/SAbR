@@ -34,7 +34,7 @@ def alignment_matrix_to_state_vector(
         raise ValueError("matrix must be 2D")
 
     # Treat rows as SeqB and cols as SeqA
-    mat = matrix.T
+    mat = np.transpose(matrix)
 
     # Coordinates of ones (alignment path), sorted by (SeqB, SeqA)
     path = np.argwhere(mat == 1)
