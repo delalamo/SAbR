@@ -41,12 +41,12 @@ addopts = "-q"
 
 [tool.setuptools]
 packages = ["sabr", "softalign", "ANARCI"]
-package-dir = {
-  sabr = "src/sabr",
-  softalign = "external/SoftAlign/softalign",
-  ANARCI = "external/ANARCI/src/ANARCI",
-}
 include-package-data = true
+
+[tool.setuptools.package-dir]
+sabr = "src/sabr"
+softalign = "external/SoftAlign/softalign"
+ANARCI = "external/ANARCI/src/ANARCI"
 
 [tool.setuptools.package-data]
 sabr = ["assets/embeddings.npz"]
