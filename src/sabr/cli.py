@@ -83,17 +83,17 @@ def main():
         f"{args.input_pdb} chain {args.input_chain}"
     )
     soft_aligner = softaligner.SoftAligner()
-    best_match, aln = soft_aligner(args.input_pdb, args.input_chain)
-    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
+    out = soft_aligner(args.input_pdb, args.input_chain)
+    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
-    subsequence = sequence[start:end]
+    subsequence = "-" * start + sequence[start:end]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
         scheme=args.numbering_scheme,
-        chain_type=best_match[-1],
+        chain_type=out.name[-1],
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
