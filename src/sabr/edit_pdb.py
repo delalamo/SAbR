@@ -67,7 +67,7 @@ def thread_onto_chain(
 def identify_deviations(
     pdb_file: str,
     chain_id: str,
-    anarci_out: dict[str, str],
+    og_anarci_out: dict[str, str],
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
@@ -75,27 +75,33 @@ def identify_deviations(
     """
     Thread the alignment onto a given chain object.
     """
-
+    anarci_out = [a for a in og_anarci_out if a[1] != "-"]
     parser = PDB.PDBParser(QUIET=True)
     chain = parser.get_structure("input_structure", pdb_file)[0][chain_id]
 
     deviations = []
+    old_ids = []
+    new_ids = []
     i = -1
     for j, res in enumerate(chain.get_residues()):
+        old_ids.append((res.get_id(), res.get_resname()))
         if res.get_id()[0].strip() != "" or j < alignment_start:
             continue
         i += 1
         if i >= anarci_start and i < anarci_end:
             try:
                 (new_id, icode), aa = anarci_out[i - anarci_start]
-                new_id += alignment_start
+                # new_id += alignment_start
             except IndexError:
                 raise IndexError(anarci_start, anarci_end, len(anarci_out), i)
             if aa == "-":
                 i -= 1
                 continue
-            if aa != constants.AA_3TO1[res.get_resname()]:
-                raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
+            resname = res.get_resname()
+            if aa != constants.AA_3TO1[resname]:
+                raise ValueError(
+                    f"Residue mismatch {res.get_id()[1]}! {aa} {resname}"
+                )
             new_id = (res.get_id()[0], new_id, icode)
         else:
             if i < (anarci_start):
@@ -106,8 +112,16 @@ def identify_deviations(
                     (i - anarci_end + alignment_start) + anarci_out[-1][0][0],
                     " ",
                 )
+        new_ids.append((new_id, res.get_resname()))
         if new_id[1] != res.get_id()[1] or new_id[2] != res.get_id()[2]:
             deviations.append((res.get_id(), new_id))
+    if len(deviations) > 0:
+        for i, og in og_anarci_out:
+            print(i, og)
+        for i, (old_id, resname) in enumerate(old_ids):
+            print(i, old_id, resname)
+        for i, (new_id, resname) in enumerate(new_ids):
+            print(i, new_id, resname)
     return deviations
 
 

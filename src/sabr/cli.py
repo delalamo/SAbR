@@ -86,7 +86,9 @@ def main():
     best_match, aln = soft_aligner(args.input_pdb, args.input_chain)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
 
-    subsequence = sequence[start:end]
+    subsequence = "-" * start + sequence[start:end]
+    while len(subsequence) < 128:
+        subsequence = subsequence + "-"
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
