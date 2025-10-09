@@ -134,7 +134,7 @@ def identify_deviations(
             else:
                 last_idx += 1
                 new_id = (" ", last_idx, " ")
-        print(i, j, res.get_id(), res.get_resname(), new_id)
+        # print(i, j, res.get_id(), res.get_resname(), new_id)
         new_ids.append((new_id, res.get_resname()))
         if (
             new_id[1] != res.get_id()[1] or new_id[2] != res.get_id()[2]
