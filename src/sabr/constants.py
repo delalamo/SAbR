@@ -12,12 +12,14 @@ IMGT_FRAMEWORKS = {
 IMGT_LOOPS = {
     "CDR1": (27, 38),
     "CDR2": (56, 65),
-    # "DE": (80, 84),
     "CDR3": (105, 117),
 }
 
 NON_CDR_RESIDUES = sum(IMGT_FRAMEWORKS.values(), [])
 CDR_RESIDUES = [x for x in range(1, 129) if x not in NON_CDR_RESIDUES]
+
+# For testing purposes
+ADDITIONAL_GAPS = []
 
 AA_3TO1 = {
     "ALA": "A",

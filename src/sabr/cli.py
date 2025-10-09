@@ -50,12 +50,6 @@ def parse_args() -> argparse.Namespace:
         default="imgt",
     )
     argparser.add_argument(
-        "-t",
-        "--trim",
-        help="Remove regions outside aligned V-region",
-        action="store_true",
-    )
-    argparser.add_argument(
         "--overwrite", help="Overwrite output PDB", action="store_true"
     )
     argparser.add_argument(
@@ -72,6 +66,12 @@ def main():
         logging.basicConfig(level=logging.INFO, force=True)
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
+    start_msg = (
+        f"Starting SAbR CLI with input={args.input_pdb} "
+        f"chain={args.input_chain} output={args.output_pdb} "
+        f"scheme={args.numbering_scheme}"
+    )
+    LOGGER.info(start_msg)
     if os.path.exists(args.output_pdb) and not args.overwrite:
         raise RuntimeError(
             f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
@@ -83,8 +83,8 @@ def main():
         f"{args.input_pdb} chain {args.input_chain}"
     )
     soft_aligner = softaligner.SoftAligner()
-    best_match, aln = soft_aligner(args.input_pdb, args.input_chain)
-    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
+    out = soft_aligner(args.input_pdb, args.input_chain)
+    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
     subsequence = "-" * start + sequence[start:end]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
@@ -93,7 +93,7 @@ def main():
         sv,
         subsequence,
         scheme=args.numbering_scheme,
-        chain_type=best_match[-1],
+        chain_type=out.name[-1],
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
@@ -105,8 +105,9 @@ def main():
         args.output_pdb,
         start_res,
         end_res,
-        trim=args.trim,
+        alignment_start=start,
     )
+    LOGGER.info(f"Finished renumbering; output written to {args.output_pdb}")
 
     sys.exit(0)
 
