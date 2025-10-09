@@ -216,14 +216,4 @@ class SoftAligner:
                 aln[:, 81] = aln[:, 80]
                 aln[:, 80] = 0
 
-            # if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
-            #     LOGGER.info("Correcting 72/73 gap")
-            #     aln[:, 71] = aln[:, 72]
-            #     aln[:, 72] = 0
-
-            # # Residue 10, heavy chains only
-            # if aln[:, 9].sum() == 1 and aln[:, 10].sum() == 0:
-            #     aln[:, 10] = aln[:, 9]
-            #     aln[:, 9] = 0
-
         return best_match, aln
