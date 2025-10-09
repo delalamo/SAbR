@@ -46,6 +46,11 @@ include-package-data = true
 where = ["src", "external/SoftAlign", "external/ANARCI/src"]
 include = ["sabr*", "softalign*", "ANARCI*"]
 
+[tool.setuptools.package-dir]
+sabr = "src/sabr"
+softalign = "external/SoftAlign/softalign"
+ANARCI = "external/ANARCI/src/ANARCI"
+
 [tool.setuptools.package-data]
 sabr = ["assets/embeddings.npz"]
 softalign = ["models/*"]
