@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -5,6 +6,8 @@ import numpy as np
 from jax import numpy as jnp
 
 from sabr import constants
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -43,6 +46,10 @@ class MPNNEmbeddings:
                 f"constants.EMBED_DIM ({constants.EMBED_DIM}). "
                 f"Error raised for {self.name}"
             )
+        LOGGER.debug(
+            f"Initialized MPNNEmbeddings for {self.name} "
+            f"(shape={self.embeddings.shape})"
+        )
 
 
 @dataclass(frozen=True)
@@ -70,3 +77,10 @@ class SoftAlignOutput:
     score: float
     sim_matrix: Optional[jnp.ndarray]
     species: Optional[str]
+
+    def __post_init__(self) -> None:
+        LOGGER.debug(
+            "Created SoftAlignOutput for "
+            f"species={self.species}, alignment_shape="
+            f"{getattr(self.alignment, 'shape', None)}, score={self.score}"
+        )

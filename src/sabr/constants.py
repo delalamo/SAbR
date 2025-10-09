@@ -12,7 +12,6 @@ IMGT_FRAMEWORKS = {
 IMGT_LOOPS = {
     "CDR1": (27, 38),
     "CDR2": (56, 65),
-    # "DE": (80, 84),
     "CDR3": (105, 117),
 }
 

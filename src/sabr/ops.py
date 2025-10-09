@@ -55,6 +55,10 @@ def align_fn(
     - The model expects batched inputs; this wrapper adds a batch dimension of
       size 1 and removes it from the outputs.
     """
+    LOGGER.info(
+        f"Running align_fn with input shape {input_array.shape}, "
+        f"target shape {target_array.shape}, temperature={temperature}"
+    )
     e2e_model = END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,
         constants.EMBED_DIM,
@@ -82,6 +86,11 @@ def align_fn(
     batched_target = jnp.array(target_array[None, :])
     alignment, sim_matrix, score = e2e_model.align(
         batched_input, batched_target, lens, temperature
+    )
+    LOGGER.debug(
+        "Alignment complete: alignment shape "
+        f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
+        f"score={float(score[0])}"
     )
     return types.SoftAlignOutput(
         alignment=alignment[0],
@@ -138,6 +147,7 @@ def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
     - If the number of ``ids`` does not match the number of embedding rows,
       a diagnostic listing is logged at ``INFO`` level.
     """
+    LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
     e2e_model = END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,
         constants.EMBED_DIM,
@@ -164,6 +174,11 @@ def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
         )
         for i, id_ in enumerate(ids):
             LOGGER.info(f"{i}: {id_}")
+    embed_msg = (
+        f"Generated embeddings with shape {embeddings.shape} "
+        f"for chain {chains}"
+    )
+    LOGGER.info(embed_msg)
     return types.MPNNEmbeddings(
         name="INPUT_PDB", embeddings=embeddings, idxs=ids
     )

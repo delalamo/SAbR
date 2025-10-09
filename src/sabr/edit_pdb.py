@@ -62,6 +62,12 @@ def thread_onto_chain(
       parents are updated to reference the newly created chain.
     """
 
+    thread_msg = (
+        f"Threading chain {chain.id} with ANARCI window "
+        f"[{anarci_start}, {anarci_end}) "
+        f"(alignment starts at {alignment_start})"
+    )
+    LOGGER.info(thread_msg)
     new_chain = Chain.Chain(chain.id)
 
     chain_res = []
@@ -154,6 +160,11 @@ def identify_deviations(
     - HETATM residues do not contribute to ANARCI index advancement, but they
       are included in the ``old_ids`` / ``new_ids`` bookkeeping.
     """
+    LOGGER.info(
+        f"Analyzing deviations in {pdb_file} chain {chain_id} "
+        f"(ANARCI window [{anarci_start}, {anarci_end}), "
+        f"alignment start {alignment_start})"
+    )
     anarci_out = [a for a in og_anarci_out if a[1] != "-"]
     parser = PDB.PDBParser(QUIET=True)
     chain = parser.get_structure("input_structure", pdb_file)[0][chain_id]
@@ -180,7 +191,7 @@ def identify_deviations(
                 # new_id += alignment_start
             except IndexError:
                 for j, k in enumerate(anarci_out):
-                    print(j, k)
+                    LOGGER.debug(f"ANARCI out {j}: {k}")
                 raise IndexError(
                     "alignment_start",
                     alignment_start,
@@ -215,19 +226,24 @@ def identify_deviations(
             else:
                 last_idx += 1
                 new_id = (" ", last_idx, " ")
-        # print(i, j, res.get_id(), res.get_resname(), new_id)
+        index_info = (
+            f"Residue index={j} (anarci_pos={i}) "
+            f"{res.get_id()}/{res.get_resname()} -> {new_id}"
+        )
+        LOGGER.debug(index_info)
         new_ids.append((new_id, res.get_resname()))
         if (
             new_id[1] != res.get_id()[1] or new_id[2] != res.get_id()[2]
         ) and res.get_id()[0].strip() == "":
             deviations.append((res.get_id(), new_id))
     if len(deviations) > 0:
-        for i, og in og_anarci_out:
-            print(i, og)
-        for i, (old_id, resname) in enumerate(old_ids):
-            print(i, old_id, resname)
-        for i, (new_id, resname) in enumerate(new_ids):
-            print(i, new_id, resname)
+        LOGGER.info(f"Found {len(deviations)} residue ID deviations")
+        for idx, og in og_anarci_out:
+            LOGGER.debug(f"Original ANARCI entry {idx} -> {og}")
+        for idx, (old_id, resname) in enumerate(old_ids):
+            LOGGER.debug(f"Existing residue {idx}: {old_id} {resname}")
+        for idx, (new_id, resname) in enumerate(new_ids):
+            LOGGER.debug(f"Proposed residue {idx}: {new_id} {resname}")
     return deviations
 
 
@@ -295,6 +311,11 @@ def thread_alignment(
     - See :func:`thread_onto_chain` for details on alignment structure and
       residue-ID assignment semantics.
     """
+    align_msg = (
+        f"Threading alignment for {pdb_file} chain {chain}; "
+        f"writing to {output_pdb}"
+    )
+    LOGGER.info(align_msg)
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("input_structure", pdb_file)
     # Create a new structure and model
@@ -315,5 +336,7 @@ def thread_alignment(
     io = PDB.PDBIO()
     if output_pdb.endswith(".cif"):
         io = PDB.MMCIFIO()
+        LOGGER.debug("Detected CIF output; using MMCIFIO writer")
     io.set_structure(new_structure)
     io.save(output_pdb)
+    LOGGER.info(f"Saved threaded structure to {output_pdb}")

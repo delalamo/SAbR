@@ -69,6 +69,7 @@ def alignment_matrix_to_state_vector(
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
+    LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
 
     # Treat rows as SeqB and cols as SeqA
     mat = np.transpose(matrix)
@@ -76,7 +77,7 @@ def alignment_matrix_to_state_vector(
     # Coordinates of ones (alignment path), sorted by (SeqB, SeqA)
     path = np.argwhere(mat == 1)
     if path.size == 0:
-        return []
+        raise RuntimeError("Alignment matrix contains no path")
 
     path = sorted(path.tolist())  # [(b, a), ...]
     out: List[Tuple[Tuple[int, str], Optional[int]]] = []
@@ -116,6 +117,11 @@ def alignment_matrix_to_state_vector(
             out.append(((b, "d"), None))
 
     report_output(out)
+    LOGGER.debug(
+        "Generated state vector with "
+        f"{len(out)} entries, b_start={path[0][0]}, "
+        f"a_end={path[-1][1] + path[0][0]}"
+    )
     return out, path[0][0], path[-1][1] + path[0][0]
 
 
@@ -134,6 +140,7 @@ def report_output(
         The state vector produced by
         :func:`alignment_matrix_to_state_vector`.
     """
+    LOGGER.info(f"Reporting {len(out)} HMM states")
     for idx, st in enumerate(out):
         (seqB, code), seqA = st
         if seqA is None:

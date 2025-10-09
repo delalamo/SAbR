@@ -50,12 +50,6 @@ def parse_args() -> argparse.Namespace:
         default="imgt",
     )
     argparser.add_argument(
-        "-t",
-        "--trim",
-        help="Remove regions outside aligned V-region",
-        action="store_true",
-    )
-    argparser.add_argument(
         "--overwrite", help="Overwrite output PDB", action="store_true"
     )
     argparser.add_argument(
@@ -72,6 +66,12 @@ def main():
         logging.basicConfig(level=logging.INFO, force=True)
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
+    start_msg = (
+        f"Starting SAbR CLI with input={args.input_pdb} "
+        f"chain={args.input_chain} output={args.output_pdb} "
+        f"scheme={args.numbering_scheme}"
+    )
+    LOGGER.info(start_msg)
     if os.path.exists(args.output_pdb) and not args.overwrite:
         raise RuntimeError(
             f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
@@ -105,8 +105,9 @@ def main():
         args.output_pdb,
         start_res,
         end_res,
-        trim=args.trim,
+        alignment_start=start,
     )
+    LOGGER.info(f"Finished renumbering; output written to {args.output_pdb}")
 
     sys.exit(0)
 
