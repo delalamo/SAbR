@@ -18,7 +18,7 @@ class DummyModel:
         return alignment, sim_matrix, score
 
     def MPNN(self, X1, mask1, chain1, res1):
-        length = len(res1)
+        length = res1.shape[-1]
         emb = np.ones((1, length, constants.EMBED_DIM), dtype=float)
         return emb
 
@@ -67,6 +67,7 @@ def test_embed_fn_returns_embeddings(monkeypatch):
     assert result.idxs == ["id_0", "id_1"]
 
 
-def test_embed_fn_rejects_multi_chain_input():
+def test_embed_fn_rejects_multi_chain_input(monkeypatch):
+    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
     with pytest.raises(NotImplementedError):
         ops.embed_fn("fake.pdb", chains="AB")
