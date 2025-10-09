@@ -1,3 +1,4 @@
+import jax.numpy as jnp
 import numpy as np
 import pytest
 
@@ -16,3 +17,17 @@ def test_mpnnembeddings_shape_mismatch_raises():
     msg = str(excinfo.value)
     assert "embeddings.shape[0] (2) must match len(idxs) (3)" in msg
     assert "Error raised for test_case" in msg
+
+
+def test_softalignoutput_holds_passed_values():
+    alignment = jnp.ones((2, 2), dtype=int)
+    output = types.SoftAlignOutput(
+        alignment=alignment,
+        score=1.5,
+        sim_matrix=None,
+        species="mouse",
+    )
+
+    assert output.alignment.shape == (2, 2)
+    assert output.score == pytest.approx(1.5)
+    assert output.species == "mouse"
