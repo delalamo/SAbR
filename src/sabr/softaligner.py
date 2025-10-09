@@ -138,12 +138,8 @@ class SoftAligner:
         for i in range(min(sub_aln.shape)):
             pos = ((i + 1) // 2) * ((-1) ** i)
             new_aln[pos, pos] = 1
-        print(new_aln)
 
         return new_aln
-        # This led me to conclude that this is a problem with ANARCI
-        # and not with my code
-        # return np.flip(np.flip(new_aln, 1), 0)
 
     def __call__(
         self, input_pdb: str, input_chain: str, correct_loops: bool = True
@@ -206,14 +202,19 @@ class SoftAligner:
                     self.correct_gap_numbering(sub_aln)
                 )
 
-            if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
-                LOGGER.info("Correcting 72/73 gap")
-                aln[:, 71] = aln[:, 72]
-                aln[:, 72] = 0
+            if aln[:, 80].sum() == 1 and aln[:, 81:83].sum() == 0:
+                LOGGER.info("Correcting DE loop")
+                aln[:, 82] = aln[:, 80]
+                aln[:, 80] = 0
 
-            # Residue 10, heavy chains only
-            if aln[:, 9].sum() == 1 and aln[:, 10].sum() == 0:
-                aln[:, 10] = aln[:, 9]
-                aln[:, 9] = 0
+            # if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
+            #     LOGGER.info("Correcting 72/73 gap")
+            #     aln[:, 71] = aln[:, 72]
+            #     aln[:, 72] = 0
+
+            # # Residue 10, heavy chains only
+            # if aln[:, 9].sum() == 1 and aln[:, 10].sum() == 0:
+            #     aln[:, 10] = aln[:, 9]
+            #     aln[:, 9] = 0
 
         return best_match, aln
