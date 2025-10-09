@@ -43,7 +43,6 @@ options:
                         Output pdb file
   -n NUMBERING_SCHEME, --numbering_scheme NUMBERING_SCHEME
                         Numbering scheme, default is IMGT. Supports IMGT, Chothia, Kabat, Martin, AHo, and Wolfguy.
-  -t, --trim            Remove regions outside aligned V-region
   --overwrite           Overwrite PDB
   -v, --verbose         Verbose output
 ```
@@ -51,5 +50,5 @@ options:
 ## Known issues
 
 - SAbR currently struggles with scFvs for two reasons. First, it is unclear how to assign canonical numbering to multiple domains within a single chain, unless we accept a spacer (e.g., starting chain #2 at 201 instead of 1). Second, it will sometimes align across both chains, introducing a massive insertion in between. It is unclear how to prevent this; please see [issue #2](https://github.com/delalamo/SAbR/issues/2) for details.
-- There are two regions that show persistent errors: loops 72/73 residues 82-84. This is extremely common and needs to be looked into, perhaps warranted splitting of V-gene family structures into different sets of embeddings.
-- There is also quite a bit of CDR misnumbering going on.
+- SAbR sometimes mistakenly includes sheets from the Fab in the VH.
+- The algorithm for renumbering CDRs, which is the same as the one for IMGT, does not account for unassigned residues. So if a residue is missing due to heterogeneity, the CDR numbering algorithm will misnumber other residues in the CDR.
