@@ -87,8 +87,6 @@ def main():
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(aln)
 
     subsequence = "-" * start + sequence[start:end]
-    while len(subsequence) < 128:
-        subsequence = subsequence + "-"
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
