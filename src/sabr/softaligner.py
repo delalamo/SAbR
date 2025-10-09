@@ -202,19 +202,18 @@ class SoftAligner:
                     self.correct_gap_numbering(sub_aln)
                 )
 
+            # DE loop manual fix
             if aln[:, 80].sum() == 1 and aln[:, 81:83].sum() == 0:
                 LOGGER.info("Correcting DE loop")
                 aln[:, 82] = aln[:, 80]
                 aln[:, 80] = 0
-
-            # if aln[:, 72].sum() > 0 and aln[:, 71].sum() == 0:
-            #     LOGGER.info("Correcting 72/73 gap")
-            #     aln[:, 71] = aln[:, 72]
-            #     aln[:, 72] = 0
-
-            # # Residue 10, heavy chains only
-            # if aln[:, 9].sum() == 1 and aln[:, 10].sum() == 0:
-            #     aln[:, 10] = aln[:, 9]
-            #     aln[:, 9] = 0
+            elif (
+                aln[:, 80].sum() == 1
+                and aln[:, 81].sum() == 0
+                and aln[:, 82].sum() == 1
+            ):
+                LOGGER.info("Correcting DE loop")
+                aln[:, 81] = aln[:, 80]
+                aln[:, 80] = 0
 
         return best_match, aln
