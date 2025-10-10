@@ -6,6 +6,11 @@ on:
   push:
     tags:
       - "v*" # Or whenever a tag starting with v is pushed
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Container tag to use when running manually (leave blank to auto-generate)"
+        required: false
 
 jobs:
   build-and-push:
@@ -23,10 +28,22 @@ jobs:
 
       - name: Compute lowercase image name and version tag
         id: vars
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_VERSION: ${{ github.event.inputs.version }}
+          REPO: ${{ github.repository }}
         run: |
-          IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}"
-          VERSION_TAG="${GITHUB_REF_NAME}"        # e.g. v0.1.4
-          CLEAN_TAG="${VERSION_TAG#v}"            # strip leading 'v' if present
+          IMAGE_NAME="ghcr.io/${REPO,,}"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            if [ -n "$DISPATCH_VERSION" ]; then
+              CLEAN_TAG="$DISPATCH_VERSION"
+            else
+              CLEAN_TAG="manual-${GITHUB_RUN_ID}"
+            fi
+          else
+            VERSION_TAG="${GITHUB_REF_NAME}"        # e.g. v0.1.4
+            CLEAN_TAG="${VERSION_TAG#v}"            # strip leading 'v' if present
+          fi
           echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
           echo "version_tag=${CLEAN_TAG}" >> $GITHUB_OUTPUT
 
