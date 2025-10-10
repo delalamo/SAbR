@@ -46,11 +46,11 @@ jobs:
             type=raw,value=${{ steps.vars.outputs.version_tag }}
             type=raw,value=latest
 
-      - name: Build and push Docker image
+      - name: Build Docker image (no push)
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -59,4 +59,21 @@ jobs:
           docker run --rm \
             --entrypoint python \
             ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
-            -c "import sabr, softalign, ANARCI; print('✅ All imports OK')"
+            -c "import sabr; print('✅ sabr imports OK')"
+          docker run --rm \
+            --entrypoint python \
+            ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
+            -c "import softalign; print('✅ softalign imports OK')"
+          docker run --rm \
+            --entrypoint python \
+            ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
+            -c "import ANARCI; print('✅ ANARCI imports OK')"
+
+      - name: Build and push Docker image
+        if: success()
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
