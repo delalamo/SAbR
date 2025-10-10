@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true # IMPORTANT: include vendored submodules in build
 
       - name: Set up Python
         uses: actions/setup-python@v5
