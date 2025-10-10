@@ -42,10 +42,10 @@ sabr = "sabr.cli:main"
 # ----------------------------------------
 [tool.hatch.build.targets.wheel]
 packages = ["src/sabr"]
-force-include = { 
-  "external/ANARCI/src/ANARCI" = "ANARCI",
-  "external/SoftAlign/src/softalign" = "softalign"
-}
+
+[tool.hatch.build.targets.wheel.force-include]
+"external/ANARCI/src/ANARCI" = "ANARCI"
+"external/SoftAlign/softalign" = "softalign"
 
 # Optionally, include any data files you want in the wheel
 [tool.hatch.build]
