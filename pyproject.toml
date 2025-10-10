@@ -62,3 +62,15 @@ include = [
 # ----------------------------------------
 [tool.hatch.version]
 source = "vcs"
+
+[tool.black]
+line-length = 79
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.flake8]
+max-line-length = 79
+extend-ignore = ["E203", "W503"]
