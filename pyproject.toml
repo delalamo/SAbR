@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sabr"
-version = "0.2.0"
+version = "0.1.3"
 description = "Structure-based Antibody Renumbering (SAbR)"
 readme = "README.md"
 license = { file = "LICENSE" }
