@@ -63,13 +63,11 @@ jobs:
             type=raw,value=${{ steps.vars.outputs.version_tag }}
             type=raw,value=latest
 
-      - name: Build Docker image (no push)
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: false
-          load: true
-          platforms: linux/amd64
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -78,21 +76,4 @@ jobs:
           docker run --rm \
             --entrypoint python \
             ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
-            -c "import sabr; print('✅ sabr imports OK')"
-          docker run --rm \
-            --entrypoint python \
-            ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
-            -c "import softalign; print('✅ softalign imports OK')"
-          docker run --rm \
-            --entrypoint python \
-            ${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.version_tag }} \
-            -c "import ANARCI; print('✅ ANARCI imports OK')"
-
-      - name: Push Docker image to GHCR
-        if: success()
-        run: |
-          echo "${{ steps.meta.outputs.tags }}" | tr ' ' '\n' | while read tag; do
-            if [ -n "$tag" ]; then
-              docker push "$tag"
-            fi
-          done
+            -c "import sabr, softalign, ANARCI; print('✅ All imports OK')"
