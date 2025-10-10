@@ -27,6 +27,9 @@ dependencies = [
 Homepage = "https://github.com/delalamo/sabr"
 Issues = "https://github.com/delalamo/sabr/issues"
 
+[project.scripts]
+sabr = "sabr.cli:main"
+
 # ----------------------------------------
 # Include external submodules in the build
 # ----------------------------------------
