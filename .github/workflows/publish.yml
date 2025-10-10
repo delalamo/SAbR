@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true # IMPORTANT: include vendored submodules in build
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,10 +22,34 @@ jobs:
 
       - name: Install build tools
         run: |
+          python -m pip install --upgrade pip
           pip install build twine
 
       - name: Build package
         run: python -m build
+
+      - name: Twine metadata check
+        run: twine check dist/*
+
+      # --- Smoke test: install built wheel in clean venv, import modules, run CLI
+      - name: Smoke test built wheel
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          # Install the WHEEL (ensures vendored packages are in the artifact we’ll publish)
+          python -m pip install dist/*.whl
+          python - <<'PY'
+          import importlib, subprocess, sys
+          for mod in ["sabr", "softalign", "ANARCI"]:
+              importlib.import_module(mod)
+              print(f"✅ import {mod} OK")
+          # Check CLI entrypoint
+          rc = subprocess.call(["sabr", "--help"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+          if rc != 0:
+              sys.exit("sabr CLI failed")
+          print("✅ sabr CLI OK")
+          PY
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
