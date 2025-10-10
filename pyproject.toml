@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 
 name = "sabr-kit"
-version = "0.1.2.dev1"
+version = "0.1.3"
 description = "Structure-based Antibody Renumbering"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -41,11 +41,11 @@ sabr = "sabr.cli:main"
 # Include external submodules in the build
 # ----------------------------------------
 [tool.hatch.build.targets.wheel]
-packages = [
-  "src/sabr",
-  "external/ANARCI/src/ANARCI",
-  "external/SoftAlign/softalign"
-]
+packages = ["src/sabr"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"external/ANARCI/src/ANARCI" = "ANARCI"
+"external/SoftAlign/softalign" = "softalign"
 
 # Optionally, include any data files you want in the wheel
 [tool.hatch.build]
