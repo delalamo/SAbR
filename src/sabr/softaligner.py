@@ -291,7 +291,7 @@ class SoftAligner:
 
         Given a binary sub-alignment array ``sub_aln`` with shape ``(N, M)``,
         construct a new alignment of the same shape that places ones along an
-        alternating index pattern (0, +1, -1, +2, -2, ...). This is intended
+        alternating index pattern (0, -1, +1, -2, +2, ...). This is intended
         to regularize gap placement for loops with expected numbering schemes
         (e.g., CDR2).
 
@@ -309,7 +309,8 @@ class SoftAligner:
         Notes
         -----
         The mapping assumes ``min(N, M)`` effective aligned positions and
-        does not validate biochemical plausibility.
+        does not validate biochemical plausibility. For example, gaps are not
+        considered and this could be a problem.
         """
         new_aln = np.zeros_like(sub_aln)
         for i in range(min(sub_aln.shape)):
