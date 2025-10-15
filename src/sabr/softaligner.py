@@ -388,14 +388,19 @@ class SoftAligner:
             out = self.transformed_align_fn.apply(
                 self.model_params,
                 self.key,
-                input_data.embeddings,
-                species_embedding.embeddings,
+                input_data,
+                species_embedding,
                 self.temperature,
             )
             aln = self.fix_aln(out.alignment, species_embedding.idxs)
 
             outputs[name] = types.SoftAlignOutput(
-                alignment=aln, score=out.score, species=name, sim_matrix=None
+                alignment=aln,
+                score=out.score,
+                species=name,
+                sim_matrix=None,
+                idxs1=input_data.idxs,
+                idxs2=[str(x) for x in range(1, 129)],
             )
         LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
 
@@ -403,6 +408,7 @@ class SoftAligner:
         LOGGER.info(
             f"Best match: {best_match}; score {outputs[best_match].score}"
         )
+
         aln = np.array(outputs[best_match].alignment, dtype=int)
 
         if correct_loops:
@@ -444,5 +450,10 @@ class SoftAligner:
                 aln[:, 80] = 0
 
         return types.SoftAlignOutput(
-            species=best_match, alignment=aln, score=0, sim_matrix=None
+            species=best_match,
+            alignment=aln,
+            score=0,
+            sim_matrix=None,
+            idxs1=outputs[best_match].idxs1,
+            idxs2=outputs[best_match].idxs2,
         )

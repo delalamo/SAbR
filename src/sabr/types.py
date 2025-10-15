@@ -77,8 +77,20 @@ class SoftAlignOutput:
     score: float
     sim_matrix: Optional[jnp.ndarray]
     species: Optional[str]
+    idxs1: List[str]
+    idxs2: List[str]
 
     def __post_init__(self) -> None:
+        if self.alignment.shape[0] != len(self.idxs1):
+            raise ValueError(
+                f"embeddings.shape[0] ({self.alignment.shape[0]}) must match "
+                f"len(idxs1) ({len(self.idxs1)}). "
+            )
+        if self.alignment.shape[1] != len(self.idxs2):
+            raise ValueError(
+                f"embeddings.shape[1] ({self.alignment.shape[1]}) must match "
+                f"len(idxs2) ({len(self.idxs2)}). "
+            )
         LOGGER.debug(
             "Created SoftAlignOutput for "
             f"species={self.species}, alignment_shape="
