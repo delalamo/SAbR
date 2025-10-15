@@ -26,6 +26,8 @@ def test_softalignoutput_holds_passed_values():
         score=1.5,
         sim_matrix=None,
         species="mouse",
+        idxs1=[str(x) for x in range(len(alignment[0]))],
+        idxs2=[str(x) for x in range(len(alignment[1]))],
     )
 
     assert output.alignment.shape == (2, 2)
