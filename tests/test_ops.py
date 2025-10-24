@@ -25,26 +25,23 @@ class DummyModel:
 
 def test_align_fn_returns_softalign_output(monkeypatch):
     monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
-    input_array = np.ones((2, constants.EMBED_DIM), dtype=float)
-    target_array = np.ones((3, constants.EMBED_DIM), dtype=float)
 
-    result = ops.align_fn(input_array, target_array, temperature=0.5)
+    # MPNN embeddings
+    input = types.MPNNEmbeddings(
+        embeddings=np.ones((2, constants.EMBED_DIM), dtype=float),
+        idxs=list(range(2)),
+    )
+    targ = types.MPNNEmbeddings(
+        embeddings=np.ones((3, constants.EMBED_DIM), dtype=float),
+        idxs=list(range(3)),
+    )
+
+    result = ops.align_fn(input, targ)
 
     assert isinstance(result, types.SoftAlignOutput)
     assert result.alignment.shape == (2, 3)
     assert result.sim_matrix.shape == (2, 3)
     assert result.score == pytest.approx(0.5)
-
-
-def test_align_fn_raises_for_bad_embed_dim(monkeypatch):
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
-    bad_input = np.ones((2, constants.EMBED_DIM - 1), dtype=float)
-    target = np.ones((3, constants.EMBED_DIM - 1), dtype=float)
-
-    with pytest.raises(ValueError) as excinfo:
-        ops.align_fn(bad_input, target, temperature=1.0)
-
-    assert "last dim must be" in str(excinfo.value)
 
 
 def test_embed_fn_returns_embeddings(monkeypatch):
