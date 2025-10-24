@@ -29,9 +29,9 @@ class MPNNEmbeddings:
         ``embeddings``.
     """
 
-    name: str = "TEST"
     embeddings: np.ndarray
     idxs: List[str]
+    name: str = "TEST"
 
     def __post_init__(self) -> None:
         if self.embeddings.shape[0] != len(self.idxs):
