@@ -11,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 def align_fn(
     input: types.MPNNEmbeddings,
     target: types.MPNNEmbeddings,
-    temperature: float,
+    temperature: float = 10**-4,
 ) -> types.SoftAlignOutput:
     """
     Compute a pairwise alignment using the SoftAlign end-to-end model.
