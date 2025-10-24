@@ -19,7 +19,7 @@ def test_thread_onto_chain_updates_residue_ids():
         ((2, " "), "G"),
     ]
 
-    threaded = edit_pdb.thread_onto_chain(
+    threaded, _ = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,

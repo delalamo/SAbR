@@ -1,6 +1,5 @@
 import logging
 
-import numpy as np
 from jax import numpy as jnp
 from softalign import END_TO_END_MODELS, Input_MPNN
 
@@ -10,7 +9,9 @@ LOGGER = logging.getLogger(__name__)
 
 
 def align_fn(
-    input_array: np.ndarray, target_array: np.ndarray, temperature: float
+    input: types.MPNNEmbeddings,
+    target: types.MPNNEmbeddings,
+    temperature: float = 10**-4,
 ) -> types.SoftAlignOutput:
     """
     Compute a pairwise alignment using the SoftAlign end-to-end model.
@@ -55,6 +56,8 @@ def align_fn(
     - The model expects batched inputs; this wrapper adds a batch dimension of
       size 1 and removes it from the outputs.
     """
+    input_array = input.embeddings
+    target_array = target.embeddings
     LOGGER.info(
         f"Running align_fn with input shape {input_array.shape}, "
         f"target shape {target_array.shape}, temperature={temperature}"
@@ -97,6 +100,8 @@ def align_fn(
         sim_matrix=sim_matrix[0],
         score=float(score[0]),
         species=None,
+        idxs1=input.idxs,
+        idxs2=target.idxs,
     )
 
 
