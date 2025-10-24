@@ -1,5 +1,6 @@
 import copy
 import logging
+from typing import Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
@@ -15,7 +16,7 @@ def thread_onto_chain(
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
-) -> Chain.Chain:
+) -> Tuple[Chain.Chain, int]:
     """
     Create renumbered copy of a PDB chain by threading ANARCI indices onto it
 
