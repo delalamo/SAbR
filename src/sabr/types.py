@@ -29,7 +29,7 @@ class MPNNEmbeddings:
         ``embeddings``.
     """
 
-    name: str
+    name: str = "TEST"
     embeddings: np.ndarray
     idxs: List[str]
 

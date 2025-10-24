@@ -28,10 +28,12 @@ def test_align_fn_returns_softalign_output(monkeypatch):
 
     # MPNN embeddings
     input = types.MPNNEmbeddings(
+        name="test1",
         embeddings=np.ones((2, constants.EMBED_DIM), dtype=float),
         idxs=list(range(2)),
     )
     targ = types.MPNNEmbeddings(
+        name="test2",
         embeddings=np.ones((3, constants.EMBED_DIM), dtype=float),
         idxs=list(range(3)),
     )
