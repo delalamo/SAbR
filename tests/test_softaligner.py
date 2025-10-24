@@ -1,8 +1,5 @@
 import importlib
 
-# tests/test_resource_lookup.py
-import importlib.resources as resources
-
 import jax.numpy as jnp
 import numpy as np
 
@@ -17,7 +14,7 @@ def test_files_resolves():
     pkg = importlib.import_module(
         "sabr.assets"
     )  # will raise if not importable
-    assert resources.files(pkg) is not None
+    assert importlib.resources.files(pkg) is not None
 
 
 def test_normalize_orders_indices():
