@@ -74,6 +74,7 @@ def thread_onto_chain(
 
     i = -1
     last_idx = None
+    deviations = 0
     for j, res in enumerate(chain.get_residues()):
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
         past_n_anarci = i >= anarci_start  # In Fv, ANARCI numbering
@@ -104,10 +105,12 @@ def thread_onto_chain(
                 new_id = (" ", last_idx, " ")
         new_res.id = new_id
         LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
+        if res.get_id() != new_res.get_id():
+            deviations += 1
         new_chain.add(new_res)
         new_res.parent = new_chain
         chain_res.append(res.get_id()[1:])
-    return new_chain
+    return new_chain, deviations
 
 
 def thread_alignment(
@@ -185,15 +188,17 @@ def thread_alignment(
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)
 
+    all_devs = 0
+
     for ch in structure[0]:
         if ch.id != chain:
             new_model.add(ch)
         else:
-            new_model.add(
-                thread_onto_chain(
-                    ch, alignment, start_res, end_res, alignment_start
-                )
+            new_chain, deviations = thread_onto_chain(
+                ch, alignment, start_res, end_res, alignment_start
             )
+            new_model.add(new_chain)
+            all_devs += deviations
 
     new_structure.add(new_model)
     io = PDB.PDBIO()
@@ -203,3 +208,4 @@ def thread_alignment(
     io.set_structure(new_structure)
     io.save(output_pdb)
     LOGGER.info(f"Saved threaded structure to {output_pdb}")
+    return all_devs

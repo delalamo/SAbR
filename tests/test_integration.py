@@ -1,4 +1,5 @@
 import pathlib
+import tempfile
 
 from ANARCI import anarci
 
@@ -25,13 +26,14 @@ def test_pipeline_generates_deviations():
         )
     )
 
-    deviations = edit_pdb.identify_deviations(
-        str(pdb_path),
-        chain,
-        anarci_out,
-        anarci_start,
-        anarci_end,
-        alignment_start=start,
-    )
-
+    with tempfile.TomporaryDirectory() as tmpdir:
+        deviations = edit_pdb.thread_alignment(
+            pdb_path,
+            chain,
+            anarci_out,
+            f"{tmpdir}/test.pdb",
+            anarci_start,
+            anarci_end,
+            start,
+        )
     assert len(deviations) > 1
