@@ -16,53 +16,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class SoftAligner:
-    """
-    Run structure-conditioned alignment against precomputed embeddings.
-
-    This class wraps two Haiku-transformed functions—an embedding function and
-    an alignment function—and applies them to an input PDB chain against a set
-    of species-specific embeddings. It also provides utilities for reading the
-    required assets, normalizing embedding indices, and post-processing the
-    alignment to conform with IMGT loop conventions.
-
-    Parameters
-    ----------
-    params_name : str, optional
-        Filename (within `params_path`) of the serialized model parameters
-        (e.g., a pickle file). Default is ``"CONT_SW_05_T_3_1"``.
-    params_path : str, optional
-        Package path where the parameters file can be found. This is passed to
-        :func:`importlib.resources.files`. Default is ``"softalign.models"``.
-    embeddings_name : str, optional
-        Filename (within `embeddings_path`) of the serialized embeddings
-        archive (``.npz``). Default is ``"embeddings.npz"``.
-    embeddings_path : str, optional
-        Package path where the embeddings archive resides. Default is
-        ``"sabr.assets"``.
-    temperature : float, optional
-        Temperature used by the alignment scoring function. Default is
-        ``1e-4``.
-    random_seed : int, optional
-        Seed for JAX PRNG key creation. Default is ``0``.
-    DEBUG : bool, optional
-        If ``True``, defer asset loading (useful for testing). Default is
-        ``False``.
-
-    Attributes
-    ----------
-    all_embeddings : list[types.MPNNEmbeddings]
-        The set of species embeddings loaded from disk (omitted if `DEBUG`).
-    model_params : dict
-        Haiku/SoftAlign parameters loaded from disk (omitted if `DEBUG`).
-    temperature : float
-        Temperature used by the alignment function.
-    key : jax.random.KeyArray
-        PRNG key used by Haiku apply calls.
-    transformed_align_fn : hk.Transformed
-        Haiku-transformed alignment function.
-    transformed_embed_fn : hk.Transformed
-        Haiku-transformed embedding function.
-    """
+    """Embed a query chain and align it against packaged species embeddings."""
 
     def __init__(
         self,
