@@ -2,7 +2,6 @@
 
 import logging
 
-import numpy as np
 from jax import numpy as jnp
 from softalign import END_TO_END_MODELS, Input_MPNN
 
@@ -12,9 +11,55 @@ LOGGER = logging.getLogger(__name__)
 
 
 def align_fn(
-    input_array: np.ndarray, target_array: np.ndarray, temperature: float
+    input: types.MPNNEmbeddings,
+    target: types.MPNNEmbeddings,
+    temperature: float = 10**-4,
 ) -> types.SoftAlignOutput:
-    """Run the SoftAlign aligner on two embedding arrays after shape checks."""
+    """
+    Compute a pairwise alignment using the SoftAlign end-to-end model.
+
+    This function wraps the SoftAlign model's ``align`` method. It validates
+    inputs, adds a batch dimension expected by the model, and returns a
+    :class:`sabr.types.SoftAlignOutput` object containing the single best
+    alignment for the provided input/target embeddings.
+
+    Parameters
+    ----------
+    input_array : np.ndarray
+        2-D array with shape ``(L_in, D)`` containing per-residue embeddings
+        of the input sequence/structure. ``D`` must equal
+        ``constants.EMBED_DIM``.
+    target_array : np.ndarray
+        2-D array with shape ``(L_tgt, D)`` containing per-residue embeddings
+        of the target sequence/structure. ``D`` must equal
+        ``constants.EMBED_DIM``.
+    temperature : float
+        Temperature parameter passed to the model's alignment routine.
+
+    Returns
+    -------
+    sabr.types.SoftAlignOutput
+        A container with:
+        - ``alignment``: binary matrix ``(L_in, K)`` (model-specific width),
+        - ``sim_matrix``: similarity matrix for the pair,
+        - ``score``: scalar alignment score (higher is better).
+
+    Raises
+    ------
+    ValueError
+        If ``input_array`` or ``target_array`` is not 2-D, or if the final
+        dimension does not equal ``constants.EMBED_DIM``.
+
+    Notes
+    -----
+    - A fresh model instance is constructed on every call. If you plan to call
+      this function many times, consider instantiating and reusing the model in
+      your own code to avoid repeated setup costs.
+    - The model expects batched inputs; this wrapper adds a batch dimension of
+      size 1 and removes it from the outputs.
+    """
+    input_array = input.embeddings
+    target_array = target.embeddings
     LOGGER.info(
         f"Running align_fn with input shape {input_array.shape}, "
         f"target shape {target_array.shape}, temperature={temperature}"
@@ -57,6 +102,8 @@ def align_fn(
         sim_matrix=sim_matrix[0],
         score=float(score[0]),
         species=None,
+        idxs1=input.idxs,
+        idxs2=target.idxs,
     )
 
 

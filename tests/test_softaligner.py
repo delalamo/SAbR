@@ -1,13 +1,20 @@
+import importlib
+
 import jax.numpy as jnp
 import numpy as np
 
 from sabr import constants, softaligner, types
 
-# import pytest
-
 
 def make_aligner():
     return softaligner.SoftAligner.__new__(softaligner.SoftAligner)
+
+
+def test_files_resolves():
+    pkg = importlib.import_module(
+        "sabr.assets"
+    )  # will raise if not importable
+    assert importlib.resources.files(pkg) is not None
 
 
 def test_normalize_orders_indices():
