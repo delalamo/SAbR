@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 import pickle
 from importlib.resources import as_file, files
