@@ -11,9 +11,8 @@ def make_aligner():
 
 
 def test_files_resolves():
-    pkg = importlib.import_module(
-        "sabr.assets"
-    )  # will raise if not importable
+    # will raise if not importable
+    pkg = importlib.import_module("sabr.assets")
     assert importlib.resources.files(pkg) is not None
 
 
