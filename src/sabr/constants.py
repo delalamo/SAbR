@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3
 

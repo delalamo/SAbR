@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 
 from jax import numpy as jnp
@@ -106,52 +108,7 @@ def align_fn(
 
 
 def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
-    """
-    Generate per-residue MPNN embeddings for a single PDB chain.
-
-    This function parses a PDB file, extracts the specified chain, computes
-    MPNN embeddings using the SoftAlign model's encoder, and returns them in a
-    :class:`sabr.types.MPNNEmbeddings` container. The container includes the
-    embedding array and the corresponding residue identifiers as produced by
-    :func:`softalign.Input_MPNN.get_inputs_mpnn`.
-
-    Parameters
-    ----------
-    pdbfile : str
-        Path to the input PDB file to embed.
-    chains : str
-        Single-character chain identifier (e.g., ``"A"``, ``"H"``, ``"L"``).
-        Multi-chain inputs are not supported by this wrapper.
-
-    Returns
-    -------
-    sabr.types.MPNNEmbeddings
-        An object with:
-        - ``name``: fixed to ``"INPUT_PDB"``,
-        - ``embeddings``: array of shape ``(L, D)`` where ``D`` is
-          ``constants.EMBED_DIM``,
-        - ``idxs``: sequence of residue IDs (as returned by
-          :func:`Input_MPNN.get_inputs_mpnn`), typically strings that identify
-          positions in the original structure.
-
-    Raises
-    ------
-    NotImplementedError
-        If ``chains`` contains more than one character (i.e., multi-chain
-        embedding is requested).
-    ValueError
-        May be raised by underlying parsing/featurization if the PDB/chain
-        cannot be processed.
-
-    Notes
-    -----
-    - :func:`softalign.Input_MPNN.get_inputs_mpnn` returns a tuple
-      ``(X, mask, chain_idx, res_one_letter, ids)``. Only ``ids`` are used
-      here for metadata; they should align with the first axis of the returned
-      embedding array.
-    - If the number of ``ids`` does not match the number of embedding rows,
-      a diagnostic listing is logged at ``INFO`` level.
-    """
+    """Return MPNN embeddings for ``chains`` in ``pdbfile`` using SoftAlign."""
     LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
     e2e_model = END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,

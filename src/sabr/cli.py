@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import logging
 import os
@@ -12,9 +14,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
-    """
-    Fetch the sequence from a PDB file for a given chain.
-    """
+    """Return the sequence for chain in pdb_file without X residues."""
     for record in SeqIO.parse(pdb_file, "pdb-atom"):
         if record.id.endswith(chain):
             return str(record.seq).replace("X", "")
@@ -23,9 +23,7 @@ def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
 
 
 def parse_args() -> argparse.Namespace:
-    """
-    Parse arguments
-    """
+    """Return parsed CLI arguments for the SAbR entry point."""
     description = (
         "Structure-based Antibody Renumbering (SAbR) renumbers antibody "
         "PDB files using the 3D coordinate of backbone atoms."
@@ -60,7 +58,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main():
-
+    """Run the command-line workflow for renumbering antibody structures."""
     args = parse_args()
     if args.verbose:
         logging.basicConfig(level=logging.INFO, force=True)
