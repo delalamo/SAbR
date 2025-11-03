@@ -112,56 +112,14 @@ class SoftAligner:
         params_name: str = "CONT_SW_05_T_3_1",
         params_path: str = "softalign.models",
     ) -> Dict[str, Any]:
-        """
-        Load SoftAlign model parameters from a package resource.
-
-        Parameters
-        ----------
-        params_name : str, optional
-            Filename of the serialized parameters within `params_path`.
-        params_path : str, optional
-            Package path resolvable by :func:`importlib.resources.files`.
-
-        Returns
-        -------
-        dict
-            The deserialized parameter dictionary.
-
-        Raises
-        ------
-        FileNotFoundError
-            If the target file cannot be found by `files(params_path) / name`.
-        pickle.UnpicklingError
-            If the file exists but cannot be unpickled.
-        """
+        """Load SoftAlign parameters from package resources."""
         path = files(params_path) / params_name
         params = pickle.load(open(path, "rb"))
         LOGGER.info(f"Loaded model parameters from {path}")
         return params
 
     def normalize(self, mp: types.MPNNEmbeddings) -> types.MPNNEmbeddings:
-        """
-        Return an embedding object with rows reordered by sorted int indices.
-
-        This utility is useful when the embedding rows are stored in an
-        arbitrary order and `mp.idxs` encodes the target order.
-
-        Parameters
-        ----------
-        mp : types.MPNNEmbeddings
-            Embedding container with fields ``name``, ``embeddings``, and
-            ``idxs`` (string or int-like identifiers).
-
-        Returns
-        -------
-        types.MPNNEmbeddings
-            A new container with rows permuted to ascending ``idxs`` and
-            ``idxs`` cast to ``int``.
-
-        Notes
-        -----
-        This function does not modify `mp` in place; it returns a new object.
-        """
+        """Return embeddings reordered by sorted integer indices."""
         idxs_int = [int(x) for x in mp.idxs]
         order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
         if not np.array_equal(order, np.arange(len(order))):
@@ -181,34 +139,7 @@ class SoftAligner:
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
     ) -> List[types.MPNNEmbeddings]:
-        """
-        Load species embeddings from a package ``.npz`` archive.
-
-        The archive is expected to contain a pickled dict under key ``"arr_0"``
-        mapping species name -> dict with keys:
-        ``{"array": np.ndarray, "idxs": list[str|int]}``.
-
-        Parameters
-        ----------
-        embeddings_name : str, optional
-            Filename of the ``.npz`` archive within `embeddings_path`.
-        embeddings_path : str, optional
-            Package path resolvable by :func:`importlib.resources.files`.
-
-        Returns
-        -------
-        list[types.MPNNEmbeddings]
-            List of per-species embeddings.
-
-        Raises
-        ------
-        RuntimeError
-            If no embeddings are found in the archive.
-        FileNotFoundError
-            If the archive cannot be resolved.
-        ValueError
-            If the archive structure does not match the expected schema.
-        """
+        """Load packaged species embeddings as ``MPNNEmbeddings``."""
         out_embeddings = []
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
@@ -236,36 +167,7 @@ class SoftAligner:
         res1: List[str],
         res2: List[str],
     ) -> Dict[str, str]:
-        """
-        Convert a binary alignment matrix into residue-to-residue matches.
-
-        Parameters
-        ----------
-        aln : jnp.ndarray
-            A binary matrix of shape ``(len(res1), len(res2))`` where ones
-            indicate matched positions.
-        res1 : list[str]
-            Residue identifiers (e.g., PDB numbers, IMGT labels) for the rows.
-        res2 : list[str]
-            Residue identifiers for the columns.
-
-        Returns
-        -------
-        dict[str, str]
-            Mapping from ``res1`` identifiers to ``res2`` identifiers for the
-            subset of columns that are **not** in
-            ``constants.CDR_RESIDUES + constants.ADDITIONAL_GAPS``.
-
-        Raises
-        ------
-        ValueError
-            If `aln` is not 2-D or its shape mismatches `res1`/`res2`.
-
-        Notes
-        -----
-        Each ``1`` entry in `aln` is treated as a match. Columns whose IMGT
-        integer index (1-based) falls into the excluded positions are skipped.
-        """
+        """Map residues from binary alignment while skipping IMGT gaps."""
         if aln.ndim != 2:
             raise ValueError(f"Alignment must be 2D; got shape {aln.shape}")
         if aln.shape[0] != len(res1):
@@ -288,31 +190,7 @@ class SoftAligner:
         return matches
 
     def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
-        """
-        Re-map a loop sub-alignment to an IMGT-like alternating pattern.
-
-        Given a binary sub-alignment array ``sub_aln`` with shape ``(N, M)``,
-        construct a new alignment of the same shape that places ones along an
-        alternating index pattern (0, +1, -1, +2, -2, ...). This is intended
-        to regularize gap placement for loops with expected numbering schemes
-        (e.g., CDR2).
-
-        Parameters
-        ----------
-        sub_aln : np.ndarray
-            Binary sub-alignment of shape ``(N, M)``.
-
-        Returns
-        -------
-        np.ndarray
-            A new binary array with ones placed along the alternating pattern
-            and zeros elsewhere.
-
-        Notes
-        -----
-        The mapping assumes ``min(N, M)`` effective aligned positions and
-        does not validate biochemical plausibility.
-        """
+        """Redistribute loop gaps to an alternating IMGT-style pattern."""
         new_aln = np.zeros_like(sub_aln)
         for i in range(min(sub_aln.shape)):
             pos = ((i + 1) // 2) * ((-1) ** i)
@@ -325,10 +203,7 @@ class SoftAligner:
         return new_aln
 
     def fix_aln(self, old_aln, idxs):
-        """
-        Fixes alignment to introduce gaps expected from chain-specific
-        numbering idiosyncrasies. Saved indices are one-based indexed
-        """
+        """Expand an alignment onto IMGT positions using saved indices."""
         aln = np.zeros((old_aln.shape[0], 128))
         for i, idx in enumerate(idxs):
             aln[:, int(idx) - 1] = old_aln[:, i]
@@ -341,42 +216,7 @@ class SoftAligner:
     def __call__(
         self, input_pdb: str, input_chain: str, correct_loops: bool = True
     ) -> Tuple[str, types.SoftAlignOutput]:
-        """
-        Align an input PDB chain to each species embedding and pick the best.
-
-        Parameters
-        ----------
-        input_pdb : str
-            Path to the PDB file to embed and align.
-        input_chain : str
-            Chain identifier within the PDB structure.
-        correct_loops : bool, optional
-            If ``True``, apply IMGT-inspired loop regularization (including
-            special handling for the DE loop). Default is ``True``.
-
-        Returns
-        -------
-        tuple[str, types.SoftAlignOutput]
-            The best-matching species name and its corresponding alignment
-            output. The output contains:
-            ``alignment`` (np.ndarray), ``name`` (str),
-            and ``score`` (float, set to zero).
-
-        Raises
-        ------
-        RuntimeError
-            If multiple starts/ends are detected for an IMGT loop region.
-        ValueError
-            If residue lookups or embeddings are inconsistent.
-
-        Notes
-        -----
-        - The method computes an embedding for the input once, then aligns it
-          against all available species embeddings.
-        - Loop correction currently targets IMGT-defined loop windows from
-          ``constants.IMGT_LOOPS`` and performs a DE-loop fix-up as a
-          post-processing step.
-        """
+        """Align input chain to each species embedding and return best hit."""
         input_data = self.transformed_embed_fn.apply(
             self.model_params, self.key, input_pdb, input_chain
         )

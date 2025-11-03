@@ -67,13 +67,13 @@ include = [
 source = "vcs"
 
 [tool.black]
-line-length = 79
+line-length = 80
 target-version = ["py311"]
 
 [tool.isort]
 profile = "black"
-line_length = 79
+line_length = 80
 
 [tool.flake8]
-max-line-length = 79
+max-line-length = 80
 extend-ignore = ["E203", "W503"]

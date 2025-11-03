@@ -18,50 +18,9 @@ def thread_onto_chain(
     anarci_end: int,
     alignment_start: int,
 ) -> Chain.Chain:
-    """
-    Create renumbered copy of a PDB chain by threading ANARCI indices onto it
+    """Return a deep-copied chain renumbered by the ANARCI window.
 
-    This function deep-copies each residue of the input ``chain`` and assigns a
-    new PDB-style residue ID by following a window of ANARCI output. Within the
-    ANARCI window, residues are validated against the expected one-letter amino
-    acid and assigned the corresponding ANARCI (index, insertion-code). Outside
-    the window, residues are numbered by extrapolating before/after the window.
-
-    Parameters
-    ----------
-    chain : Bio.PDB.Chain.Chain
-        The input chain to be renumbered (source of residues).
-    anarci_out : Sequence[tuple[tuple[int, str], str]]
-        ANARCI results for the *window of interest*, where each element is
-        ``((new_index, insertion_code), aa_one_letter)``. Gaps may be present
-        in the original ANARCI results (``aa_one_letter == '-'``) but this
-        function assumes the provided slice is consistent with the logic below.
-    anarci_start : int
-        Start offset into the original ANARCI output (inclusive).
-    anarci_end : int
-        End offset into the original ANARCI output (exclusive).
-    alignment_start : int
-        Index (0-based) into ``chain.get_residues()`` where the Fv alignment
-        begins; residues before this index are treated as N-terminal prefix.
-
-    Returns
-    -------
-    Bio.PDB.Chain.Chain
-        A new Chain instance with residues re-IDed according to the logic
-        below. Original residue objects are not modified.
-
-    Raises
-    ------
-    ValueError
-        If an amino-acid identity in the chain disagrees with the ANARCI
-        one-letter code at the mapped position.
-
-    Notes
-    -----
-    - HETATM residues (``hetflag != ''``) are copied but do not advance the
-      ANARCI index counter.
-    - The resulting residue IDs are assigned as ``(hetflag, index, icode)`` and
-      parents are updated to reference the newly created chain.
+    Raise ValueError on residue mismatches.
     """
 
     thread_msg = (
@@ -120,48 +79,7 @@ def identify_deviations(
     anarci_end: int,
     alignment_start: int,
 ) -> Chain.Chain:
-    """
-    Compute residue ID changes implied by ANARCI threading, without writing.
-
-    This is a dry-run that reads ``pdb_file``, walks the specified
-    ``chain_id``, and determines which standard residues (``hetflag == ''``)
-    would change their residue ID if threaded with the provided ANARCI window
-
-    Parameters
-    ----------
-    pdb_file : str
-        Path to an input PDB or mmCIF file that Bio.PDB can parse.
-    chain_id : str
-        Chain identifier to examine (e.g., ``'H'``, ``'L'``, or ``'A'``).
-    og_anarci_out : Sequence[tuple[tuple[int, str], str]]
-        Full ANARCI output as ``((index, icode), aa_one_letter)``; gaps may be
-        present (``'-'``). Gaps are removed internally for the mapping step.
-    anarci_start : int
-        Start index into the ANARCI output (inclusive).
-    anarci_end : int
-        End index into the ANARCI output (exclusive).
-    alignment_start : int
-        0-based index in the chain residues at which the Fv alignment starts.
-
-    Returns
-    -------
-    list[tuple[tuple[str, int, str], tuple[str, int, str]]]
-        A list of ``(old_id, new_id)`` tuples for residues whose ID would
-        change. Each ID is a PDB residue ID ``(hetflag, resseq, icode)``.
-
-    Raises
-    ------
-    IndexError
-        If ANARCI indexing is inconsistent with the chain/alignment window.
-    ValueError
-        If an amino-acid identity mismatch is detected.
-
-    Notes
-    -----
-    - This function logs additional debug output when deviations are found.
-    - HETATM residues do not contribute to ANARCI index advancement, but they
-      are included in the ``old_ids`` / ``new_ids`` bookkeeping.
-    """
+    """Return residue-ID changes that ANARCI threading would introduce."""
     LOGGER.info(
         f"Analyzing deviations in {pdb_file} chain {chain_id} "
         f"(ANARCI window [{anarci_start}, {anarci_end}), "
@@ -258,61 +176,7 @@ def thread_alignment(
     end_res: int,
     alignment_start: int,
 ) -> PDB.Structure.Structure:
-    """
-    Thread an ANARCI numbering window onto a PDB structure and write the file.
-
-    This function parses ``pdb_file``, constructs a new structure containing a
-    single model, and for the specified ``chain`` replaces that chain with a
-    renumbered copy produced by :func:`thread_onto_chain`. The resulting
-    structure is written to ``output_pdb`` (PDB or mmCIF based on extension)
-    and returned.
-
-    Parameters
-    ----------
-    pdb_file : str
-        Path to the input coordinate file readable by :mod:`Bio.PDB`.
-    chain : str
-        Chain identifier to renumber (e.g., ``"H"``, ``"L"``, or ``"A"``).
-    alignment : dict[str, str]
-        ANARCI window used to drive renumbering.  In practice this is often
-        provided as an iterable of entries like
-        ``((index, icode), aa_one_letter)``; the value here is typed as a
-        ``dict[str, str]`` for historical compatibility with earlier code.
-        Whatever is passed is forwarded to :func:`thread_onto_chain` unchanged.
-    output_pdb : str
-        Output path. If it ends with ``.cif`` the structure is written as
-        mmCIF via :class:`Bio.PDB.MMCIFIO`; otherwise PDB via
-        :class:`Bio.PDB.PDBIO`.
-    start_res : int
-        Start (inclusive) of the ANARCI window to apply.
-    end_res : int
-        End (exclusive) of the ANARCI window to apply.
-    alignment_start : int
-        Zero-based index along the chain's residue iteration at which the
-        alignment to the ANARCI window begins (i.e., N-terminus of the Fv
-        region in PDB residue order).
-
-    Returns
-    -------
-    Bio.PDB.Structure.Structure
-        The in-memory structure containing the renumbered chain; it is also
-        written to disk at ``output_pdb``.
-
-    Raises
-    ------
-    FileNotFoundError
-        If ``pdb_file`` cannot be opened.
-    KeyError / ValueError
-        Propagated from downstream parsing or
-        :func:`thread_onto_chain` if the alignment content is invalid.
-
-    Notes
-    -----
-    - All non-target chains are copied verbatim.
-    - The writer (PDB vs mmCIF) is selected from the file suffix.
-    - See :func:`thread_onto_chain` for details on alignment structure and
-      residue-ID assignment semantics.
-    """
+    """Write the renumbered chain to ``output_pdb`` and return the structure."""
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
         f"writing to {output_pdb}"
