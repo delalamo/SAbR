@@ -110,11 +110,16 @@ def main(
     subsequence = "-" * start + sequence[start:end]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
+    if not out.species:
+        raise click.ClickException(
+            "SoftAlign did not specify the matched species; "
+            "cannot infer heavy/light chain type."
+        )
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=out.name[-1],
+        chain_type=out.species[-1],
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
