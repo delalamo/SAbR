@@ -21,7 +21,7 @@ def alignment_matrix_to_state_vector(
     LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
 
     path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
-    assert path.size != 0, "Alignment matrix contains no path"
+    assert len(path) > 0, "Alignment matrix contains no path"
 
     out = []
 
