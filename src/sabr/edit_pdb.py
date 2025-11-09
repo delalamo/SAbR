@@ -2,6 +2,7 @@
 
 import copy
 import logging
+from typing import Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
@@ -17,7 +18,7 @@ def thread_onto_chain(
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
-) -> Chain.Chain:
+) -> Tuple[Chain.Chain, int]:
     """Return a deep-copied chain renumbered by the ANARCI window.
 
     Raise ValueError on residue mismatches.
@@ -82,7 +83,7 @@ def thread_alignment(
     start_res: int,
     end_res: int,
     alignment_start: int,
-) -> PDB.Structure.Structure:
+) -> int:
     """Write the renumbered chain to ``output_pdb`` and return the structure."""
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
@@ -91,7 +92,6 @@ def thread_alignment(
     LOGGER.info(align_msg)
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("input_structure", pdb_file)
-    # Create a new structure and model
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)
 
