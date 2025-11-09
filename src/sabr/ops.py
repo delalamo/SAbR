@@ -86,19 +86,12 @@ def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
     )
     embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
     if len(ids) != embeddings.shape[0]:
-        LOGGER.info(
+        raise ValueError(
             (
                 f"IDs length ({len(ids)}) does not match embeddings rows"
                 f" ({embeddings.shape[0]})"
             )
         )
-        for i, id_ in enumerate(ids):
-            LOGGER.info(f"{i}: {id_}")
-    embed_msg = (
-        f"Generated embeddings with shape {embeddings.shape} "
-        f"for chain {chains}"
-    )
-    LOGGER.info(embed_msg)
     return types.MPNNEmbeddings(
         name="INPUT_PDB", embeddings=embeddings, idxs=ids
     )
