@@ -7,7 +7,6 @@ from typing import Any, Dict, List, Tuple
 
 import haiku as hk
 import jax
-import jax.numpy as jnp
 import numpy as np
 
 from sabr import constants, ops, types
@@ -26,40 +25,21 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
         temperature: float = 10**-4,
         random_seed: int = 0,
-        DEBUG: bool = False,
     ) -> None:
         """
         Initialize the SoftAligner by loading model parameters and embeddings.
         """
-        init_parts = [
-            f"params={params_name}",
-            f"embeddings={embeddings_name}",
-            f"temperature={temperature}",
-            f"seed={random_seed}",
-        ]
-        init_msg = "Initializing SoftAligner with " + ", ".join(init_parts)
-        LOGGER.info(init_msg)
-        if not DEBUG:
-            self.all_embeddings = self.read_embeddings(
-                embeddings_name=embeddings_name,
-                embeddings_path=embeddings_path,
-            )
-            embed_count = len(self.all_embeddings)
-            LOGGER.info(f"Loaded {embed_count} species embeddings")
-            self.model_params = self.read_softalign_params(
-                params_name=params_name, params_path=params_path
-            )
-            param_msg = (
-                "SoftAligner model parameters loaded "
-                f"({len(self.model_params)} top-level entries)"
-            )
-            LOGGER.debug(param_msg)
+        self.all_embeddings = self.read_embeddings(
+            embeddings_name=embeddings_name,
+            embeddings_path=embeddings_path,
+        )
+        self.model_params = self.read_softalign_params(
+            params_name=params_name, params_path=params_path
+        )
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(ops.align_fn)
         self.transformed_embed_fn = hk.transform(ops.embed_fn)
-        if DEBUG:
-            LOGGER.debug("DEBUG mode enabled; asset loading deferred")
 
     def read_softalign_params(
         self,
@@ -109,39 +89,7 @@ class SoftAligner:
         if len(out_embeddings) == 0:
             raise RuntimeError(f"Couldn't load from {path}")
         LOGGER.info(f"Loaded {len(out_embeddings)} embeddings from {path}")
-        LOGGER.debug(
-            "Embeddings include species: "
-            f"{', '.join(sorted(e.name for e in out_embeddings))}"
-        )
         return out_embeddings
-
-    def calc_matches(
-        self,
-        aln: jnp.ndarray,
-        res1: List[str],
-        res2: List[str],
-    ) -> Dict[str, str]:
-        """Map residues from binary alignment while skipping IMGT gaps."""
-        if aln.ndim != 2:
-            raise ValueError(f"Alignment must be 2D; got shape {aln.shape}")
-        if aln.shape[0] != len(res1):
-            raise ValueError(
-                f"alignment.shape[0] ({aln.shape[0]}) must match "
-                f"len(input_residues) ({len(res1)})"
-            )
-        if aln.shape[1] != len(res2):
-            raise ValueError(
-                f"alignment.shape[1] ({aln.shape[1]}) must match "
-                f"len(target_residues) ({len(res2)})"
-            )
-        matches = {}
-        aln_array = np.array(aln)
-        indices = np.argwhere(aln_array == 1)
-        for i, j in indices:
-            if j + 1 not in constants.CDR_RESIDUES + constants.ADDITIONAL_GAPS:
-                matches[str(res1[i])] = str(res2[j])
-        LOGGER.debug(f"Calculated {len(matches)} matches")
-        return matches
 
     def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
         """Redistribute loop gaps to an alternating IMGT-style pattern."""
@@ -149,22 +97,32 @@ class SoftAligner:
         for i in range(min(sub_aln.shape)):
             pos = ((i + 1) // 2) * ((-1) ** i)
             new_aln[pos, pos] = 1
-        gap_msg = (
-            "Corrected gap numbering for sub-alignment "
-            f"with shape {sub_aln.shape}"
-        )
-        LOGGER.debug(gap_msg)
         return new_aln
 
     def fix_aln(self, old_aln, idxs):
         """Expand an alignment onto IMGT positions using saved indices."""
-        aln = np.zeros((old_aln.shape[0], 128))
-        for i, idx in enumerate(idxs):
-            aln[:, int(idx) - 1] = old_aln[:, i]
-        expand_msg = (
-            f"Expanded alignment from shape {old_aln.shape} to {aln.shape}"
-        )
-        LOGGER.debug(expand_msg)
+        # aln = np.zeros((old_aln.shape[0], 128))
+        # for i, idx in enumerate(idxs):
+        #     aln[:, int(idx) - 1] = old_aln[:, i]
+        aln = np.zeros((old_aln.shape[0], 128), dtype=old_aln.dtype)
+        aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
+
+        return aln
+
+    def correct_de_loop(self, aln: np.ndarray) -> np.ndarray:
+        # DE loop manual fix
+        if aln[:, 80].sum() == 1 and aln[:, 81:83].sum() == 0:
+            LOGGER.info("Correcting DE loop")
+            aln[:, 82] = aln[:, 80]
+            aln[:, 80] = 0
+        elif (
+            aln[:, 80].sum() == 1
+            and aln[:, 81].sum() == 0
+            and aln[:, 82].sum() == 1
+        ):
+            LOGGER.info("Correcting DE loop")
+            aln[:, 81] = aln[:, 80]
+            aln[:, 80] = 0
         return aln
 
     def __call__(
@@ -201,49 +159,23 @@ class SoftAligner:
         LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
 
         best_match = max(outputs, key=lambda k: outputs[k].score)
-        LOGGER.info(
-            f"Best match: {best_match}; score {outputs[best_match].score}"
-        )
 
         aln = np.array(outputs[best_match].alignment, dtype=int)
 
         if correct_loops:
             for name, (startres, endres) in constants.IMGT_LOOPS.items():
                 startres_idx = startres - 1
-                loop_start = np.where(aln[:, startres - 1] == 1)[0]
+                loop_start = np.where(aln[:, startres_idx] == 1)[0]
                 loop_end = np.where(aln[:, endres - 1] == 1)[0]
-                if len(loop_start) == 0 or len(loop_end) == 0:
-                    LOGGER.info(f"Loop {name} not found")
-                    for arr, r in [(loop_start, startres), (loop_end, endres)]:
-                        if len(arr) == 0:
-                            LOGGER.info(f"Residue {r} not found")
-                    LOGGER.info("Skipping...")
-                    continue
-                elif len(loop_start) > 1 or len(loop_end) > 1:
+                if len(loop_start) > 1 or len(loop_end) > 1:
                     raise RuntimeError(f"Multiple start/end for loop {name}")
-                loop_start = loop_start[0]
-                loop_end = loop_end[0]
+                loop_start, loop_end = loop_start[0], loop_end[0]
                 sub_aln = aln[loop_start:loop_end, startres_idx:endres]
-                LOGGER.info(f"Found {name} from {loop_start} to {loop_end}")
-                LOGGER.info(f"IMGT positions from {startres} to {endres}")
-                LOGGER.info(f"Sub-alignment shape: {sub_aln.shape}")
                 aln[loop_start:loop_end, startres_idx:endres] = (
                     self.correct_gap_numbering(sub_aln)
                 )
 
-            # DE loop manual fix
-            if aln[:, 80].sum() == 1 and aln[:, 81:83].sum() == 0:
-                LOGGER.info("Correcting DE loop")
-                aln[:, 82] = aln[:, 80]
-                aln[:, 80] = 0
-            elif (
-                aln[:, 80].sum() == 1
-                and aln[:, 81].sum() == 0
-                and aln[:, 82].sum() == 1
-            ):
-                LOGGER.info("Correcting DE loop")
-                aln[:, 81] = aln[:, 80]
-                aln[:, 80] = 0
+            aln = self.correct_de_loop(aln)
 
         return types.SoftAlignOutput(
             species=best_match,

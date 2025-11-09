@@ -1,6 +1,5 @@
 import importlib
 
-import jax.numpy as jnp
 import numpy as np
 
 from sabr import constants, softaligner, types
@@ -32,18 +31,6 @@ def test_normalize_orders_indices():
     assert normalized.idxs == [1, 2, 3]
     expected = np.vstack([embed[1], embed[2], embed[0]])
     assert np.array_equal(normalized.embeddings, expected)
-
-
-def test_calc_matches_filters_cdr_residues(monkeypatch):
-    monkeypatch.setattr(constants, "ADDITIONAL_GAPS", [])
-    aligner = make_aligner()
-    aln = jnp.array([[1, 0, 0], [0, 1, 0]], dtype=int)
-    res1 = ["a1", "a2"]
-    res2 = ["b1", "b2", "b3"]
-
-    matches = aligner.calc_matches(aln, res1, res2)
-
-    assert matches == {"a1": "b1", "a2": "b2"}
 
 
 def test_correct_gap_numbering_places_expected_ones():

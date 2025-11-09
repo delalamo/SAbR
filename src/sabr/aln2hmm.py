@@ -5,28 +5,25 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-State = Tuple[Tuple[int, str], Optional[int]]
-
 LOGGER = logging.getLogger(__name__)
+
+# Residue number, insertion code, and (optional) mapped residue from original
+State = Tuple[Tuple[int, str], Optional[int]]
 
 
 def alignment_matrix_to_state_vector(
     matrix: np.ndarray,
 ) -> Tuple[List[State], int, int]:
     """Return an HMMER-style state vector from a binary alignment matrix."""
+
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
     LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
 
-    mat = np.transpose(matrix)
-    path = np.argwhere(mat == 1)
-    if path.size == 0:
-        raise RuntimeError("Alignment matrix contains no path")
+    path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
+    assert len(path) > 0, "Alignment matrix contains no path"
 
-    path = sorted(path.tolist())
-    out: List[Tuple[Tuple[int, str], Optional[int]]] = []
-
-    b_end = max(b for b, _ in path)
+    out = []
 
     for (b, a), (b2, a2) in zip(path[:-1], path[1:]):
         db, da = b2 - b, a2 - a
@@ -41,7 +38,7 @@ def alignment_matrix_to_state_vector(
 
         # 2) A-only steps -> inserts (emit current A, then advance A)
         while da > 0:
-            if b == b_end:
+            if b == max(bp for bp, _ in path):
                 out.append(((path[-1][0] + 1, "m"), a))
                 report_output(out)
                 return out, path[0][0], a + 1 + path[0][0]
@@ -56,11 +53,6 @@ def alignment_matrix_to_state_vector(
             out.append(((b, "d"), None))
 
     report_output(out)
-    LOGGER.debug(
-        "Generated state vector with "
-        f"{len(out)} entries, b_start={path[0][0]}, "
-        f"a_end={path[-1][1] + path[0][0]}"
-    )
     return out, path[0][0], path[-1][1] + path[0][0]
 
 
