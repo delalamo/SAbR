@@ -30,6 +30,8 @@ docker run --rm ghcr.io/delalamo/sabr:latest -i input.pdb -o output.pdb -c CHAIN
 
 ## Running SAbR
 
+If running on a Mac with apple silicon, set the environmental variable `JAX_PLATFORMS` to `cpu`.
+
 ```bash
 usage: sabr [-h] -i INPUT_PDB -c INPUT_CHAIN -o OUTPUT_PDB [-n NUMBERING_SCHEME] [-t] [--overwrite] [-v]
 
