@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-import argparse
 import logging
 import os
-import sys
 
+import click
 from ANARCI import anarci
 from Bio import SeqIO
 
@@ -22,66 +21,90 @@ def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
     raise ValueError(f"Chain {chain} not found in {pdb_file} (contains {ids})")
 
 
-def parse_args() -> argparse.Namespace:
-    """Return parsed CLI arguments for the SAbR entry point."""
-    description = (
-        "Structure-based Antibody Renumbering (SAbR) renumbers antibody "
-        "PDB files using the 3D coordinate of backbone atoms."
-    )
-    argparser = argparse.ArgumentParser(prog="sabr", description=description)
-    argparser.add_argument(
-        "-i", "--input_pdb", required=True, help="Input pdb file"
-    )
-    argparser.add_argument(
-        "-c", "--input_chain", help="Input chain", required=True
-    )
-    argparser.add_argument(
-        "-o", "--output_pdb", help="Output pdb file", required=True
-    )
-    argparser.add_argument(
-        "-n",
-        "--numbering_scheme",
-        help=(
-            "Numbering scheme, default is IMGT. Supports IMGT, Chothia, "
-            "Kabat, Martin, AHo, and Wolfguy."
-        ),
-        default="imgt",
-    )
-    argparser.add_argument(
-        "--overwrite", help="Overwrite output PDB", action="store_true"
-    )
-    argparser.add_argument(
-        "-v", "--verbose", help="Verbose output", action="store_true"
-    )
-    args = argparser.parse_args()
-    return args
-
-
-def main():
+@click.command(
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help=(
+        "Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB "
+        "files using the 3D coordinates of backbone atoms."
+    ),
+)
+@click.option(
+    "-i",
+    "--input-pdb",
+    "input_pdb",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
+    help="Input PDB file.",
+)
+@click.option(
+    "-c",
+    "--input-chain",
+    "input_chain",
+    required=True,
+    help="Chain identifier to renumber.",
+)
+@click.option(
+    "-o",
+    "--output-pdb",
+    "output_pdb",
+    required=True,
+    type=click.Path(dir_okay=False, writable=True, path_type=str),
+    help="Destination PDB file.",
+)
+@click.option(
+    "-n",
+    "--numbering-scheme",
+    "numbering_scheme",
+    default="imgt",
+    show_default="IMGT",
+    type=click.Choice(
+        ["imgt", "chothia", "kabat", "martin", "aho", "wolfguy"],
+        case_sensitive=False,
+    ),
+    help="Numbering scheme.",
+)
+@click.option(
+    "--overwrite",
+    is_flag=True,
+    help="Overwrite the output PDB if it already exists.",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    help="Enable verbose logging.",
+)
+def main(
+    input_pdb: str,
+    input_chain: str,
+    output_pdb: str,
+    numbering_scheme: str,
+    overwrite: bool,
+    verbose: bool,
+) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
-    args = parse_args()
-    if args.verbose:
+    if verbose:
         logging.basicConfig(level=logging.INFO, force=True)
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
     start_msg = (
-        f"Starting SAbR CLI with input={args.input_pdb} "
-        f"chain={args.input_chain} output={args.output_pdb} "
-        f"scheme={args.numbering_scheme}"
+        f"Starting SAbR CLI with input={input_pdb} "
+        f"chain={input_chain} output={output_pdb} "
+        f"scheme={numbering_scheme}"
     )
     LOGGER.info(start_msg)
-    if os.path.exists(args.output_pdb) and not args.overwrite:
-        raise RuntimeError(
-            f"Error: {args.output_pdb} exists, use --overwrite to overwrite"
+    if os.path.exists(output_pdb) and not overwrite:
+        raise click.ClickException(
+            f"{output_pdb} exists, rerun with --overwrite to replace it"
         )
-    sequence = fetch_sequence_from_pdb(args.input_pdb, args.input_chain)
+    sequence = fetch_sequence_from_pdb(input_pdb, input_chain)
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
     LOGGER.info(
         f"Fetched sequence of length {len(sequence)} from "
-        f"{args.input_pdb} chain {args.input_chain}"
+        f"{input_pdb} chain {input_chain}"
     )
     soft_aligner = softaligner.SoftAligner()
-    out = soft_aligner(args.input_pdb, args.input_chain)
+    out = soft_aligner(input_pdb, input_chain)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
     subsequence = "-" * start + sequence[start:end]
@@ -90,24 +113,22 @@ def main():
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
-        scheme=args.numbering_scheme,
+        scheme=numbering_scheme,
         chain_type=out.name[-1],
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
-        args.input_pdb,
-        args.input_chain,
+        input_pdb,
+        input_chain,
         anarci_out,
-        args.output_pdb,
+        output_pdb,
         start_res,
         end_res,
         alignment_start=start,
     )
-    LOGGER.info(f"Finished renumbering; output written to {args.output_pdb}")
-
-    sys.exit(0)
+    LOGGER.info(f"Finished renumbering; output written to {output_pdb}")
 
 
 if __name__ == "__main__":

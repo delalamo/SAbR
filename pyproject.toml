@@ -17,6 +17,7 @@ authors = [
 
 dependencies = [
   "biopython>=1.85",
+  "click>=8.1",
   "jax>=0.4",
   "numpy>=1.26",
   "pandas>=2.2",
