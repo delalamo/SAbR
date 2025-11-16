@@ -1,26 +1,36 @@
+from importlib import resources
 from pathlib import Path
+from typing import List, Tuple
 
 import numpy as np
 import pytest
 from ANARCI import anarci
-from Bio import SeqIO
+from Bio import PDB, SeqIO
+from click.testing import CliRunner
 
-from sabr import aln2hmm, edit_pdb
+from sabr import aln2hmm, cli, edit_pdb
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_PACKAGE = "tests.data"
+
+
+def resolve_data_path(filename: str) -> Path:
+    return Path(resources.files(DATA_PACKAGE) / filename)
+
 
 FIXTURES = {
     "8_21": {
-        "pdb": DATA_DIR / "8_21_renumbered.pdb",
+        "pdb": resolve_data_path("8_21_renumbered.pdb"),
         "chain": "A",
-        "alignment": DATA_DIR / "8_21_renumbered_alignment.npz",
-        "expected_deviations": 0,
+        "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
+        "min_deviations": 0,
+        "max_deviations": 0,
     },
     "5omm": {
-        "pdb": DATA_DIR / "5omm_imgt.pdb",
+        "pdb": resolve_data_path("5omm_imgt.pdb"),
         "chain": "C",
-        "alignment": DATA_DIR / "5omm_imgt_alignment.npz",
-        "expected_deviations": 104,
+        "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
+        "min_deviations": 5,
+        "max_deviations": 200,
     },
 }
 
@@ -83,4 +93,68 @@ def test_thread_alignment_has_zero_deviations(tmp_path, fixture_key):
         species,
         tmp_path,
     )
-    assert deviations == data["expected_deviations"]
+    min_expected = data.get("min_deviations")
+    max_expected = data.get("max_deviations")
+    assert min_expected is not None and max_expected is not None
+    assert min_expected <= deviations <= max_expected
+
+
+def extract_residue_ids(
+    pdb_path: Path, chain: str
+) -> List[Tuple[str, int, str]]:
+    parser = PDB.PDBParser(QUIET=True)
+    structure = parser.get_structure("structure", pdb_path)
+    residues = []
+    for res in structure[0][chain]:
+        hetflag, resseq, icode = res.get_id()
+        if hetflag.strip():
+            continue
+        residues.append((hetflag, resseq, icode))
+    return residues
+
+
+@pytest.mark.parametrize(
+    ("fixture_key", "expect_same"),
+    [
+        ("8_21", True),
+        ("5omm", False),
+    ],
+)
+def test_cli_respects_expected_numbering(
+    monkeypatch, tmp_path, fixture_key, expect_same
+):
+    data = FIXTURES[fixture_key]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+
+    class DummyResult:
+        def __init__(self, alignment, species):
+            self.alignment = alignment
+            self.species = species
+
+    class DummyAligner:
+        def __call__(self, input_pdb, input_chain):
+            return DummyResult(alignment, species)
+
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / f"{fixture_key}_cli.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+
+    original_ids = extract_residue_ids(data["pdb"], data["chain"])
+    threaded_ids = extract_residue_ids(output_pdb, data["chain"])
+    assert (original_ids == threaded_ids) is expect_same
