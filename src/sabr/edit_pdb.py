@@ -39,14 +39,23 @@ def thread_onto_chain(
     deviations = 0
     for j, res in enumerate(chain.get_residues()):
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
+        hetatm = res.get_id()[0].strip() != ""
+
+        if past_n_pdb and not hetatm:
+            i += 1
+
+        if i >= anarci_start:
+            # Skip ANARCI positions that correspond to deletions ("-")
+            while (
+                i - anarci_start < len(anarci_out)
+                and anarci_out[i - anarci_start][1] == "-"
+            ):
+                i += 1
+
         past_n_anarci = i >= anarci_start  # In Fv, ANARCI numbering
         before_c = i < min(
             anarci_end, len(anarci_out)
         )  # Not yet reached C term of Fv
-        hetatm = res.get_id()[0].strip() != ""
-
-        if not past_n_pdb and not hetatm:
-            i += 1
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
         if past_n_anarci and before_c:
