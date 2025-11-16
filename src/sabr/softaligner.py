@@ -167,6 +167,14 @@ class SoftAligner:
                 startres_idx = startres - 1
                 loop_start = np.where(aln[:, startres_idx] == 1)[0]
                 loop_end = np.where(aln[:, endres - 1] == 1)[0]
+                if len(loop_start) == 0 or len(loop_end) == 0:
+                    LOGGER.warning(
+                        (
+                            f"Skipping {name}; missing start ({loop_start}) "
+                            f"or end ({loop_end})"
+                        )
+                    )
+                    continue
                 if len(loop_start) > 1 or len(loop_end) > 1:
                     raise RuntimeError(f"Multiple start/end for loop {name}")
                 loop_start, loop_end = loop_start[0], loop_end[0]
