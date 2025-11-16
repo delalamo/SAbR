@@ -1,3 +1,4 @@
+from importlib import resources
 from pathlib import Path
 from typing import List, Tuple
 
@@ -9,20 +10,25 @@ from click.testing import CliRunner
 
 from sabr import aln2hmm, cli, edit_pdb
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_PACKAGE = "tests.data"
+
+
+def resolve_data_path(filename: str) -> Path:
+    return Path(resources.files(DATA_PACKAGE) / filename)
+
 
 FIXTURES = {
     "8_21": {
-        "pdb": DATA_DIR / "8_21_renumbered.pdb",
+        "pdb": resolve_data_path("8_21_renumbered.pdb"),
         "chain": "A",
-        "alignment": DATA_DIR / "8_21_renumbered_alignment.npz",
+        "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
         "min_deviations": 0,
         "max_deviations": 0,
     },
     "5omm": {
-        "pdb": DATA_DIR / "5omm_imgt.pdb",
+        "pdb": resolve_data_path("5omm_imgt.pdb"),
         "chain": "C",
-        "alignment": DATA_DIR / "5omm_imgt_alignment.npz",
+        "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
         "min_deviations": 5,
         "max_deviations": 200,
     },
