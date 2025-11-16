@@ -74,6 +74,11 @@ def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
     is_flag=True,
     help="Enable verbose logging.",
 )
+@click.option(
+    "--deviations-only",
+    is_flag=True,
+    help="Report residue numbering deviations without writing output.",
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -81,6 +86,7 @@ def main(
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
+    deviations_only: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -124,7 +130,7 @@ def main(
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
 
-    edit_pdb.thread_alignment(
+    deviations = edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
         anarci_out,
@@ -132,7 +138,11 @@ def main(
         start_res,
         end_res,
         alignment_start=start,
+        write_output=not deviations_only,
     )
+    if deviations_only:
+        click.echo(deviations)
+        return
     LOGGER.info(f"Finished renumbering; output written to {output_pdb}")
 
 

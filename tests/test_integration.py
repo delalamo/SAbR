@@ -113,6 +113,19 @@ def extract_residue_ids(
     return residues
 
 
+def patch_softaligner(monkeypatch, alignment, species):
+    class DummyResult:
+        def __init__(self, alignment, species):
+            self.alignment = alignment
+            self.species = species
+
+    class DummyAligner:
+        def __call__(self, input_pdb, input_chain):
+            return DummyResult(alignment, species)
+
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+
 @pytest.mark.parametrize(
     ("fixture_key", "expect_same"),
     [
@@ -128,16 +141,7 @@ def test_cli_respects_expected_numbering(
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
     alignment, species = load_alignment_fixture(data["alignment"])
 
-    class DummyResult:
-        def __init__(self, alignment, species):
-            self.alignment = alignment
-            self.species = species
-
-    class DummyAligner:
-        def __call__(self, input_pdb, input_chain):
-            return DummyResult(alignment, species)
-
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    patch_softaligner(monkeypatch, alignment, species)
 
     runner = CliRunner()
     output_pdb = tmp_path / f"{fixture_key}_cli.pdb"
@@ -158,3 +162,29 @@ def test_cli_respects_expected_numbering(
     original_ids = extract_residue_ids(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
+
+
+def test_cli_deviations_only_prints_results(monkeypatch, tmp_path):
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+    patch_softaligner(monkeypatch, alignment, species)
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "should_not_exist.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--deviations-only",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert not output_pdb.exists()
+    assert result.output.strip() == "[]"

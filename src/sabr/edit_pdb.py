@@ -2,7 +2,7 @@
 
 import copy
 import logging
-from typing import Tuple
+from typing import List, Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
@@ -19,7 +19,7 @@ def thread_onto_chain(
     anarci_end: int,
     alignment_start: int,
 ) -> Tuple[
-    Chain.Chain, list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]
+    Chain.Chain, List[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]
 ]:
     """Return a deep-copied chain renumbered by the ANARCI window.
 
@@ -38,7 +38,7 @@ def thread_onto_chain(
 
     i = -1
     last_idx = None
-    deviations: list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
+    deviations: List[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
     for j, res in enumerate(chain.get_residues()):
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
         hetatm = res.get_id()[0].strip() != ""
@@ -94,7 +94,8 @@ def thread_alignment(
     start_res: int,
     end_res: int,
     alignment_start: int,
-) -> list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]:
+    write_output: bool = True,
+) -> List[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]:
     """Write the renumbered chain to ``output_pdb`` and return the structure."""
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
@@ -106,7 +107,7 @@ def thread_alignment(
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)
 
-    all_devs: list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
+    all_devs: List[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
 
     for ch in structure[0]:
         if ch.id != chain:
@@ -118,12 +119,18 @@ def thread_alignment(
             new_model.add(new_chain)
             all_devs.extend(deviations)
 
-    new_structure.add(new_model)
-    io = PDB.PDBIO()
-    if output_pdb.endswith(".cif"):
-        io = PDB.MMCIFIO()
-        LOGGER.debug("Detected CIF output; using MMCIFIO writer")
-    io.set_structure(new_structure)
-    io.save(output_pdb)
-    LOGGER.info(f"Saved threaded structure to {output_pdb}")
+    if write_output:
+        new_structure.add(new_model)
+        io = PDB.PDBIO()
+        if output_pdb.endswith(".cif"):
+            io = PDB.MMCIFIO()
+            LOGGER.debug("Detected CIF output; using MMCIFIO writer")
+        io.set_structure(new_structure)
+        io.save(output_pdb)
+        LOGGER.info(f"Saved threaded structure to {output_pdb}")
+    else:
+        LOGGER.info(
+            "write_output is False; computed deviations without saving %s",
+            output_pdb,
+        )
     return all_devs
