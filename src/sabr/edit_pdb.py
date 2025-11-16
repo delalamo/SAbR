@@ -18,7 +18,9 @@ def thread_onto_chain(
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
-) -> Tuple[Chain.Chain, int]:
+) -> Tuple[
+    Chain.Chain, list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]
+]:
     """Return a deep-copied chain renumbered by the ANARCI window.
 
     Raise ValueError on residue mismatches.
@@ -36,7 +38,7 @@ def thread_onto_chain(
 
     i = -1
     last_idx = None
-    deviations = 0
+    deviations: list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
     for j, res in enumerate(chain.get_residues()):
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
         hetatm = res.get_id()[0].strip() != ""
@@ -77,7 +79,7 @@ def thread_onto_chain(
         new_res.id = new_id
         LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
         if res.get_id() != new_res.get_id():
-            deviations += 1
+            deviations.append((res.get_id(), new_res.get_id()))
         new_chain.add(new_res)
         new_res.parent = new_chain
         chain_res.append(res.get_id()[1:])
@@ -92,7 +94,7 @@ def thread_alignment(
     start_res: int,
     end_res: int,
     alignment_start: int,
-) -> int:
+) -> list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]]:
     """Write the renumbered chain to ``output_pdb`` and return the structure."""
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
@@ -104,7 +106,7 @@ def thread_alignment(
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)
 
-    all_devs = 0
+    all_devs: list[Tuple[Tuple[str, int, str], Tuple[str, int, str]]] = []
 
     for ch in structure[0]:
         if ch.id != chain:
@@ -114,7 +116,7 @@ def thread_alignment(
                 ch, alignment, start_res, end_res, alignment_start
             )
             new_model.add(new_chain)
-            all_devs += deviations
+            all_devs.extend(deviations)
 
     new_structure.add(new_model)
     io = PDB.PDBIO()

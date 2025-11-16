@@ -96,7 +96,7 @@ def test_thread_alignment_has_zero_deviations(tmp_path, fixture_key):
     min_expected = data.get("min_deviations")
     max_expected = data.get("max_deviations")
     assert min_expected is not None and max_expected is not None
-    assert min_expected <= deviations <= max_expected
+    assert min_expected <= len(deviations) <= max_expected
 
 
 def extract_residue_ids(

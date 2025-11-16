@@ -19,7 +19,7 @@ def test_thread_onto_chain_updates_residue_ids():
         ((2, " "), "G"),
     ]
 
-    threaded, _ = edit_pdb.thread_onto_chain(
+    threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
@@ -30,3 +30,4 @@ def test_thread_onto_chain_updates_residue_ids():
     new_ids = [res.get_id() for res in threaded.get_residues()]
     assert new_ids == [(" ", 1, " "), (" ", 2, " ")]
     assert threaded.id == "A"
+    assert deviations == []
