@@ -1,3 +1,6 @@
+import ast
+import csv
+import shutil
 from importlib import resources
 from pathlib import Path
 from typing import List, Tuple
@@ -113,17 +116,23 @@ def extract_residue_ids(
     return residues
 
 
-def patch_softaligner(monkeypatch, alignment, species):
+def patch_softaligner(monkeypatch, mapping):
     class DummyResult:
         def __init__(self, alignment, species):
             self.alignment = alignment
             self.species = species
 
     class DummyAligner:
+        def __init__(self, data):
+            self.data = data
+
         def __call__(self, input_pdb, input_chain):
+            alignment, species = self.data[str(input_pdb)]
             return DummyResult(alignment, species)
 
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        cli.softaligner, "SoftAligner", lambda: DummyAligner(mapping)
+    )
 
 
 @pytest.mark.parametrize(
@@ -141,7 +150,7 @@ def test_cli_respects_expected_numbering(
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
     alignment, species = load_alignment_fixture(data["alignment"])
 
-    patch_softaligner(monkeypatch, alignment, species)
+    patch_softaligner(monkeypatch, {str(data["pdb"]): (alignment, species)})
 
     runner = CliRunner()
     output_pdb = tmp_path / f"{fixture_key}_cli.pdb"
@@ -169,7 +178,7 @@ def test_cli_deviations_only_prints_results(monkeypatch, tmp_path):
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
     alignment, species = load_alignment_fixture(data["alignment"])
-    patch_softaligner(monkeypatch, alignment, species)
+    patch_softaligner(monkeypatch, {str(data["pdb"]): (alignment, species)})
 
     runner = CliRunner()
     output_pdb = tmp_path / "should_not_exist.pdb"
@@ -188,3 +197,91 @@ def test_cli_deviations_only_prints_results(monkeypatch, tmp_path):
     assert result.exit_code == 0, result.output
     assert not output_pdb.exists()
     assert result.output.strip() == "[]"
+
+
+def test_cli_can_write_deviations_csv(monkeypatch, tmp_path):
+    data = FIXTURES["5omm"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+    patch_softaligner(monkeypatch, {str(data["pdb"]): (alignment, species)})
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "unused.pdb"
+    csv_path = tmp_path / "deviations.csv"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--deviations-only",
+            "--deviations-csv",
+            str(csv_path),
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert not output_pdb.exists()
+    assert csv_path.exists()
+    rows = list(csv.reader(csv_path.open()))
+    deviations_output = ast.literal_eval(result.output.strip())
+    assert len(rows) == 1
+    first_row = rows[0]
+    assert first_row[0] == str(data["pdb"])
+    assert first_row[1].isdigit()
+    assert int(first_row[1]) == len(deviations_output)
+    residues = first_row[2].split() if len(first_row) > 2 else []
+    assert all(part.strip() for part in residues) or len(residues) == 0
+
+
+def test_cli_handles_multiple_inputs(monkeypatch, tmp_path):
+    fixtures = {}
+    input_paths = []
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+    first_path = tmp_path / "input1.pdb"
+    second_path = tmp_path / "input2.pdb"
+    shutil.copy(data["pdb"], first_path)
+    shutil.copy(data["pdb"], second_path)
+    for path in (first_path, second_path):
+        fixtures[str(path)] = (alignment, species)
+        input_paths.append(str(path))
+
+    patch_softaligner(monkeypatch, fixtures)
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "unused_output.pdb"
+    csv_base = tmp_path / "batched.csv"
+    directory = str(tmp_path)
+    args = [
+        "-i",
+        directory,
+        "-c",
+        data["chain"],
+        "-o",
+        str(output_pdb),
+        "--deviations-only",
+        "--deviations-csv",
+        str(csv_base),
+    ]
+    result = runner.invoke(cli.main, args)
+    assert result.exit_code == 0, result.output
+    assert not output_pdb.exists()
+    assert csv_base.exists()
+    rows = list(csv.reader(csv_base.open()))
+    assert len(rows) == len(input_paths)
+    seen = {row[0] for row in rows}
+    seen_norm = {str(Path(p)) for p in seen}
+    input_norm = {str(Path(p)) for p in input_paths}
+    assert seen_norm == input_norm
+    for row in rows:
+        assert row[1].isdigit()
+        if len(row) > 2 and row[2]:
+            assert all(part.strip() for part in row[2].split())
+    for path in input_paths:
+        assert path in result.output
