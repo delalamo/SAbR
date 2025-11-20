@@ -18,8 +18,8 @@ class MPNNEmbeddings:
 
     name: str
     embeddings: np.ndarray
-    stdev: np.ndarray
     idxs: List[str]
+    stdev: Optional[np.ndarray] = None
 
     def __post_init__(self) -> None:
         if self.embeddings.shape[0] != len(self.idxs):
@@ -34,6 +34,24 @@ class MPNNEmbeddings:
                 f"constants.EMBED_DIM ({constants.EMBED_DIM}). "
                 f"Error raised for {self.name}"
             )
+
+        stdev = (
+            np.ones(
+                self.embeddings.shape, dtype=np.asarray(self.embeddings).dtype
+            )
+            if self.stdev is None
+            else np.asarray(self.stdev)
+        )
+        try:
+            stdev = np.broadcast_to(stdev, self.embeddings.shape)
+        except ValueError as exc:
+            raise ValueError(
+                "stdev must be broadcastable to embeddings shape; "
+                f"got {stdev.shape} for embeddings shape "
+                f"{self.embeddings.shape} in {self.name}"
+            ) from exc
+        object.__setattr__(self, "stdev", stdev)
+
         LOGGER.debug(
             f"Initialized MPNNEmbeddings for {self.name} "
             f"(shape={self.embeddings.shape})"

@@ -66,6 +66,7 @@ class SoftAligner:
             name=mp.name,
             embeddings=mp.embeddings[order, ...],
             idxs=[idxs_int[i] for i in order],
+            stdev=mp.stdev[order, ...],
         )
 
     def read_embeddings(

@@ -100,5 +100,8 @@ def embed_fn(pdbfile: str, chains: str) -> types.MPNNEmbeddings:
             )
         )
     return types.MPNNEmbeddings(
-        name="INPUT_PDB", embeddings=embeddings, idxs=ids
+        name="INPUT_PDB",
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=jnp.ones_like(embeddings),
     )
