@@ -18,6 +18,13 @@ def align_fn(
     """Align two embedding sets with the SoftAlign model and return result."""
     input_array = input.embeddings
     target_array = target.embeddings
+    target_stdev = jnp.array(target.stdev)
+    target_array = target_array / target_stdev
+
+    # we want to look at two schemes
+    # one is where we divide each embedding by stdev
+    # the other is where we scale the similarity matrix by stdev
+
     LOGGER.info(
         f"Running align_fn with input shape {input_array.shape}, "
         f"target shape {target_array.shape}, temperature={temperature}"

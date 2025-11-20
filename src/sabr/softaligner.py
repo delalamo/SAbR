@@ -83,6 +83,7 @@ class SoftAligner:
                     types.MPNNEmbeddings(
                         name=species,
                         embeddings=embeddings_dict.get("array"),
+                        stdev=embeddings_dict.get("stdev"),
                         idxs=embeddings_dict.get("idxs"),
                     )
                 )

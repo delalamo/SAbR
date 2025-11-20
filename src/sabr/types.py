@@ -18,6 +18,7 @@ class MPNNEmbeddings:
 
     name: str
     embeddings: np.ndarray
+    stdev: np.ndarray
     idxs: List[str]
 
     def __post_init__(self) -> None:
