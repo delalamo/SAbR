@@ -66,6 +66,7 @@ class SoftAligner:
             name=mp.name,
             embeddings=mp.embeddings[order, ...],
             idxs=[idxs_int[i] for i in order],
+            stdev=mp.stdev[order, ...],
         )
 
     def read_embeddings(
@@ -83,6 +84,7 @@ class SoftAligner:
                     types.MPNNEmbeddings(
                         name=species,
                         embeddings=embeddings_dict.get("array"),
+                        stdev=embeddings_dict.get("stdev"),
                         idxs=embeddings_dict.get("idxs"),
                     )
                 )
