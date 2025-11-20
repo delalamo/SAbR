@@ -22,6 +22,7 @@ def test_normalize_orders_indices():
     mp = types.MPNNEmbeddings(
         name="demo",
         embeddings=embed,
+        stdev=embed,
         idxs=["3", "1", "2"],
     )
     aligner = make_aligner()
