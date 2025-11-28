@@ -118,6 +118,7 @@ conda install -c conda-forge -c bioconda mmseqs2
 ### Resume Capability
 
 The script automatically saves progress to `.pipeline_state.json` including:
+
 - Completed pipeline steps
 - Failed files with error messages
 - Number of structures processed
@@ -128,6 +129,7 @@ If interrupted, simply run the same command again and it will resume from where 
 ### Error Handling
 
 The script includes comprehensive error handling:
+
 - **Network failures**: Retries and continues with remaining files
 - **Invalid PDB files**: Skipped and logged
 - **Missing residues**: Moved to unclassified category
@@ -146,24 +148,28 @@ All failures are recorded in the state file for review.
 ### Troubleshooting
 
 **Out of memory during clustering:**
+
 ```bash
 # Reduce coverage parameter (edit script, line ~1177)
 # Change "-c", "0.8" to "-c", "0.5"
 ```
 
 **GPU out of memory:**
+
 ```bash
 # Reduce batch size or use CPU
 # JAX will automatically fall back to CPU if GPU unavailable
 ```
 
 **Network timeouts:**
+
 ```bash
 # Resume after network is stable
 # Already downloaded files are skipped
 ```
 
 **Missing MMSeqs2:**
+
 ```bash
 conda install -c conda-forge -c bioconda mmseqs2
 ```
@@ -171,6 +177,7 @@ conda install -c conda-forge -c bioconda mmseqs2
 ### Citation
 
 If you use this pipeline, please cite:
+
 - SAbDab: Dunbar et al. (2014) Nucleic Acids Research
 - SAbR: [Your citation]
 - MPNN: [Original MPNN paper]

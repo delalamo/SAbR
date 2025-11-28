@@ -20,15 +20,15 @@ python scripts/process_sabdab_antibodies.py \
 
 ## Expected Runtime
 
-| Step | Time | Notes |
-|------|------|-------|
-| 1. Download summary | 1 min | Network required |
-| 2. Download structures | 2-6 hrs | 8.2 GB, network required |
-| 3. Organize | 10-30 min | Single-threaded |
-| 4. Classify CDR-H3 | 5-15 min | Single-threaded |
-| 5. Cluster sequences | 30-60 min | Multi-threaded |
-| 6. Compute embeddings | 30 min - 48 hrs | **GPU: 30-120 min, CPU: 10-48 hrs** |
-| **TOTAL** | **8-48 hrs** | **GPU recommended** |
+| Step                   | Time            | Notes                               |
+| ---------------------- | --------------- | ----------------------------------- |
+| 1. Download summary    | 1 min           | Network required                    |
+| 2. Download structures | 2-6 hrs         | 8.2 GB, network required            |
+| 3. Organize            | 10-30 min       | Single-threaded                     |
+| 4. Classify CDR-H3     | 5-15 min        | Single-threaded                     |
+| 5. Cluster sequences   | 30-60 min       | Multi-threaded                      |
+| 6. Compute embeddings  | 30 min - 48 hrs | **GPU: 30-120 min, CPU: 10-48 hrs** |
+| **TOTAL**              | **8-48 hrs**    | **GPU recommended**                 |
 
 ## Resource Requirements
 
@@ -40,12 +40,14 @@ python scripts/process_sabdab_antibodies.py \
 ## Common Scenarios
 
 ### Scenario 1: First Time Setup
+
 ```bash
 python scripts/process_sabdab_antibodies.py \
     --output-dir ~/antibody_data
 ```
 
 ### Scenario 2: Job Got Interrupted
+
 ```bash
 # Just run the same command - it auto-resumes
 python scripts/process_sabdab_antibodies.py \
@@ -53,6 +55,7 @@ python scripts/process_sabdab_antibodies.py \
 ```
 
 ### Scenario 3: Already Have Structures Downloaded
+
 ```bash
 python scripts/process_sabdab_antibodies.py \
     --output-dir ~/antibody_data \
@@ -60,6 +63,7 @@ python scripts/process_sabdab_antibodies.py \
 ```
 
 ### Scenario 4: Only Process Human Antibodies
+
 ```bash
 python scripts/process_sabdab_antibodies.py \
     --output-dir ~/antibody_data \
@@ -67,6 +71,7 @@ python scripts/process_sabdab_antibodies.py \
 ```
 
 ### Scenario 5: Run in Background (Long Jobs)
+
 ```bash
 nohup python scripts/process_sabdab_antibodies.py \
     --output-dir ~/antibody_data \
@@ -77,6 +82,7 @@ tail -f pipeline.log
 ```
 
 ### Scenario 6: Testing the Pipeline
+
 ```bash
 # Quick test with smallest category
 python scripts/process_sabdab_antibodies.py \
@@ -101,15 +107,16 @@ output_dir/
 
 ## Key Files
 
-| File | Description | Size |
-|------|-------------|------|
-| `cluster_representatives.csv` | Main output: cluster info | ~400 KB |
-| `{category}_embeddings.npz` | MPNN embeddings per category | 100 KB - 11 MB |
-| `.pipeline_state.json` | Resume state (auto-created) | ~10 KB |
+| File                          | Description                  | Size           |
+| ----------------------------- | ---------------------------- | -------------- |
+| `cluster_representatives.csv` | Main output: cluster info    | ~400 KB        |
+| `{category}_embeddings.npz`   | MPNN embeddings per category | 100 KB - 11 MB |
+| `.pipeline_state.json`        | Resume state (auto-created)  | ~10 KB         |
 
 ## Monitoring Progress
 
 ### Check Current Status
+
 ```bash
 # View log in real-time
 tail -f ~/antibody_data/pipeline.log
@@ -122,11 +129,13 @@ grep "completed_steps" ~/antibody_data/.pipeline_state.json
 ```
 
 ### Check Disk Usage
+
 ```bash
 du -sh ~/antibody_data/*
 ```
 
 ### Check Output Files
+
 ```bash
 # Count structures downloaded
 ls ~/antibody_data/all_structures/imgt/*.pdb | wc -l
@@ -141,6 +150,7 @@ ls -lh ~/antibody_data/mpnn_embeddings/
 ## Troubleshooting
 
 ### Out of Memory
+
 ```bash
 # Close other applications
 # Or use smaller categories:
@@ -148,6 +158,7 @@ ls -lh ~/antibody_data/mpnn_embeddings/
 ```
 
 ### Network Timeout
+
 ```bash
 # Just resume - downloaded files are skipped
 python scripts/process_sabdab_antibodies.py \
@@ -155,6 +166,7 @@ python scripts/process_sabdab_antibodies.py \
 ```
 
 ### GPU Out of Memory
+
 ```bash
 # Will automatically fall back to CPU
 # Or process one category at a time:
@@ -162,11 +174,13 @@ python scripts/process_sabdab_antibodies.py \
 ```
 
 ### MMSeqs2 Not Found
+
 ```bash
 conda install -c conda-forge -c bioconda mmseqs2
 ```
 
 ### Script Won't Run
+
 ```bash
 # Check you're in the right environment
 conda activate softalign_env
@@ -191,6 +205,7 @@ python scripts/process_sabdab_antibodies.py --help
 ## Available Categories
 
 **Heavy chains (kinked/extended/unclassified):**
+
 - `human_heavy_kinked`
 - `human_heavy_extended`
 - `mouse_heavy_kinked`
@@ -201,6 +216,7 @@ python scripts/process_sabdab_antibodies.py --help
 - `other_heavy_extended`
 
 **Light chains (all):**
+
 - `human_light_all`
 - `mouse_light_all`
 - `llama_alpaca_light_all`
