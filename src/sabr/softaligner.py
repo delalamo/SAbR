@@ -9,7 +9,9 @@ import haiku as hk
 import jax
 import numpy as np
 
-from sabr import constants, ops, types
+from sabr import constants, ops
+from sabr.mpnn_embeddings import MPNNEmbeddings
+from sabr.softalign_output import SoftAlignOutput
 
 LOGGER = logging.getLogger(__name__)
 
@@ -52,7 +54,7 @@ class SoftAligner:
         LOGGER.info(f"Loaded model parameters from {path}")
         return params
 
-    def normalize(self, mp: types.MPNNEmbeddings) -> types.MPNNEmbeddings:
+    def normalize(self, mp: MPNNEmbeddings) -> MPNNEmbeddings:
         """Return embeddings reordered by sorted integer indices."""
         idxs_int = [int(x) for x in mp.idxs]
         order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
@@ -62,7 +64,7 @@ class SoftAligner:
                 f"(size={len(order)})"
             )
             LOGGER.debug(norm_msg)
-        return types.MPNNEmbeddings(
+        return MPNNEmbeddings(
             name=mp.name,
             embeddings=mp.embeddings[order, ...],
             idxs=[idxs_int[i] for i in order],
@@ -73,7 +75,7 @@ class SoftAligner:
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ) -> List[types.MPNNEmbeddings]:
+    ) -> List[MPNNEmbeddings]:
         """Load packaged species embeddings as ``MPNNEmbeddings``."""
         out_embeddings = []
         path = files(embeddings_path) / embeddings_name
@@ -81,7 +83,7 @@ class SoftAligner:
             data = np.load(p, allow_pickle=True)["arr_0"].item()
             for species, embeddings_dict in data.items():
                 out_embeddings.append(
-                    types.MPNNEmbeddings(
+                    MPNNEmbeddings(
                         name=species,
                         embeddings=embeddings_dict.get("array"),
                         stdev=embeddings_dict.get("stdev"),
@@ -129,7 +131,7 @@ class SoftAligner:
 
     def __call__(
         self, input_pdb: str, input_chain: str, correct_loops: bool = True
-    ) -> Tuple[str, types.SoftAlignOutput]:
+    ) -> Tuple[str, SoftAlignOutput]:
         """Align input chain to each species embedding and return best hit."""
         input_data = self.transformed_embed_fn.apply(
             self.model_params, self.key, input_pdb, input_chain
@@ -150,7 +152,7 @@ class SoftAligner:
             )
             aln = self.fix_aln(out.alignment, species_embedding.idxs)
 
-            outputs[name] = types.SoftAlignOutput(
+            outputs[name] = SoftAlignOutput(
                 alignment=aln,
                 score=out.score,
                 species=name,
@@ -187,7 +189,7 @@ class SoftAligner:
 
             aln = self.correct_de_loop(aln)
 
-        return types.SoftAlignOutput(
+        return SoftAlignOutput(
             species=best_match,
             alignment=aln,
             score=0,
