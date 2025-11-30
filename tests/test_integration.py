@@ -5,10 +5,10 @@ from typing import List, Tuple
 import numpy as np
 import pytest
 from ANARCI import anarci
-from Bio import PDB, SeqIO
+from Bio import PDB
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb
+from sabr import aln2hmm, cli, edit_pdb, util
 
 DATA_PACKAGE = "tests.data"
 
@@ -35,15 +35,6 @@ FIXTURES = {
 }
 
 
-def fetch_sequence_from_pdb(pdb_file: Path, chain: str) -> str:
-    """Return the sequence for ``chain`` from ``pdb_file``."""
-    for record in SeqIO.parse(pdb_file, "pdb-atom"):
-        if record.id.endswith(chain):
-            return str(record.seq).replace("X", "")
-    ids = [r.id for r in SeqIO.parse(pdb_file, "pdb-atom")]
-    raise ValueError(f"Chain {chain} not found in {pdb_file} (contains {ids})")
-
-
 def load_alignment_fixture(path: Path):
     if not path.exists():
         pytest.skip(f"Missing alignment fixture at {path}")
@@ -56,7 +47,7 @@ def load_alignment_fixture(path: Path):
 def run_threading_pipeline(
     pdb_path: Path, chain: str, alignment, species: str, tmp_path
 ):
-    sequence = fetch_sequence_from_pdb(pdb_path, chain)
+    sequence = util.fetch_sequence_from_pdb(str(pdb_path), chain)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
     subsequence = "-" * start + sequence[start:end]
     anarci_out, anarci_start, anarci_end = (
