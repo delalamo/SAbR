@@ -5,20 +5,10 @@ import os
 
 import click
 from ANARCI import anarci
-from Bio import SeqIO
 
-from sabr import aln2hmm, edit_pdb, softaligner
+from sabr import aln2hmm, edit_pdb, softaligner, util
 
 LOGGER = logging.getLogger(__name__)
-
-
-def fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
-    """Return the sequence for chain in pdb_file without X residues."""
-    for record in SeqIO.parse(pdb_file, "pdb-atom"):
-        if record.id.endswith(chain):
-            return str(record.seq).replace("X", "")
-    ids = [r.id for r in SeqIO.parse(pdb_file, "pdb-atom")]
-    raise ValueError(f"Chain {chain} not found in {pdb_file} (contains {ids})")
 
 
 @click.command(
@@ -97,7 +87,7 @@ def main(
         raise click.ClickException(
             f"{output_pdb} exists, rerun with --overwrite to replace it"
         )
-    sequence = fetch_sequence_from_pdb(input_pdb, input_chain)
+    sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
     LOGGER.info(
         f"Fetched sequence of length {len(sequence)} from "
