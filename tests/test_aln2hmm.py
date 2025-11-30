@@ -34,10 +34,10 @@ def test_alignment_matrix_to_state_vector_diagonal_path():
 
 def test_alignment_matrix_to_state_vector_with_insertions():
     """Test alignment with insertions (A-only steps)."""
-    # Pattern: match, insert, insert, match
-    # Row 0: position 0
-    # Row 1: positions 1,2,3
-    matrix = np.array([[1, 0, 0, 0], [0, 0, 0, 1]], dtype=int)
+    # Matrix is transposed before processing, so insertions occur when
+    # the transposed matrix has multiple 1s in same row
+    # After transpose: row 0 will have positions at columns 0,1,2
+    matrix = np.array([[1, 0], [1, 0], [1, 0], [0, 1]], dtype=int)
 
     states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
@@ -48,8 +48,10 @@ def test_alignment_matrix_to_state_vector_with_insertions():
 
 def test_alignment_matrix_to_state_vector_with_deletions():
     """Test alignment with deletions (B-only steps)."""
-    # Pattern: match at (0,0), deletion at B=1, match at (2,1)
-    matrix = np.array([[1, 0], [0, 0], [0, 1]], dtype=int)
+    # Matrix is transposed before processing, so deletions occur when
+    # the transposed matrix has multiple 1s in same column
+    # After transpose: column 0 will have positions at rows 0,1,2
+    matrix = np.array([[1, 1, 1, 0], [0, 0, 0, 1]], dtype=int)
 
     states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
@@ -63,11 +65,13 @@ def test_alignment_matrix_to_state_vector_with_deletions():
 
 def test_alignment_matrix_to_state_vector_complex_path():
     """Test complex path with mixed matches, insertions, and deletions."""
+    # Matrix is transposed before processing
+    # Create a path with both deletions and matches:
+    # After transpose, we want: (0,0), (1,0), (2,0), (3,1), (4,2)
+    # This means deletions from (0,0) to (2,0), then diagonal matches
     matrix = np.array(
         [
-            [1, 0, 0, 0, 0],
-            [0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0],  # Deletion row
+            [1, 1, 1, 0, 0],
             [0, 0, 0, 1, 0],
             [0, 0, 0, 0, 1],
         ],
@@ -80,7 +84,7 @@ def test_alignment_matrix_to_state_vector_complex_path():
     match_states = [s for s in states if s[0][1] == "m"]
     assert len(match_states) > 0
 
-    # Should have deletions (row 2 has no 1s)
+    # Should have deletions
     deletion_states = [s for s in states if s[0][1] == "d"]
     assert len(deletion_states) > 0
 
@@ -109,16 +113,17 @@ def test_alignment_matrix_to_state_vector_single_match():
 
 def test_alignment_matrix_to_state_vector_insertion_at_end():
     """Test insertion at the end of sequence."""
-    # Match at (0,0), then insertions at A=1,2
-    matrix = np.array([[1, 0, 0], [0, 0, 0]], dtype=int)
+    # Matrix is transposed, multiple columns in same row req'd
+    # After transpose: row 0 should have multiple positions
+    matrix = np.array([[1, 0], [1, 0], [1, 0], [0, 1]], dtype=int)
 
     states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
-    # Should handle end insertions
+    # Should handle insertions
     assert len(states) > 0
     # Check for insertion states
     insertion_states = [s for s in states if s[0][1] == "i"]
-    assert len(insertion_states) >= 0  # May have insertions
+    assert len(insertion_states) > 0
 
 
 def test_alignment_matrix_to_state_vector_large_matrix():
