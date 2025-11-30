@@ -1,7 +1,9 @@
 import numpy as np
 import pytest
 
-from sabr import constants, ops, types
+from sabr import constants, ops
+from sabr.mpnn_embeddings import MPNNEmbeddings
+from sabr.softalign_output import SoftAlignOutput
 
 
 class DummyModel:
@@ -27,13 +29,13 @@ def test_align_fn_returns_softalign_output(monkeypatch):
     monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
     # MPNN embeddings
-    input = types.MPNNEmbeddings(
+    input = MPNNEmbeddings(
         name="test1",
         embeddings=np.ones((2, constants.EMBED_DIM), dtype=float),
         stdev=np.ones((3, constants.EMBED_DIM), dtype=float),
         idxs=list(range(2)),
     )
-    targ = types.MPNNEmbeddings(
+    targ = MPNNEmbeddings(
         name="test2",
         embeddings=np.ones((3, constants.EMBED_DIM), dtype=float),
         stdev=np.ones((3, constants.EMBED_DIM), dtype=float),
@@ -42,7 +44,7 @@ def test_align_fn_returns_softalign_output(monkeypatch):
 
     result = ops.align_fn(input, targ)
 
-    assert isinstance(result, types.SoftAlignOutput)
+    assert isinstance(result, SoftAlignOutput)
     assert result.alignment.shape == (2, 3)
     assert result.sim_matrix.shape == (2, 3)
     assert np.all(np.isfinite(result.score))
@@ -63,7 +65,7 @@ def test_embed_fn_returns_embeddings(monkeypatch):
 
     result = ops.embed_fn("fake.pdb", chains="A")
 
-    assert isinstance(result, types.MPNNEmbeddings)
+    assert isinstance(result, MPNNEmbeddings)
     assert result.embeddings.shape == (2, constants.EMBED_DIM)
     assert result.idxs == ["id_0", "id_1"]
 
