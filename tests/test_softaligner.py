@@ -2,7 +2,7 @@ import importlib
 
 import numpy as np
 
-from sabr import constants, softaligner, types
+from sabr import constants, mpnn_embeddings, softaligner
 
 
 def make_aligner():
@@ -19,7 +19,7 @@ def test_normalize_orders_indices():
     embed = np.vstack(
         [np.full((1, constants.EMBED_DIM), i, dtype=float) for i in range(3)]
     )
-    mp = types.MPNNEmbeddings(
+    mp = mpnn_embeddings.MPNNEmbeddings(
         name="demo",
         embeddings=embed,
         stdev=embed,
