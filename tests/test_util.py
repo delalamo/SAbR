@@ -78,7 +78,9 @@ def test_fetch_sequence_from_pdb_empty_file():
         with pytest.raises(ValueError) as excinfo:
             util.fetch_sequence_from_pdb(pdb_path, "A")
 
-        assert "Chain A not found" in str(excinfo.value)
+        # BioPython may raise "Empty file." for empty PDB files
+        error_msg = str(excinfo.value)
+        assert "Chain A not found" in error_msg or "Empty file" in error_msg
     finally:
         Path(pdb_path).unlink()
 
