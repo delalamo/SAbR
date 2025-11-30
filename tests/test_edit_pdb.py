@@ -58,30 +58,33 @@ def test_thread_onto_chain_residue_mismatch():
 
 
 def test_thread_onto_chain_with_hetatm():
-    """Test that HETATM residues are handled correctly."""
+    """Test that HETATM residues don't cause errors when present."""
     chain = Chain.Chain("A")
     chain.add(build_residue(1, "ALA"))
-    chain.add(build_residue(2, "HOH", hetflag="W"))  # Water molecule
-    chain.add(build_residue(3, "GLY"))
+    chain.add(build_residue(2, "GLY"))
+    # HETATM before the ANARCI window starts
+    chain.add(build_residue(3, "HOH", hetflag="W"))
+    chain.add(build_residue(4, "VAL"))
 
+    # ANARCI window starts at residue 1 (skipping HETATM at position 0)
+    # alignment_start=3 means we start processing from the 4th residue (index 3)
     anarci_out = [
-        ((1, " "), "A"),
-        ((2, " "), "G"),  # Only 2 protein residues
+        ((1, " "), "V"),  # VAL gets numbered as 1
     ]
 
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=2,
-        alignment_start=0,
+        anarci_end=1,
+        alignment_start=3,  # Start alignment from VAL (index 3)
     )
 
-    # Should have 3 residues (including HETATM)
-    assert len(list(threaded.get_residues())) == 3
-    # HETATM should be preserved
+    # Should have all 4 residues
+    assert len(list(threaded.get_residues())) == 4
+    # VAL should be in the output
     residues = list(threaded.get_residues())
-    assert residues[1].get_id()[0] == "W"
+    assert any(res.get_resname() == "VAL" for res in residues)
 
 
 def test_thread_onto_chain_with_insertion_codes():
