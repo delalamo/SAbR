@@ -5,18 +5,16 @@ import logging
 from jax import numpy as jnp
 from softalign import END_TO_END_MODELS, Input_MPNN
 
-from sabr import constants
-from sabr.mpnn_embeddings import MPNNEmbeddings
-from sabr.softalign_output import SoftAlignOutput
+from sabr import constants, mpnn_embeddings, softalign_output
 
 LOGGER = logging.getLogger(__name__)
 
 
 def align_fn(
-    input: MPNNEmbeddings,
-    target: MPNNEmbeddings,
+    input: mpnn_embeddings.MPNNEmbeddings,
+    target: mpnn_embeddings.MPNNEmbeddings,
     temperature: float = 10**-4,
-) -> SoftAlignOutput:
+) -> softalign_output.SoftAlignOutput:
     """Align two embedding sets with the SoftAlign model and return result."""
     input_array = input.embeddings
     target_array = target.embeddings
@@ -64,7 +62,7 @@ def align_fn(
         f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
         f"score={float(score[0])}"
     )
-    return SoftAlignOutput(
+    return softalign_output.SoftAlignOutput(
         alignment=alignment[0],
         sim_matrix=sim_matrix[0],
         score=float(score[0]),
@@ -74,7 +72,7 @@ def align_fn(
     )
 
 
-def embed_fn(pdbfile: str, chains: str) -> MPNNEmbeddings:
+def embed_fn(pdbfile: str, chains: str) -> mpnn_embeddings.MPNNEmbeddings:
     """Return MPNN embeddings for ``chains`` in ``pdbfile`` using SoftAlign."""
     LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
     e2e_model = END_TO_END_MODELS.END_TO_END(
@@ -101,7 +99,7 @@ def embed_fn(pdbfile: str, chains: str) -> MPNNEmbeddings:
                 f" ({embeddings.shape[0]})"
             )
         )
-    return MPNNEmbeddings(
+    return mpnn_embeddings.MPNNEmbeddings(
         name="INPUT_PDB",
         embeddings=embeddings,
         idxs=ids,

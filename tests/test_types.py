@@ -2,8 +2,7 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
-from sabr.mpnn_embeddings import MPNNEmbeddings
-from sabr.softalign_output import SoftAlignOutput
+from sabr import mpnn_embeddings, softalign_output
 
 
 def test_mpnnembeddings_shape_mismatch_raises():
@@ -12,7 +11,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
     idx = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
-        MPNNEmbeddings(
+        mpnn_embeddings.MPNNEmbeddings(
             name="test_case", embeddings=embedding, stdev=embedding, idxs=idx
         )
 
@@ -24,7 +23,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
 
 def test_softalignoutput_holds_passed_values():
     alignment = jnp.ones((2, 2), dtype=int)
-    output = SoftAlignOutput(
+    output = softalign_output.SoftAlignOutput(
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
