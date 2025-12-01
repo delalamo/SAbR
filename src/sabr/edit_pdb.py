@@ -64,14 +64,18 @@ def thread_onto_chain(
 
             if aa != constants.AA_3TO1[res.get_resname()]:
                 raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
-            new_id = (res.get_id()[0], new_idx + alignment_start, icode)
+            # FIX: Don't add alignment_start - ANARCI already returns correct IMGT positions
+            new_id = (res.get_id()[0], new_idx, icode)
         else:
             if i < (anarci_start):
-                new_idx = (j - (anarci_start + alignment_start)) + anarci_out[
-                    0
-                ][0][0]
+                # PRE-Fv region: number backwards from first ANARCI position
+                first_anarci_pos = anarci_out[0][0][0]
+                # j is current residue index, alignment_start is where Fv starts
+                # So residue at j should get position: first_anarci_pos - (alignment_start - j)
+                new_idx = first_anarci_pos - (alignment_start - j)
                 new_id = (res.get_id()[0], new_idx, " ")
             else:
+                # AFTER Fv region: continue from last ANARCI position
                 last_idx += 1
                 new_id = (" ", last_idx, " ")
         new_res.id = new_id
