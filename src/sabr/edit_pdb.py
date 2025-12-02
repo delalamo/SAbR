@@ -25,7 +25,8 @@ def thread_onto_chain(
     Raise ValueError on residue mismatches.
 
     Args:
-        max_residues: Maximum number of residues to process. If 0, process all residues.
+        max_residues: Maximum number of residues to process. If 0,
+            process all residues.
     """
 
     thread_msg = (
@@ -44,11 +45,15 @@ def thread_onto_chain(
     last_idx = None
     deviations = 0
     for j, res in enumerate(chain.get_residues()):
-        # Skip residues beyond max_residues limit (check actual residue index, not count)
+        # Skip residues beyond max_residues limit
+        # (check actual residue index, not count)
         if max_residues > 0:
             res_index = res.id[1]  # Actual residue number from PDB
             if res_index > max_residues:
-                LOGGER.info(f"Stopping at residue index {res_index} (max_residues={max_residues})")
+                LOGGER.info(
+                    f"Stopping at residue index {res_index} "
+                    f"(max_residues={max_residues})"
+                )
                 break
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
         hetatm = res.get_id()[0].strip() != ""
@@ -76,7 +81,8 @@ def thread_onto_chain(
 
             if aa != constants.AA_3TO1[res.get_resname()]:
                 raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
-            # FIX: Don't add alignment_start - ANARCI already returns correct IMGT positions
+            # FIX: Don't add alignment_start - ANARCI already returns
+            # correct IMGT positions
             new_id = (res.get_id()[0], new_idx, icode)
         else:
             if i < (anarci_start):
@@ -84,12 +90,15 @@ def thread_onto_chain(
                 first_anarci_pos = anarci_out[0][0][0]
                 if past_n_pdb:
                     # Residue is in aligned sequence but before ANARCI window
-                    # i represents position in aligned sequence, anarci_start is where ANARCI numbering begins
+                    # i represents position in aligned sequence,
+                    # anarci_start is where ANARCI numbering begins
                     new_idx = first_anarci_pos - (anarci_start - i)
                 else:
                     # Residue is before the aligned sequence entirely
                     # Number based on distance from alignment_start
-                    new_idx = first_anarci_pos - (anarci_start + (alignment_start - j))
+                    new_idx = first_anarci_pos - (
+                        anarci_start + (alignment_start - j)
+                    )
                 new_id = (res.get_id()[0], new_idx, " ")
             else:
                 # AFTER Fv region: continue from last ANARCI position
@@ -118,7 +127,8 @@ def thread_alignment(
     """Write the renumbered chain to ``output_pdb`` and return the structure.
 
     Args:
-        max_residues: Maximum number of residues to process. If 0, process all residues.
+        max_residues: Maximum number of residues to process. If 0,
+            process all residues.
     """
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
