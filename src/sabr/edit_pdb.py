@@ -82,9 +82,14 @@ def thread_onto_chain(
             if i < (anarci_start):
                 # PRE-Fv region: number backwards from first ANARCI position
                 first_anarci_pos = anarci_out[0][0][0]
-                # j is current residue index, alignment_start is where Fv starts
-                # So residue at j should get position: first_anarci_pos - (alignment_start - j)
-                new_idx = first_anarci_pos - (alignment_start - j)
+                if past_n_pdb:
+                    # Residue is in aligned sequence but before ANARCI window
+                    # i represents position in aligned sequence, anarci_start is where ANARCI numbering begins
+                    new_idx = first_anarci_pos - (anarci_start - i)
+                else:
+                    # Residue is before the aligned sequence entirely
+                    # Number based on distance from alignment_start
+                    new_idx = first_anarci_pos - (anarci_start + (alignment_start - j))
                 new_id = (res.get_id()[0], new_idx, " ")
             else:
                 # AFTER Fv region: continue from last ANARCI position
