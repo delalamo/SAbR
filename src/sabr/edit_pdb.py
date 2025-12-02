@@ -18,10 +18,14 @@ def thread_onto_chain(
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
+    max_residues: int = 0,
 ) -> Tuple[Chain.Chain, int]:
     """Return a deep-copied chain renumbered by the ANARCI window.
 
     Raise ValueError on residue mismatches.
+
+    Args:
+        max_residues: Maximum number of residues to process. If 0, process all residues.
     """
 
     thread_msg = (
@@ -29,6 +33,8 @@ def thread_onto_chain(
         f"[{anarci_start}, {anarci_end}) "
         f"(alignment starts at {alignment_start})"
     )
+    if max_residues > 0:
+        thread_msg += f" (max_residues={max_residues})"
     LOGGER.info(thread_msg)
     new_chain = Chain.Chain(chain.id)
 
@@ -38,6 +44,12 @@ def thread_onto_chain(
     last_idx = None
     deviations = 0
     for j, res in enumerate(chain.get_residues()):
+        # Skip residues beyond max_residues limit (check actual residue index, not count)
+        if max_residues > 0:
+            res_index = res.id[1]  # Actual residue number from PDB
+            if res_index > max_residues:
+                LOGGER.info(f"Stopping at residue index {res_index} (max_residues={max_residues})")
+                break
         past_n_pdb = j >= alignment_start  # In Fv, PDB numbering
         hetatm = res.get_id()[0].strip() != ""
 
@@ -96,8 +108,13 @@ def thread_alignment(
     start_res: int,
     end_res: int,
     alignment_start: int,
+    max_residues: int = 0,
 ) -> int:
-    """Write the renumbered chain to ``output_pdb`` and return the structure."""
+    """Write the renumbered chain to ``output_pdb`` and return the structure.
+
+    Args:
+        max_residues: Maximum number of residues to process. If 0, process all residues.
+    """
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
         f"writing to {output_pdb}"
@@ -115,7 +132,7 @@ def thread_alignment(
             new_model.add(ch)
         else:
             new_chain, deviations = thread_onto_chain(
-                ch, alignment, start_res, end_res, alignment_start
+                ch, alignment, start_res, end_res, alignment_start, max_residues
             )
             new_model.add(new_chain)
             all_devs += deviations

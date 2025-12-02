@@ -64,6 +64,13 @@ LOGGER = logging.getLogger(__name__)
     is_flag=True,
     help="Enable verbose logging.",
 )
+@click.option(
+    "--max-residues",
+    "max_residues",
+    type=int,
+    default=0,
+    help="Maximum number of residues to process from the chain. If 0 (default), process all residues.",
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -71,6 +78,7 @@ def main(
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
+    max_residues: int,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -89,6 +97,8 @@ def main(
         )
     sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
+    if max_residues > 0:
+        LOGGER.info(f"Will truncate output to {max_residues} residues (max_residues flag)")
     LOGGER.info(
         f"Fetched sequence of length {len(sequence)} from "
         f"{input_pdb} chain {input_chain}"
@@ -122,6 +132,7 @@ def main(
         start_res,
         end_res,
         alignment_start=start,
+        max_residues=max_residues,
     )
     LOGGER.info(f"Finished renumbering; output written to {output_pdb}")
 
