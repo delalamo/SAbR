@@ -129,10 +129,63 @@ class SoftAligner:
             aln[:, 80] = 0
         return aln
 
+    def filter_embeddings_by_chain_type(
+        self, chain_type: str
+    ) -> List[mpnn_embeddings.MPNNEmbeddings]:
+        """
+        Filter embeddings based on chain type.
+
+        Args:
+            chain_type: 'heavy' for H embeddings only,
+                       'light' for K and L embeddings only,
+                       None for all embeddings.
+
+        Returns:
+            Filtered list of embeddings.
+        """
+        if chain_type is None:
+            return self.all_embeddings
+
+        filtered = []
+        for emb in self.all_embeddings:
+            suffix = emb.name[-1].upper()
+            if chain_type == "heavy" and suffix == "H":
+                filtered.append(emb)
+            elif chain_type == "light" and suffix in ("K", "L"):
+                filtered.append(emb)
+
+        if not filtered:
+            LOGGER.warning(
+                f"No embeddings found for chain_type='{chain_type}', "
+                f"using all embeddings"
+            )
+            return self.all_embeddings
+
+        LOGGER.info(
+            f"Filtered to {len(filtered)} embeddings for chain_type='{chain_type}'"
+        )
+        return filtered
+
     def __call__(
-        self, input_pdb: str, input_chain: str, correct_loops: bool = True
+        self,
+        input_pdb: str,
+        input_chain: str,
+        correct_loops: bool = True,
+        chain_type: str = None,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
-        """Align input chain to each species embedding and return best hit."""
+        """
+        Align input chain to each species embedding and return best hit.
+
+        Args:
+            input_pdb: Path to input PDB file.
+            input_chain: Chain identifier to renumber.
+            correct_loops: Whether to apply loop gap corrections.
+            chain_type: Optional filter - 'heavy' for H only, 'light' for K/L only,
+                       None for all embeddings.
+
+        Returns:
+            SoftAlignOutput with the best alignment.
+        """
         input_data = self.transformed_embed_fn.apply(
             self.model_params, self.key, input_pdb, input_chain
         )
@@ -140,8 +193,12 @@ class SoftAligner:
             f"Computed embeddings for {input_pdb} chain {input_chain} "
             f"(length={input_data.embeddings.shape[0]})"
         )
+
+        # Filter embeddings based on chain type
+        embeddings_to_search = self.filter_embeddings_by_chain_type(chain_type)
+
         outputs = {}
-        for species_embedding in self.all_embeddings:
+        for species_embedding in embeddings_to_search:
             name = species_embedding.name
             out = self.transformed_align_fn.apply(
                 self.model_params,

@@ -74,6 +74,20 @@ LOGGER = logging.getLogger(__name__)
         "If 0 (default), process all residues."
     ),
 )
+@click.option(
+    "-t",
+    "--chain-type",
+    "chain_type",
+    type=click.Choice(["heavy", "light", "auto"], case_sensitive=False),
+    default="auto",
+    show_default=True,
+    help=(
+        "Restrict alignment to specific chain type embeddings. "
+        "'heavy' searches only heavy chain (H) embeddings, "
+        "'light' searches only light chain (K and L) embeddings, "
+        "'auto' searches all embeddings and picks the best match."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -82,6 +96,7 @@ def main(
     overwrite: bool,
     verbose: bool,
     max_residues: int,
+    chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -109,8 +124,10 @@ def main(
         f"Fetched sequence of length {len(sequence)} from "
         f"{input_pdb} chain {input_chain}"
     )
+    # Convert chain_type to filter format for SoftAligner
+    chain_type_filter = None if chain_type == "auto" else chain_type
     soft_aligner = softaligner.SoftAligner()
-    out = soft_aligner(input_pdb, input_chain)
+    out = soft_aligner(input_pdb, input_chain, chain_type=chain_type_filter)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
     subsequence = "-" * start + sequence[start:end]
