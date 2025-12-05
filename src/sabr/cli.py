@@ -30,7 +30,7 @@ LOGGER = logging.getLogger(__name__)
     "-c",
     "--input-chain",
     "input_chain",
-    required=True,
+    default=None,
     help="Chain identifier to renumber.",
 )
 @click.option(
