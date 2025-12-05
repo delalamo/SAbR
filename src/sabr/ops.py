@@ -72,8 +72,19 @@ def align_fn(
     )
 
 
-def embed_fn(pdbfile: str, chains: str) -> mpnn_embeddings.MPNNEmbeddings:
-    """Return MPNN embeddings for ``chains`` in ``pdbfile`` using SoftAlign."""
+def embed_fn(
+    pdbfile: str, chains: str, max_residues: int = 0
+) -> mpnn_embeddings.MPNNEmbeddings:
+    """Return MPNN embeddings for ``chains`` in ``pdbfile`` using SoftAlign.
+
+    Args:
+        pdbfile: Path to the PDB file.
+        chains: Chain identifier(s) to embed.
+        max_residues: Maximum number of residues to embed. If 0, embed all.
+
+    Returns:
+        MPNNEmbeddings for the specified chain.
+    """
     LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
     e2e_model = END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,
@@ -99,6 +110,15 @@ def embed_fn(pdbfile: str, chains: str) -> mpnn_embeddings.MPNNEmbeddings:
                 f" ({embeddings.shape[0]})"
             )
         )
+
+    # Truncate to max_residues if specified
+    if max_residues > 0 and len(ids) > max_residues:
+        LOGGER.info(
+            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
+        )
+        embeddings = embeddings[:max_residues]
+        ids = ids[:max_residues]
+
     return mpnn_embeddings.MPNNEmbeddings(
         name="INPUT_PDB",
         embeddings=embeddings,
