@@ -129,6 +129,40 @@ class SoftAligner:
             aln[:, 80] = 0
         return aln
 
+    def correct_light_chain_fr1(self, aln: np.ndarray) -> np.ndarray:
+        """
+        Fix light chain FR1 alignment issues in positions 6-11.
+
+        Light chains often have shifted alignments in FR1 where the row
+        (sequence position) doesn't match the expected column (IMGT position).
+        For example, row 7 at column 6 means residue 8 is at position 7.
+
+        This fix shifts matches forward when position 10 is empty but
+        earlier positions (7-9) have matches from later rows.
+        """
+        # Check if position 10 (0-indexed: 9) is empty
+        if aln[:, 9].sum() == 0:
+            # Find matches in positions 6-9 (0-indexed: 5-8)
+            for col_idx in range(5, 9):
+                if aln[:, col_idx].sum() == 1:
+                    row = np.where(aln[:, col_idx] == 1)[0][0]
+                    # If row > col_idx, the alignment is shifted
+                    # (residue row+1 is at position col_idx+1, should be at row+1)
+                    if row > col_idx:
+                        shift_amount = row - col_idx
+                        LOGGER.info(
+                            f"Correcting light chain FR1: detected shift of "
+                            f"{shift_amount} at position {col_idx + 1}"
+                        )
+                        # Shift all matches from col_idx to position 9 forward
+                        for c in range(8, col_idx - 1, -1):
+                            if aln[:, c].sum() == 1:
+                                aln[:, c + shift_amount] = aln[:, c]
+                                aln[:, c] = 0
+                        break
+
+        return aln
+
     def filter_embeddings_by_chain_type(
         self, chain_type: str
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
@@ -250,6 +284,10 @@ class SoftAligner:
                 )
 
             aln = self.correct_de_loop(aln)
+
+            # Apply light chain FR1 correction only for light chains
+            if best_match[-1].upper() in ("K", "L"):
+                aln = self.correct_light_chain_fr1(aln)
 
         return softalign_output.SoftAlignOutput(
             species=best_match,

@@ -52,13 +52,8 @@ def alignment_matrix_to_state_vector(
             db -= 1
             out.append(((b, "d"), None))
 
-    # Add the final match state for the last path element
-    # (the loop above only processes pairs, so the last element is skipped)
-    final_col, final_row = path[-1]
-    out.append(((final_col + 1, "m"), final_row))
-
     report_output(out)
-    return out, path[0][0], path[-1][1] + 1 + path[0][0]
+    return out, path[0][0], path[-1][1] + path[0][0]
 
 
 def report_output(
