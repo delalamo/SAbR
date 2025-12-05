@@ -162,7 +162,10 @@ class SoftAligner:
             return self.all_embeddings
 
         LOGGER.info(
-            f"Filtered to {len(filtered)} embeddings for chain_type='{chain_type}'"
+            (
+                f"Filtered to {len(filtered)} embeddings for ",
+                "chain_type='{chain_type}'",
+            )
         )
         return filtered
 
@@ -181,8 +184,8 @@ class SoftAligner:
             input_pdb: Path to input PDB file.
             input_chain: Chain identifier to renumber.
             correct_loops: Whether to apply loop gap corrections.
-            chain_type: Optional filter - 'heavy' for H only, 'light' for K/L only,
-                       None for all embeddings.
+            chain_type: Optional filter - 'heavy' for H only,
+                'light' for K/L only, None for all embeddings.
             max_residues: Maximum residues to embed. If 0, embed all.
 
         Returns:
