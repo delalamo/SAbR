@@ -172,6 +172,7 @@ class SoftAligner:
         input_chain: str,
         correct_loops: bool = True,
         chain_type: str = None,
+        max_residues: int = 0,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
         """
         Align input chain to each species embedding and return best hit.
@@ -182,12 +183,13 @@ class SoftAligner:
             correct_loops: Whether to apply loop gap corrections.
             chain_type: Optional filter - 'heavy' for H only, 'light' for K/L only,
                        None for all embeddings.
+            max_residues: Maximum residues to embed. If 0, embed all.
 
         Returns:
             SoftAlignOutput with the best alignment.
         """
         input_data = self.transformed_embed_fn.apply(
-            self.model_params, self.key, input_pdb, input_chain
+            self.model_params, self.key, input_pdb, input_chain, max_residues
         )
         LOGGER.info(
             f"Computed embeddings for {input_pdb} chain {input_chain} "

@@ -127,7 +127,12 @@ def main(
     # Convert chain_type to filter format for SoftAligner
     chain_type_filter = None if chain_type == "auto" else chain_type
     soft_aligner = softaligner.SoftAligner()
-    out = soft_aligner(input_pdb, input_chain, chain_type=chain_type_filter)
+    out = soft_aligner(
+        input_pdb,
+        input_chain,
+        chain_type=chain_type_filter,
+        max_residues=max_residues,
+    )
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
     subsequence = "-" * start + sequence[start:end]
