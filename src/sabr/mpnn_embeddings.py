@@ -19,6 +19,7 @@ class MPNNEmbeddings:
     embeddings: np.ndarray
     idxs: List[str]
     stdev: Optional[np.ndarray] = None
+    sequence: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.embeddings.shape[0] != len(self.idxs):

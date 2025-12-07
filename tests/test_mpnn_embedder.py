@@ -38,13 +38,14 @@ def test_mpnn_embedder_read_params_method_exists():
     assert callable(embedder._read_softalign_params)
 
 
-def create_test_embedding():
+def create_test_embedding(include_sequence=True):
     """Create a test MPNNEmbeddings object."""
     return mpnn_embeddings.MPNNEmbeddings(
         name="test_chain",
         embeddings=np.random.rand(10, 64),
         idxs=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         stdev=np.random.rand(10, 64),
+        sequence="ACDEFGHIKL" if include_sequence else None,
     )
 
 
@@ -144,6 +145,7 @@ def test_round_trip_with_different_idxs_formats():
         embeddings=np.random.rand(5, 64),
         idxs=["1", "2A", "3", "4B", "5"],
         stdev=np.random.rand(5, 64),
+        sequence="ACDEF",
     )
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -160,3 +162,40 @@ def test_round_trip_with_different_idxs_formats():
             loaded_embedding.embeddings, embedding.embeddings
         )
         np.testing.assert_array_equal(loaded_embedding.stdev, embedding.stdev)
+
+
+def test_save_and_load_preserves_sequence():
+    """Test that save and load preserves the sequence field."""
+    embedding = create_test_embedding(include_sequence=True)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+
+        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+            str(output_path)
+        )
+
+        assert loaded_embedding.sequence == embedding.sequence
+        assert loaded_embedding.sequence == "ACDEFGHIKL"
+
+
+def test_save_and_load_without_sequence():
+    """Test that save/load works when sequence is None."""
+    embedding = create_test_embedding(include_sequence=False)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+
+        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+            str(output_path)
+        )
+
+        assert loaded_embedding.sequence is None
+
+
+def test_fetch_sequence_from_pdb_method_exists():
+    """Test that MPNNEmbedder has a fetch_sequence_from_pdb method."""
+    assert hasattr(mpnn_embedder.MPNNEmbedder, "fetch_sequence_from_pdb")
+    assert callable(mpnn_embedder.MPNNEmbedder.fetch_sequence_from_pdb)
