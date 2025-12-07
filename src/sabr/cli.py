@@ -125,6 +125,7 @@ def main(
         f"{input_pdb} chain {input_chain}"
     )
     # Convert chain_type to filter format for SoftAligner
+    # TODO: convert to enum
     chain_type_filter = None if chain_type == "auto" else chain_type
 
     # Generate MPNN embeddings for the input chain
@@ -147,6 +148,8 @@ def main(
             "SoftAlign did not specify the matched species; "
             "cannot infer heavy/light chain type."
         )
+    # TODO add an "extra insertions" option
+    # this should include way more insertion codes
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
