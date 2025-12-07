@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, util
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embedder, softaligner, util
 
 DATA_PACKAGE = "tests.data"
 
@@ -22,6 +22,7 @@ FIXTURES = {
         "pdb": resolve_data_path("8_21_renumbered.pdb"),
         "chain": "A",
         "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
+        "embeddings": resolve_data_path("8_21_renumbered_embeddings.npz"),
         "min_deviations": 0,
         "max_deviations": 0,
     },
@@ -29,6 +30,7 @@ FIXTURES = {
         "pdb": resolve_data_path("5omm_imgt.pdb"),
         "chain": "C",
         "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
+        "embeddings": resolve_data_path("5omm_imgt_embeddings.npz"),
         "min_deviations": 5,
         "max_deviations": 200,
     },
@@ -172,3 +174,41 @@ def test_cli_respects_expected_numbering(
     original_ids = extract_residue_ids(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
+
+
+@pytest.mark.parametrize("fixture_key", ["8_21", "5omm"])
+def test_pipeline_with_precomputed_embeddings(tmp_path, fixture_key):
+    """Test full pipeline using precomputed MPNN embeddings.
+
+    This test loads precomputed embeddings from disk instead of computing them,
+    then runs the SoftAligner and threading pipeline. Results should match
+    the reference alignment fixtures.
+    """
+    data = FIXTURES[fixture_key]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    embeddings_path = data.get("embeddings")
+    if embeddings_path is None or not embeddings_path.exists():
+        pytest.skip(f"Missing embeddings fixture at {embeddings_path}")
+
+    # Load precomputed embeddings
+    input_data = mpnn_embedder.MPNNEmbedder.load_from_npz(str(embeddings_path))
+
+    # Run SoftAligner on precomputed embeddings
+    aligner = softaligner.SoftAligner()
+    result = aligner(input_data)
+
+    # Run the threading pipeline with the computed alignment
+    deviations = run_threading_pipeline(
+        data["pdb"],
+        data["chain"],
+        result.alignment,
+        result.species,
+        tmp_path,
+    )
+
+    # Verify deviations are within expected range
+    min_expected = data.get("min_deviations")
+    max_expected = data.get("max_deviations")
+    assert min_expected is not None and max_expected is not None
+    assert min_expected <= deviations <= max_expected
