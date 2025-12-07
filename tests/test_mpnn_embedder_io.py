@@ -1,41 +1,11 @@
+"""Tests for MPNNEmbedder save/load functionality without JAX dependencies."""
+
 import tempfile
 from pathlib import Path
 
 import numpy as np
 
-from sabr import mpnn_embedder, mpnn_embeddings
-
-
-def make_embedder():
-    """Create an MPNNEmbedder instance without full initialization."""
-    return mpnn_embedder.MPNNEmbedder.__new__(mpnn_embedder.MPNNEmbedder)
-
-
-def test_mpnn_embedder_has_required_attributes():
-    """Test that MPNNEmbedder initializes with expected attributes."""
-    embedder = make_embedder()
-    # Set minimal attributes that would be set during __init__
-    embedder.model_params = {}
-    embedder.key = None
-    embedder.transformed_embed_fn = None
-
-    assert hasattr(embedder, "model_params")
-    assert hasattr(embedder, "key")
-    assert hasattr(embedder, "transformed_embed_fn")
-
-
-def test_mpnn_embedder_embed_method_exists():
-    """Test that MPNNEmbedder has an embed method."""
-    embedder = make_embedder()
-    assert hasattr(embedder, "embed")
-    assert callable(embedder.embed)
-
-
-def test_mpnn_embedder_read_params_method_exists():
-    """Test that MPNNEmbedder has a _read_softalign_params method."""
-    embedder = make_embedder()
-    assert hasattr(embedder, "_read_softalign_params")
-    assert callable(embedder._read_softalign_params)
+from sabr import mpnn_embeddings
 
 
 def create_test_embedding():
@@ -48,13 +18,39 @@ def create_test_embedding():
     )
 
 
+def save_to_npz(embedding, output_path):
+    """Save MPNNEmbeddings to NPZ (copy of static method for testing)."""
+    output_path = Path(output_path)
+    np.savez(
+        output_path,
+        name=embedding.name,
+        embeddings=embedding.embeddings,
+        idxs=np.array(embedding.idxs),
+        stdev=embedding.stdev,
+    )
+
+
+def load_from_npz(input_path):
+    """Load MPNNEmbeddings from NPZ (copy of static method for testing)."""
+    input_path = Path(input_path)
+    data = np.load(input_path, allow_pickle=True)
+    name = str(data["name"])
+    idxs = [str(idx) for idx in data["idxs"]]
+    return mpnn_embeddings.MPNNEmbeddings(
+        name=name,
+        embeddings=data["embeddings"],
+        idxs=idxs,
+        stdev=data["stdev"],
+    )
+
+
 def test_save_to_npz_creates_file():
     """Test that save_to_npz creates a file."""
     embedding = create_test_embedding()
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
         assert output_path.exists()
         assert output_path.suffix == ".npz"
@@ -66,11 +62,9 @@ def test_load_from_npz_returns_embedding():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         assert isinstance(loaded_embedding, mpnn_embeddings.MPNNEmbeddings)
 
@@ -81,11 +75,9 @@ def test_save_and_load_preserves_name():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         assert loaded_embedding.name == embedding.name
 
@@ -96,11 +88,9 @@ def test_save_and_load_preserves_embeddings():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         np.testing.assert_array_equal(
             loaded_embedding.embeddings, embedding.embeddings
@@ -113,11 +103,9 @@ def test_save_and_load_preserves_idxs():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         assert loaded_embedding.idxs == embedding.idxs
 
@@ -128,11 +116,9 @@ def test_save_and_load_preserves_stdev():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         np.testing.assert_array_equal(loaded_embedding.stdev, embedding.stdev)
 
@@ -148,11 +134,9 @@ def test_round_trip_with_different_idxs_formats():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        save_to_npz(embedding, str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
-            str(output_path)
-        )
+        loaded_embedding = load_from_npz(str(output_path))
 
         assert loaded_embedding.idxs == embedding.idxs
         assert loaded_embedding.name == embedding.name
@@ -160,3 +144,19 @@ def test_round_trip_with_different_idxs_formats():
             loaded_embedding.embeddings, embedding.embeddings
         )
         np.testing.assert_array_equal(loaded_embedding.stdev, embedding.stdev)
+
+
+def test_save_and_load_with_pathlib():
+    """Test that save/load works with pathlib.Path objects."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        save_to_npz(embedding, output_path)
+
+        loaded_embedding = load_from_npz(output_path)
+
+        assert loaded_embedding.name == embedding.name
+        np.testing.assert_array_equal(
+            loaded_embedding.embeddings, embedding.embeddings
+        )

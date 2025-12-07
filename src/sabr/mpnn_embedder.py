@@ -3,10 +3,12 @@
 import logging
 import pickle
 from importlib.resources import files
+from pathlib import Path
 from typing import Any, Dict
 
 import haiku as hk
 import jax
+import numpy as np
 
 from sabr import mpnn_embeddings, ops
 
@@ -72,3 +74,57 @@ class MPNNEmbedder:
             f"(length={input_data.embeddings.shape[0]})"
         )
         return input_data
+
+    @staticmethod
+    def save_to_npz(
+        embedding: mpnn_embeddings.MPNNEmbeddings,
+        output_path: str,
+    ) -> None:
+        """
+        Save MPNNEmbeddings to an NPZ file.
+
+        Args:
+            embedding: The MPNNEmbeddings object to save.
+            output_path: Path where the NPZ file will be saved.
+        """
+        output_path = Path(output_path)
+        np.savez(
+            output_path,
+            name=embedding.name,
+            embeddings=embedding.embeddings,
+            idxs=np.array(embedding.idxs),
+            stdev=embedding.stdev,
+        )
+        LOGGER.info(f"Saved embeddings to {output_path}")
+
+    @staticmethod
+    def load_from_npz(input_path: str) -> mpnn_embeddings.MPNNEmbeddings:
+        """
+        Load MPNNEmbeddings from an NPZ file.
+
+        Args:
+            input_path: Path to the NPZ file to load.
+
+        Returns:
+            MPNNEmbeddings object loaded from the file.
+        """
+        input_path = Path(input_path)
+        data = np.load(input_path, allow_pickle=True)
+
+        # Convert numpy scalar to string if needed
+        name = str(data["name"])
+
+        # Convert idxs back to list of strings
+        idxs = [str(idx) for idx in data["idxs"]]
+
+        embedding = mpnn_embeddings.MPNNEmbeddings(
+            name=name,
+            embeddings=data["embeddings"],
+            idxs=idxs,
+            stdev=data["stdev"],
+        )
+        LOGGER.info(
+            f"Loaded embeddings from {input_path} "
+            f"(name={name}, length={len(idxs)})"
+        )
+        return embedding
