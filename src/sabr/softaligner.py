@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class SoftAligner:
-    """Embed a query chain and align it against packaged species embeddings."""
+    """Align a query embedding against packaged species embeddings."""
 
     def __init__(
         self,
@@ -39,7 +39,6 @@ class SoftAligner:
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(ops.align_fn)
-        self.transformed_embed_fn = hk.transform(ops.embed_fn)
 
     def read_softalign_params(
         self,
@@ -105,9 +104,6 @@ class SoftAligner:
 
     def fix_aln(self, old_aln, idxs):
         """Expand an alignment onto IMGT positions using saved indices."""
-        # aln = np.zeros((old_aln.shape[0], 128))
-        # for i, idx in enumerate(idxs):
-        #     aln[:, int(idx) - 1] = old_aln[:, i]
         aln = np.zeros((old_aln.shape[0], 128), dtype=old_aln.dtype)
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
 
@@ -127,6 +123,40 @@ class SoftAligner:
             LOGGER.info("Correcting DE loop")
             aln[:, 81] = aln[:, 80]
             aln[:, 80] = 0
+        return aln
+
+    def correct_light_chain_fr1(self, aln: np.ndarray) -> np.ndarray:
+        """
+        Fix light chain FR1 alignment issues in positions 6-11.
+
+        Light chains often have shifted alignments in FR1 where the row
+        (sequence position) doesn't match the expected column (IMGT position).
+        For example, row 7 at column 6 means residue 8 is at position 7.
+
+        This fix shifts matches forward when position 10 is empty but
+        earlier positions (7-9) have matches from later rows.
+        """
+        # Check if position 10 (0-indexed: 9) is empty
+        if aln[:, 9].sum() == 0:
+            # Find matches in positions 6-9 (0-indexed: 5-8)
+            for col_idx in range(5, 9):
+                if aln[:, col_idx].sum() == 1:
+                    row = np.where(aln[:, col_idx] == 1)[0][0]
+                    # If row > col_idx, the alignment is shifted
+                    # (residue row+1 at position col_idx+1, expected at row+1)
+                    if row > col_idx:
+                        shift_amount = row - col_idx
+                        LOGGER.info(
+                            f"Correcting light chain FR1: detected shift of "
+                            f"{shift_amount} at position {col_idx + 1}"
+                        )
+                        # Shift all matches from col_idx to position 9 forward
+                        for c in range(8, col_idx - 1, -1):
+                            if aln[:, c].sum() == 1:
+                                aln[:, c + shift_amount] = aln[:, c]
+                                aln[:, c] = 0
+                        break
+
         return aln
 
     def filter_embeddings_by_chain_type(
@@ -171,32 +201,24 @@ class SoftAligner:
 
     def __call__(
         self,
-        input_pdb: str,
-        input_chain: str,
+        input_data: mpnn_embeddings.MPNNEmbeddings,
         correct_loops: bool = True,
         chain_type: str = None,
-        max_residues: int = 0,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
         """
-        Align input chain to each species embedding and return best hit.
+        Align input embeddings to each species embedding and return best hit.
 
         Args:
-            input_pdb: Path to input PDB file.
-            input_chain: Chain identifier to renumber.
+            input_data: Pre-computed MPNN embeddings for the query chain.
             correct_loops: Whether to apply loop gap corrections.
             chain_type: Optional filter - 'heavy' for H only,
                 'light' for K/L only, None for all embeddings.
-            max_residues: Maximum residues to embed. If 0, embed all.
 
         Returns:
             SoftAlignOutput with the best alignment.
         """
-        input_data = self.transformed_embed_fn.apply(
-            self.model_params, self.key, input_pdb, input_chain, max_residues
-        )
         LOGGER.info(
-            f"Computed embeddings for {input_pdb} chain {input_chain} "
-            f"(length={input_data.embeddings.shape[0]})"
+            f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
         # Filter embeddings based on chain type
@@ -250,6 +272,10 @@ class SoftAligner:
                 )
 
             aln = self.correct_de_loop(aln)
+
+            # Apply light chain FR1 correction only for light chains
+            if best_match[-1].upper() in ("K", "L"):
+                aln = self.correct_light_chain_fr1(aln)
 
         return softalign_output.SoftAlignOutput(
             species=best_match,
