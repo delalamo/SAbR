@@ -2,7 +2,7 @@
 
 import copy
 import logging
-from typing import Tuple
+from typing import List, Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
@@ -10,6 +10,44 @@ from Bio.PDB import Chain, Model, Structure
 from sabr import constants
 
 LOGGER = logging.getLogger(__name__)
+
+
+def has_extended_insertion_codes(
+    alignment: List[Tuple[Tuple[int, str], str]],
+) -> bool:
+    """Check if any insertion codes in the alignment are multi-character.
+
+    PDB format only supports single-character insertion codes (A-Z).
+    Extended codes (AA, AB, ..., ZZ, AAA, etc.) require mmCIF format.
+
+    Args:
+        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
+
+    Returns:
+        True if any insertion code has more than one character.
+    """
+    for (_, icode), _ in alignment:
+        if len(icode.strip()) > 1:
+            return True
+    return False
+
+
+def validate_output_format(
+    output_path: str, alignment: List[Tuple[Tuple[int, str], str]]
+) -> None:
+    """Validate that the output format supports the insertion codes used.
+
+    Raises:
+        ValueError: If PDB format is requested but extended insertion codes
+            are present in the alignment.
+    """
+    if has_extended_insertion_codes(alignment):
+        if not output_path.endswith(".cif"):
+            raise ValueError(
+                "Extended insertion codes detected in alignment"
+                "PDB format only supports single-character insertion codes. "
+                "Please use mmCIF format (.cif extension) for output."
+            )
 
 
 def thread_onto_chain(
@@ -122,7 +160,7 @@ def thread_onto_chain(
 def thread_alignment(
     pdb_file: str,
     chain: str,
-    alignment: dict[str, str],
+    alignment: List[Tuple[Tuple[int, str], str]],
     output_pdb: str,
     start_res: int,
     end_res: int,
@@ -132,9 +170,25 @@ def thread_alignment(
     """Write the renumbered chain to ``output_pdb`` and return the structure.
 
     Args:
+        pdb_file: Path to input PDB file.
+        chain: Chain identifier to renumber.
+        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
+        output_pdb: Path to output file (.pdb or .cif).
+        start_res: Start residue index from ANARCI.
+        end_res: End residue index from ANARCI.
+        alignment_start: Offset where alignment begins in the sequence.
         max_residues: Maximum number of residues to process. If 0,
             process all residues.
+
+    Returns:
+        Number of residue ID deviations from original numbering.
+
+    Raises:
+        ValueError: If extended insertion codes are used but output is not .cif.
     """
+    # Validate output format supports the insertion codes used
+    validate_output_format(output_pdb, alignment)
+
     align_msg = (
         f"Threading alignment for {pdb_file} chain {chain}; "
         f"writing to {output_pdb}"
@@ -161,7 +215,7 @@ def thread_alignment(
     io = PDB.PDBIO()
     if output_pdb.endswith(".cif"):
         io = PDB.MMCIFIO()
-        LOGGER.debug("Detected CIF output; using MMCIFIO writer")
+        LOGGER.debug("Detected CIF output; using MMCIFIO")
     io.set_structure(new_structure)
     io.save(output_pdb)
     LOGGER.info(f"Saved threaded structure to {output_pdb}")

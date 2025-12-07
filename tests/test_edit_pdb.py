@@ -213,3 +213,66 @@ def test_thread_onto_chain_counts_deviations():
 
     # Both residues changed numbering
     assert deviations == 2
+
+
+def test_has_extended_insertion_codes_single_char():
+    """Test if single-character insertion codes are flagged as extended"""
+    alignment = [
+        ((1, " "), "A"),
+        ((1, "A"), "G"),
+        ((1, "B"), "V"),
+        ((2, " "), "L"),
+    ]
+    assert not edit_pdb.has_extended_insertion_codes(alignment)
+
+
+def test_has_extended_insertion_codes_multi_char():
+    """Test that multi-character insertion codes are flagged as extended."""
+    alignment = [
+        ((1, " "), "A"),
+        ((1, "A"), "G"),
+        ((1, "AA"), "V"),  # Extended insertion code
+        ((2, " "), "L"),
+    ]
+    assert edit_pdb.has_extended_insertion_codes(alignment)
+
+
+def test_has_extended_insertion_codes_empty():
+    """Test empty alignment."""
+    assert not edit_pdb.has_extended_insertion_codes([])
+
+
+def test_validate_output_format_pdb_with_single_char():
+    """Test that PDB format is allowed with single-character insertion codes."""
+    alignment = [
+        ((1, " "), "A"),
+        ((1, "A"), "G"),
+        ((2, " "), "V"),
+    ]
+    # Should not raise
+    edit_pdb.validate_output_format("output.pdb", alignment)
+
+
+def test_validate_output_format_pdb_with_extended_codes():
+    """Test that PDB format raises error with extended insertion codes."""
+    alignment = [
+        ((1, " "), "A"),
+        ((1, "AA"), "G"),  # Extended insertion code
+        ((2, " "), "V"),
+    ]
+    with pytest.raises(ValueError, match="Extended insertion codes"):
+        edit_pdb.validate_output_format("output.pdb", alignment)
+
+
+def test_validate_output_format_cif_with_extended_codes():
+    """Test that CIF format is allowed with extended insertion codes."""
+    alignment = [
+        ((1, " "), "A"),
+        ((1, "AA"), "G"),  # Extended insertion code
+        ((1, "AB"), "V"),
+        ((1, "ZZ"), "L"),
+        ((1, "AAA"), "I"),  # Triple-letter code
+        ((2, " "), "P"),
+    ]
+    # Should not raise
+    edit_pdb.validate_output_format("output.cif", alignment)
