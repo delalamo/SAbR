@@ -1,5 +1,8 @@
 name: Verify Installation (Editable & Non-Editable)
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:

@@ -102,8 +102,13 @@ def thread_onto_chain(
                 new_id = (res.get_id()[0], new_idx, " ")
             else:
                 # AFTER Fv region: continue from last ANARCI position
-                last_idx += 1
-                new_id = (" ", last_idx, " ")
+                # Preserve the hetero flag for HETATM residues
+                if hetatm:
+                    # Keep original ID for HETATM (water, ligands, etc.)
+                    new_id = res.get_id()
+                else:
+                    last_idx += 1
+                    new_id = (" ", last_idx, " ")
         new_res.id = new_id
         LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
         if res.get_id() != new_res.get_id():

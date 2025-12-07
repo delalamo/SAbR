@@ -1,4 +1,6 @@
 name: Code Formatting
+permissions:
+  contents: read
 
 on:
   push:

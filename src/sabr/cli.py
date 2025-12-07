@@ -136,6 +136,7 @@ def main(
     out = soft_aligner(
         input_data,
         chain_type=chain_type_filter,
+
     )
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
