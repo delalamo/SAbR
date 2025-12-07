@@ -125,7 +125,7 @@ def test_cli_respects_expected_numbering(
             self.species = species
 
     class DummyAligner:
-        def __call__(self, input_pdb, input_chain, **kwargs):
+        def __call__(self, input_data, **kwargs):
             return DummyResult(alignment, species)
 
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())

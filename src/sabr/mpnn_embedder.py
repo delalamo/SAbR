@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import pickle
 from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict
@@ -11,7 +10,7 @@ import jax
 import numpy as np
 from Bio import SeqIO
 
-from sabr import mpnn_embeddings, ops
+from sabr import mpnn_embeddings, ops, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -46,7 +45,8 @@ class MPNNEmbedder:
     ) -> Dict[str, Any]:
         """Load SoftAlign parameters from package resources."""
         path = files(params_path) / params_name
-        params = pickle.load(open(path, "rb"))
+        with open(path, "rb") as f:
+            params = util.JaxBackwardsCompatUnpickler(f).load()
         LOGGER.info(f"Loaded model parameters from {path}")
         return params
 
