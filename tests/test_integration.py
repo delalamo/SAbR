@@ -128,6 +128,29 @@ def test_cli_respects_expected_numbering(
         def __call__(self, input_data, **kwargs):
             return DummyResult(alignment, species)
 
+    class DummyEmbeddings:
+        def __init__(self, name, embeddings, idxs, stdev=None, sequence=None):
+            self.name = name
+            self.embeddings = embeddings
+            self.idxs = idxs
+            self.stdev = stdev
+            self.sequence = sequence
+
+    class DummyEmbedder:
+        def embed(self, input_pdb, input_chain, max_residues=0):
+            # Return dummy embeddings with correct shape
+            n_residues = 100
+            return DummyEmbeddings(
+                name=f"{input_pdb}_{input_chain}",
+                embeddings=np.zeros((n_residues, 64)),
+                idxs=[str(i) for i in range(n_residues)],
+                stdev=np.ones((n_residues, 64)),
+                sequence="A" * n_residues,
+            )
+
+    monkeypatch.setattr(
+        cli.mpnn_embedder, "MPNNEmbedder", lambda: DummyEmbedder()
+    )
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
 
     runner = CliRunner()
