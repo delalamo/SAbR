@@ -35,10 +35,52 @@ class MPNNEmbeddings:
                 f"Error raised for {self.name}"
             )
 
-        if self.stdev is None:
-            self.stdev = np.ones_like(self.embeddings)
+        n_rows = self.embeddings.shape[0]
+        processed_stdev = self._process_stdev(self.stdev, n_rows)
+        object.__setattr__(self, "stdev", processed_stdev)
 
         LOGGER.debug(
             f"Initialized MPNNEmbeddings for {self.name} "
             f"(shape={self.embeddings.shape})"
+        )
+
+    def _process_stdev(
+        self, stdev: Optional[np.ndarray], n_rows: int
+    ) -> np.ndarray:
+        """Process and validate stdev, returning a properly shaped array."""
+        if stdev is None:
+            return np.ones_like(self.embeddings)
+
+        stdev = np.asarray(stdev)
+
+        if stdev.ndim == 1:
+            if stdev.shape[0] != constants.EMBED_DIM:
+                raise ValueError(
+                    f"1D stdev must have length {constants.EMBED_DIM}, "
+                    f"got {stdev.shape[0]}"
+                )
+            return np.broadcast_to(stdev, (n_rows, constants.EMBED_DIM)).copy()
+
+        if stdev.ndim == 2:
+            if stdev.shape[1] != constants.EMBED_DIM:
+                raise ValueError(
+                    f"stdev.shape[1] ({stdev.shape[1]}) must match "
+                    f"constants.EMBED_DIM ({constants.EMBED_DIM})"
+                )
+            if stdev.shape[0] == 1:
+                return np.broadcast_to(
+                    stdev, (n_rows, constants.EMBED_DIM)
+                ).copy()
+            if stdev.shape[0] < n_rows:
+                raise ValueError(
+                    f"stdev rows fewer than embeddings rows are not allowed: "
+                    f"stdev rows={stdev.shape[0]}, embeddings rows={n_rows}"
+                )
+            if stdev.shape[0] > n_rows:
+                return stdev[:n_rows, :].copy()
+            return stdev
+
+        raise ValueError(
+            f"stdev must be 1D or 2D array compatible with embeddings, "
+            f"got ndim={stdev.ndim}"
         )
