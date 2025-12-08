@@ -6,7 +6,7 @@ import os
 import click
 from ANARCI import anarci
 
-from sabr import aln2hmm, edit_pdb, softaligner, util
+from sabr import aln2hmm, edit_pdb, mpnn_embedder, softaligner, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -151,13 +151,18 @@ def main(
         f"{input_pdb} chain {input_chain}"
     )
     # Convert chain_type to filter format for SoftAligner
+    # TODO: convert to enum
     chain_type_filter = None if chain_type == "auto" else chain_type
+
+    # Generate MPNN embeddings for the input chain
+    embedder = mpnn_embedder.MPNNEmbedder()
+    input_data = embedder.embed(input_pdb, input_chain, max_residues)
+
+    # Align embeddings against species references
     soft_aligner = softaligner.SoftAligner()
     out = soft_aligner(
-        input_pdb,
-        input_chain,
+        input_data,
         chain_type=chain_type_filter,
-        max_residues=max_residues,
     )
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
@@ -169,6 +174,8 @@ def main(
             "SoftAlign did not specify the matched species; "
             "cannot infer heavy/light chain type."
         )
+    # TODO add an "extra insertions" option
+    # this should include way more insertion codes
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
