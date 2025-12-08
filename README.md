@@ -30,25 +30,39 @@ docker run --rm ghcr.io/delalamo/sabr:latest -i input.pdb -o output.pdb -c CHAIN
 
 ## Running SAbR
 
+Practical considerations:
+
+- Heavy and light chain structures are similar enough that chain type should be manually declared with `--chain-type` if possible (leave blank if uncertain).
+- It is recommended for now to truncate the query structure to contain only the Fv when running SAbR, as it will sometimes align variable region beta-strands to those in the constant region.
+- When running scFvs, it is recommended to run each variable domain independently.
+
 If running on a Mac with apple silicon, set the environmental variable `JAX_PLATFORMS` to `cpu`.
 
 ```bash
-usage: sabr [-h] -i INPUT_PDB -c INPUT_CHAIN -o OUTPUT_PDB [-n NUMBERING_SCHEME] [-t] [--overwrite] [-v]
+Usage: sabr [OPTIONS]
 
-Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB files using the 3D coordinate of backbone atoms.
+  Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB files
+  using the 3D coordinates of backbone atoms.
 
-options:
-  -h, --help            show this help message and exit
-  -i INPUT_PDB, --input_pdb INPUT_PDB
-                        Input pdb file
-  -c INPUT_CHAIN, --input_chain INPUT_CHAIN
-                        Input chain
-  -o OUTPUT_PDB, --output_pdb OUTPUT_PDB
-                        Output pdb file
-  -n NUMBERING_SCHEME, --numbering_scheme NUMBERING_SCHEME
-                        Numbering scheme, default is IMGT. Supports IMGT, Chothia, Kabat, Martin, AHo, and Wolfguy.
-  --overwrite           Overwrite PDB
-  -v, --verbose         Verbose output
+Options:
+  -i, --input-pdb FILE            Input PDB file.  [required]
+  -c, --input-chain TEXT          Chain identifier to renumber.
+  -o, --output-pdb FILE           Destination PDB file.  [required]
+  -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
+                                  Numbering scheme.  [default: (IMGT)]
+  --overwrite                     Overwrite the output PDB if it already
+                                  exists.
+  -v, --verbose                   Enable verbose logging.
+  --max-residues INTEGER          Maximum number of residues to process from
+                                  the chain. If 0 (default), process all
+                                  residues.
+  -t, --chain-type [heavy|light|auto]
+                                  Restrict alignment to specific chain type
+                                  embeddings. 'heavy' searches only heavy
+                                  chain (H) embeddings, 'light' searches only
+                                  light chain (K and L) embeddings, 'auto'
+                                  searches all embeddings and picks the best
+                                  match.  [default: auto]
 ```
 
 ## Known issues
