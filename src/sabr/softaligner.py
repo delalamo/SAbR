@@ -49,7 +49,7 @@ class SoftAligner:
         """Load SoftAlign parameters from package resources."""
         path = files(params_path) / params_name
         params = pickle.load(open(path, "rb"))
-        LOGGER.info(f"Loaded model parameters from {path}")
+        LOGGER.info("Loaded model parameters from %s", path)
         return params
 
     def normalize(
@@ -147,7 +147,8 @@ class SoftAligner:
                 if aln[:, col_idx].sum() == 1:
                     row = np.where(aln[:, col_idx] == 1)[0][0]
                     # If row > col_idx, the alignment is shifted
-                    # (residue row+1 is at position col_idx+1, should be at row+1)
+                    # (residue row+1 is at position col_idx+1,
+                    # should be at row+1)
                     if row > col_idx:
                         shift_amount = row - col_idx
                         LOGGER.info(

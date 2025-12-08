@@ -276,3 +276,220 @@ def test_validate_output_format_cif_with_extended_codes():
     ]
     # Should not raise
     edit_pdb.validate_output_format("output.cif", alignment)
+
+
+def test_thread_alignment_raises_error_with_pdb_and_extended_insertions(
+    tmp_path,
+):
+    """Test thread_alignment raises ValueError with PDB and extended codes."""
+    from importlib import resources
+    from pathlib import Path
+
+    DATA_PACKAGE = "tests.data"
+    pdb_path = Path(resources.files(DATA_PACKAGE) / "8_21_renumbered.pdb")
+
+    if not pdb_path.exists():
+        pytest.skip(f"Missing structure fixture at {pdb_path}")
+
+    # Create alignment with extended insertion codes
+    # Sequence starts with QVQLQESGGG
+    alignment = [
+        ((1, " "), "Q"),
+        ((1, "A"), "V"),  # Single-char insertion
+        ((1, "AA"), "Q"),  # Extended insertion code
+        ((2, " "), "L"),
+    ]
+
+    output_pdb = tmp_path / "test_output.pdb"
+
+    # Should raise ValueError with extended codes and .pdb output
+    with pytest.raises(ValueError, match="Extended insertion codes"):
+        edit_pdb.thread_alignment(
+            str(pdb_path),
+            "A",
+            alignment,
+            str(output_pdb),
+            start_res=0,
+            end_res=4,
+            alignment_start=0,
+        )
+
+
+def test_thread_alignment_succeeds_with_cif_and_extended_insertions(tmp_path):
+    """Test thread_alignment succeeds with CIF and extended codes."""
+    from importlib import resources
+    from pathlib import Path
+
+    DATA_PACKAGE = "tests.data"
+    pdb_path = Path(resources.files(DATA_PACKAGE) / "8_21_renumbered.pdb")
+
+    if not pdb_path.exists():
+        pytest.skip(f"Missing structure fixture at {pdb_path}")
+
+    # Create alignment with extended insertion codes
+    # Sequence starts with QVQLQESGGG
+    alignment = [
+        ((1, " "), "Q"),
+        ((1, "A"), "V"),  # Single-char insertion
+        ((1, "AA"), "Q"),  # Extended insertion code
+        ((2, " "), "L"),
+    ]
+
+    output_cif = tmp_path / "test_output.cif"
+
+    # Should NOT raise with extended codes and .cif output
+    edit_pdb.thread_alignment(
+        str(pdb_path),
+        "A",
+        alignment,
+        str(output_cif),
+        start_res=0,
+        end_res=4,
+        alignment_start=0,
+    )
+
+    # Verify the output file was created
+    assert output_cif.exists()
+
+
+def test_8sve_L_raises_error_with_pdb_output(tmp_path):
+    """Test 8SVE_L antibody with huge insertions raises error with PDB."""
+    from importlib import resources
+    from pathlib import Path
+
+    from ANARCI import anarci
+
+    from sabr import aln2hmm, softaligner, util
+
+    DATA_PACKAGE = "tests.data"
+    pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
+
+    if not pdb_path.exists():
+        pytest.skip(f"Missing structure fixture at {pdb_path}")
+
+    # Use SoftAligner to generate alignment
+    try:
+        aligner = softaligner.SoftAligner()
+        result = aligner(str(pdb_path), "M", chain_type="light")
+
+        # Convert to ANARCI format
+        sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
+        sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
+            result.alignment
+        )
+        subsequence = "-" * start + sequence[start:end]
+
+        anarci_out, anarci_start, anarci_end = (
+            anarci.number_sequence_from_alignment(
+                sv, subsequence, scheme="imgt", chain_type=result.species
+            )
+        )
+
+        # Try to output to PDB format - should raise ValueError
+        output_pdb = tmp_path / "8sve_L_output.pdb"
+
+        with pytest.raises(ValueError, match="Extended insertion codes"):
+            edit_pdb.thread_alignment(
+                str(pdb_path),
+                "M",
+                anarci_out,
+                str(output_pdb),
+                anarci_start,
+                anarci_end,
+                alignment_start=start,
+            )
+    except ImportError:
+        pytest.skip("SoftAligner dependencies not available")
+
+
+def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
+    """Test 8SVE_L succeeds with CIF output and verify extended codes.
+
+    Verifies extended insertion codes are tolerated and output is created.
+    """
+    from importlib import resources
+    from pathlib import Path
+
+    from ANARCI import anarci
+    from Bio import PDB
+
+    from sabr import aln2hmm, softaligner, util
+
+    DATA_PACKAGE = "tests.data"
+    pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
+
+    if not pdb_path.exists():
+        pytest.skip(f"Missing structure fixture at {pdb_path}")
+
+    # Use SoftAligner to generate alignment
+    try:
+        aligner = softaligner.SoftAligner()
+        result = aligner(str(pdb_path), "M", chain_type="light")
+
+        # Convert to ANARCI format
+        sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
+        sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
+            result.alignment
+        )
+        subsequence = "-" * start + sequence[start:end]
+
+        anarci_out, anarci_start, anarci_end = (
+            anarci.number_sequence_from_alignment(
+                sv, subsequence, scheme="imgt", chain_type=result.species
+            )
+        )
+
+        # Output to CIF format - should succeed
+        output_cif = tmp_path / "8sve_L_output.cif"
+
+        edit_pdb.thread_alignment(
+            str(pdb_path),
+            "M",
+            anarci_out,
+            str(output_cif),
+            anarci_start,
+            anarci_end,
+            alignment_start=start,
+        )
+
+        # Verify the output file was created
+        assert output_cif.exists()
+
+        # Parse the output and verify extended insertion codes are present
+        parser = PDB.MMCIFParser(QUIET=True)
+        structure = parser.get_structure("8sve", str(output_cif))
+
+        residues = list(structure[0]["M"].get_residues())
+
+        # Check first residue is numbered 1
+        first_res = residues[0]
+        hetflag, resnum, icode = first_res.get_id()
+        assert resnum == 1, f"First residue should be numbered 1, got {resnum}"
+
+        # Check last residue numbered in expected range
+        # (IMGT light chain ends around 120-128)
+        last_res = residues[-1]
+        hetflag, resnum, icode = last_res.get_id()
+        assert (
+            120 <= resnum <= 128
+        ), f"Last residue should be around 120-128, got {resnum}"
+
+        # Check that there are extended insertion codes present
+        has_extended = False
+        extended_codes_found = []
+        for res in residues:
+            hetflag, resnum, icode = res.get_id()
+            if len(icode.strip()) > 1:
+                has_extended = True
+                extended_codes_found.append((resnum, icode))
+                if (
+                    len(extended_codes_found) >= 5
+                ):  # Just collect a few examples
+                    break
+
+        assert (
+            has_extended
+        ), "Expected to find extended insertion codes in 8sve_L output"
+
+    except ImportError:
+        pytest.skip("SoftAligner dependencies not available")

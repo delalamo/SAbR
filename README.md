@@ -37,17 +37,34 @@ usage: sabr [-h] -i INPUT_PDB -c INPUT_CHAIN -o OUTPUT_PDB [-n NUMBERING_SCHEME]
 
 Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB files using the 3D coordinate of backbone atoms.
 
-options:
-  -h, --help            show this help message and exit
-  -i INPUT_PDB, --input_pdb INPUT_PDB
-                        Input pdb file
-  -c INPUT_CHAIN, --input_chain INPUT_CHAIN
-                        Input chain
-  -o OUTPUT_PDB, --output_pdb OUTPUT_PDB
-                        Output pdb file
-  -n NUMBERING_SCHEME, --numbering_scheme NUMBERING_SCHEME
-                        Numbering scheme, default is IMGT. Supports IMGT, Chothia, Kabat, Martin, AHo, and Wolfguy.
-  --overwrite           Overwrite PDB
+Options:
+  -i, --input-pdb FILE            Input PDB file.  [required]
+  -c, --input-chain TEXT          Chain identifier to renumber.
+  -o, --output FILE               Destination structure file. Use .pdb
+                                  extension for PDB format or .cif extension
+                                  for mmCIF format. mmCIF is required when
+                                  using --extended-insertions.  [required]
+  -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
+                                  Numbering scheme.  [default: (IMGT)]
+  --overwrite                     Overwrite the output PDB if it already
+                                  exists.
+  -v, --verbose                   Enable verbose logging.
+  --max-residues INTEGER          Maximum number of residues to process from
+                                  the chain. If 0 (default), process all
+                                  residues.
+  -t, --chain-type [heavy|light|auto]
+                                  Restrict alignment to specific chain type
+                                  embeddings. 'heavy' searches only heavy
+                                  chain (H) embeddings, 'light' searches only
+                                  light chain (K and L) embeddings, 'auto'
+                                  searches all embeddings and picks the best
+                                  match.  [default: auto]
+  --extended-insertions           Enable extended insertion codes (AA, AB,
+                                  ..., ZZ, AAA, etc.) for antibodies with very
+                                  long CDR loops. Requires mmCIF output format
+                                  (.cif extension). Standard PDB format only
+                                  supports single-character insertion codes
+                                  (A-Z, max 26 insertions per position)
   -v, --verbose         Verbose output
 ```
 
