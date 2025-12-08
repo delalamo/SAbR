@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, mpnn_embedder, softaligner, util
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, softaligner, util
 
 DATA_PACKAGE = "tests.data"
 
@@ -151,7 +151,7 @@ def test_cli_respects_expected_numbering(
             )
 
     monkeypatch.setattr(
-        cli.mpnn_embedder, "MPNNEmbedder", lambda: DummyEmbedder()
+        cli.mpnn_embeddings.MPNNEmbeddings, "from_pdb", DummyEmbedder().embed
     )
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
 
@@ -192,7 +192,7 @@ def test_pipeline_with_precomputed_embeddings(tmp_path, fixture_key):
         pytest.skip(f"Missing embeddings fixture at {embeddings_path}")
 
     # Load precomputed embeddings
-    input_data = mpnn_embedder.MPNNEmbedder.load_from_npz(str(embeddings_path))
+    input_data = mpnn_embeddings.MPNNEmbeddings.from_npz(str(embeddings_path))
 
     # Run SoftAligner on precomputed embeddings
     aligner = softaligner.SoftAligner()

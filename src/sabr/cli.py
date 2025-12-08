@@ -6,7 +6,7 @@ import os
 import click
 from ANARCI import anarci
 
-from sabr import aln2hmm, edit_pdb, mpnn_embedder, softaligner, util
+from sabr import aln2hmm, edit_pdb, mpnn_embeddings, softaligner, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -129,8 +129,9 @@ def main(
     chain_type_filter = None if chain_type == "auto" else chain_type
 
     # Generate MPNN embeddings for the input chain
-    embedder = mpnn_embedder.MPNNEmbedder()
-    input_data = embedder.embed(input_pdb, input_chain, max_residues)
+    input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(
+        input_pdb, input_chain, max_residues
+    )
 
     # Align embeddings against species references
     soft_aligner = softaligner.SoftAligner()

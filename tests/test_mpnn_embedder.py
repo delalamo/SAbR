@@ -1,41 +1,11 @@
+"""Tests for MPNNEmbeddings I/O (backward compatibility test file)."""
+
 import tempfile
 from pathlib import Path
 
 import numpy as np
 
-from sabr import mpnn_embedder, mpnn_embeddings
-
-
-def make_embedder():
-    """Create an MPNNEmbedder instance without full initialization."""
-    return mpnn_embedder.MPNNEmbedder.__new__(mpnn_embedder.MPNNEmbedder)
-
-
-def test_mpnn_embedder_has_required_attributes():
-    """Test that MPNNEmbedder initializes with expected attributes."""
-    embedder = make_embedder()
-    # Set minimal attributes that would be set during __init__
-    embedder.model_params = {}
-    embedder.key = None
-    embedder.transformed_embed_fn = None
-
-    assert hasattr(embedder, "model_params")
-    assert hasattr(embedder, "key")
-    assert hasattr(embedder, "transformed_embed_fn")
-
-
-def test_mpnn_embedder_embed_method_exists():
-    """Test that MPNNEmbedder has an embed method."""
-    embedder = make_embedder()
-    assert hasattr(embedder, "embed")
-    assert callable(embedder.embed)
-
-
-def test_mpnn_embedder_read_params_method_exists():
-    """Test that MPNNEmbedder has a _read_softalign_params method."""
-    embedder = make_embedder()
-    assert hasattr(embedder, "_read_softalign_params")
-    assert callable(embedder._read_softalign_params)
+from sabr import mpnn_embeddings
 
 
 def create_test_embedding(include_sequence=True):
@@ -49,27 +19,46 @@ def create_test_embedding(include_sequence=True):
     )
 
 
+def test_mpnn_embeddings_has_from_pdb_classmethod():
+    """Test that MPNNEmbeddings has a from_pdb class method."""
+    assert hasattr(mpnn_embeddings.MPNNEmbeddings, "from_pdb")
+    assert callable(mpnn_embeddings.MPNNEmbeddings.from_pdb)
+
+
+def test_mpnn_embeddings_has_from_npz_classmethod():
+    """Test that MPNNEmbeddings has a from_npz class method."""
+    assert hasattr(mpnn_embeddings.MPNNEmbeddings, "from_npz")
+    assert callable(mpnn_embeddings.MPNNEmbeddings.from_npz)
+
+
+def test_mpnn_embeddings_has_to_npz_method():
+    """Test that MPNNEmbeddings has a to_npz method."""
+    embedding = create_test_embedding()
+    assert hasattr(embedding, "to_npz")
+    assert callable(embedding.to_npz)
+
+
 def test_save_to_npz_creates_file():
-    """Test that save_to_npz creates a file."""
+    """Test that to_npz creates a file."""
     embedding = create_test_embedding()
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
         assert output_path.exists()
         assert output_path.suffix == ".npz"
 
 
 def test_load_from_npz_returns_embedding():
-    """Test that load_from_npz returns an MPNNEmbeddings object."""
+    """Test that from_npz returns an MPNNEmbeddings object."""
     embedding = create_test_embedding()
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -82,9 +71,9 @@ def test_save_and_load_preserves_name():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -97,9 +86,9 @@ def test_save_and_load_preserves_embeddings():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -114,9 +103,9 @@ def test_save_and_load_preserves_idxs():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -129,9 +118,9 @@ def test_save_and_load_preserves_stdev():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -150,9 +139,9 @@ def test_round_trip_with_different_idxs_formats():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -170,9 +159,9 @@ def test_save_and_load_preserves_sequence():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -186,9 +175,9 @@ def test_save_and_load_without_sequence():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir) / "test_embedding.npz"
-        mpnn_embedder.MPNNEmbedder.save_to_npz(embedding, str(output_path))
+        embedding.to_npz(str(output_path))
 
-        loaded_embedding = mpnn_embedder.MPNNEmbedder.load_from_npz(
+        loaded_embedding = mpnn_embeddings.MPNNEmbeddings.from_npz(
             str(output_path)
         )
 
@@ -196,6 +185,6 @@ def test_save_and_load_without_sequence():
 
 
 def test_fetch_sequence_from_pdb_method_exists():
-    """Test that MPNNEmbedder has a fetch_sequence_from_pdb method."""
-    assert hasattr(mpnn_embedder.MPNNEmbedder, "fetch_sequence_from_pdb")
-    assert callable(mpnn_embedder.MPNNEmbedder.fetch_sequence_from_pdb)
+    """Test that MPNNEmbeddings has a _fetch_sequence_from_pdb method."""
+    assert hasattr(mpnn_embeddings.MPNNEmbeddings, "_fetch_sequence_from_pdb")
+    assert callable(mpnn_embeddings.MPNNEmbeddings._fetch_sequence_from_pdb)

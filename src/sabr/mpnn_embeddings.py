@@ -2,18 +2,29 @@
 
 import logging
 from dataclasses import dataclass
-from typing import List, Optional
+from importlib.resources import files
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
+import haiku as hk
+import jax
 import numpy as np
+from Bio import SeqIO
 
-from sabr import constants
+from sabr import constants, ops, util
 
 LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
 class MPNNEmbeddings:
-    """Per-residue embedding tensor and matching residue identifiers."""
+    """Per-residue embedding tensor and matching residue identifiers.
+
+    This class can be instantiated in three ways:
+    1. Directly with data (name, embeddings, idxs, etc.)
+    2. From a PDB file using from_pdb()
+    3. From an NPZ file using from_npz()
+    """
 
     name: str
     embeddings: np.ndarray
@@ -83,4 +94,162 @@ class MPNNEmbeddings:
         raise ValueError(
             f"stdev must be 1D or 2D array compatible with embeddings, "
             f"got ndim={stdev.ndim}"
+        )
+
+    @classmethod
+    def from_pdb(
+        cls,
+        pdb_path: str,
+        chain_id: str,
+        max_residues: int = 0,
+        params_name: str = "CONT_SW_05_T_3_1",
+        params_path: str = "softalign.models",
+        random_seed: int = 0,
+    ) -> "MPNNEmbeddings":
+        """
+        Create MPNNEmbeddings from a PDB file by running the MPNN embedder.
+
+        Args:
+            pdb_path: Path to input PDB file.
+            chain_id: Chain identifier to embed.
+            max_residues: Maximum residues to embed. If 0, embed all.
+            params_name: Name of the model parameters file.
+            params_path: Package path containing the parameters file.
+            random_seed: Random seed for JAX.
+
+        Returns:
+            MPNNEmbeddings for the specified chain, including sequence.
+        """
+        # Load model parameters
+        model_params = cls._read_softalign_params(
+            params_name=params_name, params_path=params_path
+        )
+        key = jax.random.PRNGKey(random_seed)
+        transformed_embed_fn = hk.transform(ops.embed_fn)
+
+        # Get embeddings from the model
+        input_data = transformed_embed_fn.apply(
+            model_params, key, pdb_path, chain_id, max_residues
+        )
+
+        # Extract sequence from PDB file
+        try:
+            sequence = cls._fetch_sequence_from_pdb(pdb_path, chain_id)
+        except Exception as e:
+            LOGGER.warning(
+                f"Could not extract sequence from PDB: {e}. "
+                "Continuing without sequence."
+            )
+            sequence = None
+
+        # Create new MPNNEmbeddings with sequence included
+        result = cls(
+            name=input_data.name,
+            embeddings=input_data.embeddings,
+            idxs=input_data.idxs,
+            stdev=input_data.stdev,
+            sequence=sequence,
+        )
+
+        LOGGER.info(
+            f"Computed embeddings for {pdb_path} chain {chain_id} "
+            f"(length={result.embeddings.shape[0]})"
+        )
+        return result
+
+    @classmethod
+    def from_npz(cls, npz_path: str) -> "MPNNEmbeddings":
+        """
+        Load MPNNEmbeddings from an NPZ file.
+
+        Args:
+            npz_path: Path to the NPZ file to load.
+
+        Returns:
+            MPNNEmbeddings object loaded from the file.
+        """
+        npz_path = Path(npz_path)
+        data = np.load(npz_path, allow_pickle=True)
+
+        # Convert numpy scalar to string if needed
+        name = str(data["name"])
+
+        # Convert idxs back to list of strings
+        idxs = [str(idx) for idx in data["idxs"]]
+
+        # Load sequence if present, otherwise None
+        sequence = None
+        if "sequence" in data:
+            seq_str = str(data["sequence"])
+            sequence = seq_str if seq_str else None
+
+        result = cls(
+            name=name,
+            embeddings=data["embeddings"],
+            idxs=idxs,
+            stdev=data["stdev"],
+            sequence=sequence,
+        )
+        LOGGER.info(
+            f"Loaded embeddings from {npz_path} "
+            f"(name={name}, length={len(idxs)})"
+        )
+        return result
+
+    def to_npz(self, output_path: str) -> None:
+        """
+        Save this MPNNEmbeddings to an NPZ file.
+
+        Args:
+            output_path: Path where the NPZ file will be saved.
+        """
+        output_path = Path(output_path)
+        np.savez(
+            output_path,
+            name=self.name,
+            embeddings=self.embeddings,
+            idxs=np.array(self.idxs),
+            stdev=self.stdev,
+            sequence=self.sequence if self.sequence else "",
+        )
+        LOGGER.info(f"Saved embeddings to {output_path}")
+
+    @staticmethod
+    def _read_softalign_params(
+        params_name: str = "CONT_SW_05_T_3_1",
+        params_path: str = "softalign.models",
+    ) -> Dict[str, Any]:
+        """Load SoftAlign parameters from package resources."""
+        path = files(params_path) / params_name
+        with open(path, "rb") as f:
+            params = util.JaxBackwardsCompatUnpickler(f).load()
+        LOGGER.info(f"Loaded model parameters from {path}")
+        return params
+
+    @staticmethod
+    def _fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
+        """
+        Extract the sequence for a chain from a PDB file.
+
+        Args:
+            pdb_file: Path to the PDB file.
+            chain: Chain identifier to extract.
+
+        Returns:
+            The sequence as a string, with X residues removed.
+
+        Raises:
+            ValueError: If the chain is not found in the PDB file.
+        """
+        for record in SeqIO.parse(pdb_file, "pdb-atom"):
+            if record.id.endswith(chain):
+                sequence = str(record.seq).replace("X", "")
+                LOGGER.info(
+                    f"Extracted sequence from {pdb_file} chain {chain} "
+                    f"(length={len(sequence)})"
+                )
+                return sequence
+        ids = [r.id for r in SeqIO.parse(pdb_file, "pdb-atom")]
+        raise ValueError(
+            f"Chain {chain} not found in {pdb_file} (contains {ids})"
         )
