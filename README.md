@@ -33,7 +33,8 @@ docker run --rm ghcr.io/delalamo/sabr:latest -i input.pdb -o output.pdb -c CHAIN
 Practical considerations:
 
 - Heavy and light chain structures are similar enough that chain type should be manually declared with `--chain-type` if possible (leave blank if uncertain).
-- It is recommended for now to truncate the quewry structure to contain only the Fv when running SAbR, as it will sometimes align variable region beta-strands to those in the constant region.
+- It is recommended for now to truncate the query structure to contain only the Fv when running SAbR, as it will sometimes align variable region beta-strands to those in the constant region.
+- When running scFvs, it is recommended to run each variable domain independently.
 
 If running on a Mac with apple silicon, set the environmental variable `JAX_PLATFORMS` to `cpu`.
 
