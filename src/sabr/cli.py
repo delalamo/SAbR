@@ -6,7 +6,14 @@ import os
 import click
 from ANARCI import anarci
 
-from sabr import aln2hmm, edit_pdb, mpnn_embedder, softaligner, util
+from sabr import (
+    aln2hmm,
+    constants,
+    edit_pdb,
+    mpnn_embeddings,
+    softaligner,
+    util,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -35,11 +42,15 @@ LOGGER = logging.getLogger(__name__)
 )
 @click.option(
     "-o",
-    "--output-pdb",
-    "output_pdb",
+    "--output",
+    "output_file",
     required=True,
     type=click.Path(dir_okay=False, writable=True, path_type=str),
-    help="Destination PDB file.",
+    help=(
+        "Destination structure file. Use .pdb extension for PDB format "
+        "or .cif extension for mmCIF format. mmCIF is required when using "
+        "--extended-insertions."
+    ),
 )
 @click.option(
     "-n",
@@ -78,7 +89,9 @@ LOGGER = logging.getLogger(__name__)
     "-t",
     "--chain-type",
     "chain_type",
-    type=click.Choice(["heavy", "light", "auto"], case_sensitive=False),
+    type=click.Choice(
+        [ct.value for ct in constants.ChainType], case_sensitive=False
+    ),
     default="auto",
     show_default=True,
     help=(
@@ -88,30 +101,52 @@ LOGGER = logging.getLogger(__name__)
         "'auto' searches all embeddings and picks the best match."
     ),
 )
+@click.option(
+    "--extended-insertions",
+    "extended_insertions",
+    is_flag=True,
+    help=(
+        "Enable extended insertion codes (AA, AB, ..., ZZ, AAA, etc.) "
+        "for antibodies with very long CDR loops. Requires mmCIF output "
+        "format (.cif extension). Standard PDB format only supports "
+        "single-character insertion codes (A-Z, max 26 insertions per position)"
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
-    output_pdb: str,
+    output_file: str,
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
     max_residues: int,
     chain_type: str,
+    extended_insertions: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
         logging.basicConfig(level=logging.INFO, force=True)
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
+
+    # Validate extended insertions requires mmCIF format
+    if extended_insertions and not output_file.endswith(".cif"):
+        raise click.ClickException(
+            "The --extended-insertions option requires mmCIF output format. "
+            "Please use a .cif file extension for the output file."
+        )
+
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
-        f"chain={input_chain} output={output_pdb} "
+        f"chain={input_chain} output={output_file} "
         f"scheme={numbering_scheme}"
     )
+    if extended_insertions:
+        start_msg += " (extended insertion codes enabled)"
     LOGGER.info(start_msg)
-    if os.path.exists(output_pdb) and not overwrite:
+    if os.path.exists(output_file) and not overwrite:
         raise click.ClickException(
-            f"{output_pdb} exists, rerun with --overwrite to replace it"
+            f"{output_file} exists, rerun with --overwrite to replace it"
         )
     sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
@@ -124,13 +159,14 @@ def main(
         f"Fetched sequence of length {len(sequence)} from "
         f"{input_pdb} chain {input_chain}"
     )
-    # Convert chain_type to filter format for SoftAligner
-    # TODO: convert to enum
-    chain_type_filter = None if chain_type == "auto" else chain_type
+    # Convert chain_type string to enum
+    chain_type_enum = constants.ChainType(chain_type)
+    chain_type_filter = (
+        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
+    )
 
     # Generate MPNN embeddings for the input chain
-    embedder = mpnn_embedder.MPNNEmbedder()
-    input_data = embedder.embed(input_pdb, input_chain, max_residues)
+    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
 
     # Align embeddings against species references
     soft_aligner = softaligner.SoftAligner()
@@ -148,8 +184,9 @@ def main(
             "SoftAlign did not specify the matched species; "
             "cannot infer heavy/light chain type."
         )
-    # TODO add an "extra insertions" option
-    # this should include way more insertion codes
+
+    # TODO introduce extended insertion code handling here
+    # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
@@ -163,13 +200,13 @@ def main(
         input_pdb,
         input_chain,
         anarci_out,
-        output_pdb,
+        output_file,
         start_res,
         end_res,
         alignment_start=start,
         max_residues=max_residues,
     )
-    LOGGER.info(f"Finished renumbering; output written to {output_pdb}")
+    LOGGER.info(f"Finished renumbering; output written to {output_file}")
 
 
 if __name__ == "__main__":

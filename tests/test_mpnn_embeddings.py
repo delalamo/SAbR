@@ -1,3 +1,6 @@
+import tempfile
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -199,3 +202,238 @@ def test_mpnnembeddings_stdev_as_list():
 
     assert isinstance(mp.stdev, np.ndarray)
     assert mp.stdev.shape == (3, constants.EMBED_DIM)
+
+
+def test_from_pdb_is_callable():
+    """Test that from_pdb function exists and is callable."""
+    assert hasattr(mpnn_embeddings, "from_pdb")
+    assert callable(mpnn_embeddings.from_pdb)
+
+
+def test_from_npz_is_callable():
+    """Test that from_npz function exists and is callable."""
+    assert hasattr(mpnn_embeddings, "from_npz")
+    assert callable(mpnn_embeddings.from_npz)
+
+
+def test_save_is_callable():
+    """Test that save method exists and is callable."""
+    embedding = create_test_embedding()
+    assert hasattr(embedding, "save")
+    assert callable(embedding.save)
+
+
+def create_test_embedding(include_sequence=True):
+    """Create a test MPNNEmbeddings object."""
+    return mpnn_embeddings.MPNNEmbeddings(
+        name="test_chain",
+        embeddings=np.random.rand(10, 64),
+        idxs=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        stdev=np.random.rand(10, 64),
+        sequence="ACDEFGHIKL" if include_sequence else None,
+    )
+
+
+def test_save_creates_file():
+    """Test that save creates a file."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        assert output_path.exists()
+        assert output_path.suffix == ".npz"
+
+
+def test_from_npz_returns_embedding():
+    """Test that from_npz returns an MPNNEmbeddings object."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert isinstance(loaded_embedding, mpnn_embeddings.MPNNEmbeddings)
+
+
+def test_save_and_load_preserves_name():
+    """Test that save and load preserves the name field."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert loaded_embedding.name == embedding.name
+
+
+def test_save_and_load_preserves_embeddings():
+    """Test that save and load preserves the embeddings array."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        np.testing.assert_array_equal(
+            loaded_embedding.embeddings, embedding.embeddings
+        )
+
+
+def test_save_and_load_preserves_idxs():
+    """Test that save and load preserves the idxs list."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert loaded_embedding.idxs == embedding.idxs
+
+
+def test_save_and_load_preserves_stdev():
+    """Test that save and load preserves the stdev array."""
+    embedding = create_test_embedding()
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        np.testing.assert_array_equal(loaded_embedding.stdev, embedding.stdev)
+
+
+def test_round_trip_with_different_idxs_formats():
+    """Test save/load with different idx formats (strings, numbers)."""
+    embedding = mpnn_embeddings.MPNNEmbeddings(
+        name="mixed_idxs",
+        embeddings=np.random.rand(5, 64),
+        idxs=["1", "2A", "3", "4B", "5"],
+        stdev=np.random.rand(5, 64),
+        sequence="ACDEF",
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert loaded_embedding.idxs == embedding.idxs
+        assert loaded_embedding.name == embedding.name
+        np.testing.assert_array_equal(
+            loaded_embedding.embeddings, embedding.embeddings
+        )
+        np.testing.assert_array_equal(loaded_embedding.stdev, embedding.stdev)
+
+
+def test_save_and_load_preserves_sequence():
+    """Test that save and load preserves the sequence field."""
+    embedding = create_test_embedding(include_sequence=True)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert loaded_embedding.sequence == embedding.sequence
+        assert loaded_embedding.sequence == "ACDEFGHIKL"
+
+
+def test_save_and_load_without_sequence():
+    """Test that save/load works when sequence is None."""
+    embedding = create_test_embedding(include_sequence=False)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_path = Path(tmpdir) / "test_embedding.npz"
+        embedding.save(str(output_path))
+
+        loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
+
+        assert loaded_embedding.sequence is None
+
+
+class DummyModel:
+    """Dummy model for testing _embed_pdb function."""
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def MPNN(self, X1, mask1, chain1, res1):
+        length = res1.shape[-1]
+        emb = np.ones((1, length, constants.EMBED_DIM), dtype=float)
+        return emb
+
+
+def test_embed_pdb_returns_embeddings(monkeypatch):
+    """Test that _embed_pdb returns MPNNEmbeddings."""
+
+    def fake_get_input_mpnn(pdbfile, chain):
+        length = 2
+        ids = [f"id_{i}" for i in range(length)]
+        X = np.zeros((1, length, 1, 3), dtype=float)
+        mask = np.zeros((1, length), dtype=float)
+        chain_idx = np.zeros((1, length), dtype=int)
+        res = np.zeros((1, length), dtype=int)
+        return X, mask, chain_idx, res, ids
+
+    monkeypatch.setattr(
+        mpnn_embeddings.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn
+    )
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+
+    result = mpnn_embeddings._embed_pdb("fake.pdb", chains="A")
+
+    assert isinstance(result, mpnn_embeddings.MPNNEmbeddings)
+    assert result.embeddings.shape == (2, constants.EMBED_DIM)
+    assert result.idxs == ["id_0", "id_1"]
+
+
+def test_embed_pdb_rejects_multi_chain_input(monkeypatch):
+    """Test that _embed_pdb rejects multi-chain input."""
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+    with pytest.raises(NotImplementedError):
+        mpnn_embeddings._embed_pdb("fake.pdb", chains="AB")
+
+
+def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
+    """Test ValueError when IDs length doesn't match embeddings rows."""
+
+    def fake_get_input_mpnn_mismatch(pdbfile, chain):
+        length = 3
+        ids = ["id_0", "id_1"]  # Only 2 IDs, but length is 3
+        X = np.zeros((1, length, 1, 3), dtype=float)
+        mask = np.zeros((1, length), dtype=float)
+        chain_idx = np.zeros((1, length), dtype=int)
+        res = np.zeros((1, length), dtype=int)
+        return X, mask, chain_idx, res, ids
+
+    monkeypatch.setattr(
+        mpnn_embeddings.Input_MPNN,
+        "get_inputs_mpnn",
+        fake_get_input_mpnn_mismatch,
+    )
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+
+    with pytest.raises(
+        ValueError, match="IDs length.*does not match embeddings rows"
+    ):
+        mpnn_embeddings._embed_pdb("fake.pdb", chains="A")

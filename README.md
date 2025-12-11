@@ -47,7 +47,10 @@ Usage: sabr [OPTIONS]
 Options:
   -i, --input-pdb FILE            Input PDB file.  [required]
   -c, --input-chain TEXT          Chain identifier to renumber.
-  -o, --output-pdb FILE           Destination PDB file.  [required]
+  -o, --output FILE               Destination structure file. Use .pdb
+                                  extension for PDB format or .cif extension
+                                  for mmCIF format. mmCIF is required when
+                                  using --extended-insertions.  [required]
   -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
                                   Numbering scheme.  [default: (IMGT)]
   --overwrite                     Overwrite the output PDB if it already
@@ -63,6 +66,13 @@ Options:
                                   light chain (K and L) embeddings, 'auto'
                                   searches all embeddings and picks the best
                                   match.  [default: auto]
+  --extended-insertions           Enable extended insertion codes (AA, AB,
+                                  ..., ZZ, AAA, etc.) for antibodies with very
+                                  long CDR loops. Requires mmCIF output format
+                                  (.cif extension). Standard PDB format only
+                                  supports single-character insertion codes
+                                  (A-Z, max 26 insertions per position)
+  -v, --verbose         Verbose output
 ```
 
 ## Known issues
