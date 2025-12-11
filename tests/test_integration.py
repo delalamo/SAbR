@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, util
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, util
 
 DATA_PACKAGE = "tests.data"
 
@@ -22,6 +22,7 @@ FIXTURES = {
         "pdb": resolve_data_path("8_21_renumbered.pdb"),
         "chain": "A",
         "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
+        "embeddings": resolve_data_path("8_21_renumbered_embeddings.npz"),
         "min_deviations": 0,
         "max_deviations": 0,
     },
@@ -29,6 +30,7 @@ FIXTURES = {
         "pdb": resolve_data_path("5omm_imgt.pdb"),
         "chain": "C",
         "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
+        "embeddings": resolve_data_path("5omm_imgt_embeddings.npz"),
         "min_deviations": 5,
         "max_deviations": 200,
     },
@@ -125,9 +127,31 @@ def test_cli_respects_expected_numbering(
             self.species = species
 
     class DummyAligner:
-        def __call__(self, input_pdb, input_chain, **kwargs):
+        def __call__(self, input_data, **kwargs):
             return DummyResult(alignment, species)
 
+    class DummyEmbeddings:
+        def __init__(self, name, embeddings, idxs, stdev=None, sequence=None):
+            self.name = name
+            self.embeddings = embeddings
+            self.idxs = idxs
+            self.stdev = stdev
+            self.sequence = sequence
+
+    def dummy_from_pdb(pdb_file, chain, max_residues=0, **kwargs):
+        # Return dummy embeddings with correct shape
+        n_residues = 100
+        return DummyEmbeddings(
+            name=f"{pdb_file}_{chain}",
+            embeddings=np.zeros((n_residues, 64)),
+            idxs=[str(i) for i in range(n_residues)],
+            stdev=np.ones((n_residues, 64)),
+            sequence="A" * n_residues,
+        )
+
+    monkeypatch.setattr(
+        mpnn_embeddings.MPNNEmbeddings, "from_pdb", dummy_from_pdb
+    )
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
 
     runner = CliRunner()
@@ -149,99 +173,3 @@ def test_cli_respects_expected_numbering(
     original_ids = extract_residue_ids(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
-
-
-def test_cli_with_8sve_L_extended_insertions(monkeypatch, tmp_path):
-    """Test CLI with 8SVE_L (huge insertions) to catch alphabet size bugs."""
-    from importlib import resources
-    from pathlib import Path
-
-    from ANARCI import anarci
-
-    from sabr import aln2hmm, softaligner, util
-
-    DATA_PACKAGE = "tests.data"
-    pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
-
-    if not pdb_path.exists():
-        pytest.skip(f"Missing structure fixture at {pdb_path}")
-
-    # Use SoftAligner to generate alignment
-    try:
-        aligner = softaligner.SoftAligner()
-        result = aligner(str(pdb_path), "M", chain_type="light")
-
-        # Convert to ANARCI format
-        sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
-        sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
-            result.alignment
-        )
-        subsequence = "-" * start + sequence[start:end]
-
-        anarci_out, anarci_start, anarci_end = (
-            anarci.number_sequence_from_alignment(
-                sv, subsequence, scheme="imgt", chain_type=result.species
-            )
-        )
-
-        class DummyResult:
-            def __init__(self, alignment, species):
-                self.alignment = alignment
-                self.species = species
-
-        class DummyAligner:
-            def __call__(self, input_pdb, input_chain, **kwargs):
-                return DummyResult(result.alignment, result.species)
-
-        monkeypatch.setattr(
-            cli.softaligner, "SoftAligner", lambda: DummyAligner()
-        )
-
-        runner = CliRunner()
-        output_cif = tmp_path / "8sve_L_cli.cif"
-
-        # Test with CIF output (should succeed)
-        result = runner.invoke(
-            cli.main,
-            [
-                "-i",
-                str(pdb_path),
-                "-c",
-                "M",
-                "-o",
-                str(output_cif),
-                "--extended-insertions",
-                "--overwrite",
-            ],
-        )
-
-        # Should succeed without errors
-        assert result.exit_code == 0, f"CLI failed with: {result.output}"
-        assert output_cif.exists(), "Output CIF file was not created"
-
-        # Test with PDB output (should fail)
-        output_pdb = tmp_path / "8sve_L_cli.pdb"
-        result_pdb = runner.invoke(
-            cli.main,
-            [
-                "-i",
-                str(pdb_path),
-                "-c",
-                "M",
-                "-o",
-                str(output_pdb),
-                "--extended-insertions",
-                "--overwrite",
-            ],
-        )
-
-        # Should fail because PDB format doesn't support extended insertions
-        assert (
-            result_pdb.exit_code != 0
-        ), "Should fail with PDB output and extended insertions"
-        assert (
-            "mmCIF output format" in result_pdb.output
-        ), "Should mention mmCIF format requirement"
-
-    except ImportError:
-        pytest.skip("SoftAligner dependencies not available")

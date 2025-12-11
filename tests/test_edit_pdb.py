@@ -359,7 +359,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
     from ANARCI import anarci
 
-    from sabr import aln2hmm, softaligner, util
+    from sabr import aln2hmm, mpnn_embeddings, softaligner, util
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -369,8 +369,10 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
     # Use SoftAligner to generate alignment
     try:
+        # Generate embeddings first
+        input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(str(pdb_path), "M", chain_type="light")
+        result = aligner(input_data, chain_type="light")
 
         # Convert to ANARCI format
         sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
@@ -413,7 +415,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
     from ANARCI import anarci
     from Bio import PDB
 
-    from sabr import aln2hmm, softaligner, util
+    from sabr import aln2hmm, mpnn_embeddings, softaligner, util
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -423,8 +425,10 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
     # Use SoftAligner to generate alignment
     try:
+        # Generate embeddings first
+        input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(str(pdb_path), "M", chain_type="light")
+        result = aligner(input_data, chain_type="light")
 
         # Convert to ANARCI format
         sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")

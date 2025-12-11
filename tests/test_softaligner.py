@@ -140,3 +140,96 @@ def test_fix_aln_preserves_dtype():
     expanded = aligner.fix_aln(old_aln, idxs=["1", "2"])
 
     assert expanded.dtype == old_aln.dtype
+
+
+def test_filter_embeddings_by_chain_type_none():
+    """Test that None chain_type returns all embeddings."""
+    aligner = make_aligner()
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
+
+    filtered = aligner.filter_embeddings_by_chain_type(None)
+
+    assert len(filtered) == 3
+
+
+def test_filter_embeddings_by_chain_type_heavy():
+    """Test that 'heavy' chain_type returns only H embeddings."""
+    aligner = make_aligner()
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
+
+    filtered = aligner.filter_embeddings_by_chain_type("heavy")
+
+    assert len(filtered) == 1
+    assert filtered[0].name == "humanH"
+
+
+def test_filter_embeddings_by_chain_type_light():
+    """Test that 'light' chain_type returns only K and L embeddings."""
+    aligner = make_aligner()
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
+
+    filtered = aligner.filter_embeddings_by_chain_type("light")
+
+    assert len(filtered) == 2
+    assert all(emb.name[-1] in ("K", "L") for emb in filtered)
+
+
+def test_correct_light_chain_fr1_no_correction_needed():
+    """Test light chain FR1 correction when no correction is needed."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Set up normal alignment where position 10 is filled
+    aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
+
+    corrected = aligner.correct_light_chain_fr1(aln)
+
+    # Should not change
+    assert np.array_equal(corrected, aln)
+
+
+def test_correct_light_chain_fr1_with_shift():
+    """Test light chain FR1 correction when shift is needed."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 10 (0-indexed: 9) is empty
+    aln[:, 9] = 0
+    # Row 7 at column 6 means residue 8 is at position 7 (shifted)
+    aln[7, 6] = 1
+
+    corrected = aligner.correct_light_chain_fr1(aln)
+
+    # Should have shifted the alignment
+    assert corrected[7, 6] == 0  # Original position should be cleared

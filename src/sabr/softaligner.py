@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class SoftAligner:
-    """Embed a query chain and align it against packaged species embeddings."""
+    """Align a query embedding against packaged species embeddings."""
 
     def __init__(
         self,
@@ -39,7 +39,6 @@ class SoftAligner:
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(ops.align_fn)
-        self.transformed_embed_fn = hk.transform(ops.embed_fn)
 
     def read_softalign_params(
         self,
@@ -105,9 +104,6 @@ class SoftAligner:
 
     def fix_aln(self, old_aln, idxs):
         """Expand an alignment onto IMGT positions using saved indices."""
-        # aln = np.zeros((old_aln.shape[0], 128))
-        # for i, idx in enumerate(idxs):
-        #     aln[:, int(idx) - 1] = old_aln[:, i]
         aln = np.zeros((old_aln.shape[0], 128), dtype=old_aln.dtype)
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
 
@@ -147,8 +143,8 @@ class SoftAligner:
                 if aln[:, col_idx].sum() == 1:
                     row = np.where(aln[:, col_idx] == 1)[0][0]
                     # If row > col_idx, the alignment is shifted
-                    # (residue row+1 is at position col_idx+1,
-                    # should be at row+1)
+                    # (residue row+1 at position col_idx+1,
+                    # expected at row+1)
                     if row > col_idx:
                         shift_amount = row - col_idx
                         LOGGER.info(
@@ -206,32 +202,24 @@ class SoftAligner:
 
     def __call__(
         self,
-        input_pdb: str,
-        input_chain: str,
+        input_data: mpnn_embeddings.MPNNEmbeddings,
         correct_loops: bool = True,
         chain_type: str = None,
-        max_residues: int = 0,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
         """
-        Align input chain to each species embedding and return best hit.
+        Align input embeddings to each species embedding and return best hit.
 
         Args:
-            input_pdb: Path to input PDB file.
-            input_chain: Chain identifier to renumber.
+            input_data: Pre-computed MPNN embeddings for the query chain.
             correct_loops: Whether to apply loop gap corrections.
             chain_type: Optional filter - 'heavy' for H only,
                 'light' for K/L only, None for all embeddings.
-            max_residues: Maximum residues to embed. If 0, embed all.
 
         Returns:
             SoftAlignOutput with the best alignment.
         """
-        input_data = self.transformed_embed_fn.apply(
-            self.model_params, self.key, input_pdb, input_chain, max_residues
-        )
         LOGGER.info(
-            f"Computed embeddings for {input_pdb} chain {input_chain} "
-            f"(length={input_data.embeddings.shape[0]})"
+            f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
         # Filter embeddings based on chain type
