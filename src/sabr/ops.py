@@ -3,7 +3,7 @@
 import logging
 
 from jax import numpy as jnp
-from softalign import END_TO_END_MODELS, Input_MPNN
+from softalign import END_TO_END_MODELS
 
 from sabr import constants, mpnn_embeddings, softalign_output
 
@@ -20,10 +20,6 @@ def align_fn(
     target_array = target.embeddings
     target_stdev = jnp.array(target.stdev)
     target_array = target_array / target_stdev
-
-    # we want to look at two schemes
-    # one is where we divide each embedding by stdev
-    # the other is where we scale the similarity matrix by stdev
 
     LOGGER.info(
         f"Running align_fn with input shape {input_array.shape}, "
@@ -69,59 +65,4 @@ def align_fn(
         species=None,
         idxs1=input.idxs,
         idxs2=target.idxs,
-    )
-
-
-def embed_fn(
-    pdbfile: str, chains: str, max_residues: int = 0
-) -> mpnn_embeddings.MPNNEmbeddings:
-    """Return MPNN embeddings for ``chains`` in ``pdbfile`` using SoftAlign.
-
-    Args:
-        pdbfile: Path to the PDB file.
-        chains: Chain identifier(s) to embed.
-        max_residues: Maximum number of residues to embed. If 0, embed all.
-
-    Returns:
-        MPNNEmbeddings for the specified chain.
-    """
-    LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
-    e2e_model = END_TO_END_MODELS.END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
-        affine=True,
-        soft_max=False,
-        dropout=0.0,
-        augment_eps=0.0,
-    )
-    if len(chains) > 1:
-        raise NotImplementedError("Only single chain embedding is supported")
-    X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
-        pdbfile, chain=chains
-    )
-    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
-    if len(ids) != embeddings.shape[0]:
-        raise ValueError(
-            (
-                f"IDs length ({len(ids)}) does not match embeddings rows"
-                f" ({embeddings.shape[0]})"
-            )
-        )
-
-    # Truncate to max_residues if specified
-    if max_residues > 0 and len(ids) > max_residues:
-        LOGGER.info(
-            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
-        )
-        embeddings = embeddings[:max_residues]
-        ids = ids[:max_residues]
-
-    return mpnn_embeddings.MPNNEmbeddings(
-        name="INPUT_PDB",
-        embeddings=embeddings,
-        idxs=ids,
-        stdev=jnp.ones_like(embeddings),
     )

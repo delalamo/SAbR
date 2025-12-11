@@ -2,8 +2,9 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
+import pytest
 
-from sabr import mpnn_embeddings
+from sabr import constants, mpnn_embeddings
 
 
 def test_mpnn_embeddings_has_from_pdb_classmethod():
@@ -186,3 +187,78 @@ def test_fetch_sequence_from_pdb_method_exists():
     """Test that MPNNEmbeddings has a _fetch_sequence_from_pdb method."""
     assert hasattr(mpnn_embeddings.MPNNEmbeddings, "_fetch_sequence_from_pdb")
     assert callable(mpnn_embeddings.MPNNEmbeddings._fetch_sequence_from_pdb)
+
+
+class DummyModel:
+    """Dummy model for testing _embed_pdb function."""
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+    def MPNN(self, X1, mask1, chain1, res1):
+        length = res1.shape[-1]
+        emb = np.ones((1, length, constants.EMBED_DIM), dtype=float)
+        return emb
+
+
+def test_embed_pdb_returns_embeddings(monkeypatch):
+    """Test that _embed_pdb returns MPNNEmbeddings."""
+
+    def fake_get_input_mpnn(pdbfile, chain):
+        length = 2
+        ids = [f"id_{i}" for i in range(length)]
+        X = np.zeros((1, length, 1, 3), dtype=float)
+        mask = np.zeros((1, length), dtype=float)
+        chain_idx = np.zeros((1, length), dtype=int)
+        res = np.zeros((1, length), dtype=int)
+        return X, mask, chain_idx, res, ids
+
+    monkeypatch.setattr(
+        mpnn_embeddings.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn
+    )
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+
+    result = mpnn_embeddings._embed_pdb("fake.pdb", chains="A")
+
+    assert isinstance(result, mpnn_embeddings.MPNNEmbeddings)
+    assert result.embeddings.shape == (2, constants.EMBED_DIM)
+    assert result.idxs == ["id_0", "id_1"]
+
+
+def test_embed_pdb_rejects_multi_chain_input(monkeypatch):
+    """Test that _embed_pdb rejects multi-chain input."""
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+    with pytest.raises(NotImplementedError):
+        mpnn_embeddings._embed_pdb("fake.pdb", chains="AB")
+
+
+def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
+    """Test ValueError when IDs length doesn't match embeddings rows."""
+
+    def fake_get_input_mpnn_mismatch(pdbfile, chain):
+        length = 3
+        ids = ["id_0", "id_1"]  # Only 2 IDs, but length is 3
+        X = np.zeros((1, length, 1, 3), dtype=float)
+        mask = np.zeros((1, length), dtype=float)
+        chain_idx = np.zeros((1, length), dtype=int)
+        res = np.zeros((1, length), dtype=int)
+        return X, mask, chain_idx, res, ids
+
+    monkeypatch.setattr(
+        mpnn_embeddings.Input_MPNN,
+        "get_inputs_mpnn",
+        fake_get_input_mpnn_mismatch,
+    )
+    monkeypatch.setattr(
+        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
+    )
+
+    with pytest.raises(
+        ValueError, match="IDs length.*does not match embeddings rows"
+    ):
+        mpnn_embeddings._embed_pdb("fake.pdb", chains="A")

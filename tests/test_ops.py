@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 
 from sabr import constants, mpnn_embeddings, ops, softalign_output
 
@@ -46,55 +45,6 @@ def test_align_fn_returns_softalign_output(monkeypatch):
     assert result.alignment.shape == (2, 3)
     assert result.sim_matrix.shape == (2, 3)
     assert np.all(np.isfinite(result.score))
-
-
-def test_embed_fn_returns_embeddings(monkeypatch):
-    def fake_get_input_mpnn(pdbfile, chain):
-        length = 2
-        ids = [f"id_{i}" for i in range(length)]
-        X = np.zeros((1, length, 1, 3), dtype=float)
-        mask = np.zeros((1, length), dtype=float)
-        chain_idx = np.zeros((1, length), dtype=int)
-        res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
-
-    monkeypatch.setattr(ops.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn)
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
-
-    result = ops.embed_fn("fake.pdb", chains="A")
-
-    assert isinstance(result, mpnn_embeddings.MPNNEmbeddings)
-    assert result.embeddings.shape == (2, constants.EMBED_DIM)
-    assert result.idxs == ["id_0", "id_1"]
-
-
-def test_embed_fn_rejects_multi_chain_input(monkeypatch):
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
-    with pytest.raises(NotImplementedError):
-        ops.embed_fn("fake.pdb", chains="AB")
-
-
-def test_embed_fn_id_mismatch_raises_error(monkeypatch):
-    """Test ValueError when IDs length doesn't match embeddings rows."""
-
-    def fake_get_input_mpnn_mismatch(pdbfile, chain):
-        length = 3
-        ids = ["id_0", "id_1"]  # Only 2 IDs, but length is 3
-        X = np.zeros((1, length, 1, 3), dtype=float)
-        mask = np.zeros((1, length), dtype=float)
-        chain_idx = np.zeros((1, length), dtype=int)
-        res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
-
-    monkeypatch.setattr(
-        ops.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn_mismatch
-    )
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
-
-    with pytest.raises(
-        ValueError, match="IDs length.*does not match embeddings rows"
-    ):
-        ops.embed_fn("fake.pdb", chains="A")
 
 
 def test_align_fn_temperature_parameter(monkeypatch):

@@ -6,11 +6,68 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import haiku as hk
+import jax
 import numpy as np
+from Bio import SeqIO
+from jax import numpy as jnp
+from softalign import END_TO_END_MODELS, Input_MPNN
 
-from sabr import constants
+from sabr import constants, util
 
 LOGGER = logging.getLogger(__name__)
+
+
+def _embed_pdb(
+    pdbfile: str, chains: str, max_residues: int = 0
+) -> "MPNNEmbeddings":
+    """Return MPNN embeddings for chains in pdbfile using SoftAlign.
+
+    Args:
+        pdbfile: Path to the PDB file.
+        chains: Chain identifier(s) to embed.
+        max_residues: Maximum number of residues to embed. If 0, embed all.
+
+    Returns:
+        MPNNEmbeddings for the specified chain.
+    """
+    LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
+    e2e_model = END_TO_END_MODELS.END_TO_END(
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.N_MPNN_LAYERS,
+        constants.EMBED_DIM,
+        affine=True,
+        soft_max=False,
+        dropout=0.0,
+        augment_eps=0.0,
+    )
+    if len(chains) > 1:
+        raise NotImplementedError("Only single chain embedding is supported")
+    X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
+        pdbfile, chain=chains
+    )
+    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
+    if len(ids) != embeddings.shape[0]:
+        raise ValueError(
+            f"IDs length ({len(ids)}) does not match embeddings rows"
+            f" ({embeddings.shape[0]})"
+        )
+
+    if max_residues > 0 and len(ids) > max_residues:
+        LOGGER.info(
+            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
+        )
+        embeddings = embeddings[:max_residues]
+        ids = ids[:max_residues]
+
+    return MPNNEmbeddings(
+        name="INPUT_PDB",
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=jnp.ones_like(embeddings),
+    )
 
 
 @dataclass(frozen=True)
@@ -117,25 +174,16 @@ class MPNNEmbeddings:
         Returns:
             MPNNEmbeddings for the specified chain.
         """
-        # Lazy imports to avoid JAX dependency for NPZ loading
-        import haiku as hk
-        import jax
-
-        from sabr import ops
-
-        # Load model parameters
         model_params = cls._read_softalign_params(
             params_name=params_name, params_path=params_path
         )
         key = jax.random.PRNGKey(random_seed)
-        transformed_embed_fn = hk.transform(ops.embed_fn)
+        transformed_embed_fn = hk.transform(_embed_pdb)
 
-        # Get embeddings from the model
         input_data = transformed_embed_fn.apply(
             model_params, key, pdb_file, chain, max_residues
         )
 
-        # Extract sequence from PDB file
         try:
             sequence = cls._fetch_sequence_from_pdb(pdb_file, chain)
         except Exception as e:
@@ -145,7 +193,6 @@ class MPNNEmbeddings:
             )
             sequence = None
 
-        # Create new MPNNEmbeddings with sequence included
         result = cls(
             name=input_data.name,
             embeddings=input_data.embeddings,
@@ -174,13 +221,9 @@ class MPNNEmbeddings:
         input_path = Path(npz_file)
         data = np.load(input_path, allow_pickle=True)
 
-        # Convert numpy scalar to string if needed
         name = str(data["name"])
-
-        # Convert idxs back to list of strings
         idxs = [str(idx) for idx in data["idxs"]]
 
-        # Load sequence if present, otherwise None
         sequence = None
         if "sequence" in data:
             seq_str = str(data["sequence"])
@@ -223,8 +266,6 @@ class MPNNEmbeddings:
         params_path: str = "softalign.models",
     ) -> Dict[str, Any]:
         """Load SoftAlign parameters from package resources."""
-        from sabr import util
-
         path = files(params_path) / params_name
         with open(path, "rb") as f:
             params = util.JaxBackwardsCompatUnpickler(f).load()
@@ -246,8 +287,6 @@ class MPNNEmbeddings:
         Raises:
             ValueError: If the chain is not found in the PDB file.
         """
-        from Bio import SeqIO
-
         for record in SeqIO.parse(pdb_file, "pdb-atom"):
             if record.id.endswith(chain):
                 sequence = str(record.seq).replace("X", "")
