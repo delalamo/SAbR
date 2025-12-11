@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
 
+from enum import Enum
+
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3
+
+
+class ChainType(Enum):
+    """Antibody chain type filter options."""
+
+    HEAVY = "heavy"
+    LIGHT = "light"
+    AUTO = "auto"
+
 
 IMGT_FRAMEWORKS = {
     "FW1": list(range(1, 27)),

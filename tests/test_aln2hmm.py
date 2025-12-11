@@ -9,7 +9,10 @@ def test_alignment_matrix_to_state_vector_basic():
 
     states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
-    assert states == [((1, "m"), 0)]
+    assert len(states) == 1
+    assert states[0].residue_number == 1
+    assert states[0].insertion_code == "m"
+    assert states[0].mapped_residue == 0
     assert b_start == 0
     assert a_end == 1
 

@@ -12,42 +12,18 @@ from sabr import constants
 LOGGER = logging.getLogger(__name__)
 
 
-def has_extended_insertion_codes(
-    alignment: List[Tuple[Tuple[int, str], str]],
-) -> bool:
-    """Check if any insertion codes in the alignment are multi-character.
-
-    PDB format only supports single-character insertion codes (A-Z).
-    Extended codes (AA, AB, ..., ZZ, AAA, etc.) require mmCIF format.
-
-    Args:
-        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
-
-    Returns:
-        True if any insertion code has more than one character.
-    """
-    for (_, icode), _ in alignment:
-        if len(icode.strip()) > 1:
-            return True
-    return False
-
-
 def validate_output_format(
     output_path: str, alignment: List[Tuple[Tuple[int, str], str]]
 ) -> None:
-    """Validate that the output format supports the insertion codes used.
+    """Validate that the output format supports the insertion codes used."""
+    has_extended = any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
 
-    Raises:
-        ValueError: If PDB format is requested but extended insertion codes
-            are present in the alignment.
-    """
-    if has_extended_insertion_codes(alignment):
-        if not output_path.endswith(".cif"):
-            raise ValueError(
-                "Extended insertion codes detected in alignment"
-                "PDB format only supports single-character insertion codes. "
-                "Please use mmCIF format (.cif extension) for output."
-            )
+    if has_extended and not output_path.endswith(".cif"):
+        raise ValueError(
+            "Extended insertion codes detected in alignment. "
+            "PDB format only supports single-character insertion codes. "
+            "Please use mmCIF format (.cif extension) for output."
+        )
 
 
 def thread_onto_chain(
@@ -58,14 +34,7 @@ def thread_onto_chain(
     alignment_start: int,
     max_residues: int = 0,
 ) -> Tuple[Chain.Chain, int]:
-    """Return a deep-copied chain renumbered by the ANARCI window.
-
-    Raise ValueError on residue mismatches.
-
-    Args:
-        max_residues: Maximum number of residues to process. If 0,
-            process all residues.
-    """
+    """Return a deep-copied chain renumbered by the ANARCI window."""
 
     thread_msg = (
         f"Threading chain {chain.id} with ANARCI window "

@@ -1,7 +1,7 @@
 import pytest
 from Bio.PDB import Chain, Residue
 
-from sabr import edit_pdb
+from sabr import constants, edit_pdb
 
 
 def build_residue(number, name, hetflag=" "):
@@ -215,33 +215,6 @@ def test_thread_onto_chain_counts_deviations():
     assert deviations == 2
 
 
-def test_has_extended_insertion_codes_single_char():
-    """Test if single-character insertion codes are flagged as extended"""
-    alignment = [
-        ((1, " "), "A"),
-        ((1, "A"), "G"),
-        ((1, "B"), "V"),
-        ((2, " "), "L"),
-    ]
-    assert not edit_pdb.has_extended_insertion_codes(alignment)
-
-
-def test_has_extended_insertion_codes_multi_char():
-    """Test that multi-character insertion codes are flagged as extended."""
-    alignment = [
-        ((1, " "), "A"),
-        ((1, "A"), "G"),
-        ((1, "AA"), "V"),  # Extended insertion code
-        ((2, " "), "L"),
-    ]
-    assert edit_pdb.has_extended_insertion_codes(alignment)
-
-
-def test_has_extended_insertion_codes_empty():
-    """Test empty alignment."""
-    assert not edit_pdb.has_extended_insertion_codes([])
-
-
 def test_validate_output_format_pdb_with_single_char():
     """Test that PDB format is allowed with single-character insertion codes."""
     alignment = [
@@ -370,9 +343,9 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
     # Use SoftAligner to generate alignment
     try:
         # Generate embeddings first
-        input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(str(pdb_path), "M")
+        input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(input_data, chain_type="light")
+        result = aligner(input_data, chain_type=constants.ChainType.LIGHT)
 
         # Convert to ANARCI format
         sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
@@ -426,9 +399,9 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
     # Use SoftAligner to generate alignment
     try:
         # Generate embeddings first
-        input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(str(pdb_path), "M")
+        input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(input_data, chain_type="light")
+        result = aligner(input_data, chain_type=constants.ChainType.LIGHT)
 
         # Convert to ANARCI format
         sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")

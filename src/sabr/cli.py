@@ -6,7 +6,14 @@ import os
 import click
 from ANARCI import anarci
 
-from sabr import aln2hmm, edit_pdb, mpnn_embeddings, softaligner, util
+from sabr import (
+    aln2hmm,
+    constants,
+    edit_pdb,
+    mpnn_embeddings,
+    softaligner,
+    util,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -82,7 +89,9 @@ LOGGER = logging.getLogger(__name__)
     "-t",
     "--chain-type",
     "chain_type",
-    type=click.Choice(["heavy", "light", "auto"], case_sensitive=False),
+    type=click.Choice(
+        [ct.value for ct in constants.ChainType], case_sensitive=False
+    ),
     default="auto",
     show_default=True,
     help=(
@@ -150,14 +159,14 @@ def main(
         f"Fetched sequence of length {len(sequence)} from "
         f"{input_pdb} chain {input_chain}"
     )
-    # Convert chain_type to filter format for SoftAligner
-    # TODO: convert to enum
-    chain_type_filter = None if chain_type == "auto" else chain_type
+    # Convert chain_type string to enum
+    chain_type_enum = constants.ChainType(chain_type)
+    chain_type_filter = (
+        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
+    )
 
     # Generate MPNN embeddings for the input chain
-    input_data = mpnn_embeddings.MPNNEmbeddings.from_pdb(
-        input_pdb, input_chain, max_residues
-    )
+    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
 
     # Align embeddings against species references
     soft_aligner = softaligner.SoftAligner()
@@ -175,8 +184,9 @@ def main(
             "SoftAlign did not specify the matched species; "
             "cannot infer heavy/light chain type."
         )
-    # TODO add an "extra insertions" option
-    # this should include way more insertion codes
+
+    # TODO introduce extended insertion code handling here
+    # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,

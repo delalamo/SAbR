@@ -149,9 +149,7 @@ def test_cli_respects_expected_numbering(
             sequence="A" * n_residues,
         )
 
-    monkeypatch.setattr(
-        mpnn_embeddings.MPNNEmbeddings, "from_pdb", dummy_from_pdb
-    )
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
 
     runner = CliRunner()

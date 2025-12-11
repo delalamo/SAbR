@@ -179,7 +179,9 @@ def test_filter_embeddings_by_chain_type_heavy():
         ),
     ]
 
-    filtered = aligner.filter_embeddings_by_chain_type("heavy")
+    filtered = aligner.filter_embeddings_by_chain_type(
+        constants.ChainType.HEAVY
+    )
 
     assert len(filtered) == 1
     assert filtered[0].name == "humanH"
@@ -201,7 +203,9 @@ def test_filter_embeddings_by_chain_type_light():
         ),
     ]
 
-    filtered = aligner.filter_embeddings_by_chain_type("light")
+    filtered = aligner.filter_embeddings_by_chain_type(
+        constants.ChainType.LIGHT
+    )
 
     assert len(filtered) == 2
     assert all(emb.name[-1] in ("K", "L") for emb in filtered)

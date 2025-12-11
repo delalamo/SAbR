@@ -2,15 +2,75 @@
 
 import logging
 from importlib.resources import as_file, files
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import haiku as hk
 import jax
 import numpy as np
+from jax import numpy as jnp
+from softalign import END_TO_END_MODELS
 
-from sabr import constants, mpnn_embeddings, ops, softalign_output, util
+from sabr import constants, mpnn_embeddings, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
+
+
+def _align_fn(
+    input: mpnn_embeddings.MPNNEmbeddings,
+    target: mpnn_embeddings.MPNNEmbeddings,
+    temperature: float = 10**-4,
+) -> softalign_output.SoftAlignOutput:
+    """Align two embedding sets with the SoftAlign model and return result."""
+    input_array = input.embeddings
+    target_array = target.embeddings
+    target_stdev = jnp.array(target.stdev)
+    target_array = target_array / target_stdev
+
+    LOGGER.info(
+        f"Running align_fn with input shape {input_array.shape}, "
+        f"target shape {target_array.shape}, temperature={temperature}"
+    )
+    e2e_model = END_TO_END_MODELS.END_TO_END(
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.EMBED_DIM,
+        constants.N_MPNN_LAYERS,
+        constants.EMBED_DIM,
+        affine=True,
+        soft_max=False,
+        dropout=0.0,
+        augment_eps=0.0,
+    )
+    if input_array.ndim != 2 or target_array.ndim != 2:
+        raise ValueError(
+            "align_fn expects 2D arrays; got shapes "
+            f"{input_array.shape} and {target_array.shape}"
+        )
+    for array_shape in (input_array.shape, target_array.shape):
+        if array_shape[1] != constants.EMBED_DIM:
+            raise ValueError(
+                f"last dim must be {constants.EMBED_DIM}; got "
+                f"{input_array.shape} and {target_array.shape}"
+            )
+    lens = jnp.array([input_array.shape[0], target_array.shape[0]])[None, :]
+    batched_input = jnp.array(input_array[None, :])
+    batched_target = jnp.array(target_array[None, :])
+    alignment, sim_matrix, score = e2e_model.align(
+        batched_input, batched_target, lens, temperature
+    )
+    LOGGER.debug(
+        "Alignment complete: alignment shape "
+        f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
+        f"score={float(score[0])}"
+    )
+    return softalign_output.SoftAlignOutput(
+        alignment=alignment[0],
+        sim_matrix=sim_matrix[0],
+        score=float(score[0]),
+        species=None,
+        idxs1=input.idxs,
+        idxs2=target.idxs,
+    )
 
 
 class SoftAligner:
@@ -37,7 +97,7 @@ class SoftAligner:
         )
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
-        self.transformed_align_fn = hk.transform(ops.align_fn)
+        self.transformed_align_fn = hk.transform(_align_fn)
 
     def normalize(
         self, mp: mpnn_embeddings.MPNNEmbeddings
@@ -149,42 +209,43 @@ class SoftAligner:
         return aln
 
     def filter_embeddings_by_chain_type(
-        self, chain_type: str
+        self, chain_type: Optional[constants.ChainType]
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
         """
         Filter embeddings based on chain type.
 
         Args:
-            chain_type: 'heavy' for H embeddings only,
-                       'light' for K and L embeddings only,
-                       None for all embeddings.
+            chain_type: ChainType.HEAVY for H embeddings only,
+                       ChainType.LIGHT for K and L embeddings only,
+                       None or ChainType.AUTO for all embeddings.
 
         Returns:
             Filtered list of embeddings.
         """
-        if chain_type is None:
+        if chain_type is None or chain_type == constants.ChainType.AUTO:
             return self.all_embeddings
 
         filtered = []
         for emb in self.all_embeddings:
             suffix = emb.name[-1].upper()
-            if chain_type == "heavy" and suffix == "H":
+            if chain_type == constants.ChainType.HEAVY and suffix == "H":
                 filtered.append(emb)
-            elif chain_type == "light" and suffix in ("K", "L"):
+            elif chain_type == constants.ChainType.LIGHT and suffix in (
+                "K",
+                "L",
+            ):
                 filtered.append(emb)
 
         if not filtered:
             LOGGER.warning(
-                f"No embeddings found for chain_type='{chain_type}', "
+                f"No embeddings found for chain_type='{chain_type.value}', "
                 f"using all embeddings"
             )
             return self.all_embeddings
 
         LOGGER.info(
-            (
-                f"Filtered to {len(filtered)} embeddings for ",
-                "chain_type='{chain_type}'",
-            )
+            f"Filtered to {len(filtered)} embeddings for "
+            f"chain_type='{chain_type.value}'"
         )
         return filtered
 
@@ -192,7 +253,7 @@ class SoftAligner:
         self,
         input_data: mpnn_embeddings.MPNNEmbeddings,
         correct_loops: bool = True,
-        chain_type: str = None,
+        chain_type: Optional[constants.ChainType] = None,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
         """
         Align input embeddings to each species embedding and return best hit.
@@ -200,8 +261,8 @@ class SoftAligner:
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
             correct_loops: Whether to apply loop gap corrections.
-            chain_type: Optional filter - 'heavy' for H only,
-                'light' for K/L only, None for all embeddings.
+            chain_type: Optional filter - ChainType.HEAVY for H only,
+                ChainType.LIGHT for K/L only, None/AUTO for all.
 
         Returns:
             SoftAlignOutput with the best alignment.

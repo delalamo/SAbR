@@ -1,6 +1,6 @@
 import numpy as np
 
-from sabr import constants, mpnn_embeddings, ops, softalign_output
+from sabr import constants, mpnn_embeddings, softalign_output, softaligner
 
 
 class DummyModel:
@@ -23,7 +23,7 @@ class DummyModel:
 
 
 def test_align_fn_returns_softalign_output(monkeypatch):
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", DummyModel)
+    monkeypatch.setattr(softaligner.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
     # MPNN embeddings
     input = mpnn_embeddings.MPNNEmbeddings(
@@ -39,7 +39,7 @@ def test_align_fn_returns_softalign_output(monkeypatch):
         idxs=list(range(3)),
     )
 
-    result = ops.align_fn(input, targ)
+    result = softaligner._align_fn(input, targ)
 
     assert isinstance(result, softalign_output.SoftAlignOutput)
     assert result.alignment.shape == (2, 3)
@@ -64,7 +64,9 @@ def test_align_fn_temperature_parameter(monkeypatch):
             score = np.array([1.0], dtype=float)
             return alignment, sim_matrix, score
 
-    monkeypatch.setattr(ops.END_TO_END_MODELS, "END_TO_END", TempCapturingModel)
+    monkeypatch.setattr(
+        softaligner.END_TO_END_MODELS, "END_TO_END", TempCapturingModel
+    )
 
     input = mpnn_embeddings.MPNNEmbeddings(
         name="test1",
@@ -80,7 +82,7 @@ def test_align_fn_temperature_parameter(monkeypatch):
     )
 
     custom_temp = 0.5
-    ops.align_fn(input, targ, temperature=custom_temp)
+    softaligner._align_fn(input, targ, temperature=custom_temp)
 
     assert len(captured_temperature) == 1
     assert captured_temperature[0] == custom_temp
@@ -104,7 +106,7 @@ def test_align_fn_stdev_normalization(monkeypatch):
             return alignment, sim_matrix, score
 
     monkeypatch.setattr(
-        ops.END_TO_END_MODELS, "END_TO_END", ArrayCapturingModel
+        softaligner.END_TO_END_MODELS, "END_TO_END", ArrayCapturingModel
     )
 
     input = mpnn_embeddings.MPNNEmbeddings(
@@ -125,7 +127,7 @@ def test_align_fn_stdev_normalization(monkeypatch):
         idxs=["1", "2", "3"],
     )
 
-    ops.align_fn(input, targ)
+    softaligner._align_fn(input, targ)
 
     # Target should be divided by stdev: 4.0 / 2.0 = 2.0
     assert len(captured_target) == 1
