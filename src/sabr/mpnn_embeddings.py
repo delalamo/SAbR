@@ -2,14 +2,12 @@
 
 import logging
 from dataclasses import dataclass
-from importlib.resources import files
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 import haiku as hk
 import jax
 import numpy as np
-from Bio import SeqIO
 from jax import numpy as jnp
 from softalign import END_TO_END_MODELS, Input_MPNN
 
@@ -174,7 +172,7 @@ class MPNNEmbeddings:
         Returns:
             MPNNEmbeddings for the specified chain.
         """
-        model_params = cls._read_softalign_params(
+        model_params = util.read_softalign_params(
             params_name=params_name, params_path=params_path
         )
         key = jax.random.PRNGKey(random_seed)
@@ -185,7 +183,7 @@ class MPNNEmbeddings:
         )
 
         try:
-            sequence = cls._fetch_sequence_from_pdb(pdb_file, chain)
+            sequence = util.fetch_sequence_from_pdb(pdb_file, chain)
         except Exception as e:
             LOGGER.warning(
                 f"Could not extract sequence from PDB: {e}. "
@@ -259,43 +257,3 @@ class MPNNEmbeddings:
             sequence=self.sequence if self.sequence else "",
         )
         LOGGER.info(f"Saved embeddings to {output_path}")
-
-    @staticmethod
-    def _read_softalign_params(
-        params_name: str = "CONT_SW_05_T_3_1",
-        params_path: str = "softalign.models",
-    ) -> Dict[str, Any]:
-        """Load SoftAlign parameters from package resources."""
-        path = files(params_path) / params_name
-        with open(path, "rb") as f:
-            params = util.JaxBackwardsCompatUnpickler(f).load()
-        LOGGER.info(f"Loaded model parameters from {path}")
-        return params
-
-    @staticmethod
-    def _fetch_sequence_from_pdb(pdb_file: str, chain: str) -> str:
-        """
-        Extract the sequence for a chain from a PDB file.
-
-        Args:
-            pdb_file: Path to the PDB file.
-            chain: Chain identifier to extract.
-
-        Returns:
-            The sequence as a string, with X residues removed.
-
-        Raises:
-            ValueError: If the chain is not found in the PDB file.
-        """
-        for record in SeqIO.parse(pdb_file, "pdb-atom"):
-            if record.id.endswith(chain):
-                sequence = str(record.seq).replace("X", "")
-                LOGGER.info(
-                    f"Extracted sequence from {pdb_file} chain {chain} "
-                    f"(length={len(sequence)})"
-                )
-                return sequence
-        ids = [r.id for r in SeqIO.parse(pdb_file, "pdb-atom")]
-        raise ValueError(
-            f"Chain {chain} not found in {pdb_file} (contains {ids})"
-        )

@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
 import logging
-import pickle
 from importlib.resources import as_file, files
-from typing import Any, Dict, List, Tuple
+from typing import List, Tuple
 
 import haiku as hk
 import jax
 import numpy as np
 
-from sabr import constants, mpnn_embeddings, ops, softalign_output
+from sabr import constants, mpnn_embeddings, ops, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -33,23 +32,12 @@ class SoftAligner:
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
-        self.model_params = self.read_softalign_params(
+        self.model_params = util.read_softalign_params(
             params_name=params_name, params_path=params_path
         )
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(ops.align_fn)
-
-    def read_softalign_params(
-        self,
-        params_name: str = "CONT_SW_05_T_3_1",
-        params_path: str = "softalign.models",
-    ) -> Dict[str, Any]:
-        """Load SoftAlign parameters from package resources."""
-        path = files(params_path) / params_name
-        params = pickle.load(open(path, "rb"))
-        LOGGER.info("Loaded model parameters from %s", path)
-        return params
 
     def normalize(
         self, mp: mpnn_embeddings.MPNNEmbeddings

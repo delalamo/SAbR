@@ -183,12 +183,6 @@ def test_save_and_load_without_sequence():
         assert loaded_embedding.sequence is None
 
 
-def test_fetch_sequence_from_pdb_method_exists():
-    """Test that MPNNEmbeddings has a _fetch_sequence_from_pdb method."""
-    assert hasattr(mpnn_embeddings.MPNNEmbeddings, "_fetch_sequence_from_pdb")
-    assert callable(mpnn_embeddings.MPNNEmbeddings._fetch_sequence_from_pdb)
-
-
 class DummyModel:
     """Dummy model for testing _embed_pdb function."""
 
