@@ -1,0 +1,67 @@
+name: Build and Test Package
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_to_testpypi:
+        description: "Publish to TestPyPI after building"
+        required: false
+        default: "false"
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build package
+        run: python -m build
+
+      - name: Show built version
+        run: |
+          echo "Built packages:"
+          ls -la dist/
+          echo ""
+          echo "Package version:"
+          unzip -p dist/*.whl '*/METADATA' | grep -E '^(Name|Version):'
+
+      - name: Twine metadata check
+        run: twine check dist/*
+
+      - name: Test installation from built wheel
+        run: |
+          python -m venv test-env
+          source test-env/bin/activate
+          pip install dist/*.whl
+          python -c "import sabr; print('Import successful')"
+          sabr --help
+
+      # Only publish to TestPyPI when manually triggered with the option
+      - name: Publish to TestPyPI
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_to_testpypi == true
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
