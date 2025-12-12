@@ -4,22 +4,10 @@ permissions:
   contents: read
 
 on:
-  release:
-    types: [published]
   push:
-    branches:
-      - main
-    paths:
-      - pyproject.toml
+    tags:
+      - "v*" # Trigger on version tags like v0.2.1, v1.0.0, etc.
   workflow_dispatch:
-    inputs:
-      release_version:
-        description: "Optional override for the release version."
-        required: false
-      force_release:
-        description: "Set to true to force a release even if the version is unchanged."
-        required: false
-        default: "false"
 
 jobs:
   build-and-publish:
@@ -30,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true # include vendored submodules in build
+          fetch-depth: 0 # fetch all history and tags for hatch-vcs
 
       - name: Set up Python
         uses: actions/setup-python@v5
