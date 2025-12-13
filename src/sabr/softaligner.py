@@ -267,7 +267,7 @@ class SoftAligner:
                 - Light chain FR1 positions 7-10
                 - DE loop positions 80-85 (all chains)
                 - CDR loops (CDR1, CDR2, CDR3) for all chains
-                When False, the raw alignment output is used without corrections.
+                When False, raw alignment output used without corrections
                 Default is True.
 
         Returns:

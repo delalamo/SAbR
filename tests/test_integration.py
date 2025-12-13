@@ -241,4 +241,6 @@ def test_cli_deterministic_loop_renumbering_flag(
 
     # Verify that the flag was passed to the aligner
     expected_value = deterministic_flag == "--deterministic-loop-renumbering"
-    assert captured_kwargs.get("deterministic_loop_renumbering") == expected_value
+    assert (
+        captured_kwargs.get("deterministic_loop_renumbering") == expected_value
+    )
