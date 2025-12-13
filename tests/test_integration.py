@@ -171,3 +171,76 @@ def test_cli_respects_expected_numbering(
     original_ids = extract_residue_ids(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
+
+
+@pytest.mark.parametrize(
+    "deterministic_flag",
+    [
+        "--deterministic-loop-renumbering",
+        "--no-deterministic-loop-renumbering",
+    ],
+)
+def test_cli_deterministic_loop_renumbering_flag(
+    monkeypatch, tmp_path, deterministic_flag
+):
+    """Test that CLI accepts both deterministic loop renumbering flags."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+
+    captured_kwargs = {}
+
+    class DummyResult:
+        def __init__(self, alignment, species):
+            self.alignment = alignment
+            self.species = species
+
+    class DummyAligner:
+        def __call__(self, input_data, **kwargs):
+            captured_kwargs.update(kwargs)
+            return DummyResult(alignment, species)
+
+    class DummyEmbeddings:
+        def __init__(self, name, embeddings, idxs, stdev=None, sequence=None):
+            self.name = name
+            self.embeddings = embeddings
+            self.idxs = idxs
+            self.stdev = stdev
+            self.sequence = sequence
+
+    def dummy_from_pdb(pdb_file, chain, max_residues=0, **kwargs):
+        n_residues = 100
+        return DummyEmbeddings(
+            name=f"{pdb_file}_{chain}",
+            embeddings=np.zeros((n_residues, 64)),
+            idxs=[str(i) for i in range(n_residues)],
+            stdev=np.ones((n_residues, 64)),
+            sequence="A" * n_residues,
+        )
+
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "test_det_flag.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+            deterministic_flag,
+        ],
+    )
+    assert result.exit_code == 0, result.output
+
+    # Verify that the flag was passed to the aligner
+    expected_value = deterministic_flag == "--deterministic-loop-renumbering"
+    assert (
+        captured_kwargs.get("deterministic_loop_renumbering") == expected_value
+    )

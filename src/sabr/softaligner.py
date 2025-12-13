@@ -252,17 +252,23 @@ class SoftAligner:
     def __call__(
         self,
         input_data: mpnn_embeddings.MPNNEmbeddings,
-        correct_loops: bool = True,
         chain_type: Optional[constants.ChainType] = None,
+        deterministic_loop_renumbering: bool = True,
     ) -> Tuple[str, softalign_output.SoftAlignOutput]:
         """
         Align input embeddings to each species embedding and return best hit.
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
-            correct_loops: Whether to apply loop gap corrections.
             chain_type: Optional filter - ChainType.HEAVY for H only,
                 ChainType.LIGHT for K/L only, None/AUTO for all.
+            deterministic_loop_renumbering: Whether to apply deterministic
+                renumbering corrections for:
+                - Light chain FR1 positions 7-10
+                - DE loop positions 80-85 (all chains)
+                - CDR loops (CDR1, CDR2, CDR3) for all chains
+                When False, raw alignment output used without corrections
+                Default is True.
 
         Returns:
             SoftAlignOutput with the best alignment.
@@ -300,7 +306,7 @@ class SoftAligner:
 
         aln = np.array(outputs[best_match].alignment, dtype=int)
 
-        if correct_loops:
+        if deterministic_loop_renumbering:
             for name, (startres, endres) in constants.IMGT_LOOPS.items():
                 startres_idx = startres - 1
                 loop_start = np.where(aln[:, startres_idx] == 1)[0]
