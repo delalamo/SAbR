@@ -112,6 +112,19 @@ LOGGER = logging.getLogger(__name__)
         "single-character insertion codes (A-Z, max 26 insertions per position)"
     ),
 )
+@click.option(
+    "--deterministic-loop-renumbering/--no-deterministic-loop-renumbering",
+    "deterministic_loop_renumbering",
+    default=True,
+    show_default=True,
+    help=(
+        "Enable deterministic renumbering corrections for loop regions. "
+        "When enabled (default), applies corrections for: "
+        "light chain FR1 positions 7-10, DE loop positions 80-85 (all chains), "
+        "and CDR loops (CDR1, CDR2, CDR3). "
+        "When disabled, uses raw alignment output without corrections."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -122,6 +135,7 @@ def main(
     max_residues: int,
     chain_type: str,
     extended_insertions: bool,
+    deterministic_loop_renumbering: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -173,6 +187,7 @@ def main(
     out = soft_aligner(
         input_data,
         chain_type=chain_type_filter,
+        deterministic_loop_renumbering=deterministic_loop_renumbering,
     )
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
