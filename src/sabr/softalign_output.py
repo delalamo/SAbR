@@ -2,20 +2,24 @@
 
 import logging
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from jax import numpy as jnp
+import jax
+import numpy as np
 
 LOGGER = logging.getLogger(__name__)
+
+# Type alias for arrays that can be either NumPy or JAX arrays
+ArrayLike = Union[np.ndarray, jax.Array]
 
 
 @dataclass(frozen=True)
 class SoftAlignOutput:
     """Alignment matrix plus bookkeeping returned by SoftAlign."""
 
-    alignment: jnp.ndarray
+    alignment: ArrayLike
     score: float
-    sim_matrix: Optional[jnp.ndarray]
+    sim_matrix: Optional[ArrayLike]
     species: Optional[str]
     idxs1: List[str]
     idxs2: List[str]

@@ -37,7 +37,7 @@ FIXTURES = {
 }
 
 
-def load_alignment_fixture(path: Path):
+def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
     if not path.exists():
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
@@ -47,8 +47,12 @@ def load_alignment_fixture(path: Path):
 
 
 def run_threading_pipeline(
-    pdb_path: Path, chain: str, alignment, species: str, tmp_path
-):
+    pdb_path: Path,
+    chain: str,
+    alignment: np.ndarray,
+    species: str,
+    tmp_path: Path,
+) -> int:
     sequence = util.fetch_sequence_from_pdb(str(pdb_path), chain)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
     subsequence = "-" * start + sequence[start:end]

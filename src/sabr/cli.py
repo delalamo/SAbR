@@ -2,6 +2,7 @@
 
 import logging
 import os
+from typing import Optional
 
 import click
 from ANARCI import anarci
@@ -127,7 +128,7 @@ LOGGER = logging.getLogger(__name__)
 )
 def main(
     input_pdb: str,
-    input_chain: str,
+    input_chain: Optional[str],
     output_file: str,
     numbering_scheme: str,
     overwrite: bool,

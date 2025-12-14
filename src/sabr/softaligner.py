@@ -2,7 +2,7 @@
 
 import logging
 from importlib.resources import as_file, files
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import haiku as hk
 import jax
@@ -150,7 +150,9 @@ class SoftAligner:
             new_aln[pos, pos] = 1
         return new_aln
 
-    def fix_aln(self, old_aln, idxs):
+    def fix_aln(
+        self, old_aln: np.ndarray, idxs: List[int]
+    ) -> np.ndarray:
         """Expand an alignment onto IMGT positions using saved indices."""
         aln = np.zeros((old_aln.shape[0], 128), dtype=old_aln.dtype)
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
@@ -254,7 +256,7 @@ class SoftAligner:
         input_data: mpnn_embeddings.MPNNEmbeddings,
         chain_type: Optional[constants.ChainType] = None,
         deterministic_loop_renumbering: bool = True,
-    ) -> Tuple[str, softalign_output.SoftAlignOutput]:
+    ) -> softalign_output.SoftAlignOutput:
         """
         Align input embeddings to each species embedding and return best hit.
 

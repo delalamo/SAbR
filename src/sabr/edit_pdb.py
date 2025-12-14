@@ -28,7 +28,7 @@ def validate_output_format(
 
 def thread_onto_chain(
     chain: Chain.Chain,
-    anarci_out: dict[str, str],
+    anarci_out: List[Tuple[Tuple[int, str], str]],
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
