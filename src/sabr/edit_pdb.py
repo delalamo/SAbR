@@ -2,18 +2,18 @@
 
 import copy
 import logging
-from typing import List, Tuple
+from typing import Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
 
-from sabr import constants
+from sabr.constants import AA_3TO1, AnarciAlignment
 
 LOGGER = logging.getLogger(__name__)
 
 
 def validate_output_format(
-    output_path: str, alignment: List[Tuple[Tuple[int, str], str]]
+    output_path: str, alignment: AnarciAlignment
 ) -> None:
     """Validate that the output format supports the insertion codes used."""
     has_extended = any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
@@ -28,7 +28,7 @@ def validate_output_format(
 
 def thread_onto_chain(
     chain: Chain.Chain,
-    anarci_out: List[Tuple[Tuple[int, str], str]],
+    anarci_out: AnarciAlignment,
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
@@ -86,7 +86,7 @@ def thread_onto_chain(
             (new_idx, icode), aa = anarci_out[i - anarci_start]
             last_idx = new_idx
 
-            if aa != constants.AA_3TO1[res.get_resname()]:
+            if aa != AA_3TO1[res.get_resname()]:
                 raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
             # FIX: Don't add alignment_start - ANARCI already returns
             # correct IMGT positions
@@ -129,7 +129,7 @@ def thread_onto_chain(
 def thread_alignment(
     pdb_file: str,
     chain: str,
-    alignment: List[Tuple[Tuple[int, str], str]],
+    alignment: AnarciAlignment,
     output_pdb: str,
     start_res: int,
     end_res: int,

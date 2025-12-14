@@ -2,7 +2,6 @@
 
 import logging
 import os
-from typing import Optional
 
 import click
 from ANARCI import anarci
@@ -38,8 +37,13 @@ LOGGER = logging.getLogger(__name__)
     "-c",
     "--input-chain",
     "input_chain",
-    default=None,
-    help="Chain identifier to renumber.",
+    required=True,
+    callback=lambda ctx, _, value: (
+        value
+        if len(value) == 1
+        else ctx.fail("Chain identifier must be exactly one character.")
+    ),
+    help="Chain identifier to renumber (single character).",
 )
 @click.option(
     "-o",
@@ -128,7 +132,7 @@ LOGGER = logging.getLogger(__name__)
 )
 def main(
     input_pdb: str,
-    input_chain: Optional[str],
+    input_chain: str,
     output_file: str,
     numbering_scheme: str,
     overwrite: bool,

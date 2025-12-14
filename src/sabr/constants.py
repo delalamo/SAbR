@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 
 from enum import Enum
+from typing import List, Tuple
+
+# Type alias for ANARCI alignment output:
+# list of ((residue_number, insertion_code), amino_acid)
+AnarciAlignment = List[Tuple[Tuple[int, str], str]]
 
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3

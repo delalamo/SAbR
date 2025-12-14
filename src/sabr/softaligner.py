@@ -64,8 +64,8 @@ def _align_fn(
         f"score={float(score[0])}"
     )
     return softalign_output.SoftAlignOutput(
-        alignment=alignment[0],
-        sim_matrix=sim_matrix[0],
+        alignment=np.asarray(alignment[0]),
+        sim_matrix=np.asarray(sim_matrix[0]),
         score=float(score[0]),
         species=None,
         idxs1=input.idxs,
