@@ -27,7 +27,9 @@ def validate_output_format(
 
 
 def _skip_deletions(
-    anarci_idx: int, anarci_start: int, anarci_out: List[Tuple[Tuple[int, str], str]]
+    anarci_idx: int,
+    anarci_start: int,
+    anarci_out: List[Tuple[Tuple[int, str], str]],
 ) -> int:
     """Advance index past any deletion positions ('-') in ANARCI output.
 
