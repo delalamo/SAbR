@@ -17,7 +17,7 @@ The renumbering process handles three regions:
 
 import copy
 import logging
-from typing import Tuple
+from typing import List, Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
