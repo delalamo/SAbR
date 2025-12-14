@@ -8,8 +8,8 @@ from ANARCI import anarci
 from Bio import PDB
 from click.testing import CliRunner
 
-from conftest import create_dummy_aligner, create_dummy_from_pdb
 from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, util
+from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
 
