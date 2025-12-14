@@ -9,7 +9,6 @@ This module defines constants used throughout the SAbR package including:
 """
 
 from enum import Enum
-from typing import Tuple
 
 # Neural network configuration
 EMBED_DIM = 64
@@ -22,7 +21,7 @@ IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
 DEFAULT_TEMPERATURE = 1e-4
 
 # DE loop correction positions (0-indexed columns in alignment matrix)
-DE_LOOP_POSITIONS: Tuple[int, int, int] = (80, 81, 82)
+DE_LOOP_POSITIONS = (80, 81, 82)
 
 # Light chain FR1 positions for correction (0-indexed)
 # Positions 6-10 in IMGT (0-indexed: 5-9)
