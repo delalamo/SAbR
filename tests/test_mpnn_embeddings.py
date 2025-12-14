@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from sabr import constants, mpnn_embeddings
+from sabr import constants, model, mpnn_embeddings
 
 
 def test_mpnnembeddings_valid_creation_with_defaults():
@@ -392,9 +392,7 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
     monkeypatch.setattr(
         mpnn_embeddings.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn
     )
-    monkeypatch.setattr(
-        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
-    )
+    monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
     result = mpnn_embeddings._embed_pdb("fake.pdb", chains="A")
 
@@ -405,9 +403,7 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
 
 def test_embed_pdb_rejects_multi_chain_input(monkeypatch):
     """Test that _embed_pdb rejects multi-chain input."""
-    monkeypatch.setattr(
-        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
-    )
+    monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
     with pytest.raises(NotImplementedError):
         mpnn_embeddings._embed_pdb("fake.pdb", chains="AB")
 
@@ -429,9 +425,7 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
         "get_inputs_mpnn",
         fake_get_input_mpnn_mismatch,
     )
-    monkeypatch.setattr(
-        mpnn_embeddings.END_TO_END_MODELS, "END_TO_END", DummyModel
-    )
+    monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
     with pytest.raises(
         ValueError, match="IDs length.*does not match embeddings rows"
