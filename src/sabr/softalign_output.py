@@ -4,7 +4,7 @@ import logging
 from dataclasses import dataclass
 from typing import List, Optional
 
-from jax import numpy as jnp
+import numpy as np
 
 LOGGER = logging.getLogger(__name__)
 
@@ -13,9 +13,9 @@ LOGGER = logging.getLogger(__name__)
 class SoftAlignOutput:
     """Alignment matrix plus bookkeeping returned by SoftAlign."""
 
-    alignment: jnp.ndarray
+    alignment: np.ndarray
     score: float
-    sim_matrix: Optional[jnp.ndarray]
+    sim_matrix: Optional[np.ndarray]
     species: Optional[str]
     idxs1: List[str]
     idxs2: List[str]
