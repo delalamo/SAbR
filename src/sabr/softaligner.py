@@ -325,7 +325,12 @@ class SoftAligner:
                     )
                     continue
                 if len(loop_start) > 1 or len(loop_end) > 1:
-                    raise RuntimeError(f"Multiple start/end for loop {name}")
+                    raise RuntimeError(
+                        f"Multiple start/end positions found for loop {name}: "
+                        f"start positions={loop_start.tolist()}, "
+                        f"end positions={loop_end.tolist()}. "
+                        f"Expected exactly one of each."
+                    )
                 loop_start, loop_end = loop_start[0], loop_end[0]
                 sub_aln = aln[loop_start:loop_end, startres_idx:endres]
                 aln[loop_start:loop_end, startres_idx:endres] = (
