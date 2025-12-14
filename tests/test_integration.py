@@ -248,3 +248,25 @@ def test_cli_deterministic_loop_renumbering_flag(
     assert (
         captured_kwargs.get("deterministic_loop_renumbering") == expected_value
     )
+
+
+def test_cli_rejects_multi_character_chain():
+    """Test that CLI rejects chain identifiers longer than one character."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            "AB",  # Two characters - should fail
+            "-o",
+            "output.pdb",
+        ],
+    )
+    assert result.exit_code != 0
+    assert "Chain identifier must be exactly one character" in result.output
