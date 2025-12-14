@@ -17,7 +17,7 @@ The renumbering process handles three regions:
 
 import copy
 import logging
-from typing import List, Tuple
+from typing import Tuple
 
 from Bio import PDB
 from Bio.PDB import Chain, Model, Structure
@@ -44,7 +44,7 @@ def validate_output_format(
 def _skip_deletions(
     anarci_idx: int,
     anarci_start: int,
-    anarci_out: List[Tuple[Tuple[int, str], str]],
+    anarci_out: AnarciAlignment,
 ) -> int:
     """Advance index past any deletion positions ('-') in ANARCI output.
 
