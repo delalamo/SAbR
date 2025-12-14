@@ -147,9 +147,7 @@ def main(
 
     # Validate input PDB file exists
     if not os.path.exists(input_pdb):
-        raise click.ClickException(
-            f"Input file '{input_pdb}' does not exist."
-        )
+        raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
 
     # Validate input file has correct extension
     valid_extensions = (".pdb", ".cif", ".ent")
@@ -169,7 +167,8 @@ def main(
     valid_output_ext = (".pdb", ".cif")
     if not output_file.lower().endswith(valid_output_ext):
         raise click.ClickException(
-            f"Output file must have extension .pdb or .cif. Got: '{output_file}'"
+            f"Output file must have extension .pdb or .cif. "
+            f"Got: '{output_file}'"
         )
 
     # Validate extended insertions requires mmCIF format
