@@ -37,8 +37,13 @@ LOGGER = logging.getLogger(__name__)
     "-c",
     "--input-chain",
     "input_chain",
-    default=None,
-    help="Chain identifier to renumber.",
+    required=True,
+    callback=lambda ctx, _, value: (
+        value
+        if len(value) == 1
+        else ctx.fail("Chain identifier must be exactly one character.")
+    ),
+    help="Chain identifier to renumber (single character).",
 )
 @click.option(
     "-o",
