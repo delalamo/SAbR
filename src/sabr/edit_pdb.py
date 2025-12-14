@@ -117,7 +117,7 @@ def thread_onto_chain(
                     last_idx += 1
                     new_id = (" ", last_idx, " ")
         new_res.id = new_id
-        LOGGER.info(f"OLD {res.get_id()}; NEW {new_res.get_id()}")
+        LOGGER.info("OLD %s; NEW %s", res.get_id(), new_res.get_id())
         if res.get_id() != new_res.get_id():
             deviations += 1
         new_chain.add(new_res)
@@ -187,5 +187,5 @@ def thread_alignment(
         LOGGER.debug("Detected CIF output; using MMCIFIO")
     io.set_structure(new_structure)
     io.save(output_pdb)
-    LOGGER.info(f"Saved threaded structure to {output_pdb}")
+    LOGGER.info("Saved threaded structure to %s", output_pdb)
     return all_devs

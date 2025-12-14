@@ -112,7 +112,7 @@ class MPNNEmbeddings:
             stdev=self.stdev,
             sequence=self.sequence if self.sequence else "",
         )
-        LOGGER.info(f"Saved embeddings to {output_path_obj}")
+        LOGGER.info("Saved embeddings to %s", output_path_obj)
 
 
 def _embed_pdb(
@@ -128,7 +128,7 @@ def _embed_pdb(
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
+    LOGGER.info("Embedding PDB %s chain %s", pdbfile, chains)
     e2e_model = END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,
         constants.EMBED_DIM,

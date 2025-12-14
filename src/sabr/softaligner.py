@@ -139,7 +139,7 @@ class SoftAligner:
                 )
         if len(out_embeddings) == 0:
             raise RuntimeError(f"Couldn't load from {path}")
-        LOGGER.info(f"Loaded {len(out_embeddings)} embeddings from {path}")
+        LOGGER.info("Loaded %d embeddings from %s", len(out_embeddings), path)
         return out_embeddings
 
     def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
@@ -300,7 +300,7 @@ class SoftAligner:
                 idxs1=input_data.idxs,
                 idxs2=[str(x) for x in range(1, 129)],
             )
-        LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
+        LOGGER.info("Evaluated alignments against %d species", len(outputs))
 
         best_match = max(outputs, key=lambda k: outputs[k].score)
 

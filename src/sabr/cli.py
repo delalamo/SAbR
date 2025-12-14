@@ -163,7 +163,7 @@ def main(
             f"{output_file} exists, rerun with --overwrite to replace it"
         )
     sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
-    LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
+    LOGGER.info(">input_seq (len %d)\n%s", len(sequence), sequence)
     if max_residues > 0:
         LOGGER.info(
             f"Will truncate output to {max_residues} residues "
@@ -192,7 +192,7 @@ def main(
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
     subsequence = "-" * start + sequence[start:end]
-    LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
+    LOGGER.info(">identified_seq (len %d)\n%s", len(subsequence), subsequence)
 
     if not out.species:
         raise click.ClickException(
@@ -221,7 +221,7 @@ def main(
         alignment_start=start,
         max_residues=max_residues,
     )
-    LOGGER.info(f"Finished renumbering; output written to {output_file}")
+    LOGGER.info("Finished renumbering; output written to %s", output_file)
 
 
 if __name__ == "__main__":

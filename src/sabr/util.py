@@ -35,5 +35,5 @@ def read_softalign_params(
     path = files(params_path) / params_name
     with open(path, "rb") as f:
         params = pickle.load(f)
-    LOGGER.info(f"Loaded model parameters from {path}")
+    LOGGER.info("Loaded model parameters from %s", path)
     return params

@@ -46,7 +46,7 @@ def alignment_matrix_to_state_vector(
 
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
-    LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
+    LOGGER.info("Converting alignment matrix with shape %s", matrix.shape)
 
     path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
     assert len(path) > 0, "Alignment matrix contains no path"
@@ -86,14 +86,17 @@ def alignment_matrix_to_state_vector(
 
 def report_output(out: List[State]) -> None:
     """Log each HMM state in ``out`` at INFO level."""
-    LOGGER.info(f"Reporting {len(out)} HMM states")
+    LOGGER.info("Reporting %d HMM states", len(out))
     for idx, st in enumerate(out):
         if st.mapped_residue is None:
             LOGGER.info(
-                f"{idx} (({st.residue_number}, '{st.insertion_code}'), None)"
+                "%d ((%d, '%s'), None)", idx, st.residue_number, st.insertion_code
             )
         else:
             LOGGER.info(
-                f"{idx} (({st.residue_number}, '{st.insertion_code}'), "
-                f"{st.mapped_residue})"
+                "%d ((%d, '%s'), %s)",
+                idx,
+                st.residue_number,
+                st.insertion_code,
+                st.mapped_residue,
             )
