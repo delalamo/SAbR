@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""PDB file modification and residue renumbering module.
+
+This module provides functions for threading ANARCI alignments onto PDB
+structures, renumbering residues according to antibody numbering schemes.
+
+Key functions:
+- thread_alignment: Main entry point for renumbering a PDB chain
+- thread_onto_chain: Core renumbering logic for a single chain
+- validate_output_format: Ensures mmCIF format for extended insertions
+
+The renumbering process handles three regions:
+1. PRE-Fv: Residues before the variable region (numbered backwards)
+2. IN-Fv: Variable region residues (ANARCI-assigned numbers)
+3. POST-Fv: Residues after the variable region (sequential numbering)
+"""
 
 import copy
 import logging

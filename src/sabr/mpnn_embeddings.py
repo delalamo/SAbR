@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""MPNN embedding generation and management module.
+
+This module provides the MPNNEmbeddings dataclass and functions for
+generating, saving, and loading neural network embeddings from PDB
+structures using the MPNN (Message Passing Neural Network) architecture.
+
+Key components:
+- MPNNEmbeddings: Dataclass for storing per-residue embeddings
+- from_pdb: Generate embeddings from a PDB file
+- from_npz: Load pre-computed embeddings from NumPy archive
+- _embed_pdb: Internal function for MPNN embedding computation
+
+Embeddings are 64-dimensional vectors computed for each residue,
+capturing structural and sequence features for alignment.
+"""
 
 import logging
 from dataclasses import dataclass

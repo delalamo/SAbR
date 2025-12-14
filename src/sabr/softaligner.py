@@ -1,4 +1,20 @@
 #!/usr/bin/env python3
+"""SoftAlign-based antibody sequence alignment module.
+
+This module provides the SoftAligner class which aligns query antibody
+embeddings against a library of species reference embeddings to identify
+the best-matching species and generate IMGT-compatible alignments.
+
+Key components:
+- SoftAligner: Main class for running alignments
+- _align_fn: Internal alignment function using the SoftAlign neural model
+
+The alignment process includes:
+1. Embedding comparison against all species references
+2. Selection of best-matching species by similarity score
+3. Deterministic corrections for CDR loops, DE loop, and FR1 positions
+4. Expansion to full 128-position IMGT alignment matrix
+"""
 
 import logging
 from importlib.resources import as_file, files
