@@ -49,7 +49,10 @@ def alignment_matrix_to_state_vector(
     LOGGER.info("Converting alignment matrix with shape %s", matrix.shape)
 
     path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
-    assert len(path) > 0, "Alignment matrix contains no path"
+    if len(path) == 0:
+        raise ValueError(
+            "Alignment matrix contains no path (no non-zero elements found)"
+        )
 
     out = []
 
