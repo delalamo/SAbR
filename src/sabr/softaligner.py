@@ -17,7 +17,7 @@ LOGGER = logging.getLogger(__name__)
 def _align_fn(
     input: mpnn_embeddings.MPNNEmbeddings,
     target: mpnn_embeddings.MPNNEmbeddings,
-    temperature: float = 10**-4,
+    temperature: float = constants.DEFAULT_TEMPERATURE,
 ) -> softalign_output.SoftAlignOutput:
     """Align two embedding sets with the SoftAlign model and return result."""
     input_array = input.embeddings
@@ -71,7 +71,7 @@ class SoftAligner:
         params_path: str = "softalign.models",
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-        temperature: float = 10**-4,
+        temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
     ) -> None:
         """
@@ -141,25 +141,29 @@ class SoftAligner:
 
     def fix_aln(self, old_aln, idxs):
         """Expand an alignment onto IMGT positions using saved indices."""
-        aln = np.zeros((old_aln.shape[0], 128), dtype=old_aln.dtype)
+        aln = np.zeros(
+            (old_aln.shape[0], constants.IMGT_MAX_POSITION), dtype=old_aln.dtype
+        )
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
 
         return aln
 
     def correct_de_loop(self, aln: np.ndarray) -> np.ndarray:
+        """Fix DE loop alignment at positions 81-83 (0-indexed: 80-82)."""
+        pos0, pos1, pos2 = constants.DE_LOOP_POSITIONS
         # DE loop manual fix
-        if aln[:, 80].sum() == 1 and aln[:, 81:83].sum() == 0:
+        if aln[:, pos0].sum() == 1 and aln[:, pos1 : pos2 + 1].sum() == 0:
             LOGGER.info("Correcting DE loop")
-            aln[:, 82] = aln[:, 80]
-            aln[:, 80] = 0
+            aln[:, pos2] = aln[:, pos0]
+            aln[:, pos0] = 0
         elif (
-            aln[:, 80].sum() == 1
-            and aln[:, 81].sum() == 0
-            and aln[:, 82].sum() == 1
+            aln[:, pos0].sum() == 1
+            and aln[:, pos1].sum() == 0
+            and aln[:, pos2].sum() == 1
         ):
             LOGGER.info("Correcting DE loop")
-            aln[:, 81] = aln[:, 80]
-            aln[:, 80] = 0
+            aln[:, pos1] = aln[:, pos0]
+            aln[:, pos0] = 0
         return aln
 
     def correct_light_chain_fr1(self, aln: np.ndarray) -> np.ndarray:
@@ -173,10 +177,12 @@ class SoftAligner:
         This fix shifts matches forward when position 10 is empty but
         earlier positions (7-9) have matches from later rows.
         """
-        # Check if position 10 (0-indexed: 9) is empty
-        if aln[:, 9].sum() == 0:
-            # Find matches in positions 6-9 (0-indexed: 5-8)
-            for col_idx in range(5, 9):
+        fr1_start = constants.LIGHT_CHAIN_FR1_START
+        fr1_end = constants.LIGHT_CHAIN_FR1_END
+        # Check if position 10 (0-indexed: fr1_end) is empty
+        if aln[:, fr1_end].sum() == 0:
+            # Find matches in positions 6-9 (0-indexed: fr1_start to fr1_end-1)
+            for col_idx in range(fr1_start, fr1_end):
                 if aln[:, col_idx].sum() == 1:
                     row = np.where(aln[:, col_idx] == 1)[0][0]
                     # If row > col_idx, the alignment is shifted
@@ -188,8 +194,8 @@ class SoftAligner:
                             f"Correcting light chain FR1: detected shift of "
                             f"{shift_amount} at position {col_idx + 1}"
                         )
-                        # Shift all matches from col_idx to position 9 forward
-                        for c in range(8, col_idx - 1, -1):
+                        # Shift all matches from col_idx to fr1_end-1 forward
+                        for c in range(fr1_end - 1, col_idx - 1, -1):
                             if aln[:, c].sum() == 1:
                                 aln[:, c + shift_amount] = aln[:, c]
                                 aln[:, c] = 0
@@ -287,7 +293,9 @@ class SoftAligner:
                 species=name,
                 sim_matrix=None,
                 idxs1=input_data.idxs,
-                idxs2=[str(x) for x in range(1, 129)],
+                idxs2=[
+                    str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)
+                ],
             )
         LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
 
@@ -309,7 +317,12 @@ class SoftAligner:
                     )
                     continue
                 if len(loop_start) > 1 or len(loop_end) > 1:
-                    raise RuntimeError(f"Multiple start/end for loop {name}")
+                    raise RuntimeError(
+                        f"Multiple start/end positions found for loop {name}: "
+                        f"start positions={loop_start.tolist()}, "
+                        f"end positions={loop_end.tolist()}. "
+                        f"Expected exactly one of each."
+                    )
                 loop_start, loop_end = loop_start[0], loop_end[0]
                 sub_aln = aln[loop_start:loop_end, startres_idx:endres]
                 aln[loop_start:loop_end, startres_idx:endres] = (
