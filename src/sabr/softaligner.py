@@ -8,9 +8,8 @@ import haiku as hk
 import jax
 import numpy as np
 from jax import numpy as jnp
-from softalign import END_TO_END_MODELS
 
-from sabr import constants, mpnn_embeddings, softalign_output, util
+from sabr import constants, model, mpnn_embeddings, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,17 +29,7 @@ def _align_fn(
         f"Running align_fn with input shape {input_array.shape}, "
         f"target shape {target_array.shape}, temperature={temperature}"
     )
-    e2e_model = END_TO_END_MODELS.END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
-        affine=True,
-        soft_max=False,
-        dropout=0.0,
-        augment_eps=0.0,
-    )
+    e2e_model = model.create_e2e_model()
     if input_array.ndim != 2 or target_array.ndim != 2:
         raise ValueError(
             "align_fn expects 2D arrays; got shapes "
