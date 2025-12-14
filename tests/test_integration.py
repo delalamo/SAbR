@@ -38,7 +38,7 @@ FIXTURES = {
 }
 
 
-def load_alignment_fixture(path: Path):
+def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
     if not path.exists():
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
@@ -48,8 +48,12 @@ def load_alignment_fixture(path: Path):
 
 
 def run_threading_pipeline(
-    pdb_path: Path, chain: str, alignment, species: str, tmp_path
-):
+    pdb_path: Path,
+    chain: str,
+    alignment: np.ndarray,
+    species: str,
+    tmp_path: Path,
+) -> int:
     sequence = util.fetch_sequence_from_pdb(str(pdb_path), chain)
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
     subsequence = "-" * start + sequence[start:end]
@@ -194,3 +198,25 @@ def test_cli_deterministic_loop_renumbering_flag(
     assert (
         captured_kwargs.get("deterministic_loop_renumbering") == expected_value
     )
+
+
+def test_cli_rejects_multi_character_chain():
+    """Test that CLI rejects chain identifiers longer than one character."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            "AB",  # Two characters - should fail
+            "-o",
+            "output.pdb",
+        ],
+    )
+    assert result.exit_code != 0
+    assert "Chain identifier must be exactly one character" in result.output

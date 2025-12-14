@@ -18,7 +18,7 @@ The alignment process includes:
 
 import logging
 from importlib.resources import as_file, files
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import haiku as hk
 import jax
@@ -69,8 +69,8 @@ def _align_fn(
         f"score={float(score[0])}"
     )
     return softalign_output.SoftAlignOutput(
-        alignment=alignment[0],
-        sim_matrix=sim_matrix[0],
+        alignment=np.asarray(alignment[0]),
+        sim_matrix=np.asarray(sim_matrix[0]),
         score=float(score[0]),
         species=None,
         idxs1=input.idxs,
@@ -155,7 +155,7 @@ class SoftAligner:
             new_aln[pos, pos] = 1
         return new_aln
 
-    def fix_aln(self, old_aln, idxs):
+    def fix_aln(self, old_aln: np.ndarray, idxs: List[int]) -> np.ndarray:
         """Expand an alignment onto IMGT positions using saved indices."""
         aln = np.zeros(
             (old_aln.shape[0], constants.IMGT_MAX_POSITION), dtype=old_aln.dtype
@@ -265,7 +265,7 @@ class SoftAligner:
         input_data: mpnn_embeddings.MPNNEmbeddings,
         chain_type: Optional[constants.ChainType] = None,
         deterministic_loop_renumbering: bool = True,
-    ) -> Tuple[str, softalign_output.SoftAlignOutput]:
+    ) -> softalign_output.SoftAlignOutput:
         """
         Align input embeddings to each species embedding and return best hit.
 
