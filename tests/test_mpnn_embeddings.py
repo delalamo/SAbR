@@ -223,7 +223,9 @@ def test_save_is_callable():
     assert callable(embedding.save)
 
 
-def create_test_embedding(include_sequence=True):
+def create_test_embedding(
+    include_sequence: bool = True,
+) -> mpnn_embeddings.MPNNEmbeddings:
     """Create a test MPNNEmbeddings object."""
     return mpnn_embeddings.MPNNEmbeddings(
         name="test_chain",

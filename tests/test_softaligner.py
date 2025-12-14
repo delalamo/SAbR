@@ -5,7 +5,7 @@ import numpy as np
 from sabr import constants, mpnn_embeddings, softaligner
 
 
-def make_aligner():
+def make_aligner() -> softaligner.SoftAligner:
     return softaligner.SoftAligner.__new__(softaligner.SoftAligner)
 
 
