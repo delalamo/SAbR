@@ -26,8 +26,10 @@ def _align_fn(
     target_array = target_array / target_stdev
 
     LOGGER.info(
-        f"Running align_fn with input shape {input_array.shape}, "
-        f"target shape {target_array.shape}, temperature={temperature}"
+        "Running align_fn with input shape %s, target shape %s, temperature=%s",
+        input_array.shape,
+        target_array.shape,
+        temperature,
     )
     e2e_model = model.create_e2e_model()
     if input_array.ndim != 2 or target_array.ndim != 2:
@@ -48,9 +50,10 @@ def _align_fn(
         batched_input, batched_target, lens, temperature
     )
     LOGGER.debug(
-        "Alignment complete: alignment shape "
-        f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
-        f"score={float(score[0])}"
+        "Alignment complete: alignment shape %s, sim_matrix shape %s, score=%s",
+        alignment.shape,
+        sim_matrix.shape,
+        float(score[0]),
     )
     return softalign_output.SoftAlignOutput(
         alignment=alignment[0],
@@ -95,11 +98,11 @@ class SoftAligner:
         idxs_int = [int(x) for x in mp.idxs]
         order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
         if not np.array_equal(order, np.arange(len(order))):
-            norm_msg = (
-                f"Normalizing embedding order for {mp.name} "
-                f"(size={len(order)})"
+            LOGGER.debug(
+                "Normalizing embedding order for %s (size=%d)",
+                mp.name,
+                len(order),
             )
-            LOGGER.debug(norm_msg)
         return mpnn_embeddings.MPNNEmbeddings(
             name=mp.name,
             embeddings=mp.embeddings[order, ...],
@@ -185,8 +188,10 @@ class SoftAligner:
                     if row > col_idx:
                         shift_amount = row - col_idx
                         LOGGER.info(
-                            f"Correcting light chain FR1: detected shift of "
-                            f"{shift_amount} at position {col_idx + 1}"
+                            "Correcting light chain FR1: detected shift of "
+                            "%d at position %d",
+                            shift_amount,
+                            col_idx + 1,
                         )
                         # Shift all matches from col_idx to position 9 forward
                         for c in range(8, col_idx - 1, -1):
@@ -227,14 +232,15 @@ class SoftAligner:
 
         if not filtered:
             LOGGER.warning(
-                f"No embeddings found for chain_type='{chain_type.value}', "
-                f"using all embeddings"
+                "No embeddings found for chain_type='%s', using all embeddings",
+                chain_type.value,
             )
             return self.all_embeddings
 
         LOGGER.info(
-            f"Filtered to {len(filtered)} embeddings for "
-            f"chain_type='{chain_type.value}'"
+            "Filtered to %d embeddings for chain_type='%s'",
+            len(filtered),
+            chain_type.value,
         )
         return filtered
 
@@ -263,7 +269,7 @@ class SoftAligner:
             SoftAlignOutput with the best alignment.
         """
         LOGGER.info(
-            f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
+            "Aligning embeddings with length=%d", input_data.embeddings.shape[0]
         )
 
         # Filter embeddings based on chain type
@@ -302,10 +308,10 @@ class SoftAligner:
                 loop_end = np.where(aln[:, endres - 1] == 1)[0]
                 if len(loop_start) == 0 or len(loop_end) == 0:
                     LOGGER.warning(
-                        (
-                            f"Skipping {name}; missing start ({loop_start}) "
-                            f"or end ({loop_end})"
-                        )
+                        "Skipping %s; missing start (%s) or end (%s)",
+                        name,
+                        loop_start,
+                        loop_end,
                     )
                     continue
                 if len(loop_start) > 1 or len(loop_end) > 1:
