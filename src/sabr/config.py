@@ -7,7 +7,6 @@ throughout the application.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from sabr import constants
 
