@@ -143,12 +143,49 @@ def main(
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
 
+    # === Input Validation ===
+
+    # Validate input PDB file exists
+    if not os.path.exists(input_pdb):
+        raise click.ClickException(
+            f"Input file '{input_pdb}' does not exist."
+        )
+
+    # Validate input file has correct extension
+    valid_extensions = (".pdb", ".cif", ".ent")
+    if not input_pdb.lower().endswith(valid_extensions):
+        raise click.ClickException(
+            f"Input file must have a valid extension: {valid_extensions}. "
+            f"Got: '{input_pdb}'"
+        )
+
+    # Validate chain identifier
+    if input_chain and len(input_chain) != 1:
+        raise click.ClickException(
+            f"Chain identifier must be a single character. Got: '{input_chain}'"
+        )
+
+    # Validate output file extension
+    valid_output_ext = (".pdb", ".cif")
+    if not output_file.lower().endswith(valid_output_ext):
+        raise click.ClickException(
+            f"Output file must have extension .pdb or .cif. Got: '{output_file}'"
+        )
+
     # Validate extended insertions requires mmCIF format
     if extended_insertions and not output_file.endswith(".cif"):
         raise click.ClickException(
             "The --extended-insertions option requires mmCIF output format. "
             "Please use a .cif file extension for the output file."
         )
+
+    # Validate max_residues is non-negative
+    if max_residues < 0:
+        raise click.ClickException(
+            f"max_residues must be non-negative. Got: {max_residues}"
+        )
+
+    # === End Input Validation ===
 
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
