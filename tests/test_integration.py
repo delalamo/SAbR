@@ -9,6 +9,7 @@ from Bio import PDB
 from click.testing import CliRunner
 
 from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, util
+from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
 
@@ -125,33 +126,8 @@ def test_cli_respects_expected_numbering(
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
     alignment, species = load_alignment_fixture(data["alignment"])
 
-    class DummyResult:
-        def __init__(self, alignment, species):
-            self.alignment = alignment
-            self.species = species
-
-    class DummyAligner:
-        def __call__(self, input_data, **kwargs):
-            return DummyResult(alignment, species)
-
-    class DummyEmbeddings:
-        def __init__(self, name, embeddings, idxs, stdev=None, sequence=None):
-            self.name = name
-            self.embeddings = embeddings
-            self.idxs = idxs
-            self.stdev = stdev
-            self.sequence = sequence
-
-    def dummy_from_pdb(pdb_file, chain, max_residues=0, **kwargs):
-        # Return dummy embeddings with correct shape
-        n_residues = 100
-        return DummyEmbeddings(
-            name=f"{pdb_file}_{chain}",
-            embeddings=np.zeros((n_residues, 64)),
-            idxs=[str(i) for i in range(n_residues)],
-            stdev=np.ones((n_residues, 64)),
-            sequence="A" * n_residues,
-        )
+    DummyAligner = create_dummy_aligner(alignment, species)
+    dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
@@ -194,34 +170,8 @@ def test_cli_deterministic_loop_renumbering_flag(
     alignment, species = load_alignment_fixture(data["alignment"])
 
     captured_kwargs = {}
-
-    class DummyResult:
-        def __init__(self, alignment, species):
-            self.alignment = alignment
-            self.species = species
-
-    class DummyAligner:
-        def __call__(self, input_data, **kwargs):
-            captured_kwargs.update(kwargs)
-            return DummyResult(alignment, species)
-
-    class DummyEmbeddings:
-        def __init__(self, name, embeddings, idxs, stdev=None, sequence=None):
-            self.name = name
-            self.embeddings = embeddings
-            self.idxs = idxs
-            self.stdev = stdev
-            self.sequence = sequence
-
-    def dummy_from_pdb(pdb_file, chain, max_residues=0, **kwargs):
-        n_residues = 100
-        return DummyEmbeddings(
-            name=f"{pdb_file}_{chain}",
-            embeddings=np.zeros((n_residues, 64)),
-            idxs=[str(i) for i in range(n_residues)],
-            stdev=np.ones((n_residues, 64)),
-            sequence="A" * n_residues,
-        )
+    DummyAligner = create_dummy_aligner(alignment, species, captured_kwargs)
+    dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
     monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())

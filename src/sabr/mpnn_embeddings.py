@@ -9,9 +9,9 @@ import haiku as hk
 import jax
 import numpy as np
 from jax import numpy as jnp
-from softalign import END_TO_END_MODELS, Input_MPNN
+from softalign import Input_MPNN
 
-from sabr import constants, util
+from sabr import constants, model, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -129,17 +129,7 @@ def _embed_pdb(
         MPNNEmbeddings for the specified chain.
     """
     LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
-    e2e_model = END_TO_END_MODELS.END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
-        affine=True,
-        soft_max=False,
-        dropout=0.0,
-        augment_eps=0.0,
-    )
+    e2e_model = model.create_e2e_model()
     if len(chains) > 1:
         raise NotImplementedError("Only single chain embedding is supported")
     X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(

@@ -1,6 +1,12 @@
 import numpy as np
 
-from sabr import constants, mpnn_embeddings, softalign_output, softaligner
+from sabr import (
+    constants,
+    model,
+    mpnn_embeddings,
+    softalign_output,
+    softaligner,
+)
 
 
 class DummyModel:
@@ -23,7 +29,7 @@ class DummyModel:
 
 
 def test_align_fn_returns_softalign_output(monkeypatch):
-    monkeypatch.setattr(softaligner.END_TO_END_MODELS, "END_TO_END", DummyModel)
+    monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
     # MPNN embeddings
     input = mpnn_embeddings.MPNNEmbeddings(
@@ -65,7 +71,7 @@ def test_align_fn_temperature_parameter(monkeypatch):
             return alignment, sim_matrix, score
 
     monkeypatch.setattr(
-        softaligner.END_TO_END_MODELS, "END_TO_END", TempCapturingModel
+        model.END_TO_END_MODELS, "END_TO_END", TempCapturingModel
     )
 
     input = mpnn_embeddings.MPNNEmbeddings(
@@ -106,7 +112,7 @@ def test_align_fn_stdev_normalization(monkeypatch):
             return alignment, sim_matrix, score
 
     monkeypatch.setattr(
-        softaligner.END_TO_END_MODELS, "END_TO_END", ArrayCapturingModel
+        model.END_TO_END_MODELS, "END_TO_END", ArrayCapturingModel
     )
 
     input = mpnn_embeddings.MPNNEmbeddings(
