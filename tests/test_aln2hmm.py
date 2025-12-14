@@ -96,9 +96,7 @@ def test_alignment_matrix_to_state_vector_empty_path():
     """Test that empty alignment matrix with no path raises ValueError."""
     matrix = np.zeros((3, 3), dtype=int)
 
-    with pytest.raises(
-        ValueError, match="Alignment matrix contains no path"
-    ):
+    with pytest.raises(ValueError, match="Alignment matrix contains no path"):
         aln2hmm.alignment_matrix_to_state_vector(matrix)
 
 
