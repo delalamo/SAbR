@@ -131,7 +131,11 @@ def _embed_pdb(
     LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
     e2e_model = model.create_e2e_model()
     if len(chains) > 1:
-        raise NotImplementedError("Only single chain embedding is supported")
+        raise NotImplementedError(
+            f"Only single chain embedding is supported. "
+            f"Got {len(chains)} chains: '{chains}'. "
+            f"Please specify a single chain identifier."
+        )
     X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
         pdbfile, chain=chains
     )
