@@ -4,7 +4,9 @@ from Bio.PDB import Chain, Residue
 from sabr import constants, edit_pdb
 
 
-def build_residue(number, name, hetflag=" "):
+def build_residue(
+    number: int, name: str, hetflag: str = " "
+) -> Residue.Residue:
     """Build a test residue with given number, name, and hetflag."""
     resid = (hetflag, number, " ")
     residue = Residue.Residue(resid, name, " ")
