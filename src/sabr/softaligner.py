@@ -160,7 +160,7 @@ class SoftAligner:
         return aln
 
     def correct_de_loop(self, aln: np.ndarray) -> np.ndarray:
-        """Fix DE loop alignment issues at positions 81-83 (0-indexed: 80-82)."""
+        """Fix DE loop alignment at positions 81-83 (0-indexed: 80-82)."""
         pos0, pos1, pos2 = constants.DE_LOOP_POSITIONS
         # DE loop manual fix
         if aln[:, pos0].sum() == 1 and aln[:, pos1 : pos2 + 1].sum() == 0:
@@ -304,7 +304,9 @@ class SoftAligner:
                 species=name,
                 sim_matrix=None,
                 idxs1=input_data.idxs,
-                idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
+                idxs2=[
+                    str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)
+                ],
             )
         LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
 
