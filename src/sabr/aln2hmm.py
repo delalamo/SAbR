@@ -90,7 +90,10 @@ def report_output(out: List[State]) -> None:
     for idx, st in enumerate(out):
         if st.mapped_residue is None:
             LOGGER.info(
-                "%d ((%d, '%s'), None)", idx, st.residue_number, st.insertion_code
+                "%d ((%d, '%s'), None)",
+                idx,
+                st.residue_number,
+                st.insertion_code,
             )
         else:
             LOGGER.info(
