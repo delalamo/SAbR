@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""Command-line interface for SAbR antibody renumbering.
+
+This module provides the CLI entry point for the SAbR (Structure-based
+Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
+
+1. Load PDB structure and extract sequence
+2. Generate MPNN embeddings for the target chain
+3. Align embeddings against species references using SoftAlign
+4. Convert alignment to HMM state vector
+5. Apply ANARCI numbering scheme (IMGT, Chothia, Kabat, etc.)
+6. Write renumbered structure to output file
+
+Usage:
+    sabr -i input.pdb -c A -o output.pdb -n imgt
+"""
 
 import logging
 import os
