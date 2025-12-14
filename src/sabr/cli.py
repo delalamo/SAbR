@@ -150,11 +150,9 @@ def main(
         raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
 
     # Validate input file has correct extension
-    valid_extensions = (".pdb", ".ent")
-    if not input_pdb.lower().endswith(valid_extensions):
+    if not input_pdb.lower().endswith(".pdb"):
         raise click.ClickException(
-            f"Input file must be a PDB file (.pdb or .ent). "
-            f"Got: '{input_pdb}'"
+            f"Input file must be a PDB file (.pdb). Got: '{input_pdb}'"
         )
 
     # Validate chain identifier
