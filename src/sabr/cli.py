@@ -46,7 +46,7 @@ LOGGER = logging.getLogger(__name__)
     "input_pdb",
     required=True,
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
-    help="Input PDB file.",
+    help="Input PDB file or NPZ file with pre-computed embeddings.",
 )
 @click.option(
     "-c",
@@ -59,6 +59,16 @@ LOGGER = logging.getLogger(__name__)
         else ctx.fail("Chain identifier must be exactly one character.")
     ),
     help="Chain identifier to renumber (single character).",
+)
+@click.option(
+    "--pdb-file",
+    "pdb_file",
+    type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
+    default=None,
+    help=(
+        "Original PDB file for structure threading. Required when input (-i) is an NPZ file. "
+        "When input is a PDB file, this parameter is ignored."
+    ),
 )
 @click.option(
     "-o",
@@ -145,9 +155,23 @@ LOGGER = logging.getLogger(__name__)
         "When disabled, uses raw alignment output without corrections."
     ),
 )
+@click.option(
+    "-w",
+    "--num-workers",
+    "num_workers",
+    type=int,
+    default=1,
+    show_default=True,
+    help=(
+        "Number of parallel workers for species alignment. "
+        "Use 0 for sequential processing, >0 for parallel processing. "
+        "Higher values can speed up alignment but use more memory."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
+    pdb_file: str,
     output_file: str,
     numbering_scheme: str,
     overwrite: bool,
@@ -156,6 +180,7 @@ def main(
     chain_type: str,
     extended_insertions: bool,
     deterministic_loop_renumbering: bool,
+    num_workers: int,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -165,20 +190,32 @@ def main(
 
     # === Input Validation ===
 
-    # Validate input PDB file exists
+    # Validate input file exists
     if not os.path.exists(input_pdb):
         raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
 
+    # Detect input file type
+    is_npz_input = input_pdb.lower().endswith(".npz")
+    is_pdb_input = input_pdb.lower().endswith(".pdb")
+
     # Validate input file has correct extension
-    if not input_pdb.lower().endswith(".pdb"):
+    if not is_pdb_input and not is_npz_input:
         raise click.ClickException(
-            f"Input file must be a PDB file (.pdb). Got: '{input_pdb}'"
+            f"Input file must be a PDB file (.pdb) or NPZ file (.npz). "
+            f"Got: '{input_pdb}'"
         )
 
-    # Validate chain identifier
-    if input_chain and len(input_chain) != 1:
+    # Validate pdb_file is provided for NPZ input
+    if is_npz_input and not pdb_file:
         raise click.ClickException(
-            f"Chain identifier must be a single character. Got: '{input_chain}'"
+            "Original PDB file (--pdb-file) is required when input is an NPZ file, "
+            "since the original structure is needed for renumbering output."
+        )
+
+    # Validate pdb_file has correct extension if provided
+    if pdb_file and not pdb_file.lower().endswith(".pdb"):
+        raise click.ClickException(
+            f"PDB file must have .pdb extension. Got: '{pdb_file}'"
         )
 
     # Validate output file extension
@@ -206,7 +243,8 @@ def main(
 
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
-        f"chain={input_chain} output={output_file} "
+        f"chain={input_chain if input_chain else 'from NPZ'} "
+        f"output={output_file} "
         f"scheme={numbering_scheme}"
     )
     if extended_insertions:
@@ -216,28 +254,57 @@ def main(
         raise click.ClickException(
             f"{output_file} exists, rerun with --overwrite to replace it"
         )
-    sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
-    LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
-    if max_residues > 0:
+
+    # Load embeddings and sequence based on input type
+    if is_npz_input:
+        LOGGER.info(f"Loading pre-computed embeddings from {input_pdb}")
+        input_data = mpnn_embeddings.from_npz(input_pdb)
+
+        # Extract sequence from NPZ if available, otherwise fetch from PDB
+        if input_data.sequence:
+            sequence = input_data.sequence
+            LOGGER.info(f"Using sequence from NPZ file (len {len(sequence)})")
+        else:
+            # Get sequence from the provided PDB file
+            sequence = util.fetch_sequence_from_pdb(pdb_file, input_chain)
+            LOGGER.info(
+                f"Fetched sequence from PDB file {pdb_file} chain {input_chain} "
+                f"(len {len(sequence)})"
+            )
+
+        # Use the provided PDB file and chain for threading
+        source_pdb_for_threading = pdb_file
+        chain_for_threading = input_chain
+
+    else:
+        # PDB input - extract sequence and generate embeddings
+        sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
+        LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
+        if max_residues > 0:
+            LOGGER.info(
+                f"Will truncate output to {max_residues} residues "
+                f"(max_residues flag)"
+            )
         LOGGER.info(
-            f"Will truncate output to {max_residues} residues "
-            f"(max_residues flag)"
+            f"Fetched sequence of length {len(sequence)} from "
+            f"{input_pdb} chain {input_chain}"
         )
-    LOGGER.info(
-        f"Fetched sequence of length {len(sequence)} from "
-        f"{input_pdb} chain {input_chain}"
-    )
+
+        # Generate MPNN embeddings for the input chain
+        input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
+
+        # Use the input PDB for threading
+        source_pdb_for_threading = input_pdb
+        chain_for_threading = input_chain
+
     # Convert chain_type string to enum
     chain_type_enum = constants.ChainType(chain_type)
     chain_type_filter = (
         None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
     )
 
-    # Generate MPNN embeddings for the input chain
-    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
-
     # Align embeddings against species references
-    soft_aligner = softaligner.SoftAligner()
+    soft_aligner = softaligner.SoftAligner(num_workers=num_workers)
     out = soft_aligner(
         input_data,
         chain_type=chain_type_filter,
@@ -266,8 +333,8 @@ def main(
     anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
-        input_pdb,
-        input_chain,
+        source_pdb_for_threading,
+        chain_for_threading,
         anarci_out,
         output_file,
         start_res,

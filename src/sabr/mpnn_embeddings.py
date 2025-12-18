@@ -245,7 +245,13 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
     input_path = Path(npz_file)
     data = np.load(input_path, allow_pickle=True)
 
-    name = str(data["name"])
+    # Handle both new format (with "name" key) and old format (without)
+    if "name" in data:
+        name = str(data["name"])
+    else:
+        # Use filename as name if not stored in the NPZ
+        name = input_path.stem
+
     idxs = [str(idx) for idx in data["idxs"]]
 
     sequence = None

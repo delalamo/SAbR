@@ -17,6 +17,7 @@ The alignment process includes:
 """
 
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from importlib.resources import as_file, files
 from typing import List, Optional
 
@@ -89,9 +90,21 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
         temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
+        num_workers: int = 1,
     ) -> None:
         """
         Initialize the SoftAligner by loading model parameters and embeddings.
+
+        Args:
+            params_name: Name of the model parameters file.
+            params_path: Package path containing the parameters file.
+            embeddings_name: Name of the embeddings file.
+            embeddings_path: Package path containing the embeddings file.
+            temperature: Temperature parameter for alignment.
+            random_seed: Random seed for JAX.
+            num_workers: Number of parallel workers for species alignment.
+                Use 0 for sequential processing, >0 for parallel processing.
+                Default is 1.
         """
         self.all_embeddings = self.read_embeddings(
             embeddings_name=embeddings_name,
@@ -103,6 +116,7 @@ class SoftAligner:
         self.temperature = temperature
         self.key = jax.random.PRNGKey(random_seed)
         self.transformed_align_fn = hk.transform(_align_fn)
+        self.num_workers = num_workers
 
     def normalize(
         self, mp: mpnn_embeddings.MPNNEmbeddings
@@ -292,7 +306,9 @@ class SoftAligner:
         embeddings_to_search = self.filter_embeddings_by_chain_type(chain_type)
 
         outputs = {}
-        for species_embedding in embeddings_to_search:
+
+        def align_species(species_embedding: mpnn_embeddings.MPNNEmbeddings):
+            """Align against a single species embedding."""
             name = species_embedding.name
             out = self.transformed_align_fn.apply(
                 self.model_params,
@@ -303,7 +319,7 @@ class SoftAligner:
             )
             aln = self.fix_aln(out.alignment, species_embedding.idxs)
 
-            outputs[name] = softalign_output.SoftAlignOutput(
+            return name, softalign_output.SoftAlignOutput(
                 alignment=aln,
                 score=out.score,
                 species=name,
@@ -313,6 +329,26 @@ class SoftAligner:
                     str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)
                 ],
             )
+
+        # Use parallel or sequential processing based on num_workers
+        if self.num_workers > 0:
+            LOGGER.info(
+                f"Using parallel alignment with {self.num_workers} workers"
+            )
+            with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
+                futures = {
+                    executor.submit(align_species, emb): emb
+                    for emb in embeddings_to_search
+                }
+                for future in as_completed(futures):
+                    name, result = future.result()
+                    outputs[name] = result
+        else:
+            LOGGER.info("Using sequential alignment")
+            for species_embedding in embeddings_to_search:
+                name, result = align_species(species_embedding)
+                outputs[name] = result
+
         LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
 
         best_match = max(outputs, key=lambda k: outputs[k].score)
