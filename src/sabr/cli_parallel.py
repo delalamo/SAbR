@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Parallelized batch processing CLI for Structure-based Antibody Renumbering (SAbR).
+Parallelized batch processing CLI for SAbR.
 
-This script provides optimized parallel processing with two levels of parallelization:
+This script provides optimized parallel processing with two levels:
 1. Species alignment parallelization (within each chain)
 2. Multi-file/chain parallelization (across multiple inputs)
 
@@ -169,7 +169,8 @@ def parse_input_file(input_file: str) -> List[tuple]:
             pdb_path, chain_id = parts[0], parts[1]
             if not os.path.exists(pdb_path):
                 LOGGER.warning(
-                    f"Line {line_num}: PDB file not found: {pdb_path}. Skipping."
+                    f"Line {line_num}: PDB file not found: {pdb_path}. "
+                    "Skipping."
                 )
                 continue
 
@@ -181,10 +182,10 @@ def parse_input_file(input_file: str) -> List[tuple]:
 @click.command(
     context_settings={"help_option_names": ["-h", "--help"]},
     help=(
-        "Parallelized batch processing for Structure-based Antibody Renumbering. "
+        "Parallelized batch processing for SAbR. "
         "Process multiple antibody chains with two levels of parallelization: "
         "(1) parallel species alignment within each chain, and "
-        "(2) parallel processing across multiple input files/chains."
+        "(2) parallel processing across multiple files/chains."
     ),
 )
 @click.option(
@@ -275,8 +276,7 @@ def parse_input_file(input_file: str) -> List[tuple]:
     show_default=True,
     help=(
         "Number of parallel jobs for processing multiple files/chains. "
-        "Use 1 for sequential processing, >1 for parallel processing "
-        "across multiple inputs."
+        "Use 1 for sequential, >1 for parallel across multiple inputs."
     ),
 )
 @click.option(
@@ -306,7 +306,7 @@ def parse_input_file(input_file: str) -> List[tuple]:
     show_default=True,
     help=(
         "Enable deterministic renumbering corrections for loop regions. "
-        "When enabled (default), applies corrections for FR1, DE loop, and CDR loops."
+        "When enabled (default), applies corrections for FR1, DE, CDR loops."
     ),
 )
 def main(
@@ -351,7 +351,7 @@ def main(
             # Single PDB file
             if not chains:
                 raise click.ClickException(
-                    "When input is a PDB file, you must specify chain(s) with -c"
+                    "When input is a PDB file, specify chain(s) with -c"
                 )
             chain_list = [c.strip() for c in chains.split(",")]
             pdb_name = Path(input_source).stem
@@ -366,6 +366,7 @@ def main(
                     )
                     continue
 
+                det_loop = deterministic_loop_renumbering
                 jobs.append(
                     ProcessingJob(
                         input_pdb=input_source,
@@ -375,7 +376,7 @@ def main(
                         chain_type=chain_type,
                         max_residues=max_residues,
                         num_workers=species_workers,
-                        deterministic_loop_renumbering=deterministic_loop_renumbering,
+                        deterministic_loop_renumbering=det_loop,
                     )
                 )
         else:
@@ -392,6 +393,7 @@ def main(
                     )
                     continue
 
+                det_loop = deterministic_loop_renumbering
                 jobs.append(
                     ProcessingJob(
                         input_pdb=pdb_path,
@@ -401,7 +403,7 @@ def main(
                         chain_type=chain_type,
                         max_residues=max_residues,
                         num_workers=species_workers,
-                        deterministic_loop_renumbering=deterministic_loop_renumbering,
+                        deterministic_loop_renumbering=det_loop,
                     )
                 )
     elif os.path.isdir(input_source):
@@ -427,6 +429,7 @@ def main(
                     )
                     continue
 
+                det_loop = deterministic_loop_renumbering
                 jobs.append(
                     ProcessingJob(
                         input_pdb=str(pdb_file),
@@ -436,7 +439,7 @@ def main(
                         chain_type=chain_type,
                         max_residues=max_residues,
                         num_workers=species_workers,
-                        deterministic_loop_renumbering=deterministic_loop_renumbering,
+                        deterministic_loop_renumbering=det_loop,
                     )
                 )
     else:
@@ -457,9 +460,14 @@ def main(
 
     if num_jobs == 1:
         # Sequential file processing (but parallel species alignment)
-        click.echo("Using sequential file processing with parallel species alignment")
+        click.echo(
+            "Using sequential file processing with parallel species alignment"
+        )
         for i, job in enumerate(jobs, 1):
-            click.echo(f"Processing {i}/{len(jobs)}: {job.input_pdb} chain {job.input_chain}")
+            click.echo(
+                f"Processing {i}/{len(jobs)}: "
+                f"{job.input_pdb} chain {job.input_chain}"
+            )
             result = process_single_chain(job)
             results.append(result)
             if not result.success:
@@ -467,15 +475,17 @@ def main(
     else:
         # Parallel file processing (each with parallel species alignment)
         click.echo(
-            f"Using {num_jobs} parallel workers for file processing "
-            f"({species_workers} species workers each)"
+            f"Using {num_jobs} parallel workers for file processing, "
+            f"{species_workers} species workers each"
         )
         with ProcessPoolExecutor(max_workers=num_jobs) as executor:
             futures = {
                 executor.submit(process_single_chain, job): job for job in jobs
             }
 
-            with click.progressbar(length=len(futures), label="Processing") as pbar:
+            with click.progressbar(
+                length=len(futures), label="Processing"
+            ) as pbar:
                 for future in as_completed(futures):
                     result = future.result()
                     results.append(result)
@@ -498,7 +508,8 @@ def main(
         for r in results:
             if not r.success:
                 click.echo(
-                    f"  {r.job.input_pdb} chain {r.job.input_chain}: {r.error_msg}"
+                    f"  {r.job.input_pdb} chain {r.job.input_chain}: "
+                    f"{r.error_msg}"
                 )
 
 

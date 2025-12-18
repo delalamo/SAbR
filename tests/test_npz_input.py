@@ -8,9 +8,7 @@ These tests verify that:
 3. CLI handles NPZ files properly
 """
 
-import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -94,7 +92,7 @@ class TestNPZvsPDBEquivalence:
     @pytest.mark.slow
     @pytest.mark.integration
     def test_12e8_heavy_chain_equivalence(self, tmp_path):
-        """Test that PDB and NPZ inputs give identical results for 12e8 H chain."""
+        """Test PDB and NPZ inputs give identical results for 12e8 H chain."""
         test_data_dir = Path("tests/data")
         pdb_file = test_data_dir / "12e8_imgt.pdb"
         npz_file = test_data_dir / "12e8_imgt_H_embeddings.npz"
@@ -155,7 +153,7 @@ class TestNPZvsPDBEquivalence:
     @pytest.mark.slow
     @pytest.mark.integration
     def test_12e8_light_chain_equivalence(self, tmp_path):
-        """Test that PDB and NPZ inputs give identical results for 12e8 L chain."""
+        """Test PDB and NPZ inputs give identical results for 12e8 L chain."""
         test_data_dir = Path("tests/data")
         pdb_file = test_data_dir / "12e8_imgt.pdb"
         npz_file = test_data_dir / "12e8_imgt_L_embeddings.npz"
@@ -232,14 +230,27 @@ class TestCLIValidation:
 
         # Try to run without --pdb-file
         result = subprocess.run(
-            ["sabr", "-i", str(npz_file), "-c", "H", "-o", str(output), "-n", "imgt"],
+            [
+                "sabr",
+                "-i",
+                str(npz_file),
+                "-c",
+                "H",
+                "-o",
+                str(output),
+                "-n",
+                "imgt",
+            ],
             capture_output=True,
             text=True,
         )
 
         # Should fail with error message about missing --pdb-file
         assert result.returncode != 0
-        assert "pdb-file" in result.stderr.lower() or "pdb file" in result.stderr.lower()
+        assert (
+            "pdb-file" in result.stderr.lower()
+            or "pdb file" in result.stderr.lower()
+        )
 
     def test_npz_requires_chain(self, tmp_path):
         """Test that NPZ input requires chain ID."""
@@ -254,7 +265,9 @@ class TestCLIValidation:
             idxs=np.arange(50),
             stdev=np.ones((50, 64)),
         )
-        pdb_file.write_text("ATOM      1  CA  ALA A   1       0.000   0.000   0.000\n")
+        pdb_file.write_text(
+            "ATOM      1  CA  ALA A   1       0.000   0.000   0.000\n"
+        )
 
         # Try to run without -c
         result = subprocess.run(

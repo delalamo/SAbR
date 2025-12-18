@@ -66,8 +66,8 @@ LOGGER = logging.getLogger(__name__)
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
     default=None,
     help=(
-        "Original PDB file for structure threading. Required when input (-i) is an NPZ file. "
-        "When input is a PDB file, this parameter is ignored."
+        "Original PDB file for structure threading. Required when input (-i) "
+        "is an NPZ file. When input is a PDB file, this parameter is ignored."
     ),
 )
 @click.option(
@@ -208,8 +208,8 @@ def main(
     # Validate pdb_file is provided for NPZ input
     if is_npz_input and not pdb_file:
         raise click.ClickException(
-            "Original PDB file (--pdb-file) is required when input is an NPZ file, "
-            "since the original structure is needed for renumbering output."
+            "Original PDB file (--pdb-file) is required when input is an NPZ "
+            "file, since the structure is needed for renumbering output."
         )
 
     # Validate pdb_file has correct extension if provided
@@ -268,8 +268,8 @@ def main(
             # Get sequence from the provided PDB file
             sequence = util.fetch_sequence_from_pdb(pdb_file, input_chain)
             LOGGER.info(
-                f"Fetched sequence from PDB file {pdb_file} chain {input_chain} "
-                f"(len {len(sequence)})"
+                f"Fetched sequence from PDB file {pdb_file} "
+                f"chain {input_chain} (len {len(sequence)})"
             )
 
         # Use the provided PDB file and chain for threading
@@ -291,7 +291,9 @@ def main(
         )
 
         # Generate MPNN embeddings for the input chain
-        input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
+        input_data = mpnn_embeddings.from_pdb(
+            input_pdb, input_chain, max_residues
+        )
 
         # Use the input PDB for threading
         source_pdb_for_threading = input_pdb
