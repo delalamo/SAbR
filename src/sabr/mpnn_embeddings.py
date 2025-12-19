@@ -2,17 +2,21 @@
 """MPNN embedding generation and management module.
 
 This module provides the MPNNEmbeddings dataclass and functions for
-generating, saving, and loading neural network embeddings from PDB
+generating, saving, and loading neural network embeddings from protein
 structures using the MPNN (Message Passing Neural Network) architecture.
 
 Key components:
 - MPNNEmbeddings: Dataclass for storing per-residue embeddings
-- from_pdb: Generate embeddings from a PDB file
+- from_pdb: Generate embeddings from a PDB or CIF file
 - from_npz: Load pre-computed embeddings from NumPy archive
 - _embed_pdb: Internal function for MPNN embedding computation
 
 Embeddings are 64-dimensional vectors computed for each residue,
 capturing structural and sequence features for alignment.
+
+Supported file formats:
+- PDB (.pdb): Standard Protein Data Bank format
+- mmCIF (.cif): Macromolecular Crystallographic Information File format
 """
 
 import logging
@@ -24,9 +28,8 @@ import haiku as hk
 import jax
 import numpy as np
 from jax import numpy as jnp
-from softalign import Input_MPNN
 
-from sabr import constants, model, util
+from sabr import constants, model, pdb_reader, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -151,7 +154,7 @@ def _embed_pdb(
             f"Got {len(chains)} chains: '{chains}'. "
             f"Please specify a single chain identifier."
         )
-    X1, mask1, chain1, res1, ids = Input_MPNN.get_inputs_mpnn(
+    X1, mask1, chain1, res1, ids = pdb_reader.get_inputs_mpnn(
         pdbfile, chain=chains
     )
     embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]

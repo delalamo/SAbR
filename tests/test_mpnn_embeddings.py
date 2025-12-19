@@ -385,14 +385,14 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
     def fake_get_input_mpnn(pdbfile, chain):
         length = 2
         ids = [f"id_{i}" for i in range(length)]
-        X = np.zeros((1, length, 1, 3), dtype=float)
+        X = np.zeros((1, length, 4, 3), dtype=float)
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
         return X, mask, chain_idx, res, ids
 
     monkeypatch.setattr(
-        mpnn_embeddings.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn
+        mpnn_embeddings.pdb_reader, "get_inputs_mpnn", fake_get_input_mpnn
     )
     monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
@@ -416,14 +416,14 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
     def fake_get_input_mpnn_mismatch(pdbfile, chain):
         length = 3
         ids = ["id_0", "id_1"]  # Only 2 IDs, but length is 3
-        X = np.zeros((1, length, 1, 3), dtype=float)
+        X = np.zeros((1, length, 4, 3), dtype=float)
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
         return X, mask, chain_idx, res, ids
 
     monkeypatch.setattr(
-        mpnn_embeddings.Input_MPNN,
+        mpnn_embeddings.pdb_reader,
         "get_inputs_mpnn",
         fake_get_input_mpnn_mismatch,
     )
