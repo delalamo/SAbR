@@ -385,14 +385,14 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
     def fake_get_input_mpnn(pdbfile, chain):
         length = 2
         ids = [f"id_{i}" for i in range(length)]
-        X = np.zeros((1, length, 1, 3), dtype=float)
+        X = np.zeros((1, length, 4, 3), dtype=float)
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
         return X, mask, chain_idx, res, ids
 
     monkeypatch.setattr(
-        mpnn_embeddings.Input_MPNN, "get_inputs_mpnn", fake_get_input_mpnn
+        mpnn_embeddings, "_get_inputs_mpnn", fake_get_input_mpnn
     )
     monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
@@ -416,15 +416,15 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
     def fake_get_input_mpnn_mismatch(pdbfile, chain):
         length = 3
         ids = ["id_0", "id_1"]  # Only 2 IDs, but length is 3
-        X = np.zeros((1, length, 1, 3), dtype=float)
+        X = np.zeros((1, length, 4, 3), dtype=float)
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
         return X, mask, chain_idx, res, ids
 
     monkeypatch.setattr(
-        mpnn_embeddings.Input_MPNN,
-        "get_inputs_mpnn",
+        mpnn_embeddings,
+        "_get_inputs_mpnn",
         fake_get_input_mpnn_mismatch,
     )
     monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
@@ -433,3 +433,55 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
         ValueError, match="IDs length.*does not match embeddings rows"
     ):
         mpnn_embeddings._embed_pdb("fake.pdb", chains="A")
+
+
+def test_get_inputs_mpnn_matches_softalign():
+    """Verify that _get_inputs_mpnn produces same output as softalign."""
+    from softalign import Input_MPNN
+
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+    chain = "H"
+
+    # Get outputs from both implementations
+    new_X, new_mask, new_chain, new_res, new_ids = (
+        mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
+    )
+    old_X, old_mask, old_chain, old_res, old_ids = Input_MPNN.get_inputs_mpnn(
+        str(test_pdb), chain=chain
+    )
+
+    # Compare shapes
+    assert (
+        new_X.shape == old_X.shape
+    ), f"X shape mismatch: {new_X.shape} vs {old_X.shape}"
+    assert (
+        new_mask.shape == old_mask.shape
+    ), f"mask shape mismatch: {new_mask.shape} vs {old_mask.shape}"
+    assert (
+        new_chain.shape == old_chain.shape
+    ), f"chain shape mismatch: {new_chain.shape} vs {old_chain.shape}"
+    assert (
+        new_res.shape == old_res.shape
+    ), f"res shape mismatch: {new_res.shape} vs {old_res.shape}"
+    assert len(new_ids) == len(
+        old_ids
+    ), f"ids length mismatch: {len(new_ids)} vs {len(old_ids)}"
+
+    # Compare residue IDs (softalign returns numpy array, we return list)
+    old_ids_list = list(old_ids)
+    assert new_ids == old_ids_list, f"IDs mismatch: {new_ids} vs {old_ids_list}"
+
+    # Compare coordinates (allowing small numerical differences)
+    np.testing.assert_allclose(
+        new_X, old_X, rtol=1e-5, atol=1e-5, err_msg="Coordinate arrays differ"
+    )
+
+    # Compare mask values
+    np.testing.assert_array_equal(
+        new_mask, old_mask, err_msg="Mask arrays differ"
+    )
+
+    # Compare chain values
+    np.testing.assert_array_equal(
+        new_chain, old_chain, err_msg="Chain arrays differ"
+    )

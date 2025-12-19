@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""PDB file modification and residue renumbering module.
+"""Structure file modification and residue renumbering module.
 
-This module provides functions for threading ANARCI alignments onto PDB
+This module provides functions for threading ANARCI alignments onto protein
 structures, renumbering residues according to antibody numbering schemes.
 
 Key functions:
-- thread_alignment: Main entry point for renumbering a PDB chain
+- thread_alignment: Main entry point for renumbering a structure chain
 - thread_onto_chain: Core renumbering logic for a single chain
 - validate_output_format: Ensures mmCIF format for extended insertions
+
+Supported file formats:
+- Input: PDB (.pdb) and mmCIF (.cif)
+- Output: PDB (.pdb) and mmCIF (.cif)
 
 The renumbering process handles three regions:
 1. PRE-Fv: Residues before the variable region (numbered backwards)
@@ -215,7 +219,13 @@ def thread_alignment(
         f"writing to {output_pdb}"
     )
     LOGGER.info(align_msg)
-    parser = PDB.PDBParser(QUIET=True)
+
+    # Auto-detect input format based on file extension
+    if pdb_file.lower().endswith(".cif"):
+        parser = PDB.MMCIFParser(QUIET=True)
+        LOGGER.debug("Detected CIF input; using MMCIFParser")
+    else:
+        parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("input_structure", pdb_file)
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)

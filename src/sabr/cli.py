@@ -4,7 +4,7 @@
 This module provides the CLI entry point for the SAbR (Structure-based
 Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
 
-1. Load PDB structure and extract sequence
+1. Load structure (PDB or mmCIF format) and extract sequence
 2. Generate MPNN embeddings for the target chain
 3. Align embeddings against species references using SoftAlign
 4. Convert alignment to HMM state vector
@@ -13,6 +13,7 @@ Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
 
 Usage:
     sabr -i input.pdb -c A -o output.pdb -n imgt
+    sabr -i input.cif -c A -o output.cif -n imgt
 """
 
 import logging
@@ -36,8 +37,9 @@ LOGGER = logging.getLogger(__name__)
 @click.command(
     context_settings={"help_option_names": ["-h", "--help"]},
     help=(
-        "Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB "
-        "files using the 3D coordinates of backbone atoms."
+        "Structure-based Antibody Renumbering (SAbR) renumbers antibody "
+        "structure files using the 3D coordinates of backbone atoms. "
+        "Supports both PDB and mmCIF input formats."
     ),
 )
 @click.option(
@@ -46,7 +48,7 @@ LOGGER = logging.getLogger(__name__)
     "input_pdb",
     required=True,
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
-    help="Input PDB file.",
+    help="Input structure file (PDB or mmCIF format).",
 )
 @click.option(
     "-c",
@@ -170,9 +172,11 @@ def main(
         raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
 
     # Validate input file has correct extension
-    if not input_pdb.lower().endswith(".pdb"):
+    valid_input_ext = (".pdb", ".cif")
+    if not input_pdb.lower().endswith(valid_input_ext):
         raise click.ClickException(
-            f"Input file must be a PDB file (.pdb). Got: '{input_pdb}'"
+            f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. "
+            f"Got: '{input_pdb}'"
         )
 
     # Validate chain identifier
