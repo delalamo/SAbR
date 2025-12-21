@@ -24,10 +24,37 @@ import haiku as hk
 import jax
 import numpy as np
 from jax import numpy as jnp
+from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
-from sabr import constants, model, mpnn_embeddings, softalign_output, util
+from sabr import constants, model, mpnn_embeddings, softalign_output
 
 LOGGER = logging.getLogger(__name__)
+
+
+def read_softalign_params(
+    params_name: str = "CONT_SW_05_T_3_1",
+    params_path: str = "softalign.models",
+) -> dict:
+    """Load SoftAlign parameters from package resources.
+
+    Args:
+        params_name: Name of the model parameters file (without extension).
+        params_path: Package path containing the parameters file.
+
+    Returns:
+        Dictionary containing the model parameters as JAX arrays.
+    """
+    package_files = files(params_path)
+    npz_path = package_files / f"{params_name}.npz"
+
+    with open(npz_path, "rb") as f:
+        data = dict(np.load(f, allow_pickle=False))
+
+    # Unflatten the dictionary structure and convert to JAX arrays
+    params = unflatten_dict(data)
+    params = convert_numpy_to_jax(params)
+    LOGGER.info(f"Loaded model parameters from {npz_path}")
+    return params
 
 
 def _align_fn(
@@ -97,7 +124,7 @@ class SoftAligner:
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
-        self.model_params = util.read_softalign_params(
+        self.model_params = read_softalign_params(
             params_name=params_name, params_path=params_path
         )
         self.temperature = temperature

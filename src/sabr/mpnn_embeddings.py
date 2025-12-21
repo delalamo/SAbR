@@ -31,7 +31,7 @@ from Bio.PDB import MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
 from jax import numpy as jnp
 
-from sabr import constants, model, util
+from sabr import constants, model
 
 LOGGER = logging.getLogger(__name__)
 
@@ -411,7 +411,10 @@ def from_pdb(
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    model_params = util.read_softalign_params(
+    # Lazy import to avoid circular dependency with softaligner
+    from sabr import softaligner
+
+    model_params = softaligner.read_softalign_params(
         params_name=params_name, params_path=params_path
     )
     key = jax.random.PRNGKey(random_seed)
