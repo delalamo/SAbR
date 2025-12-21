@@ -51,7 +51,7 @@ def convert_pickle_to_npz(pickle_path: Path) -> Path:
     with open(pickle_path, "rb") as f:
         params = pickle.load(f)
 
-    print(f"  Converting to numpy...")
+    print("  Converting to numpy...")
     params_np = convert_to_numpy(params)
 
     # Flatten nested dicts for npz storage
@@ -68,8 +68,11 @@ def convert_pickle_to_npz(pickle_path: Path) -> Path:
     return npz_path
 
 
-def flatten_dict(d: Dict, parent_key: str = "", sep: str = "/") -> Dict:
-    """Flatten a nested dictionary using separator in keys."""
+def flatten_dict(d: Dict, parent_key: str = "", sep: str = "|||") -> Dict:
+    """Flatten a nested dictionary using separator in keys.
+
+    Uses ||| as separator to avoid conflicts with haiku's / in module names.
+    """
     items = []
     for k, v in d.items():
         new_key = f"{parent_key}{sep}{k}" if parent_key else k
@@ -80,7 +83,7 @@ def flatten_dict(d: Dict, parent_key: str = "", sep: str = "/") -> Dict:
     return dict(items)
 
 
-def unflatten_dict(d: Dict, sep: str = "/") -> Dict:
+def unflatten_dict(d: Dict, sep: str = "|||") -> Dict:
     """Unflatten a dictionary with separator-joined keys."""
     result = {}
     for key, value in d.items():
@@ -96,7 +99,13 @@ def unflatten_dict(d: Dict, sep: str = "/") -> Dict:
 
 def main():
     # Find model files
-    models_dir = Path(__file__).parent.parent / "external" / "SoftAlign" / "softalign" / "models"
+    models_dir = (
+        Path(__file__).parent.parent
+        / "external"
+        / "SoftAlign"
+        / "softalign"
+        / "models"
+    )
 
     if not models_dir.exists():
         print(f"Error: Models directory not found: {models_dir}")
@@ -111,7 +120,10 @@ def main():
     # Also convert joblib pkl files (they use pickle internally)
     pkl_files = list(models_dir.glob("*.pkl"))
 
-    print(f"Found {len(pkl_files)} .pkl files and {len(pickle_files)} parameter files")
+    print(
+        f"Found {len(pkl_files)} .pkl files and "
+        f"{len(pickle_files)} parameter files"
+    )
     print()
 
     converted = []
@@ -133,10 +145,11 @@ def main():
         try:
             # These use joblib, need special handling
             import joblib
+
             print(f"Loading {path} (joblib)...")
             data = joblib.load(path)
 
-            print(f"  Converting to numpy...")
+            print("  Converting to numpy...")
             data_np = convert_to_numpy(data)
 
             flat_data = flatten_dict(data_np)

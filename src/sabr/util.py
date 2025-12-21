@@ -89,12 +89,12 @@ def _fetch_sequence_from_cif(cif_file: str, chain: str) -> str:
     )
 
 
-def _unflatten_dict(d: Dict[str, Any], sep: str = "/") -> Dict[str, Any]:
+def _unflatten_dict(d: Dict[str, Any], sep: str = "|||") -> Dict[str, Any]:
     """Unflatten a dictionary with separator-joined keys.
 
     Args:
-        d: Flat dictionary with keys like "a/b/c".
-        sep: Separator used in keys.
+        d: Flat dictionary with keys like "a|||b|||c".
+        sep: Separator used in keys (||| to avoid conflicts with haiku's /).
 
     Returns:
         Nested dictionary structure.
