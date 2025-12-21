@@ -21,9 +21,8 @@ Supported file formats:
 
 import logging
 from dataclasses import dataclass
-from importlib.resources import files
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 import haiku as hk
 import jax
@@ -31,38 +30,10 @@ import numpy as np
 from Bio.PDB import MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
 from jax import numpy as jnp
-from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
-from sabr import constants, model
+from sabr import constants, model, util
 
 LOGGER = logging.getLogger(__name__)
-
-
-def read_softalign_params(
-    params_name: str = "CONT_SW_05_T_3_1",
-    params_path: str = "softalign.models",
-) -> Dict[str, Any]:
-    """Load SoftAlign parameters from package resources.
-
-    Args:
-        params_name: Name of the model parameters file (without extension).
-        params_path: Package path containing the parameters file.
-
-    Returns:
-        Dictionary containing the model parameters as JAX arrays.
-    """
-    package_files = files(params_path)
-    npz_path = package_files / f"{params_name}.npz"
-
-    with open(npz_path, "rb") as f:
-        data = dict(np.load(f, allow_pickle=False))
-
-    # Unflatten the dictionary structure and convert to JAX arrays
-    params = unflatten_dict(data)
-    params = convert_numpy_to_jax(params)
-    LOGGER.info(f"Loaded model parameters from {npz_path}")
-    return params
-
 
 # Constants for CB position calculation (standard protein geometry)
 _CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
@@ -440,7 +411,7 @@ def from_pdb(
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    model_params = read_softalign_params(
+    model_params = util.read_softalign_params(
         params_name=params_name, params_path=params_path
     )
     key = jax.random.PRNGKey(random_seed)

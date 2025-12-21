@@ -25,7 +25,7 @@ import jax
 import numpy as np
 from jax import numpy as jnp
 
-from sabr import constants, model, mpnn_embeddings, softalign_output
+from sabr import constants, model, mpnn_embeddings, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -97,7 +97,7 @@ class SoftAligner:
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
-        self.model_params = mpnn_embeddings.read_softalign_params(
+        self.model_params = util.read_softalign_params(
             params_name=params_name, params_path=params_path
         )
         self.temperature = temperature
