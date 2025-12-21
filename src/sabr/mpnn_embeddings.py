@@ -121,7 +121,8 @@ def _get_inputs_mpnn(
         chain: Chain identifier to extract. If None, uses first chain.
 
     Returns:
-        Tuple of (coords, mask, chain_ids, residue_indices, residue_ids, sequence):
+        Tuple containing:
+        (coords, mask, chain_ids, residue_indices, residue_ids, sequence):
         - coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB)
         - mask: Binary mask for valid residues [1, N]
         - chain_ids: Chain identifiers (all ones) [1, N]
@@ -361,7 +362,9 @@ def _embed_pdb(
             f"Got {len(chains)} chains: '{chains}'. "
             f"Please specify a single chain identifier."
         )
-    X1, mask1, chain1, res1, ids, sequence = _get_inputs_mpnn(pdbfile, chain=chains)
+    X1, mask1, chain1, res1, ids, sequence = _get_inputs_mpnn(
+        pdbfile, chain=chains
+    )
     embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
     if len(ids) != embeddings.shape[0]:
         raise ValueError(
