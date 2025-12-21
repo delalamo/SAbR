@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from Bio import SeqIO
 
 from sabr import constants, model, mpnn_embeddings
 
@@ -486,4 +487,44 @@ def test_get_inputs_mpnn_matches_softalign():
     # Compare chain values
     np.testing.assert_array_equal(
         new_chain, old_chain, err_msg="Chain arrays differ"
+    )
+
+
+def test_get_inputs_mpnn_sequence_matches_seqio():
+    """Verify that _get_inputs_mpnn sequence matches BioPython SeqIO pdb-atom.
+
+    Note: _get_inputs_mpnn only includes residues with complete backbone atoms
+    (N, CA, C), while SeqIO includes all residues (with X for those missing
+    backbone atoms). So we compare after removing X residues from SeqIO output.
+    """
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+    chain = "H"
+
+    # Get sequence from _get_inputs_mpnn
+    _, _, _, _, _, mpnn_sequence = mpnn_embeddings._get_inputs_mpnn(
+        str(test_pdb), chain=chain
+    )
+
+    # Get sequence from BioPython SeqIO pdb-atom
+    seqio_sequence = None
+    for record in SeqIO.parse(str(test_pdb), "pdb-atom"):
+        if record.id.endswith(chain):
+            seqio_sequence = str(record.seq)
+            break
+
+    assert seqio_sequence is not None, f"Chain {chain} not found via SeqIO"
+
+    # Remove X residues from SeqIO sequence (these are residues missing
+    # backbone atoms, which _get_inputs_mpnn skips)
+    seqio_sequence_no_x = seqio_sequence.replace("X", "")
+
+    # Both should have the same length and content
+    assert len(mpnn_sequence) == len(seqio_sequence_no_x), (
+        f"Sequence length mismatch: mpnn={len(mpnn_sequence)}, "
+        f"seqio (without X)={len(seqio_sequence_no_x)}"
+    )
+    assert mpnn_sequence == seqio_sequence_no_x, (
+        f"Sequence mismatch:\n"
+        f"mpnn:           {mpnn_sequence}\n"
+        f"seqio (no X):   {seqio_sequence_no_x}"
     )
