@@ -22,7 +22,7 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import haiku as hk
 import jax
@@ -39,6 +39,30 @@ LOGGER = logging.getLogger(__name__)
 _CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
 _CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
 _CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
+
+
+@dataclass(frozen=True)
+class MPNNInputs:
+    """Input data for MPNN embedding computation.
+
+    Contains backbone coordinates and residue information extracted
+    from a PDB or CIF structure file.
+
+    Attributes:
+        coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB).
+        mask: Binary mask for valid residues [1, N].
+        chain_ids: Chain identifiers (all ones) [1, N].
+        residue_indices: Sequential residue indices [1, N].
+        residue_ids: List of residue ID strings.
+        sequence: Amino acid sequence as one-letter codes.
+    """
+
+    coords: np.ndarray
+    mask: np.ndarray
+    chain_ids: np.ndarray
+    residue_indices: np.ndarray
+    residue_ids: List[str]
+    sequence: str
 
 
 def _np_norm(
@@ -106,9 +130,7 @@ def _get_structure(file_path: str) -> Structure:
     return parser.get_structure("structure", file_path)
 
 
-def _get_inputs_mpnn(
-    file_path: str, chain: str | None = None
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[str], str]:
+def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
     """Extract coordinates, residue info, and sequence from a PDB or CIF file.
 
     This function provides the same interface as
@@ -121,14 +143,7 @@ def _get_inputs_mpnn(
         chain: Chain identifier to extract. If None, uses first chain.
 
     Returns:
-        Tuple containing:
-        (coords, mask, chain_ids, residue_indices, residue_ids, sequence):
-        - coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB)
-        - mask: Binary mask for valid residues [1, N]
-        - chain_ids: Chain identifiers (all ones) [1, N]
-        - residue_indices: Sequential residue indices [1, N]
-        - residue_ids: List of residue ID strings
-        - sequence: Amino acid sequence as one-letter codes (X for unknown)
+        MPNNInputs containing backbone coordinates and residue information.
 
     Raises:
         ValueError: If the specified chain is not found.
@@ -232,13 +247,13 @@ def _get_inputs_mpnn(
     )
 
     # Add batch dimension to match softalign output format
-    return (
-        coords[None, :],  # [1, N, 4, 3]
-        mask[None, :],  # [1, N]
-        chain_ids[None, :],  # [1, N]
-        residue_indices[None, :],  # [1, N]
-        ids_list,
-        sequence,
+    return MPNNInputs(
+        coords=coords[None, :],  # [1, N, 4, 3]
+        mask=mask[None, :],  # [1, N]
+        chain_ids=chain_ids[None, :],  # [1, N]
+        residue_indices=residue_indices[None, :],  # [1, N]
+        residue_ids=ids_list,
+        sequence=sequence,
     )
 
 
@@ -362,15 +377,18 @@ def _embed_pdb(
             f"Got {len(chains)} chains: '{chains}'. "
             f"Please specify a single chain identifier."
         )
-    X1, mask1, chain1, res1, ids, sequence = _get_inputs_mpnn(
-        pdbfile, chain=chains
-    )
-    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
-    if len(ids) != embeddings.shape[0]:
+    inputs = _get_inputs_mpnn(pdbfile, chain=chains)
+    embeddings = e2e_model.MPNN(
+        inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
+    )[0]
+    if len(inputs.residue_ids) != embeddings.shape[0]:
         raise ValueError(
-            f"IDs length ({len(ids)}) does not match embeddings rows"
-            f" ({embeddings.shape[0]})"
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
         )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
 
     if max_residues > 0 and len(ids) > max_residues:
         LOGGER.info(
