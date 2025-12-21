@@ -6,6 +6,8 @@ SAbR (<u>S</U>tructure-based <u>A</u>nti<u>b</u>ody <u>R</u>enumbering) renumber
 
 ## Installation and use
 
+**Requirements:** Python 3.11 or higher
+
 1. SAbR can be installed into a virtual environment via pip:
 
 ```bash
