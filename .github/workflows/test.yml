@@ -10,9 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout and setup Python
-        uses: ./.github/actions/checkout-and-setup-python
+      - uses: actions/checkout@v4
         with:
           submodules: true
+      - uses: ./.github/actions/setup-python
       - run: pip install -e .[test]
       - run: pytest --cov=sabr --cov-report=term-missing

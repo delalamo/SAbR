@@ -14,11 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout and setup Python
-        uses: ./.github/actions/checkout-and-setup-python
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0 # fetch all history and tags for hatch-vcs
+
+      - uses: ./.github/actions/setup-python
 
       - name: Prepare build environment
         uses: ./.github/actions/prepare-build
