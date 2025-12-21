@@ -5,10 +5,10 @@ from typing import List, Tuple
 import numpy as np
 import pytest
 from ANARCI import anarci
-from Bio import PDB
+from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, util
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings
 from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
@@ -54,7 +54,14 @@ def run_threading_pipeline(
     species: str,
     tmp_path: Path,
 ) -> int:
-    sequence = util.fetch_sequence_from_pdb(str(pdb_path), chain)
+    # Extract sequence using SeqIO (removes X residues to match main code)
+    sequence = None
+    for record in SeqIO.parse(str(pdb_path), "pdb-atom"):
+        if record.id.endswith(chain):
+            sequence = str(record.seq).replace("X", "")
+            break
+    if sequence is None:
+        raise ValueError(f"Chain {chain} not found in {pdb_path}")
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
     subsequence = "-" * start + sequence[start:end]
     anarci_out, anarci_start, anarci_end = (

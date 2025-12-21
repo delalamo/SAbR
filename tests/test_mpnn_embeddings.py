@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from Bio import SeqIO
 
 from sabr import constants, model, mpnn_embeddings
 
@@ -389,7 +390,15 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
+        sequence = "A" * length  # Mock sequence matching length
+        return mpnn_embeddings.MPNNInputs(
+            coords=X,
+            mask=mask,
+            chain_ids=chain_idx,
+            residue_indices=res,
+            residue_ids=ids,
+            sequence=sequence,
+        )
 
     monkeypatch.setattr(
         mpnn_embeddings, "_get_inputs_mpnn", fake_get_input_mpnn
@@ -420,7 +429,15 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
+        sequence = "A" * length  # Mock sequence matching coord length
+        return mpnn_embeddings.MPNNInputs(
+            coords=X,
+            mask=mask,
+            chain_ids=chain_idx,
+            residue_indices=res,
+            residue_ids=ids,
+            sequence=sequence,
+        )
 
     monkeypatch.setattr(
         mpnn_embeddings,
@@ -443,45 +460,131 @@ def test_get_inputs_mpnn_matches_softalign():
     chain = "H"
 
     # Get outputs from both implementations
-    new_X, new_mask, new_chain, new_res, new_ids = (
-        mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
-    )
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
     old_X, old_mask, old_chain, old_res, old_ids = Input_MPNN.get_inputs_mpnn(
         str(test_pdb), chain=chain
     )
 
     # Compare shapes
     assert (
-        new_X.shape == old_X.shape
-    ), f"X shape mismatch: {new_X.shape} vs {old_X.shape}"
+        inputs.coords.shape == old_X.shape
+    ), f"X shape mismatch: {inputs.coords.shape} vs {old_X.shape}"
     assert (
-        new_mask.shape == old_mask.shape
-    ), f"mask shape mismatch: {new_mask.shape} vs {old_mask.shape}"
+        inputs.mask.shape == old_mask.shape
+    ), f"mask shape mismatch: {inputs.mask.shape} vs {old_mask.shape}"
     assert (
-        new_chain.shape == old_chain.shape
-    ), f"chain shape mismatch: {new_chain.shape} vs {old_chain.shape}"
+        inputs.chain_ids.shape == old_chain.shape
+    ), f"chain shape mismatch: {inputs.chain_ids.shape} vs {old_chain.shape}"
     assert (
-        new_res.shape == old_res.shape
-    ), f"res shape mismatch: {new_res.shape} vs {old_res.shape}"
-    assert len(new_ids) == len(
+        inputs.residue_indices.shape == old_res.shape
+    ), f"res shape mismatch: {inputs.residue_indices.shape} vs {old_res.shape}"
+    assert len(inputs.residue_ids) == len(
         old_ids
-    ), f"ids length mismatch: {len(new_ids)} vs {len(old_ids)}"
+    ), f"ids length mismatch: {len(inputs.residue_ids)} vs {len(old_ids)}"
 
     # Compare residue IDs (softalign returns numpy array, we return list)
     old_ids_list = list(old_ids)
-    assert new_ids == old_ids_list, f"IDs mismatch: {new_ids} vs {old_ids_list}"
+    assert (
+        inputs.residue_ids == old_ids_list
+    ), f"IDs mismatch: {inputs.residue_ids} vs {old_ids_list}"
 
     # Compare coordinates (allowing small numerical differences)
     np.testing.assert_allclose(
-        new_X, old_X, rtol=1e-5, atol=1e-5, err_msg="Coordinate arrays differ"
+        inputs.coords,
+        old_X,
+        rtol=1e-5,
+        atol=1e-5,
+        err_msg="Coordinate arrays differ",
     )
 
     # Compare mask values
     np.testing.assert_array_equal(
-        new_mask, old_mask, err_msg="Mask arrays differ"
+        inputs.mask, old_mask, err_msg="Mask arrays differ"
     )
 
     # Compare chain values
     np.testing.assert_array_equal(
-        new_chain, old_chain, err_msg="Chain arrays differ"
+        inputs.chain_ids, old_chain, err_msg="Chain arrays differ"
     )
+
+
+def test_get_inputs_mpnn_sequence_matches_seqio():
+    """Verify that _get_inputs_mpnn sequence matches BioPython SeqIO pdb-atom.
+
+    Note: _get_inputs_mpnn only includes residues with complete backbone atoms
+    (N, CA, C), while SeqIO includes all residues (with X for those missing
+    backbone atoms). So we compare after removing X residues from SeqIO output.
+    """
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+    chain = "H"
+
+    # Get sequence from _get_inputs_mpnn
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
+    mpnn_sequence = inputs.sequence
+
+    # Get sequence from BioPython SeqIO pdb-atom
+    seqio_sequence = None
+    for record in SeqIO.parse(str(test_pdb), "pdb-atom"):
+        if record.id.endswith(chain):
+            seqio_sequence = str(record.seq)
+            break
+
+    assert seqio_sequence is not None, f"Chain {chain} not found via SeqIO"
+
+    # Remove X residues from SeqIO sequence (these are residues missing
+    # backbone atoms, which _get_inputs_mpnn skips)
+    seqio_sequence_no_x = seqio_sequence.replace("X", "")
+
+    # Both should have the same length and content
+    assert len(mpnn_sequence) == len(seqio_sequence_no_x), (
+        f"Sequence length mismatch: mpnn={len(mpnn_sequence)}, "
+        f"seqio (without X)={len(seqio_sequence_no_x)}"
+    )
+    assert mpnn_sequence == seqio_sequence_no_x, (
+        f"Sequence mismatch:\n"
+        f"mpnn:           {mpnn_sequence}\n"
+        f"seqio (no X):   {seqio_sequence_no_x}"
+    )
+
+
+def test_get_inputs_mpnn_parses_cif_file():
+    """Test that _get_inputs_mpnn correctly parses CIF files."""
+    cif_file = Path(__file__).parent / "data" / "test_minimal.cif"
+
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(cif_file), chain="A")
+
+    assert isinstance(inputs, mpnn_embeddings.MPNNInputs)
+    assert inputs.coords.shape[1] == 2  # 2 residues
+    assert inputs.coords.shape[2] == 4  # N, CA, C, CB
+    assert inputs.coords.shape[3] == 3  # x, y, z
+    assert len(inputs.residue_ids) == 2
+    assert inputs.sequence == "AG"
+
+
+def test_get_inputs_mpnn_raises_on_missing_chain():
+    """Test that requesting a non-existent chain raises ValueError."""
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+
+    with pytest.raises(
+        ValueError, match="Chain 'Z' not found.*Available chains"
+    ):
+        mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain="Z")
+
+
+def test_get_inputs_mpnn_handles_insertion_codes():
+    """Test that residues with insertion codes are correctly represented."""
+    pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
+
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
+
+    assert len(inputs.residue_ids) == 4
+    assert inputs.residue_ids == ["52", "52A", "52B", "53"]
+    assert inputs.sequence == "AGST"
+
+
+def test_get_inputs_mpnn_raises_on_empty_chain():
+    """Test that a chain with no valid residues raises ValueError."""
+    pdb_file = Path(__file__).parent / "data" / "test_no_backbone.pdb"
+
+    with pytest.raises(ValueError, match="No valid residues found"):
+        mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
