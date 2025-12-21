@@ -389,7 +389,8 @@ def test_embed_pdb_returns_embeddings(monkeypatch):
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
+        sequence = "A" * length  # Mock sequence matching length
+        return X, mask, chain_idx, res, ids, sequence
 
     monkeypatch.setattr(
         mpnn_embeddings, "_get_inputs_mpnn", fake_get_input_mpnn
@@ -420,7 +421,8 @@ def test_embed_pdb_id_mismatch_raises_error(monkeypatch):
         mask = np.zeros((1, length), dtype=float)
         chain_idx = np.zeros((1, length), dtype=int)
         res = np.zeros((1, length), dtype=int)
-        return X, mask, chain_idx, res, ids
+        sequence = "A" * length  # Mock sequence matching coord length
+        return X, mask, chain_idx, res, ids, sequence
 
     monkeypatch.setattr(
         mpnn_embeddings,
@@ -443,7 +445,7 @@ def test_get_inputs_mpnn_matches_softalign():
     chain = "H"
 
     # Get outputs from both implementations
-    new_X, new_mask, new_chain, new_res, new_ids = (
+    new_X, new_mask, new_chain, new_res, new_ids, new_sequence = (
         mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
     )
     old_X, old_mask, old_chain, old_res, old_ids = Input_MPNN.get_inputs_mpnn(
