@@ -334,7 +334,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
     from ANARCI import anarci
 
-    from sabr import aln2hmm, mpnn_embeddings, softaligner, util
+    from sabr import aln2hmm, mpnn_embeddings, softaligner
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -344,13 +344,13 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
     # Use SoftAligner to generate alignment
     try:
-        # Generate embeddings first
+        # Generate embeddings first (also extracts sequence)
         input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
         result = aligner(input_data, chain_type=constants.ChainType.LIGHT)
 
         # Convert to ANARCI format
-        sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
+        sequence = input_data.sequence
         sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
@@ -390,7 +390,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
     from ANARCI import anarci
     from Bio import PDB
 
-    from sabr import aln2hmm, mpnn_embeddings, softaligner, util
+    from sabr import aln2hmm, mpnn_embeddings, softaligner
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -400,13 +400,13 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
     # Use SoftAligner to generate alignment
     try:
-        # Generate embeddings first
+        # Generate embeddings first (also extracts sequence)
         input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
         result = aligner(input_data, chain_type=constants.ChainType.LIGHT)
 
         # Convert to ANARCI format
-        sequence = util.fetch_sequence_from_pdb(str(pdb_path), "M")
+        sequence = input_data.sequence
         sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
