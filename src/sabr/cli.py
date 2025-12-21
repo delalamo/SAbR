@@ -28,7 +28,6 @@ from sabr import (
     edit_pdb,
     mpnn_embeddings,
     softaligner,
-    util,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -220,7 +219,17 @@ def main(
         raise click.ClickException(
             f"{output_file} exists, rerun with --overwrite to replace it"
         )
-    sequence = util.fetch_sequence_from_pdb(input_pdb, input_chain)
+
+    # Convert chain_type string to enum
+    chain_type_enum = constants.ChainType(chain_type)
+    chain_type_filter = (
+        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
+    )
+
+    # Generate MPNN embeddings for the input chain (also extracts sequence)
+    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
+    sequence = input_data.sequence
+
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
     if max_residues > 0:
         LOGGER.info(
@@ -231,14 +240,6 @@ def main(
         f"Fetched sequence of length {len(sequence)} from "
         f"{input_pdb} chain {input_chain}"
     )
-    # Convert chain_type string to enum
-    chain_type_enum = constants.ChainType(chain_type)
-    chain_type_filter = (
-        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
-    )
-
-    # Generate MPNN embeddings for the input chain
-    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
 
     # Align embeddings against species references
     soft_aligner = softaligner.SoftAligner()
