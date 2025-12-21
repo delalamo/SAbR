@@ -14,9 +14,9 @@ from typing import Any, Dict
 import numpy as np
 from Bio import SeqIO
 from Bio.PDB import MMCIFParser
+from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
 from sabr.constants import AA_3TO1
-from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
 LOGGER = logging.getLogger(__name__)
 
