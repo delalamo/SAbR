@@ -545,3 +545,112 @@ def test_get_inputs_mpnn_sequence_matches_seqio():
         f"mpnn:           {mpnn_sequence}\n"
         f"seqio (no X):   {seqio_sequence_no_x}"
     )
+
+
+def test_get_inputs_mpnn_parses_cif_file(tmp_path):
+    """Test that _get_inputs_mpnn correctly parses CIF files."""
+    # Create a minimal valid CIF file with two residues
+    # Must include all required fields for BioPython's MMCIFParser
+    cif_content = """data_test
+#
+loop_
+_atom_site.group_PDB
+_atom_site.id
+_atom_site.type_symbol
+_atom_site.label_atom_id
+_atom_site.label_alt_id
+_atom_site.label_comp_id
+_atom_site.label_asym_id
+_atom_site.label_entity_id
+_atom_site.label_seq_id
+_atom_site.pdbx_PDB_ins_code
+_atom_site.Cartn_x
+_atom_site.Cartn_y
+_atom_site.Cartn_z
+_atom_site.occupancy
+_atom_site.B_iso_or_equiv
+_atom_site.pdbx_PDB_model_num
+_atom_site.auth_seq_id
+_atom_site.auth_asym_id
+ATOM 1 N N . ALA A 1 1 ? 0.000 0.000 0.000 1.00 0.00 1 1 A
+ATOM 2 C CA . ALA A 1 1 ? 1.458 0.000 0.000 1.00 0.00 1 1 A
+ATOM 3 C C . ALA A 1 1 ? 2.009 1.420 0.000 1.00 0.00 1 1 A
+ATOM 4 O O . ALA A 1 1 ? 1.251 2.390 0.000 1.00 0.00 1 1 A
+ATOM 5 N N . GLY A 1 2 ? 3.330 1.540 0.000 1.00 0.00 1 2 A
+ATOM 6 C CA . GLY A 1 2 ? 3.970 2.850 0.000 1.00 0.00 1 2 A
+ATOM 7 C C . GLY A 1 2 ? 5.480 2.750 0.000 1.00 0.00 1 2 A
+ATOM 8 O O . GLY A 1 2 ? 6.100 1.680 0.000 1.00 0.00 1 2 A
+#
+"""
+    cif_file = tmp_path / "test.cif"
+    cif_file.write_text(cif_content)
+
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(cif_file), chain="A")
+
+    assert isinstance(inputs, mpnn_embeddings.MPNNInputs)
+    assert inputs.coords.shape[1] == 2  # 2 residues
+    assert inputs.coords.shape[2] == 4  # N, CA, C, CB
+    assert inputs.coords.shape[3] == 3  # x, y, z
+    assert len(inputs.residue_ids) == 2
+    assert inputs.sequence == "AG"
+
+
+def test_get_inputs_mpnn_raises_on_missing_chain():
+    """Test that requesting a non-existent chain raises ValueError."""
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+
+    with pytest.raises(
+        ValueError, match="Chain 'Z' not found.*Available chains"
+    ):
+        mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain="Z")
+
+
+def test_get_inputs_mpnn_handles_insertion_codes(tmp_path):
+    """Test that residues with insertion codes are correctly represented."""
+    # Create a PDB with insertion codes (e.g., residue 52A, 52B)
+    # fmt: off
+    pdb_content = (
+        "ATOM      1  N   ALA A  52      0.000   0.000   0.000  1.00  0.00\n"
+        "ATOM      2  CA  ALA A  52      1.458   0.000   0.000  1.00  0.00\n"
+        "ATOM      3  C   ALA A  52      2.009   1.420   0.000  1.00  0.00\n"
+        "ATOM      4  O   ALA A  52      1.251   2.390   0.000  1.00  0.00\n"
+        "ATOM      5  N   GLY A  52A     3.330   1.540   0.000  1.00  0.00\n"
+        "ATOM      6  CA  GLY A  52A     3.970   2.850   0.000  1.00  0.00\n"
+        "ATOM      7  C   GLY A  52A     5.480   2.750   0.000  1.00  0.00\n"
+        "ATOM      8  O   GLY A  52A     6.100   1.680   0.000  1.00  0.00\n"
+        "ATOM      9  N   SER A  52B     6.050   3.950   0.000  1.00  0.00\n"
+        "ATOM     10  CA  SER A  52B     7.500   4.100   0.000  1.00  0.00\n"
+        "ATOM     11  C   SER A  52B     8.100   5.500   0.000  1.00  0.00\n"
+        "ATOM     12  O   SER A  52B     7.350   6.470   0.000  1.00  0.00\n"
+        "ATOM     13  N   THR A  53      9.410   5.600   0.000  1.00  0.00\n"
+        "ATOM     14  CA  THR A  53     10.100   6.900   0.000  1.00  0.00\n"
+        "ATOM     15  C   THR A  53     11.610   6.800   0.000  1.00  0.00\n"
+        "ATOM     16  O   THR A  53     12.230   5.730   0.000  1.00  0.00\n"
+        "END\n"
+    )
+    # fmt: on
+    pdb_file = tmp_path / "insertion_codes.pdb"
+    pdb_file.write_text(pdb_content)
+
+    inputs = mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
+
+    assert len(inputs.residue_ids) == 4
+    assert inputs.residue_ids == ["52", "52A", "52B", "53"]
+    assert inputs.sequence == "AGST"
+
+
+def test_get_inputs_mpnn_raises_on_empty_chain(tmp_path):
+    """Test that a chain with no valid residues raises ValueError."""
+    # Create a PDB with residues missing backbone atoms (only CB atoms)
+    # fmt: off
+    pdb_content = (
+        "ATOM      1  CB  ALA A   1      0.000   0.000   0.000  1.00  0.00\n"
+        "ATOM      2  CB  GLY A   2      3.800   0.000   0.000  1.00  0.00\n"
+        "END\n"
+    )
+    # fmt: on
+    pdb_file = tmp_path / "no_backbone.pdb"
+    pdb_file.write_text(pdb_content)
+
+    with pytest.raises(ValueError, match="No valid residues found"):
+        mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
