@@ -22,7 +22,7 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import haiku as hk
 import jax
@@ -39,6 +39,30 @@ LOGGER = logging.getLogger(__name__)
 _CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
 _CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
 _CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
+
+
+@dataclass(frozen=True)
+class MPNNInputs:
+    """Input data for MPNN embedding computation.
+
+    Contains backbone coordinates and residue information extracted
+    from a PDB or CIF structure file.
+
+    Attributes:
+        coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB).
+        mask: Binary mask for valid residues [1, N].
+        chain_ids: Chain identifiers (all ones) [1, N].
+        residue_indices: Sequential residue indices [1, N].
+        residue_ids: List of residue ID strings.
+        sequence: Amino acid sequence as one-letter codes.
+    """
+
+    coords: np.ndarray
+    mask: np.ndarray
+    chain_ids: np.ndarray
+    residue_indices: np.ndarray
+    residue_ids: List[str]
+    sequence: str
 
 
 def _np_norm(
@@ -106,26 +130,20 @@ def _get_structure(file_path: str) -> Structure:
     return parser.get_structure("structure", file_path)
 
 
-def _get_inputs_mpnn(
-    file_path: str, chain: str | None = None
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[str]]:
-    """Extract coordinates and residue info from a PDB or CIF file.
+def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
+    """Extract coordinates, residue info, and sequence from a PDB or CIF file.
 
     This function provides the same interface as
     softalign.Input_MPNN.get_inputs_mpnn but uses Biopython for parsing,
-    enabling support for both PDB and CIF formats.
+    enabling support for both PDB and CIF formats. It also extracts the
+    amino acid sequence during parsing using the AA_3TO1 dictionary.
 
     Args:
         file_path: Path to the structure file (.pdb or .cif).
         chain: Chain identifier to extract. If None, uses first chain.
 
     Returns:
-        Tuple of (coords, mask, chain_ids, residue_indices, residue_ids):
-        - coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB)
-        - mask: Binary mask for valid residues [1, N]
-        - chain_ids: Chain identifiers (all ones) [1, N]
-        - residue_indices: Sequential residue indices [1, N]
-        - residue_ids: List of residue ID strings
+        MPNNInputs containing backbone coordinates and residue information.
 
     Raises:
         ValueError: If the specified chain is not found.
@@ -156,6 +174,7 @@ def _get_inputs_mpnn(
     # Extract residue data
     coords_list = []
     ids_list = []
+    seq_list = []
 
     for residue in target_chain.get_residues():
         # Skip heteroatoms (water, ligands, etc.)
@@ -171,6 +190,11 @@ def _get_inputs_mpnn(
         except KeyError:
             # Skip residues missing backbone atoms
             continue
+
+        # Extract one-letter amino acid code (X for unknown residues)
+        resname = residue.get_resname()
+        one_letter = constants.AA_3TO1.get(resname, "X")
+        seq_list.append(one_letter)
 
         # Compute CB position
         cb_coord = _compute_cb(
@@ -207,6 +231,7 @@ def _get_inputs_mpnn(
     valid_mask = ~np.isnan(coords).any(axis=(1, 2))
     coords = coords[valid_mask]
     ids_list = [ids_list[i] for i in range(len(ids_list)) if valid_mask[i]]
+    seq_list = [seq_list[i] for i in range(len(seq_list)) if valid_mask[i]]
 
     n_residues = coords.shape[0]
 
@@ -215,18 +240,20 @@ def _get_inputs_mpnn(
     chain_ids = np.ones(n_residues)
     residue_indices = np.arange(n_residues)
 
+    sequence = "".join(seq_list)
     LOGGER.info(
         f"Extracted {n_residues} residues from chain '{target_chain.id}' "
         f"in {file_path}"
     )
 
     # Add batch dimension to match softalign output format
-    return (
-        coords[None, :],  # [1, N, 4, 3]
-        mask[None, :],  # [1, N]
-        chain_ids[None, :],  # [1, N]
-        residue_indices[None, :],  # [1, N]
-        ids_list,
+    return MPNNInputs(
+        coords=coords[None, :],  # [1, N, 4, 3]
+        mask=mask[None, :],  # [1, N]
+        chain_ids=chain_ids[None, :],  # [1, N]
+        residue_indices=residue_indices[None, :],  # [1, N]
+        residue_ids=ids_list,
+        sequence=sequence,
     )
 
 
@@ -350,13 +377,18 @@ def _embed_pdb(
             f"Got {len(chains)} chains: '{chains}'. "
             f"Please specify a single chain identifier."
         )
-    X1, mask1, chain1, res1, ids = _get_inputs_mpnn(pdbfile, chain=chains)
-    embeddings = e2e_model.MPNN(X1, mask1, chain1, res1)[0]
-    if len(ids) != embeddings.shape[0]:
+    inputs = _get_inputs_mpnn(pdbfile, chain=chains)
+    embeddings = e2e_model.MPNN(
+        inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
+    )[0]
+    if len(inputs.residue_ids) != embeddings.shape[0]:
         raise ValueError(
-            f"IDs length ({len(ids)}) does not match embeddings rows"
-            f" ({embeddings.shape[0]})"
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
         )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
 
     if max_residues > 0 and len(ids) > max_residues:
         LOGGER.info(
@@ -364,12 +396,14 @@ def _embed_pdb(
         )
         embeddings = embeddings[:max_residues]
         ids = ids[:max_residues]
+        sequence = sequence[:max_residues]
 
     return MPNNEmbeddings(
         name="INPUT_PDB",
         embeddings=embeddings,
         idxs=ids,
         stdev=jnp.ones_like(embeddings),
+        sequence=sequence,
     )
 
 
@@ -401,25 +435,8 @@ def from_pdb(
     key = jax.random.PRNGKey(random_seed)
     transformed_embed_fn = hk.transform(_embed_pdb)
 
-    input_data = transformed_embed_fn.apply(
+    result = transformed_embed_fn.apply(
         model_params, key, pdb_file, chain, max_residues
-    )
-
-    try:
-        sequence = util.fetch_sequence_from_pdb(pdb_file, chain)
-    except Exception as e:
-        LOGGER.warning(
-            f"Could not extract sequence from PDB: {e}. "
-            "Continuing without sequence."
-        )
-        sequence = None
-
-    result = MPNNEmbeddings(
-        name=input_data.name,
-        embeddings=input_data.embeddings,
-        idxs=input_data.idxs,
-        stdev=input_data.stdev,
-        sequence=sequence,
     )
 
     LOGGER.info(
