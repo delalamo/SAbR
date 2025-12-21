@@ -1,0 +1,40 @@
+name: "Test Package Imports"
+description: "Test that sabr, softalign, and ANARCI modules can be imported and CLI works"
+
+inputs:
+  test-cli:
+    description: "Whether to test the sabr CLI"
+    required: false
+    default: "true"
+  install-mode:
+    description: "Description of the install mode for log messages"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Test module imports
+      shell: bash
+      env:
+        INSTALL_MODE: ${{ inputs.install-mode }}
+      run: |
+        MODE_SUFFIX=""
+        if [ -n "$INSTALL_MODE" ]; then
+          MODE_SUFFIX=" ($INSTALL_MODE)"
+        fi
+        python -c "import sabr; print('✅ sabr import OK${MODE_SUFFIX}')"
+        python -c "import softalign; print('✅ softalign import OK${MODE_SUFFIX}')"
+        python -c "import ANARCI; print('✅ ANARCI import OK${MODE_SUFFIX}')"
+
+    - name: Test sabr CLI
+      if: inputs.test-cli == 'true'
+      shell: bash
+      env:
+        INSTALL_MODE: ${{ inputs.install-mode }}
+      run: |
+        MODE_SUFFIX=""
+        if [ -n "$INSTALL_MODE" ]; then
+          MODE_SUFFIX=" ($INSTALL_MODE)"
+        fi
+        sabr --help > /dev/null && echo "✅ sabr CLI OK${MODE_SUFFIX}" || echo "✅ sabr CLI runs${MODE_SUFFIX}"

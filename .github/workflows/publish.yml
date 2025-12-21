@@ -14,27 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          submodules: true # include vendored submodules in build
+          submodules: true
           fetch-depth: 0 # fetch all history and tags for hatch-vcs
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      - uses: ./.github/actions/setup-python
 
-      - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build twine
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build
 
-      - name: Build package
-        run: python -m build
-
-      - name: Twine metadata check
-        run: twine check dist/*
+      - name: Build and validate package
+        uses: ./.github/actions/build-and-validate-package
 
       - name: Smoke test built wheel
         run: |
@@ -42,16 +33,14 @@ jobs:
           source .venv/bin/activate
           python -m pip install --upgrade pip
           python -m pip install dist/*.whl
-          python - <<'PY'
-          import importlib, subprocess, sys
-          for mod in ["sabr", "softalign", "ANARCI"]:
-              importlib.import_module(mod)
-              print(f"✅ import {mod} OK")
-          rc = subprocess.call(["sabr", "--help"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-          if rc != 0:
-              sys.exit("sabr CLI failed")
-          print("✅ sabr CLI OK")
-          PY
+
+      - name: Test imports and CLI
+        run: |
+          source .venv/bin/activate
+          python -c "import sabr; print('✅ sabr import OK')"
+          python -c "import softalign; print('✅ softalign import OK')"
+          python -c "import ANARCI; print('✅ ANARCI import OK')"
+          sabr --help > /dev/null && echo "✅ sabr CLI OK"
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

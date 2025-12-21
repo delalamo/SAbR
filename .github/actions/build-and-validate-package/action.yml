@@ -1,0 +1,29 @@
+name: "Build and Validate Package"
+description: "Build Python package and validate with twine"
+
+inputs:
+  show-version:
+    description: "Whether to display the built package version"
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build package
+      shell: bash
+      run: python -m build
+
+    - name: Show built version
+      if: inputs.show-version == 'true'
+      shell: bash
+      run: |
+        echo "Built packages:"
+        ls -la dist/
+        echo ""
+        echo "Package version:"
+        unzip -p dist/*.whl '*/METADATA' | grep -E '^(Name|Version):'
+
+    - name: Twine metadata check
+      shell: bash
+      run: twine check dist/*

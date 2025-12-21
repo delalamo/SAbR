@@ -18,36 +18,37 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          submodules: true # Pulls external/ANARCI and external/SoftAlign
+          submodules: true
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-python
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Upgrade pip and install build tools
-        run: |
-          python -m pip install --upgrade pip hatchling build
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build
+        with:
+          extra-packages: hatchling
 
       - name: Test non-editable install
         run: |
           pip install .
-          python -c "import sabr; print('✅ sabr import OK (non-editable)')"
-          python -c "import softalign; print('✅ softalign import OK (non-editable)')"
-          python -c "import ANARCI; print('✅ ANARCI import OK (non-editable)')"
-          sabr --help || echo "✅ sabr CLI runs (non-editable)"
-          pip uninstall -y sabr
 
-      - name: Test editable install
+      - name: Verify non-editable imports
+        uses: ./.github/actions/test-imports
+        with:
+          install-mode: non-editable
+
+      - name: Uninstall and reinstall editable
         run: |
+          pip uninstall -y sabr
           pip install -e .
-          python -c "import sabr; print('✅ sabr import OK (editable)')"
-          python -c "import softalign; print('✅ softalign import OK (editable)')"
-          python -c "import ANARCI; print('✅ ANARCI import OK (editable)')"
-          sabr --help || echo "✅ sabr CLI runs (editable)"
+
+      - name: Verify editable imports
+        uses: ./.github/actions/test-imports
+        with:
+          install-mode: editable
 
       - name: Show installed packages
         if: always()

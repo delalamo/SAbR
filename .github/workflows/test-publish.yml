@@ -19,35 +19,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-python
+
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build
+
+      - name: Build and validate package
+        uses: ./.github/actions/build-and-validate-package
         with:
-          python-version: "3.11"
-
-      - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build twine
-
-      - name: Build package
-        run: python -m build
-
-      - name: Show built version
-        run: |
-          echo "Built packages:"
-          ls -la dist/
-          echo ""
-          echo "Package version:"
-          unzip -p dist/*.whl '*/METADATA' | grep -E '^(Name|Version):'
-
-      - name: Twine metadata check
-        run: twine check dist/*
+          show-version: true
 
       - name: Test installation from built wheel
         run: |

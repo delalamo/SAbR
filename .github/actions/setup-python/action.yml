@@ -1,0 +1,16 @@
+name: "Setup Python"
+description: "Set up Python with specified version"
+
+inputs:
+  python-version:
+    description: "Python version to set up"
+    required: false
+    default: "3.11"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
