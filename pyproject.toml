@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "Structure-based Antibody Renumbering"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 authors = [
   { name = "Diego del Alamo" },
@@ -17,12 +17,12 @@ authors = [
 dependencies = [
   "biopython>=1.85",
   "click>=8.1",
-  "jax>=0.4,<0.5",
-  "jaxlib>=0.4,<0.5",
-  "numpy>=1.26",
+  "jax>=0.4.20",
+  "jaxlib>=0.4.20",
+  "numpy>=2.4",
   "pandas>=2.2",
   "scipy>=1.12",
-  "dm-haiku>=0.0.11"
+  "dm-haiku>=0.0.12"
 ]
 
 [project.optional-dependencies]

@@ -7,13 +7,14 @@ This module provides helper functions for:
 """
 
 import logging
-import pickle
 from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict
 
+import numpy as np
 from Bio import SeqIO
 from Bio.PDB import MMCIFParser
+from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
 from sabr.constants import AA_3TO1
 
@@ -94,14 +95,20 @@ def read_softalign_params(
     """Load SoftAlign parameters from package resources.
 
     Args:
-        params_name: Name of the model parameters file.
+        params_name: Name of the model parameters file (without extension).
         params_path: Package path containing the parameters file.
 
     Returns:
-        Dictionary containing the model parameters.
+        Dictionary containing the model parameters as JAX arrays.
     """
-    path = files(params_path) / params_name
-    with open(path, "rb") as f:
-        params = pickle.load(f)
-    LOGGER.info(f"Loaded model parameters from {path}")
+    package_files = files(params_path)
+    npz_path = package_files / f"{params_name}.npz"
+
+    with open(npz_path, "rb") as f:
+        data = dict(np.load(f, allow_pickle=False))
+
+    # Unflatten the dictionary structure and convert to JAX arrays
+    params = unflatten_dict(data)
+    params = convert_numpy_to_jax(params)
+    LOGGER.info(f"Loaded model parameters from {npz_path}")
     return params
