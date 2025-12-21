@@ -3,6 +3,7 @@
 from typing import Any, Dict, List, Optional
 
 import numpy as np
+from Bio import SeqIO
 
 
 class DummyResult:
@@ -69,12 +70,27 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
     def dummy_from_pdb(
         pdb_file: str, chain: str, max_residues: int = 0, **kwargs: Any
     ) -> DummyEmbeddings:
+        # Extract real sequence from PDB file to match alignment expectations
+        sequence = None
+        for record in SeqIO.parse(pdb_file, "pdb-atom"):
+            if record.id.endswith(chain):
+                sequence = str(record.seq).replace("X", "")
+                break
+        if sequence is None:
+            # Fallback to dummy sequence if chain not found
+            sequence = "A" * n_residues
+
+        actual_n_residues = len(sequence)
+        if max_residues > 0:
+            actual_n_residues = min(actual_n_residues, max_residues)
+            sequence = sequence[:max_residues]
+
         return DummyEmbeddings(
             name=f"{pdb_file}_{chain}",
-            embeddings=np.zeros((n_residues, 64)),
-            idxs=[str(i) for i in range(n_residues)],
-            stdev=np.ones((n_residues, 64)),
-            sequence="A" * n_residues,
+            embeddings=np.zeros((actual_n_residues, 64)),
+            idxs=[str(i) for i in range(actual_n_residues)],
+            stdev=np.ones((actual_n_residues, 64)),
+            sequence=sequence,
         )
 
     return dummy_from_pdb
