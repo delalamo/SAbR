@@ -329,6 +329,7 @@ def test_thread_alignment_succeeds_with_cif_and_extended_insertions(tmp_path):
 
 def test_8sve_L_raises_error_with_pdb_output(tmp_path):
     """Test 8SVE_L antibody with huge insertions raises error with PDB."""
+    pytest.importorskip("ANARCI")
     from importlib import resources
     from pathlib import Path
 
@@ -384,6 +385,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
     Verifies extended insertion codes are tolerated and output is created.
     """
+    pytest.importorskip("ANARCI")
     from importlib import resources
     from pathlib import Path
 
