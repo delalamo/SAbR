@@ -1,5 +1,11 @@
 # Structure-based Antibody Renumbering
 
+[![Tests](https://github.com/delalamo/SAbR/actions/workflows/test.yml/badge.svg)](https://github.com/delalamo/SAbR/actions/workflows/test.yml)
+[![Code Formatting](https://github.com/delalamo/SAbR/actions/workflows/format.yml/badge.svg)](https://github.com/delalamo/SAbR/actions/workflows/format.yml)
+[![PyPI version](https://img.shields.io/pypi/v/sabr-kit.svg)](https://pypi.org/project/sabr-kit/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 _This repo is currently in development. If you encounter any bugs, please report the issue [here](https://github.com/delalamo/SAbR/issues)._
 
 SAbR (<u>S</U>tructure-based <u>A</u>nti<u>b</u>ody <u>R</u>enumbering) renumbers antibody PDB files using the 3D coordinate of backbone atoms. It uses custom forked versions of [SoftAlign](https://github.com/delalamo/SoftAlign) and [ANARCI](https://github.com/delalamo/ANARCI/tree/master) to align structures to SAbDaB-derived consensus embeddings and renumber to various antibody schemes, respectively.
