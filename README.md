@@ -28,9 +28,7 @@ pip install -e .
 
 It can then be run using the `sabr` command (see below).
 
-2. ~~Alternatively, SAbR can be directly run with the latest docker container:~~
-
-❌ _This doesn't currently work. Please check back soon!_ ❌
+2. Alternatively, SAbR can be directly run with the latest docker container:
 
 ```bash
 docker run --rm ghcr.io/delalamo/sabr:latest -i input.pdb -o output.pdb -c CHAIN_ID
