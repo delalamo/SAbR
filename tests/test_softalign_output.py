@@ -66,7 +66,7 @@ def test_softalignoutput_alignment_idxs1_mismatch():
         )
 
     msg = str(excinfo.value)
-    assert "embeddings.shape[0] (3) must match len(idxs1) (2)" in msg
+    assert "alignment.shape[0] (3) must match len(idxs1) (2)" in msg
 
 
 def test_softalignoutput_alignment_idxs2_mismatch():
@@ -86,7 +86,7 @@ def test_softalignoutput_alignment_idxs2_mismatch():
         )
 
     msg = str(excinfo.value)
-    assert "embeddings.shape[1] (4) must match len(idxs2) (2)" in msg
+    assert "alignment.shape[1] (4) must match len(idxs2) (2)" in msg
 
 
 def test_softalignoutput_empty_alignment():
