@@ -340,8 +340,10 @@ class SoftAligner:
                         f"Expected exactly one of each."
                     )
                 loop_start, loop_end = loop_start[0], loop_end[0]
-                sub_aln = aln[loop_start:loop_end, startres_idx:endres]
-                aln[loop_start:loop_end, startres_idx:endres] = (
+                # Use loop_end + 1 to include the end row
+                # (Python slicing is exclusive)
+                sub_aln = aln[loop_start : loop_end + 1, startres_idx:endres]
+                aln[loop_start : loop_end + 1, startres_idx:endres] = (
                     self.correct_gap_numbering(sub_aln)
                 )
 
