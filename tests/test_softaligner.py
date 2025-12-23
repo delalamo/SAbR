@@ -237,3 +237,111 @@ def test_correct_light_chain_fr1_with_shift():
 
     # Should have shifted the alignment
     assert corrected[7, 6] == 0  # Original position should be cleared
+
+
+def test_correct_gap_numbering_5_residue_cdr():
+    """Test IMGT gap distribution for a 5-residue CDR.
+
+    A 5-residue CDR-H3 (positions 105-117, 13 columns) should produce:
+    105, 106, 107, 116, 117 (columns 0, 1, 2, 11, 12 in sub-alignment).
+    """
+    aligner = make_aligner()
+
+    # 5 residues, 13 possible positions (like CDR-H3: 105-117)
+    sub_aln = np.zeros((5, 13), dtype=int)
+
+    corrected = aligner.correct_gap_numbering(sub_aln)
+
+    # Check anchor points: first residue -> first column, last -> last
+    assert corrected[0, 0] == 1  # Residue 0 -> position 105
+    assert corrected[4, 12] == 1  # Residue 4 -> position 117
+
+    # Check intermediate positions follow alternating pattern
+    assert corrected[1, 1] == 1  # Residue 1 -> position 106
+    assert corrected[2, 2] == 1  # Residue 2 -> position 107
+    assert corrected[3, 11] == 1  # Residue 3 -> position 116
+
+    # Should have exactly 5 assignments
+    assert corrected.sum() == 5
+
+
+def test_correct_gap_numbering_6_residue_cdr():
+    """Test IMGT gap distribution for a 6-residue CDR.
+
+    A 6-residue CDR-H3 (positions 105-117, 13 columns) should produce:
+    105, 106, 107, 115, 116, 117 (columns 0, 1, 2, 10, 11, 12).
+    """
+    aligner = make_aligner()
+
+    # 6 residues, 13 possible positions
+    sub_aln = np.zeros((6, 13), dtype=int)
+
+    corrected = aligner.correct_gap_numbering(sub_aln)
+
+    # Check anchor points
+    assert corrected[0, 0] == 1  # Residue 0 -> position 105
+    assert corrected[5, 12] == 1  # Residue 5 -> position 117
+
+    # Check intermediate positions
+    assert corrected[1, 1] == 1  # Residue 1 -> position 106
+    assert corrected[2, 2] == 1  # Residue 2 -> position 107
+    assert corrected[4, 11] == 1  # Residue 4 -> position 116
+    assert corrected[3, 10] == 1  # Residue 3 -> position 115
+
+    # Should have exactly 6 assignments
+    assert corrected.sum() == 6
+
+
+def test_correct_gap_numbering_always_applies_imgt_pattern():
+    """Test that IMGT gap distribution is always applied.
+
+    Even if the input alignment has a different distribution,
+    correct_gap_numbering should always redistribute according to
+    IMGT rules.
+    """
+    aligner = make_aligner()
+
+    # Create an alignment with non-IMGT gap distribution
+    sub_aln = np.zeros((4, 8), dtype=int)
+    sub_aln[0, 0] = 1  # Correct anchor
+    sub_aln[1, 3] = 1  # Wrong intermediate
+    sub_aln[2, 5] = 1  # Wrong intermediate
+    sub_aln[3, 7] = 1  # Correct anchor
+
+    corrected = aligner.correct_gap_numbering(sub_aln)
+
+    # Should apply IMGT pattern regardless of input
+    assert corrected[0, 0] == 1  # First anchor
+    assert corrected[3, 7] == 1  # Last anchor (row -1, col -1)
+    assert corrected[1, 1] == 1  # Second position
+    assert corrected[2, 6] == 1  # Second-to-last position
+
+    assert corrected.sum() == 4
+
+
+def test_correct_gap_numbering_preserves_anchor_points():
+    """Test that anchor points (first and last) are always preserved.
+
+    The first residue must always map to the first column (N-terminal anchor)
+    and the last residue must always map to the last column (C-terminal anchor).
+    This is critical for maintaining CDR boundary positions.
+    """
+    aligner = make_aligner()
+
+    # Test various loop sizes
+    for n_residues in range(2, 15):
+        for n_positions in range(n_residues, 20):
+            sub_aln = np.zeros((n_residues, n_positions), dtype=int)
+            corrected = aligner.correct_gap_numbering(sub_aln)
+
+            # First residue (row 0) must map to first column (col 0)
+            assert corrected[0, 0] == 1, (
+                f"N-terminal anchor not preserved for "
+                f"{n_residues} residues, {n_positions} positions"
+            )
+
+            # Last residue (row -1) must map to last column (col -1)
+            assert corrected[n_residues - 1, n_positions - 1] == 1, (
+                f"C-terminal anchor not preserved for "
+                f"{n_residues} residues, {n_positions} positions"
+            )
