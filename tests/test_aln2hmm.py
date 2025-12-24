@@ -8,7 +8,7 @@ def test_alignment_matrix_to_state_vector_basic():
     """Test basic diagonal alignment starting at column 0."""
     matrix = np.array([[1, 0], [0, 1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # New algorithm produces one state per matched column
     assert len(states) == 2
@@ -33,7 +33,7 @@ def test_alignment_matrix_to_state_vector_diagonal_path():
     """Test simple diagonal alignment (all matches)."""
     matrix = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Diagonal should produce only matches, one per column
     assert all(s.insertion_code == "m" for s in states)
@@ -48,7 +48,7 @@ def test_alignment_matrix_to_state_vector_with_insertions():
     # Column 1 has row 3 (match)
     matrix = np.array([[1, 0], [1, 0], [1, 0], [0, 1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should have insertions
     insertion_states = [s for s in states if s.insertion_code == "i"]
@@ -62,7 +62,7 @@ def test_alignment_matrix_to_state_vector_with_deletions():
     # Columns 1 and 2 have no matches = deletions
     matrix = np.array([[1, 0, 0, 0], [0, 0, 0, 1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should have deletions for columns 1 and 2
     deletion_states = [s for s in states if s.insertion_code == "d"]
@@ -89,7 +89,7 @@ def test_alignment_matrix_to_state_vector_complex_path():
         dtype=int,
     )
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should have matches
     match_states = [s for s in states if s.insertion_code == "m"]
@@ -116,7 +116,7 @@ def test_alignment_matrix_to_state_vector_single_match():
     """Test minimal alignment with single match."""
     matrix = np.array([[1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Single match should produce one state
     assert len(states) == 1
@@ -132,7 +132,7 @@ def test_alignment_matrix_to_state_vector_insertion_at_end():
     # After transpose: col 0 has rows 0,1,2 (match + inserts), col 1 has row 3
     matrix = np.array([[1, 0], [1, 0], [1, 0], [0, 1]], dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should handle insertions
     assert len(states) == 4  # 1 match + 2 inserts at col 0, 1 match at col 1
@@ -147,7 +147,7 @@ def test_alignment_matrix_to_state_vector_large_matrix():
     # Create diagonal alignment
     matrix = np.eye(size, dtype=int)
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should produce matches, one per position
     assert all(s.insertion_code == "m" for s in states)
@@ -168,7 +168,7 @@ def test_alignment_matrix_to_state_vector_offset_start():
         dtype=int,
     )
 
-    states, b_start, a_end = aln2hmm.alignment_matrix_to_state_vector(matrix)
+    states, b_start, a_end, _ = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should start at column 1
     assert b_start == 1

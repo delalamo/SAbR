@@ -41,7 +41,7 @@ class State:
 
 def alignment_matrix_to_state_vector(
     matrix: np.ndarray,
-) -> Tuple[List[State], int, int]:
+) -> Tuple[List[State], int, int, int]:
     """Return an HMMER-style state vector from a binary alignment matrix.
 
     The alignment matrix has shape (n_residues, n_imgt_positions) where:
@@ -59,6 +59,8 @@ def alignment_matrix_to_state_vector(
         start: First IMGT column index (0-indexed), used for leading dashes
         end: Value such that subsequence = "-" * start + sequence[:end-start]
              has sufficient length for all mapped_residue values
+        first_aligned_row: First sequence row (0-indexed) that is aligned,
+             used for alignment_start in thread_alignment
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
@@ -150,7 +152,7 @@ def alignment_matrix_to_state_vector(
     start = path[0][0]
     end = max_row + 1 + start
 
-    return out, start, end
+    return out, start, end, first_aligned_row
 
 
 def report_output(out: List[State]) -> None:
