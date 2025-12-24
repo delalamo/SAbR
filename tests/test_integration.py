@@ -35,6 +35,18 @@ FIXTURES = {
         "min_deviations": 5,
         "max_deviations": 200,
     },
+    # Heavy chain test case for alignment start position fix
+    # This structure starts at IMGT position 2 (not 1), which previously
+    # caused off-by-one errors in numbering
+    "test_heavy_chain": {
+        "pdb": resolve_data_path("test_heavy_chain.pdb"),
+        "chain": "F",
+        "alignment": resolve_data_path("test_heavy_chain_alignment.npz"),
+        "embeddings": resolve_data_path("test_heavy_chain_embeddings.npz"),
+        # CDR3 insertions cause some expected deviations
+        "min_deviations": 0,
+        "max_deviations": 25,
+    },
 }
 
 
@@ -63,7 +75,11 @@ def run_threading_pipeline(
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
-    subsequence = "-" * start + sequence[start:end]
+    # Create subsequence with leading dashes for missing IMGT positions
+    # start = first IMGT column (0-indexed), used for leading dashes
+    # end - start = number of aligned residues
+    n_aligned = end - start
+    subsequence = "-" * start + sequence[:n_aligned]
     anarci_out, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
             sv,
@@ -73,6 +89,9 @@ def run_threading_pipeline(
         )
     )
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
+    # alignment_start=0 because PDB structures start at the Fv region
+    # (no leader sequence). The 'start' value from aln2hmm is the IMGT
+    # column offset, which is already handled by anarci_start.
     deviations = edit_pdb.thread_alignment(
         str(pdb_path),
         chain,
@@ -80,7 +99,7 @@ def run_threading_pipeline(
         str(output_pdb),
         anarci_start,
         anarci_end,
-        alignment_start=start,
+        alignment_start=0,
     )
     return deviations
 
@@ -227,3 +246,52 @@ def test_cli_rejects_multi_character_chain():
     )
     assert result.exit_code != 0
     assert "Chain identifier must be exactly one character" in result.output
+
+
+def test_alignment_start_position_correct():
+    """Test alignment handles structures starting at IMGT position 2.
+
+    This is a regression test for the off-by-one bug where sequences starting
+    at IMGT position 2 (not 1) had their first residue incorrectly numbered.
+    The fix ensures that:
+    1. The state vector uses 1-indexed IMGT positions
+    2. The subsequence is constructed correctly with leading dashes
+    3. The first residue maps to the correct IMGT position
+    """
+    data = FIXTURES["test_heavy_chain"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    alignment, species = load_alignment_fixture(data["alignment"])
+
+    # Get the state vector
+    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
+
+    # The alignment for this structure starts at IMGT column 1 (position 2)
+    # This means there should be 1 leading dash in the subsequence
+    assert start == 1, f"Expected start=1 (IMGT position 2), got {start}"
+
+    # The first state should have residue_number=2 (1-indexed IMGT position)
+    first_state = sv[0]
+    assert (
+        first_state.residue_number == 2
+    ), f"Expected IMGT position 2, got {first_state.residue_number}"
+    assert (
+        first_state.insertion_code == "m"
+    ), f"Expected first state to be a match, got {first_state.insertion_code}"
+
+    # The mapped_residue should be offset by start (for subsequence indexing)
+    # First residue (seq index 0) should map to subsequence index 1
+    assert (
+        first_state.mapped_residue == 1
+    ), f"Expected mapped_residue=1, got {first_state.mapped_residue}"
+
+    # Verify the subsequence construction
+    n_aligned = end - start
+    assert n_aligned > 0, f"Expected positive n_aligned, got {n_aligned}"
+
+    # Verify state vector consistency
+    match_states = [s for s in sv if s.insertion_code == "m"]
+    assert (
+        len(match_states) > 100
+    ), f"Expected >100 match states, got {len(match_states)}"

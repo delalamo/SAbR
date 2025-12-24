@@ -53,18 +53,20 @@ def _skip_deletions(
     """Advance index past any deletion positions ('-') in ANARCI output.
 
     Args:
-        anarci_idx: Current index in the sequence alignment.
-        anarci_start: Starting index of the ANARCI window.
+        anarci_idx: Current 0-indexed count of aligned residues.
+        anarci_start: First index in anarci_out with actual residue.
         anarci_out: ANARCI alignment output list.
 
     Returns:
         Updated index after skipping any deletions.
     """
+    anarci_array_idx = anarci_idx + anarci_start
     while (
-        anarci_idx - anarci_start < len(anarci_out)
-        and anarci_out[anarci_idx - anarci_start][1] == "-"
+        anarci_array_idx < len(anarci_out)
+        and anarci_out[anarci_array_idx][1] == "-"
     ):
         anarci_idx += 1
+        anarci_array_idx = anarci_idx + anarci_start
     return anarci_idx
 
 
@@ -132,45 +134,41 @@ def thread_onto_chain(
             anarci_idx += 1
 
         # Skip over deletion positions in ANARCI output
-        if anarci_idx >= anarci_start:
+        if anarci_idx >= 0:
             anarci_idx = _skip_deletions(anarci_idx, anarci_start, anarci_out)
 
         # Determine which region we're in
-        is_in_anarci_window = anarci_idx >= anarci_start
-        is_before_fv_end = anarci_idx < min(anarci_end, len(anarci_out))
+        # anarci_idx: 0-indexed count of aligned residues
+        # anarci_start: offset for leading gaps in anarci_out
+        anarci_array_idx = anarci_idx + anarci_start
+        is_in_anarci_window = anarci_idx >= 0
+        is_before_fv_end = anarci_array_idx < len(anarci_out)
 
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
 
         # Compute new residue ID based on region
-        if is_in_anarci_window and is_before_fv_end:
+        if is_in_anarci_window and is_before_fv_end and not is_hetatm:
             # IN-Fv region: use ANARCI numbering
-            (new_idx, icode), aa = anarci_out[anarci_idx - anarci_start]
+            (new_idx, icode), aa = anarci_out[anarci_array_idx]
             last_idx = new_idx
 
             if aa != AA_3TO1[res.get_resname()]:
                 raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
             new_id = (res.get_id()[0], new_idx, icode)
-        elif anarci_idx < anarci_start:
+        elif is_hetatm:
+            # Keep original ID for HETATM (water, ligands, etc.)
+            new_id = res.get_id()
+        elif anarci_idx < 0:
             # PRE-Fv region: number backwards from first ANARCI position
-            first_anarci_pos = anarci_out[0][0][0]
-            if is_in_aligned_region:
-                # Residue is in aligned sequence but before ANARCI window
-                new_idx = first_anarci_pos - (anarci_start - anarci_idx)
-            else:
-                # Residue is before the aligned sequence entirely
-                new_idx = first_anarci_pos - (
-                    anarci_start + (alignment_start - pdb_idx)
-                )
+            first_anarci_pos = anarci_out[anarci_start][0][0]
+            # Residue is before the aligned sequence entirely
+            new_idx = first_anarci_pos - (alignment_start - pdb_idx)
             new_id = (res.get_id()[0], new_idx, " ")
         else:
             # POST-Fv region: continue from last ANARCI position
-            if is_hetatm:
-                # Keep original ID for HETATM (water, ligands, etc.)
-                new_id = res.get_id()
-            else:
-                last_idx += 1
-                new_id = (" ", last_idx, " ")
+            last_idx += 1
+            new_id = (" ", last_idx, " ")
 
         new_res.id = new_id
         LOGGER.info("OLD %s; NEW %s", res.get_id(), new_res.get_id())

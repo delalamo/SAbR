@@ -250,7 +250,11 @@ def main(
     )
     sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
-    subsequence = "-" * start + sequence[start:end]
+    # Create subsequence with leading dashes for missing IMGT positions
+    # start = first IMGT column (0-indexed), used for leading dashes
+    # end - start = number of aligned residues
+    n_aligned = end - start
+    subsequence = "-" * start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     if not out.species:
