@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings
+from sabr import aln2hmm, cli, constants, edit_pdb, mpnn_embeddings, softaligner
 from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
@@ -46,6 +46,18 @@ FIXTURES = {
         # CDR3 insertions cause some expected deviations
         "min_deviations": 0,
         "max_deviations": 25,
+    },
+    # Heavy chain with N-terminal extension (residues -6 to 0)
+    # Tests that N-terminal residues are correctly numbered backwards
+    # and the Fv region (1-128) is correctly IMGT-numbered
+    "woot_H_next": {
+        "pdb": resolve_data_path("woot_H_next.pdb"),
+        "chain": "H",
+        "alignment": resolve_data_path("woot_H_next_alignment.npz"),
+        "embeddings": resolve_data_path("woot_H_next_embeddings.npz"),
+        "min_deviations": 0,
+        "max_deviations": 0,
+        "has_n_terminal_extension": True,
     },
 }
 
@@ -295,3 +307,115 @@ def test_alignment_start_position_correct():
     assert (
         len(match_states) > 100
     ), f"Expected >100 match states, got {len(match_states)}"
+
+
+def test_n_terminal_extension_numbering_end_to_end(tmp_path):
+    """End-to-end test for structures with N-terminal extensions.
+
+    The woot_H_next.pdb structure has 7 N-terminal residues numbered -6 to 0,
+    followed by the standard IMGT-numbered Fv region (1-128).
+
+    This test runs the FULL pipeline from start to finish:
+    1. Generate MPNN embeddings from PDB
+    2. Run SoftAligner to generate alignment
+    3. Convert alignment to state vector
+    4. Run ANARCI numbering
+    5. Thread alignment onto structure
+    6. Verify output numbering
+
+    This verifies that:
+    - N-terminal residues are numbered correctly (-6 to 0)
+    - The Fv region is numbered correctly (1-128)
+    - Zero deviations from the expected numbering
+    """
+    data = FIXTURES["woot_H_next"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    pdb_path = data["pdb"]
+    chain = data["chain"]
+
+    # Step 1: Extract sequence
+    sequence = None
+    for record in SeqIO.parse(str(pdb_path), "pdb-atom"):
+        if record.id.endswith(chain):
+            sequence = str(record.seq).replace("X", "")
+            break
+    assert sequence is not None, f"Chain {chain} not found"
+    assert len(sequence) == 124, f"Expected 124 residues, got {len(sequence)}"
+
+    # Step 2: Generate MPNN embeddings from PDB (full pipeline)
+    embeddings = mpnn_embeddings.from_pdb(str(pdb_path), chain)
+    assert embeddings.embeddings.shape[0] == 124, "Embedding count mismatch"
+
+    # Step 3: Run SoftAligner (full pipeline)
+    aligner = softaligner.SoftAligner()
+    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
+    assert (
+        output.species == "human_H"
+    ), f"Expected human_H, got {output.species}"
+
+    # Step 4: Convert alignment to state vector
+    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(output.alignment)
+    n_aligned = end - start
+    subsequence = "-" * start + sequence[:n_aligned]
+
+    # Step 5: Run ANARCI numbering
+    anarci_out, anarci_start, anarci_end = (
+        anarci.number_sequence_from_alignment(
+            sv,
+            subsequence,
+            scheme="imgt",
+            chain_type=output.species,
+        )
+    )
+
+    # For N-terminal extensions, anarci_start indicates where the Fv begins
+    assert (
+        anarci_start == 7
+    ), f"Expected 7 N-terminal residues, got {anarci_start}"
+
+    # First ANARCI position should be IMGT 1
+    first_pos, first_aa = anarci_out[0]
+    assert (
+        first_pos[0] == 1
+    ), f"Expected first IMGT position 1, got {first_pos[0]}"
+    assert first_aa == "E", f"Expected first residue E, got {first_aa}"
+
+    # Step 6: Thread the alignment onto structure
+    output_pdb = tmp_path / "woot_threaded.pdb"
+    deviations = edit_pdb.thread_alignment(
+        str(pdb_path),
+        chain,
+        anarci_out,
+        str(output_pdb),
+        start_res=0,  # anarci_out starts at index 0
+        end_res=anarci_end - anarci_start,  # Adjusted length
+        alignment_start=anarci_start,  # Skip N-terminal residues in PDB
+    )
+
+    assert deviations == 0, f"Expected 0 deviations, got {deviations}"
+
+    # Step 7: Verify the output structure has correct numbering
+    parser = PDB.PDBParser(QUIET=True)
+    out_structure = parser.get_structure("output", output_pdb)
+    residue_ids = []
+    for res in out_structure[0][chain]:
+        hetflag, resseq, icode = res.get_id()
+        if not hetflag.strip():
+            residue_ids.append(resseq)
+
+    # Check N-terminal residues are numbered -6 to 0
+    n_terminal_ids = residue_ids[:7]
+    expected_n_terminal = [-6, -5, -4, -3, -2, -1, 0]
+    assert (
+        n_terminal_ids == expected_n_terminal
+    ), f"N-terminal numbering wrong: {n_terminal_ids}"
+
+    # Check Fv region starts at 1
+    assert residue_ids[7] == 1, f"Fv should start at 1, got {residue_ids[7]}"
+
+    # Check last residue is 128
+    assert (
+        residue_ids[-1] == 128
+    ), f"Last residue should be 128, got {residue_ids[-1]}"
