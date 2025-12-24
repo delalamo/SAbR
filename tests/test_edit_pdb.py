@@ -352,7 +352,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
         # Convert to ANARCI format
         sequence = input_data.sequence
-        sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
+        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
         n_aligned = end - start
@@ -410,7 +410,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
         # Convert to ANARCI format
         sequence = input_data.sequence
-        sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
+        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
         n_aligned = end - start
