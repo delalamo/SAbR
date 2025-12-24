@@ -355,7 +355,8 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
         sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
-        subsequence = "-" * start + sequence[start:end]
+        n_aligned = end - start
+        subsequence = "-" * start + sequence[:n_aligned]
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
@@ -374,7 +375,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
                 str(output_pdb),
                 anarci_start,
                 anarci_end,
-                alignment_start=start,
+                alignment_start=0,
             )
     except ImportError:
         pytest.skip("SoftAligner dependencies not available")
@@ -412,7 +413,8 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
         sv, start, end = aln2hmm.alignment_matrix_to_state_vector(
             result.alignment
         )
-        subsequence = "-" * start + sequence[start:end]
+        n_aligned = end - start
+        subsequence = "-" * start + sequence[:n_aligned]
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
@@ -430,7 +432,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
             str(output_cif),
             anarci_start,
             anarci_end,
-            alignment_start=start,
+            alignment_start=0,
         )
 
         # Verify the output file was created
