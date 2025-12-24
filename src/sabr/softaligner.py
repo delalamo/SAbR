@@ -18,7 +18,7 @@ The alignment process includes:
 
 import logging
 from importlib.resources import as_file, files
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import haiku as hk
 import jax
@@ -76,6 +76,50 @@ def _align_fn(
         idxs1=input.idxs,
         idxs2=target.idxs,
     )
+
+
+def find_nearest_occupied_column(
+    aln: np.ndarray,
+    target_col: int,
+    search_range: int = 2,
+    direction: str = "both",
+) -> Tuple[Optional[int], Optional[int]]:
+    """Find the nearest column with an alignment match within a search window.
+
+    Args:
+        aln: The alignment matrix (rows=sequence, cols=IMGT positions).
+        target_col: The 0-indexed column to search near.
+        search_range: How many columns to search in each direction.
+        direction: "both" searches both directions, "forward" only searches
+            higher column indices, "backward" only searches lower indices.
+
+    Returns:
+        Tuple of (row_index, col_index) where a match was found, or
+        (None, None) if no match found in the search window.
+    """
+    n_cols = aln.shape[1]
+
+    # Build search order based on direction preference
+    offsets = [0]
+    for i in range(1, search_range + 1):
+        if direction == "both":
+            offsets.extend([-i, i])
+        elif direction == "backward":
+            offsets.append(-i)
+        elif direction == "forward":
+            offsets.append(i)
+
+    for offset in offsets:
+        col = target_col + offset
+        if 0 <= col < n_cols:
+            rows = np.where(aln[:, col] == 1)[0]
+            if len(rows) == 1:
+                return int(rows[0]), col
+            elif len(rows) > 1:
+                # Multiple matches - take the first one
+                return int(rows[0]), col
+
+    return None, None
 
 
 class SoftAligner:
@@ -322,30 +366,60 @@ class SoftAligner:
         if deterministic_loop_renumbering:
             for name, (startres, endres) in constants.IMGT_LOOPS.items():
                 startres_idx = startres - 1
-                loop_start = np.where(aln[:, startres_idx] == 1)[0]
-                loop_end = np.where(aln[:, endres - 1] == 1)[0]
-                if len(loop_start) == 0 or len(loop_end) == 0:
+                endres_idx = endres - 1
+
+                # Use soft boundary detection: search ±2 positions
+                # For start, prefer exact or backward (lower column indices)
+                # For end, prefer exact or forward (higher column indices)
+                start_row, start_col = find_nearest_occupied_column(
+                    aln, startres_idx, search_range=2, direction="both"
+                )
+                end_row, end_col = find_nearest_occupied_column(
+                    aln, endres_idx, search_range=2, direction="both"
+                )
+
+                if start_row is None or end_row is None:
                     LOGGER.warning(
-                        (
-                            f"Skipping {name}; missing start ({loop_start}) "
-                            f"or end ({loop_end})"
-                        )
+                        f"Skipping {name}; missing start "
+                        f"(searched {startres_idx}±2) or end "
+                        f"(searched {endres_idx}±2)"
                     )
                     continue
-                if len(loop_start) > 1 or len(loop_end) > 1:
-                    raise RuntimeError(
-                        f"Multiple start/end positions found for loop {name}: "
-                        f"start positions={loop_start.tolist()}, "
-                        f"end positions={loop_end.tolist()}. "
-                        f"Expected exactly one of each."
+
+                # Validate that start comes before end in sequence
+                if start_row >= end_row:
+                    LOGGER.warning(
+                        f"Skipping {name}; start row ({start_row}) >= "
+                        f"end row ({end_row})"
                     )
-                loop_start, loop_end = loop_start[0], loop_end[0]
-                # Use loop_end + 1 to include the end row
-                # (Python slicing is exclusive)
-                sub_aln = aln[loop_start : loop_end + 1, startres_idx:endres]
-                aln[loop_start : loop_end + 1, startres_idx:endres] = (
-                    self.correct_gap_numbering(sub_aln)
-                )
+                    continue
+
+                # Log if we used soft boundaries
+                if start_col != startres_idx or end_col != endres_idx:
+                    LOGGER.info(
+                        f"{name}: soft boundary detection used - "
+                        f"start col {start_col} (expected {startres_idx}), "
+                        f"end col {end_col} (expected {endres_idx})"
+                    )
+
+                # Clear the entire CDR region in the alignment first
+                # This prevents conflicts when re-assigning positions
+                aln[start_row : end_row + 1, startres_idx:endres] = 0
+
+                # Extract the sub-alignment using the found row range
+                # but the canonical IMGT column range
+                n_residues = end_row - start_row + 1
+                # Column slice is startres_idx:endres
+                n_positions = endres - startres_idx
+
+                # Create a new sub-alignment with correct dimensions
+                sub_aln = np.zeros((n_residues, n_positions), dtype=aln.dtype)
+
+                # Apply deterministic gap numbering pattern
+                sub_aln = self.correct_gap_numbering(sub_aln)
+
+                # Place the corrected sub-alignment back
+                aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
 
             aln = self.correct_de_loop(aln)
 
