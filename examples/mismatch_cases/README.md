@@ -6,12 +6,12 @@ a different amino acid.
 
 ## Cases
 
-| File | Chain | Error |
-|------|-------|-------|
-| 7fbk_C.pdb | C | Residue mismatch: S vs ASN |
-| 7q1u_B.pdb | B | Residue mismatch: F vs LYS |
-| 7qbe_F.pdb | F | Residue mismatch: S vs GLY |
-| 7s83_A.pdb | A | Residue mismatch: R vs ALA |
+| File       | Chain | Error                      |
+| ---------- | ----- | -------------------------- |
+| 7fbk_C.pdb | C     | Residue mismatch: S vs ASN |
+| 7q1u_B.pdb | B     | Residue mismatch: F vs LYS |
+| 7qbe_F.pdb | F     | Residue mismatch: S vs GLY |
+| 7s83_A.pdb | A     | Residue mismatch: R vs ALA |
 
 ## Reproduction
 
