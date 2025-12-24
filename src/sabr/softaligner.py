@@ -368,6 +368,17 @@ class SoftAligner:
                 startres_idx = startres - 1
                 endres_idx = endres - 1
 
+                # Check if there are any aligned residues within the CDR range
+                # If the CDR region is entirely empty, skip renumbering
+                cdr_region = aln[:, startres_idx:endres]
+                cdr_occupancy = cdr_region.sum()
+                if cdr_occupancy == 0:
+                    LOGGER.info(
+                        f"Skipping {name}; no residues aligned within "
+                        f"CDR range (cols {startres_idx}-{endres - 1})"
+                    )
+                    continue
+
                 # Use soft boundary detection: search ±2 positions
                 # For start, prefer exact or backward (lower column indices)
                 # For end, prefer exact or forward (higher column indices)
@@ -394,6 +405,17 @@ class SoftAligner:
                     )
                     continue
 
+                # Validate detected boundaries overlap with CDR range.
+                # If boundaries are outside the CDR range (e.g., spanning
+                # a deletion), the soft detection picked up non-CDR residues
+                if start_col > endres_idx or end_col < startres_idx:
+                    LOGGER.warning(
+                        f"Skipping {name}; detected boundaries "
+                        f"(cols {start_col}-{end_col}) don't overlap "
+                        f"CDR range (cols {startres_idx}-{endres_idx})"
+                    )
+                    continue
+
                 # Log if we used soft boundaries
                 if start_col != startres_idx or end_col != endres_idx:
                     LOGGER.info(
@@ -405,6 +427,13 @@ class SoftAligner:
                 # Clear the entire CDR region in the alignment first
                 # This prevents conflicts when re-assigning positions
                 aln[start_row : end_row + 1, startres_idx:endres] = 0
+
+                # Also clear any soft-detected positions outside the CDR range
+                # to prevent duplicate alignments when pulling rows into CDR
+                if start_col < startres_idx:
+                    aln[start_row, start_col] = 0
+                if end_col > endres_idx:
+                    aln[end_row, end_col] = 0
 
                 # Extract the sub-alignment using the found row range
                 # but the canonical IMGT column range

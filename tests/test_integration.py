@@ -86,7 +86,7 @@ def run_threading_pipeline(
             break
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
-    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(alignment)
     # Create subsequence with leading dashes for missing IMGT positions
     # start = first IMGT column (0-indexed), used for leading dashes
     # end - start = number of aligned residues
@@ -277,7 +277,7 @@ def test_alignment_start_position_correct():
     alignment, species = load_alignment_fixture(data["alignment"])
 
     # Get the state vector
-    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(alignment)
 
     # The alignment for this structure starts at IMGT column 1 (position 2)
     # This means there should be 1 leading dash in the subsequence

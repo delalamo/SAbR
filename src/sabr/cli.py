@@ -248,7 +248,9 @@ def main(
         chain_type=chain_type_filter,
         deterministic_loop_renumbering=deterministic_loop_renumbering,
     )
-    sv, start, end = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
+    sv, start, end, first_aligned_row = (
+        aln2hmm.alignment_matrix_to_state_vector(out.alignment)
+    )
 
     # Create subsequence with leading dashes for missing IMGT positions
     # start = first IMGT column (0-indexed), used for leading dashes
@@ -274,14 +276,19 @@ def main(
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
 
+    # After filtering, the ANARCI output starts at index 0, not start_res
+    # Reset start_res and end_res to match the filtered output
+    filtered_start_res = 0
+    filtered_end_res = len(anarci_out)
+
     edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
         anarci_out,
         output_file,
-        start_res,
-        end_res,
-        alignment_start=start,
+        filtered_start_res,
+        filtered_end_res,
+        alignment_start=first_aligned_row,
         max_residues=max_residues,
     )
     LOGGER.info(f"Finished renumbering; output written to {output_file}")
