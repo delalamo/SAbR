@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 import anthropic
-from github import Github
+from github import Auth, Github
 
 
 def get_pr_diff() -> str:
@@ -246,7 +246,7 @@ def post_review(
         print("Error: GITHUB_TOKEN not set")
         sys.exit(1)
 
-    gh = Github(token)
+    gh = Github(auth=Auth.Token(token))
     repo = gh.get_repo(repo_name)
     pr = repo.get_pull(pr_number)
     commit = pr.get_commits().reversed[0]
@@ -317,10 +317,11 @@ def post_review(
         )
 
     # Determine review event
+    # Note: GitHub Actions cannot use APPROVE, so we use COMMENT for approvals
     if substantial_comments and review_comments:
         event = "REQUEST_CHANGES"
     else:
-        event = "APPROVE"
+        event = "COMMENT"
 
     # Post the review
     if review_comments:
