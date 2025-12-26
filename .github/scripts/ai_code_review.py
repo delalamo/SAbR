@@ -62,47 +62,45 @@ def analyze_code_with_claude(
     )
 
     system_prompt = (
-        "You are an expert code reviewer. Analyze the provided git "
-        "diff and provide constructive feedback.\n\n"
-        "CRITICAL GUIDELINES:\n"
-        "1. **Only report REAL issues** - Do NOT fabricate or invent "
-        "problems that don't exist\n"
-        "2. **If the code is good, say so** - Not every PR has problems\n"
-        "3. **Be specific** - Use exact file paths and line numbers\n"
-        "4. **Focus on what matters**: bugs, security, performance, "
-        "clear best practice violations\n"
-        "5. **Ignore minor style issues** - Don't nitpick formatting\n"
-        "6. **When uncertain, don't comment** - Only flag clear issues\n\n"
-        "RESPONSE FORMAT - You MUST respond with valid JSON:\n"
+        "You are a code reviewer. Respond ONLY with JSON, no other text.\n\n"
+        "OUTPUT FORMAT (strict JSON, no markdown):\n"
         "{\n"
-        '    "summary": "Brief 1-2 sentence overall assessment",\n'
-        '    "approval": "APPROVE" or "REQUEST_CHANGES",\n'
-        '    "comments": [\n'
-        "        {\n"
-        '            "file": "exact/path/from/diff.py",\n'
-        '            "line": <line_number_from_diff>,\n'
-        '            "body": "Description of issue and suggested fix"\n'
-        "        }\n"
-        "    ]\n"
+        '  "summary": "<MAX 15 WORDS - e.g. Good changes overall, '
+        'a few issues to address>",\n'
+        '  "approval": "APPROVE" or "REQUEST_CHANGES",\n'
+        '  "comments": [\n'
+        '    {"file": "path/to/file.py", "line": 42, '
+        '"body": "Issue description and fix"}\n'
+        "  ]\n"
         "}\n\n"
-        "CRITICAL RULES FOR COMMENTS:\n"
-        "- EVERY issue MUST be in the comments array with file and line\n"
-        "- Do NOT describe issues in the summary - put them in comments\n"
-        "- The summary should only be a brief overall assessment\n"
-        "- Use EXACT file paths as shown in the diff (e.g., src/foo.py)\n"
-        "- Use actual line numbers from the + lines in the diff\n"
-        "- If no issues, use approval=APPROVE with empty comments array\n"
-        "- Only use REQUEST_CHANGES if there are items in comments array"
+        "RULES:\n"
+        "1. summary = MAX 15 words, just overall assessment\n"
+        "2. ALL specific issues go in comments array with file + line\n"
+        "3. Do NOT put code examples or details in summary\n"
+        "4. Do NOT invent issues - empty comments array is fine\n"
+        "5. file = exact path from diff, line = number from diff\n"
+        "6. Only real bugs, security, or performance issues\n\n"
+        "EXAMPLE with issues:\n"
+        "{\n"
+        '  "summary": "Good refactor but has potential null pointer bug.",\n'
+        '  "approval": "REQUEST_CHANGES",\n'
+        '  "comments": [\n'
+        '    {"file": "src/main.py", "line": 45, '
+        '"body": "This may throw if user is None. Add a null check."}\n'
+        "  ]\n"
+        "}\n\n"
+        "EXAMPLE no issues:\n"
+        "{\n"
+        '  "summary": "Clean implementation, no issues found.",\n'
+        '  "approval": "APPROVE",\n'
+        '  "comments": []\n'
+        "}"
     )
 
     user_prompt = (
-        "Review this pull request diff. The following files were "
-        f"changed:\n{files_context}\n\n"
+        f"Files changed:\n{files_context}\n\n"
         f"```diff\n{diff}\n```\n\n"
-        "Analyze the changes and respond with JSON. Remember:\n"
-        '- Empty "comments" array is correct if the code has no issues\n'
-        "- Only flag genuine problems you can specifically identify\n"
-        "- Use exact file paths and line numbers from the diff"
+        "Respond with JSON only. Put ALL issues in comments array."
     )
 
     message = client.messages.create(
