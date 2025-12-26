@@ -9,7 +9,7 @@ on:
         required: true
         type: number
 
-  # Comment trigger - maintainers comment "/review" on a PR
+  # Comment trigger - maintainers comment "/review" or "/ask" on a PR
   issue_comment:
     types: [created]
 
@@ -20,14 +20,13 @@ permissions:
 jobs:
   ai-review:
     runs-on: ubuntu-latest
-    # Only run if:
-    # 1. Manual workflow_dispatch trigger, OR
-    # 2. Comment "/review" on a PR by someone with write access
+    # Only run for /review command
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request &&
        contains(github.event.comment.body, '/review') &&
+       !startsWith(github.event.comment.body, '/ask') &&
        (github.event.comment.author_association == 'OWNER' ||
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'COLLABORATOR'))
@@ -79,6 +78,67 @@ jobs:
 
       - name: Add success reaction
         if: success() && github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='rocket'
+
+  ai-ask:
+    runs-on: ubuntu-latest
+    # Only run for /ask command
+    if: |
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/ask ') &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'MEMBER' ||
+       github.event.comment.author_association == 'COLLABORATOR')
+    steps:
+      - name: Get PR number
+        id: pr
+        run: |
+          echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+      - name: Add reaction to comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='eyes'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic PyGithub
+
+      - name: Get PR diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr diff ${{ steps.pr.outputs.number }} > pr_diff.txt
+
+      - name: Run AI Ask
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          REPO_NAME: ${{ github.repository }}
+          QUESTION: ${{ github.event.comment.body }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: python .github/scripts/ai_ask.py
+
+      - name: Add success reaction
+        if: success()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
