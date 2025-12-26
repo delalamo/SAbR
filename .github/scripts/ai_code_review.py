@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """AI-powered code review using Anthropic's Claude API."""
 
+import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -18,32 +20,88 @@ def get_pr_diff() -> str:
     return diff_file.read_text()
 
 
-def analyze_code_with_claude(diff: str, client: anthropic.Anthropic) -> str:
-    """Send the diff to Claude for analysis."""
-    system_prompt = """You are an expert code reviewer. Analyze the provided git diff and provide a constructive code review.
+def parse_diff_files(diff: str) -> dict[str, list[int]]:
+    """Parse diff to extract changed files and their line numbers."""
+    files = {}
+    current_file = None
+    current_line = 0
 
-Focus on:
-1. **Bugs and Issues**: Identify potential bugs, logic errors, or edge cases that aren't handled
-2. **Security**: Flag any security vulnerabilities or concerns
-3. **Performance**: Note any performance issues or inefficiencies
-4. **Best Practices**: Suggest improvements for code quality, readability, and maintainability
-5. **Testing**: Comment on test coverage if tests are included in the diff
+    for line in diff.split("\n"):
+        # Match file header: +++ b/path/to/file
+        if line.startswith("+++ b/"):
+            current_file = line[6:]
+            files[current_file] = []
+        # Match hunk header: @@ -old,count +new,count @@
+        elif line.startswith("@@") and current_file:
+            match = re.search(r"\+(\d+)", line)
+            if match:
+                current_line = int(match.group(1))
+        # Track added/modified lines
+        elif current_file and line.startswith("+") and not line.startswith("+++"):
+            files[current_file].append(current_line)
+            current_line += 1
+        elif current_file and not line.startswith("-"):
+            current_line += 1
 
-Guidelines:
-- Be constructive and helpful, not harsh
-- Prioritize important issues over style nitpicks
-- If the code looks good, say so briefly
-- Format your response in clear markdown
-- Keep the review concise but thorough
-- Reference specific line numbers or code snippets when discussing issues"""
+    return files
 
-    user_prompt = f"""Please review the following pull request diff and provide feedback:
+
+def analyze_code_with_claude(
+    diff: str, changed_files: dict[str, list[int]], client: anthropic.Anthropic
+) -> dict:
+    """Send the diff to Claude for analysis and get structured feedback."""
+    files_context = "\n".join(
+        [f"- {f}: lines {min(lines) if lines else 0}-{max(lines) if lines else 0}"
+         for f, lines in changed_files.items() if lines]
+    )
+
+    system_prompt = """You are an expert code reviewer. Analyze the provided git diff and provide constructive feedback.
+
+CRITICAL GUIDELINES:
+1. **Only report REAL issues** - Do NOT fabricate, invent, or speculate about problems that don't exist in the code
+2. **If the code is good, say so** - It's perfectly fine to approve code with no issues. Not every PR has problems.
+3. **Be specific** - Reference exact file paths and line numbers from the diff
+4. **Focus on what matters**:
+   - Bugs, logic errors, edge cases
+   - Security vulnerabilities
+   - Performance issues
+   - Clear violations of best practices
+5. **Ignore minor style issues** - Don't nitpick formatting, naming preferences, or subjective style choices
+6. **When uncertain, don't comment** - If you're not confident something is an issue, leave it alone
+
+You MUST respond with valid JSON in this exact format:
+{
+    "summary": "Brief overall assessment of the changes",
+    "approval": "APPROVE" | "REQUEST_CHANGES",
+    "comments": [
+        {
+            "file": "path/to/file.py",
+            "line": 42,
+            "body": "Description of the issue and suggested fix"
+        }
+    ]
+}
+
+If there are no issues, return:
+{
+    "summary": "Brief positive summary of the changes",
+    "approval": "APPROVE",
+    "comments": []
+}
+
+IMPORTANT: The "comments" array should be EMPTY if there are no genuine issues. Do not invent problems."""
+
+    user_prompt = f"""Review this pull request diff. The following files were changed:
+{files_context}
 
 ```diff
 {diff}
 ```
 
-Provide a structured code review with sections for any issues found. If the changes look good, provide a brief positive summary."""
+Analyze the changes and respond with JSON. Remember:
+- Empty "comments" array is correct if the code has no issues
+- Only flag genuine problems you can specifically identify in the diff
+- Use exact file paths and line numbers from the diff"""
 
     message = client.messages.create(
         model="claude-sonnet-4-20250514",
@@ -52,11 +110,33 @@ Provide a structured code review with sections for any issues found. If the chan
         system=system_prompt,
     )
 
-    return message.content[0].text
+    response_text = message.content[0].text
+
+    # Extract JSON from response (handle markdown code blocks)
+    json_match = re.search(r"```(?:json)?\s*([\s\S]*?)```", response_text)
+    if json_match:
+        response_text = json_match.group(1)
+
+    try:
+        return json.loads(response_text.strip())
+    except json.JSONDecodeError as e:
+        print(f"Warning: Failed to parse JSON response: {e}")
+        print(f"Raw response: {response_text}")
+        # Return a safe default
+        return {
+            "summary": "Unable to parse AI response. Please review manually.",
+            "approval": "APPROVE",
+            "comments": [],
+        }
 
 
-def post_review_comment(review: str, repo_name: str, pr_number: int) -> None:
-    """Post the review as a comment on the pull request."""
+def post_review(
+    review_data: dict,
+    repo_name: str,
+    pr_number: int,
+    changed_files: dict[str, list[int]],
+) -> None:
+    """Post the review with file-specific comments using GitHub's review API."""
     token = os.environ.get("GITHUB_TOKEN")
     if not token:
         print("Error: GITHUB_TOKEN not set")
@@ -66,15 +146,78 @@ def post_review_comment(review: str, repo_name: str, pr_number: int) -> None:
     repo = gh.get_repo(repo_name)
     pr = repo.get_pull(pr_number)
 
-    comment_body = f"""## 🤖 AI Code Review
+    # Get the latest commit for the review
+    commit = pr.get_commits().reversed[0]
 
-{review}
+    summary = review_data.get("summary", "No summary provided")
+    approval = review_data.get("approval", "APPROVE")
+    comments = review_data.get("comments", [])
 
----
-*This review was generated by Claude AI. Please use your judgment when considering these suggestions.*"""
+    # Build review body
+    if approval == "APPROVE":
+        body = f"## :white_check_mark: AI Code Review - Approved\n\n{summary}"
+        if not comments:
+            body += "\n\n*No issues found. The changes look good!*"
+    else:
+        body = f"## :warning: AI Code Review - Changes Requested\n\n{summary}"
 
-    pr.create_issue_comment(comment_body)
-    print(f"Successfully posted review comment to PR #{pr_number}")
+    body += "\n\n---\n*This review was generated by Claude AI. Please use your judgment when considering these suggestions.*"
+
+    # Prepare review comments with validated line numbers
+    review_comments = []
+    for comment in comments:
+        file_path = comment.get("file", "")
+        line = comment.get("line", 0)
+        comment_body = comment.get("body", "")
+
+        # Validate the file exists in the diff
+        if file_path not in changed_files:
+            print(f"Skipping comment for unknown file: {file_path}")
+            continue
+
+        # Validate line number is in the changed lines
+        valid_lines = changed_files.get(file_path, [])
+        if line not in valid_lines:
+            # Find the closest valid line
+            if valid_lines:
+                line = min(valid_lines, key=lambda x: abs(x - line))
+            else:
+                print(f"Skipping comment for {file_path}: no valid lines")
+                continue
+
+        review_comments.append({
+            "path": file_path,
+            "line": line,
+            "body": comment_body,
+        })
+
+    # Determine review event type
+    if approval == "REQUEST_CHANGES" and review_comments:
+        event = "REQUEST_CHANGES"
+    elif approval == "APPROVE":
+        event = "APPROVE"
+    else:
+        event = "COMMENT"
+
+    # Create the review
+    if review_comments:
+        pr.create_review(
+            commit=commit,
+            body=body,
+            event=event,
+            comments=review_comments,
+        )
+        print(f"Posted review with {len(review_comments)} file-specific comments")
+    else:
+        # No file-specific comments, just post the summary
+        pr.create_review(
+            commit=commit,
+            body=body,
+            event=event,
+        )
+        print("Posted review summary (no file-specific comments)")
+
+    print(f"Review status: {event}")
 
 
 def main() -> None:
@@ -100,6 +243,10 @@ def main() -> None:
         print("No changes detected in the pull request")
         return
 
+    # Parse the diff to understand file structure
+    changed_files = parse_diff_files(diff)
+    print(f"Found {len(changed_files)} changed files")
+
     # Truncate very large diffs to avoid token limits
     max_diff_chars = 100000
     if len(diff) > max_diff_chars:
@@ -109,10 +256,10 @@ def main() -> None:
     client = anthropic.Anthropic(api_key=api_key)
 
     print("Analyzing code with Claude...")
-    review = analyze_code_with_claude(diff, client)
+    review_data = analyze_code_with_claude(diff, changed_files, client)
 
-    print("Posting review comment...")
-    post_review_comment(review, repo_name, pr_number)
+    print("Posting review...")
+    post_review(review_data, repo_name, pr_number, changed_files)
 
     print("AI code review completed successfully!")
 
