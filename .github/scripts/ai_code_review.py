@@ -65,41 +65,34 @@ def analyze_code_with_claude(
         "You are an expert code reviewer. Analyze the provided git "
         "diff and provide constructive feedback.\n\n"
         "CRITICAL GUIDELINES:\n"
-        "1. **Only report REAL issues** - Do NOT fabricate, invent, "
-        "or speculate about problems that don't exist in the code\n"
-        "2. **If the code is good, say so** - It's perfectly fine to "
-        "approve code with no issues. Not every PR has problems.\n"
-        "3. **Be specific** - Reference exact file paths and line "
-        "numbers from the diff\n"
-        "4. **Focus on what matters**:\n"
-        "   - Bugs, logic errors, edge cases\n"
-        "   - Security vulnerabilities\n"
-        "   - Performance issues\n"
-        "   - Clear violations of best practices\n"
-        "5. **Ignore minor style issues** - Don't nitpick formatting, "
-        "naming preferences, or subjective style choices\n"
-        "6. **When uncertain, don't comment** - If you're not confident "
-        "something is an issue, leave it alone\n\n"
-        "You MUST respond with valid JSON in this exact format:\n"
+        "1. **Only report REAL issues** - Do NOT fabricate or invent "
+        "problems that don't exist\n"
+        "2. **If the code is good, say so** - Not every PR has problems\n"
+        "3. **Be specific** - Use exact file paths and line numbers\n"
+        "4. **Focus on what matters**: bugs, security, performance, "
+        "clear best practice violations\n"
+        "5. **Ignore minor style issues** - Don't nitpick formatting\n"
+        "6. **When uncertain, don't comment** - Only flag clear issues\n\n"
+        "RESPONSE FORMAT - You MUST respond with valid JSON:\n"
         "{\n"
-        '    "summary": "Brief overall assessment of the changes",\n'
-        '    "approval": "APPROVE" | "REQUEST_CHANGES",\n'
+        '    "summary": "Brief 1-2 sentence overall assessment",\n'
+        '    "approval": "APPROVE" or "REQUEST_CHANGES",\n'
         '    "comments": [\n'
         "        {\n"
-        '            "file": "path/to/file.py",\n'
-        '            "line": 42,\n'
-        '            "body": "Description of the issue and suggested fix"\n'
+        '            "file": "exact/path/from/diff.py",\n'
+        '            "line": <line_number_from_diff>,\n'
+        '            "body": "Description of issue and suggested fix"\n'
         "        }\n"
         "    ]\n"
         "}\n\n"
-        "If there are no issues, return:\n"
-        "{\n"
-        '    "summary": "Brief positive summary of the changes",\n'
-        '    "approval": "APPROVE",\n'
-        '    "comments": []\n'
-        "}\n\n"
-        'IMPORTANT: The "comments" array should be EMPTY if there are '
-        "no genuine issues. Do not invent problems."
+        "CRITICAL RULES FOR COMMENTS:\n"
+        "- EVERY issue MUST be in the comments array with file and line\n"
+        "- Do NOT describe issues in the summary - put them in comments\n"
+        "- The summary should only be a brief overall assessment\n"
+        "- Use EXACT file paths as shown in the diff (e.g., src/foo.py)\n"
+        "- Use actual line numbers from the + lines in the diff\n"
+        "- If no issues, use approval=APPROVE with empty comments array\n"
+        "- Only use REQUEST_CHANGES if there are items in comments array"
     )
 
     user_prompt = (
@@ -121,13 +114,21 @@ def analyze_code_with_claude(
 
     response_text = message.content[0].text
 
+    # Debug: print raw response
+    print(f"Raw Claude response:\n{response_text}\n")
+
     # Extract JSON from response (handle markdown code blocks)
     json_match = re.search(r"```(?:json)?\s*([\s\S]*?)```", response_text)
     if json_match:
         response_text = json_match.group(1)
 
     try:
-        return json.loads(response_text.strip())
+        result = json.loads(response_text.strip())
+        print(
+            f"Parsed review: approval={result.get('approval')}, "
+            f"comments={len(result.get('comments', []))}"
+        )
+        return result
     except json.JSONDecodeError as e:
         print(f"Warning: Failed to parse JSON response: {e}")
         print(f"Raw response: {response_text}")
@@ -177,25 +178,30 @@ def post_review(
 
     # Prepare review comments with validated line numbers
     review_comments = []
-    for comment in comments:
+    print(f"Processing {len(comments)} comments from Claude...")
+    for i, comment in enumerate(comments):
         file_path = comment.get("file", "")
         line = comment.get("line", 0)
         comment_body = comment.get("body", "")
 
+        print(f"  Comment {i+1}: {file_path}:{line}")
+
         # Validate the file exists in the diff
         if file_path not in changed_files:
-            print(f"Skipping comment for unknown file: {file_path}")
+            print("    -> Skipping: file not in diff")
+            print(f"    -> Available files: {list(changed_files.keys())}")
             continue
 
-        # Validate line number is in the changed lines
+        # Validate line number - find closest valid line if needed
         valid_lines = changed_files.get(file_path, [])
+        if not valid_lines:
+            print("    -> Skipping: no valid lines for file")
+            continue
+
         if line not in valid_lines:
-            # Find the closest valid line
-            if valid_lines:
-                line = min(valid_lines, key=lambda x: abs(x - line))
-            else:
-                print(f"Skipping comment for {file_path}: no valid lines")
-                continue
+            closest = min(valid_lines, key=lambda x: abs(x - line))
+            print(f"    -> Line {line} not in diff, using closest: {closest}")
+            line = closest
 
         review_comments.append(
             {
@@ -204,6 +210,7 @@ def post_review(
                 "body": comment_body,
             }
         )
+        print(f"    -> Added comment at {file_path}:{line}")
 
     # Determine review event type
     if approval == "REQUEST_CHANGES" and review_comments:
