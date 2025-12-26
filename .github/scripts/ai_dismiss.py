@@ -44,7 +44,9 @@ def main() -> None:
                 and "AI Code Review" in review.body
             ):
                 try:
-                    review.dismiss("Dismissed by maintainer via /dismiss command")
+                    review.dismiss(
+                        "Dismissed by maintainer via /dismiss command"
+                    )
                     print(f"Dismissed review {review.id}")
                     dismissed_count += 1
                 except Exception as e:
