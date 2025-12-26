@@ -113,7 +113,7 @@ def analyze_code_with_claude(
     )
 
     message = client.messages.create(
-        model="claude-haiku-3-5-20241022",
+        model="claude-haiku-4-5-20251001",
         max_tokens=4096,
         messages=[{"role": "user", "content": user_prompt}],
         system=system_prompt,
