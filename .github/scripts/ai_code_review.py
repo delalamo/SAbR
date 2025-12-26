@@ -359,7 +359,12 @@ def main() -> None:
         print("Error: REPO_NAME and PR_NUMBER must be set")
         sys.exit(1)
 
-    pr_number = int(pr_number_str)
+    try:
+        pr_number = int(pr_number_str)
+    except ValueError:
+        print(f"Error: PR_NUMBER '{pr_number_str}' is not a valid integer")
+        sys.exit(1)
+
     print(f"Starting AI code review for {repo_name}#{pr_number}")
 
     diff = get_pr_diff()

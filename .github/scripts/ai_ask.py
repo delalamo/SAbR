@@ -98,7 +98,12 @@ def main() -> None:
         print("Error: QUESTION not set")
         sys.exit(1)
 
-    pr_number = int(pr_number_str)
+    try:
+        pr_number = int(pr_number_str)
+    except ValueError:
+        print(f"Error: PR_NUMBER '{pr_number_str}' is not a valid integer")
+        sys.exit(1)
+
     question = extract_question(question_raw)
 
     print(f"Answering question for {repo_name}#{pr_number}")
