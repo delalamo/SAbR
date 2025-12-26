@@ -351,9 +351,7 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
     output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
-    assert (
-        output.species == "human_H"
-    ), f"Expected human_H, got {output.species}"
+    assert output.species == "H", f"Expected H, got {output.species}"
 
     # Step 4: Convert alignment to state vector
     sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
@@ -421,3 +419,119 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
     assert (
         residue_ids[-1] == 128
     ), f"Last residue should be 128, got {residue_ids[-1]}"
+
+
+def test_n_terminal_truncated_structure_end_to_end(tmp_path):
+    """End-to-end test for structures with N-terminal truncation.
+
+    The 8_21_renumbered_ntrunc.pdb structure is missing IMGT positions 1 and 2,
+    starting at position 3. This tests that SAbR correctly handles structures
+    where the N-terminus is truncated.
+
+    This test runs the FULL pipeline from start to finish:
+    1. Generate MPNN embeddings from PDB
+    2. Run SoftAligner to generate alignment
+    3. Convert alignment to state vector
+    4. Run ANARCI numbering
+    5. Thread alignment onto structure
+    6. Verify output numbering matches input (0 deviations expected)
+
+    This verifies that:
+    - Structures starting at IMGT position 3 are handled correctly
+    - The alignment correctly identifies the starting position
+    - Zero deviations from the expected IMGT numbering
+    """
+    pdb_path = resolve_data_path("8_21_renumbered_ntrunc.pdb")
+    if not pdb_path.exists():
+        pytest.skip(f"Missing structure fixture at {pdb_path}")
+
+    chain = "A"
+
+    # Step 1: Extract sequence
+    sequence = None
+    for record in SeqIO.parse(str(pdb_path), "pdb-atom"):
+        if record.id.endswith(chain):
+            sequence = str(record.seq).replace("X", "")
+            break
+    assert sequence is not None, f"Chain {chain} not found"
+
+    # Step 2: Generate MPNN embeddings from PDB (full pipeline)
+    embeddings = mpnn_embeddings.from_pdb(str(pdb_path), chain)
+    assert embeddings.embeddings.shape[0] == len(
+        sequence
+    ), "Embedding count mismatch"
+
+    # Step 3: Run SoftAligner (full pipeline)
+    aligner = softaligner.SoftAligner()
+    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
+    assert output.species is not None, "Species should be detected"
+
+    # Step 4: Convert alignment to state vector
+    sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
+        output.alignment
+    )
+
+    # The alignment should start at column 2 (0-indexed),
+    # corresponding to IMGT position 3
+    assert start == 2, f"Expected start=2 (IMGT position 3), got {start}"
+
+    n_aligned = end - start
+    subsequence = "-" * start + sequence[:n_aligned]
+
+    # Step 5: Run ANARCI numbering
+    anarci_out, anarci_start, anarci_end = (
+        anarci.number_sequence_from_alignment(
+            sv,
+            subsequence,
+            scheme="imgt",
+            chain_type=output.species,
+        )
+    )
+
+    # Filter out gap positions (ANARCI includes gaps for missing positions 1, 2)
+    anarci_non_gap = [(pos, aa) for pos, aa in anarci_out if aa != "-"]
+
+    # First non-gap ANARCI position should be IMGT 3 (since 1 and 2 are missing)
+    first_pos, first_aa = anarci_non_gap[0]
+    assert (
+        first_pos[0] == 3
+    ), f"Expected first IMGT position 3, got {first_pos[0]}"
+    assert first_aa == "Q", f"Expected first residue Q (Gln), got {first_aa}"
+
+    # Step 6: Thread the alignment onto structure
+    output_pdb = tmp_path / "8_21_ntrunc_threaded.pdb"
+    deviations = edit_pdb.thread_alignment(
+        str(pdb_path),
+        chain,
+        anarci_out,
+        str(output_pdb),
+        anarci_start,
+        anarci_end,
+        alignment_start=0,
+    )
+
+    assert deviations == 0, f"Expected 0 deviations, got {deviations}"
+
+    # Step 7: Verify the output structure has correct numbering
+    parser = PDB.PDBParser(QUIET=True)
+    out_structure = parser.get_structure("output", output_pdb)
+    residue_ids = []
+    for res in out_structure[0][chain]:
+        hetflag, resseq, icode = res.get_id()
+        if not hetflag.strip():
+            residue_ids.append(resseq)
+
+    # Check first residue is 3 (positions 1 and 2 are missing)
+    assert (
+        residue_ids[0] == 3
+    ), f"First residue should be 3, got {residue_ids[0]}"
+
+    # Check last residue is 128
+    assert (
+        residue_ids[-1] == 128
+    ), f"Last residue should be 128, got {residue_ids[-1]}"
+
+    # Verify position 10 is skipped (standard IMGT gap)
+    assert (
+        10 not in residue_ids
+    ), "Position 10 should be skipped in IMGT heavy chains"
