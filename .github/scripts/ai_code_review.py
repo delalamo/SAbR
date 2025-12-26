@@ -37,7 +37,9 @@ def parse_diff_files(diff: str) -> dict[str, list[int]]:
             if match:
                 current_line = int(match.group(1))
         # Track added/modified lines
-        elif current_file and line.startswith("+") and not line.startswith("+++"):
+        elif (
+            current_file and line.startswith("+") and not line.startswith("+++")
+        ):
             files[current_file].append(current_line)
             current_line += 1
         elif current_file and not line.startswith("-"):
@@ -51,57 +53,64 @@ def analyze_code_with_claude(
 ) -> dict:
     """Send the diff to Claude for analysis and get structured feedback."""
     files_context = "\n".join(
-        [f"- {f}: lines {min(lines) if lines else 0}-{max(lines) if lines else 0}"
-         for f, lines in changed_files.items() if lines]
+        [
+            f"- {f}: lines {min(lines) if lines else 0}-"
+            f"{max(lines) if lines else 0}"
+            for f, lines in changed_files.items()
+            if lines
+        ]
     )
 
-    system_prompt = """You are an expert code reviewer. Analyze the provided git diff and provide constructive feedback.
+    system_prompt = (
+        "You are an expert code reviewer. Analyze the provided git "
+        "diff and provide constructive feedback.\n\n"
+        "CRITICAL GUIDELINES:\n"
+        "1. **Only report REAL issues** - Do NOT fabricate, invent, "
+        "or speculate about problems that don't exist in the code\n"
+        "2. **If the code is good, say so** - It's perfectly fine to "
+        "approve code with no issues. Not every PR has problems.\n"
+        "3. **Be specific** - Reference exact file paths and line "
+        "numbers from the diff\n"
+        "4. **Focus on what matters**:\n"
+        "   - Bugs, logic errors, edge cases\n"
+        "   - Security vulnerabilities\n"
+        "   - Performance issues\n"
+        "   - Clear violations of best practices\n"
+        "5. **Ignore minor style issues** - Don't nitpick formatting, "
+        "naming preferences, or subjective style choices\n"
+        "6. **When uncertain, don't comment** - If you're not confident "
+        "something is an issue, leave it alone\n\n"
+        "You MUST respond with valid JSON in this exact format:\n"
+        "{\n"
+        '    "summary": "Brief overall assessment of the changes",\n'
+        '    "approval": "APPROVE" | "REQUEST_CHANGES",\n'
+        '    "comments": [\n'
+        "        {\n"
+        '            "file": "path/to/file.py",\n'
+        '            "line": 42,\n'
+        '            "body": "Description of the issue and suggested fix"\n'
+        "        }\n"
+        "    ]\n"
+        "}\n\n"
+        "If there are no issues, return:\n"
+        "{\n"
+        '    "summary": "Brief positive summary of the changes",\n'
+        '    "approval": "APPROVE",\n'
+        '    "comments": []\n'
+        "}\n\n"
+        'IMPORTANT: The "comments" array should be EMPTY if there are '
+        "no genuine issues. Do not invent problems."
+    )
 
-CRITICAL GUIDELINES:
-1. **Only report REAL issues** - Do NOT fabricate, invent, or speculate about problems that don't exist in the code
-2. **If the code is good, say so** - It's perfectly fine to approve code with no issues. Not every PR has problems.
-3. **Be specific** - Reference exact file paths and line numbers from the diff
-4. **Focus on what matters**:
-   - Bugs, logic errors, edge cases
-   - Security vulnerabilities
-   - Performance issues
-   - Clear violations of best practices
-5. **Ignore minor style issues** - Don't nitpick formatting, naming preferences, or subjective style choices
-6. **When uncertain, don't comment** - If you're not confident something is an issue, leave it alone
-
-You MUST respond with valid JSON in this exact format:
-{
-    "summary": "Brief overall assessment of the changes",
-    "approval": "APPROVE" | "REQUEST_CHANGES",
-    "comments": [
-        {
-            "file": "path/to/file.py",
-            "line": 42,
-            "body": "Description of the issue and suggested fix"
-        }
-    ]
-}
-
-If there are no issues, return:
-{
-    "summary": "Brief positive summary of the changes",
-    "approval": "APPROVE",
-    "comments": []
-}
-
-IMPORTANT: The "comments" array should be EMPTY if there are no genuine issues. Do not invent problems."""
-
-    user_prompt = f"""Review this pull request diff. The following files were changed:
-{files_context}
-
-```diff
-{diff}
-```
-
-Analyze the changes and respond with JSON. Remember:
-- Empty "comments" array is correct if the code has no issues
-- Only flag genuine problems you can specifically identify in the diff
-- Use exact file paths and line numbers from the diff"""
+    user_prompt = (
+        "Review this pull request diff. The following files were "
+        f"changed:\n{files_context}\n\n"
+        f"```diff\n{diff}\n```\n\n"
+        "Analyze the changes and respond with JSON. Remember:\n"
+        '- Empty "comments" array is correct if the code has no issues\n'
+        "- Only flag genuine problems you can specifically identify\n"
+        "- Use exact file paths and line numbers from the diff"
+    )
 
     message = client.messages.create(
         model="claude-sonnet-4-20250514",
@@ -161,7 +170,10 @@ def post_review(
     else:
         body = f"## :warning: AI Code Review - Changes Requested\n\n{summary}"
 
-    body += "\n\n---\n*This review was generated by Claude AI. Please use your judgment when considering these suggestions.*"
+    body += (
+        "\n\n---\n*This review was generated by Claude AI. "
+        "Please use your judgment when considering these suggestions.*"
+    )
 
     # Prepare review comments with validated line numbers
     review_comments = []
@@ -185,11 +197,13 @@ def post_review(
                 print(f"Skipping comment for {file_path}: no valid lines")
                 continue
 
-        review_comments.append({
-            "path": file_path,
-            "line": line,
-            "body": comment_body,
-        })
+        review_comments.append(
+            {
+                "path": file_path,
+                "line": line,
+                "body": comment_body,
+            }
+        )
 
     # Determine review event type
     if approval == "REQUEST_CHANGES" and review_comments:
@@ -207,7 +221,9 @@ def post_review(
             event=event,
             comments=review_comments,
         )
-        print(f"Posted review with {len(review_comments)} file-specific comments")
+        print(
+            f"Posted review with {len(review_comments)} file-specific comments"
+        )
     else:
         # No file-specific comments, just post the summary
         pr.create_review(
