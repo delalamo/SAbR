@@ -46,7 +46,7 @@ Guidelines:
 Provide a structured code review with sections for any issues found. If the changes look good, provide a brief positive summary."""
 
     message = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5-20250514",
         max_tokens=4096,
         messages=[{"role": "user", "content": user_prompt}],
         system=system_prompt,
