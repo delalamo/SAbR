@@ -351,9 +351,7 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
     output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
-    assert (
-        output.species == "human_H"
-    ), f"Expected human_H, got {output.species}"
+    assert output.species == "H", f"Expected H, got {output.species}"
 
     # Step 4: Convert alignment to state vector
     sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
