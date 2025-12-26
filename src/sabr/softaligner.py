@@ -208,58 +208,175 @@ class SoftAligner:
 
         return aln
 
-    def correct_de_loop(self, aln: np.ndarray) -> np.ndarray:
-        """Fix DE loop alignment at positions 81-83 (0-indexed: 80-82)."""
-        pos0, pos1, pos2 = constants.DE_LOOP_POSITIONS
-        # DE loop manual fix
-        if aln[:, pos0].sum() == 1 and aln[:, pos1 : pos2 + 1].sum() == 0:
-            LOGGER.info("Correcting DE loop")
-            aln[:, pos2] = aln[:, pos0]
-            aln[:, pos0] = 0
-        elif (
-            aln[:, pos0].sum() == 1
-            and aln[:, pos1].sum() == 0
-            and aln[:, pos2].sum() == 1
-        ):
-            LOGGER.info("Correcting DE loop")
-            aln[:, pos1] = aln[:, pos0]
-            aln[:, pos0] = 0
-        return aln
-
-    def correct_light_chain_fr1(self, aln: np.ndarray) -> np.ndarray:
+    def correct_fr1_alignment(
+        self,
+        aln: np.ndarray,
+        chain_type: Optional[constants.ChainType] = None,
+        input_has_pos10: bool = False,
+    ) -> np.ndarray:
         """
-        Fix light chain FR1 alignment issues in positions 6-11.
+        Fix FR1 alignment issues in positions 6-11 for all chain types.
 
-        Light chains often have shifted alignments in FR1 where the row
+        Antibody chains can have shifted alignments in FR1 where the row
         (sequence position) doesn't match the expected column (IMGT position).
         For example, row 7 at column 6 means residue 8 is at position 7.
 
-        This fix shifts matches forward when position 10 is empty but
-        earlier positions (7-9) have matches from later rows.
+        Position 10 handling:
+        - Kappa light chains: position 10 is occupied (input_has_pos10=True)
+        - Lambda light chains and Heavy chains: position 10 is skipped
+
+        With unified embeddings, position 10 exists in the reference but may
+        not apply to all input chains. This function detects and corrects
+        alignment shifts in FR1 regardless of position 10 occupancy.
+
+        Args:
+            aln: The alignment matrix
+            chain_type: The chain type (used for logging)
+            input_has_pos10: Whether the input sequence has position 10
+                (True for kappa, False for heavy/lambda)
+
+        Returns:
+            Corrected alignment matrix
         """
-        fr1_start = constants.LIGHT_CHAIN_FR1_START
-        fr1_end = constants.LIGHT_CHAIN_FR1_END
-        # Check if position 10 (0-indexed: fr1_end) is empty
-        if aln[:, fr1_end].sum() == 0:
-            # Find matches in positions 6-9 (0-indexed: fr1_start to fr1_end-1)
-            for col_idx in range(fr1_start, fr1_end):
-                if aln[:, col_idx].sum() == 1:
-                    row = np.where(aln[:, col_idx] == 1)[0][0]
-                    # If row > col_idx, the alignment is shifted
-                    # (residue row+1 at position col_idx+1,
-                    # expected at row+1)
-                    if row > col_idx:
-                        shift_amount = row - col_idx
-                        LOGGER.info(
-                            f"Correcting light chain FR1: detected shift of "
-                            f"{shift_amount} at position {col_idx + 1}"
-                        )
-                        # Shift all matches from col_idx to fr1_end-1 forward
-                        for c in range(fr1_end - 1, col_idx - 1, -1):
-                            if aln[:, c].sum() == 1:
-                                aln[:, c + shift_amount] = aln[:, c]
+        fr1_start = constants.LIGHT_CHAIN_FR1_START  # 0-indexed col 5 = pos 6
+        fr1_end = constants.LIGHT_CHAIN_FR1_END  # 0-indexed col 9 = pos 10
+
+        # Check for alignment shifts in FR1 region (positions 6-10)
+        # Detect if residues are systematically shifted
+        for col_idx in range(fr1_start, fr1_end + 1):
+            if aln[:, col_idx].sum() == 1:
+                row = np.where(aln[:, col_idx] == 1)[0][0]
+                # If row > col_idx, alignment is shifted backward
+                # (residue at row is placed at earlier column than expected)
+                if row > col_idx:
+                    shift_amount = row - col_idx
+                    LOGGER.info(
+                        f"Correcting FR1 alignment: detected shift of "
+                        f"{shift_amount} at position {col_idx + 1}"
+                    )
+                    # Shift all matches forward to correct positions
+                    # Work backwards to avoid overwriting
+                    for c in range(fr1_end, col_idx - 1, -1):
+                        if aln[:, c].sum() == 1:
+                            new_col = c + shift_amount
+                            if new_col < aln.shape[1]:
+                                aln[:, new_col] = aln[:, c]
                                 aln[:, c] = 0
-                        break
+                    break
+
+        # For chains without position 10 (heavy, lambda), clear position 10
+        # The unified embeddings include position 10 (from kappa), so
+        # heavy/lambda residues may incorrectly align there. We need to handle:
+        # Case 1: pos10 occupied, pos9 empty -> move to pos9
+        # Case 2: pos10 occupied, pos11 empty -> move to pos11
+        # Case 3: pos10 occupied, both pos9 and pos11 filled -> just clear
+        if not input_has_pos10:
+            pos9_col = 8  # 0-indexed column for position 9
+            pos10_col = 9  # 0-indexed column for position 10
+            pos11_col = 10  # 0-indexed column for position 11
+
+            pos9_occupied = aln[:, pos9_col].sum() == 1
+            pos10_occupied = aln[:, pos10_col].sum() == 1
+            pos11_occupied = aln[:, pos11_col].sum() == 1
+
+            if pos10_occupied:
+                if not pos9_occupied:
+                    # Move residue from position 10 to position 9
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 9 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos9_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                elif not pos11_occupied:
+                    # Move residue from position 10 to position 11
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 11 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos11_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                else:
+                    # Both neighbors occupied - just clear position 10
+                    LOGGER.info(
+                        "Clearing position 10 (chain lacks position 10)"
+                    )
+                    aln[:, pos10_col] = 0
+
+        return aln
+
+    def correct_fr3_alignment(
+        self,
+        aln: np.ndarray,
+        input_has_pos81: bool = False,
+        input_has_pos82: bool = False,
+    ) -> np.ndarray:
+        """
+        Fix FR3 alignment issues in positions 81-84 for light chains.
+
+        Light chains (kappa and lambda) typically skip positions 81-82 in IMGT
+        numbering, having residues at 79, 80, 83, 84, ... instead of the full
+        79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
+
+        When using unified embeddings (which include 81-82 from heavy chains),
+        the aligner may incorrectly place light chain residues at positions
+        81-82 instead of 83-84. This function corrects that misalignment.
+
+        Args:
+            aln: The alignment matrix
+            input_has_pos81: Whether the input sequence has position 81
+            input_has_pos82: Whether the input sequence has position 82
+
+        Returns:
+            Corrected alignment matrix
+        """
+        # Column indices (0-indexed)
+        pos81_col = 80  # IMGT position 81
+        pos82_col = 81  # IMGT position 82
+        pos83_col = 82  # IMGT position 83
+        pos84_col = 83  # IMGT position 84
+
+        # Check current occupancy
+        pos81_occupied = aln[:, pos81_col].sum() == 1
+        pos82_occupied = aln[:, pos82_col].sum() == 1
+        pos83_occupied = aln[:, pos83_col].sum() == 1
+        pos84_occupied = aln[:, pos84_col].sum() == 1
+
+        # If input lacks position 81 but aligner placed something there
+        if not input_has_pos81 and pos81_occupied:
+            if not pos83_occupied:
+                # Move residue from position 81 to position 83
+                LOGGER.info(
+                    "Moving residue from position 81 to position 83 "
+                    "(chain lacks position 81)"
+                )
+                aln[:, pos83_col] = aln[:, pos81_col]
+                aln[:, pos81_col] = 0
+                # Update occupancy flag
+                pos83_occupied = True
+            else:
+                LOGGER.info(
+                    "Clearing position 81 (chain lacks position 81, "
+                    "but position 83 already occupied)"
+                )
+                aln[:, pos81_col] = 0
+
+        # If input lacks position 82 but aligner placed something there
+        if not input_has_pos82 and pos82_occupied:
+            if not pos84_occupied:
+                # Move residue from position 82 to position 84
+                LOGGER.info(
+                    "Moving residue from position 82 to position 84 "
+                    "(chain lacks position 82)"
+                )
+                aln[:, pos84_col] = aln[:, pos82_col]
+                aln[:, pos82_col] = 0
+            else:
+                LOGGER.info(
+                    "Clearing position 82 (chain lacks position 82, "
+                    "but position 84 already occupied)"
+                )
+                aln[:, pos82_col] = 0
 
         return aln
 
@@ -364,6 +481,14 @@ class SoftAligner:
         Returns:
             Filtered list of embeddings.
         """
+        # Check for unified embeddings - if present, use for all chain types
+        unified_embeddings = [
+            emb for emb in self.all_embeddings if emb.name == "unified"
+        ]
+        if unified_embeddings:
+            LOGGER.info("Using unified embeddings for all chain types")
+            return unified_embeddings
+
         if chain_type is None or chain_type == constants.ChainType.AUTO:
             return self.all_embeddings
 
@@ -538,17 +663,51 @@ class SoftAligner:
                 # Place the corrected sub-alignment back
                 aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
 
-            aln = self.correct_de_loop(aln)
+            # Apply FR1 alignment correction
+            # Check if input has position 10 (kappa) or not (heavy/lambda)
+            input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
+            is_light_chain = (
+                chain_type == constants.ChainType.LIGHT
+                or best_match[-1].upper() in ("K", "L")
+            )
+            if is_light_chain or chain_type == constants.ChainType.HEAVY:
+                aln = self.correct_fr1_alignment(
+                    aln, chain_type=chain_type, input_has_pos10=input_has_pos10
+                )
 
-            # Apply light chain FR1 correction only for light chains
-            if best_match[-1].upper() in ("K", "L"):
-                aln = self.correct_light_chain_fr1(aln)
+            # Apply FR3 alignment correction for light chains
+            # Light chains typically lack positions 81-82
+            input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
+            input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
+            if is_light_chain and (not input_has_pos81 or not input_has_pos82):
+                aln = self.correct_fr3_alignment(
+                    aln,
+                    input_has_pos81=input_has_pos81,
+                    input_has_pos82=input_has_pos82,
+                )
+
+        # Determine species to report
+        # For unified embeddings, derive from chain_type parameter
+        reported_species = best_match
+        if best_match == "unified":
+            if chain_type == constants.ChainType.HEAVY:
+                reported_species = "H"
+            elif chain_type == constants.ChainType.LIGHT:
+                # Default to K for light chains (most common)
+                reported_species = "K"
+            else:
+                # AUTO or None - default to H
+                reported_species = "H"
+            LOGGER.info(
+                f"Unified embeddings: reporting species as "
+                f"'{reported_species}' based on chain_type={chain_type}"
+            )
 
             # Apply C-terminus correction for unassigned trailing residues
             aln = self.correct_c_terminus(aln)
 
         return softalign_output.SoftAlignOutput(
-            species=best_match,
+            species=reported_species,
             alignment=aln,
             score=0,
             sim_matrix=None,
