@@ -459,7 +459,9 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
 
     # Step 2: Generate MPNN embeddings from PDB (full pipeline)
     embeddings = mpnn_embeddings.from_pdb(str(pdb_path), chain)
-    assert embeddings.embeddings.shape[0] == len(sequence), "Embedding count mismatch"
+    assert embeddings.embeddings.shape[0] == len(
+        sequence
+    ), "Embedding count mismatch"
 
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
@@ -471,7 +473,8 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
         output.alignment
     )
 
-    # The alignment should start at column 2 (0-indexed), corresponding to IMGT position 3
+    # The alignment should start at column 2 (0-indexed),
+    # corresponding to IMGT position 3
     assert start == 2, f"Expected start=2 (IMGT position 3), got {start}"
 
     n_aligned = end - start
@@ -521,7 +524,9 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
             residue_ids.append(resseq)
 
     # Check first residue is 3 (positions 1 and 2 are missing)
-    assert residue_ids[0] == 3, f"First residue should be 3, got {residue_ids[0]}"
+    assert (
+        residue_ids[0] == 3
+    ), f"First residue should be 3, got {residue_ids[0]}"
 
     # Check last residue is 128
     assert (
@@ -529,4 +534,6 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     ), f"Last residue should be 128, got {residue_ids[-1]}"
 
     # Verify position 10 is skipped (standard IMGT gap)
-    assert 10 not in residue_ids, "Position 10 should be skipped in IMGT heavy chains"
+    assert (
+        10 not in residue_ids
+    ), "Position 10 should be skipped in IMGT heavy chains"
