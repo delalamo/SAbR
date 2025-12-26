@@ -234,6 +234,26 @@ def apply_trivial_fixes(
     return remaining_comments
 
 
+def dismiss_previous_ai_reviews(pr) -> None:
+    """Dismiss any previous AI reviews that requested changes."""
+    try:
+        reviews = pr.get_reviews()
+        for review in reviews:
+            # Check if this is an AI review that requested changes
+            if (
+                review.state == "CHANGES_REQUESTED"
+                and review.body
+                and "AI Code Review" in review.body
+            ):
+                try:
+                    review.dismiss("Superseded by new AI review")
+                    print(f"Dismissed previous AI review {review.id}")
+                except Exception as e:
+                    print(f"Could not dismiss review {review.id}: {e}")
+    except Exception as e:
+        print(f"Warning: Could not check previous reviews: {e}")
+
+
 def post_review(
     review_data: dict,
     repo_name: str,
@@ -249,6 +269,10 @@ def post_review(
     gh = Github(auth=Auth.Token(token))
     repo = gh.get_repo(repo_name)
     pr = repo.get_pull(pr_number)
+
+    # Dismiss any previous AI reviews that blocked merging
+    dismiss_previous_ai_reviews(pr)
+
     commit = pr.get_commits().reversed[0]
 
     summary = review_data.get("summary", "No summary provided")
