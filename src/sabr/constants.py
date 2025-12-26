@@ -33,6 +33,17 @@ DE_LOOP_POSITIONS = (80, 81, 82)
 LIGHT_CHAIN_FR1_START = 5  # 0-indexed column for position 6
 LIGHT_CHAIN_FR1_END = 9  # 0-indexed column for position 10
 
+# C-terminus correction positions (0-indexed)
+# Used to detect and fix unassigned residues at the end of FW4
+# If residues after the last assigned position (around 125/126) are unassigned,
+# they should be deterministically assigned to positions 127, 128
+C_TERMINUS_ANCHOR_POSITION = 124  # 0-indexed for IMGT position 125
+C_TERMINUS_LAST_POSITIONS = (
+    125,
+    126,
+    127,
+)  # 0-indexed for positions 126, 127, 128
+
 
 class ChainType(Enum):
     """Antibody chain type filter options."""

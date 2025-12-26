@@ -345,3 +345,122 @@ def test_correct_gap_numbering_preserves_anchor_points():
                 f"C-terminal anchor not preserved for "
                 f"{n_residues} residues, {n_positions} positions"
             )
+
+
+def test_correct_c_terminus_no_correction_needed():
+    """Test C-terminus correction when no correction is needed.
+
+    When all residues are already assigned, no correction should be applied.
+    """
+    aligner = make_aligner()
+    aln = np.zeros((120, 128), dtype=int)
+
+    # Set up an alignment where all rows have assignments
+    # and the last assigned column is 127 (IMGT position 128)
+    for i in range(120):
+        aln[i, min(i, 127)] = 1
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Should not change since all rows are assigned
+    assert np.array_equal(corrected, aln)
+
+
+def test_correct_c_terminus_assigns_trailing_residues():
+    """Test that trailing unassigned residues are assigned to C-terminus.
+
+    When residues after position 125 are unassigned, they should be
+    deterministically assigned to positions 126, 127, 128.
+    """
+    aligner = make_aligner()
+    aln = np.zeros((120, 128), dtype=int)
+
+    # Set up alignment: residues 0-116 assigned to IMGT positions 1-117
+    # and residue 117 assigned to position 125 (0-indexed: 124)
+    # Residues 118, 119 are unassigned
+    for i in range(117):
+        aln[i, i] = 1
+    aln[117, 124] = 1  # Last assigned is row 117 at col 124 (IMGT pos 125)
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Residues 118, 119 should now be assigned to cols 125, 126 (IMGT 126, 127)
+    assert corrected[118, 125] == 1, "Row 118 should be assigned to col 125"
+    assert corrected[119, 126] == 1, "Row 119 should be assigned to col 126"
+
+
+def test_correct_c_terminus_respects_max_imgt_position():
+    """Test that C-terminus correction doesn't exceed IMGT position 128.
+
+    Even if there are many trailing unassigned residues, we can only
+    assign up to position 128 (0-indexed: 127).
+    """
+    aligner = make_aligner()
+    aln = np.zeros((130, 128), dtype=int)
+
+    # Set up alignment: residues 0-124 assigned, last at col 124 (IMGT 125)
+    for i in range(125):
+        aln[i, i] = 1
+
+    # Residues 125-129 are unassigned (5 residues)
+    # But we only have positions 126, 127, 128 available (3 positions)
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Only 3 residues should be assigned (to positions 126, 127, 128)
+    assert corrected[125, 125] == 1, "Row 125 should be assigned to col 125"
+    assert corrected[126, 126] == 1, "Row 126 should be assigned to col 126"
+    assert corrected[127, 127] == 1, "Row 127 should be assigned to col 127"
+
+    # Rows 128, 129 should still be unassigned (no space left)
+    assert corrected[128, :].sum() == 0, "Row 128 should remain unassigned"
+    assert corrected[129, :].sum() == 0, "Row 129 should remain unassigned"
+
+
+def test_correct_c_terminus_skips_if_last_col_too_early():
+    """Test that C-terminus correction is skipped if last col is too early.
+
+    If the last assigned column is before position 125 (0-indexed: 124),
+    the correction should not be applied as this indicates a different issue.
+    """
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+
+    # Set up alignment: last assigned position is 100 (0-indexed: 99)
+    # This is well before the C-terminus anchor position
+    for i in range(90):
+        aln[i, i] = 1
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Should not change since last assigned col (89) < anchor position (124)
+    assert np.array_equal(corrected, aln)
+
+
+def test_correct_c_terminus_single_trailing_residue():
+    """Test C-terminus correction with a single trailing unassigned residue."""
+    aligner = make_aligner()
+    aln = np.zeros((118, 128), dtype=int)
+
+    # Set up: residues 0-116 assigned, last at position 126 (0-indexed: 125)
+    for i in range(117):
+        aln[i, i] = 1
+    aln[116, 125] = 1  # Overwrite: row 116 at col 125 (IMGT pos 126)
+
+    # Row 117 is unassigned
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Row 117 should be assigned to col 126 (IMGT pos 127)
+    assert corrected[117, 126] == 1, "Row 117 should be assigned to col 126"
+
+
+def test_correct_c_terminus_empty_alignment():
+    """Test C-terminus correction with an empty alignment matrix."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+
+    corrected = aligner.correct_c_terminus(aln)
+
+    # Should return unchanged (no assignments to work with)
+    assert np.array_equal(corrected, aln)

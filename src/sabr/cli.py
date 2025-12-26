@@ -142,7 +142,7 @@ LOGGER = logging.getLogger(__name__)
         "Enable deterministic renumbering corrections for loop regions. "
         "When enabled (default), applies corrections for: "
         "light chain FR1 positions 7-10, DE loop positions 80-85 (all chains), "
-        "and CDR loops (CDR1, CDR2, CDR3). "
+        "CDR loops (CDR1, CDR2, CDR3), and C-terminus positions 126-128. "
         "When disabled, uses raw alignment output without corrections."
     ),
 )

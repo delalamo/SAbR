@@ -12,7 +12,7 @@ Key components:
 The alignment process includes:
 1. Embedding comparison against all species references
 2. Selection of best-matching species by similarity score
-3. Deterministic corrections for CDR loops, DE loop, and FR1 positions
+3. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
 4. Expansion to full 128-position IMGT alignment matrix
 """
 
@@ -263,6 +263,93 @@ class SoftAligner:
 
         return aln
 
+    def correct_c_terminus(self, aln: np.ndarray) -> np.ndarray:
+        """Fix C-terminus alignment for the last residues (positions 126-128).
+
+        When residues at the end of the sequence are unassigned after the
+        last aligned IMGT position (around 125/126), this function
+        deterministically assigns them to positions 127, 128.
+
+        The logic:
+        1. Find the last row (sequence position) with any assignment
+        2. Find the last column (IMGT position) with any assignment
+        3. If there are unassigned rows after the last assigned row,
+           and the last assigned column is around position 125 or 126,
+           assign those trailing residues to subsequent positions (127, 128)
+
+        Args:
+            aln: The alignment matrix (rows=sequence, cols=IMGT positions).
+
+        Returns:
+            Corrected alignment matrix with C-terminus residues assigned.
+        """
+        n_rows, n_cols = aln.shape
+
+        # Find the last row that has any assignment
+        row_sums = aln.sum(axis=1)
+        assigned_rows = np.where(row_sums > 0)[0]
+        if len(assigned_rows) == 0:
+            return aln
+
+        last_assigned_row = assigned_rows[-1]
+
+        # Find the last column that has any assignment
+        col_sums = aln.sum(axis=0)
+        assigned_cols = np.where(col_sums > 0)[0]
+        if len(assigned_cols) == 0:
+            return aln
+
+        last_assigned_col = assigned_cols[-1]
+
+        # Check if there are unassigned rows after the last assigned row
+        # These are residues that weren't aligned to any IMGT position
+        n_unassigned_trailing = n_rows - last_assigned_row - 1
+
+        if n_unassigned_trailing <= 0:
+            # No unassigned trailing residues
+            return aln
+
+        # Only apply the fix if the last assigned column is around
+        # position 125 or 126 (0-indexed: 124 or 125)
+        # This indicates the C-terminus wasn't fully aligned
+        if last_assigned_col < constants.C_TERMINUS_ANCHOR_POSITION:
+            LOGGER.debug(
+                f"C-terminus: last assigned col {last_assigned_col} is "
+                f"before anchor position "
+                f"{constants.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
+            )
+            return aln
+
+        # Assign trailing residues to subsequent IMGT positions
+        # Starting from last_assigned_col + 1, up to position 127 (0-indexed)
+        LOGGER.info(
+            f"Correcting C-terminus: {n_unassigned_trailing} unassigned "
+            f"residues after row {last_assigned_row}, "
+            f"last assigned col was {last_assigned_col}"
+        )
+
+        next_col = last_assigned_col + 1
+        for i in range(n_unassigned_trailing):
+            row_to_assign = last_assigned_row + 1 + i
+            if next_col >= n_cols:
+                LOGGER.warning(
+                    f"C-terminus: cannot assign row {row_to_assign}, "
+                    f"no more IMGT positions available (max col {n_cols - 1})"
+                )
+                break
+
+            # Clear any existing assignment in this row (shouldn't be any)
+            aln[row_to_assign, :] = 0
+            # Assign to the next available IMGT position
+            aln[row_to_assign, next_col] = 1
+            LOGGER.info(
+                f"C-terminus: assigned row {row_to_assign} to "
+                f"IMGT position {next_col + 1}"
+            )
+            next_col += 1
+
+        return aln
+
     def filter_embeddings_by_chain_type(
         self, chain_type: Optional[constants.ChainType]
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
@@ -322,6 +409,7 @@ class SoftAligner:
                 - Light chain FR1 positions 7-10
                 - DE loop positions 80-85 (all chains)
                 - CDR loops (CDR1, CDR2, CDR3) for all chains
+                - C-terminus positions 126-128 (all chains)
                 When False, raw alignment output used without corrections
                 Default is True.
 
@@ -455,6 +543,9 @@ class SoftAligner:
             # Apply light chain FR1 correction only for light chains
             if best_match[-1].upper() in ("K", "L"):
                 aln = self.correct_light_chain_fr1(aln)
+
+            # Apply C-terminus correction for unassigned trailing residues
+            aln = self.correct_c_terminus(aln)
 
         return softalign_output.SoftAlignOutput(
             species=best_match,
