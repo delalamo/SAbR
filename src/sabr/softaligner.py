@@ -208,24 +208,6 @@ class SoftAligner:
 
         return aln
 
-    def correct_de_loop(self, aln: np.ndarray) -> np.ndarray:
-        """Fix DE loop alignment at positions 81-83 (0-indexed: 80-82)."""
-        pos0, pos1, pos2 = constants.DE_LOOP_POSITIONS
-        # DE loop manual fix
-        if aln[:, pos0].sum() == 1 and aln[:, pos1 : pos2 + 1].sum() == 0:
-            LOGGER.info("Correcting DE loop")
-            aln[:, pos2] = aln[:, pos0]
-            aln[:, pos0] = 0
-        elif (
-            aln[:, pos0].sum() == 1
-            and aln[:, pos1].sum() == 0
-            and aln[:, pos2].sum() == 1
-        ):
-            LOGGER.info("Correcting DE loop")
-            aln[:, pos1] = aln[:, pos0]
-            aln[:, pos0] = 0
-        return aln
-
     def correct_fr1_alignment(
         self,
         aln: np.ndarray,
@@ -592,8 +574,6 @@ class SoftAligner:
 
                 # Place the corrected sub-alignment back
                 aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
-
-            aln = self.correct_de_loop(aln)
 
             # Apply FR1 alignment correction
             # Check if input has position 10 (kappa) or not (heavy/lambda)

@@ -77,51 +77,6 @@ def test_correct_gap_numbering_single_element():
     assert corrected.sum() == 1
 
 
-def test_correct_de_loop_no_correction_needed():
-    """Test DE loop correction when no correction is needed."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    # Set up a pattern that doesn't match correction criteria
-    aln[:, 80] = 0
-    aln[:, 81] = 1
-    aln[:, 82] = 1
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should not change
-    assert np.array_equal(corrected, aln)
-
-
-def test_correct_de_loop_case1():
-    """Test DE loop correction case 1: position 80 filled, 81-82 empty."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    aln[5, 80] = 1  # One residue at position 80
-    aln[:, 81:83] = 0  # Positions 81-82 empty
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should move position 80 to 82
-    assert corrected[5, 80] == 0
-    assert corrected[5, 82] == 1
-
-
-def test_correct_de_loop_case2():
-    """Test DE loop correction case 2: 80 and 82 filled, 81 empty."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    aln[5, 80] = 1  # One residue at position 80
-    aln[:, 81] = 0  # Position 81 empty
-    aln[7, 82] = 1  # One residue at position 82
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should move position 80 to 81
-    assert corrected[5, 80] == 0
-    assert corrected[5, 81] == 1
-    assert corrected[7, 82] == 1
-
-
 def test_fix_aln_with_integer_idxs():
     """Test fix_aln with integer indices."""
     aligner = make_aligner()
