@@ -323,6 +323,81 @@ class SoftAligner:
 
         return aln
 
+    def correct_fr3_alignment(
+        self,
+        aln: np.ndarray,
+        input_has_pos81: bool = False,
+        input_has_pos82: bool = False,
+    ) -> np.ndarray:
+        """
+        Fix FR3 alignment issues in positions 81-84 for light chains.
+
+        Light chains (kappa and lambda) typically skip positions 81-82 in IMGT
+        numbering, having residues at 79, 80, 83, 84, ... instead of the full
+        79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
+
+        When using unified embeddings (which include 81-82 from heavy chains),
+        the aligner may incorrectly place light chain residues at positions
+        81-82 instead of 83-84. This function corrects that misalignment.
+
+        Args:
+            aln: The alignment matrix
+            input_has_pos81: Whether the input sequence has position 81
+            input_has_pos82: Whether the input sequence has position 82
+
+        Returns:
+            Corrected alignment matrix
+        """
+        # Column indices (0-indexed)
+        pos81_col = 80  # IMGT position 81
+        pos82_col = 81  # IMGT position 82
+        pos83_col = 82  # IMGT position 83
+        pos84_col = 83  # IMGT position 84
+
+        # Check current occupancy
+        pos81_occupied = aln[:, pos81_col].sum() == 1
+        pos82_occupied = aln[:, pos82_col].sum() == 1
+        pos83_occupied = aln[:, pos83_col].sum() == 1
+        pos84_occupied = aln[:, pos84_col].sum() == 1
+
+        # If input lacks position 81 but aligner placed something there
+        if not input_has_pos81 and pos81_occupied:
+            if not pos83_occupied:
+                # Move residue from position 81 to position 83
+                LOGGER.info(
+                    "Moving residue from position 81 to position 83 "
+                    "(chain lacks position 81)"
+                )
+                aln[:, pos83_col] = aln[:, pos81_col]
+                aln[:, pos81_col] = 0
+                # Update occupancy flag
+                pos83_occupied = True
+            else:
+                LOGGER.info(
+                    "Clearing position 81 (chain lacks position 81, "
+                    "but position 83 already occupied)"
+                )
+                aln[:, pos81_col] = 0
+
+        # If input lacks position 82 but aligner placed something there
+        if not input_has_pos82 and pos82_occupied:
+            if not pos84_occupied:
+                # Move residue from position 82 to position 84
+                LOGGER.info(
+                    "Moving residue from position 82 to position 84 "
+                    "(chain lacks position 82)"
+                )
+                aln[:, pos84_col] = aln[:, pos82_col]
+                aln[:, pos82_col] = 0
+            else:
+                LOGGER.info(
+                    "Clearing position 82 (chain lacks position 82, "
+                    "but position 84 already occupied)"
+                )
+                aln[:, pos82_col] = 0
+
+        return aln
+
     def filter_embeddings_by_chain_type(
         self, chain_type: Optional[constants.ChainType]
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
@@ -530,6 +605,17 @@ class SoftAligner:
             if is_light_chain or chain_type == constants.ChainType.HEAVY:
                 aln = self.correct_fr1_alignment(
                     aln, chain_type=chain_type, input_has_pos10=input_has_pos10
+                )
+
+            # Apply FR3 alignment correction for light chains
+            # Light chains typically lack positions 81-82
+            input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
+            input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
+            if is_light_chain and (not input_has_pos81 or not input_has_pos82):
+                aln = self.correct_fr3_alignment(
+                    aln,
+                    input_has_pos81=input_has_pos81,
+                    input_has_pos82=input_has_pos82,
                 )
 
         # Determine species to report
