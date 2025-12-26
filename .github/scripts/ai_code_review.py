@@ -84,9 +84,7 @@ def analyze_code_with_claude(
         "- old_code/new_code = exact single-line or multi-line snippet\n"
         "- old_code must match file content EXACTLY (including whitespace)\n"
         "- Do NOT invent issues - empty comments array is fine\n"
-        "- Only real bugs, not style preferences\n"
-        "- Do NOT comment on model names like claude-haiku-4-5-20251001 - "
-        "these are valid Anthropic model IDs\n\n"
+        "- Only real bugs, not style preferences\n\n"
         "EXAMPLE:\n"
         "{\n"
         '  "summary": "Has typo and potential security issue.",\n'
@@ -107,7 +105,7 @@ def analyze_code_with_claude(
     )
 
     message = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+        model=os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-20250514"),
         max_tokens=4096,
         messages=[{"role": "user", "content": user_prompt}],
         system=system_prompt,
