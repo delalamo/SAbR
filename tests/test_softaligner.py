@@ -77,51 +77,6 @@ def test_correct_gap_numbering_single_element():
     assert corrected.sum() == 1
 
 
-def test_correct_de_loop_no_correction_needed():
-    """Test DE loop correction when no correction is needed."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    # Set up a pattern that doesn't match correction criteria
-    aln[:, 80] = 0
-    aln[:, 81] = 1
-    aln[:, 82] = 1
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should not change
-    assert np.array_equal(corrected, aln)
-
-
-def test_correct_de_loop_case1():
-    """Test DE loop correction case 1: position 80 filled, 81-82 empty."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    aln[5, 80] = 1  # One residue at position 80
-    aln[:, 81:83] = 0  # Positions 81-82 empty
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should move position 80 to 82
-    assert corrected[5, 80] == 0
-    assert corrected[5, 82] == 1
-
-
-def test_correct_de_loop_case2():
-    """Test DE loop correction case 2: 80 and 82 filled, 81 empty."""
-    aligner = make_aligner()
-    aln = np.zeros((10, 128), dtype=int)
-    aln[5, 80] = 1  # One residue at position 80
-    aln[:, 81] = 0  # Position 81 empty
-    aln[7, 82] = 1  # One residue at position 82
-
-    corrected = aligner.correct_de_loop(aln)
-
-    # Should move position 80 to 81
-    assert corrected[5, 80] == 0
-    assert corrected[5, 81] == 1
-    assert corrected[7, 82] == 1
-
-
 def test_fix_aln_with_integer_idxs():
     """Test fix_aln with integer indices."""
     aligner = make_aligner()
@@ -211,21 +166,24 @@ def test_filter_embeddings_by_chain_type_light():
     assert all(emb.name[-1] in ("K", "L") for emb in filtered)
 
 
-def test_correct_light_chain_fr1_no_correction_needed():
-    """Test light chain FR1 correction when no correction is needed."""
+def test_correct_fr1_alignment_no_correction_needed():
+    """Test FR1 correction when no correction is needed."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
-    # Set up normal alignment where position 10 is filled
+    # Set up normal alignment where row matches column
     aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
 
-    corrected = aligner.correct_light_chain_fr1(aln)
+    # With input_has_pos10=True (kappa), position 10 should remain
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
 
     # Should not change
     assert np.array_equal(corrected, aln)
 
 
-def test_correct_light_chain_fr1_with_shift():
-    """Test light chain FR1 correction when shift is needed."""
+def test_correct_fr1_alignment_with_shift():
+    """Test FR1 correction when shift is needed."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
     # Position 10 (0-indexed: 9) is empty
@@ -233,10 +191,159 @@ def test_correct_light_chain_fr1_with_shift():
     # Row 7 at column 6 means residue 8 is at position 7 (shifted)
     aln[7, 6] = 1
 
-    corrected = aligner.correct_light_chain_fr1(aln)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
 
     # Should have shifted the alignment
     assert corrected[7, 6] == 0  # Original position should be cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos9():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos9."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos11():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos11."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is filled, position 10 (col 9) has a residue,
+    # position 11 (col 10) is empty
+    aln[7, 8] = 1  # Residue 8 at position 9
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10 (should be at 11)
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos11
+    assert corrected[7, 8] == 1  # Position 9 unchanged
+    assert corrected[8, 9] == 0  # Position 10 cleared
+    assert corrected[8, 10] == 1  # Now at position 11
+
+
+def test_correct_fr1_lambda_chain_clears_pos10():
+    """Test lambda chain FR1 correction: position 10 cleared like heavy."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue incorrectly at position 10
+
+    # Lambda chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.LIGHT, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
+
+
+def test_correct_fr3_alignment_no_correction_needed():
+    """Test FR3 correction when input has positions 81 and 82."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+    # Set up positions 81 and 82 (cols 80 and 81) occupied
+    aln[70, 80] = 1  # Residue at position 81
+    aln[71, 81] = 1  # Residue at position 82
+
+    # If input has both positions, no correction needed
+    corrected = aligner.correct_fr3_alignment(
+        aln, input_has_pos81=True, input_has_pos82=True
+    )
+
+    # Should not change
+    assert np.array_equal(corrected, aln)
+
+
+def test_correct_fr3_alignment_move_81_to_83():
+    """Test FR3 correction: move residue from pos 81 to pos 83."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+    # Position 81 (col 80) has a residue, position 83 (col 82) is empty
+    aln[70, 80] = 1  # Residue incorrectly at position 81
+
+    # Light chain lacks position 81
+    corrected = aligner.correct_fr3_alignment(
+        aln, input_has_pos81=False, input_has_pos82=True
+    )
+
+    # Residue should be moved from pos81 to pos83
+    assert corrected[70, 80] == 0  # Position 81 cleared
+    assert corrected[70, 82] == 1  # Now at position 83
+
+
+def test_correct_fr3_alignment_move_82_to_84():
+    """Test FR3 correction: move residue from pos 82 to pos 84."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+    # Position 82 (col 81) has a residue, position 84 (col 83) is empty
+    aln[71, 81] = 1  # Residue incorrectly at position 82
+
+    # Light chain lacks position 82
+    corrected = aligner.correct_fr3_alignment(
+        aln, input_has_pos81=True, input_has_pos82=False
+    )
+
+    # Residue should be moved from pos82 to pos84
+    assert corrected[71, 81] == 0  # Position 82 cleared
+    assert corrected[71, 83] == 1  # Now at position 84
+
+
+def test_correct_fr3_alignment_both_moves():
+    """Test FR3 correction: move both 81->83 and 82->84."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+    # Positions 81 and 82 have residues, 83 and 84 are empty
+    aln[70, 80] = 1  # Residue incorrectly at position 81
+    aln[71, 81] = 1  # Residue incorrectly at position 82
+
+    # Light chain lacks both positions 81 and 82
+    corrected = aligner.correct_fr3_alignment(
+        aln, input_has_pos81=False, input_has_pos82=False
+    )
+
+    # Both residues should be moved
+    assert corrected[70, 80] == 0  # Position 81 cleared
+    assert corrected[70, 82] == 1  # Now at position 83
+    assert corrected[71, 81] == 0  # Position 82 cleared
+    assert corrected[71, 83] == 1  # Now at position 84
+
+
+def test_correct_fr3_alignment_83_84_already_occupied():
+    """Test FR3 correction when target positions are already occupied."""
+    aligner = make_aligner()
+    aln = np.zeros((100, 128), dtype=int)
+    # All positions 81-84 have residues
+    aln[70, 80] = 1  # Position 81
+    aln[71, 81] = 1  # Position 82
+    aln[72, 82] = 1  # Position 83
+    aln[73, 83] = 1  # Position 84
+
+    # Light chain lacks positions 81 and 82
+    corrected = aligner.correct_fr3_alignment(
+        aln, input_has_pos81=False, input_has_pos82=False
+    )
+
+    # Since 83, 84 are occupied, 81, 82 should just be cleared
+    assert corrected[70, 80] == 0  # Position 81 cleared
+    assert corrected[71, 81] == 0  # Position 82 cleared
+    assert corrected[72, 82] == 1  # Position 83 unchanged
+    assert corrected[73, 83] == 1  # Position 84 unchanged
 
 
 def test_correct_gap_numbering_5_residue_cdr():

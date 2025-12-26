@@ -25,9 +25,6 @@ IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
 # Default alignment temperature for SoftAlign
 DEFAULT_TEMPERATURE = 1e-4
 
-# DE loop correction positions (0-indexed columns in alignment matrix)
-DE_LOOP_POSITIONS = (80, 81, 82)
-
 # Light chain FR1 positions for correction (0-indexed)
 # Positions 6-10 in IMGT (0-indexed: 5-9)
 LIGHT_CHAIN_FR1_START = 5  # 0-indexed column for position 6
