@@ -106,6 +106,10 @@ def main() -> None:
 
     question = extract_question(question_raw)
 
+    if not question:
+        print("Error: No question provided after /ask")
+        sys.exit(1)
+
     print(f"Answering question for {repo_name}#{pr_number}")
     print(f"Question: {question}")
 
