@@ -211,21 +211,21 @@ def test_filter_embeddings_by_chain_type_light():
     assert all(emb.name[-1] in ("K", "L") for emb in filtered)
 
 
-def test_correct_light_chain_fr1_no_correction_needed():
-    """Test light chain FR1 correction when no correction is needed."""
+def test_correct_fr1_alignment_no_correction_needed():
+    """Test FR1 correction when no correction is needed."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
-    # Set up normal alignment where position 10 is filled
+    # Set up normal alignment where row matches column
     aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
 
-    corrected = aligner.correct_light_chain_fr1(aln)
+    corrected = aligner.correct_fr1_alignment(aln, chain_type=None)
 
     # Should not change
     assert np.array_equal(corrected, aln)
 
 
-def test_correct_light_chain_fr1_with_shift():
-    """Test light chain FR1 correction when shift is needed."""
+def test_correct_fr1_alignment_with_shift():
+    """Test FR1 correction when shift is needed."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
     # Position 10 (0-indexed: 9) is empty
@@ -233,7 +233,7 @@ def test_correct_light_chain_fr1_with_shift():
     # Row 7 at column 6 means residue 8 is at position 7 (shifted)
     aln[7, 6] = 1
 
-    corrected = aligner.correct_light_chain_fr1(aln)
+    corrected = aligner.correct_fr1_alignment(aln, chain_type=None)
 
     # Should have shifted the alignment
     assert corrected[7, 6] == 0  # Original position should be cleared

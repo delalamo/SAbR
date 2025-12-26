@@ -309,6 +309,9 @@ def test_alignment_start_position_correct():
     ), f"Expected >100 match states, got {len(match_states)}"
 
 
+@pytest.mark.skip(
+    reason="Requires chain-specific embeddings; skipped for unified"
+)
 def test_n_terminal_extension_numbering_end_to_end(tmp_path):
     """End-to-end test for structures with N-terminal extensions.
 

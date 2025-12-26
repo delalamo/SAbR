@@ -226,40 +226,70 @@ class SoftAligner:
             aln[:, pos0] = 0
         return aln
 
-    def correct_light_chain_fr1(self, aln: np.ndarray) -> np.ndarray:
+    def correct_fr1_alignment(
+        self,
+        aln: np.ndarray,
+        chain_type: Optional[constants.ChainType] = None,
+    ) -> np.ndarray:
         """
-        Fix light chain FR1 alignment issues in positions 6-11.
+        Fix FR1 alignment issues in positions 6-11 for all chain types.
 
-        Light chains often have shifted alignments in FR1 where the row
+        Antibody chains can have shifted alignments in FR1 where the row
         (sequence position) doesn't match the expected column (IMGT position).
         For example, row 7 at column 6 means residue 8 is at position 7.
 
-        This fix shifts matches forward when position 10 is empty but
-        earlier positions (7-9) have matches from later rows.
+        Position 10 handling:
+        - Kappa light chains: position 10 is occupied
+        - Lambda light chains and Heavy chains: position 10 is skipped
+
+        With unified embeddings, position 10 exists in the reference but may
+        not apply to all input chains. This function detects and corrects
+        alignment shifts in FR1 regardless of position 10 occupancy.
+
+        Args:
+            aln: The alignment matrix
+            chain_type: The chain type (used for position 10 handling)
+
+        Returns:
+            Corrected alignment matrix
         """
-        fr1_start = constants.LIGHT_CHAIN_FR1_START
-        fr1_end = constants.LIGHT_CHAIN_FR1_END
-        # Check if position 10 (0-indexed: fr1_end) is empty
-        if aln[:, fr1_end].sum() == 0:
-            # Find matches in positions 6-9 (0-indexed: fr1_start to fr1_end-1)
-            for col_idx in range(fr1_start, fr1_end):
-                if aln[:, col_idx].sum() == 1:
-                    row = np.where(aln[:, col_idx] == 1)[0][0]
-                    # If row > col_idx, the alignment is shifted
-                    # (residue row+1 at position col_idx+1,
-                    # expected at row+1)
-                    if row > col_idx:
-                        shift_amount = row - col_idx
-                        LOGGER.info(
-                            f"Correcting light chain FR1: detected shift of "
-                            f"{shift_amount} at position {col_idx + 1}"
-                        )
-                        # Shift all matches from col_idx to fr1_end-1 forward
-                        for c in range(fr1_end - 1, col_idx - 1, -1):
-                            if aln[:, c].sum() == 1:
-                                aln[:, c + shift_amount] = aln[:, c]
+        fr1_start = constants.LIGHT_CHAIN_FR1_START  # 0-indexed col 5 = pos 6
+        fr1_end = constants.LIGHT_CHAIN_FR1_END  # 0-indexed col 9 = pos 10
+
+        # Check for alignment shifts in FR1 region (positions 6-10)
+        # Detect if residues are systematically shifted
+        for col_idx in range(fr1_start, fr1_end + 1):
+            if aln[:, col_idx].sum() == 1:
+                row = np.where(aln[:, col_idx] == 1)[0][0]
+                # If row > col_idx, alignment is shifted backward
+                # (residue at row is placed at earlier column than expected)
+                if row > col_idx:
+                    shift_amount = row - col_idx
+                    LOGGER.info(
+                        f"Correcting FR1 alignment: detected shift of "
+                        f"{shift_amount} at position {col_idx + 1}"
+                    )
+                    # Shift all matches forward to correct positions
+                    # Work backwards to avoid overwriting
+                    for c in range(fr1_end, col_idx - 1, -1):
+                        if aln[:, c].sum() == 1:
+                            new_col = c + shift_amount
+                            if new_col < aln.shape[1]:
+                                aln[:, new_col] = aln[:, c]
                                 aln[:, c] = 0
-                        break
+                    break
+
+        # For non-kappa chains, position 10 should be empty
+        # If position 10 (col 9) is occupied but shouldn't be, clear it
+        # and let the residue be assigned by ANARCI later
+        if chain_type == constants.ChainType.HEAVY:
+            # Heavy chains never have position 10
+            if aln[:, 9].sum() == 1:
+                LOGGER.info(
+                    "Clearing position 10 for heavy chain "
+                    "(should be unoccupied)"
+                )
+                aln[:, 9] = 0
 
         return aln
 
@@ -277,6 +307,14 @@ class SoftAligner:
         Returns:
             Filtered list of embeddings.
         """
+        # Check for unified embeddings - if present, use for all chain types
+        unified_embeddings = [
+            emb for emb in self.all_embeddings if emb.name == "unified"
+        ]
+        if unified_embeddings:
+            LOGGER.info("Using unified embeddings for all chain types")
+            return unified_embeddings
+
         if chain_type is None or chain_type == constants.ChainType.AUTO:
             return self.all_embeddings
 
@@ -452,12 +490,35 @@ class SoftAligner:
 
             aln = self.correct_de_loop(aln)
 
-            # Apply light chain FR1 correction only for light chains
-            if best_match[-1].upper() in ("K", "L"):
-                aln = self.correct_light_chain_fr1(aln)
+            # Apply FR1 alignment correction
+            # For light chains: fix shift issues, handle position 10 occupancy
+            # For heavy chains: ensure position 10 is unoccupied
+            is_light_chain = (
+                chain_type == constants.ChainType.LIGHT
+                or best_match[-1].upper() in ("K", "L")
+            )
+            if is_light_chain or chain_type == constants.ChainType.HEAVY:
+                aln = self.correct_fr1_alignment(aln, chain_type=chain_type)
+
+        # Determine species to report
+        # For unified embeddings, derive from chain_type parameter
+        reported_species = best_match
+        if best_match == "unified":
+            if chain_type == constants.ChainType.HEAVY:
+                reported_species = "H"
+            elif chain_type == constants.ChainType.LIGHT:
+                # Default to K for light chains (most common)
+                reported_species = "K"
+            else:
+                # AUTO or None - default to H
+                reported_species = "H"
+            LOGGER.info(
+                f"Unified embeddings: reporting species as "
+                f"'{reported_species}' based on chain_type={chain_type}"
+            )
 
         return softalign_output.SoftAlignOutput(
-            species=best_match,
+            species=reported_species,
             alignment=aln,
             score=0,
             sim_matrix=None,
