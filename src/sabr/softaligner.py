@@ -230,6 +230,7 @@ class SoftAligner:
         self,
         aln: np.ndarray,
         chain_type: Optional[constants.ChainType] = None,
+        input_has_pos10: bool = False,
     ) -> np.ndarray:
         """
         Fix FR1 alignment issues in positions 6-11 for all chain types.
@@ -239,7 +240,7 @@ class SoftAligner:
         For example, row 7 at column 6 means residue 8 is at position 7.
 
         Position 10 handling:
-        - Kappa light chains: position 10 is occupied
+        - Kappa light chains: position 10 is occupied (input_has_pos10=True)
         - Lambda light chains and Heavy chains: position 10 is skipped
 
         With unified embeddings, position 10 exists in the reference but may
@@ -248,7 +249,9 @@ class SoftAligner:
 
         Args:
             aln: The alignment matrix
-            chain_type: The chain type (used for position 10 handling)
+            chain_type: The chain type (used for logging)
+            input_has_pos10: Whether the input sequence has position 10
+                (True for kappa, False for heavy/lambda)
 
         Returns:
             Corrected alignment matrix
@@ -279,17 +282,44 @@ class SoftAligner:
                                 aln[:, c] = 0
                     break
 
-        # For non-kappa chains, position 10 should be empty
-        # If position 10 (col 9) is occupied but shouldn't be, clear it
-        # and let the residue be assigned by ANARCI later
-        if chain_type == constants.ChainType.HEAVY:
-            # Heavy chains never have position 10
-            if aln[:, 9].sum() == 1:
-                LOGGER.info(
-                    "Clearing position 10 for heavy chain "
-                    "(should be unoccupied)"
-                )
-                aln[:, 9] = 0
+        # For chains without position 10 (heavy, lambda), clear position 10
+        # The unified embeddings include position 10 (from kappa), so
+        # heavy/lambda residues may incorrectly align there. We need to handle:
+        # Case 1: pos10 occupied, pos9 empty -> move to pos9
+        # Case 2: pos10 occupied, pos11 empty -> move to pos11
+        # Case 3: pos10 occupied, both pos9 and pos11 filled -> just clear
+        if not input_has_pos10:
+            pos9_col = 8  # 0-indexed column for position 9
+            pos10_col = 9  # 0-indexed column for position 10
+            pos11_col = 10  # 0-indexed column for position 11
+
+            pos9_occupied = aln[:, pos9_col].sum() == 1
+            pos10_occupied = aln[:, pos10_col].sum() == 1
+            pos11_occupied = aln[:, pos11_col].sum() == 1
+
+            if pos10_occupied:
+                if not pos9_occupied:
+                    # Move residue from position 10 to position 9
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 9 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos9_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                elif not pos11_occupied:
+                    # Move residue from position 10 to position 11
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 11 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos11_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                else:
+                    # Both neighbors occupied - just clear position 10
+                    LOGGER.info(
+                        "Clearing position 10 (chain lacks position 10)"
+                    )
+                    aln[:, pos10_col] = 0
 
         return aln
 
@@ -491,14 +521,16 @@ class SoftAligner:
             aln = self.correct_de_loop(aln)
 
             # Apply FR1 alignment correction
-            # For light chains: fix shift issues, handle position 10 occupancy
-            # For heavy chains: ensure position 10 is unoccupied
+            # Check if input has position 10 (kappa) or not (heavy/lambda)
+            input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
             is_light_chain = (
                 chain_type == constants.ChainType.LIGHT
                 or best_match[-1].upper() in ("K", "L")
             )
             if is_light_chain or chain_type == constants.ChainType.HEAVY:
-                aln = self.correct_fr1_alignment(aln, chain_type=chain_type)
+                aln = self.correct_fr1_alignment(
+                    aln, chain_type=chain_type, input_has_pos10=input_has_pos10
+                )
 
         # Determine species to report
         # For unified embeddings, derive from chain_type parameter

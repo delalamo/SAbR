@@ -218,7 +218,10 @@ def test_correct_fr1_alignment_no_correction_needed():
     # Set up normal alignment where row matches column
     aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type=None)
+    # With input_has_pos10=True (kappa), position 10 should remain
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
 
     # Should not change
     assert np.array_equal(corrected, aln)
@@ -233,10 +236,66 @@ def test_correct_fr1_alignment_with_shift():
     # Row 7 at column 6 means residue 8 is at position 7 (shifted)
     aln[7, 6] = 1
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type=None)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
 
     # Should have shifted the alignment
     assert corrected[7, 6] == 0  # Original position should be cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos9():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos9."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos11():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos11."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is filled, position 10 (col 9) has a residue,
+    # position 11 (col 10) is empty
+    aln[7, 8] = 1  # Residue 8 at position 9
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10 (should be at 11)
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos11
+    assert corrected[7, 8] == 1  # Position 9 unchanged
+    assert corrected[8, 9] == 0  # Position 10 cleared
+    assert corrected[8, 10] == 1  # Now at position 11
+
+
+def test_correct_fr1_lambda_chain_clears_pos10():
+    """Test lambda chain FR1 correction: position 10 cleared like heavy."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue incorrectly at position 10
+
+    # Lambda chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.LIGHT, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
 
 
 def test_correct_gap_numbering_5_residue_cdr():
