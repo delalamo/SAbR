@@ -84,7 +84,9 @@ def analyze_code_with_claude(
         "- old_code/new_code = exact single-line or multi-line snippet\n"
         "- old_code must match file content EXACTLY (including whitespace)\n"
         "- Do NOT invent issues - empty comments array is fine\n"
-        "- Only real bugs, not style preferences\n\n"
+        "- Only real bugs, not style preferences\n"
+        "- Do NOT comment on model names like claude-haiku-4-5-20251001 - "
+        "these are valid Anthropic model IDs\n\n"
         "EXAMPLE:\n"
         "{\n"
         '  "summary": "Has typo and potential security issue.",\n'
