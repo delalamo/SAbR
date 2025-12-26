@@ -9,7 +9,7 @@ on:
         required: true
         type: number
 
-  # Comment trigger - maintainers comment "/review" or "/ask" on a PR
+  # Comment trigger - maintainers comment "/review", "/ask", or "/dismiss" on a PR
   issue_comment:
     types: [created]
 
@@ -27,6 +27,7 @@ jobs:
        github.event.issue.pull_request &&
        contains(github.event.comment.body, '/review') &&
        !startsWith(github.event.comment.body, '/ask') &&
+       !startsWith(github.event.comment.body, '/dismiss') &&
        (github.event.comment.author_association == 'OWNER' ||
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'COLLABORATOR'))
@@ -138,6 +139,56 @@ jobs:
           QUESTION: ${{ github.event.comment.body }}
           COMMENT_ID: ${{ github.event.comment.id }}
         run: python .github/scripts/ai_ask.py
+
+      - name: Add success reaction
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='rocket'
+
+  ai-dismiss:
+    runs-on: ubuntu-latest
+    # Only run for /dismiss command
+    if: |
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/dismiss') &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'MEMBER' ||
+       github.event.comment.author_association == 'COLLABORATOR')
+    steps:
+      - name: Get PR number
+        id: pr
+        run: |
+          echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+      - name: Add reaction to comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='eyes'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install PyGithub
+
+      - name: Dismiss AI Reviews
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          REPO_NAME: ${{ github.repository }}
+        run: python .github/scripts/ai_dismiss.py
 
       - name: Add success reaction
         if: success()
