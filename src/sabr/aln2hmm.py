@@ -72,13 +72,13 @@ def alignment_matrix_to_state_vector(
             "Alignment matrix contains no path (no non-zero elements found)"
         )
 
-    col_to_rows: dict = {}
+    col_to_rows = {}
     for col, row in path:
         if col not in col_to_rows:
             col_to_rows[col] = []
         col_to_rows[col].append(row)
 
-    row_to_col: dict = {}
+    row_to_col = {}
     for col, row in path:
         row_to_col[row] = col
 
@@ -96,7 +96,7 @@ def alignment_matrix_to_state_vector(
         )
 
     offset = path[0][0]
-    states: List[State] = []
+    states = []
 
     for col in range(path[0][0], path[-1][0] + 1):
         imgt_pos = col + 1
