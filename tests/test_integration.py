@@ -60,15 +60,15 @@ def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
     alignment = data["alignment"]
-    species = data["species"].item()
-    return alignment, species
+    chain_type = data["chain_type"].item()
+    return alignment, chain_type
 
 
 def run_threading_pipeline(
     pdb_path: Path,
     chain: str,
     alignment: np.ndarray,
-    species: str,
+    chain_type: str,
     tmp_path: Path,
 ) -> int:
     sequence = None
@@ -87,7 +87,7 @@ def run_threading_pipeline(
 
     anarci_alignment, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
-            state_vector, subsequence, scheme="imgt", chain_type=species
+            state_vector, subsequence, scheme="imgt", chain_type=chain_type
         )
     )
 
@@ -108,12 +108,12 @@ def test_thread_alignment_has_zero_deviations(tmp_path, fixture_key):
     data = FIXTURES[fixture_key]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, species = load_alignment_fixture(data["alignment"])
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
     deviations = run_threading_pipeline(
         data["pdb"],
         data["chain"],
         alignment,
-        species,
+        chain_type,
         tmp_path,
     )
     min_expected = data.get("min_deviations")
@@ -149,9 +149,9 @@ def test_cli_respects_expected_numbering(
     data = FIXTURES[fixture_key]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, species = load_alignment_fixture(data["alignment"])
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
 
-    DummyAligner = create_dummy_aligner(alignment, species)
+    DummyAligner = create_dummy_aligner(alignment, chain_type)
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
@@ -192,10 +192,10 @@ def test_cli_deterministic_renumbering_flag(
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, species = load_alignment_fixture(data["alignment"])
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
 
     captured_kwargs = {}
-    DummyAligner = create_dummy_aligner(alignment, species, captured_kwargs)
+    DummyAligner = create_dummy_aligner(alignment, chain_type, captured_kwargs)
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
@@ -245,6 +245,65 @@ def test_cli_rejects_multi_character_chain():
     assert "Chain identifier must be exactly one character" in result.output
 
 
+@pytest.mark.parametrize(
+    "chain_type", ["H", "K", "L", "heavy", "kappa", "lambda", "auto"]
+)
+def test_cli_chain_type_argument(monkeypatch, tmp_path, chain_type):
+    """Test that CLI accepts all valid --chain-type values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, fixture_chain_type = load_alignment_fixture(data["alignment"])
+
+    DummyAligner = create_dummy_aligner(alignment, fixture_chain_type)
+    dummy_from_pdb = create_dummy_from_pdb()
+
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / f"test_chain_type_{chain_type}.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+            "-t",
+            chain_type,
+        ],
+    )
+    assert result.exit_code == 0, result.output
+
+
+def test_cli_rejects_invalid_chain_type():
+    """Test that CLI rejects invalid --chain-type values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "-t",
+            "X",  # Invalid chain type
+        ],
+    )
+    assert result.exit_code != 0
+    assert "Invalid value" in result.output or "X" in result.output
+
+
 def test_alignment_start_position_correct():
     """Test alignment handles structures starting at IMGT position 2.
 
@@ -259,7 +318,7 @@ def test_alignment_start_position_correct():
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
 
-    alignment, species = load_alignment_fixture(data["alignment"])
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
 
     state_vector, imgt_start, imgt_end, _ = (
         aln2hmm.alignment_matrix_to_state_vector(alignment)
