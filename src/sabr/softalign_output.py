@@ -16,7 +16,7 @@ class SoftAlignOutput:
     alignment: np.ndarray
     score: float
     sim_matrix: Optional[np.ndarray]
-    species: Optional[str]
+    chain_type: Optional[str]
     idxs1: List[str]
     idxs2: List[str]
 
@@ -33,6 +33,6 @@ class SoftAlignOutput:
             )
         LOGGER.debug(
             "Created SoftAlignOutput for "
-            f"species={self.species}, alignment_shape="
+            f"chain_type={self.chain_type}, alignment_shape="
             f"{getattr(self.alignment, 'shape', None)}, score={self.score}"
         )
