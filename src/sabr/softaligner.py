@@ -2,18 +2,18 @@
 """SoftAlign-based antibody sequence alignment module.
 
 This module provides the SoftAligner class which aligns query antibody
-embeddings against a library of species reference embeddings to identify
-the best-matching species and generate IMGT-compatible alignments.
+embeddings against unified reference embeddings to generate IMGT-compatible
+alignments.
 
 Key components:
 - SoftAligner: Main class for running alignments
 - _align_fn: Internal alignment function using the SoftAlign neural model
 
 The alignment process includes:
-1. Embedding comparison against all species references
-2. Selection of best-matching species by similarity score
-3. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
-4. Expansion to full 128-position IMGT alignment matrix
+1. Embedding comparison against unified reference
+2. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
+3. Expansion to full 128-position IMGT alignment matrix
+4. Chain type detection from DE loop occupancy
 """
 
 import logging
@@ -72,7 +72,7 @@ def _align_fn(
         alignment=np.asarray(alignment[0]),
         sim_matrix=np.asarray(sim_matrix[0]),
         score=float(score[0]),
-        species=None,
+        chain_type=None,
         idxs1=input.idxs,
         idxs2=target.idxs,
     )
@@ -119,7 +119,7 @@ def find_nearest_occupied_column(
 
 
 class SoftAligner:
-    """Align a query embedding against packaged species embeddings."""
+    """Align a query embedding against unified reference embeddings."""
 
     def __init__(
         self,
@@ -168,15 +168,15 @@ class SoftAligner:
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
-        """Load packaged species embeddings as ``MPNNEmbeddings``."""
+        """Load packaged reference embeddings as ``MPNNEmbeddings``."""
         out_embeddings = []
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)["arr_0"].item()
-            for species, embeddings_dict in data.items():
+            for name, embeddings_dict in data.items():
                 out_embeddings.append(
                     mpnn_embeddings.MPNNEmbeddings(
-                        name=species,
+                        name=name,
                         embeddings=embeddings_dict.get("array"),
                         stdev=embeddings_dict.get("stdev"),
                         idxs=embeddings_dict.get("idxs"),
@@ -558,11 +558,11 @@ class SoftAligner:
             aln = self.correct_c_terminus(aln)
 
         # Detect chain type from alignment for reporting
-        reported_species = util.detect_chain_type(aln)
-        LOGGER.info(f"Detected chain type: {reported_species}")
+        detected_chain_type = util.detect_chain_type(aln)
+        LOGGER.info(f"Detected chain type: {detected_chain_type}")
 
         return softalign_output.SoftAlignOutput(
-            species=reported_species,
+            chain_type=detected_chain_type,
             alignment=aln,
             score=out.score,
             sim_matrix=None,

@@ -6,7 +6,7 @@ Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
 
 1. Load structure (PDB or mmCIF format) and extract sequence
 2. Generate MPNN embeddings for the target chain
-3. Align embeddings against species references using SoftAlign
+3. Align embeddings against unified reference using SoftAlign
 4. Convert alignment to HMM state vector
 5. Apply ANARCI numbering scheme (IMGT, Chothia, Kabat, etc.)
 6. Write renumbered structure to output file
@@ -135,10 +135,22 @@ LOGGER = logging.getLogger(__name__)
     "chain_type",
     default="auto",
     show_default=True,
-    type=click.Choice(["H", "K", "L", "auto"], case_sensitive=True),
+    type=click.Choice(
+        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        case_sensitive=False,
+    ),
+    callback=lambda ctx, param, value: {
+        "heavy": "H",
+        "kappa": "K",
+        "lambda": "L",
+    }.get(
+        value.lower(),
+        value.upper() if value.upper() in ("H", "K", "L") else value,
+    ),
     help=(
-        "Chain type for ANARCI numbering. H=heavy, K=kappa light, L=lambda "
-        "light. Use 'auto' (default) to detect from DE loop occupancy."
+        "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
+        "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
+        "DE loop occupancy."
     ),
 )
 def main(

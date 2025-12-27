@@ -9,9 +9,9 @@ from Bio import SeqIO
 class DummyResult:
     """Mock alignment result for testing."""
 
-    def __init__(self, alignment: np.ndarray, species: str) -> None:
+    def __init__(self, alignment: np.ndarray, chain_type: str) -> None:
         self.alignment = alignment
-        self.species = species
+        self.chain_type = chain_type
 
 
 class DummyEmbeddings:
@@ -34,14 +34,14 @@ class DummyEmbeddings:
 
 def create_dummy_aligner(
     alignment: np.ndarray,
-    species: str,
+    chain_type: str,
     captured_kwargs: Optional[Dict[str, Any]] = None,
 ) -> Any:
     """Create a mock aligner that returns predetermined results.
 
     Args:
         alignment: The alignment matrix to return.
-        species: The species name to return.
+        chain_type: The chain type to return.
         captured_kwargs: Optional dict to capture kwargs passed to __call__.
 
     Returns:
@@ -52,7 +52,7 @@ def create_dummy_aligner(
         def __call__(self, input_data: Any, **kwargs: Any) -> DummyResult:
             if captured_kwargs is not None:
                 captured_kwargs.update(kwargs)
-            return DummyResult(alignment, species)
+            return DummyResult(alignment, chain_type)
 
     return DummyAligner
 

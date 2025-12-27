@@ -27,11 +27,11 @@ def test_softalignoutput_holds_passed_values():
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
-        species="mouse",
+        chain_type="mouse",
         idxs1=[str(x) for x in range(len(alignment[0]))],
         idxs2=[str(x) for x in range(len(alignment[1]))],
     )
 
     assert output.alignment.shape == (2, 2)
     assert output.score == pytest.approx(1.5)
-    assert output.species == "mouse"
+    assert output.chain_type == "mouse"

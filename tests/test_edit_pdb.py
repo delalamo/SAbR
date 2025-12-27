@@ -360,7 +360,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
-                sv, subsequence, scheme="imgt", chain_type=result.species
+                sv, subsequence, scheme="imgt", chain_type=result.chain_type
             )
         )
 
@@ -418,7 +418,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
-                sv, subsequence, scheme="imgt", chain_type=result.species
+                sv, subsequence, scheme="imgt", chain_type=result.chain_type
             )
         )
 
