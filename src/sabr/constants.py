@@ -78,10 +78,12 @@ IMGT_LOOPS = {
 # Framework anchor positions for CDR renumbering
 # These are conserved framework residues used to identify CDR boundaries.
 # CDR residues are determined by counting rows between these anchors.
+# Anchors are the last FW residue before CDR and first FW residue after CDR,
+# except CDR1 which uses Cys23 (conserved) requiring linear FW fill-in for 24-26.
 CDR_ANCHORS = {
-    "CDR1": (23, 40),   # Cys23 (conserved) and position 40 (FW2)
-    "CDR2": (54, 67),   # FW2 end region and FW3 start region
-    "CDR3": (103, 119),  # FW3 end region and FW4 start region
+    "CDR1": (23, 40),   # Cys23 (conserved) and position 40 (first FW2 after CDR1)
+    "CDR2": (54, 66),   # position 54 (55 is last FW2, added linearly) and 66 (first FW3)
+    "CDR3": (104, 118),  # position 104 (last FW3) and 118 (first FW4)
 }
 
 NON_CDR_RESIDUES = sum(IMGT_FRAMEWORKS.values(), [])
