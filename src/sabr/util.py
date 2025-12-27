@@ -53,17 +53,21 @@ def read_softalign_params(
 
 
 def detect_chain_type(alignment: np.ndarray) -> str:
-    """Detect antibody chain type from alignment based on DE loop length.
+    """Detect antibody chain type from alignment.
 
-    The DE loop (IMGT positions 81-84) differs between chain types:
-    - Heavy chains have 4 residues (81, 82, 83, 84)
+    Uses DE loop (positions 81-84) and position 10 to determine chain type:
+    - Heavy chains have 4 residues in DE loop (81, 82, 83, 84)
     - Light chains have 2 residues (83, 84 only - skip 81, 82)
+
+    For light chains, position 10 distinguishes kappa from lambda:
+    - Kappa chains have position 10 occupied
+    - Lambda chains lack position 10
 
     Args:
         alignment: The alignment matrix (rows=sequence, cols=IMGT positions).
 
     Returns:
-        Chain type string for ANARCI: "H" for heavy, "K" for kappa.
+        Chain type: "H" (heavy), "K" (kappa), or "L" (lambda).
     """
     # Check alignment matrix for occupancy at positions 81 and 82
     pos81_col = 80  # 0-indexed column for IMGT position 81
@@ -79,9 +83,20 @@ def detect_chain_type(alignment: np.ndarray) -> str:
         )
         return "H"
     else:
-        # DE loop has 2 residues -> light chain (default to kappa)
-        LOGGER.info(
-            "Detected chain type: K (kappa) based on DE loop "
-            "lacking residues at positions 81 and 82"
-        )
-        return "K"
+        # DE loop has 2 residues -> light chain
+        # Check position 10 to distinguish kappa from lambda
+        pos10_col = 9  # 0-indexed column for IMGT position 10
+        pos10_occupied = alignment[:, pos10_col].sum() >= 1
+
+        if pos10_occupied:
+            LOGGER.info(
+                "Detected chain type: K (kappa) based on DE loop "
+                "lacking positions 81-82 and position 10 being occupied"
+            )
+            return "K"
+        else:
+            LOGGER.info(
+                "Detected chain type: L (lambda) based on DE loop "
+                "lacking positions 81-82 and position 10 being unoccupied"
+            )
+            return "L"
