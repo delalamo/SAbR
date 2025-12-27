@@ -60,9 +60,7 @@ def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
     alignment = data["alignment"]
-    # Handle both new "chain_type" key and legacy "species" key in fixtures
-    key = "chain_type" if "chain_type" in data else "species"
-    chain_type = data[key].item()
+    chain_type = data["chain_type"].item()
     return alignment, chain_type
 
 
