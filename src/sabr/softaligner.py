@@ -99,7 +99,6 @@ def find_nearest_occupied_column(
     """
     n_cols = aln.shape[1]
 
-    # Build search order based on direction preference
     offsets = [0]
     for i in range(1, search_range + 1):
         if direction == "both":
@@ -113,10 +112,7 @@ def find_nearest_occupied_column(
         col = target_col + offset
         if 0 <= col < n_cols:
             rows = np.where(aln[:, col] == 1)[0]
-            if len(rows) == 1:
-                return int(rows[0]), col
-            elif len(rows) > 1:
-                # Multiple matches - take the first one
+            if len(rows) >= 1:
                 return int(rows[0]), col
 
     return None, None
@@ -238,24 +234,18 @@ class SoftAligner:
         Returns:
             Corrected alignment matrix
         """
-        fr1_start = constants.LIGHT_CHAIN_FR1_START  # 0-indexed col 5 = pos 6
-        fr1_end = constants.LIGHT_CHAIN_FR1_END  # 0-indexed col 9 = pos 10
+        fr1_start = constants.LIGHT_CHAIN_FR1_START
+        fr1_end = constants.LIGHT_CHAIN_FR1_END
 
-        # Check for alignment shifts in FR1 region (positions 6-10)
-        # Detect if residues are systematically shifted
         for col_idx in range(fr1_start, fr1_end + 1):
             if aln[:, col_idx].sum() == 1:
                 row = np.where(aln[:, col_idx] == 1)[0][0]
-                # If row > col_idx, alignment is shifted backward
-                # (residue at row is placed at earlier column than expected)
                 if row > col_idx:
                     shift_amount = row - col_idx
                     LOGGER.info(
                         f"Correcting FR1 alignment: detected shift of "
                         f"{shift_amount} at position {col_idx + 1}"
                     )
-                    # Shift all matches forward to correct positions
-                    # Work backwards to avoid overwriting
                     for c in range(fr1_end, col_idx - 1, -1):
                         if aln[:, c].sum() == 1:
                             new_col = c + shift_amount
@@ -264,11 +254,8 @@ class SoftAligner:
                                 aln[:, c] = 0
                     break
 
-        # For chains without position 10 (heavy, lambda), clear position 10
         if not input_has_pos10:
-            pos9_col = 8  # 0-indexed column for position 9
-            pos10_col = 9  # 0-indexed column for position 10
-            pos11_col = 10  # 0-indexed column for position 11
+            pos9_col, pos10_col, pos11_col = 8, 9, 10
 
             pos9_occupied = aln[:, pos9_col].sum() == 1
             pos10_occupied = aln[:, pos10_col].sum() == 1
@@ -276,7 +263,6 @@ class SoftAligner:
 
             if pos10_occupied:
                 if not pos9_occupied:
-                    # Move residue from position 10 to position 9
                     LOGGER.info(
                         "Moving residue from position 10 to position 9 "
                         "(chain lacks position 10)"
@@ -284,7 +270,6 @@ class SoftAligner:
                     aln[:, pos9_col] = aln[:, pos10_col]
                     aln[:, pos10_col] = 0
                 elif not pos11_occupied:
-                    # Move residue from position 10 to position 11
                     LOGGER.info(
                         "Moving residue from position 10 to position 11 "
                         "(chain lacks position 10)"
@@ -292,7 +277,6 @@ class SoftAligner:
                     aln[:, pos11_col] = aln[:, pos10_col]
                     aln[:, pos10_col] = 0
                 else:
-                    # Both neighbors occupied - just clear position 10
                     LOGGER.info(
                         "Clearing position 10 (chain lacks position 10)"
                     )
@@ -325,29 +309,21 @@ class SoftAligner:
         Returns:
             Corrected alignment matrix
         """
-        # Column indices (0-indexed)
-        pos81_col = 80  # IMGT position 81
-        pos82_col = 81  # IMGT position 82
-        pos83_col = 82  # IMGT position 83
-        pos84_col = 83  # IMGT position 84
+        pos81_col, pos82_col, pos83_col, pos84_col = 80, 81, 82, 83
 
-        # Check current occupancy
         pos81_occupied = aln[:, pos81_col].sum() == 1
         pos82_occupied = aln[:, pos82_col].sum() == 1
         pos83_occupied = aln[:, pos83_col].sum() == 1
         pos84_occupied = aln[:, pos84_col].sum() == 1
 
-        # If input lacks position 81 but aligner placed something there
         if not input_has_pos81 and pos81_occupied:
             if not pos83_occupied:
-                # Move residue from position 81 to position 83
                 LOGGER.info(
                     "Moving residue from position 81 to position 83 "
                     "(chain lacks position 81)"
                 )
                 aln[:, pos83_col] = aln[:, pos81_col]
                 aln[:, pos81_col] = 0
-                # Update occupancy flag
                 pos83_occupied = True
             else:
                 LOGGER.info(
@@ -356,10 +332,8 @@ class SoftAligner:
                 )
                 aln[:, pos81_col] = 0
 
-        # If input lacks position 82 but aligner placed something there
         if not input_has_pos82 and pos82_occupied:
             if not pos84_occupied:
-                # Move residue from position 82 to position 84
                 LOGGER.info(
                     "Moving residue from position 82 to position 84 "
                     "(chain lacks position 82)"
@@ -389,7 +363,6 @@ class SoftAligner:
         Returns:
             Filtered list of embeddings.
         """
-        # Check for unified embeddings - if present, use for all chain types
         unified_embeddings = [
             emb for emb in self.all_embeddings if emb.name == "unified"
         ]
@@ -405,10 +378,7 @@ class SoftAligner:
             suffix = emb.name[-1].upper()
             if chain_type == constants.ChainType.HEAVY and suffix == "H":
                 filtered.append(emb)
-            elif chain_type == constants.ChainType.LIGHT and suffix in (
-                "K",
-                "L",
-            ):
+            elif chain_type == constants.ChainType.LIGHT and suffix in ("K", "L"):
                 filtered.append(emb)
 
         if not filtered:
@@ -452,7 +422,6 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        # Filter embeddings based on chain type
         embeddings_to_search = self.filter_embeddings_by_chain_type(chain_type)
 
         outputs = {}
@@ -484,24 +453,18 @@ class SoftAligner:
         aln = np.array(outputs[best_match].alignment, dtype=int)
 
         if deterministic_loop_renumbering:
-            for name, (startres, endres) in constants.IMGT_LOOPS.items():
+            for loop_name, (startres, endres) in constants.IMGT_LOOPS.items():
                 startres_idx = startres - 1
                 endres_idx = endres - 1
 
-                # Check if there are any aligned residues within the CDR range
-                # If the CDR region is entirely empty, skip renumbering
                 cdr_region = aln[:, startres_idx:endres]
-                cdr_occupancy = cdr_region.sum()
-                if cdr_occupancy == 0:
+                if cdr_region.sum() == 0:
                     LOGGER.info(
-                        f"Skipping {name}; no residues aligned within "
+                        f"Skipping {loop_name}; no residues aligned within "
                         f"CDR range (cols {startres_idx}-{endres - 1})"
                     )
                     continue
 
-                # Use soft boundary detection: search ±2 positions
-                # For start, prefer exact or backward (lower column indices)
-                # For end, prefer exact or forward (higher column indices)
                 start_row, start_col = find_nearest_occupied_column(
                     aln, startres_idx, search_range=2, direction="both"
                 )
@@ -511,67 +474,48 @@ class SoftAligner:
 
                 if start_row is None or end_row is None:
                     LOGGER.warning(
-                        f"Skipping {name}; missing start "
+                        f"Skipping {loop_name}; missing start "
                         f"(searched {startres_idx}±2) or end "
                         f"(searched {endres_idx}±2)"
                     )
                     continue
 
-                # Validate that start comes before end in sequence
                 if start_row >= end_row:
                     LOGGER.warning(
-                        f"Skipping {name}; start row ({start_row}) >= "
+                        f"Skipping {loop_name}; start row ({start_row}) >= "
                         f"end row ({end_row})"
                     )
                     continue
 
-                # Validate detected boundaries overlap with CDR range.
-                # If boundaries are outside the CDR range (e.g., spanning
-                # a deletion), the soft detection picked up non-CDR residues
                 if start_col > endres_idx or end_col < startres_idx:
                     LOGGER.warning(
-                        f"Skipping {name}; detected boundaries "
+                        f"Skipping {loop_name}; detected boundaries "
                         f"(cols {start_col}-{end_col}) don't overlap "
                         f"CDR range (cols {startres_idx}-{endres_idx})"
                     )
                     continue
 
-                # Log if we used soft boundaries
                 if start_col != startres_idx or end_col != endres_idx:
                     LOGGER.info(
-                        f"{name}: soft boundary detection used - "
+                        f"{loop_name}: soft boundary detection used - "
                         f"start col {start_col} (expected {startres_idx}), "
                         f"end col {end_col} (expected {endres_idx})"
                     )
 
-                # Clear the entire CDR region in the alignment first
-                # This prevents conflicts when re-assigning positions
                 aln[start_row : end_row + 1, startres_idx:endres] = 0
 
-                # Also clear any soft-detected positions outside the CDR range
-                # to prevent duplicate alignments when pulling rows into CDR
                 if start_col < startres_idx:
                     aln[start_row, start_col] = 0
                 if end_col > endres_idx:
                     aln[end_row, end_col] = 0
 
-                # Extract the sub-alignment using the found row range
-                # but the canonical IMGT column range
                 n_residues = end_row - start_row + 1
-                # Column slice is startres_idx:endres
                 n_positions = endres - startres_idx
 
-                # Create a new sub-alignment with correct dimensions
                 sub_aln = np.zeros((n_residues, n_positions), dtype=aln.dtype)
-
-                # Apply deterministic gap numbering pattern
                 sub_aln = self.correct_gap_numbering(sub_aln)
-
-                # Place the corrected sub-alignment back
                 aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
 
-            # Apply FR1 alignment correction
-            # Check if input has position 10 (kappa) or not (heavy/lambda)
             input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
             is_light_chain = (
                 chain_type == constants.ChainType.LIGHT
@@ -582,8 +526,6 @@ class SoftAligner:
                     aln, chain_type=chain_type, input_has_pos10=input_has_pos10
                 )
 
-            # Apply FR3 alignment correction for light chains
-            # Light chains typically lack positions 81-82
             input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
             input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
             if is_light_chain and (not input_has_pos81 or not input_has_pos82):
@@ -593,17 +535,13 @@ class SoftAligner:
                     input_has_pos82=input_has_pos82,
                 )
 
-        # Determine species to report
-        # For unified embeddings, derive from chain_type parameter
         reported_species = best_match
         if best_match == "unified":
             if chain_type == constants.ChainType.HEAVY:
                 reported_species = "H"
             elif chain_type == constants.ChainType.LIGHT:
-                # Default to K for light chains (most common)
                 reported_species = "K"
             else:
-                # AUTO or None - default to H
                 reported_species = "H"
             LOGGER.info(
                 f"Unified embeddings: reporting species as "

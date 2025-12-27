@@ -96,79 +96,57 @@ def thread_onto_chain(
     Returns:
         Tuple of (new_chain, deviation_count).
     """
-    thread_msg = (
+    LOGGER.info(
         f"Threading chain {chain.id} with ANARCI window "
-        f"[{anarci_start}, {anarci_end}) "
-        f"(alignment starts at {alignment_start})"
+        f"[{anarci_start}, {anarci_end}) (alignment starts at {alignment_start})"
+        + (f" (max_residues={max_residues})" if max_residues > 0 else "")
     )
-    if max_residues > 0:
-        thread_msg += f" (max_residues={max_residues})"
-    LOGGER.info(thread_msg)
     new_chain = Chain.Chain(chain.id)
-
-    chain_res = []
-
-    # anarci_idx tracks position in the aligned sequence
-    # It starts at -1 and increments for each aligned residue
-    anarci_idx = -1
-    last_idx = None
+    aligned_residue_idx = -1
+    last_imgt_pos = None
     deviations = 0
 
     for pdb_idx, res in enumerate(chain.get_residues()):
-        # Skip residues beyond max_residues limit
-        if max_residues > 0:
-            res_index = res.id[1]
-            if res_index > max_residues:
-                LOGGER.info(
-                    f"Stopping at residue index {res_index} "
-                    f"(max_residues={max_residues})"
-                )
-                break
+        if max_residues > 0 and res.id[1] > max_residues:
+            LOGGER.info(
+                f"Stopping at residue index {res.id[1]} "
+                f"(max_residues={max_residues})"
+            )
+            break
 
-        # Determine if we're past the alignment start position
         is_in_aligned_region = pdb_idx >= alignment_start
         is_hetatm = res.get_id()[0].strip() != ""
 
-        # Increment anarci_idx only for aligned, non-HETATM residues
         if is_in_aligned_region and not is_hetatm:
-            anarci_idx += 1
+            aligned_residue_idx += 1
 
-        # Skip over deletion positions in ANARCI output
-        if anarci_idx >= 0:
-            anarci_idx = _skip_deletions(anarci_idx, anarci_start, anarci_out)
+        if aligned_residue_idx >= 0:
+            aligned_residue_idx = _skip_deletions(
+                aligned_residue_idx, anarci_start, anarci_out
+            )
 
-        # Determine which region we're in
-        # anarci_idx: 0-indexed count of aligned residues
-        # anarci_start: offset for leading gaps in anarci_out
-        anarci_array_idx = anarci_idx + anarci_start
-        is_in_anarci_window = anarci_idx >= 0
+        anarci_array_idx = aligned_residue_idx + anarci_start
+        is_in_fv_region = aligned_residue_idx >= 0
         is_before_fv_end = anarci_array_idx < len(anarci_out)
 
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
 
-        # Compute new residue ID based on region
-        if is_in_anarci_window and is_before_fv_end and not is_hetatm:
-            # IN-Fv region: use ANARCI numbering
-            (new_idx, icode), aa = anarci_out[anarci_array_idx]
-            last_idx = new_idx
-
+        if is_in_fv_region and is_before_fv_end and not is_hetatm:
+            (new_imgt_pos, icode), aa = anarci_out[anarci_array_idx]
+            last_imgt_pos = new_imgt_pos
             if aa != AA_3TO1[res.get_resname()]:
                 raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
-            new_id = (res.get_id()[0], new_idx, icode)
+            new_id = (res.get_id()[0], new_imgt_pos, icode)
         elif is_hetatm:
-            # Keep original ID for HETATM (water, ligands, etc.)
             new_id = res.get_id()
-        elif anarci_idx < 0:
-            # PRE-Fv region: number backwards from first ANARCI position
+        elif aligned_residue_idx < 0:
             first_anarci_pos = anarci_out[anarci_start][0][0]
-            # Residue is before the aligned sequence entirely
-            new_idx = first_anarci_pos - (alignment_start - pdb_idx)
-            new_id = (res.get_id()[0], new_idx, " ")
+            new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
+            new_id = (res.get_id()[0], new_imgt_pos, " ")
         else:
-            # POST-Fv region: continue from last ANARCI position
-            last_idx += 1
-            new_id = (" ", last_idx, " ")
+            last_imgt_pos += 1
+            new_id = (" ", last_imgt_pos, " ")
 
         new_res.id = new_id
         LOGGER.info("OLD %s; NEW %s", res.get_id(), new_res.get_id())
@@ -176,7 +154,7 @@ def thread_onto_chain(
             deviations += 1
         new_chain.add(new_res)
         new_res.parent = new_chain
-        chain_res.append(res.get_id()[1:])
+
     return new_chain, deviations
 
 
@@ -209,21 +187,18 @@ def thread_alignment(
     Raises:
         ValueError: If extended insertion codes are used but output is not .cif.
     """
-    # Validate output format supports the insertion codes used
     validate_output_format(output_pdb, alignment)
 
-    align_msg = (
+    LOGGER.info(
         f"Threading alignment for {pdb_file} chain {chain}; "
         f"writing to {output_pdb}"
     )
-    LOGGER.info(align_msg)
 
-    # Auto-detect input format based on file extension
-    if pdb_file.lower().endswith(".cif"):
-        parser = PDB.MMCIFParser(QUIET=True)
-        LOGGER.debug("Detected CIF input; using MMCIFParser")
-    else:
-        parser = PDB.PDBParser(QUIET=True)
+    parser = (
+        PDB.MMCIFParser(QUIET=True)
+        if pdb_file.lower().endswith(".cif")
+        else PDB.PDBParser(QUIET=True)
+    )
     structure = parser.get_structure("input_structure", pdb_file)
     new_structure = Structure.Structure("threaded_structure")
     new_model = Model.Model(0)
@@ -241,10 +216,7 @@ def thread_alignment(
             all_devs += deviations
 
     new_structure.add(new_model)
-    io = PDB.PDBIO()
-    if output_pdb.endswith(".cif"):
-        io = PDB.MMCIFIO()
-        LOGGER.debug("Detected CIF output; using MMCIFIO")
+    io = PDB.MMCIFIO() if output_pdb.endswith(".cif") else PDB.PDBIO()
     io.set_structure(new_structure)
     io.save(output_pdb)
     LOGGER.info(f"Saved threaded structure to {output_pdb}")

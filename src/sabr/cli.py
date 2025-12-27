@@ -134,16 +134,15 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
-    "--deterministic-loop-renumbering/--no-deterministic-loop-renumbering",
-    "deterministic_loop_renumbering",
-    default=True,
-    show_default=True,
+    "--disable-deterministic-renumbering",
+    "disable_deterministic_renumbering",
+    is_flag=True,
     help=(
-        "Enable deterministic renumbering corrections for loop regions. "
-        "When enabled (default), applies corrections for: "
+        "Disable deterministic renumbering corrections for loop regions. "
+        "By default, corrections are applied for: "
         "light chain FR1 positions 7-10, DE loop positions 80-85 (all chains), "
         "and CDR loops (CDR1, CDR2, CDR3). "
-        "When disabled, uses raw alignment output without corrections."
+        "Use this flag to use raw alignment output without corrections."
     ),
 )
 def main(
@@ -156,7 +155,7 @@ def main(
     max_residues: int,
     chain_type: str,
     extended_insertions: bool,
-    deterministic_loop_renumbering: bool,
+    disable_deterministic_renumbering: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -164,40 +163,32 @@ def main(
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
 
-    # Validate input PDB file exists
     if not os.path.exists(input_pdb):
         raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
 
-    # Validate input file has correct extension
-    valid_input_ext = (".pdb", ".cif")
-    if not input_pdb.lower().endswith(valid_input_ext):
+    if not input_pdb.lower().endswith((".pdb", ".cif")):
         raise click.ClickException(
             f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. "
             f"Got: '{input_pdb}'"
         )
 
-    # Validate chain identifier
     if input_chain and len(input_chain) != 1:
         raise click.ClickException(
             f"Chain identifier must be a single character. Got: '{input_chain}'"
         )
 
-    # Validate output file extension
-    valid_output_ext = (".pdb", ".cif")
-    if not output_file.lower().endswith(valid_output_ext):
+    if not output_file.lower().endswith((".pdb", ".cif")):
         raise click.ClickException(
             f"Output file must have extension .pdb or .cif. "
             f"Got: '{output_file}'"
         )
 
-    # Validate extended insertions requires mmCIF format
     if extended_insertions and not output_file.endswith(".cif"):
         raise click.ClickException(
             "The --extended-insertions option requires mmCIF output format. "
             "Please use a .cif file extension for the output file."
         )
 
-    # Validate max_residues is non-negative
     if max_residues < 0:
         raise click.ClickException(
             f"max_residues must be non-negative. Got: {max_residues}"
@@ -216,13 +207,11 @@ def main(
             f"{output_file} exists, rerun with --overwrite to replace it"
         )
 
-    # Convert chain_type string to enum
     chain_type_enum = constants.ChainType(chain_type)
     chain_type_filter = (
         None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
     )
 
-    # Generate MPNN embeddings for the input chain (also extracts sequence)
     input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
     sequence = input_data.sequence
 
@@ -237,48 +226,42 @@ def main(
         f"{input_pdb} chain {input_chain}"
     )
 
-    # Align embeddings against species references
-    soft_aligner = softaligner.SoftAligner()
-    out = soft_aligner(
+    aligner = softaligner.SoftAligner()
+    alignment_result = aligner(
         input_data,
         chain_type=chain_type_filter,
-        deterministic_loop_renumbering=deterministic_loop_renumbering,
+        deterministic_loop_renumbering=not disable_deterministic_renumbering,
     )
-    sv, start, end, first_aligned_row = (
-        aln2hmm.alignment_matrix_to_state_vector(out.alignment)
+    state_vector, imgt_start, imgt_end, first_aligned_row = (
+        aln2hmm.alignment_matrix_to_state_vector(alignment_result.alignment)
     )
 
-    n_aligned = end - start
-    subsequence = "-" * start + sequence[:n_aligned]
+    n_aligned = imgt_end - imgt_start
+    subsequence = "-" * imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
-    if not out.species:
+    if not alignment_result.species:
         raise click.ClickException(
             "SoftAlign did not specify the matched species; "
             "cannot infer heavy/light chain type."
         )
 
-    anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        sv,
+    anarci_alignment, _, _ = anarci.number_sequence_from_alignment(
+        state_vector,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=out.species[-1],
+        chain_type=alignment_result.species[-1],
     )
 
-    anarci_out = [a for a in anarci_out if a[1] != "-"]
-
-    # After filtering, the ANARCI output starts at index 0, not start_res
-    # Reset start_res and end_res to match the filtered output
-    filtered_start_res = 0
-    filtered_end_res = len(anarci_out)
+    anarci_alignment = [a for a in anarci_alignment if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
-        anarci_out,
+        anarci_alignment,
         output_file,
-        filtered_start_res,
-        filtered_end_res,
+        0,
+        len(anarci_alignment),
         alignment_start=first_aligned_row,
         max_residues=max_residues,
     )
