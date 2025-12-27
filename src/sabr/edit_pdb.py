@@ -117,7 +117,7 @@ def thread_onto_chain(
     for pdb_idx, res in enumerate(chain.get_residues()):
         # Skip residues beyond max_residues limit
         if max_residues > 0:
-            res_index = res.id[1]  # Actual residue number from PDB
+            res_index = res.id[1]
             if res_index > max_residues:
                 LOGGER.info(
                     f"Stopping at residue index {res_index} "

@@ -164,8 +164,6 @@ def main(
     else:
         logging.basicConfig(level=logging.WARNING, force=True)
 
-    # === Input Validation ===
-
     # Validate input PDB file exists
     if not os.path.exists(input_pdb):
         raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
@@ -204,8 +202,6 @@ def main(
         raise click.ClickException(
             f"max_residues must be non-negative. Got: {max_residues}"
         )
-
-    # === End Input Validation ===
 
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
@@ -252,9 +248,6 @@ def main(
         aln2hmm.alignment_matrix_to_state_vector(out.alignment)
     )
 
-    # Create subsequence with leading dashes for missing IMGT positions
-    # start = first IMGT column (0-indexed), used for leading dashes
-    # end - start = number of aligned residues
     n_aligned = end - start
     subsequence = "-" * start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
@@ -265,8 +258,6 @@ def main(
             "cannot infer heavy/light chain type."
         )
 
-    # TODO introduce extended insertion code handling here
-    # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,

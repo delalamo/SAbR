@@ -87,9 +87,6 @@ def run_threading_pipeline(
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
     sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(alignment)
-    # Create subsequence with leading dashes for missing IMGT positions
-    # start = first IMGT column (0-indexed), used for leading dashes
-    # end - start = number of aligned residues
     n_aligned = end - start
     subsequence = "-" * start + sequence[:n_aligned]
     anarci_out, anarci_start, anarci_end = (
@@ -101,9 +98,6 @@ def run_threading_pipeline(
         )
     )
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
-    # alignment_start=0 because PDB structures start at the Fv region
-    # (no leader sequence). The 'start' value from aln2hmm is the IMGT
-    # column offset, which is already handled by anarci_start.
     deviations = edit_pdb.thread_alignment(
         str(pdb_path),
         chain,

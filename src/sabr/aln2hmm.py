@@ -142,10 +142,6 @@ def alignment_matrix_to_state_vector(
 
     report_output(out)
 
-    # Calculate start and end for subsequence construction
-    # start = first IMGT column (0-indexed), determines number of leading dashes
-    # end = ensures sequence[:end-start] includes all aligned residues
-    # Include orphan residues in the end calculation
     max_row = last_aligned_row
     if orphan_rows:
         max_row = max(max_row, max(orphan_rows))

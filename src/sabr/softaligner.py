@@ -265,11 +265,6 @@ class SoftAligner:
                     break
 
         # For chains without position 10 (heavy, lambda), clear position 10
-        # The unified embeddings include position 10 (from kappa), so
-        # heavy/lambda residues may incorrectly align there. We need to handle:
-        # Case 1: pos10 occupied, pos9 empty -> move to pos9
-        # Case 2: pos10 occupied, pos11 empty -> move to pos11
-        # Case 3: pos10 occupied, both pos9 and pos11 filled -> just clear
         if not input_has_pos10:
             pos9_col = 8  # 0-indexed column for position 9
             pos10_col = 9  # 0-indexed column for position 10
