@@ -540,13 +540,45 @@ class SoftAligner:
             detected_chain_type = util.detect_chain_type(aln)
             is_light_chain = detected_chain_type in ("K", "L")
 
-            input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
+            # Detect position 10 occupancy from alignment
+            # Check if there's a residue aligned to position 10 (column 9)
+            input_has_pos10 = aln[:, 9].sum() >= 1
             aln = self.correct_fr1_alignment(
                 aln, input_has_pos10=input_has_pos10
             )
 
-            input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
-            input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
+            # Detect positions 81-82 occupancy from alignment
+            # Count residues between positions 80 and 85 in the input
+            # Heavy chains have 4 (81, 82, 83, 84), light chains have 2 (83, 84)
+            pos80_col = 79  # 0-indexed for IMGT position 80
+            pos85_col = 84  # 0-indexed for IMGT position 85
+
+            # Find which input row is aligned to position 80
+            pos80_rows = np.where(aln[:, pos80_col] == 1)[0]
+            pos85_rows = np.where(aln[:, pos85_col] == 1)[0]
+
+            if len(pos80_rows) > 0 and len(pos85_rows) > 0:
+                row_at_pos80 = pos80_rows[0]
+                row_at_pos85 = pos85_rows[0]
+                # Count residues strictly between positions 80 and 85
+                n_residues_between = row_at_pos85 - row_at_pos80 - 1
+                # Heavy chains: 4 residues (81, 82, 83, 84)
+                # Light chains: 2 residues (83, 84)
+                input_has_pos81 = n_residues_between >= 3
+                input_has_pos82 = n_residues_between >= 4
+                LOGGER.info(
+                    f"DE loop: {n_residues_between} residues between "
+                    f"pos 80-85 (rows {row_at_pos80}-{row_at_pos85})"
+                )
+            else:
+                # Fallback: assume light chain pattern if we can't find anchors
+                input_has_pos81 = False
+                input_has_pos82 = False
+                LOGGER.warning(
+                    "Could not find positions 80 or 85 in alignment, "
+                    "assuming light chain DE loop pattern"
+                )
+
             if is_light_chain and (not input_has_pos81 or not input_has_pos82):
                 aln = self.correct_fr3_alignment(
                     aln,
