@@ -17,7 +17,6 @@ Usage:
 """
 
 import logging
-import os
 
 import click
 from ANARCI import anarci
@@ -26,6 +25,7 @@ from sabr import (
     aln2hmm,
     edit_pdb,
     mpnn_embeddings,
+    options,
     softaligner,
     util,
 )
@@ -154,41 +154,15 @@ def main(
     chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
-    if verbose:
-        logging.basicConfig(level=logging.INFO, force=True)
-    else:
-        logging.basicConfig(level=logging.WARNING, force=True)
-
-    if not os.path.exists(input_pdb):
-        raise click.ClickException(f"Input file '{input_pdb}' does not exist.")
-
-    if not input_pdb.lower().endswith((".pdb", ".cif")):
-        raise click.ClickException(
-            f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. "
-            f"Got: '{input_pdb}'"
-        )
-
-    if input_chain and len(input_chain) != 1:
-        raise click.ClickException(
-            f"Chain identifier must be a single character. Got: '{input_chain}'"
-        )
-
-    if not output_file.lower().endswith((".pdb", ".cif")):
-        raise click.ClickException(
-            f"Output file must have extension .pdb or .cif. "
-            f"Got: '{output_file}'"
-        )
-
-    if extended_insertions and not output_file.endswith(".cif"):
-        raise click.ClickException(
-            "The --extended-insertions option requires mmCIF output format. "
-            "Please use a .cif file extension for the output file."
-        )
-
-    if max_residues < 0:
-        raise click.ClickException(
-            f"max_residues must be non-negative. Got: {max_residues}"
-        )
+    util.configure_logging(verbose)
+    options.validate_inputs(
+        input_pdb,
+        input_chain,
+        output_file,
+        max_residues,
+        extended_insertions,
+        overwrite,
+    )
 
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
@@ -198,10 +172,6 @@ def main(
     if extended_insertions:
         start_msg += " (extended insertion codes enabled)"
     LOGGER.info(start_msg)
-    if os.path.exists(output_file) and not overwrite:
-        raise click.ClickException(
-            f"{output_file} exists, rerun with --overwrite to replace it"
-        )
 
     input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
     sequence = input_data.sequence
