@@ -253,9 +253,9 @@ def test_cli_chain_type_argument(monkeypatch, tmp_path, chain_type):
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, chain_type = load_alignment_fixture(data["alignment"])
+    alignment, fixture_chain_type = load_alignment_fixture(data["alignment"])
 
-    DummyAligner = create_dummy_aligner(alignment, chain_type)
+    DummyAligner = create_dummy_aligner(alignment, fixture_chain_type)
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
