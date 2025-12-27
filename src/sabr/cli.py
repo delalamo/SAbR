@@ -129,6 +129,18 @@ LOGGER = logging.getLogger(__name__)
         "Use this flag to use raw alignment output without corrections."
     ),
 )
+@click.option(
+    "-t",
+    "--chain-type",
+    "chain_type",
+    default="auto",
+    show_default=True,
+    type=click.Choice(["H", "K", "L", "auto"], case_sensitive=True),
+    help=(
+        "Chain type for ANARCI numbering. H=heavy, K=kappa light, L=lambda "
+        "light. Use 'auto' (default) to detect from DE loop occupancy."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -139,6 +151,7 @@ def main(
     max_residues: int,
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
+    chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -217,8 +230,11 @@ def main(
     subsequence = "-" * imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
-    # Detect chain type from DE loop for ANARCI numbering
-    chain_type = util.detect_chain_type(alignment_result.alignment)
+    # Detect chain type from DE loop for ANARCI numbering if not specified
+    if chain_type == "auto":
+        chain_type = util.detect_chain_type(alignment_result.alignment)
+    else:
+        LOGGER.info(f"Using user-specified chain type: {chain_type}")
 
     # TODO introduce extended insertion code handling here
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(

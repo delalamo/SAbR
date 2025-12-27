@@ -245,6 +245,63 @@ def test_cli_rejects_multi_character_chain():
     assert "Chain identifier must be exactly one character" in result.output
 
 
+@pytest.mark.parametrize("chain_type", ["H", "K", "L", "auto"])
+def test_cli_chain_type_argument(monkeypatch, tmp_path, chain_type):
+    """Test that CLI accepts all valid --chain-type values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, species = load_alignment_fixture(data["alignment"])
+
+    DummyAligner = create_dummy_aligner(alignment, species)
+    dummy_from_pdb = create_dummy_from_pdb()
+
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / f"test_chain_type_{chain_type}.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+            "-t",
+            chain_type,
+        ],
+    )
+    assert result.exit_code == 0, result.output
+
+
+def test_cli_rejects_invalid_chain_type():
+    """Test that CLI rejects invalid --chain-type values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "-t",
+            "X",  # Invalid chain type
+        ],
+    )
+    assert result.exit_code != 0
+    assert "Invalid value" in result.output or "X" in result.output
+
+
 def test_alignment_start_position_correct():
     """Test alignment handles structures starting at IMGT position 2.
 

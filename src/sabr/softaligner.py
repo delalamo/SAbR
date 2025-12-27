@@ -440,7 +440,7 @@ class SoftAligner:
         deterministic_loop_renumbering: bool = True,
     ) -> softalign_output.SoftAlignOutput:
         """
-        Align input embeddings to each species embedding and return best hit.
+        Align input embeddings against the unified reference embedding.
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
@@ -460,35 +460,17 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        embeddings_to_search = self.all_embeddings
-
-        outputs = {}
-        for species_embedding in embeddings_to_search:
-            name = species_embedding.name
-            out = self.transformed_align_fn.apply(
-                self.model_params,
-                self.key,
-                input_data,
-                species_embedding,
-                self.temperature,
-            )
-            aln = self.fix_aln(out.alignment, species_embedding.idxs)
-
-            outputs[name] = softalign_output.SoftAlignOutput(
-                alignment=aln,
-                score=out.score,
-                species=name,
-                sim_matrix=None,
-                idxs1=input_data.idxs,
-                idxs2=[
-                    str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)
-                ],
-            )
-        LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
-
-        best_match = max(outputs, key=lambda k: outputs[k].score)
-
-        aln = np.array(outputs[best_match].alignment, dtype=int)
+        # Use the single unified embedding
+        unified_embedding = self.all_embeddings[0]
+        out = self.transformed_align_fn.apply(
+            self.model_params,
+            self.key,
+            input_data,
+            unified_embedding,
+            self.temperature,
+        )
+        aln = self.fix_aln(out.alignment, unified_embedding.idxs)
+        aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:
             for loop_name, (startres, endres) in constants.IMGT_LOOPS.items():
@@ -572,22 +554,18 @@ class SoftAligner:
                     input_has_pos82=input_has_pos82,
                 )
 
-        # Detect chain type from alignment for reporting
-        reported_species = best_match
-        if best_match == "unified":
-            reported_species = util.detect_chain_type(aln)
-            LOGGER.info(
-                f"Unified embeddings: reporting species as '{reported_species}'"
-            )
-
             # Apply C-terminus correction for unassigned trailing residues
             aln = self.correct_c_terminus(aln)
+
+        # Detect chain type from alignment for reporting
+        reported_species = util.detect_chain_type(aln)
+        LOGGER.info(f"Detected chain type: {reported_species}")
 
         return softalign_output.SoftAlignOutput(
             species=reported_species,
             alignment=aln,
-            score=0,
+            score=out.score,
             sim_matrix=None,
-            idxs1=outputs[best_match].idxs1,
-            idxs2=outputs[best_match].idxs2,
+            idxs1=input_data.idxs,
+            idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
         )
