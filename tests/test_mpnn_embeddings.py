@@ -110,7 +110,7 @@ def test_mpnnembeddings_wrong_embedding_dimension():
             lambda: np.ones((3, 32)),
             3,
             None,
-            "stdev.shape[1] (32)",
+            r"stdev\.shape\[1\] \(32\)",
         ),
         (
             "3d_error",
