@@ -556,10 +556,10 @@ class SoftAligner:
 
             # Apply C-terminus correction for unassigned trailing residues
             aln = self.correct_c_terminus(aln)
-
-        # Detect chain type from alignment for reporting
-        detected_chain_type = util.detect_chain_type(aln)
-        LOGGER.info(f"Detected chain type: {detected_chain_type}")
+        else:
+            # Detect chain type when deterministic renumbering is disabled
+            detected_chain_type = util.detect_chain_type(aln)
+            LOGGER.info(f"Detected chain type: {detected_chain_type}")
 
         return softalign_output.SoftAlignOutput(
             chain_type=detected_chain_type,
