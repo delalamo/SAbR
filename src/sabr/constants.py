@@ -8,7 +8,6 @@ This module defines constants used throughout the SAbR package including:
 - Alignment parameters
 """
 
-from enum import Enum
 from typing import List, Tuple
 
 # Type alias for ANARCI alignment output:
@@ -40,29 +39,6 @@ C_TERMINUS_LAST_POSITIONS = (
     126,
     127,
 )  # 0-indexed for positions 126, 127, 128
-
-
-class ChainType(Enum):
-    """Antibody chain type filter options."""
-
-    HEAVY = "heavy"
-    LIGHT = "light"
-    AUTO = "auto"
-
-
-class AnarciChainType(Enum):
-    """Chain type options for ANARCI numbering.
-
-    These are passed directly to ANARCI's number_sequence_from_alignment
-    function. AUTO will detect based on DE loop length (positions 81-84):
-    - Heavy chains have 4 residues (81, 82, 83, 84)
-    - Light chains have 2 residues (83, 84 only)
-    """
-
-    HEAVY = "H"
-    KAPPA = "K"
-    LAMBDA = "L"
-    AUTO = "auto"
 
 
 IMGT_FRAMEWORKS = {

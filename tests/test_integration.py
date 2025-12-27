@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, constants, edit_pdb, mpnn_embeddings, softaligner
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, softaligner
 from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
@@ -245,66 +245,6 @@ def test_cli_rejects_multi_character_chain():
     assert "Chain identifier must be exactly one character" in result.output
 
 
-@pytest.mark.parametrize(
-    "chain_type",
-    ["H", "K", "L", "auto"],
-)
-def test_cli_anarci_chain_type_argument(monkeypatch, tmp_path, chain_type):
-    """Test that CLI accepts all valid --anarci-chain-type values."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, species = load_alignment_fixture(data["alignment"])
-
-    DummyAligner = create_dummy_aligner(alignment, species)
-    dummy_from_pdb = create_dummy_from_pdb()
-
-    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
-
-    runner = CliRunner()
-    output_pdb = tmp_path / f"test_chain_type_{chain_type}.pdb"
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            str(output_pdb),
-            "--overwrite",
-            "-a",
-            chain_type,
-        ],
-    )
-    assert result.exit_code == 0, result.output
-
-
-def test_cli_rejects_invalid_anarci_chain_type():
-    """Test that CLI rejects invalid --anarci-chain-type values."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            "output.pdb",
-            "-a",
-            "X",  # Invalid chain type
-        ],
-    )
-    assert result.exit_code != 0
-    assert "Invalid value" in result.output or "X" in result.output
-
-
 def test_alignment_start_position_correct():
     """Test alignment handles structures starting at IMGT position 2.
 
@@ -383,7 +323,7 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
 
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
-    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
+    output = aligner(embeddings)
     assert output.species == "H", f"Expected H, got {output.species}"
 
     # Step 4: Convert alignment to state vector
@@ -496,7 +436,7 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
 
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
-    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
+    output = aligner(embeddings)
     assert output.species is not None, "Species should be detected"
 
     # Step 4: Convert alignment to state vector

@@ -207,7 +207,6 @@ class SoftAligner:
     def correct_fr1_alignment(
         self,
         aln: np.ndarray,
-        chain_type: Optional[constants.ChainType] = None,
         input_has_pos10: bool = False,
     ) -> np.ndarray:
         """
@@ -227,7 +226,6 @@ class SoftAligner:
 
         Args:
             aln: The alignment matrix
-            chain_type: The chain type (used for logging)
             input_has_pos10: Whether the input sequence has position 10
                 (True for kappa, False for heavy/lambda)
 
@@ -436,58 +434,9 @@ class SoftAligner:
 
         return aln
 
-    def filter_embeddings_by_chain_type(
-        self, chain_type: Optional[constants.ChainType]
-    ) -> List[mpnn_embeddings.MPNNEmbeddings]:
-        """
-        Filter embeddings based on chain type.
-
-        Args:
-            chain_type: ChainType.HEAVY for H embeddings only,
-                       ChainType.LIGHT for K and L embeddings only,
-                       None or ChainType.AUTO for all embeddings.
-
-        Returns:
-            Filtered list of embeddings.
-        """
-        unified_embeddings = [
-            emb for emb in self.all_embeddings if emb.name == "unified"
-        ]
-        if unified_embeddings:
-            LOGGER.info("Using unified embeddings for all chain types")
-            return unified_embeddings
-
-        if chain_type is None or chain_type == constants.ChainType.AUTO:
-            return self.all_embeddings
-
-        filtered = []
-        for emb in self.all_embeddings:
-            suffix = emb.name[-1].upper()
-            if chain_type == constants.ChainType.HEAVY and suffix == "H":
-                filtered.append(emb)
-            elif chain_type == constants.ChainType.LIGHT and suffix in (
-                "K",
-                "L",
-            ):
-                filtered.append(emb)
-
-        if not filtered:
-            LOGGER.warning(
-                f"No embeddings found for chain_type='{chain_type.value}', "
-                f"using all embeddings"
-            )
-            return self.all_embeddings
-
-        LOGGER.info(
-            f"Filtered to {len(filtered)} embeddings for "
-            f"chain_type='{chain_type.value}'"
-        )
-        return filtered
-
     def __call__(
         self,
         input_data: mpnn_embeddings.MPNNEmbeddings,
-        chain_type: Optional[constants.ChainType] = None,
         deterministic_loop_renumbering: bool = True,
     ) -> softalign_output.SoftAlignOutput:
         """
@@ -495,8 +444,6 @@ class SoftAligner:
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
-            chain_type: Optional filter - ChainType.HEAVY for H only,
-                ChainType.LIGHT for K/L only, None/AUTO for all.
             deterministic_loop_renumbering: Whether to apply deterministic
                 renumbering corrections for:
                 - Light chain FR1 positions 7-10
@@ -513,7 +460,7 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        embeddings_to_search = self.filter_embeddings_by_chain_type(chain_type)
+        embeddings_to_search = self.all_embeddings
 
         outputs = {}
         for species_embedding in embeddings_to_search:
@@ -607,15 +554,14 @@ class SoftAligner:
                 sub_aln = self.correct_gap_numbering(sub_aln)
                 aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
 
+            # Detect chain type from DE loop (positions 81-82)
+            detected_chain_type = util.detect_chain_type(aln)
+            is_light_chain = detected_chain_type in ("K", "L")
+
             input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
-            is_light_chain = (
-                chain_type == constants.ChainType.LIGHT
-                or best_match[-1].upper() in ("K", "L")
+            aln = self.correct_fr1_alignment(
+                aln, input_has_pos10=input_has_pos10
             )
-            if is_light_chain or chain_type == constants.ChainType.HEAVY:
-                aln = self.correct_fr1_alignment(
-                    aln, chain_type=chain_type, input_has_pos10=input_has_pos10
-                )
 
             input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
             input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
@@ -626,17 +572,12 @@ class SoftAligner:
                     input_has_pos82=input_has_pos82,
                 )
 
+        # Detect chain type from alignment for reporting
         reported_species = best_match
         if best_match == "unified":
-            if chain_type == constants.ChainType.HEAVY:
-                reported_species = "H"
-            elif chain_type == constants.ChainType.LIGHT:
-                reported_species = "K"
-            else:
-                reported_species = "H"
+            reported_species = util.detect_chain_type(aln)
             LOGGER.info(
-                f"Unified embeddings: reporting species as "
-                f"'{reported_species}' based on chain_type={chain_type}"
+                f"Unified embeddings: reporting species as '{reported_species}'"
             )
 
             # Apply C-terminus correction for unassigned trailing residues

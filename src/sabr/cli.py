@@ -24,7 +24,6 @@ from ANARCI import anarci
 
 from sabr import (
     aln2hmm,
-    constants,
     edit_pdb,
     mpnn_embeddings,
     softaligner,
@@ -108,22 +107,6 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
-    "-t",
-    "--chain-type",
-    "chain_type",
-    type=click.Choice(
-        [ct.value for ct in constants.ChainType], case_sensitive=False
-    ),
-    default="auto",
-    show_default=True,
-    help=(
-        "Restrict alignment to specific chain type embeddings. "
-        "'heavy' searches only heavy chain (H) embeddings, "
-        "'light' searches only light chain (K and L) embeddings, "
-        "'auto' searches all embeddings and picks the best match."
-    ),
-)
-@click.option(
     "--extended-insertions",
     "extended_insertions",
     is_flag=True,
@@ -146,24 +129,6 @@ LOGGER = logging.getLogger(__name__)
         "Use this flag to use raw alignment output without corrections."
     ),
 )
-@click.option(
-    "-a",
-    "--anarci-chain-type",
-    "anarci_chain_type",
-    type=click.Choice(
-        [ct.value for ct in constants.AnarciChainType], case_sensitive=False
-    ),
-    default="auto",
-    show_default=True,
-    help=(
-        "Chain type for ANARCI numbering. 'H' for heavy chain, 'K' for kappa "
-        "light chain, 'L' for lambda light chain. 'auto' will detect based on "
-        "DE loop length: heavy chains have 4 residues at positions 81-84, "
-        "while light chains have 2 residues at positions 83-84 only. "
-        "When 'auto' is used, heavy is selected if DE loop is 4 residues, "
-        "kappa is selected if DE loop is 2 residues."
-    ),
-)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -172,9 +137,7 @@ def main(
     overwrite: bool,
     verbose: bool,
     max_residues: int,
-    chain_type: str,
     extended_insertions: bool,
-    anarci_chain_type: str,
     disable_deterministic_renumbering: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
@@ -227,11 +190,6 @@ def main(
             f"{output_file} exists, rerun with --overwrite to replace it"
         )
 
-    chain_type_enum = constants.ChainType(chain_type)
-    chain_type_filter = (
-        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
-    )
-
     input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
     sequence = input_data.sequence
 
@@ -249,7 +207,6 @@ def main(
     aligner = softaligner.SoftAligner()
     alignment_result = aligner(
         input_data,
-        chain_type=chain_type_filter,
         deterministic_loop_renumbering=not disable_deterministic_renumbering,
     )
     state_vector, imgt_start, imgt_end, first_aligned_row = (
@@ -260,25 +217,15 @@ def main(
     subsequence = "-" * imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
-    if not alignment_result.species:
-        raise click.ClickException(
-            "SoftAlign did not specify the matched species; "
-            "cannot infer heavy/light chain type."
-        )
-
-    # Determine ANARCI chain type (auto-detect from DE loop or use user value)
-    anarci_chain_type_enum = constants.AnarciChainType(anarci_chain_type)
-    resolved_chain_type = util.detect_anarci_chain_type(
-        alignment_result.alignment, anarci_chain_type_enum
-    )
+    # Detect chain type from DE loop for ANARCI numbering
+    chain_type = util.detect_chain_type(alignment_result.alignment)
 
     # TODO introduce extended insertion code handling here
-    # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         state_vector,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=resolved_chain_type,
+        chain_type=chain_type,
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]

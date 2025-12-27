@@ -13,8 +13,6 @@ from typing import Any, Dict
 import numpy as np
 from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
-from sabr import constants
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -44,31 +42,19 @@ def read_softalign_params(
     return params
 
 
-def detect_anarci_chain_type(
-    alignment: np.ndarray,
-    anarci_chain_type: constants.AnarciChainType,
-) -> str:
-    """Determine the ANARCI chain type from alignment or user specification.
+def detect_chain_type(alignment: np.ndarray) -> str:
+    """Detect antibody chain type from alignment based on DE loop length.
 
-    When anarci_chain_type is AUTO, detects based on DE loop length
-    (IMGT positions 81-84):
+    The DE loop (IMGT positions 81-84) differs between chain types:
     - Heavy chains have 4 residues (81, 82, 83, 84)
     - Light chains have 2 residues (83, 84 only - skip 81, 82)
 
     Args:
         alignment: The alignment matrix (rows=sequence, cols=IMGT positions).
-        anarci_chain_type: User-specified chain type or AUTO for detection.
 
     Returns:
-        ANARCI chain type string: "H" for heavy, "K" for kappa, "L" for lambda.
+        Chain type string for ANARCI: "H" for heavy, "K" for kappa.
     """
-    if anarci_chain_type != constants.AnarciChainType.AUTO:
-        LOGGER.info(
-            f"Using user-specified ANARCI chain type: {anarci_chain_type.value}"
-        )
-        return anarci_chain_type.value
-
-    # Auto-detect based on DE loop length (positions 81-84)
     # Check alignment matrix for occupancy at positions 81 and 82
     pos81_col = 80  # 0-indexed column for IMGT position 81
     pos82_col = 81  # 0-indexed column for IMGT position 82
@@ -78,14 +64,14 @@ def detect_anarci_chain_type(
     if pos81_occupied or pos82_occupied:
         # DE loop has 4 residues -> heavy chain
         LOGGER.info(
-            "Auto-detected chain type: H (heavy) based on DE loop "
+            "Detected chain type: H (heavy) based on DE loop "
             "having residues at positions 81 or 82"
         )
         return "H"
     else:
         # DE loop has 2 residues -> light chain (default to kappa)
         LOGGER.info(
-            "Auto-detected chain type: K (kappa) based on DE loop "
+            "Detected chain type: K (kappa) based on DE loop "
             "lacking residues at positions 81 and 82"
         )
         return "K"
