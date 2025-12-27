@@ -24,10 +24,30 @@ IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
 # Default alignment temperature for SoftAlign
 DEFAULT_TEMPERATURE = 1e-4
 
-# Light chain FR1 positions for correction (0-indexed)
-# Positions 6-10 in IMGT (0-indexed: 5-9)
+# FR1 region constants for alignment correction (0-indexed columns)
+# FR1 spans IMGT positions 1-26, but correction focuses on positions 6-12
+FR1_ANCHOR_START_COL = 5   # 0-indexed column for IMGT position 6
+FR1_ANCHOR_END_COL = 11    # 0-indexed column for IMGT position 12
+FR1_POSITION_10_COL = 9    # 0-indexed column for IMGT position 10
+FR1_KAPPA_RESIDUE_COUNT = 7  # Kappa chains have 7 residues in positions 6-12
+
+# Legacy FR1 constants (kept for compatibility)
 LIGHT_CHAIN_FR1_START = 5  # 0-indexed column for position 6
 LIGHT_CHAIN_FR1_END = 9  # 0-indexed column for position 10
+
+# FR3/DE loop region constants (0-indexed columns)
+# DE loop spans IMGT positions 79-84
+# Heavy chains: 6 residues (79, 80, 81, 82, 83, 84)
+# Light chains: 4 residues (79, 80, 83, 84) - skip 81, 82
+DE_LOOP_START_COL = 78     # 0-indexed column for IMGT position 79
+DE_LOOP_END_COL = 83       # 0-indexed column for IMGT position 84
+DE_LOOP_HEAVY_THRESHOLD = 5  # >= 5 residues indicates heavy chain
+
+# FR3 positions 81-84 (0-indexed columns)
+FR3_POS81_COL = 80
+FR3_POS82_COL = 81
+FR3_POS83_COL = 82
+FR3_POS84_COL = 83
 
 # C-terminus correction positions (0-indexed)
 # Used to detect and fix unassigned residues at the end of FW4
@@ -48,11 +68,20 @@ IMGT_FRAMEWORKS = {
     "FW4": list(range(118, 129)),
 }
 
-# Loop definitions are inclusive
+# Loop definitions are inclusive (CDR start position, CDR end position)
 IMGT_LOOPS = {
     "CDR1": (27, 38),
     "CDR2": (56, 65),
     "CDR3": (105, 117),
+}
+
+# Framework anchor positions for CDR renumbering
+# These are conserved framework residues used to identify CDR boundaries.
+# CDR residues are determined by counting rows between these anchors.
+CDR_ANCHORS = {
+    "CDR1": (23, 40),   # Cys23 (conserved) and position 40 (FW2)
+    "CDR2": (54, 67),   # FW2 end region and FW3 start region
+    "CDR3": (103, 119),  # FW3 end region and FW4 start region
 }
 
 NON_CDR_RESIDUES = sum(IMGT_FRAMEWORKS.values(), [])
