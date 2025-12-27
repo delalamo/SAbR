@@ -133,76 +133,33 @@ def test_fix_aln_preserves_dtype():
 
 
 @pytest.mark.parametrize(
-    "chain_type,expected_count,expected_names",
-    [
-        (None, 3, ["humanH", "humanK", "mouseL"]),
-        (constants.ChainType.HEAVY, 1, ["humanH"]),
-        (constants.ChainType.LIGHT, 2, ["humanK", "mouseL"]),
-    ],
-)
-def test_filter_embeddings_by_chain_type(
-    chain_type, expected_count, expected_names
-):
-    """Test filter_embeddings_by_chain_type with different chain types."""
-    aligner = make_aligner()
-    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
-    aligner.all_embeddings = [
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
-        ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
-        ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
-        ),
-    ]
-
-    filtered = aligner.filter_embeddings_by_chain_type(chain_type)
-
-    assert len(filtered) == expected_count
-    assert [emb.name for emb in filtered] == expected_names
-
-
-@pytest.mark.parametrize(
-    "description,setup,chain_type,input_has_pos10,expected_changes",
+    "description,setup,input_has_pos10,expected_changes",
     [
         # No correction needed
         (
             "no_correction_needed",
             {(9, 9): 1},
-            None,
             True,
             {},  # No changes
         ),
-        # Heavy chain: move from pos10 to pos9
+        # Move from pos10 to pos9
         (
-            "heavy_move_to_pos9",
+            "move_to_pos9",
             {(8, 9): 1},
-            constants.ChainType.HEAVY,
             False,
             {(8, 8): 1, (8, 9): 0},
         ),
-        # Heavy chain: move from pos10 to pos11 (pos9 occupied)
+        # Move from pos10 to pos11 (pos9 occupied)
         (
-            "heavy_move_to_pos11",
+            "move_to_pos11",
             {(7, 8): 1, (8, 9): 1},
-            constants.ChainType.HEAVY,
             False,
             {(7, 8): 1, (8, 9): 0, (8, 10): 1},
-        ),
-        # Lambda chain: pos10 cleared like heavy
-        (
-            "lambda_clears_pos10",
-            {(8, 9): 1},
-            constants.ChainType.LIGHT,
-            False,
-            {(8, 8): 1, (8, 9): 0},
         ),
     ],
 )
 def test_correct_fr1_alignment(
-    description, setup, chain_type, input_has_pos10, expected_changes
+    description, setup, input_has_pos10, expected_changes
 ):
     """Test FR1 alignment correction with various scenarios."""
     aligner = make_aligner()
@@ -214,7 +171,7 @@ def test_correct_fr1_alignment(
 
     original = aln.copy()
     corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=chain_type, input_has_pos10=input_has_pos10
+        aln, input_has_pos10=input_has_pos10
     )
 
     if not expected_changes:
@@ -235,9 +192,7 @@ def test_correct_fr1_alignment_with_shift():
     aln[:, 9] = 0
     aln[7, 6] = 1
 
-    corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=None, input_has_pos10=True
-    )
+    corrected = aligner.correct_fr1_alignment(aln, input_has_pos10=True)
 
     assert corrected[7, 6] == 0  # Original position should be cleared
 
