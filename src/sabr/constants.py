@@ -52,19 +52,6 @@ FR3_POS84_COL = 83
 # C-terminus correction positions (0-indexed)
 # Used to detect and fix unassigned residues at the end of FW4
 C_TERMINUS_ANCHOR_POSITION = 124  # 0-indexed for IMGT position 125
-C_TERMINUS_LAST_POSITIONS = (
-    125,
-    126,
-    127,
-)  # 0-indexed for positions 126, 127, 128
-
-
-IMGT_FRAMEWORKS = {
-    "FW1": list(range(1, 27)),
-    "FW2": list(range(39, 56)),
-    "FW3": list(range(66, 105)),
-    "FW4": list(range(118, 129)),
-}
 
 # Loop definitions are inclusive (CDR start position, CDR end position)
 IMGT_LOOPS = {

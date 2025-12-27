@@ -15,14 +15,14 @@ def test_softalignoutput_valid_creation():
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
-        species="mouse_H",
+        chain_type="mouse_H",
         idxs1=idxs1,
         idxs2=idxs2,
     )
 
     assert output.alignment.shape == (3, 4)
     assert output.score == pytest.approx(1.5)
-    assert output.species == "mouse_H"
+    assert output.chain_type == "mouse_H"
     assert output.idxs1 == idxs1
     assert output.idxs2 == idxs2
     assert output.sim_matrix is None
@@ -39,14 +39,14 @@ def test_softalignoutput_with_sim_matrix():
         alignment=alignment,
         score=2.0,
         sim_matrix=sim_matrix,
-        species=None,
+        chain_type=None,
         idxs1=idxs1,
         idxs2=idxs2,
     )
 
     assert output.sim_matrix is not None
     assert output.sim_matrix.shape == (2, 2)
-    assert output.species is None
+    assert output.chain_type is None
 
 
 def test_softalignoutput_alignment_idxs1_mismatch():
@@ -60,7 +60,7 @@ def test_softalignoutput_alignment_idxs1_mismatch():
             alignment=alignment,
             score=1.0,
             sim_matrix=None,
-            species="test",
+            chain_type="test",
             idxs1=idxs1,
             idxs2=idxs2,
         )
@@ -80,7 +80,7 @@ def test_softalignoutput_alignment_idxs2_mismatch():
             alignment=alignment,
             score=1.0,
             sim_matrix=None,
-            species="test",
+            chain_type="test",
             idxs1=idxs1,
             idxs2=idxs2,
         )
@@ -99,7 +99,7 @@ def test_softalignoutput_empty_alignment():
         alignment=alignment,
         score=0.0,
         sim_matrix=None,
-        species=None,
+        chain_type=None,
         idxs1=idxs1,
         idxs2=idxs2,
     )
@@ -119,7 +119,7 @@ def test_softalignoutput_single_element():
         alignment=alignment,
         score=1.0,
         sim_matrix=None,
-        species="test",
+        chain_type="test",
         idxs1=idxs1,
         idxs2=idxs2,
     )
@@ -139,7 +139,7 @@ def test_softalignoutput_numpy_array():
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
-        species="test",
+        chain_type="test",
         idxs1=idxs1,
         idxs2=idxs2,
     )
@@ -157,7 +157,7 @@ def test_softalignoutput_negative_score():
         alignment=alignment,
         score=-5.0,
         sim_matrix=None,
-        species="test",
+        chain_type="test",
         idxs1=idxs1,
         idxs2=idxs2,
     )
