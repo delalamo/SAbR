@@ -35,21 +35,14 @@ FIXTURES = {
         "min_deviations": 5,
         "max_deviations": 200,
     },
-    # Heavy chain test case for alignment start position fix
-    # This structure starts at IMGT position 2 (not 1), which previously
-    # caused off-by-one errors in numbering
     "test_heavy_chain": {
         "pdb": resolve_data_path("test_heavy_chain.pdb"),
         "chain": "F",
         "alignment": resolve_data_path("test_heavy_chain_alignment.npz"),
         "embeddings": resolve_data_path("test_heavy_chain_embeddings.npz"),
-        # CDR3 insertions cause some expected deviations
         "min_deviations": 0,
         "max_deviations": 25,
     },
-    # Heavy chain with N-terminal extension (residues -6 to 0)
-    # Tests that N-terminal residues are correctly numbered backwards
-    # and the Fv region (1-128) is correctly IMGT-numbered
     "woot_H_next": {
         "pdb": resolve_data_path("woot_H_next.pdb"),
         "chain": "H",
@@ -78,7 +71,6 @@ def run_threading_pipeline(
     species: str,
     tmp_path: Path,
 ) -> int:
-    # Extract sequence using SeqIO (removes X residues to match main code)
     sequence = None
     for record in SeqIO.parse(str(pdb_path), "pdb-atom"):
         if record.id.endswith(chain):
@@ -86,34 +78,29 @@ def run_threading_pipeline(
             break
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
-    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(alignment)
-    # Create subsequence with leading dashes for missing IMGT positions
-    # start = first IMGT column (0-indexed), used for leading dashes
-    # end - start = number of aligned residues
-    n_aligned = end - start
-    subsequence = "-" * start + sequence[:n_aligned]
-    anarci_out, anarci_start, anarci_end = (
+
+    state_vector, imgt_start, imgt_end, _ = (
+        aln2hmm.alignment_matrix_to_state_vector(alignment)
+    )
+    n_aligned = imgt_end - imgt_start
+    subsequence = "-" * imgt_start + sequence[:n_aligned]
+
+    anarci_alignment, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
-            sv,
-            subsequence,
-            scheme="imgt",
-            chain_type=species,
+            state_vector, subsequence, scheme="imgt", chain_type=species
         )
     )
+
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
-    # alignment_start=0 because PDB structures start at the Fv region
-    # (no leader sequence). The 'start' value from aln2hmm is the IMGT
-    # column offset, which is already handled by anarci_start.
-    deviations = edit_pdb.thread_alignment(
+    return edit_pdb.thread_alignment(
         str(pdb_path),
         chain,
-        anarci_out,
+        anarci_alignment,
         str(output_pdb),
         anarci_start,
         anarci_end,
         alignment_start=0,
     )
-    return deviations
 
 
 @pytest.mark.parametrize("fixture_key", ["8_21", "5omm"])
@@ -192,16 +179,16 @@ def test_cli_respects_expected_numbering(
 
 
 @pytest.mark.parametrize(
-    "deterministic_flag",
+    ("use_disable_flag", "expected_value"),
     [
-        "--deterministic-loop-renumbering",
-        "--no-deterministic-loop-renumbering",
+        (False, True),
+        (True, False),
     ],
 )
-def test_cli_deterministic_loop_renumbering_flag(
-    monkeypatch, tmp_path, deterministic_flag
+def test_cli_deterministic_renumbering_flag(
+    monkeypatch, tmp_path, use_disable_flag, expected_value
 ):
-    """Test that CLI accepts both deterministic loop renumbering flags."""
+    """Test --disable-deterministic-renumbering CLI flag handling."""
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
@@ -216,23 +203,21 @@ def test_cli_deterministic_loop_renumbering_flag(
 
     runner = CliRunner()
     output_pdb = tmp_path / "test_det_flag.pdb"
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            str(output_pdb),
-            "--overwrite",
-            deterministic_flag,
-        ],
-    )
+    args = [
+        "-i",
+        str(data["pdb"]),
+        "-c",
+        data["chain"],
+        "-o",
+        str(output_pdb),
+        "--overwrite",
+    ]
+    if use_disable_flag:
+        args.append("--disable-deterministic-renumbering")
+
+    result = runner.invoke(cli.main, args)
     assert result.exit_code == 0, result.output
 
-    # Verify that the flag was passed to the aligner
-    expected_value = deterministic_flag == "--deterministic-loop-renumbering"
     assert (
         captured_kwargs.get("deterministic_loop_renumbering") == expected_value
     )
@@ -276,37 +261,22 @@ def test_alignment_start_position_correct():
 
     alignment, species = load_alignment_fixture(data["alignment"])
 
-    # Get the state vector
-    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    state_vector, imgt_start, imgt_end, _ = (
+        aln2hmm.alignment_matrix_to_state_vector(alignment)
+    )
 
-    # The alignment for this structure starts at IMGT column 1 (position 2)
-    # This means there should be 1 leading dash in the subsequence
-    assert start == 1, f"Expected start=1 (IMGT position 2), got {start}"
+    assert imgt_start == 1, f"Expected imgt_start=1, got {imgt_start}"
 
-    # The first state should have residue_number=2 (1-indexed IMGT position)
-    first_state = sv[0]
-    assert (
-        first_state.residue_number == 2
-    ), f"Expected IMGT position 2, got {first_state.residue_number}"
-    assert (
-        first_state.insertion_code == "m"
-    ), f"Expected first state to be a match, got {first_state.insertion_code}"
+    first_state = state_vector[0]
+    assert first_state.residue_number == 2
+    assert first_state.insertion_code == "m"
+    assert first_state.mapped_residue == 1
 
-    # The mapped_residue should be offset by start (for subsequence indexing)
-    # First residue (seq index 0) should map to subsequence index 1
-    assert (
-        first_state.mapped_residue == 1
-    ), f"Expected mapped_residue=1, got {first_state.mapped_residue}"
+    n_aligned = imgt_end - imgt_start
+    assert n_aligned > 0
 
-    # Verify the subsequence construction
-    n_aligned = end - start
-    assert n_aligned > 0, f"Expected positive n_aligned, got {n_aligned}"
-
-    # Verify state vector consistency
-    match_states = [s for s in sv if s.insertion_code == "m"]
-    assert (
-        len(match_states) > 100
-    ), f"Expected >100 match states, got {len(match_states)}"
+    match_states = [s for s in state_vector if s.insertion_code == "m"]
+    assert len(match_states) > 100
 
 
 @pytest.mark.skip(
