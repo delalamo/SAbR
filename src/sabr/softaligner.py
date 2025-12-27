@@ -236,27 +236,203 @@ class SoftAligner:
         """
         fr1_start = constants.LIGHT_CHAIN_FR1_START
         fr1_end = constants.LIGHT_CHAIN_FR1_END
-        # Check if position 10 (0-indexed: fr1_end) is empty
-        if aln[:, fr1_end].sum() == 0:
-            # Find matches in positions 6-9 (0-indexed: fr1_start to fr1_end-1)
-            for col_idx in range(fr1_start, fr1_end):
-                if aln[:, col_idx].sum() == 1:
-                    row = np.where(aln[:, col_idx] == 1)[0][0]
-                    # If row > col_idx, the alignment is shifted
-                    # (residue row+1 at position col_idx+1,
-                    # expected at row+1)
-                    if row > col_idx:
-                        shift_amount = row - col_idx
-                        LOGGER.info(
-                            f"Correcting light chain FR1: detected shift of "
-                            f"{shift_amount} at position {col_idx + 1}"
-                        )
-                        # Shift all matches from col_idx to fr1_end-1 forward
-                        for c in range(fr1_end - 1, col_idx - 1, -1):
-                            if aln[:, c].sum() == 1:
-                                aln[:, c + shift_amount] = aln[:, c]
+
+        for col_idx in range(fr1_start, fr1_end + 1):
+            if aln[:, col_idx].sum() == 1:
+                row = np.where(aln[:, col_idx] == 1)[0][0]
+                if row > col_idx:
+                    shift_amount = row - col_idx
+                    LOGGER.info(
+                        f"Correcting FR1 alignment: detected shift of "
+                        f"{shift_amount} at position {col_idx + 1}"
+                    )
+                    for c in range(fr1_end, col_idx - 1, -1):
+                        if aln[:, c].sum() == 1:
+                            new_col = c + shift_amount
+                            if new_col < aln.shape[1]:
+                                aln[:, new_col] = aln[:, c]
                                 aln[:, c] = 0
                     break
+
+        if not input_has_pos10:
+            pos9_col, pos10_col, pos11_col = 8, 9, 10
+
+            pos9_occupied = aln[:, pos9_col].sum() == 1
+            pos10_occupied = aln[:, pos10_col].sum() == 1
+            pos11_occupied = aln[:, pos11_col].sum() == 1
+
+            if pos10_occupied:
+                if not pos9_occupied:
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 9 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos9_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                elif not pos11_occupied:
+                    LOGGER.info(
+                        "Moving residue from position 10 to position 11 "
+                        "(chain lacks position 10)"
+                    )
+                    aln[:, pos11_col] = aln[:, pos10_col]
+                    aln[:, pos10_col] = 0
+                else:
+                    LOGGER.info(
+                        "Clearing position 10 (chain lacks position 10)"
+                    )
+                    aln[:, pos10_col] = 0
+
+        return aln
+
+    def correct_fr3_alignment(
+        self,
+        aln: np.ndarray,
+        input_has_pos81: bool = False,
+        input_has_pos82: bool = False,
+    ) -> np.ndarray:
+        """
+        Fix FR3 alignment issues in positions 81-84 for light chains.
+
+        Light chains (kappa and lambda) typically skip positions 81-82 in IMGT
+        numbering, having residues at 79, 80, 83, 84, ... instead of the full
+        79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
+
+        When using unified embeddings (which include 81-82 from heavy chains),
+        the aligner may incorrectly place light chain residues at positions
+        81-82 instead of 83-84. This function corrects that misalignment.
+
+        Args:
+            aln: The alignment matrix
+            input_has_pos81: Whether the input sequence has position 81
+            input_has_pos82: Whether the input sequence has position 82
+
+        Returns:
+            Corrected alignment matrix
+        """
+        pos81_col, pos82_col, pos83_col, pos84_col = 80, 81, 82, 83
+
+        pos81_occupied = aln[:, pos81_col].sum() == 1
+        pos82_occupied = aln[:, pos82_col].sum() == 1
+        pos83_occupied = aln[:, pos83_col].sum() == 1
+        pos84_occupied = aln[:, pos84_col].sum() == 1
+
+        if not input_has_pos81 and pos81_occupied:
+            if not pos83_occupied:
+                LOGGER.info(
+                    "Moving residue from position 81 to position 83 "
+                    "(chain lacks position 81)"
+                )
+                aln[:, pos83_col] = aln[:, pos81_col]
+                aln[:, pos81_col] = 0
+                pos83_occupied = True
+            else:
+                LOGGER.info(
+                    "Clearing position 81 (chain lacks position 81, "
+                    "but position 83 already occupied)"
+                )
+                aln[:, pos81_col] = 0
+
+        if not input_has_pos82 and pos82_occupied:
+            if not pos84_occupied:
+                LOGGER.info(
+                    "Moving residue from position 82 to position 84 "
+                    "(chain lacks position 82)"
+                )
+                aln[:, pos84_col] = aln[:, pos82_col]
+                aln[:, pos82_col] = 0
+            else:
+                LOGGER.info(
+                    "Clearing position 82 (chain lacks position 82, "
+                    "but position 84 already occupied)"
+                )
+                aln[:, pos82_col] = 0
+
+        return aln
+
+    def correct_c_terminus(self, aln: np.ndarray) -> np.ndarray:
+        """Fix C-terminus alignment for the last residues (positions 126-128).
+
+        When residues at the end of the sequence are unassigned after the
+        last aligned IMGT position (around 125/126), this function
+        deterministically assigns them to positions 127, 128.
+
+        The logic:
+        1. Find the last row (sequence position) with any assignment
+        2. Find the last column (IMGT position) with any assignment
+        3. If there are unassigned rows after the last assigned row,
+           and the last assigned column is around position 125 or 126,
+           assign those trailing residues to subsequent positions (127, 128)
+
+        Args:
+            aln: The alignment matrix (rows=sequence, cols=IMGT positions).
+
+        Returns:
+            Corrected alignment matrix with C-terminus residues assigned.
+        """
+        n_rows, n_cols = aln.shape
+
+        # Find the last row that has any assignment
+        row_sums = aln.sum(axis=1)
+        assigned_rows = np.where(row_sums > 0)[0]
+        if len(assigned_rows) == 0:
+            return aln
+
+        last_assigned_row = assigned_rows[-1]
+
+        # Find the last column that has any assignment
+        col_sums = aln.sum(axis=0)
+        assigned_cols = np.where(col_sums > 0)[0]
+        if len(assigned_cols) == 0:
+            return aln
+
+        last_assigned_col = assigned_cols[-1]
+
+        # Check if there are unassigned rows after the last assigned row
+        # These are residues that weren't aligned to any IMGT position
+        n_unassigned_trailing = n_rows - last_assigned_row - 1
+
+        if n_unassigned_trailing <= 0:
+            # No unassigned trailing residues
+            return aln
+
+        # Only apply the fix if the last assigned column is around
+        # position 125 or 126 (0-indexed: 124 or 125)
+        # This indicates the C-terminus wasn't fully aligned
+        if last_assigned_col < constants.C_TERMINUS_ANCHOR_POSITION:
+            LOGGER.debug(
+                f"C-terminus: last assigned col {last_assigned_col} is "
+                f"before anchor position "
+                f"{constants.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
+            )
+            return aln
+
+        # Assign trailing residues to subsequent IMGT positions
+        # Starting from last_assigned_col + 1, up to position 127 (0-indexed)
+        LOGGER.info(
+            f"Correcting C-terminus: {n_unassigned_trailing} unassigned "
+            f"residues after row {last_assigned_row}, "
+            f"last assigned col was {last_assigned_col}"
+        )
+
+        next_col = last_assigned_col + 1
+        for i in range(n_unassigned_trailing):
+            row_to_assign = last_assigned_row + 1 + i
+            if next_col >= n_cols:
+                LOGGER.warning(
+                    f"C-terminus: cannot assign row {row_to_assign}, "
+                    f"no more IMGT positions available (max col {n_cols - 1})"
+                )
+                break
+
+            # Clear any existing assignment in this row (shouldn't be any)
+            aln[row_to_assign, :] = 0
+            # Assign to the next available IMGT position
+            aln[row_to_assign, next_col] = 1
+            LOGGER.info(
+                f"C-terminus: assigned row {row_to_assign} to "
+                f"IMGT position {next_col + 1}"
+            )
+            next_col += 1
 
         return aln
 
@@ -372,67 +548,46 @@ class SoftAligner:
                 startres_idx = startres - 1
                 endres_idx = endres - 1
 
-                cdr_region = aln[:, startres_idx:endres]
-                if cdr_region.sum() == 0:
+                # Use input positions to determine which residues belong in loop
+                loop_rows = []
+                for row, idx in enumerate(input_data.idxs):
+                    # Parse the input position (handle insertion codes)
+                    idx_str = str(idx).rstrip("ABCDEFGHIJ")
+                    try:
+                        imgt_pos = int(idx_str)
+                        if startres <= imgt_pos <= endres:
+                            loop_rows.append((row, idx))
+                    except ValueError:
+                        continue
+
+                if not loop_rows:
                     LOGGER.info(
-                        f"Skipping {loop_name}; no residues aligned within "
-                        f"CDR range (cols {startres_idx}-{endres - 1})"
+                        f"Skipping {loop_name}; no input residues in "
+                        f"range {startres}-{endres}"
                     )
                     continue
 
-                start_row, start_col = find_nearest_occupied_column(
-                    aln, startres_idx, search_range=2, direction="both"
+                # Clear the CDR region for rows that have loop residues
+                first_row = loop_rows[0][0]
+                last_row = loop_rows[-1][0]
+                aln[first_row:last_row + 1, :] = 0
+
+                # Assign each residue to its input IMGT position
+                for row, idx in loop_rows:
+                    idx_str = str(idx)
+                    base_pos = int(idx_str.rstrip("ABCDEFGHIJ"))
+                    col = base_pos - 1  # 0-indexed column
+                    if 0 <= col < aln.shape[1]:
+                        aln[row, col] = 1
+                        LOGGER.debug(
+                            f"{loop_name}: row {row} -> col {col} (pos {idx})"
+                        )
+
+                LOGGER.info(
+                    f"{loop_name}: assigned {len(loop_rows)} residues "
+                    f"using input positions"
                 )
-                end_row, end_col = find_nearest_occupied_column(
-                    aln, endres_idx, search_range=2, direction="both"
-                )
 
-                if start_row is None or end_row is None:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; missing start "
-                        f"(searched {startres_idx}±2) or end "
-                        f"(searched {endres_idx}±2)"
-                    )
-                    continue
-
-                if start_row >= end_row:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; start row ({start_row}) >= "
-                        f"end row ({end_row})"
-                    )
-                    continue
-
-                if start_col > endres_idx or end_col < startres_idx:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; detected boundaries "
-                        f"(cols {start_col}-{end_col}) don't overlap "
-                        f"CDR range (cols {startres_idx}-{endres_idx})"
-                    )
-                    continue
-
-                if start_col != startres_idx or end_col != endres_idx:
-                    LOGGER.info(
-                        f"{loop_name}: soft boundary detection used - "
-                        f"start col {start_col} (expected {startres_idx}), "
-                        f"end col {end_col} (expected {endres_idx})"
-                    )
-
-                aln[start_row : end_row + 1, startres_idx:endres] = 0
-
-                if start_col < startres_idx:
-                    aln[start_row, start_col] = 0
-                if end_col > endres_idx:
-                    aln[end_row, end_col] = 0
-
-                n_residues = end_row - start_row + 1
-                n_positions = endres - startres_idx
-
-                sub_aln = np.zeros((n_residues, n_positions), dtype=aln.dtype)
-                sub_aln = self.correct_gap_numbering(sub_aln)
-                aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
-
-            # Apply FR1 alignment correction
-            # Check if input has position 10 (kappa) or not (heavy/lambda)
             input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
             is_light_chain = (
                 chain_type == constants.ChainType.LIGHT
@@ -443,8 +598,6 @@ class SoftAligner:
                     aln, chain_type=chain_type, input_has_pos10=input_has_pos10
                 )
 
-            # Apply FR3 alignment correction for light chains
-            # Light chains typically lack positions 81-82
             input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
             input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
             if is_light_chain and (not input_has_pos81 or not input_has_pos82):
@@ -454,22 +607,21 @@ class SoftAligner:
                     input_has_pos82=input_has_pos82,
                 )
 
-        # Determine species to report
-        # For unified embeddings, derive from chain_type parameter
         reported_species = best_match
         if best_match == "unified":
             if chain_type == constants.ChainType.HEAVY:
                 reported_species = "H"
             elif chain_type == constants.ChainType.LIGHT:
-                # Default to K for light chains (most common)
                 reported_species = "K"
             else:
-                # AUTO or None - default to H
                 reported_species = "H"
             LOGGER.info(
                 f"Unified embeddings: reporting species as "
                 f"'{reported_species}' based on chain_type={chain_type}"
             )
+
+            # Apply C-terminus correction for unassigned trailing residues
+            aln = self.correct_c_terminus(aln)
 
         return softalign_output.SoftAlignOutput(
             species=reported_species,
