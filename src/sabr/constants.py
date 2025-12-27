@@ -8,7 +8,6 @@ This module defines constants used throughout the SAbR package including:
 - Alignment parameters
 """
 
-from enum import Enum
 from typing import List, Tuple
 
 # Type alias for ANARCI alignment output:
@@ -40,14 +39,6 @@ C_TERMINUS_LAST_POSITIONS = (
     126,
     127,
 )  # 0-indexed for positions 126, 127, 128
-
-
-class ChainType(Enum):
-    """Antibody chain type filter options."""
-
-    HEAVY = "heavy"
-    LIGHT = "light"
-    AUTO = "auto"
 
 
 IMGT_FRAMEWORKS = {

@@ -2,18 +2,18 @@
 """SoftAlign-based antibody sequence alignment module.
 
 This module provides the SoftAligner class which aligns query antibody
-embeddings against a library of species reference embeddings to identify
-the best-matching species and generate IMGT-compatible alignments.
+embeddings against unified reference embeddings to generate IMGT-compatible
+alignments.
 
 Key components:
 - SoftAligner: Main class for running alignments
 - _align_fn: Internal alignment function using the SoftAlign neural model
 
 The alignment process includes:
-1. Embedding comparison against all species references
-2. Selection of best-matching species by similarity score
-3. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
-4. Expansion to full 128-position IMGT alignment matrix
+1. Embedding comparison against unified reference
+2. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
+3. Expansion to full 128-position IMGT alignment matrix
+4. Chain type detection from DE loop occupancy
 """
 
 import logging
@@ -72,7 +72,7 @@ def _align_fn(
         alignment=np.asarray(alignment[0]),
         sim_matrix=np.asarray(sim_matrix[0]),
         score=float(score[0]),
-        species=None,
+        chain_type=None,
         idxs1=input.idxs,
         idxs2=target.idxs,
     )
@@ -119,7 +119,7 @@ def find_nearest_occupied_column(
 
 
 class SoftAligner:
-    """Align a query embedding against packaged species embeddings."""
+    """Align a query embedding against unified reference embeddings."""
 
     def __init__(
         self,
@@ -168,15 +168,15 @@ class SoftAligner:
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
     ) -> List[mpnn_embeddings.MPNNEmbeddings]:
-        """Load packaged species embeddings as ``MPNNEmbeddings``."""
+        """Load packaged reference embeddings as ``MPNNEmbeddings``."""
         out_embeddings = []
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)["arr_0"].item()
-            for species, embeddings_dict in data.items():
+            for name, embeddings_dict in data.items():
                 out_embeddings.append(
                     mpnn_embeddings.MPNNEmbeddings(
-                        name=species,
+                        name=name,
                         embeddings=embeddings_dict.get("array"),
                         stdev=embeddings_dict.get("stdev"),
                         idxs=embeddings_dict.get("idxs"),
@@ -207,7 +207,6 @@ class SoftAligner:
     def correct_fr1_alignment(
         self,
         aln: np.ndarray,
-        chain_type: Optional[constants.ChainType] = None,
         input_has_pos10: bool = False,
     ) -> np.ndarray:
         """
@@ -227,7 +226,6 @@ class SoftAligner:
 
         Args:
             aln: The alignment matrix
-            chain_type: The chain type (used for logging)
             input_has_pos10: Whether the input sequence has position 10
                 (True for kappa, False for heavy/lambda)
 
@@ -436,67 +434,16 @@ class SoftAligner:
 
         return aln
 
-    def filter_embeddings_by_chain_type(
-        self, chain_type: Optional[constants.ChainType]
-    ) -> List[mpnn_embeddings.MPNNEmbeddings]:
-        """
-        Filter embeddings based on chain type.
-
-        Args:
-            chain_type: ChainType.HEAVY for H embeddings only,
-                       ChainType.LIGHT for K and L embeddings only,
-                       None or ChainType.AUTO for all embeddings.
-
-        Returns:
-            Filtered list of embeddings.
-        """
-        unified_embeddings = [
-            emb for emb in self.all_embeddings if emb.name == "unified"
-        ]
-        if unified_embeddings:
-            LOGGER.info("Using unified embeddings for all chain types")
-            return unified_embeddings
-
-        if chain_type is None or chain_type == constants.ChainType.AUTO:
-            return self.all_embeddings
-
-        filtered = []
-        for emb in self.all_embeddings:
-            suffix = emb.name[-1].upper()
-            if chain_type == constants.ChainType.HEAVY and suffix == "H":
-                filtered.append(emb)
-            elif chain_type == constants.ChainType.LIGHT and suffix in (
-                "K",
-                "L",
-            ):
-                filtered.append(emb)
-
-        if not filtered:
-            LOGGER.warning(
-                f"No embeddings found for chain_type='{chain_type.value}', "
-                f"using all embeddings"
-            )
-            return self.all_embeddings
-
-        LOGGER.info(
-            f"Filtered to {len(filtered)} embeddings for "
-            f"chain_type='{chain_type.value}'"
-        )
-        return filtered
-
     def __call__(
         self,
         input_data: mpnn_embeddings.MPNNEmbeddings,
-        chain_type: Optional[constants.ChainType] = None,
         deterministic_loop_renumbering: bool = True,
     ) -> softalign_output.SoftAlignOutput:
         """
-        Align input embeddings to each species embedding and return best hit.
+        Align input embeddings against the unified reference embedding.
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
-            chain_type: Optional filter - ChainType.HEAVY for H only,
-                ChainType.LIGHT for K/L only, None/AUTO for all.
             deterministic_loop_renumbering: Whether to apply deterministic
                 renumbering corrections for:
                 - Light chain FR1 positions 7-10
@@ -513,35 +460,17 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        embeddings_to_search = self.filter_embeddings_by_chain_type(chain_type)
-
-        outputs = {}
-        for species_embedding in embeddings_to_search:
-            name = species_embedding.name
-            out = self.transformed_align_fn.apply(
-                self.model_params,
-                self.key,
-                input_data,
-                species_embedding,
-                self.temperature,
-            )
-            aln = self.fix_aln(out.alignment, species_embedding.idxs)
-
-            outputs[name] = softalign_output.SoftAlignOutput(
-                alignment=aln,
-                score=out.score,
-                species=name,
-                sim_matrix=None,
-                idxs1=input_data.idxs,
-                idxs2=[
-                    str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)
-                ],
-            )
-        LOGGER.info(f"Evaluated alignments against {len(outputs)} species")
-
-        best_match = max(outputs, key=lambda k: outputs[k].score)
-
-        aln = np.array(outputs[best_match].alignment, dtype=int)
+        # Use the single unified embedding
+        unified_embedding = self.all_embeddings[0]
+        out = self.transformed_align_fn.apply(
+            self.model_params,
+            self.key,
+            input_data,
+            unified_embedding,
+            self.temperature,
+        )
+        aln = self.fix_aln(out.alignment, unified_embedding.idxs)
+        aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:
             for loop_name, (startres, endres) in constants.IMGT_LOOPS.items():
@@ -588,18 +517,49 @@ class SoftAligner:
                     f"using input positions"
                 )
 
-            input_has_pos10 = "10" in input_data.idxs or 10 in input_data.idxs
-            is_light_chain = (
-                chain_type == constants.ChainType.LIGHT
-                or best_match[-1].upper() in ("K", "L")
+            # Detect chain type from DE loop (positions 81-82)
+            detected_chain_type = util.detect_chain_type(aln)
+            is_light_chain = detected_chain_type in ("K", "L")
+
+            # Detect position 10 occupancy from alignment
+            # Check if there's a residue aligned to position 10 (column 9)
+            input_has_pos10 = aln[:, 9].sum() >= 1
+            aln = self.correct_fr1_alignment(
+                aln, input_has_pos10=input_has_pos10
             )
-            if is_light_chain or chain_type == constants.ChainType.HEAVY:
-                aln = self.correct_fr1_alignment(
-                    aln, chain_type=chain_type, input_has_pos10=input_has_pos10
+
+            # Detect positions 81-82 occupancy from alignment
+            # Count residues between positions 80 and 85 in the input
+            # Heavy chains have 4 (81, 82, 83, 84), light chains have 2 (83, 84)
+            pos80_col = 79  # 0-indexed for IMGT position 80
+            pos85_col = 84  # 0-indexed for IMGT position 85
+
+            # Find which input row is aligned to position 80
+            pos80_rows = np.where(aln[:, pos80_col] == 1)[0]
+            pos85_rows = np.where(aln[:, pos85_col] == 1)[0]
+
+            if len(pos80_rows) > 0 and len(pos85_rows) > 0:
+                row_at_pos80 = pos80_rows[0]
+                row_at_pos85 = pos85_rows[0]
+                # Count residues strictly between positions 80 and 85
+                n_residues_between = row_at_pos85 - row_at_pos80 - 1
+                # Heavy chains: 4 residues (81, 82, 83, 84)
+                # Light chains: 2 residues (83, 84)
+                input_has_pos81 = n_residues_between >= 3
+                input_has_pos82 = n_residues_between >= 4
+                LOGGER.info(
+                    f"DE loop: {n_residues_between} residues between "
+                    f"pos 80-85 (rows {row_at_pos80}-{row_at_pos85})"
+                )
+            else:
+                # Fallback: assume light chain pattern if we can't find anchors
+                input_has_pos81 = False
+                input_has_pos82 = False
+                LOGGER.warning(
+                    "Could not find positions 80 or 85 in alignment, "
+                    "assuming light chain DE loop pattern"
                 )
 
-            input_has_pos81 = "81" in input_data.idxs or 81 in input_data.idxs
-            input_has_pos82 = "82" in input_data.idxs or 82 in input_data.idxs
             if is_light_chain and (not input_has_pos81 or not input_has_pos82):
                 aln = self.correct_fr3_alignment(
                     aln,
@@ -607,27 +567,18 @@ class SoftAligner:
                     input_has_pos82=input_has_pos82,
                 )
 
-        reported_species = best_match
-        if best_match == "unified":
-            if chain_type == constants.ChainType.HEAVY:
-                reported_species = "H"
-            elif chain_type == constants.ChainType.LIGHT:
-                reported_species = "K"
-            else:
-                reported_species = "H"
-            LOGGER.info(
-                f"Unified embeddings: reporting species as "
-                f"'{reported_species}' based on chain_type={chain_type}"
-            )
-
             # Apply C-terminus correction for unassigned trailing residues
             aln = self.correct_c_terminus(aln)
+        else:
+            # Detect chain type when deterministic renumbering is disabled
+            detected_chain_type = util.detect_chain_type(aln)
+            LOGGER.info(f"Detected chain type: {detected_chain_type}")
 
         return softalign_output.SoftAlignOutput(
-            species=reported_species,
+            chain_type=detected_chain_type,
             alignment=aln,
-            score=0,
+            score=out.score,
             sim_matrix=None,
-            idxs1=outputs[best_match].idxs1,
-            idxs2=outputs[best_match].idxs2,
+            idxs1=input_data.idxs,
+            idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
         )

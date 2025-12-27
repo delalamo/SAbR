@@ -6,7 +6,7 @@ Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
 
 1. Load structure (PDB or mmCIF format) and extract sequence
 2. Generate MPNN embeddings for the target chain
-3. Align embeddings against species references using SoftAlign
+3. Align embeddings against unified reference using SoftAlign
 4. Convert alignment to HMM state vector
 5. Apply ANARCI numbering scheme (IMGT, Chothia, Kabat, etc.)
 6. Write renumbered structure to output file
@@ -23,7 +23,6 @@ from ANARCI import anarci
 
 from sabr import (
     aln2hmm,
-    constants,
     edit_pdb,
     mpnn_embeddings,
     options,
@@ -108,22 +107,6 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
-    "-t",
-    "--chain-type",
-    "chain_type",
-    type=click.Choice(
-        [ct.value for ct in constants.ChainType], case_sensitive=False
-    ),
-    default="auto",
-    show_default=True,
-    help=(
-        "Restrict alignment to specific chain type embeddings. "
-        "'heavy' searches only heavy chain (H) embeddings, "
-        "'light' searches only light chain (K and L) embeddings, "
-        "'auto' searches all embeddings and picks the best match."
-    ),
-)
-@click.option(
     "--extended-insertions",
     "extended_insertions",
     is_flag=True,
@@ -146,6 +129,30 @@ LOGGER = logging.getLogger(__name__)
         "Use this flag to use raw alignment output without corrections."
     ),
 )
+@click.option(
+    "-t",
+    "--chain-type",
+    "chain_type",
+    default="auto",
+    show_default=True,
+    type=click.Choice(
+        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        case_sensitive=False,
+    ),
+    callback=lambda ctx, param, value: {
+        "heavy": "H",
+        "kappa": "K",
+        "lambda": "L",
+    }.get(
+        value.lower(),
+        value.upper() if value.upper() in ("H", "K", "L") else value,
+    ),
+    help=(
+        "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
+        "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
+        "DE loop occupancy."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -154,9 +161,9 @@ def main(
     overwrite: bool,
     verbose: bool,
     max_residues: int,
-    chain_type: str,
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
+    chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     util.configure_logging(verbose)
@@ -178,11 +185,6 @@ def main(
         start_msg += " (extended insertion codes enabled)"
     LOGGER.info(start_msg)
 
-    chain_type_enum = constants.ChainType(chain_type)
-    chain_type_filter = (
-        None if chain_type_enum == constants.ChainType.AUTO else chain_type_enum
-    )
-
     input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
     sequence = input_data.sequence
 
@@ -200,7 +202,6 @@ def main(
     aligner = softaligner.SoftAligner()
     alignment_result = aligner(
         input_data,
-        chain_type=chain_type_filter,
         deterministic_loop_renumbering=not disable_deterministic_renumbering,
     )
     state_vector, imgt_start, imgt_end, first_aligned_row = (
@@ -211,28 +212,29 @@ def main(
     subsequence = "-" * imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
-    if not alignment_result.species:
-        raise click.ClickException(
-            "SoftAlign did not specify the matched species; "
-            "cannot infer heavy/light chain type."
-        )
+    # Detect chain type from DE loop for ANARCI numbering if not specified
+    if chain_type == "auto":
+        chain_type = util.detect_chain_type(alignment_result.alignment)
+    else:
+        LOGGER.info(f"Using user-specified chain type: {chain_type}")
 
-    anarci_alignment, _, _ = anarci.number_sequence_from_alignment(
+    # TODO introduce extended insertion code handling here
+    anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         state_vector,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=alignment_result.species[-1],
+        chain_type=chain_type,
     )
 
-    anarci_alignment = [a for a in anarci_alignment if a[1] != "-"]
+    anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
-        anarci_alignment,
+        anarci_out,
         output_file,
         0,
-        len(anarci_alignment),
+        len(anarci_out),
         alignment_start=first_aligned_row,
         max_residues=max_residues,
     )
