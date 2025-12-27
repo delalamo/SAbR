@@ -348,7 +348,7 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
         # Generate embeddings first (also extracts sequence)
         input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(input_data, chain_type="L")
+        result = aligner(input_data)
 
         # Convert to ANARCI format
         sequence = input_data.sequence
@@ -406,7 +406,7 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
         # Generate embeddings first (also extracts sequence)
         input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
-        result = aligner(input_data, chain_type="L")
+        result = aligner(input_data)
 
         # Convert to ANARCI format
         sequence = input_data.sequence
