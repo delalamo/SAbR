@@ -147,21 +147,6 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
-    "-s",
-    "--anarci-species",
-    "anarci_species",
-    type=click.Choice(
-        [s.value for s in constants.AnarciSpecies], case_sensitive=False
-    ),
-    default="human",
-    show_default=True,
-    help=(
-        "Species for ANARCI numbering. This parameter is passed to ANARCI "
-        "and affects germline gene identification. Choose from: human, mouse, "
-        "rat, rabbit, pig, rhesus, alpaca."
-    ),
-)
-@click.option(
     "-a",
     "--anarci-chain-type",
     "anarci_chain_type",
@@ -189,7 +174,6 @@ def main(
     max_residues: int,
     chain_type: str,
     extended_insertions: bool,
-    anarci_species: str,
     anarci_chain_type: str,
     disable_deterministic_renumbering: bool,
 ) -> None:
@@ -285,31 +269,27 @@ def main(
     # Determine ANARCI chain type (auto-detect from DE loop or use user value)
     anarci_chain_type_enum = constants.AnarciChainType(anarci_chain_type)
     resolved_chain_type = util.detect_anarci_chain_type(
-        out.alignment, anarci_chain_type_enum
+        alignment_result.alignment, anarci_chain_type_enum
     )
-
-    # Log the species parameter (informational - not currently used by ANARCI)
-    anarci_species_enum = constants.AnarciSpecies(anarci_species)
-    LOGGER.info(f"ANARCI species: {anarci_species_enum.value}")
 
     # TODO introduce extended insertion code handling here
     # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        sv,
+        state_vector,
         subsequence,
         scheme=numbering_scheme,
         chain_type=resolved_chain_type,
     )
 
-    anarci_alignment = [a for a in anarci_alignment if a[1] != "-"]
+    anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
-        anarci_alignment,
+        anarci_out,
         output_file,
         0,
-        len(anarci_alignment),
+        len(anarci_out),
         alignment_start=first_aligned_row,
         max_residues=max_residues,
     )

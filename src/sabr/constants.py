@@ -50,21 +50,6 @@ class ChainType(Enum):
     AUTO = "auto"
 
 
-class AnarciSpecies(Enum):
-    """Species options for ANARCI numbering.
-
-    These correspond to the germline databases available in ANARCI.
-    """
-
-    HUMAN = "human"
-    MOUSE = "mouse"
-    RAT = "rat"
-    RABBIT = "rabbit"
-    PIG = "pig"
-    RHESUS = "rhesus"
-    ALPACA = "alpaca"
-
-
 class AnarciChainType(Enum):
     """Chain type options for ANARCI numbering.
 

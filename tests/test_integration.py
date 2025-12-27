@@ -246,42 +246,6 @@ def test_cli_rejects_multi_character_chain():
 
 
 @pytest.mark.parametrize(
-    "species",
-    ["human", "mouse", "rat", "rabbit", "pig", "rhesus", "alpaca"],
-)
-def test_cli_anarci_species_argument(monkeypatch, tmp_path, species):
-    """Test that CLI accepts all valid --anarci-species values."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, sp = load_alignment_fixture(data["alignment"])
-
-    DummyAligner = create_dummy_aligner(alignment, sp)
-    dummy_from_pdb = create_dummy_from_pdb()
-
-    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
-
-    runner = CliRunner()
-    output_pdb = tmp_path / f"test_species_{species}.pdb"
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            str(output_pdb),
-            "--overwrite",
-            "-s",
-            species,
-        ],
-    )
-    assert result.exit_code == 0, result.output
-
-
-@pytest.mark.parametrize(
     "chain_type",
     ["H", "K", "L", "auto"],
 )
@@ -315,32 +279,6 @@ def test_cli_anarci_chain_type_argument(monkeypatch, tmp_path, chain_type):
         ],
     )
     assert result.exit_code == 0, result.output
-
-
-def test_cli_rejects_invalid_anarci_species():
-    """Test that CLI rejects invalid --anarci-species values."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            "output.pdb",
-            "-s",
-            "invalid_species",
-        ],
-    )
-    assert result.exit_code != 0
-    assert (
-        "Invalid value" in result.output or "invalid_species" in result.output
-    )
 
 
 def test_cli_rejects_invalid_anarci_chain_type():
