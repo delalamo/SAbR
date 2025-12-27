@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, constants, edit_pdb, mpnn_embeddings, softaligner
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, softaligner
 from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
@@ -323,8 +323,8 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
 
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
-    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
-    assert output.species == "H", f"Expected H, got {output.species}"
+    output = aligner(embeddings, chain_type="H")
+    assert output.chain_type == "H", f"Expected H, got {output.chain_type}"
 
     # Step 4: Convert alignment to state vector
     sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
@@ -339,7 +339,7 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
             sv,
             subsequence,
             scheme="imgt",
-            chain_type=output.species,
+            chain_type=output.chain_type,
         )
     )
 
@@ -436,8 +436,8 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
 
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
-    output = aligner(embeddings, chain_type=constants.ChainType.HEAVY)
-    assert output.species is not None, "Species should be detected"
+    output = aligner(embeddings, chain_type="H")
+    assert output.chain_type is not None, "Chain type should be detected"
 
     # Step 4: Convert alignment to state vector
     sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
@@ -457,7 +457,7 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
             sv,
             subsequence,
             scheme="imgt",
-            chain_type=output.species,
+            chain_type=output.chain_type,
         )
     )
 
