@@ -47,44 +47,38 @@ If running on a Mac with apple silicon, set the environmental variable `JAX_PLAT
 ```bash
 Usage: sabr [OPTIONS]
 
-  Structure-based Antibody Renumbering (SAbR) renumbers antibody structure
-  files using the 3D coordinates of backbone atoms. Supports both PDB and
-  mmCIF input formats.
+  Structure-based Antibody Renumbering (SAbR) renumbers antibody PDB files
+  using the 3D coordinates of backbone atoms.
 
 Options:
-  -i, --input-pdb FILE            Input structure file (PDB or mmCIF format).
-                                  [required]
-  -c, --input-chain TEXT          Chain identifier to renumber (single
-                                  character).  [required]
+  -i, --input-pdb FILE            Input PDB file.  [required]
+  -c, --input-chain TEXT          Chain identifier to renumber.
   -o, --output FILE               Destination structure file. Use .pdb
                                   extension for PDB format or .cif extension
                                   for mmCIF format. mmCIF is required when
                                   using --extended-insertions.  [required]
   -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
-                                  Numbering scheme.  [default: IMGT]
-  --overwrite                     Overwrite the output file if it already
+                                  Numbering scheme.  [default: (IMGT)]
+  --overwrite                     Overwrite the output PDB if it already
                                   exists.
   -v, --verbose                   Enable verbose logging.
   --max-residues INTEGER          Maximum number of residues to process from
                                   the chain. If 0 (default), process all
                                   residues.
+  -t, --chain-type [heavy|light|auto]
+                                  Restrict alignment to specific chain type
+                                  embeddings. 'heavy' searches only heavy
+                                  chain (H) embeddings, 'light' searches only
+                                  light chain (K and L) embeddings, 'auto'
+                                  searches all embeddings and picks the best
+                                  match.  [default: auto]
   --extended-insertions           Enable extended insertion codes (AA, AB,
                                   ..., ZZ, AAA, etc.) for antibodies with very
                                   long CDR loops. Requires mmCIF output format
                                   (.cif extension). Standard PDB format only
                                   supports single-character insertion codes
-                                  (A-Z, max 26 insertions per position).
-  --disable-deterministic-renumbering
-                                  Disable deterministic renumbering corrections
-                                  for loop regions. By default, corrections are
-                                  applied for FR1, DE loop, and CDR loops.
-  -t, --chain-type [H|K|L|heavy|kappa|lambda|auto]
-                                  Chain type for ANARCI numbering.
-                                  H/heavy=heavy chain, K/kappa=kappa light,
-                                  L/lambda=lambda light. Use 'auto' (default)
-                                  to detect from DE loop occupancy.
-                                  [default: auto]
-  -h, --help                      Show this message and exit.
+                                  (A-Z, max 26 insertions per position)
+  -v, --verbose         Verbose output
 ```
 
 ## Known issues

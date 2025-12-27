@@ -97,59 +97,160 @@ def test_fix_aln_preserves_dtype():
     assert expanded.dtype == old_aln.dtype
 
 
-def test_correct_fr1_alignment_kappa_7_residues():
-    """Test FR1 correction with 7 residues (kappa pattern) keeps position 10."""
+def test_filter_embeddings_by_chain_type_none():
+    """Test that None chain_type returns all embeddings."""
     aligner = make_aligner()
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up 7 residues from position 6 to 12 (kappa pattern)
-    # Rows 5-11 at columns 5-11 (positions 6-12)
-    for i, col in enumerate(range(5, 12)):
-        aln[i + 5, col] = 1
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type=None)
+    filtered = aligner.filter_embeddings_by_chain_type(None)
 
-    # Should keep position 10 filled - 7 residues means kappa pattern
-    assert corrected[9, 9] == 1  # Position 10 should be occupied
+    assert len(filtered) == 3
 
 
-def test_correct_fr1_alignment_heavy_6_residues():
-    """Test FR1 correction with 6 residues (heavy/lambda) skips position 10."""
+def test_filter_embeddings_by_chain_type_heavy():
+    """Test that 'heavy' chain_type returns only H embeddings."""
     aligner = make_aligner()
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up 6 residues from position 6 to 12 (heavy/lambda pattern)
-    # Only 6 rows, so position 10 should become a gap
-    aln[5, 5] = 1   # Position 6
-    aln[6, 6] = 1   # Position 7
-    aln[7, 7] = 1   # Position 8
-    aln[8, 8] = 1   # Position 9
-    aln[9, 10] = 1  # Position 11 (skip 10)
-    aln[10, 11] = 1  # Position 12
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type="H")
+    filtered = aligner.filter_embeddings_by_chain_type(
+        constants.ChainType.HEAVY
+    )
 
-    # Should redistribute to skip position 10
-    assert corrected[5, 5] == 1   # Position 6
-    assert corrected[6, 6] == 1   # Position 7
-    assert corrected[7, 7] == 1   # Position 8
-    assert corrected[8, 8] == 1   # Position 9
-    assert corrected[9, 10] == 1  # Position 11
-    assert corrected[10, 11] == 1  # Position 12
-    assert corrected[:, 9].sum() == 0  # Position 10 should be empty
+    assert len(filtered) == 1
+    assert filtered[0].name == "humanH"
 
 
-def test_correct_fr1_no_anchors_found():
-    """Test FR1 correction returns unchanged when no anchors found."""
+def test_filter_embeddings_by_chain_type_light():
+    """Test that 'light' chain_type returns only K and L embeddings."""
     aligner = make_aligner()
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up residues outside the FR1 anchor region
-    aln[0, 0] = 1  # Position 1
-    aln[1, 1] = 1  # Position 2
+    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
+    aligner.all_embeddings = [
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+        mpnn_embeddings.MPNNEmbeddings(
+            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        ),
+    ]
 
-    original = aln.copy()
-    corrected = aligner.correct_fr1_alignment(aln, chain_type="H")
+    filtered = aligner.filter_embeddings_by_chain_type(
+        constants.ChainType.LIGHT
+    )
 
-    # Should not change - no anchors in positions 6-12
-    assert np.array_equal(corrected, original)
+    assert len(filtered) == 2
+    assert all(emb.name[-1] in ("K", "L") for emb in filtered)
+
+
+def test_correct_fr1_alignment_no_correction_needed():
+    """Test FR1 correction when no correction is needed."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Set up normal alignment where row matches column
+    aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
+
+    # With input_has_pos10=True (kappa), position 10 should remain
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
+
+    # Should not change
+    assert np.array_equal(corrected, aln)
+
+
+def test_correct_fr1_alignment_with_shift():
+    """Test FR1 correction when shift is needed."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 10 (0-indexed: 9) is empty
+    aln[:, 9] = 0
+    # Row 7 at column 6 means residue 8 is at position 7 (shifted)
+    aln[7, 6] = 1
+
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=None, input_has_pos10=True
+    )
+
+    # Should have shifted the alignment
+    assert corrected[7, 6] == 0  # Original position should be cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos9():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos9."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
+
+
+def test_correct_fr1_heavy_chain_move_to_pos11():
+    """Test heavy chain FR1 correction: move residue from pos10 to pos11."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is filled, position 10 (col 9) has a residue,
+    # position 11 (col 10) is empty
+    aln[7, 8] = 1  # Residue 8 at position 9
+    aln[8, 9] = 1  # Residue 9 incorrectly at position 10 (should be at 11)
+
+    # Heavy chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos11
+    assert corrected[7, 8] == 1  # Position 9 unchanged
+    assert corrected[8, 9] == 0  # Position 10 cleared
+    assert corrected[8, 10] == 1  # Now at position 11
+
+
+def test_correct_fr1_lambda_chain_clears_pos10():
+    """Test lambda chain FR1 correction: position 10 cleared like heavy."""
+    aligner = make_aligner()
+    aln = np.zeros((15, 128), dtype=int)
+    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
+    aln[8, 9] = 1  # Residue incorrectly at position 10
+
+    # Lambda chains don't have position 10 (input_has_pos10=False)
+    corrected = aligner.correct_fr1_alignment(
+        aln, chain_type=constants.ChainType.LIGHT, input_has_pos10=False
+    )
+
+    # Residue should be moved from pos10 to pos9
+    assert corrected[8, 8] == 1  # Now at position 9
+    assert corrected[8, 9] == 0  # Position 10 cleared
 
 
 def test_correct_fr3_alignment_no_correction_needed():

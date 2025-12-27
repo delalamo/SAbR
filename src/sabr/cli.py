@@ -107,6 +107,22 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
+    "-t",
+    "--chain-type",
+    "chain_type",
+    type=click.Choice(
+        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"], case_sensitive=False
+    ),
+    default="auto",
+    show_default=True,
+    help=(
+        "Expected chain type. This is used for logging and validation. "
+        "Chain type is auto-detected from the alignment. "
+        "'H'/'heavy' for heavy chain, 'K'/'kappa' for kappa light chain, "
+        "'L'/'lambda' for lambda light chain, 'auto' for auto-detection."
+    ),
+)
+@click.option(
     "--extended-insertions",
     "extended_insertions",
     is_flag=True,
@@ -129,30 +145,6 @@ LOGGER = logging.getLogger(__name__)
         "Use this flag to use raw alignment output without corrections."
     ),
 )
-@click.option(
-    "-t",
-    "--chain-type",
-    "chain_type",
-    default="auto",
-    show_default=True,
-    type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
-        case_sensitive=False,
-    ),
-    callback=lambda ctx, param, value: {
-        "heavy": "H",
-        "kappa": "K",
-        "lambda": "L",
-    }.get(
-        value.lower(),
-        value.upper() if value.upper() in ("H", "K", "L") else value,
-    ),
-    help=(
-        "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
-        "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
-        "DE loop occupancy."
-    ),
-)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -161,9 +153,9 @@ def main(
     overwrite: bool,
     verbose: bool,
     max_residues: int,
+    chain_type: str,
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
-    chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     util.configure_logging(verbose)
@@ -212,29 +204,37 @@ def main(
     subsequence = "-" * imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
-    # Detect chain type from DE loop for ANARCI numbering if not specified
-    if chain_type == "auto":
-        chain_type = util.detect_chain_type(alignment_result.alignment)
-    else:
-        LOGGER.info(f"Using user-specified chain type: {chain_type}")
+    if not alignment_result.chain_type:
+        raise click.ClickException(
+            "SoftAlign did not detect the chain type; "
+            "cannot infer heavy/light chain type."
+        )
 
-    # TODO introduce extended insertion code handling here
-    anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
+    # Log if user-specified chain type differs from detected
+    detected = alignment_result.chain_type
+    if chain_type.lower() != "auto":
+        user_type = chain_type.upper()[0]  # H, K, or L
+        if user_type != detected:
+            LOGGER.warning(
+                f"User specified chain type '{chain_type}' but detected '{detected}'"
+            )
+
+    anarci_alignment, _, _ = anarci.number_sequence_from_alignment(
         state_vector,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=chain_type,
+        chain_type=detected,
     )
 
-    anarci_out = [a for a in anarci_out if a[1] != "-"]
+    anarci_alignment = [a for a in anarci_alignment if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,
         input_chain,
-        anarci_out,
+        anarci_alignment,
         output_file,
         0,
-        len(anarci_out),
+        len(anarci_alignment),
         alignment_start=first_aligned_row,
         max_residues=max_residues,
     )
