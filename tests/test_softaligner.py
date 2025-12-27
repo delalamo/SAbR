@@ -1,6 +1,7 @@
 import importlib
 
 import numpy as np
+import pytest
 
 from sabr import constants, mpnn_embeddings, softaligner
 
@@ -34,15 +35,71 @@ def test_normalize_orders_indices():
     assert np.array_equal(normalized.embeddings, expected)
 
 
-def test_correct_gap_numbering_places_expected_ones():
+@pytest.mark.parametrize(
+    "n_residues,n_positions,expected_sum",
+    [
+        (3, 3, 3),  # square matrix
+        (3, 5, 3),  # non-square
+        (1, 1, 1),  # single element
+    ],
+)
+def test_correct_gap_numbering_basic(n_residues, n_positions, expected_sum):
+    """Test correct_gap_numbering with various matrix sizes."""
     aligner = make_aligner()
-    sub_aln = np.zeros((3, 3), dtype=int)
+    sub_aln = np.zeros((n_residues, n_positions), dtype=int)
 
     corrected = aligner.correct_gap_numbering(sub_aln)
 
-    assert corrected[0, 0] == 1
-    assert corrected[-1, -1] == 1
-    assert corrected.sum() == min(sub_aln.shape)
+    assert corrected[0, 0] == 1  # First anchor
+    assert corrected[-1, -1] == 1  # Last anchor
+    assert corrected.sum() == expected_sum
+
+
+@pytest.mark.parametrize(
+    "n_residues,n_positions,expected_positions",
+    [
+        # 5-residue CDR: 105, 106, 107, 116, 117 -> cols 0, 1, 2, 11, 12
+        (5, 13, [(0, 0), (1, 1), (2, 2), (3, 11), (4, 12)]),
+        # 6-residue CDR: cols 0, 1, 2, 10, 11, 12
+        (6, 13, [(0, 0), (1, 1), (2, 2), (3, 10), (4, 11), (5, 12)]),
+        # 4-residue with 8 positions
+        (4, 8, [(0, 0), (1, 1), (2, 6), (3, 7)]),
+    ],
+)
+def test_correct_gap_numbering_imgt_pattern(
+    n_residues, n_positions, expected_positions
+):
+    """Test IMGT gap distribution for CDRs of various sizes."""
+    aligner = make_aligner()
+    sub_aln = np.zeros((n_residues, n_positions), dtype=int)
+
+    corrected = aligner.correct_gap_numbering(sub_aln)
+
+    for row, col in expected_positions:
+        assert corrected[row, col] == 1, (
+            f"Expected position ({row}, {col}) to be 1 for "
+            f"{n_residues}x{n_positions} matrix"
+        )
+    assert corrected.sum() == n_residues
+
+
+def test_correct_gap_numbering_preserves_anchor_points():
+    """Test that anchor points (first and last) are always preserved."""
+    aligner = make_aligner()
+
+    for n_residues in range(2, 15):
+        for n_positions in range(n_residues, 20):
+            sub_aln = np.zeros((n_residues, n_positions), dtype=int)
+            corrected = aligner.correct_gap_numbering(sub_aln)
+
+            assert corrected[0, 0] == 1, (
+                f"N-terminal anchor not preserved for "
+                f"{n_residues} residues, {n_positions} positions"
+            )
+            assert corrected[n_residues - 1, n_positions - 1] == 1, (
+                f"C-terminal anchor not preserved for "
+                f"{n_residues} residues, {n_positions} positions"
+            )
 
 
 def test_fix_aln_expands_to_imgt_width():
@@ -53,28 +110,6 @@ def test_fix_aln_expands_to_imgt_width():
     assert expanded.shape == (2, 128)
     assert np.array_equal(expanded[:, 0], old_aln[:, 0])
     assert np.array_equal(expanded[:, 2], old_aln[:, 1])
-
-
-def test_correct_gap_numbering_non_square():
-    """Test correct_gap_numbering with non-square matrices."""
-    aligner = make_aligner()
-    sub_aln = np.zeros((3, 5), dtype=int)
-
-    corrected = aligner.correct_gap_numbering(sub_aln)
-
-    # Should place min(3,5) = 3 ones
-    assert corrected.sum() == 3
-
-
-def test_correct_gap_numbering_single_element():
-    """Test with 1x1 matrix."""
-    aligner = make_aligner()
-    sub_aln = np.zeros((1, 1), dtype=int)
-
-    corrected = aligner.correct_gap_numbering(sub_aln)
-
-    assert corrected[0, 0] == 1
-    assert corrected.sum() == 1
 
 
 def test_fix_aln_with_integer_idxs():
@@ -97,8 +132,18 @@ def test_fix_aln_preserves_dtype():
     assert expanded.dtype == old_aln.dtype
 
 
-def test_filter_embeddings_by_chain_type_none():
-    """Test that None chain_type returns all embeddings."""
+@pytest.mark.parametrize(
+    "chain_type,expected_count,expected_names",
+    [
+        (None, 3, ["humanH", "humanK", "mouseL"]),
+        (constants.ChainType.HEAVY, 1, ["humanH"]),
+        (constants.ChainType.LIGHT, 2, ["humanK", "mouseL"]),
+    ],
+)
+def test_filter_embeddings_by_chain_type(
+    chain_type, expected_count, expected_names
+):
+    """Test filter_embeddings_by_chain_type with different chain types."""
     aligner = make_aligner()
     embed = np.ones((5, constants.EMBED_DIM), dtype=float)
     aligner.all_embeddings = [
@@ -113,435 +158,250 @@ def test_filter_embeddings_by_chain_type_none():
         ),
     ]
 
-    filtered = aligner.filter_embeddings_by_chain_type(None)
+    filtered = aligner.filter_embeddings_by_chain_type(chain_type)
 
-    assert len(filtered) == 3
+    assert len(filtered) == expected_count
+    assert [emb.name for emb in filtered] == expected_names
 
 
-def test_filter_embeddings_by_chain_type_heavy():
-    """Test that 'heavy' chain_type returns only H embeddings."""
-    aligner = make_aligner()
-    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
-    aligner.all_embeddings = [
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+@pytest.mark.parametrize(
+    "description,setup,chain_type,input_has_pos10,expected_changes",
+    [
+        # No correction needed
+        (
+            "no_correction_needed",
+            {(9, 9): 1},
+            None,
+            True,
+            {},  # No changes
         ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        # Heavy chain: move from pos10 to pos9
+        (
+            "heavy_move_to_pos9",
+            {(8, 9): 1},
+            constants.ChainType.HEAVY,
+            False,
+            {(8, 8): 1, (8, 9): 0},
         ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        # Heavy chain: move from pos10 to pos11 (pos9 occupied)
+        (
+            "heavy_move_to_pos11",
+            {(7, 8): 1, (8, 9): 1},
+            constants.ChainType.HEAVY,
+            False,
+            {(7, 8): 1, (8, 9): 0, (8, 10): 1},
         ),
-    ]
-
-    filtered = aligner.filter_embeddings_by_chain_type(
-        constants.ChainType.HEAVY
-    )
-
-    assert len(filtered) == 1
-    assert filtered[0].name == "humanH"
-
-
-def test_filter_embeddings_by_chain_type_light():
-    """Test that 'light' chain_type returns only K and L embeddings."""
-    aligner = make_aligner()
-    embed = np.ones((5, constants.EMBED_DIM), dtype=float)
-    aligner.all_embeddings = [
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanH", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
+        # Lambda chain: pos10 cleared like heavy
+        (
+            "lambda_clears_pos10",
+            {(8, 9): 1},
+            constants.ChainType.LIGHT,
+            False,
+            {(8, 8): 1, (8, 9): 0},
         ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="humanK", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
-        ),
-        mpnn_embeddings.MPNNEmbeddings(
-            name="mouseL", embeddings=embed, idxs=["1", "2", "3", "4", "5"]
-        ),
-    ]
-
-    filtered = aligner.filter_embeddings_by_chain_type(
-        constants.ChainType.LIGHT
-    )
-
-    assert len(filtered) == 2
-    assert all(emb.name[-1] in ("K", "L") for emb in filtered)
-
-
-def test_correct_fr1_alignment_no_correction_needed():
-    """Test FR1 correction when no correction is needed."""
+    ],
+)
+def test_correct_fr1_alignment(
+    description, setup, chain_type, input_has_pos10, expected_changes
+):
+    """Test FR1 alignment correction with various scenarios."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
-    # Set up normal alignment where row matches column
-    aln[9, 9] = 1  # Position 10 (0-indexed: 9) is filled
 
-    # With input_has_pos10=True (kappa), position 10 should remain
+    # Apply setup
+    for (row, col), val in setup.items():
+        aln[row, col] = val
+
+    original = aln.copy()
     corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=None, input_has_pos10=True
+        aln, chain_type=chain_type, input_has_pos10=input_has_pos10
     )
 
-    # Should not change
-    assert np.array_equal(corrected, aln)
+    if not expected_changes:
+        assert np.array_equal(
+            corrected, original
+        ), f"{description}: expected no change"
+    else:
+        for (row, col), expected_val in expected_changes.items():
+            assert (
+                corrected[row, col] == expected_val
+            ), f"{description}: expected [{row},{col}] = {expected_val}"
 
 
 def test_correct_fr1_alignment_with_shift():
     """Test FR1 correction when shift is needed."""
     aligner = make_aligner()
     aln = np.zeros((15, 128), dtype=int)
-    # Position 10 (0-indexed: 9) is empty
     aln[:, 9] = 0
-    # Row 7 at column 6 means residue 8 is at position 7 (shifted)
     aln[7, 6] = 1
 
     corrected = aligner.correct_fr1_alignment(
         aln, chain_type=None, input_has_pos10=True
     )
 
-    # Should have shifted the alignment
     assert corrected[7, 6] == 0  # Original position should be cleared
 
 
-def test_correct_fr1_heavy_chain_move_to_pos9():
-    """Test heavy chain FR1 correction: move residue from pos10 to pos9."""
-    aligner = make_aligner()
-    aln = np.zeros((15, 128), dtype=int)
-    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
-    aln[8, 9] = 1  # Residue 9 incorrectly at position 10
-
-    # Heavy chains don't have position 10 (input_has_pos10=False)
-    corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
-    )
-
-    # Residue should be moved from pos10 to pos9
-    assert corrected[8, 8] == 1  # Now at position 9
-    assert corrected[8, 9] == 0  # Position 10 cleared
-
-
-def test_correct_fr1_heavy_chain_move_to_pos11():
-    """Test heavy chain FR1 correction: move residue from pos10 to pos11."""
-    aligner = make_aligner()
-    aln = np.zeros((15, 128), dtype=int)
-    # Position 9 (col 8) is filled, position 10 (col 9) has a residue,
-    # position 11 (col 10) is empty
-    aln[7, 8] = 1  # Residue 8 at position 9
-    aln[8, 9] = 1  # Residue 9 incorrectly at position 10 (should be at 11)
-
-    # Heavy chains don't have position 10 (input_has_pos10=False)
-    corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=constants.ChainType.HEAVY, input_has_pos10=False
-    )
-
-    # Residue should be moved from pos10 to pos11
-    assert corrected[7, 8] == 1  # Position 9 unchanged
-    assert corrected[8, 9] == 0  # Position 10 cleared
-    assert corrected[8, 10] == 1  # Now at position 11
-
-
-def test_correct_fr1_lambda_chain_clears_pos10():
-    """Test lambda chain FR1 correction: position 10 cleared like heavy."""
-    aligner = make_aligner()
-    aln = np.zeros((15, 128), dtype=int)
-    # Position 9 (col 8) is empty, position 10 (col 9) has a residue
-    aln[8, 9] = 1  # Residue incorrectly at position 10
-
-    # Lambda chains don't have position 10 (input_has_pos10=False)
-    corrected = aligner.correct_fr1_alignment(
-        aln, chain_type=constants.ChainType.LIGHT, input_has_pos10=False
-    )
-
-    # Residue should be moved from pos10 to pos9
-    assert corrected[8, 8] == 1  # Now at position 9
-    assert corrected[8, 9] == 0  # Position 10 cleared
-
-
-def test_correct_fr3_alignment_no_correction_needed():
-    """Test FR3 correction when input has positions 81 and 82."""
+@pytest.mark.parametrize(
+    "description,setup,input_has_pos81,input_has_pos82,expected_changes",
+    [
+        # No correction needed
+        (
+            "no_correction_needed",
+            {(70, 80): 1, (71, 81): 1},
+            True,
+            True,
+            {},
+        ),
+        # Move 81 to 83
+        (
+            "move_81_to_83",
+            {(70, 80): 1},
+            False,
+            True,
+            {(70, 80): 0, (70, 82): 1},
+        ),
+        # Move 82 to 84
+        (
+            "move_82_to_84",
+            {(71, 81): 1},
+            True,
+            False,
+            {(71, 81): 0, (71, 83): 1},
+        ),
+        # Both moves
+        (
+            "both_moves",
+            {(70, 80): 1, (71, 81): 1},
+            False,
+            False,
+            {(70, 80): 0, (70, 82): 1, (71, 81): 0, (71, 83): 1},
+        ),
+        # Target positions already occupied
+        (
+            "targets_occupied",
+            {(70, 80): 1, (71, 81): 1, (72, 82): 1, (73, 83): 1},
+            False,
+            False,
+            {(70, 80): 0, (71, 81): 0, (72, 82): 1, (73, 83): 1},
+        ),
+    ],
+)
+def test_correct_fr3_alignment(
+    description, setup, input_has_pos81, input_has_pos82, expected_changes
+):
+    """Test FR3 alignment correction with various scenarios."""
     aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
-    # Set up positions 81 and 82 (cols 80 and 81) occupied
-    aln[70, 80] = 1  # Residue at position 81
-    aln[71, 81] = 1  # Residue at position 82
 
-    # If input has both positions, no correction needed
+    # Apply setup
+    for (row, col), val in setup.items():
+        aln[row, col] = val
+
+    original = aln.copy()
     corrected = aligner.correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=True
+        aln, input_has_pos81=input_has_pos81, input_has_pos82=input_has_pos82
     )
 
-    # Should not change
-    assert np.array_equal(corrected, aln)
+    if not expected_changes:
+        assert np.array_equal(
+            corrected, original
+        ), f"{description}: expected no change"
+    else:
+        for (row, col), expected_val in expected_changes.items():
+            assert (
+                corrected[row, col] == expected_val
+            ), f"{description}: expected [{row},{col}] = {expected_val}"
 
 
-def test_correct_fr3_alignment_move_81_to_83():
-    """Test FR3 correction: move residue from pos 81 to pos 83."""
+@pytest.mark.parametrize(
+    "description,n_rows,setup,expected_assignments",
+    [
+        # No correction needed - all rows assigned
+        (
+            "no_correction_needed",
+            120,
+            lambda aln: [
+                setattr(aln, "__setitem__", None)
+                or aln.__setitem__((i, min(i, 127)), 1)
+                for i in range(120)
+            ],
+            None,  # Check no change
+        ),
+        # Empty alignment
+        (
+            "empty_alignment",
+            100,
+            lambda aln: None,
+            None,  # Check no change
+        ),
+    ],
+)
+def test_correct_c_terminus_parametrized(
+    description, n_rows, setup, expected_assignments
+):
+    """Test C-terminus correction edge cases."""
     aligner = make_aligner()
-    aln = np.zeros((100, 128), dtype=int)
-    # Position 81 (col 80) has a residue, position 83 (col 82) is empty
-    aln[70, 80] = 1  # Residue incorrectly at position 81
+    aln = np.zeros((n_rows, 128), dtype=int)
 
-    # Light chain lacks position 81
-    corrected = aligner.correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=True
-    )
+    # Special handling for the "no_correction_needed" case
+    if description == "no_correction_needed":
+        for i in range(n_rows):
+            aln[i, min(i, 127)] = 1
 
-    # Residue should be moved from pos81 to pos83
-    assert corrected[70, 80] == 0  # Position 81 cleared
-    assert corrected[70, 82] == 1  # Now at position 83
-
-
-def test_correct_fr3_alignment_move_82_to_84():
-    """Test FR3 correction: move residue from pos 82 to pos 84."""
-    aligner = make_aligner()
-    aln = np.zeros((100, 128), dtype=int)
-    # Position 82 (col 81) has a residue, position 84 (col 83) is empty
-    aln[71, 81] = 1  # Residue incorrectly at position 82
-
-    # Light chain lacks position 82
-    corrected = aligner.correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=False
-    )
-
-    # Residue should be moved from pos82 to pos84
-    assert corrected[71, 81] == 0  # Position 82 cleared
-    assert corrected[71, 83] == 1  # Now at position 84
-
-
-def test_correct_fr3_alignment_both_moves():
-    """Test FR3 correction: move both 81->83 and 82->84."""
-    aligner = make_aligner()
-    aln = np.zeros((100, 128), dtype=int)
-    # Positions 81 and 82 have residues, 83 and 84 are empty
-    aln[70, 80] = 1  # Residue incorrectly at position 81
-    aln[71, 81] = 1  # Residue incorrectly at position 82
-
-    # Light chain lacks both positions 81 and 82
-    corrected = aligner.correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
-
-    # Both residues should be moved
-    assert corrected[70, 80] == 0  # Position 81 cleared
-    assert corrected[70, 82] == 1  # Now at position 83
-    assert corrected[71, 81] == 0  # Position 82 cleared
-    assert corrected[71, 83] == 1  # Now at position 84
-
-
-def test_correct_fr3_alignment_83_84_already_occupied():
-    """Test FR3 correction when target positions are already occupied."""
-    aligner = make_aligner()
-    aln = np.zeros((100, 128), dtype=int)
-    # All positions 81-84 have residues
-    aln[70, 80] = 1  # Position 81
-    aln[71, 81] = 1  # Position 82
-    aln[72, 82] = 1  # Position 83
-    aln[73, 83] = 1  # Position 84
-
-    # Light chain lacks positions 81 and 82
-    corrected = aligner.correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
-
-    # Since 83, 84 are occupied, 81, 82 should just be cleared
-    assert corrected[70, 80] == 0  # Position 81 cleared
-    assert corrected[71, 81] == 0  # Position 82 cleared
-    assert corrected[72, 82] == 1  # Position 83 unchanged
-    assert corrected[73, 83] == 1  # Position 84 unchanged
-
-
-def test_correct_gap_numbering_5_residue_cdr():
-    """Test IMGT gap distribution for a 5-residue CDR.
-
-    A 5-residue CDR-H3 (positions 105-117, 13 columns) should produce:
-    105, 106, 107, 116, 117 (columns 0, 1, 2, 11, 12 in sub-alignment).
-    """
-    aligner = make_aligner()
-
-    # 5 residues, 13 possible positions (like CDR-H3: 105-117)
-    sub_aln = np.zeros((5, 13), dtype=int)
-
-    corrected = aligner.correct_gap_numbering(sub_aln)
-
-    # Check anchor points: first residue -> first column, last -> last
-    assert corrected[0, 0] == 1  # Residue 0 -> position 105
-    assert corrected[4, 12] == 1  # Residue 4 -> position 117
-
-    # Check intermediate positions follow alternating pattern
-    assert corrected[1, 1] == 1  # Residue 1 -> position 106
-    assert corrected[2, 2] == 1  # Residue 2 -> position 107
-    assert corrected[3, 11] == 1  # Residue 3 -> position 116
-
-    # Should have exactly 5 assignments
-    assert corrected.sum() == 5
-
-
-def test_correct_gap_numbering_6_residue_cdr():
-    """Test IMGT gap distribution for a 6-residue CDR.
-
-    A 6-residue CDR-H3 (positions 105-117, 13 columns) should produce:
-    105, 106, 107, 115, 116, 117 (columns 0, 1, 2, 10, 11, 12).
-    """
-    aligner = make_aligner()
-
-    # 6 residues, 13 possible positions
-    sub_aln = np.zeros((6, 13), dtype=int)
-
-    corrected = aligner.correct_gap_numbering(sub_aln)
-
-    # Check anchor points
-    assert corrected[0, 0] == 1  # Residue 0 -> position 105
-    assert corrected[5, 12] == 1  # Residue 5 -> position 117
-
-    # Check intermediate positions
-    assert corrected[1, 1] == 1  # Residue 1 -> position 106
-    assert corrected[2, 2] == 1  # Residue 2 -> position 107
-    assert corrected[4, 11] == 1  # Residue 4 -> position 116
-    assert corrected[3, 10] == 1  # Residue 3 -> position 115
-
-    # Should have exactly 6 assignments
-    assert corrected.sum() == 6
-
-
-def test_correct_gap_numbering_always_applies_imgt_pattern():
-    """Test that IMGT gap distribution is always applied.
-
-    Even if the input alignment has a different distribution,
-    correct_gap_numbering should always redistribute according to
-    IMGT rules.
-    """
-    aligner = make_aligner()
-
-    # Create an alignment with non-IMGT gap distribution
-    sub_aln = np.zeros((4, 8), dtype=int)
-    sub_aln[0, 0] = 1  # Correct anchor
-    sub_aln[1, 3] = 1  # Wrong intermediate
-    sub_aln[2, 5] = 1  # Wrong intermediate
-    sub_aln[3, 7] = 1  # Correct anchor
-
-    corrected = aligner.correct_gap_numbering(sub_aln)
-
-    # Should apply IMGT pattern regardless of input
-    assert corrected[0, 0] == 1  # First anchor
-    assert corrected[3, 7] == 1  # Last anchor (row -1, col -1)
-    assert corrected[1, 1] == 1  # Second position
-    assert corrected[2, 6] == 1  # Second-to-last position
-
-    assert corrected.sum() == 4
-
-
-def test_correct_gap_numbering_preserves_anchor_points():
-    """Test that anchor points (first and last) are always preserved.
-
-    The first residue must always map to the first column (N-terminal anchor)
-    and the last residue must always map to the last column (C-terminal anchor).
-    This is critical for maintaining CDR boundary positions.
-    """
-    aligner = make_aligner()
-
-    # Test various loop sizes
-    for n_residues in range(2, 15):
-        for n_positions in range(n_residues, 20):
-            sub_aln = np.zeros((n_residues, n_positions), dtype=int)
-            corrected = aligner.correct_gap_numbering(sub_aln)
-
-            # First residue (row 0) must map to first column (col 0)
-            assert corrected[0, 0] == 1, (
-                f"N-terminal anchor not preserved for "
-                f"{n_residues} residues, {n_positions} positions"
-            )
-
-            # Last residue (row -1) must map to last column (col -1)
-            assert corrected[n_residues - 1, n_positions - 1] == 1, (
-                f"C-terminal anchor not preserved for "
-                f"{n_residues} residues, {n_positions} positions"
-            )
-
-
-def test_correct_c_terminus_no_correction_needed():
-    """Test C-terminus correction when no correction is needed.
-
-    When all residues are already assigned, no correction should be applied.
-    """
-    aligner = make_aligner()
-    aln = np.zeros((120, 128), dtype=int)
-
-    # Set up an alignment where all rows have assignments
-    # and the last assigned column is 127 (IMGT position 128)
-    for i in range(120):
-        aln[i, min(i, 127)] = 1
-
+    original = aln.copy()
     corrected = aligner.correct_c_terminus(aln)
 
-    # Should not change since all rows are assigned
-    assert np.array_equal(corrected, aln)
+    if expected_assignments is None:
+        assert np.array_equal(
+            corrected, original
+        ), f"{description}: expected no change"
 
 
 def test_correct_c_terminus_assigns_trailing_residues():
-    """Test that trailing unassigned residues are assigned to C-terminus.
-
-    When residues after position 125 are unassigned, they should be
-    deterministically assigned to positions 126, 127, 128.
-    """
+    """Test that trailing unassigned residues are assigned to C-terminus."""
     aligner = make_aligner()
     aln = np.zeros((120, 128), dtype=int)
 
-    # Set up alignment: residues 0-116 assigned to IMGT positions 1-117
-    # and residue 117 assigned to position 125 (0-indexed: 124)
-    # Residues 118, 119 are unassigned
     for i in range(117):
         aln[i, i] = 1
     aln[117, 124] = 1  # Last assigned is row 117 at col 124 (IMGT pos 125)
 
     corrected = aligner.correct_c_terminus(aln)
 
-    # Residues 118, 119 should now be assigned to cols 125, 126 (IMGT 126, 127)
     assert corrected[118, 125] == 1, "Row 118 should be assigned to col 125"
     assert corrected[119, 126] == 1, "Row 119 should be assigned to col 126"
 
 
 def test_correct_c_terminus_respects_max_imgt_position():
-    """Test that C-terminus correction doesn't exceed IMGT position 128.
-
-    Even if there are many trailing unassigned residues, we can only
-    assign up to position 128 (0-indexed: 127).
-    """
+    """Test that C-terminus correction doesn't exceed IMGT position 128."""
     aligner = make_aligner()
     aln = np.zeros((130, 128), dtype=int)
 
-    # Set up alignment: residues 0-124 assigned, last at col 124 (IMGT 125)
     for i in range(125):
         aln[i, i] = 1
 
-    # Residues 125-129 are unassigned (5 residues)
-    # But we only have positions 126, 127, 128 available (3 positions)
-
     corrected = aligner.correct_c_terminus(aln)
 
-    # Only 3 residues should be assigned (to positions 126, 127, 128)
     assert corrected[125, 125] == 1, "Row 125 should be assigned to col 125"
     assert corrected[126, 126] == 1, "Row 126 should be assigned to col 126"
     assert corrected[127, 127] == 1, "Row 127 should be assigned to col 127"
-
-    # Rows 128, 129 should still be unassigned (no space left)
     assert corrected[128, :].sum() == 0, "Row 128 should remain unassigned"
     assert corrected[129, :].sum() == 0, "Row 129 should remain unassigned"
 
 
 def test_correct_c_terminus_skips_if_last_col_too_early():
-    """Test that C-terminus correction is skipped if last col is too early.
-
-    If the last assigned column is before position 125 (0-indexed: 124),
-    the correction should not be applied as this indicates a different issue.
-    """
+    """Test that C-terminus correction is skipped if last col is too early."""
     aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
 
-    # Set up alignment: last assigned position is 100 (0-indexed: 99)
-    # This is well before the C-terminus anchor position
     for i in range(90):
         aln[i, i] = 1
 
+    original = aln.copy()
     corrected = aligner.correct_c_terminus(aln)
 
-    # Should not change since last assigned col (89) < anchor position (124)
-    assert np.array_equal(corrected, aln)
+    assert np.array_equal(corrected, original)
 
 
 def test_correct_c_terminus_single_trailing_residue():
@@ -549,25 +409,10 @@ def test_correct_c_terminus_single_trailing_residue():
     aligner = make_aligner()
     aln = np.zeros((118, 128), dtype=int)
 
-    # Set up: residues 0-116 assigned, last at position 126 (0-indexed: 125)
     for i in range(117):
         aln[i, i] = 1
     aln[116, 125] = 1  # Overwrite: row 116 at col 125 (IMGT pos 126)
 
-    # Row 117 is unassigned
-
     corrected = aligner.correct_c_terminus(aln)
 
-    # Row 117 should be assigned to col 126 (IMGT pos 127)
     assert corrected[117, 126] == 1, "Row 117 should be assigned to col 126"
-
-
-def test_correct_c_terminus_empty_alignment():
-    """Test C-terminus correction with an empty alignment matrix."""
-    aligner = make_aligner()
-    aln = np.zeros((100, 128), dtype=int)
-
-    corrected = aligner.correct_c_terminus(aln)
-
-    # Should return unchanged (no assignments to work with)
-    assert np.array_equal(corrected, aln)
