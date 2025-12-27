@@ -111,7 +111,8 @@ LOGGER = logging.getLogger(__name__)
     "--chain-type",
     "chain_type",
     type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"], case_sensitive=False
+        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        case_sensitive=False,
     ),
     default="auto",
     show_default=True,
@@ -216,7 +217,7 @@ def main(
         user_type = chain_type.upper()[0]  # H, K, or L
         if user_type != detected:
             LOGGER.warning(
-                f"User specified chain type '{chain_type}' but detected '{detected}'"
+                f"User specified '{chain_type}' but detected '{detected}'"
             )
 
     anarci_alignment, _, _ = anarci.number_sequence_from_alignment(

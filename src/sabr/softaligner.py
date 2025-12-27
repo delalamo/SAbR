@@ -214,8 +214,8 @@ class SoftAligner:
 
         Uses anchor positions 6 and 12 to count residues and determine if
         position 10 should be occupied:
-        - 7 residues between positions 6 and 12 → position 10 occupied (kappa)
-        - 6 residues between positions 6 and 12 → position 10 is gap (heavy/lambda)
+        - 7 residues between positions 6-12 → position 10 occupied (kappa)
+        - 6 residues between positions 6-12 → position 10 gap (heavy/lambda)
 
         The residues are then redistributed deterministically to fill
         positions 6-12 with or without position 10.
@@ -273,7 +273,7 @@ class SoftAligner:
         )
 
         # Clear the FR1 region (positions 6-12, cols 5-11)
-        aln[start_row:end_row + 1, pos6_col:pos12_col + 1] = 0
+        aln[start_row : end_row + 1, pos6_col : pos12_col + 1] = 0
 
         # Redistribute residues deterministically
         if should_have_pos10:
@@ -491,8 +491,10 @@ class SoftAligner:
                 anchor_start_col = anchor_start - 1
                 anchor_end_col = anchor_end - 1
 
-                anchor_start_row, found_start_col = find_nearest_occupied_column(
-                    aln, anchor_start_col, search_range=2, direction="both"
+                anchor_start_row, found_start_col = (
+                    find_nearest_occupied_column(
+                        aln, anchor_start_col, search_range=2, direction="both"
+                    )
                 )
                 anchor_end_row, found_end_col = find_nearest_occupied_column(
                     aln, anchor_end_col, search_range=2, direction="both"
@@ -501,15 +503,15 @@ class SoftAligner:
                 if anchor_start_row is None or anchor_end_row is None:
                     LOGGER.warning(
                         f"Skipping {loop_name}; missing anchor at position "
-                        f"{anchor_start} (searched col {anchor_start_col}±2) or "
-                        f"{anchor_end} (searched col {anchor_end_col}±2)"
+                        f"{anchor_start} (col {anchor_start_col}±2) or "
+                        f"{anchor_end} (col {anchor_end_col}±2)"
                     )
                     continue
 
                 if anchor_start_row >= anchor_end_row:
                     LOGGER.warning(
-                        f"Skipping {loop_name}; anchor start row ({anchor_start_row}) >= "
-                        f"anchor end row ({anchor_end_row})"
+                        f"Skipping {loop_name}; anchor start row "
+                        f"({anchor_start_row}) >= end row ({anchor_end_row})"
                     )
                     continue
 
@@ -522,13 +524,15 @@ class SoftAligner:
                 n_fw_after = len(fw_after_cdr)
 
                 # Rows between anchors (exclusive of anchor rows)
-                intermediate_rows = list(range(anchor_start_row + 1, anchor_end_row))
+                intermediate_rows = list(
+                    range(anchor_start_row + 1, anchor_end_row)
+                )
                 n_residues = len(intermediate_rows)
 
                 if n_residues < n_fw_before + n_fw_after:
                     LOGGER.warning(
-                        f"Skipping {loop_name}; not enough residues ({n_residues}) "
-                        f"between anchors for required FW positions "
+                        f"Skipping {loop_name}; not enough residues "
+                        f"({n_residues}) between anchors for FW positions "
                         f"({n_fw_before} + {n_fw_after})"
                     )
                     continue
@@ -537,16 +541,15 @@ class SoftAligner:
                 n_cdr_residues = n_residues - n_fw_before - n_fw_after
 
                 LOGGER.info(
-                    f"{loop_name}: Using anchors at positions {anchor_start} "
-                    f"(row {anchor_start_row}) and {anchor_end} (row {anchor_end_row}). "
-                    f"Found {n_residues} residues between anchors: "
-                    f"{n_fw_before} FW before, {n_cdr_residues} CDR, {n_fw_after} FW after"
+                    f"{loop_name}: anchors at {anchor_start} (row "
+                    f"{anchor_start_row}) and {anchor_end} (row "
+                    f"{anchor_end_row}). {n_residues} residues: "
+                    f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
                 )
 
-                # Clear all alignments for intermediate rows in the region
-                # (from anchor_start+1 to anchor_end-1 columns, 0-indexed)
-                region_start_col = anchor_start  # 0-indexed for position anchor_start+1
-                region_end_col = anchor_end - 1  # 0-indexed for position anchor_end-1
+                # Clear alignments for intermediate rows in the region
+                region_start_col = anchor_start
+                region_end_col = anchor_end - 1
                 for row in intermediate_rows:
                     aln[row, region_start_col:region_end_col] = 0
 
@@ -574,9 +577,9 @@ class SoftAligner:
                     )
                     sub_aln = self.correct_gap_numbering(sub_aln)
                     for i, row in enumerate(cdr_rows):
-                        aln[row, cdr_start_col:cdr_start_col + n_cdr_positions] = (
-                            sub_aln[i, :]
-                        )
+                        aln[
+                            row, cdr_start_col : cdr_start_col + n_cdr_positions
+                        ] = sub_aln[i, :]
 
             # Detect chain type from DE loop (positions 81-82)
             detected_chain_type = util.detect_chain_type(aln)
@@ -584,7 +587,9 @@ class SoftAligner:
 
             # Apply FR1 correction - uses residue counting to determine
             # if position 10 should be occupied
-            aln = self.correct_fr1_alignment(aln, chain_type=detected_chain_type)
+            aln = self.correct_fr1_alignment(
+                aln, chain_type=detected_chain_type
+            )
 
             # FR3 positions 81-82: Heavy chains have them, light chains don't
             if is_light_chain:

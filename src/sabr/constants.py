@@ -26,9 +26,9 @@ DEFAULT_TEMPERATURE = 1e-4
 
 # FR1 region constants for alignment correction (0-indexed columns)
 # FR1 spans IMGT positions 1-26, but correction focuses on positions 6-12
-FR1_ANCHOR_START_COL = 5   # 0-indexed column for IMGT position 6
-FR1_ANCHOR_END_COL = 11    # 0-indexed column for IMGT position 12
-FR1_POSITION_10_COL = 9    # 0-indexed column for IMGT position 10
+FR1_ANCHOR_START_COL = 5  # 0-indexed column for IMGT position 6
+FR1_ANCHOR_END_COL = 11  # 0-indexed column for IMGT position 12
+FR1_POSITION_10_COL = 9  # 0-indexed column for IMGT position 10
 FR1_KAPPA_RESIDUE_COUNT = 7  # Kappa chains have 7 residues in positions 6-12
 
 # Legacy FR1 constants (kept for compatibility)
@@ -39,8 +39,8 @@ LIGHT_CHAIN_FR1_END = 9  # 0-indexed column for position 10
 # DE loop spans IMGT positions 79-84
 # Heavy chains: 6 residues (79, 80, 81, 82, 83, 84)
 # Light chains: 4 residues (79, 80, 83, 84) - skip 81, 82
-DE_LOOP_START_COL = 78     # 0-indexed column for IMGT position 79
-DE_LOOP_END_COL = 83       # 0-indexed column for IMGT position 84
+DE_LOOP_START_COL = 78  # 0-indexed column for IMGT position 79
+DE_LOOP_END_COL = 83  # 0-indexed column for IMGT position 84
 DE_LOOP_HEAVY_THRESHOLD = 5  # >= 5 residues indicates heavy chain
 
 # FR3 positions 81-84 (0-indexed columns)
@@ -76,11 +76,17 @@ IMGT_LOOPS = {
 # Framework anchor positions for CDR renumbering
 # These are conserved framework residues used to identify CDR boundaries.
 # CDR residues are determined by counting rows between these anchors.
-# Anchors are the last FW residue before CDR and first FW residue after CDR,
-# except CDR1 which uses Cys23 (conserved) requiring linear FW fill-in for 24-26.
+# Anchors are the last FW residue before CDR and first FW residue after,
+# except CDR1 which uses Cys23 (conserved) requiring FW fill-in for 24-26.
 CDR_ANCHORS = {
-    "CDR1": (23, 40),   # Cys23 (conserved) and position 40 (first FW2 after CDR1)
-    "CDR2": (54, 66),   # position 54 (55 is last FW2, added linearly) and 66 (first FW3)
+    "CDR1": (
+        23,
+        40,
+    ),  # Cys23 (conserved) and position 40 (first FW2 after CDR1)
+    "CDR2": (
+        54,
+        66,
+    ),  # position 54 (55 is last FW2, added linearly) and 66 (first FW3)
     "CDR3": (104, 118),  # position 104 (last FW3) and 118 (first FW4)
 }
 
