@@ -338,7 +338,9 @@ def test_cli_rejects_invalid_anarci_species():
         ],
     )
     assert result.exit_code != 0
-    assert "Invalid value" in result.output or "invalid_species" in result.output
+    assert (
+        "Invalid value" in result.output or "invalid_species" in result.output
+    )
 
 
 def test_cli_rejects_invalid_anarci_chain_type():

@@ -68,8 +68,8 @@ class AnarciSpecies(Enum):
 class AnarciChainType(Enum):
     """Chain type options for ANARCI numbering.
 
-    These are passed directly to ANARCI's number_sequence_from_alignment function.
-    AUTO will detect based on DE loop length (positions 81-84):
+    These are passed directly to ANARCI's number_sequence_from_alignment
+    function. AUTO will detect based on DE loop length (positions 81-84):
     - Heavy chains have 4 residues (81, 82, 83, 84)
     - Light chains have 2 residues (83, 84 only)
     """

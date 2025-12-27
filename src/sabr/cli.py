@@ -28,6 +28,7 @@ from sabr import (
     edit_pdb,
     mpnn_embeddings,
     softaligner,
+    util,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -281,35 +282,11 @@ def main(
             "cannot infer heavy/light chain type."
         )
 
-    # Determine ANARCI chain type
+    # Determine ANARCI chain type (auto-detect from DE loop or use user value)
     anarci_chain_type_enum = constants.AnarciChainType(anarci_chain_type)
-    if anarci_chain_type_enum == constants.AnarciChainType.AUTO:
-        # Auto-detect based on DE loop length (positions 81-84)
-        # Heavy chains have 4 residues (81, 82, 83, 84)
-        # Light chains have 2 residues (83, 84 only - skip 81, 82)
-        # Check alignment matrix for occupancy at positions 81 and 82
-        pos81_col = 80  # 0-indexed column for IMGT position 81
-        pos82_col = 81  # 0-indexed column for IMGT position 82
-        pos81_occupied = out.alignment[:, pos81_col].sum() >= 1
-        pos82_occupied = out.alignment[:, pos82_col].sum() >= 1
-
-        if pos81_occupied or pos82_occupied:
-            # DE loop has 4 residues -> heavy chain
-            resolved_chain_type = "H"
-            LOGGER.info(
-                "Auto-detected chain type: H (heavy) based on DE loop "
-                "having residues at positions 81 or 82"
-            )
-        else:
-            # DE loop has 2 residues -> light chain (default to kappa)
-            resolved_chain_type = "K"
-            LOGGER.info(
-                "Auto-detected chain type: K (kappa) based on DE loop "
-                "lacking residues at positions 81 and 82"
-            )
-    else:
-        resolved_chain_type = anarci_chain_type_enum.value
-        LOGGER.info(f"Using user-specified ANARCI chain type: {resolved_chain_type}")
+    resolved_chain_type = util.detect_anarci_chain_type(
+        out.alignment, anarci_chain_type_enum
+    )
 
     # Log the species parameter (informational - not currently used by ANARCI)
     anarci_species_enum = constants.AnarciSpecies(anarci_species)
