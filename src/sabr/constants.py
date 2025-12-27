@@ -50,6 +50,36 @@ class ChainType(Enum):
     AUTO = "auto"
 
 
+class AnarciSpecies(Enum):
+    """Species options for ANARCI numbering.
+
+    These correspond to the germline databases available in ANARCI.
+    """
+
+    HUMAN = "human"
+    MOUSE = "mouse"
+    RAT = "rat"
+    RABBIT = "rabbit"
+    PIG = "pig"
+    RHESUS = "rhesus"
+    ALPACA = "alpaca"
+
+
+class AnarciChainType(Enum):
+    """Chain type options for ANARCI numbering.
+
+    These are passed directly to ANARCI's number_sequence_from_alignment function.
+    AUTO will detect based on DE loop length (positions 81-84):
+    - Heavy chains have 4 residues (81, 82, 83, 84)
+    - Light chains have 2 residues (83, 84 only)
+    """
+
+    HEAVY = "H"
+    KAPPA = "K"
+    LAMBDA = "L"
+    AUTO = "auto"
+
+
 IMGT_FRAMEWORKS = {
     "FW1": list(range(1, 27)),
     "FW2": list(range(39, 56)),

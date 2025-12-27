@@ -146,6 +146,39 @@ LOGGER = logging.getLogger(__name__)
         "When disabled, uses raw alignment output without corrections."
     ),
 )
+@click.option(
+    "-s",
+    "--anarci-species",
+    "anarci_species",
+    type=click.Choice(
+        [s.value for s in constants.AnarciSpecies], case_sensitive=False
+    ),
+    default="human",
+    show_default=True,
+    help=(
+        "Species for ANARCI numbering. This parameter is passed to ANARCI "
+        "and affects germline gene identification. Choose from: human, mouse, "
+        "rat, rabbit, pig, rhesus, alpaca."
+    ),
+)
+@click.option(
+    "-a",
+    "--anarci-chain-type",
+    "anarci_chain_type",
+    type=click.Choice(
+        [ct.value for ct in constants.AnarciChainType], case_sensitive=False
+    ),
+    default="auto",
+    show_default=True,
+    help=(
+        "Chain type for ANARCI numbering. 'H' for heavy chain, 'K' for kappa "
+        "light chain, 'L' for lambda light chain. 'auto' will detect based on "
+        "DE loop length: heavy chains have 4 residues at positions 81-84, "
+        "while light chains have 2 residues at positions 83-84 only. "
+        "When 'auto' is used, heavy is selected if DE loop is 4 residues, "
+        "kappa is selected if DE loop is 2 residues."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -157,6 +190,8 @@ def main(
     chain_type: str,
     extended_insertions: bool,
     deterministic_loop_renumbering: bool,
+    anarci_species: str,
+    anarci_chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     if verbose:
@@ -265,13 +300,47 @@ def main(
             "cannot infer heavy/light chain type."
         )
 
+    # Determine ANARCI chain type
+    anarci_chain_type_enum = constants.AnarciChainType(anarci_chain_type)
+    if anarci_chain_type_enum == constants.AnarciChainType.AUTO:
+        # Auto-detect based on DE loop length (positions 81-84)
+        # Heavy chains have 4 residues (81, 82, 83, 84)
+        # Light chains have 2 residues (83, 84 only - skip 81, 82)
+        # Check alignment matrix for occupancy at positions 81 and 82
+        pos81_col = 80  # 0-indexed column for IMGT position 81
+        pos82_col = 81  # 0-indexed column for IMGT position 82
+        pos81_occupied = out.alignment[:, pos81_col].sum() >= 1
+        pos82_occupied = out.alignment[:, pos82_col].sum() >= 1
+
+        if pos81_occupied or pos82_occupied:
+            # DE loop has 4 residues -> heavy chain
+            resolved_chain_type = "H"
+            LOGGER.info(
+                "Auto-detected chain type: H (heavy) based on DE loop "
+                "having residues at positions 81 or 82"
+            )
+        else:
+            # DE loop has 2 residues -> light chain (default to kappa)
+            resolved_chain_type = "K"
+            LOGGER.info(
+                "Auto-detected chain type: K (kappa) based on DE loop "
+                "lacking residues at positions 81 and 82"
+            )
+    else:
+        resolved_chain_type = anarci_chain_type_enum.value
+        LOGGER.info(f"Using user-specified ANARCI chain type: {resolved_chain_type}")
+
+    # Log the species parameter (informational - not currently used by ANARCI)
+    anarci_species_enum = constants.AnarciSpecies(anarci_species)
+    LOGGER.info(f"ANARCI species: {anarci_species_enum.value}")
+
     # TODO introduce extended insertion code handling here
     # Revert to default ANARCI behavior if extended_insertions is False
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         sv,
         subsequence,
         scheme=numbering_scheme,
-        chain_type=out.species[-1],
+        chain_type=resolved_chain_type,
     )
 
     anarci_out = [a for a in anarci_out if a[1] != "-"]
