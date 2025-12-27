@@ -107,6 +107,23 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
+    "-t",
+    "--chain-type",
+    "chain_type",
+    type=click.Choice(
+        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        case_sensitive=False,
+    ),
+    default="auto",
+    show_default=True,
+    help=(
+        "Expected chain type. This is used for logging and validation. "
+        "Chain type is auto-detected from the alignment. "
+        "'H'/'heavy' for heavy chain, 'K'/'kappa' for kappa light chain, "
+        "'L'/'lambda' for lambda light chain, 'auto' for auto-detection."
+    ),
+)
+@click.option(
     "--extended-insertions",
     "extended_insertions",
     is_flag=True,

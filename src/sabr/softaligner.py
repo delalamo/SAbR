@@ -207,78 +207,85 @@ class SoftAligner:
     def correct_fr1_alignment(
         self,
         aln: np.ndarray,
-        input_has_pos10: bool = False,
+        chain_type: Optional[str] = None,
     ) -> np.ndarray:
         """
-        Fix FR1 alignment issues in positions 6-11 for all chain types.
+        Fix FR1 alignment issues in positions 6-12 deterministically.
 
-        Antibody chains can have shifted alignments in FR1 where the row
-        (sequence position) doesn't match the expected column (IMGT position).
-        For example, row 7 at column 6 means residue 8 is at position 7.
+        Uses anchor positions 6 and 12 to count residues and determine if
+        position 10 should be occupied:
+        - 7 residues between positions 6-12 → position 10 occupied (kappa)
+        - 6 residues between positions 6-12 → position 10 gap (heavy/lambda)
 
-        Position 10 handling:
-        - Kappa light chains: position 10 is occupied (input_has_pos10=True)
-        - Lambda light chains and Heavy chains: position 10 is skipped
-
-        With unified embeddings, position 10 exists in the reference but may
-        not apply to all input chains. This function detects and corrects
-        alignment shifts in FR1 regardless of position 10 occupancy.
+        The residues are then redistributed deterministically to fill
+        positions 6-12 with or without position 10.
 
         Args:
             aln: The alignment matrix
-            input_has_pos10: Whether the input sequence has position 10
-                (True for kappa, False for heavy/lambda)
+            chain_type: The chain type (used for logging)
 
         Returns:
             Corrected alignment matrix
         """
-        fr1_start = constants.LIGHT_CHAIN_FR1_START
-        fr1_end = constants.LIGHT_CHAIN_FR1_END
+        # Anchor columns (0-indexed)
+        pos6_col = constants.FR1_ANCHOR_START_COL
+        pos12_col = constants.FR1_ANCHOR_END_COL
 
-        for col_idx in range(fr1_start, fr1_end + 1):
-            if aln[:, col_idx].sum() == 1:
-                row = np.where(aln[:, col_idx] == 1)[0][0]
-                if row > col_idx:
-                    shift_amount = row - col_idx
-                    LOGGER.info(
-                        f"Correcting FR1 alignment: detected shift of "
-                        f"{shift_amount} at position {col_idx + 1}"
-                    )
-                    for c in range(fr1_end, col_idx - 1, -1):
-                        if aln[:, c].sum() == 1:
-                            new_col = c + shift_amount
-                            if new_col < aln.shape[1]:
-                                aln[:, new_col] = aln[:, c]
-                                aln[:, c] = 0
+        # Find rows aligned to positions near anchors 6 and 12
+        # Search within a small range to find the anchor residues
+        start_row = None
+        end_row = None
+
+        # Find first residue in range around position 6
+        for col in range(pos6_col, pos6_col + 3):
+            if aln[:, col].sum() >= 1:
+                rows = np.where(aln[:, col] == 1)[0]
+                if len(rows) > 0:
+                    start_row = int(rows[0])
                     break
 
-        if not input_has_pos10:
-            pos9_col, pos10_col, pos11_col = 8, 9, 10
+        # Find first residue in range around position 12
+        for col in range(pos12_col, pos12_col + 3):
+            if aln[:, col].sum() >= 1:
+                rows = np.where(aln[:, col] == 1)[0]
+                if len(rows) > 0:
+                    end_row = int(rows[0])
+                    break
 
-            pos9_occupied = aln[:, pos9_col].sum() == 1
-            pos10_occupied = aln[:, pos10_col].sum() == 1
-            pos11_occupied = aln[:, pos11_col].sum() == 1
+        if start_row is None or end_row is None or start_row >= end_row:
+            LOGGER.debug(
+                f"FR1 correction: could not find anchor positions "
+                f"(start_row={start_row}, end_row={end_row})"
+            )
+            return aln
 
-            if pos10_occupied:
-                if not pos9_occupied:
-                    LOGGER.info(
-                        "Moving residue from position 10 to position 9 "
-                        "(chain lacks position 10)"
-                    )
-                    aln[:, pos9_col] = aln[:, pos10_col]
-                    aln[:, pos10_col] = 0
-                elif not pos11_occupied:
-                    LOGGER.info(
-                        "Moving residue from position 10 to position 11 "
-                        "(chain lacks position 10)"
-                    )
-                    aln[:, pos11_col] = aln[:, pos10_col]
-                    aln[:, pos10_col] = 0
-                else:
-                    LOGGER.info(
-                        "Clearing position 10 (chain lacks position 10)"
-                    )
-                    aln[:, pos10_col] = 0
+        # Count residues between anchors (inclusive)
+        n_residues = end_row - start_row + 1
+
+        # Kappa chains have 7 residues (6,7,8,9,10,11,12)
+        # Heavy/Lambda chains have 6 residues (6,7,8,9,11,12 - skip 10)
+        should_have_pos10 = n_residues >= constants.FR1_KAPPA_RESIDUE_COUNT
+
+        LOGGER.info(
+            f"FR1 correction: {n_residues} residues between rows "
+            f"{start_row}-{end_row}, position 10 "
+            f"{'occupied' if should_have_pos10 else 'gap'}"
+        )
+
+        # Clear the FR1 region (positions 6-12, cols 5-11)
+        aln[start_row : end_row + 1, pos6_col : pos12_col + 1] = 0
+
+        # Redistribute residues deterministically
+        if should_have_pos10:
+            # Kappa: fill positions 6,7,8,9,10,11,12
+            target_cols = [5, 6, 7, 8, 9, 10, 11]  # 0-indexed
+        else:
+            # Heavy/Lambda: fill positions 6,7,8,9,11,12 (skip 10)
+            target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed, skip col 9
+
+        for i, row in enumerate(range(start_row, end_row + 1)):
+            if i < len(target_cols):
+                aln[row, target_cols[i]] = 1
 
         return aln
 
@@ -307,7 +314,10 @@ class SoftAligner:
         Returns:
             Corrected alignment matrix
         """
-        pos81_col, pos82_col, pos83_col, pos84_col = 80, 81, 82, 83
+        pos81_col = constants.FR3_POS81_COL
+        pos82_col = constants.FR3_POS82_COL
+        pos83_col = constants.FR3_POS83_COL
+        pos84_col = constants.FR3_POS84_COL
 
         pos81_occupied = aln[:, pos81_col].sum() == 1
         pos82_occupied = aln[:, pos82_col].sum() == 1
@@ -473,117 +483,120 @@ class SoftAligner:
         aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:
-            for loop_name, (startres, endres) in constants.IMGT_LOOPS.items():
-                startres_idx = startres - 1
-                endres_idx = endres - 1
+            for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
+                # Get framework anchor positions for this CDR
+                anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
 
-                cdr_region = aln[:, startres_idx:endres]
-                if cdr_region.sum() == 0:
-                    LOGGER.info(
-                        f"Skipping {loop_name}; no residues aligned within "
-                        f"CDR range (cols {startres_idx}-{endres - 1})"
+                # Find rows at anchor positions (0-indexed columns)
+                anchor_start_col = anchor_start - 1
+                anchor_end_col = anchor_end - 1
+
+                anchor_start_row, found_start_col = (
+                    find_nearest_occupied_column(
+                        aln, anchor_start_col, search_range=2, direction="both"
                     )
-                    continue
-
-                start_row, start_col = find_nearest_occupied_column(
-                    aln, startres_idx, search_range=2, direction="both"
                 )
-                end_row, end_col = find_nearest_occupied_column(
-                    aln, endres_idx, search_range=2, direction="both"
+                anchor_end_row, found_end_col = find_nearest_occupied_column(
+                    aln, anchor_end_col, search_range=2, direction="both"
                 )
 
-                if start_row is None or end_row is None:
+                if anchor_start_row is None or anchor_end_row is None:
                     LOGGER.warning(
-                        f"Skipping {loop_name}; missing start "
-                        f"(searched {startres_idx}±2) or end "
-                        f"(searched {endres_idx}±2)"
+                        f"Skipping {loop_name}; missing anchor at position "
+                        f"{anchor_start} (col {anchor_start_col}±2) or "
+                        f"{anchor_end} (col {anchor_end_col}±2)"
                     )
                     continue
 
-                if start_row >= end_row:
+                if anchor_start_row >= anchor_end_row:
                     LOGGER.warning(
-                        f"Skipping {loop_name}; start row ({start_row}) >= "
-                        f"end row ({end_row})"
+                        f"Skipping {loop_name}; anchor start row "
+                        f"({anchor_start_row}) >= end row ({anchor_end_row})"
                     )
                     continue
 
-                if start_col > endres_idx or end_col < startres_idx:
+                # Calculate FW positions between anchors (outside CDR range)
+                # These are positions after anchor_start but before cdr_start
+                # and positions after cdr_end but before anchor_end
+                fw_before_cdr = list(range(anchor_start + 1, cdr_start))
+                fw_after_cdr = list(range(cdr_end + 1, anchor_end))
+                n_fw_before = len(fw_before_cdr)
+                n_fw_after = len(fw_after_cdr)
+
+                # Rows between anchors (exclusive of anchor rows)
+                intermediate_rows = list(
+                    range(anchor_start_row + 1, anchor_end_row)
+                )
+                n_residues = len(intermediate_rows)
+
+                if n_residues < n_fw_before + n_fw_after:
                     LOGGER.warning(
-                        f"Skipping {loop_name}; detected boundaries "
-                        f"(cols {start_col}-{end_col}) don't overlap "
-                        f"CDR range (cols {startres_idx}-{endres_idx})"
+                        f"Skipping {loop_name}; not enough residues "
+                        f"({n_residues}) between anchors for FW positions "
+                        f"({n_fw_before} + {n_fw_after})"
                     )
                     continue
 
-                if start_col != startres_idx or end_col != endres_idx:
-                    LOGGER.info(
-                        f"{loop_name}: soft boundary detection used - "
-                        f"start col {start_col} (expected {startres_idx}), "
-                        f"end col {end_col} (expected {endres_idx})"
+                # CDR residues are the rows between FW regions
+                n_cdr_residues = n_residues - n_fw_before - n_fw_after
+
+                LOGGER.info(
+                    f"{loop_name}: anchors at {anchor_start} (row "
+                    f"{anchor_start_row}) and {anchor_end} (row "
+                    f"{anchor_end_row}). {n_residues} residues: "
+                    f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
+                )
+
+                # Clear alignments for intermediate rows in the region
+                region_start_col = anchor_start
+                region_end_col = anchor_end - 1
+                for row in intermediate_rows:
+                    aln[row, region_start_col:region_end_col] = 0
+
+                # Assign FW positions before CDR (linear assignment)
+                for i, pos in enumerate(fw_before_cdr):
+                    row = intermediate_rows[i]
+                    aln[row, pos - 1] = 1  # pos-1 for 0-indexed column
+
+                # Assign FW positions after CDR (linear assignment)
+                for i, pos in enumerate(fw_after_cdr):
+                    row = intermediate_rows[-(n_fw_after - i)]
+                    aln[row, pos - 1] = 1  # pos-1 for 0-indexed column
+
+                # Assign CDR positions using alternating pattern
+                if n_cdr_residues > 0:
+                    cdr_rows = intermediate_rows[n_fw_before:]
+                    if n_fw_after > 0:
+                        cdr_rows = cdr_rows[:-n_fw_after]
+
+                    cdr_start_col = cdr_start - 1  # 0-indexed
+                    n_cdr_positions = cdr_end - cdr_start + 1
+
+                    sub_aln = np.zeros(
+                        (n_cdr_residues, n_cdr_positions), dtype=aln.dtype
                     )
-
-                aln[start_row : end_row + 1, startres_idx:endres] = 0
-
-                if start_col < startres_idx:
-                    aln[start_row, start_col] = 0
-                if end_col > endres_idx:
-                    aln[end_row, end_col] = 0
-
-                n_residues = end_row - start_row + 1
-                n_positions = endres - startres_idx
-
-                sub_aln = np.zeros((n_residues, n_positions), dtype=aln.dtype)
-                sub_aln = self.correct_gap_numbering(sub_aln)
-                aln[start_row : end_row + 1, startres_idx:endres] = sub_aln
+                    sub_aln = self.correct_gap_numbering(sub_aln)
+                    for i, row in enumerate(cdr_rows):
+                        aln[
+                            row, cdr_start_col : cdr_start_col + n_cdr_positions
+                        ] = sub_aln[i, :]
 
             # Detect chain type from DE loop (positions 81-82)
             detected_chain_type = util.detect_chain_type(aln)
             is_light_chain = detected_chain_type in ("K", "L")
 
-            # Detect position 10 occupancy from alignment
-            # Check if there's a residue aligned to position 10 (column 9)
-            input_has_pos10 = aln[:, 9].sum() >= 1
+            # Apply FR1 correction - uses residue counting to determine
+            # if position 10 should be occupied
             aln = self.correct_fr1_alignment(
-                aln, input_has_pos10=input_has_pos10
+                aln, chain_type=detected_chain_type
             )
 
-            # Detect positions 81-82 occupancy from alignment
-            # Count residues between positions 80 and 85 in the input
-            # Heavy chains have 4 (81, 82, 83, 84), light chains have 2 (83, 84)
-            pos80_col = 79  # 0-indexed for IMGT position 80
-            pos85_col = 84  # 0-indexed for IMGT position 85
-
-            # Find which input row is aligned to position 80
-            pos80_rows = np.where(aln[:, pos80_col] == 1)[0]
-            pos85_rows = np.where(aln[:, pos85_col] == 1)[0]
-
-            if len(pos80_rows) > 0 and len(pos85_rows) > 0:
-                row_at_pos80 = pos80_rows[0]
-                row_at_pos85 = pos85_rows[0]
-                # Count residues strictly between positions 80 and 85
-                n_residues_between = row_at_pos85 - row_at_pos80 - 1
-                # Heavy chains: 4 residues (81, 82, 83, 84)
-                # Light chains: 2 residues (83, 84)
-                input_has_pos81 = n_residues_between >= 3
-                input_has_pos82 = n_residues_between >= 4
-                LOGGER.info(
-                    f"DE loop: {n_residues_between} residues between "
-                    f"pos 80-85 (rows {row_at_pos80}-{row_at_pos85})"
-                )
-            else:
-                # Fallback: assume light chain pattern if we can't find anchors
-                input_has_pos81 = False
-                input_has_pos82 = False
-                LOGGER.warning(
-                    "Could not find positions 80 or 85 in alignment, "
-                    "assuming light chain DE loop pattern"
-                )
-
-            if is_light_chain and (not input_has_pos81 or not input_has_pos82):
+            # FR3 positions 81-82: Heavy chains have them, light chains don't
+            if is_light_chain:
                 aln = self.correct_fr3_alignment(
                     aln,
-                    input_has_pos81=input_has_pos81,
-                    input_has_pos82=input_has_pos82,
+                    input_has_pos81=False,  # Light chains never have 81
+                    input_has_pos82=False,  # Light chains never have 82
                 )
 
             # Apply C-terminus correction for unassigned trailing residues
