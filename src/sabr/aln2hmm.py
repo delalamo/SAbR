@@ -57,7 +57,8 @@ def alignment_matrix_to_state_vector(
     Returns:
         states: List of State objects representing the HMM state vector
         imgt_start: First IMGT column index (0-indexed), used for leading dashes
-        imgt_end: Value such that subsequence = "-" * imgt_start + sequence[:imgt_end-imgt_start]
+        imgt_end: Value such that subsequence =
+             "-" * imgt_start + sequence[:imgt_end-imgt_start]
              has sufficient length for all mapped_residue values
         first_aligned_row: First sequence row (0-indexed) that is aligned,
              used for alignment_start in thread_alignment
@@ -123,7 +124,11 @@ def alignment_matrix_to_state_vector(
 
     report_output(states)
 
-    max_row = max(last_aligned_row, max(orphan_rows)) if orphan_rows else last_aligned_row
+    max_row = (
+        max(last_aligned_row, max(orphan_rows))
+        if orphan_rows
+        else last_aligned_row
+    )
     imgt_start = path[0][0]
     imgt_end = max_row + 1 + imgt_start
 

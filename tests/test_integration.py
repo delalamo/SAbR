@@ -188,7 +188,7 @@ def test_cli_respects_expected_numbering(
 def test_cli_deterministic_renumbering_flag(
     monkeypatch, tmp_path, use_disable_flag, expected_value
 ):
-    """Test that CLI correctly handles --disable-deterministic-renumbering flag."""
+    """Test --disable-deterministic-renumbering CLI flag handling."""
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
@@ -204,9 +204,12 @@ def test_cli_deterministic_renumbering_flag(
     runner = CliRunner()
     output_pdb = tmp_path / "test_det_flag.pdb"
     args = [
-        "-i", str(data["pdb"]),
-        "-c", data["chain"],
-        "-o", str(output_pdb),
+        "-i",
+        str(data["pdb"]),
+        "-c",
+        data["chain"],
+        "-o",
+        str(output_pdb),
         "--overwrite",
     ]
     if use_disable_flag:

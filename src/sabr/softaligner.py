@@ -465,7 +465,10 @@ class SoftAligner:
             suffix = emb.name[-1].upper()
             if chain_type == constants.ChainType.HEAVY and suffix == "H":
                 filtered.append(emb)
-            elif chain_type == constants.ChainType.LIGHT and suffix in ("K", "L"):
+            elif chain_type == constants.ChainType.LIGHT and suffix in (
+                "K",
+                "L",
+            ):
                 filtered.append(emb)
 
         if not filtered:

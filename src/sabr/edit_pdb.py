@@ -98,7 +98,7 @@ def thread_onto_chain(
     """
     LOGGER.info(
         f"Threading chain {chain.id} with ANARCI window "
-        f"[{anarci_start}, {anarci_end}) (alignment starts at {alignment_start})"
+        f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
         + (f" (max_residues={max_residues})" if max_residues > 0 else "")
     )
     new_chain = Chain.Chain(chain.id)
