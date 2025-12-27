@@ -3,6 +3,7 @@
 
 This module provides helper functions for:
 - Loading SoftAlign model parameters
+- Configuring logging
 """
 
 import logging
@@ -13,6 +14,16 @@ import numpy as np
 from softalign.utils import convert_numpy_to_jax, unflatten_dict
 
 LOGGER = logging.getLogger(__name__)
+
+
+def configure_logging(verbose: bool) -> None:
+    """Configure logging level based on verbosity flag.
+
+    Args:
+        verbose: If True, set logging level to INFO. Otherwise, set to WARNING.
+    """
+    level = logging.INFO if verbose else logging.WARNING
+    logging.basicConfig(level=level, force=True)
 
 
 def read_softalign_params(
