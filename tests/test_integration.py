@@ -496,7 +496,7 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     # Step 3: Run SoftAligner (full pipeline)
     aligner = softaligner.SoftAligner()
     output = aligner(embeddings)
-    assert output.chain_type is not None, "Species should be detected"
+    assert output.chain_type is not None, "Chain type should be detected"
 
     # Step 4: Convert alignment to state vector
     sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
