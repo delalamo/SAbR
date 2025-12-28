@@ -63,7 +63,7 @@ def extract_residue_ids(
 class TestRenumberStructure:
     """Test suite for renumber_structure function."""
 
-    def test_renumber_structure_basic(self, monkeypatch, tmp_path):
+    def test_renumber_structure_basic(self, monkeypatch):
         """Test basic renumber_structure functionality with mock alignment."""
         data = FIXTURES["8_21"]
         if not data["pdb"].exists():
@@ -86,21 +86,19 @@ class TestRenumberStructure:
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
 
-        # Run renumber_structure
+        # Run renumber_structure - now returns Structure directly
         result = renumber.renumber_structure(
             structure,
             chain=data["chain"],
             numbering_scheme="imgt",
         )
 
-        # Verify result
-        assert result.structure is not None
-        assert result.chain_type in ("H", "K", "L")
-        assert result.deviations >= 0
-        assert len(result.sequence) > 0
-        assert len(result.anarci_alignment) > 0
+        # Verify result is a Structure object
+        assert isinstance(result, PDB.Structure.Structure)
+        # Verify it has the expected chain
+        assert data["chain"] in [ch.id for ch in result[0]]
 
-    def test_renumber_structure_matches_cli_output(self, monkeypatch, tmp_path):
+    def test_renumber_structure_matches_cli_output(self, monkeypatch):
         """Test that renumber_structure produces same residue IDs as CLI."""
         data = FIXTURES["8_21"]
         if not data["pdb"].exists():
@@ -134,7 +132,7 @@ class TestRenumberStructure:
 
         # Extract residue IDs from both
         original_ids = extract_residue_ids(structure, data["chain"])
-        renumbered_ids = extract_residue_ids(result.structure, data["chain"])
+        renumbered_ids = extract_residue_ids(result, data["chain"])
 
         # For 8_21 which is already correctly numbered, IDs should match
         assert len(original_ids) == len(renumbered_ids)
@@ -174,7 +172,9 @@ class TestRenumberStructure:
         if not data["pdb"].exists():
             pytest.skip(f"Missing structure fixture at {data['pdb']}")
 
-        alignment, fixture_chain_type = load_alignment_fixture(data["alignment"])
+        alignment, fixture_chain_type = load_alignment_fixture(
+            data["alignment"]
+        )
 
         DummyAligner = create_dummy_aligner(alignment, fixture_chain_type)
         dummy_from_structure = self._create_dummy_from_structure()
@@ -195,7 +195,7 @@ class TestRenumberStructure:
             chain=data["chain"],
             chain_type=chain_type,
         )
-        assert result.structure is not None
+        assert isinstance(result, PDB.Structure.Structure)
 
     @pytest.mark.parametrize(
         "numbering_scheme",
@@ -230,7 +230,7 @@ class TestRenumberStructure:
             chain=data["chain"],
             numbering_scheme=numbering_scheme,
         )
-        assert result.structure is not None
+        assert isinstance(result, PDB.Structure.Structure)
 
     @pytest.mark.parametrize("use_deterministic", [True, False])
     def test_renumber_structure_deterministic_flag(
@@ -244,7 +244,9 @@ class TestRenumberStructure:
         alignment, chain_type = load_alignment_fixture(data["alignment"])
 
         captured_kwargs = {}
-        DummyAligner = create_dummy_aligner(alignment, chain_type, captured_kwargs)
+        DummyAligner = create_dummy_aligner(
+            alignment, chain_type, captured_kwargs
+        )
         dummy_from_structure = self._create_dummy_from_structure()
 
         monkeypatch.setattr(
@@ -268,16 +270,54 @@ class TestRenumberStructure:
             == use_deterministic
         )
 
+    def test_extract_chain_subset(self):
+        """Test that _extract_chain_subset correctly filters residues."""
+        data = FIXTURES["8_21"]
+        if not data["pdb"].exists():
+            pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("test", str(data["pdb"]))
+        chain_id = data["chain"]
+
+        # Get original residue count
+        original_count = len(list(structure[0][chain_id].get_residues()))
+
+        # Test with res_end only
+        subset = renumber._extract_chain_subset(
+            structure, chain_id, res_start=None, res_end=50
+        )
+        subset_residues = list(subset[0][chain_id].get_residues())
+        # All residues should have resnum <= 50
+        for res in subset_residues:
+            assert res.get_id()[1] <= 50
+        assert len(subset_residues) < original_count
+
+        # Test with res_start only
+        subset = renumber._extract_chain_subset(
+            structure, chain_id, res_start=50, res_end=None
+        )
+        subset_residues = list(subset[0][chain_id].get_residues())
+        # All residues should have resnum >= 50
+        for res in subset_residues:
+            assert res.get_id()[1] >= 50
+
+        # Test with both res_start and res_end
+        subset = renumber._extract_chain_subset(
+            structure, chain_id, res_start=30, res_end=80
+        )
+        subset_residues = list(subset[0][chain_id].get_residues())
+        # All residues should be in range [30, 80]
+        for res in subset_residues:
+            res_num = res.get_id()[1]
+            assert 30 <= res_num <= 80
+
     def _create_dummy_from_structure(self):
         """Create a mock from_structure function."""
-        from Bio import SeqIO
         from tests.conftest import DummyEmbeddings
 
-        def dummy_from_structure(
-            structure, chain: str, max_residues: int = 0, **kwargs
-        ):
+        def dummy_from_structure(structure, chain: str, **kwargs):
             # We need to get the sequence from the structure
-            # For testing, use the actual PDB file path from fixtures
             sequence = ""
             for ch in structure[0]:
                 if ch.id == chain:
@@ -290,9 +330,6 @@ class TestRenumberStructure:
                         if resname in AA_3TO1:
                             sequence += AA_3TO1[resname]
                     break
-
-            if max_residues > 0:
-                sequence = sequence[:max_residues]
 
             actual_n_residues = len(sequence)
             return DummyEmbeddings(
@@ -353,34 +390,3 @@ class TestRunRenumberingPipeline:
         assert isinstance(anarci_out, list)
         assert detected_chain_type in ("H", "K", "L")
         assert isinstance(first_aligned_row, int)
-
-
-class TestRenumberingResult:
-    """Test suite for RenumberingResult dataclass."""
-
-    def test_renumbering_result_is_frozen(self, monkeypatch):
-        """Test that RenumberingResult is immutable."""
-        data = FIXTURES["8_21"]
-        if not data["pdb"].exists():
-            pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-        alignment, chain_type = load_alignment_fixture(data["alignment"])
-
-        DummyAligner = create_dummy_aligner(alignment, chain_type)
-        dummy_from_structure = TestRenumberStructure()._create_dummy_from_structure()
-
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
-        monkeypatch.setattr(
-            renumber.softaligner, "SoftAligner", lambda: DummyAligner()
-        )
-
-        parser = PDB.PDBParser(QUIET=True)
-        structure = parser.get_structure("test", str(data["pdb"]))
-
-        result = renumber.renumber_structure(structure, chain=data["chain"])
-
-        # Should not be able to modify frozen dataclass
-        with pytest.raises(AttributeError):
-            result.chain_type = "X"

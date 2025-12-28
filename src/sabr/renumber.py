@@ -25,59 +25,15 @@ Example usage:
 
 import copy
 import logging
-from dataclasses import dataclass
 from typing import Optional, Tuple
 
-import numpy as np
 from ANARCI import anarci
 from Bio.PDB import Chain, Model, Structure
 
 from sabr import aln2hmm, edit_pdb, mpnn_embeddings, softaligner, util
-from sabr.constants import AA_3TO1, AnarciAlignment
+from sabr.constants import AnarciAlignment
 
 LOGGER = logging.getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class RenumberingResult:
-    """Result of the renumbering pipeline.
-
-    Attributes:
-        structure: The renumbered BioPython Structure object.
-        chain_type: Detected or specified chain type ("H", "K", or "L").
-        deviations: Number of residue IDs that changed during renumbering.
-        sequence: The amino acid sequence of the renumbered chain.
-        anarci_alignment: The ANARCI alignment used for renumbering.
-    """
-
-    structure: Structure.Structure
-    chain_type: str
-    deviations: int
-    sequence: str
-    anarci_alignment: AnarciAlignment
-
-
-def _extract_sequence_from_chain(chain: Chain.Chain, max_residues: int = 0) -> str:
-    """Extract amino acid sequence from a BioPython chain.
-
-    Args:
-        chain: BioPython Chain object.
-        max_residues: Maximum residues to extract (0 = all).
-
-    Returns:
-        Single-letter amino acid sequence.
-    """
-    residues = []
-    for idx, res in enumerate(chain.get_residues()):
-        if max_residues > 0 and idx >= max_residues:
-            break
-        # Skip HETATM records
-        if res.get_id()[0].strip() != "":
-            continue
-        resname = res.get_resname()
-        if resname in AA_3TO1:
-            residues.append(AA_3TO1[resname])
-    return "".join(residues)
 
 
 def run_renumbering_pipeline(
@@ -139,8 +95,7 @@ def _thread_structure(
     chain_id: str,
     anarci_alignment: AnarciAlignment,
     alignment_start: int,
-    max_residues: int = 0,
-) -> Tuple[Structure.Structure, int]:
+) -> Structure.Structure:
     """Thread ANARCI alignment onto a BioPython structure.
 
     This function creates a new structure with renumbered residues,
@@ -151,14 +106,12 @@ def _thread_structure(
         chain_id: Chain identifier to renumber.
         anarci_alignment: ANARCI alignment output.
         alignment_start: Offset where alignment begins.
-        max_residues: Maximum residues to process (0 = all).
 
     Returns:
-        Tuple of (new_structure, total_deviations).
+        New structure with renumbered residues.
     """
     new_structure = Structure.Structure("renumbered_structure")
     new_model = Model.Model(0)
-    total_deviations = 0
 
     for chain in structure[0]:
         if chain.id != chain_id:
@@ -168,19 +121,63 @@ def _thread_structure(
             new_model.add(new_chain)
         else:
             # Renumber the target chain
-            new_chain, deviations = edit_pdb.thread_onto_chain(
+            new_chain, _ = edit_pdb.thread_onto_chain(
                 chain,
                 anarci_alignment,
                 0,  # start_res
                 len(anarci_alignment),  # end_res
                 alignment_start,
-                max_residues,
             )
             new_model.add(new_chain)
-            total_deviations += deviations
 
     new_structure.add(new_model)
-    return new_structure, total_deviations
+    return new_structure
+
+
+def _extract_chain_subset(
+    structure: Structure.Structure,
+    chain_id: str,
+    res_start: Optional[int],
+    res_end: Optional[int],
+) -> Structure.Structure:
+    """Extract a subset of residues from a structure based on range.
+
+    Args:
+        structure: BioPython Structure object.
+        chain_id: Chain identifier to extract from.
+        res_start: Starting residue number (inclusive). None = from beginning.
+        res_end: Ending residue number (inclusive). None = to end.
+
+    Returns:
+        New structure with only the specified residue range.
+    """
+    new_structure = Structure.Structure("subset_structure")
+    new_model = Model.Model(0)
+
+    for chain in structure[0]:
+        if chain.id != chain_id:
+            # Copy non-target chains as-is
+            new_chain = copy.deepcopy(chain)
+            new_chain.detach_parent()
+            new_model.add(new_chain)
+        else:
+            # Extract subset of target chain
+            new_chain = Chain.Chain(chain.id)
+            for res in chain.get_residues():
+                res_num = res.get_id()[1]
+                # Check if residue is in range
+                if res_start is not None and res_num < res_start:
+                    continue
+                if res_end is not None and res_num > res_end:
+                    continue
+                new_res = copy.deepcopy(res)
+                new_res.detach_parent()
+                new_chain.add(new_res)
+                new_res.parent = new_chain
+            new_model.add(new_chain)
+
+    new_structure.add(new_model)
+    return new_structure
 
 
 def renumber_structure(
@@ -188,9 +185,10 @@ def renumber_structure(
     chain: str,
     numbering_scheme: str = "imgt",
     chain_type: str = "auto",
-    max_residues: int = 0,
+    res_start: Optional[int] = None,
+    res_end: Optional[int] = None,
     deterministic_loop_renumbering: bool = True,
-) -> RenumberingResult:
+) -> Structure.Structure:
     """Renumber an antibody structure using SAbR.
 
     This is the main entry point for programmatic renumbering. It takes
@@ -204,12 +202,15 @@ def renumber_structure(
             "imgt", "chothia", "kabat", "martin", "aho", "wolfguy".
         chain_type: Expected chain type for ANARCI. Options:
             "H" (heavy), "K" (kappa), "L" (lambda), "auto" (detect).
-        max_residues: Maximum residues to process. If 0, process all.
+        res_start: Starting residue number to renumber (inclusive).
+            If None, starts from the first residue.
+        res_end: Ending residue number to renumber (inclusive).
+            If None, processes to the last residue.
         deterministic_loop_renumbering: Apply deterministic corrections
             for loop regions (FR1, DE loop, CDRs). Default True.
 
     Returns:
-        RenumberingResult containing the renumbered structure and metadata.
+        Renumbered BioPython Structure object.
 
     Raises:
         ValueError: If chain is not found or is not a single character.
@@ -219,10 +220,11 @@ def renumber_structure(
         >>> from sabr import renumber
         >>> parser = PDBParser(QUIET=True)
         >>> structure = parser.get_structure("ab", "antibody.pdb")
-        >>> result = renumber.renumber_structure(structure, chain="H")
-        >>> renumbered_structure = result.structure
-        >>> print(f"Chain type: {result.chain_type}")
-        >>> print(f"Deviations: {result.deviations}")
+        >>> renumbered = renumber.renumber_structure(structure, chain="H")
+        >>> # Or with a specific residue range:
+        >>> renumbered = renumber.renumber_structure(
+        ...     structure, chain="H", res_start=1, res_end=128
+        ... )
     """
     if len(chain) != 1:
         raise ValueError("Chain identifier must be exactly one character.")
@@ -241,34 +243,37 @@ def renumber_structure(
             f"Available chains: {available}"
         )
 
-    # Extract sequence for embedding generation
-    sequence = _extract_sequence_from_chain(chain_obj, max_residues)
-    LOGGER.info(f"Extracted sequence (len {len(sequence)}): {sequence}")
+    # Extract subset if range specified
+    if res_start is not None or res_end is not None:
+        working_structure = _extract_chain_subset(
+            structure, chain, res_start, res_end
+        )
+    else:
+        working_structure = structure
 
     # Generate embeddings from structure
-    embeddings = mpnn_embeddings.from_structure(structure, chain, max_residues)
+    embeddings = mpnn_embeddings.from_structure(working_structure, chain)
+
+    LOGGER.info(
+        f"Processing chain {chain} with {len(embeddings.idxs)} residues"
+    )
 
     # Run the renumbering pipeline
-    anarci_alignment, detected_chain_type, first_aligned_row = run_renumbering_pipeline(
-        embeddings,
-        numbering_scheme=numbering_scheme,
-        chain_type=chain_type,
-        deterministic_loop_renumbering=deterministic_loop_renumbering,
+    anarci_alignment, detected_chain_type, first_aligned_row = (
+        run_renumbering_pipeline(
+            embeddings,
+            numbering_scheme=numbering_scheme,
+            chain_type=chain_type,
+            deterministic_loop_renumbering=deterministic_loop_renumbering,
+        )
     )
 
     # Thread the alignment onto the structure
-    renumbered_structure, deviations = _thread_structure(
-        structure,
+    renumbered_structure = _thread_structure(
+        working_structure,
         chain,
         anarci_alignment,
         first_aligned_row,
-        max_residues,
     )
 
-    return RenumberingResult(
-        structure=renumbered_structure,
-        chain_type=detected_chain_type,
-        deviations=deviations,
-        sequence=sequence,
-        anarci_alignment=anarci_alignment,
-    )
+    return renumbered_structure
