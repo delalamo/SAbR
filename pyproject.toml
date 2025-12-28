@@ -30,9 +30,15 @@ test = [
   "pytest>=7.0",
   "pytest-cov>=4.1",
 ]
+docs = [
+  "sphinx>=7.0",
+  "sphinx-rtd-theme>=2.0",
+  "sphinx-click>=5.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/delalamo/sabr"
+Documentation = "https://sabr.readthedocs.io"
 Issues = "https://github.com/delalamo/sabr/issues"
 
 [project.scripts]
