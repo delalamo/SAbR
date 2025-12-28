@@ -27,11 +27,11 @@ from sabr import constants
 LOGGER = logging.getLogger(__name__)
 
 
-def _unflatten_dict(d: Dict[str, Any], sep: str = "|||") -> Dict[str, Any]:
+def _unflatten_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:
     """Unflatten a dictionary with separator-joined keys.
 
     Args:
-        d: Flat dictionary with keys like "a|||b|||c".
+        d: Flat dictionary with keys like "a.b.c".
         sep: Separator used in keys.
 
     Returns:
@@ -136,7 +136,7 @@ class EmbeddingBackend:
             chain_ids: np.ndarray,
             residue_indices: np.ndarray,
         ) -> np.ndarray:
-            """Internal function to compute embeddings (runs inside hk.transform)."""
+            """Compute embeddings (runs inside hk.transform)."""
             model = create_e2e_model()
             embeddings = model.MPNN(coords, mask, chain_ids, residue_indices)
             return embeddings
@@ -258,7 +258,7 @@ class AlignmentBackend:
             temperature: Alignment temperature parameter.
 
         Returns:
-            Tuple of (alignment_matrix, similarity_matrix, score) as numpy arrays.
+            Tuple of (alignment, similarity_matrix, score) as numpy.
         """
         alignment, sim_matrix, score = self._transformed_fn.apply(
             self._params,
