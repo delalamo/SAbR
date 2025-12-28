@@ -107,23 +107,6 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
-    "-t",
-    "--chain-type",
-    "chain_type",
-    type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
-        case_sensitive=False,
-    ),
-    default="auto",
-    show_default=True,
-    help=(
-        "Expected chain type. This is used for logging and validation. "
-        "Chain type is auto-detected from the alignment. "
-        "'H'/'heavy' for heavy chain, 'K'/'kappa' for kappa light chain, "
-        "'L'/'lambda' for lambda light chain, 'auto' for auto-detection."
-    ),
-)
-@click.option(
     "--extended-insertions",
     "extended_insertions",
     is_flag=True,
@@ -156,14 +139,7 @@ LOGGER = logging.getLogger(__name__)
         ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
         case_sensitive=False,
     ),
-    callback=lambda ctx, param, value: {
-        "heavy": "H",
-        "kappa": "K",
-        "lambda": "L",
-    }.get(
-        value.lower(),
-        value.upper() if value.upper() in ("H", "K", "L") else value,
-    ),
+    callback=lambda ctx, param, value: options.normalize_chain_type(value),
     help=(
         "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
         "light, L/lambda=lambda light. Use 'auto' (default) to detect from "

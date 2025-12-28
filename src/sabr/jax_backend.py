@@ -50,7 +50,17 @@ def _unflatten_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:
 
 
 def _convert_numpy_to_jax(obj: Any) -> Any:
-    """Recursively convert numpy arrays to JAX arrays."""
+    """Recursively convert numpy arrays in nested structures to JAX arrays.
+
+    Traverses dictionaries and converts numpy ndarrays to jnp.arrays
+    while preserving all other values unchanged.
+
+    Args:
+        obj: Object that may contain numpy arrays (dict, ndarray, or other).
+
+    Returns:
+        Same structure with numpy arrays replaced by JAX arrays.
+    """
     if isinstance(obj, dict):
         return {k: _convert_numpy_to_jax(v) for k, v in obj.items()}
     elif isinstance(obj, np.ndarray):
@@ -85,10 +95,11 @@ def load_mpnn_params(
 
 
 def create_e2e_model() -> END_TO_END_MODELS.END_TO_END:
-    """Create and return an END_TO_END model with standard parameters.
+    """Create an END_TO_END model with standard SAbR configuration.
 
     Returns:
-        An END_TO_END model instance configured with standard SAbR settings.
+        An END_TO_END model instance configured for antibody embedding
+        and alignment with 64-dimensional embeddings and 3 MPNN layers.
     """
     return END_TO_END_MODELS.END_TO_END(
         constants.EMBED_DIM,
@@ -101,6 +112,76 @@ def create_e2e_model() -> END_TO_END_MODELS.END_TO_END:
         dropout=0.0,
         augment_eps=0.0,
     )
+
+
+# Module-level functions for Haiku transforms
+# These must be defined at module level for hk.transform to work correctly
+
+
+def _compute_embeddings_fn(
+    coords: np.ndarray,
+    mask: np.ndarray,
+    chain_ids: np.ndarray,
+    residue_indices: np.ndarray,
+) -> np.ndarray:
+    """Compute MPNN embeddings from structure coordinates.
+
+    This function runs inside hk.transform and uses the END_TO_END model
+    to generate per-residue embeddings from backbone coordinates.
+
+    Args:
+        coords: Backbone coordinates [1, N, 4, 3] (N, CA, C, CB).
+        mask: Binary mask for valid residues [1, N].
+        chain_ids: Chain identifiers [1, N].
+        residue_indices: Sequential residue indices [1, N].
+
+    Returns:
+        Embeddings array with shape [1, N, embed_dim].
+    """
+    model = create_e2e_model()
+    return model.MPNN(coords, mask, chain_ids, residue_indices)
+
+
+def _run_alignment_fn(
+    input_embeddings: np.ndarray,
+    target_embeddings: np.ndarray,
+    target_stdev: np.ndarray,
+    temperature: float,
+) -> Tuple[np.ndarray, np.ndarray, float]:
+    """Run soft alignment between embedding sets.
+
+    This function runs inside hk.transform and uses the END_TO_END model
+    to align query embeddings against reference embeddings.
+
+    Args:
+        input_embeddings: Query embeddings [N, embed_dim].
+        target_embeddings: Reference embeddings [M, embed_dim].
+        target_stdev: Standard deviation for normalization [M, embed_dim].
+        temperature: Alignment temperature (lower = more deterministic).
+
+    Returns:
+        Tuple of (alignment_matrix, similarity_matrix, alignment_score).
+    """
+    model = create_e2e_model()
+
+    # Normalize target by stdev
+    target_stdev_jax = jnp.array(target_stdev)
+    target_normalized = target_embeddings / target_stdev_jax
+
+    # Prepare batched inputs (model expects batch dimension)
+    lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[
+        None, :
+    ]
+    batched_input = jnp.array(input_embeddings[None, :])
+    batched_target = jnp.array(target_normalized[None, :])
+
+    # Run alignment
+    alignment, sim_matrix, score = model.align(
+        batched_input, batched_target, lens, temperature
+    )
+
+    # Remove batch dimension from outputs
+    return alignment[0], sim_matrix[0], score[0]
 
 
 class EmbeddingBackend:
@@ -129,19 +210,7 @@ class EmbeddingBackend:
         """
         self.params = load_mpnn_params(params_name, params_path)
         self.key = jax.random.PRNGKey(random_seed)
-
-        def _compute_embeddings(
-            coords: np.ndarray,
-            mask: np.ndarray,
-            chain_ids: np.ndarray,
-            residue_indices: np.ndarray,
-        ) -> np.ndarray:
-            """Compute embeddings (runs inside hk.transform)."""
-            model = create_e2e_model()
-            embeddings = model.MPNN(coords, mask, chain_ids, residue_indices)
-            return embeddings
-
-        self._transformed_fn = hk.transform(_compute_embeddings)
+        self._transformed_fn = hk.transform(_compute_embeddings_fn)
         LOGGER.info("Initialized EmbeddingBackend")
 
     def compute_embeddings(
@@ -203,43 +272,15 @@ class AlignmentBackend:
         self.gap_open = gap_open
         self.key = jax.random.PRNGKey(random_seed)
 
-        # Create synthetic params dict with alignment parameters
-        # These are the only parameters needed for alignment
+        # Create params dict with alignment penalties
+        # These are the only parameters needed for the align operation
         self._params = {
             "~": {
                 "gap": jnp.array([self.gap_extend]),
                 "open": jnp.array([self.gap_open]),
             }
         }
-
-        def _run_alignment(
-            input_embeddings: np.ndarray,
-            target_embeddings: np.ndarray,
-            target_stdev: np.ndarray,
-            temperature: float,
-        ) -> Tuple[np.ndarray, np.ndarray, float]:
-            """Internal alignment function (runs inside hk.transform)."""
-            model = create_e2e_model()
-
-            # Normalize target by stdev
-            target_stdev_jax = jnp.array(target_stdev)
-            target_normalized = target_embeddings / target_stdev_jax
-
-            # Prepare batched inputs
-            lens = jnp.array(
-                [input_embeddings.shape[0], target_embeddings.shape[0]]
-            )[None, :]
-            batched_input = jnp.array(input_embeddings[None, :])
-            batched_target = jnp.array(target_normalized[None, :])
-
-            # Run alignment
-            alignment, sim_matrix, score = model.align(
-                batched_input, batched_target, lens, temperature
-            )
-
-            return alignment[0], sim_matrix[0], score[0]
-
-        self._transformed_fn = hk.transform(_run_alignment)
+        self._transformed_fn = hk.transform(_run_alignment_fn)
         LOGGER.info("Initialized AlignmentBackend")
 
     def align(

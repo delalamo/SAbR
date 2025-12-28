@@ -9,6 +9,28 @@ import os
 import click
 
 
+def normalize_chain_type(chain_type: str) -> str:
+    """Normalize chain type abbreviation to single letter.
+
+    Converts verbose chain type names to their single-letter equivalents
+    used by ANARCI. Handles case-insensitive input.
+
+    Args:
+        chain_type: Chain type string (e.g., "heavy", "H", "kappa", "auto").
+
+    Returns:
+        Normalized chain type: "H", "K", "L", or "auto".
+    """
+    chain_map = {"heavy": "H", "kappa": "K", "lambda": "L"}
+    normalized = chain_map.get(chain_type.lower())
+    if normalized:
+        return normalized
+    upper = chain_type.upper()
+    if upper in ("H", "K", "L"):
+        return upper
+    return chain_type  # Return as-is for "auto" or unknown values
+
+
 def validate_inputs(
     input_pdb: str,
     input_chain: str,
