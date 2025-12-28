@@ -87,6 +87,41 @@ Options:
   -h, --help                      Show this message and exit.
 ```
 
+## Python API
+
+SAbR can also be used programmatically to renumber BioPython Structure objects directly in memory:
+
+```python
+from Bio.PDB import PDBParser
+from sabr import renumber
+
+# Load a structure
+parser = PDBParser(QUIET=True)
+structure = parser.get_structure("antibody", "input.pdb")
+
+# Renumber the structure (returns a new BioPython Structure)
+renumbered = renumber.renumber_structure(
+    structure,
+    chain="H",                      # Chain identifier
+    numbering_scheme="imgt",        # imgt, chothia, kabat, martin, aho, wolfguy
+    chain_type="auto",              # H, K, L, or auto
+)
+
+# Optionally specify a residue range
+renumbered = renumber.renumber_structure(
+    structure,
+    chain="H",
+    res_start=1,                    # Start at residue 1
+    res_end=128,                    # End at residue 128
+)
+
+# Save the renumbered structure
+from Bio.PDB import PDBIO
+io = PDBIO()
+io.set_structure(renumbered)
+io.save("output.pdb")
+```
+
 ## Known issues
 
 - SAbR currently struggles with scFvs for two reasons. First, it is unclear how to assign canonical numbering to multiple domains within a single chain, unless we accept a spacer (e.g., starting chain #2 at 201 instead of 1). Second, it will sometimes align across both chains, introducing a massive insertion in between. It is unclear how to prevent this; please see [issue #2](https://github.com/delalamo/SAbR/issues/2) for details.
