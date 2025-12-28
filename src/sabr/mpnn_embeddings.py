@@ -479,3 +479,218 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
         f"(name={name}, length={len(idxs)})"
     )
     return embedding
+
+
+def _get_inputs_from_structure(
+    structure: Structure, chain: str | None = None
+) -> MPNNInputs:
+    """Extract coordinates, residue info, and sequence from a Structure.
+
+    This function works directly with a BioPython Structure object instead
+    of parsing a file, enabling in-memory structure processing.
+
+    Args:
+        structure: BioPython Structure object.
+        chain: Chain identifier to extract. If None, uses first chain.
+
+    Returns:
+        MPNNInputs containing backbone coordinates and residue information.
+
+    Raises:
+        ValueError: If the specified chain is not found.
+    """
+    # Get the first model
+    struct_model = structure[0]
+
+    # Find the target chain
+    target_chain = None
+    if chain is not None:
+        for ch in struct_model:
+            if ch.id == chain:
+                target_chain = ch
+                break
+        if target_chain is None:
+            available = [ch.id for ch in struct_model]
+            raise ValueError(
+                f"Chain '{chain}' not found in structure. "
+                f"Available chains: {available}"
+            )
+    else:
+        # Use first chain
+        target_chain = list(struct_model.get_chains())[0]
+        LOGGER.info(f"No chain specified, using first chain: {target_chain.id}")
+
+    # Extract residue data
+    coords_list = []
+    ids_list = []
+    seq_list = []
+
+    for residue in target_chain.get_residues():
+        # Skip heteroatoms (water, ligands, etc.)
+        hetflag = residue.get_id()[0]
+        if hetflag.strip():
+            continue
+
+        # Check if all backbone atoms are present
+        try:
+            n_coord = residue["N"].get_coord()
+            ca_coord = residue["CA"].get_coord()
+            c_coord = residue["C"].get_coord()
+        except KeyError:
+            # Skip residues missing backbone atoms
+            continue
+
+        # Extract one-letter amino acid code (X for unknown residues)
+        resname = residue.get_resname()
+        one_letter = constants.AA_3TO1.get(resname, "X")
+        seq_list.append(one_letter)
+
+        # Compute CB position
+        cb_coord = _compute_cb(
+            n_coord.reshape(1, 3),
+            ca_coord.reshape(1, 3),
+            c_coord.reshape(1, 3),
+        ).reshape(3)
+
+        # Store coordinates [N, CA, C, CB]
+        residue_coords = np.stack(
+            [n_coord, ca_coord, c_coord, cb_coord], axis=0
+        )
+        coords_list.append(residue_coords)
+
+        # Generate residue ID string
+        res_id = residue.get_id()
+        resnum = res_id[1]
+        icode = res_id[2].strip()
+        if icode:
+            id_str = f"{resnum}{icode}"
+        else:
+            id_str = str(resnum)
+        ids_list.append(id_str)
+
+    if not coords_list:
+        raise ValueError(f"No valid residues found in chain '{chain}'")
+
+    # Stack all coordinates
+    coords = np.stack(coords_list, axis=0)  # [N, 4, 3]
+
+    # Filter out any residues with NaN coordinates
+    valid_mask = ~np.isnan(coords).any(axis=(1, 2))
+    coords = coords[valid_mask]
+    ids_list = [ids_list[i] for i in range(len(ids_list)) if valid_mask[i]]
+    seq_list = [seq_list[i] for i in range(len(seq_list)) if valid_mask[i]]
+
+    n_residues = coords.shape[0]
+
+    # Create output arrays with batch dimension
+    mask = np.ones(n_residues)
+    chain_ids = np.ones(n_residues)
+    residue_indices = np.arange(n_residues)
+
+    sequence = "".join(seq_list)
+    LOGGER.info(
+        f"Extracted {n_residues} residues from chain '{target_chain.id}'"
+    )
+
+    # Add batch dimension to match softalign output format
+    return MPNNInputs(
+        coords=coords[None, :],  # [1, N, 4, 3]
+        mask=mask[None, :],  # [1, N]
+        chain_ids=chain_ids[None, :],  # [1, N]
+        residue_indices=residue_indices[None, :],  # [1, N]
+        residue_ids=ids_list,
+        sequence=sequence,
+    )
+
+
+def _embed_structure(
+    structure: Structure, chains: str, max_residues: int = 0
+) -> MPNNEmbeddings:
+    """Return MPNN embeddings for chains in a BioPython Structure.
+
+    Args:
+        structure: BioPython Structure object.
+        chains: Chain identifier(s) to embed.
+        max_residues: Maximum number of residues to embed. If 0, embed all.
+
+    Returns:
+        MPNNEmbeddings for the specified chain.
+    """
+    LOGGER.info(f"Embedding structure chain {chains}")
+    e2e_model = model.create_e2e_model()
+    if len(chains) > 1:
+        raise NotImplementedError(
+            f"Only single chain embedding is supported. "
+            f"Got {len(chains)} chains: '{chains}'. "
+            f"Please specify a single chain identifier."
+        )
+    inputs = _get_inputs_from_structure(structure, chain=chains)
+    embeddings = e2e_model.MPNN(
+        inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
+    )[0]
+    if len(inputs.residue_ids) != embeddings.shape[0]:
+        raise ValueError(
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
+        )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
+
+    if max_residues > 0 and len(ids) > max_residues:
+        LOGGER.info(
+            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
+        )
+        embeddings = embeddings[:max_residues]
+        ids = ids[:max_residues]
+        sequence = sequence[:max_residues]
+
+    return MPNNEmbeddings(
+        name="INPUT_STRUCTURE",
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=jnp.ones_like(embeddings),
+        sequence=sequence,
+    )
+
+
+def from_structure(
+    structure: Structure,
+    chain: str,
+    max_residues: int = 0,
+    params_name: str = "CONT_SW_05_T_3_1",
+    params_path: str = "softalign.models",
+    random_seed: int = 0,
+) -> MPNNEmbeddings:
+    """
+    Create MPNNEmbeddings from a BioPython Structure object.
+
+    This function enables in-memory structure processing without requiring
+    the structure to be saved to disk first.
+
+    Args:
+        structure: BioPython Structure object.
+        chain: Chain identifier to embed.
+        max_residues: Maximum residues to embed. If 0, embed all.
+        params_name: Name of the model parameters file.
+        params_path: Package path containing the parameters file.
+        random_seed: Random seed for JAX.
+
+    Returns:
+        MPNNEmbeddings for the specified chain.
+    """
+    model_params = util.read_softalign_params(
+        params_name=params_name, params_path=params_path
+    )
+    key = jax.random.PRNGKey(random_seed)
+    transformed_embed_fn = hk.transform(_embed_structure)
+
+    result = transformed_embed_fn.apply(
+        model_params, key, structure, chain, max_residues
+    )
+
+    LOGGER.info(
+        f"Computed embeddings for structure chain {chain} "
+        f"(length={result.embeddings.shape[0]})"
+    )
+    return result

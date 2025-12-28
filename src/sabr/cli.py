@@ -19,14 +19,12 @@ Usage:
 import logging
 
 import click
-from ANARCI import anarci
 
 from sabr import (
-    aln2hmm,
     edit_pdb,
     mpnn_embeddings,
     options,
-    softaligner,
+    renumber,
     util,
 )
 
@@ -216,34 +214,16 @@ def main(
         f"{input_pdb} chain {input_chain}"
     )
 
-    aligner = softaligner.SoftAligner()
-    alignment_result = aligner(
-        input_data,
-        deterministic_loop_renumbering=not disable_deterministic_renumbering,
+    # Use shared renumbering pipeline
+    use_deterministic = not disable_deterministic_renumbering
+    anarci_out, detected_chain_type, first_aligned_row = (
+        renumber.run_renumbering_pipeline(
+            input_data,
+            numbering_scheme=numbering_scheme,
+            chain_type=chain_type,
+            deterministic_loop_renumbering=use_deterministic,
+        )
     )
-    state_vector, imgt_start, imgt_end, first_aligned_row = (
-        aln2hmm.alignment_matrix_to_state_vector(alignment_result.alignment)
-    )
-
-    n_aligned = imgt_end - imgt_start
-    subsequence = "-" * imgt_start + sequence[:n_aligned]
-    LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
-
-    # Detect chain type from DE loop for ANARCI numbering if not specified
-    if chain_type == "auto":
-        chain_type = util.detect_chain_type(alignment_result.alignment)
-    else:
-        LOGGER.info(f"Using user-specified chain type: {chain_type}")
-
-    # TODO introduce extended insertion code handling here
-    anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        state_vector,
-        subsequence,
-        scheme=numbering_scheme,
-        chain_type=chain_type,
-    )
-
-    anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,

@@ -8,7 +8,7 @@ from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, softaligner
+from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, renumber, softaligner
 from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
 
 DATA_PACKAGE = "tests.data"
@@ -155,7 +155,9 @@ def test_cli_respects_expected_numbering(
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+    )
 
     runner = CliRunner()
     output_pdb = tmp_path / f"{fixture_key}_cli.pdb"
@@ -199,7 +201,9 @@ def test_cli_deterministic_renumbering_flag(
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+    )
 
     runner = CliRunner()
     output_pdb = tmp_path / "test_det_flag.pdb"
@@ -259,7 +263,9 @@ def test_cli_chain_type_argument(monkeypatch, tmp_path, chain_type):
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+    )
 
     runner = CliRunner()
     output_pdb = tmp_path / f"test_chain_type_{chain_type}.pdb"
