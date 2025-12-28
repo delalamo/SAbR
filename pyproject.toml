@@ -31,9 +31,9 @@ test = [
   "pytest-cov>=4.1",
 ]
 docs = [
-  "sphinx>=7.0",
-  "sphinx-rtd-theme>=2.0",
-  "sphinx-click>=5.0",
+  "mkdocs>=1.5",
+  "mkdocs-material>=9.0",
+  "mkdocstrings[python]>=0.24",
 ]
 
 [project.urls]

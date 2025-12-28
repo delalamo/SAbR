@@ -1,0 +1,72 @@
+site_name: SAbR Documentation
+site_description: Structure-based Antibody Renumbering
+site_url: https://delalamo.github.io/SAbR
+repo_url: https://github.com/delalamo/SAbR
+repo_name: delalamo/SAbR
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            members_order: source
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: installation.md
+      - Quick Start: quickstart.md
+  - User Guide:
+      - Usage: usage.md
+      - Numbering Schemes: numbering_schemes.md
+  - API Reference:
+      - CLI: api/cli.md
+      - SoftAligner: api/softaligner.md
+      - MPNN Embeddings: api/mpnn_embeddings.md
+      - Edit PDB: api/edit_pdb.md
+      - Alignment to HMM: api/aln2hmm.md
+      - Utilities: api/util.md
+      - Constants: api/constants.md
+  - Development:
+      - Contributing: contributing.md
+      - Changelog: changelog.md

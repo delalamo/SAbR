@@ -1,31 +1,25 @@
-Changelog
-=========
+# Changelog
 
 All notable changes to SAbR will be documented in this file.
 
-The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
-and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Unreleased
-----------
+## Unreleased
 
-Added
-~~~~~
+### Added
 
-- Sphinx documentation with API reference
-- Documentation for all numbering schemes
+- MkDocs documentation with Material theme
+- API reference using mkdocstrings
 - Contributing guide
 
-Changed
-~~~~~~~
+### Changed
 
 - Improved module docstrings for better autodoc generation
 
-[0.1.0] - Initial Release
--------------------------
+## [0.1.0] - Initial Release
 
-Added
-~~~~~
+### Added
 
 - Structure-based antibody renumbering using MPNN embeddings
 - Support for IMGT, Chothia, Kabat, Martin, Aho, and Wolfguy numbering schemes
