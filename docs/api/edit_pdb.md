@@ -18,13 +18,13 @@ The renumbering process handles three regions:
 ## Functions
 
 ::: sabr.edit_pdb.thread_alignment
-options:
-show_root_heading: true
+    options:
+      show_root_heading: true
 
 ::: sabr.edit_pdb.thread_onto_chain
-options:
-show_root_heading: true
+    options:
+      show_root_heading: true
 
 ::: sabr.edit_pdb.validate_output_format
-options:
-show_root_heading: true
+    options:
+      show_root_heading: true
