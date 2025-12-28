@@ -42,11 +42,11 @@ Open the output file to verify the renumbering. Key positions to check:
 
 ## Common Options
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `-n` | Numbering scheme | `-n chothia` |
-| `-t` | Chain type | `-t heavy` |
-| `-v` | Verbose output | `-v` |
+| Option        | Description               | Example       |
+| ------------- | ------------------------- | ------------- |
+| `-n`          | Numbering scheme          | `-n chothia`  |
+| `-t`          | Chain type                | `-t heavy`    |
+| `-v`          | Verbose output            | `-v`          |
 | `--overwrite` | Overwrite existing output | `--overwrite` |
 
 ## Example Commands

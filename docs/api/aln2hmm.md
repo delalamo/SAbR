@@ -11,17 +11,16 @@ It handles orphan residues (e.g., CDR3 insertions) that don't map directly to an
 ## Classes
 
 ::: sabr.aln2hmm.State
-    options:
-      show_root_heading: true
-      members:
-        - to_tuple
+options:
+show_root_heading: true
+members: - to_tuple
 
 ## Functions
 
 ::: sabr.aln2hmm.alignment_matrix_to_state_vector
-    options:
-      show_root_heading: true
+options:
+show_root_heading: true
 
 ::: sabr.aln2hmm.report_output
-    options:
-      show_root_heading: true
+options:
+show_root_heading: true

@@ -1,11 +1,10 @@
 # CLI Module
 
 ::: sabr.cli
-    options:
-      show_root_heading: true
-      show_source: false
-      members:
-        - main
+options:
+show_root_heading: true
+show_source: false
+members: - main
 
 ## Command Reference
 

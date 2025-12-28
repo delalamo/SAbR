@@ -18,30 +18,30 @@ When reporting bugs, please include:
 
 1. Clone the repository with submodules:
 
-    ```bash
-    git clone --recursive https://github.com/delalamo/SAbR.git
-    cd SAbR
-    ```
+   ```bash
+   git clone --recursive https://github.com/delalamo/SAbR.git
+   cd SAbR
+   ```
 
 2. Create a virtual environment:
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
 3. Install development dependencies:
 
-    ```bash
-    pip install -e ".[test]"
-    pip install pre-commit
-    ```
+   ```bash
+   pip install -e ".[test]"
+   pip install pre-commit
+   ```
 
 4. Install pre-commit hooks:
 
-    ```bash
-    pre-commit install
-    ```
+   ```bash
+   pre-commit install
+   ```
 
 ## Running Tests
 
@@ -61,11 +61,11 @@ pytest --cov=sabr --cov-report=html
 
 SAbR uses the following tools for code quality:
 
-| Tool | Purpose |
-|------|---------|
-| Black | Code formatting (line length 80) |
-| isort | Import sorting (black profile) |
-| flake8 | Linting |
+| Tool   | Purpose                          |
+| ------ | -------------------------------- |
+| Black  | Code formatting (line length 80) |
+| isort  | Import sorting (black profile)   |
+| flake8 | Linting                          |
 
 The pre-commit hooks will automatically check and format your code.
 

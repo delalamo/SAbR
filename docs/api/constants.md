@@ -12,17 +12,17 @@ Type alias for ANARCI alignment output. Each element is a tuple of `((residue_nu
 
 ## Neural Network Configuration
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `EMBED_DIM` | 64 | Dimension of MPNN embeddings |
-| `N_MPNN_LAYERS` | 3 | Number of layers in the MPNN model |
+| Constant        | Value | Description                        |
+| --------------- | ----- | ---------------------------------- |
+| `EMBED_DIM`     | 64    | Dimension of MPNN embeddings       |
+| `N_MPNN_LAYERS` | 3     | Number of layers in the MPNN model |
 
 ## IMGT Numbering
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `IMGT_MAX_POSITION` | 128 | Maximum position in IMGT numbering |
-| `DEFAULT_TEMPERATURE` | 1e-4 | Default alignment temperature for SoftAlign |
+| Constant              | Value | Description                                 |
+| --------------------- | ----- | ------------------------------------------- |
+| `IMGT_MAX_POSITION`   | 128   | Maximum position in IMGT numbering          |
+| `DEFAULT_TEMPERATURE` | 1e-4  | Default alignment temperature for SoftAlign |
 
 ### Framework Regions
 
@@ -59,35 +59,35 @@ CDR_ANCHORS = {
 
 ## FR1 Region Constants
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `FR1_ANCHOR_START_COL` | 5 | 0-indexed column for IMGT position 6 |
-| `FR1_ANCHOR_END_COL` | 11 | 0-indexed column for IMGT position 12 |
-| `FR1_POSITION_10_COL` | 9 | 0-indexed column for IMGT position 10 |
-| `FR1_KAPPA_RESIDUE_COUNT` | 7 | Kappa chains have 7 residues in positions 6-12 |
+| Constant                  | Value | Description                                    |
+| ------------------------- | ----- | ---------------------------------------------- |
+| `FR1_ANCHOR_START_COL`    | 5     | 0-indexed column for IMGT position 6           |
+| `FR1_ANCHOR_END_COL`      | 11    | 0-indexed column for IMGT position 12          |
+| `FR1_POSITION_10_COL`     | 9     | 0-indexed column for IMGT position 10          |
+| `FR1_KAPPA_RESIDUE_COUNT` | 7     | Kappa chains have 7 residues in positions 6-12 |
 
 ## DE Loop Constants
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `DE_LOOP_START_COL` | 78 | 0-indexed column for IMGT position 79 |
-| `DE_LOOP_END_COL` | 83 | 0-indexed column for IMGT position 84 |
-| `DE_LOOP_HEAVY_THRESHOLD` | 5 | Number of residues indicating heavy chain (>= 5) |
+| Constant                  | Value | Description                                      |
+| ------------------------- | ----- | ------------------------------------------------ |
+| `DE_LOOP_START_COL`       | 78    | 0-indexed column for IMGT position 79            |
+| `DE_LOOP_END_COL`         | 83    | 0-indexed column for IMGT position 84            |
+| `DE_LOOP_HEAVY_THRESHOLD` | 5     | Number of residues indicating heavy chain (>= 5) |
 
 ## FR3 Position Constants
 
-| Constant | Value |
-|----------|-------|
-| `FR3_POS81_COL` | 80 |
-| `FR3_POS82_COL` | 81 |
-| `FR3_POS83_COL` | 82 |
-| `FR3_POS84_COL` | 83 |
+| Constant        | Value |
+| --------------- | ----- |
+| `FR3_POS81_COL` | 80    |
+| `FR3_POS82_COL` | 81    |
+| `FR3_POS83_COL` | 82    |
+| `FR3_POS84_COL` | 83    |
 
 ## C-Terminus Constants
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `C_TERMINUS_ANCHOR_POSITION` | 124 | 0-indexed position for IMGT position 125 |
+| Constant                     | Value | Description                              |
+| ---------------------------- | ----- | ---------------------------------------- |
+| `C_TERMINUS_ANCHOR_POSITION` | 124   | 0-indexed position for IMGT position 125 |
 
 ## Amino Acid Mapping
 

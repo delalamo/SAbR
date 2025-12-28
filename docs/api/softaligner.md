@@ -14,21 +14,12 @@ The alignment process includes:
 ## Classes
 
 ::: sabr.softaligner.SoftAligner
-    options:
-      show_root_heading: true
-      members:
-        - __init__
-        - __call__
-        - normalize
-        - read_embeddings
-        - fix_aln
-        - correct_gap_numbering
-        - correct_fr1_alignment
-        - correct_fr3_alignment
-        - correct_c_terminus
+options:
+show_root_heading: true
+members: - **init** - **call** - normalize - read_embeddings - fix_aln - correct_gap_numbering - correct_fr1_alignment - correct_fr3_alignment - correct_c_terminus
 
 ## Functions
 
 ::: sabr.softaligner.find_nearest_occupied_column
-    options:
-      show_root_heading: true
+options:
+show_root_heading: true

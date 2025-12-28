@@ -26,7 +26,7 @@ pip install -e .
 ```
 
 !!! important
-    The `--recursive` flag is required as it clones the required submodules (SoftAlign and ANARCI).
+The `--recursive` flag is required as it clones the required submodules (SoftAlign and ANARCI).
 
 ## Docker
 
@@ -58,16 +58,16 @@ This is required because JAX's Metal backend may have compatibility issues.
 
 SAbR depends on the following packages:
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| biopython | >=1.85 | PDB/mmCIF file parsing |
-| click | >=8.1 | Command-line interface |
-| jax | >=0.4.20 | Neural network computations |
-| jaxlib | >=0.4.20 | JAX backend |
-| numpy | >=2.4 | Numerical operations |
-| pandas | >=2.2 | Data manipulation |
-| scipy | >=1.12 | Scientific computing |
-| dm-haiku | >=0.0.12 | Neural network library |
+| Package   | Version  | Purpose                     |
+| --------- | -------- | --------------------------- |
+| biopython | >=1.85   | PDB/mmCIF file parsing      |
+| click     | >=8.1    | Command-line interface      |
+| jax       | >=0.4.20 | Neural network computations |
+| jaxlib    | >=0.4.20 | JAX backend                 |
+| numpy     | >=2.4    | Numerical operations        |
+| pandas    | >=2.2    | Data manipulation           |
+| scipy     | >=1.12   | Scientific computing        |
+| dm-haiku  | >=0.0.12 | Neural network library      |
 
 ## Development Dependencies
 

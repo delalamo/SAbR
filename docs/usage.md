@@ -23,11 +23,11 @@ This will:
 
 ### Required Options
 
-| Option | Description |
-|--------|-------------|
-| `-i, --input-pdb FILE` | Input structure file (PDB or mmCIF format) |
+| Option                   | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| `-i, --input-pdb FILE`   | Input structure file (PDB or mmCIF format)      |
 | `-c, --input-chain TEXT` | Chain identifier to renumber (single character) |
-| `-o, --output FILE` | Output structure file (.pdb or .cif) |
+| `-o, --output FILE`      | Output structure file (.pdb or .cif)            |
 
 ### Numbering Scheme
 
@@ -58,17 +58,17 @@ Specify the chain type for ANARCI numbering:
 - `auto`: Automatically detect (default)
 
 !!! tip
-    Specify the chain type manually when known, as heavy and light chains have similar structures that can be confused.
+Specify the chain type manually when known, as heavy and light chains have similar structures that can be confused.
 
 ### Advanced Options
 
-| Option | Description |
-|--------|-------------|
-| `--extended-insertions` | Enable extended insertion codes (AA, AB, ..., ZZ) for very long CDR loops. Requires mmCIF output. |
-| `--disable-deterministic-renumbering` | Use raw alignment output without loop corrections |
-| `--max-residues INTEGER` | Maximum residues to process (0 = all) |
-| `--overwrite` | Overwrite output file if it exists |
-| `-v, --verbose` | Enable verbose logging |
+| Option                                | Description                                                                                       |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `--extended-insertions`               | Enable extended insertion codes (AA, AB, ..., ZZ) for very long CDR loops. Requires mmCIF output. |
+| `--disable-deterministic-renumbering` | Use raw alignment output without loop corrections                                                 |
+| `--max-residues INTEGER`              | Maximum residues to process (0 = all)                                                             |
+| `--overwrite`                         | Overwrite output file if it exists                                                                |
+| `-v, --verbose`                       | Enable verbose logging                                                                            |
 
 ## Examples
 
