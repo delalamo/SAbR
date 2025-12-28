@@ -96,8 +96,8 @@ class SoftAligner:
         self, mp: mpnn_embeddings.MPNNEmbeddings
     ) -> mpnn_embeddings.MPNNEmbeddings:
         """Return embeddings reordered by sorted integer indices."""
-        idxs_int = [int(x) for x in mp.idxs]
-        order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
+        idxs_int = np.asarray([int(x) for x in mp.idxs], dtype=np.int64)
+        order = np.argsort(idxs_int)
         if not np.array_equal(order, np.arange(len(order))):
             norm_msg = (
                 f"Normalizing embedding order for {mp.name} "
@@ -180,25 +180,12 @@ class SoftAligner:
         pos12_col = constants.FR1_ANCHOR_END_COL
 
         # Find rows aligned to positions near anchors 6 and 12
-        # Search within a small range to find the anchor residues
-        start_row = None
-        end_row = None
-
-        # Find first residue in range around position 6
-        for col in range(pos6_col, pos6_col + 3):
-            if aln[:, col].sum() >= 1:
-                rows = np.where(aln[:, col] == 1)[0]
-                if len(rows) > 0:
-                    start_row = int(rows[0])
-                    break
-
-        # Find first residue in range around position 12
-        for col in range(pos12_col, pos12_col + 3):
-            if aln[:, col].sum() >= 1:
-                rows = np.where(aln[:, col] == 1)[0]
-                if len(rows) > 0:
-                    end_row = int(rows[0])
-                    break
+        start_row, _ = find_nearest_occupied_column(
+            aln, pos6_col, search_range=2, direction="forward"
+        )
+        end_row, _ = find_nearest_occupied_column(
+            aln, pos12_col, search_range=2, direction="forward"
+        )
 
         if start_row is None or end_row is None or start_row >= end_row:
             LOGGER.debug(

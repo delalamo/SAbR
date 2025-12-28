@@ -211,7 +211,6 @@ def main(
     else:
         LOGGER.info(f"Using user-specified chain type: {chain_type}")
 
-    # TODO introduce extended insertion code handling here
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
         state_vector,
         subsequence,
