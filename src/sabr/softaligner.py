@@ -7,7 +7,6 @@ alignments.
 
 Key components:
 - SoftAligner: Main class for running alignments
-- _align_fn: Internal alignment function using the SoftAlign neural model
 
 The alignment process includes:
 1. Embedding comparison against unified reference
@@ -20,62 +19,11 @@ import logging
 from importlib.resources import as_file, files
 from typing import List, Optional, Tuple
 
-import haiku as hk
-import jax
 import numpy as np
-from jax import numpy as jnp
 
-from sabr import constants, model, mpnn_embeddings, softalign_output, util
+from sabr import constants, jax_backend, mpnn_embeddings, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
-
-
-def _align_fn(
-    input: mpnn_embeddings.MPNNEmbeddings,
-    target: mpnn_embeddings.MPNNEmbeddings,
-    temperature: float = constants.DEFAULT_TEMPERATURE,
-) -> softalign_output.SoftAlignOutput:
-    """Align two embedding sets with the SoftAlign model and return result."""
-    input_array = input.embeddings
-    target_array = target.embeddings
-    target_stdev = jnp.array(target.stdev)
-    target_array = target_array / target_stdev
-
-    LOGGER.info(
-        f"Running align_fn with input shape {input_array.shape}, "
-        f"target shape {target_array.shape}, temperature={temperature}"
-    )
-    e2e_model = model.create_e2e_model()
-    if input_array.ndim != 2 or target_array.ndim != 2:
-        raise ValueError(
-            "align_fn expects 2D arrays; got shapes "
-            f"{input_array.shape} and {target_array.shape}"
-        )
-    for array_shape in (input_array.shape, target_array.shape):
-        if array_shape[1] != constants.EMBED_DIM:
-            raise ValueError(
-                f"last dim must be {constants.EMBED_DIM}; got "
-                f"{input_array.shape} and {target_array.shape}"
-            )
-    lens = jnp.array([input_array.shape[0], target_array.shape[0]])[None, :]
-    batched_input = jnp.array(input_array[None, :])
-    batched_target = jnp.array(target_array[None, :])
-    alignment, sim_matrix, score = e2e_model.align(
-        batched_input, batched_target, lens, temperature
-    )
-    LOGGER.debug(
-        "Alignment complete: alignment shape "
-        f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
-        f"score={float(score[0])}"
-    )
-    return softalign_output.SoftAlignOutput(
-        alignment=np.asarray(alignment[0]),
-        sim_matrix=np.asarray(sim_matrix[0]),
-        score=float(score[0]),
-        chain_type=None,
-        idxs1=input.idxs,
-        idxs2=target.idxs,
-    )
 
 
 def find_nearest_occupied_column(
@@ -123,26 +71,26 @@ class SoftAligner:
 
     def __init__(
         self,
-        params_name: str = "CONT_SW_05_T_3_1",
-        params_path: str = "softalign.models",
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
         temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
     ) -> None:
         """
-        Initialize the SoftAligner by loading model parameters and embeddings.
+        Initialize the SoftAligner by loading reference embeddings and backend.
+
+        Args:
+            embeddings_name: Name of the reference embeddings file.
+            embeddings_path: Package path containing the embeddings file.
+            temperature: Alignment temperature parameter.
+            random_seed: Random seed for reproducibility.
         """
         self.all_embeddings = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
-        self.model_params = util.read_softalign_params(
-            params_name=params_name, params_path=params_path
-        )
         self.temperature = temperature
-        self.key = jax.random.PRNGKey(random_seed)
-        self.transformed_align_fn = hk.transform(_align_fn)
+        self._backend = jax_backend.AlignmentBackend(random_seed=random_seed)
 
     def normalize(
         self, mp: mpnn_embeddings.MPNNEmbeddings
@@ -472,14 +420,16 @@ class SoftAligner:
 
         # Use the single unified embedding
         unified_embedding = self.all_embeddings[0]
-        out = self.transformed_align_fn.apply(
-            self.model_params,
-            self.key,
-            input_data,
-            unified_embedding,
-            self.temperature,
+
+        # Run alignment through the JAX backend
+        alignment, sim_matrix, score = self._backend.align(
+            input_embeddings=input_data.embeddings,
+            target_embeddings=unified_embedding.embeddings,
+            target_stdev=unified_embedding.stdev,
+            temperature=self.temperature,
         )
-        aln = self.fix_aln(out.alignment, unified_embedding.idxs)
+
+        aln = self.fix_aln(alignment, unified_embedding.idxs)
         aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:
@@ -609,7 +559,7 @@ class SoftAligner:
         return softalign_output.SoftAlignOutput(
             chain_type=detected_chain_type,
             alignment=aln,
-            score=out.score,
+            score=score,
             sim_matrix=None,
             idxs1=input_data.idxs,
             idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],

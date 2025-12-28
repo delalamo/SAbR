@@ -18,6 +18,11 @@ AnarciAlignment = List[Tuple[Tuple[int, str], str]]
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3
 
+# Smith-Waterman alignment parameters from trained SoftAlign model
+# These are the gap penalties for the affine gap scoring function
+SW_GAP_EXTEND = 0.19424681  # Gap extension penalty
+SW_GAP_OPEN = -2.5441809  # Gap opening penalty
+
 # IMGT numbering constants
 IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
 
