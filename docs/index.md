@@ -46,38 +46,11 @@ SAbR uses a 6-step pipeline:
 
 ## Navigation
 
-<div class="grid cards" markdown>
-
--   :material-download:{ .lg .middle } **Installation**
-
-    ---
-
-    Install SAbR via pip, from source, or using Docker
-
-    [:octicons-arrow-right-24: Installation guide](installation.md)
-
--   :material-rocket-launch:{ .lg .middle } **Quick Start**
-
-    ---
-
-    Get up and running with SAbR in minutes
-
-    [:octicons-arrow-right-24: Quick start](quickstart.md)
-
--   :material-book-open-variant:{ .lg .middle } **User Guide**
-
-    ---
-
-    Detailed usage instructions and examples
-
-    [:octicons-arrow-right-24: Usage guide](usage.md)
-
--   :material-api:{ .lg .middle } **API Reference**
-
-    ---
-
-    Complete API documentation for developers
-
-    [:octicons-arrow-right-24: API docs](api/cli.md)
-
-</div>
+| Section | Description |
+|---------|-------------|
+| [Installation](installation.md) | Install SAbR via pip, from source, or using Docker |
+| [Quick Start](quickstart.md) | Get up and running with SAbR in minutes |
+| [Usage Guide](usage.md) | Detailed usage instructions and examples |
+| [Numbering Schemes](numbering_schemes.md) | Learn about IMGT, Chothia, Kabat, etc. |
+| [API Reference](api/cli.md) | Complete API documentation for developers |
+| [Contributing](contributing.md) | How to contribute to SAbR |
