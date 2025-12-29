@@ -65,9 +65,11 @@ Options:
   --overwrite                     Overwrite the output file if it already
                                   exists.
   -v, --verbose                   Enable verbose logging.
-  --max-residues INTEGER          Maximum number of residues to process from
-                                  the chain. If 0 (default), process all
-                                  residues.
+  --residue-range START END       Range of residues to process in PDB
+                                  numbering (inclusive). Use '0 0' (default)
+                                  to process all residues. Example:
+                                  --residue-range 1 120 processes residues
+                                  1-120.
   --extended-insertions           Enable extended insertion codes (AA, AB,
                                   ..., ZZ, AAA, etc.) for antibodies with very
                                   long CDR loops. Requires mmCIF output format
