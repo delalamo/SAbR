@@ -1,4 +1,24 @@
 #!/usr/bin/env python3
+"""Alignment matrix to HMM state vector conversion module.
+
+This module converts binary alignment matrices to HMMER-style state vectors
+for use with ANARCI numbering schemes. The conversion process:
+
+1. Extracts the alignment path from the binary matrix
+2. Identifies matched, inserted, and deleted positions
+3. Handles orphan residues (CDR insertions not aligned to any IMGT position)
+4. Returns a state vector compatible with ANARCI's numbering functions
+
+Key components:
+    State: Dataclass representing an HMM state (match/insert/delete)
+    alignment_matrix_to_state_vector: Main conversion function
+    report_output: Logging utility for state vectors
+
+The alignment matrix format:
+    - Rows: Sequence positions (0-indexed)
+    - Columns: IMGT positions (0-indexed, so column 0 = IMGT position 1)
+    - Value 1: Indicates alignment between sequence and IMGT position
+"""
 
 import logging
 from dataclasses import dataclass
@@ -13,7 +33,17 @@ LOGGER = logging.getLogger(__name__)
 class State:
     """Represents an HMM state with residue number and insertion code.
 
-    This dataclass can be used like a tuple for backward compatibility.
+    This dataclass encapsulates a single state in the HMMER-style state vector.
+    It can be unpacked like a tuple for backward compatibility with ANARCI.
+
+    Attributes:
+        residue_number: The IMGT position number (1-128).
+        insertion_code: State type indicator:
+            - "m": Match state (residue aligned to this IMGT position)
+            - "i": Insertion state (extra residue after this position)
+            - "d": Deletion state (no residue at this IMGT position)
+        mapped_residue: Index into the padded sequence for match/insert states,
+            or None for deletion states. Used by ANARCI to extract residues.
     """
 
     residue_number: int
@@ -136,7 +166,11 @@ def alignment_matrix_to_state_vector(
 
 
 def report_output(states: List[State]) -> None:
-    """Log each HMM state at INFO level."""
+    """Log each HMM state at INFO level for debugging purposes.
+
+    Args:
+        states: List of State objects to log.
+    """
     LOGGER.info(f"Reporting {len(states)} HMM states")
     for idx, state in enumerate(states):
         mapped = state.mapped_residue
