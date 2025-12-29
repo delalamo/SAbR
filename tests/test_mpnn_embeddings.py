@@ -403,18 +403,11 @@ def test_embed_returns_embeddings(monkeypatch):
     monkeypatch.setattr(mpnn_embeddings, "_get_inputs", fake_get_inputs)
     monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
 
-    result = mpnn_embeddings._embed("fake.pdb", chains="A")
+    result = mpnn_embeddings._embed("fake.pdb", chain="A")
 
     assert isinstance(result, mpnn_embeddings.MPNNEmbeddings)
     assert result.embeddings.shape == (2, constants.EMBED_DIM)
     assert result.idxs == ["id_0", "id_1"]
-
-
-def test_embed_rejects_multi_chain_input(monkeypatch):
-    """Test that _embed rejects multi-chain input."""
-    monkeypatch.setattr(model.END_TO_END_MODELS, "END_TO_END", DummyModel)
-    with pytest.raises(NotImplementedError):
-        mpnn_embeddings._embed("fake.pdb", chains="AB")
 
 
 def test_embed_id_mismatch_raises_error(monkeypatch):
@@ -447,7 +440,7 @@ def test_embed_id_mismatch_raises_error(monkeypatch):
     with pytest.raises(
         ValueError, match="IDs length.*does not match embeddings rows"
     ):
-        mpnn_embeddings._embed("fake.pdb", chains="A")
+        mpnn_embeddings._embed("fake.pdb", chain="A")
 
 
 def test_get_inputs_matches_softalign():

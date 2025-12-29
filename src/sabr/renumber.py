@@ -251,8 +251,9 @@ def renumber_structure(
     else:
         working_structure = structure
 
-    # Generate embeddings from structure
-    embeddings = mpnn_embeddings.from_structure(working_structure, chain)
+    # Get the chain object and generate embeddings
+    chain_obj = working_structure[0][chain]
+    embeddings = mpnn_embeddings.from_chain(chain_obj)
 
     LOGGER.info(
         f"Processing chain {chain} with {len(embeddings.idxs)} residues"

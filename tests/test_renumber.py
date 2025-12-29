@@ -73,11 +73,9 @@ class TestRenumberStructure:
 
         # Mock the aligner and embedding functions
         DummyAligner = create_dummy_aligner(alignment, chain_type)
-        dummy_from_structure = self._create_dummy_from_structure()
+        dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
+        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
             renumber.softaligner, "SoftAligner", lambda: DummyAligner()
         )
@@ -109,12 +107,10 @@ class TestRenumberStructure:
         # Create mocks
         DummyAligner = create_dummy_aligner(alignment, chain_type)
         dummy_from_pdb = create_dummy_from_pdb()
-        dummy_from_structure = self._create_dummy_from_structure()
+        dummy_from_chain = self._create_dummy_from_chain()
 
         monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
+        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
             renumber.softaligner, "SoftAligner", lambda: DummyAligner()
         )
@@ -177,11 +173,9 @@ class TestRenumberStructure:
         )
 
         DummyAligner = create_dummy_aligner(alignment, fixture_chain_type)
-        dummy_from_structure = self._create_dummy_from_structure()
+        dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
+        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
             renumber.softaligner, "SoftAligner", lambda: DummyAligner()
         )
@@ -212,11 +206,9 @@ class TestRenumberStructure:
         alignment, chain_type = load_alignment_fixture(data["alignment"])
 
         DummyAligner = create_dummy_aligner(alignment, chain_type)
-        dummy_from_structure = self._create_dummy_from_structure()
+        dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
+        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
             renumber.softaligner, "SoftAligner", lambda: DummyAligner()
         )
@@ -247,11 +239,9 @@ class TestRenumberStructure:
         DummyAligner = create_dummy_aligner(
             alignment, chain_type, captured_kwargs
         )
-        dummy_from_structure = self._create_dummy_from_structure()
+        dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(
-            mpnn_embeddings, "from_structure", dummy_from_structure
-        )
+        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
             renumber.softaligner, "SoftAligner", lambda: DummyAligner()
         )
@@ -312,35 +302,32 @@ class TestRenumberStructure:
             res_num = res.get_id()[1]
             assert 30 <= res_num <= 80
 
-    def _create_dummy_from_structure(self):
-        """Create a mock from_structure function."""
+    def _create_dummy_from_chain(self):
+        """Create a mock from_chain function."""
         from tests.conftest import DummyEmbeddings
 
-        def dummy_from_structure(structure, chain: str, **kwargs):
-            # We need to get the sequence from the structure
-            sequence = ""
-            for ch in structure[0]:
-                if ch.id == chain:
-                    for res in ch.get_residues():
-                        if res.get_id()[0].strip():
-                            continue
-                        from sabr.constants import AA_3TO1
+        def dummy_from_chain(chain, **kwargs):
+            # Extract the sequence from the chain
+            from sabr.constants import AA_3TO1
 
-                        resname = res.get_resname()
-                        if resname in AA_3TO1:
-                            sequence += AA_3TO1[resname]
-                    break
+            sequence = ""
+            for res in chain.get_residues():
+                if res.get_id()[0].strip():
+                    continue
+                resname = res.get_resname()
+                if resname in AA_3TO1:
+                    sequence += AA_3TO1[resname]
 
             actual_n_residues = len(sequence)
             return DummyEmbeddings(
-                name="test_structure",
+                name="test_chain",
                 embeddings=np.zeros((actual_n_residues, 64)),
                 idxs=[str(i) for i in range(actual_n_residues)],
                 stdev=np.ones((actual_n_residues, 64)),
                 sequence=sequence,
             )
 
-        return dummy_from_structure
+        return dummy_from_chain
 
 
 class TestRunRenumberingPipeline:

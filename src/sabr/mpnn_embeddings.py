@@ -8,7 +8,7 @@ structures using the MPNN (Message Passing Neural Network) architecture.
 Key components:
 - MPNNEmbeddings: Dataclass for storing per-residue embeddings
 - from_pdb: Generate embeddings from a PDB or CIF file
-- from_structure: Generate embeddings from a BioPython Structure
+- from_chain: Generate embeddings from a BioPython Chain object
 - from_npz: Load pre-computed embeddings from NumPy archive
 
 Embeddings are 64-dimensional vectors computed for each residue,
@@ -35,11 +35,6 @@ from sabr import constants, model, util
 
 LOGGER = logging.getLogger(__name__)
 
-# Constants for CB position calculation (standard protein geometry)
-_CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
-_CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
-_CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
-
 
 @dataclass(frozen=True)
 class MPNNInputs:
@@ -65,50 +60,43 @@ class MPNNInputs:
     sequence: str
 
 
-def _np_norm(
-    x: np.ndarray, axis: int = -1, keepdims: bool = True
+def _compute_cb(
+    n_coords: np.ndarray, ca_coords: np.ndarray, c_coords: np.ndarray
 ) -> np.ndarray:
-    """Compute Euclidean norm of vector with numerical stability."""
+    """Compute CB (C-beta) coordinates from backbone atoms.
+
+    Uses standard protein geometry constants to calculate the CB position
+    from N, CA, and C backbone atom coordinates.
+
+    Args:
+        n_coords: N atom coordinates [1, 3] or [3].
+        ca_coords: CA atom coordinates [1, 3] or [3].
+        c_coords: C atom coordinates [1, 3] or [3].
+
+    Returns:
+        CB coordinates with same shape as input.
+    """
     eps = 1e-8
-    return np.sqrt(np.square(x).sum(axis=axis, keepdims=keepdims) + eps)
-
-
-def _np_extend(
-    a: np.ndarray,
-    b: np.ndarray,
-    c: np.ndarray,
-    length: float,
-    angle: float,
-    dihedral: float,
-) -> np.ndarray:
-    """Compute 4th coordinate given 3 coordinates and internal geometry."""
 
     def normalize(x: np.ndarray) -> np.ndarray:
-        return x / _np_norm(x)
+        norm = np.sqrt(np.square(x).sum(axis=-1, keepdims=True) + eps)
+        return x / norm
 
-    bc = normalize(b - c)
-    n = normalize(np.cross(b - a, bc))
+    # Compute CB position using internal geometry
+    # a=C, b=N, c=CA for the extension calculation
+    bc = normalize(n_coords - ca_coords)
+    n = normalize(np.cross(n_coords - c_coords, bc))
 
-    d = c + (
+    length = constants.CB_BOND_LENGTH
+    angle = constants.CB_BOND_ANGLE
+    dihedral = constants.CB_DIHEDRAL
+
+    cb = ca_coords + (
         length * np.cos(angle) * bc
         + length * np.sin(angle) * np.cos(dihedral) * np.cross(n, bc)
         + length * np.sin(angle) * np.sin(dihedral) * (-n)
     )
-    return d
-
-
-def _compute_cb(
-    n_coords: np.ndarray, ca_coords: np.ndarray, c_coords: np.ndarray
-) -> np.ndarray:
-    """Compute CB (C-beta) coordinates from backbone atoms."""
-    return _np_extend(
-        c_coords,
-        n_coords,
-        ca_coords,
-        _CB_BOND_LENGTH,
-        _CB_BOND_ANGLE,
-        _CB_DIHEDRAL,
-    )
+    return cb
 
 
 def _parse_structure(file_path: str) -> Structure:
@@ -234,48 +222,14 @@ def _extract_inputs_from_chain(
     )
 
 
-def _find_chain(
-    structure: Structure, chain: str | None, source_name: str = ""
-) -> Chain.Chain:
-    """Find and return the target chain from a structure.
-
-    Args:
-        structure: BioPython Structure object.
-        chain: Chain identifier to find. If None, uses first chain.
-        source_name: Source identifier for error messages.
-
-    Returns:
-        The target Chain object.
-
-    Raises:
-        ValueError: If the specified chain is not found.
-    """
-    struct_model = structure[0]
-
-    if chain is not None:
-        for ch in struct_model:
-            if ch.id == chain:
-                return ch
-        available = [ch.id for ch in struct_model]
-        err_msg = f"Chain '{chain}' not found"
-        if source_name:
-            err_msg += f" in {source_name}"
-        err_msg += f". Available chains: {available}"
-        raise ValueError(err_msg)
-    else:
-        target_chain = list(struct_model.get_chains())[0]
-        LOGGER.info(f"No chain specified, using first chain: {target_chain.id}")
-        return target_chain
-
-
 def _get_inputs(
-    source: Union[str, Structure], chain: str | None = None
+    source: Union[str, Chain.Chain], chain: str | None = None
 ) -> MPNNInputs:
-    """Extract MPNN inputs from a file path or Structure object.
+    """Extract MPNN inputs from a file path or Chain object.
 
     Args:
-        source: Either a file path (str) or BioPython Structure object.
-        chain: Chain identifier to extract. If None, uses first chain.
+        source: Either a file path (str) or BioPython Chain object.
+        chain: Chain identifier to extract (only used for file paths).
 
     Returns:
         MPNNInputs containing backbone coordinates and residue information.
@@ -283,12 +237,26 @@ def _get_inputs(
     if isinstance(source, str):
         structure = _parse_structure(source)
         source_name = source
-    else:
-        structure = source
-        source_name = ""
+        struct_model = structure[0]
 
-    target_chain = _find_chain(structure, chain, source_name)
-    return _extract_inputs_from_chain(target_chain, source_name)
+        if chain is not None:
+            for ch in struct_model:
+                if ch.id == chain:
+                    return _extract_inputs_from_chain(ch, source_name)
+            available = [ch.id for ch in struct_model]
+            raise ValueError(
+                f"Chain '{chain}' not found in {source_name}. "
+                f"Available chains: {available}"
+            )
+        else:
+            target_chain = list(struct_model.get_chains())[0]
+            LOGGER.info(
+                f"No chain specified, using first chain: {target_chain.id}"
+            )
+            return _extract_inputs_from_chain(target_chain, source_name)
+    else:
+        # source is a Chain object
+        return _extract_inputs_from_chain(source, "")
 
 
 @dataclass(frozen=True)
@@ -297,7 +265,7 @@ class MPNNEmbeddings:
 
     Can be instantiated from either:
     1. A PDB file (via from_pdb function)
-    2. A BioPython Structure (via from_structure function)
+    2. A BioPython Chain (via from_chain function)
     3. An NPZ file (via from_npz function)
     4. Direct construction with embeddings data
     """
@@ -392,34 +360,32 @@ class MPNNEmbeddings:
 
 
 def _embed(
-    source: Union[str, Structure],
-    chains: str,
+    source: Union[str, Chain.Chain],
+    chain: str | None = None,
     max_residues: int = 0,
     name: str = "INPUT",
 ) -> MPNNEmbeddings:
-    """Core embedding function for both file and structure inputs.
+    """Core embedding function for both file and chain inputs.
 
     Args:
-        source: Either a file path (str) or BioPython Structure object.
-        chains: Chain identifier(s) to embed.
+        source: Either a file path (str) or BioPython Chain object.
+        chain: Chain identifier (only used for file paths).
         max_residues: Maximum number of residues to embed. If 0, embed all.
         name: Name for the resulting embeddings.
 
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    source_desc = source if isinstance(source, str) else "structure"
-    LOGGER.info(f"Embedding {source_desc} chain {chains}")
+    if isinstance(source, str):
+        source_desc = f"{source} chain {chain}"
+    else:
+        source_desc = f"chain {source.id}"
+
+    LOGGER.info(f"Embedding {source_desc}")
 
     e2e_model = model.create_e2e_model()
-    if len(chains) > 1:
-        raise NotImplementedError(
-            f"Only single chain embedding is supported. "
-            f"Got {len(chains)} chains: '{chains}'. "
-            f"Please specify a single chain identifier."
-        )
 
-    inputs = _get_inputs(source, chain=chains)
+    inputs = _get_inputs(source, chain=chain)
     embeddings = e2e_model.MPNN(
         inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
     )[0]
@@ -478,9 +444,11 @@ def from_pdb(
     key = jax.random.PRNGKey(random_seed)
 
     def _embed_pdb(
-        pdbfile: str, chains: str, max_res: int = 0
+        pdbfile: str, chain_id: str, max_res: int = 0
     ) -> MPNNEmbeddings:
-        return _embed(pdbfile, chains, max_res, name="INPUT_PDB")
+        return _embed(
+            pdbfile, chain=chain_id, max_residues=max_res, name="INPUT_PDB"
+        )
 
     transformed_embed_fn = hk.transform(_embed_pdb)
     result = transformed_embed_fn.apply(
@@ -494,48 +462,42 @@ def from_pdb(
     return result
 
 
-def from_structure(
-    structure: Structure,
-    chain: str,
+def from_chain(
+    chain: Chain.Chain,
     max_residues: int = 0,
     params_name: str = "CONT_SW_05_T_3_1",
     params_path: str = "softalign.models",
     random_seed: int = 0,
 ) -> MPNNEmbeddings:
     """
-    Create MPNNEmbeddings from a BioPython Structure object.
+    Create MPNNEmbeddings from a BioPython Chain object.
 
     This function enables in-memory structure processing without requiring
     the structure to be saved to disk first.
 
     Args:
-        structure: BioPython Structure object.
-        chain: Chain identifier to embed.
+        chain: BioPython Chain object.
         max_residues: Maximum residues to embed. If 0, embed all.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
         random_seed: Random seed for JAX.
 
     Returns:
-        MPNNEmbeddings for the specified chain.
+        MPNNEmbeddings for the chain.
     """
     model_params = util.read_softalign_params(
         params_name=params_name, params_path=params_path
     )
     key = jax.random.PRNGKey(random_seed)
 
-    def _embed_structure(
-        struct: Structure, chains: str, max_res: int = 0
-    ) -> MPNNEmbeddings:
-        return _embed(struct, chains, max_res, name="INPUT_STRUCTURE")
+    def _embed_chain(ch: Chain.Chain, max_res: int = 0) -> MPNNEmbeddings:
+        return _embed(ch, max_residues=max_res, name="INPUT_CHAIN")
 
-    transformed_embed_fn = hk.transform(_embed_structure)
-    result = transformed_embed_fn.apply(
-        model_params, key, structure, chain, max_residues
-    )
+    transformed_embed_fn = hk.transform(_embed_chain)
+    result = transformed_embed_fn.apply(model_params, key, chain, max_residues)
 
     LOGGER.info(
-        f"Computed embeddings for structure chain {chain} "
+        f"Computed embeddings for chain {chain.id} "
         f"(length={result.embeddings.shape[0]})"
     )
     return result
