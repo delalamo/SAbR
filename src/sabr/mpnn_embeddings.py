@@ -21,7 +21,7 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 from Bio.PDB import MMCIFParser, PDBParser
@@ -378,7 +378,7 @@ class MPNNEmbeddings:
 def from_pdb(
     pdb_file: str,
     chain: str,
-    max_residues: int = 0,
+    residue_range: Tuple[int, int] = (0, 0),
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
     random_seed: int = 0,
@@ -389,7 +389,8 @@ def from_pdb(
     Args:
         pdb_file: Path to input PDB file (.pdb or .cif).
         chain: Chain identifier to embed.
-        max_residues: Maximum residues to embed. If 0, embed all.
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering
+            (inclusive). Use (0, 0) to embed all residues.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
         random_seed: Random seed for reproducibility.
@@ -432,13 +433,30 @@ def from_pdb(
     ids = inputs.residue_ids
     sequence = inputs.sequence
 
-    if max_residues > 0 and len(ids) > max_residues:
-        LOGGER.info(
-            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
-        )
-        embeddings = embeddings[:max_residues]
-        ids = ids[:max_residues]
-        sequence = sequence[:max_residues]
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        # Find indices where residue numbers fall within range
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                # Skip residues with non-numeric IDs (e.g., insertion codes)
+                continue
+
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
 
     result = MPNNEmbeddings(
         name="INPUT_PDB",

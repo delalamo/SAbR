@@ -5,6 +5,7 @@ This module provides validation functions for command-line arguments.
 """
 
 import os
+from typing import Tuple
 
 import click
 
@@ -35,7 +36,7 @@ def validate_inputs(
     input_pdb: str,
     input_chain: str,
     output_file: str,
-    max_residues: int,
+    residue_range: Tuple[int, int],
     extended_insertions: bool,
     overwrite: bool,
 ) -> None:
@@ -45,7 +46,8 @@ def validate_inputs(
         input_pdb: Path to input structure file.
         input_chain: Chain identifier (single character).
         output_file: Path to output structure file.
-        max_residues: Maximum residues to process (0 for all).
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering.
+            Use (0, 0) to process all residues.
         extended_insertions: Whether extended insertion codes are enabled.
         overwrite: Whether to overwrite existing output file.
 
@@ -78,10 +80,18 @@ def validate_inputs(
             "Please use a .cif file extension for the output file."
         )
 
-    if max_residues < 0:
-        raise click.ClickException(
-            f"max_residues must be non-negative. Got: {max_residues}"
-        )
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        if end_res <= start_res:
+            raise click.ClickException(
+                f"Invalid residue range: end ({end_res}) must be greater than "
+                f"start ({start_res}). Use '0 0' to process all residues."
+            )
+        if start_res < 0 or end_res < 0:
+            raise click.ClickException(
+                f"Residue range values must be non-negative. "
+                f"Got: start={start_res}, end={end_res}"
+            )
 
     if os.path.exists(output_file) and not overwrite:
         raise click.ClickException(
