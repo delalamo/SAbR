@@ -95,21 +95,11 @@ class SoftAligner:
     def normalize(
         self, mp: mpnn_embeddings.MPNNEmbeddings
     ) -> mpnn_embeddings.MPNNEmbeddings:
-        """Return embeddings reordered by sorted integer indices."""
-        idxs_int = np.asarray([int(x) for x in mp.idxs], dtype=np.int64)
-        order = np.argsort(idxs_int)
-        if not np.array_equal(order, np.arange(len(order))):
-            norm_msg = (
-                f"Normalizing embedding order for {mp.name} "
-                f"(size={len(order)})"
-            )
-            LOGGER.debug(norm_msg)
-        return mpnn_embeddings.MPNNEmbeddings(
-            name=mp.name,
-            embeddings=mp.embeddings[order, ...],
-            idxs=[idxs_int[i] for i in order],
-            stdev=mp.stdev[order, ...],
-        )
+        """Return embeddings reordered by sorted integer indices.
+
+        Deprecated: Use mp.sorted_by_index() directly instead.
+        """
+        return mp.sorted_by_index()
 
     def read_embeddings(
         self,
@@ -570,7 +560,7 @@ class SoftAligner:
             chain_type=detected_chain_type,
             alignment=aln,
             score=score,
-            sim_matrix=None,
+            sim_matrix=sim_matrix,
             idxs1=input_data.idxs,
             idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
         )

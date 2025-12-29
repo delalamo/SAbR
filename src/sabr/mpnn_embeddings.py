@@ -333,6 +333,29 @@ class MPNNEmbeddings:
             f"got ndim={stdev.ndim}"
         )
 
+    def sorted_by_index(self) -> "MPNNEmbeddings":
+        """Return a new MPNNEmbeddings with rows sorted by integer index.
+
+        Converts string indices to integers, sorts by ascending order,
+        and reorders embeddings and stdev accordingly.
+
+        Returns:
+            New MPNNEmbeddings instance with sorted indices.
+        """
+        idxs_int = np.asarray([int(x) for x in self.idxs], dtype=np.int64)
+        order = np.argsort(idxs_int)
+        if not np.array_equal(order, np.arange(len(order))):
+            LOGGER.debug(
+                f"Sorting embedding indices for {self.name} (size={len(order)})"
+            )
+        return MPNNEmbeddings(
+            name=self.name,
+            embeddings=self.embeddings[order, ...],
+            idxs=[int(idxs_int[i]) for i in order],
+            stdev=self.stdev[order, ...],
+            sequence=self.sequence,
+        )
+
     def save(self, output_path: str) -> None:
         """
         Save MPNNEmbeddings to an NPZ file.
