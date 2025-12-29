@@ -30,6 +30,8 @@ from sabr import (
     util,
 )
 
+from typing import Tuple
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -155,7 +157,7 @@ def main(
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
-    residue_range: tuple,
+    residue_range: Tuple[int, int],
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
     chain_type: str,
