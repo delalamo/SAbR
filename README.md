@@ -92,7 +92,7 @@ Options:
 SAbR can also be used programmatically to renumber BioPython Structure objects directly in memory:
 
 ```python
-from Bio.PDB import PDBParser
+from Bio.PDB import PDBParser, PDBIO
 from sabr import renumber
 
 # Load a structure
@@ -116,7 +116,6 @@ renumbered = renumber.renumber_structure(
 )
 
 # Save the renumbered structure
-from Bio.PDB import PDBIO
 io = PDBIO()
 io.set_structure(renumbered)
 io.save("output.pdb")
