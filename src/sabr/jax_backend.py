@@ -37,7 +37,7 @@ def _unflatten_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:
     Returns:
         Nested dictionary structure.
     """
-    result: Dict[str, Any] = {}
+    result = {}
     for key, value in d.items():
         parts = key.split(sep)
         current = result

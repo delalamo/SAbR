@@ -17,6 +17,7 @@ Usage:
 """
 
 import logging
+from typing import Tuple
 
 import click
 from ANARCI import anarci
@@ -29,8 +30,6 @@ from sabr import (
     softaligner,
     util,
 )
-
-from typing import Tuple
 
 LOGGER = logging.getLogger(__name__)
 
