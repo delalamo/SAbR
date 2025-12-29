@@ -5,10 +5,6 @@ build:
   tools:
     python: "3.11"
   commands:
-    - pip install .[docs]
-    - pdoc sabr --docformat google -o $READTHEDOCS_OUTPUT/html
-
-python:
-  install:
-    - method: pip
-      path: .
+    - pip install .
+    - pip install pdoc
+    - JAX_PLATFORMS=cpu pdoc sabr --docformat google -o $READTHEDOCS_OUTPUT/html
