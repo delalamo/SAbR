@@ -30,13 +30,9 @@ test = [
   "pytest>=7.0",
   "pytest-cov>=4.1",
 ]
-docs = [
-  "pdoc>=14.0",
-]
 
 [project.urls]
 Homepage = "https://github.com/delalamo/sabr"
-Documentation = "https://sabr.readthedocs.io"
 Issues = "https://github.com/delalamo/sabr/issues"
 
 [project.scripts]
