@@ -24,7 +24,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import requests
-
 from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr import aln2hmm, mpnn_embeddings, softaligner
@@ -64,7 +63,9 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/120.0.0.0 Safari/537.36"
         ),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        ),
         "Accept-Language": "en-US,en;q=0.9",
         "Connection": "keep-alive",
     }
@@ -85,9 +86,11 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
             return True
 
         except requests.exceptions.RequestException as e:
-            print(f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}")
+            print(
+                f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
+            )
             if attempt < max_retries - 1:
-                time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
+                time.sleep(2**attempt)  # Exponential backoff: 1s, 2s, 4s
             else:
                 print(f"Failed to fetch {pdb_id} after {max_retries} attempts")
                 return False
