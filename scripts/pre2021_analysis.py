@@ -399,7 +399,18 @@ def main():
                 continue
 
             # Run SAbR
-            sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
+            try:
+                sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
+            except Exception as e:
+                print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")
+                results[chain_type].append(
+                    {
+                        "pdb": f"{pdb_id}_{chain_id}",
+                        "error": f"SAbR failed: {e}",
+                        "perfect": False,
+                    }
+                )
+                continue
 
             # Compare
             comparison = compare_positions(
