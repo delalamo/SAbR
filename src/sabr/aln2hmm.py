@@ -22,7 +22,7 @@ The alignment matrix format:
 
 import logging
 from dataclasses import dataclass
-from typing import Iterator, List, Optional, Tuple
+from typing import Iterator, List, Optional
 
 import numpy as np
 
@@ -49,10 +49,6 @@ class State:
     residue_number: int
     insertion_code: str
     mapped_residue: Optional[int] = None
-
-    def to_tuple(self) -> Tuple[Tuple[int, str], Optional[int]]:
-        """Convert to ANARCI-compatible tuple format."""
-        return ((self.residue_number, self.insertion_code), self.mapped_residue)
 
     def __iter__(self) -> Iterator:
         """Allow unpacking like a tuple for backward compatibility."""
