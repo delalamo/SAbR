@@ -26,7 +26,7 @@ from typing import Dict, List
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr import aln2hmm, mpnn_embeddings, softaligner
+from sabr import mpnn_embeddings, renumber
 from sabr.constants import IMGT_LOOPS
 
 # Build IMGT_REGIONS from sabr constants and IMGT framework definitions
@@ -197,37 +197,27 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     Raises:
         RuntimeError: If SAbR pipeline fails
     """
-    from anarci import number_sequence_from_alignment
-
     # Extract embeddings
     input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
 
-    # Align
-    aligner = softaligner.SoftAligner()
-    out = aligner(input_data, deterministic_loop_renumbering=True)
-
-    # Convert to state vector
-    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
-
-    # Build subsequence
-    subsequence = "-" * start + input_data.sequence[: end - start]
-
-    # Get ANARCI numbering
-    anarci_out, _, _ = number_sequence_from_alignment(
-        sv, subsequence, scheme="imgt", chain_type=out.chain_type
+    # Run the renumbering pipeline (handles alignment and ANARCI)
+    anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
+        input_data,
+        numbering_scheme="imgt",
+        chain_type="auto",
+        deterministic_loop_renumbering=True,
     )
 
-    # Parse output positions
+    # Parse output positions from ANARCI alignment
     output_positions = []
-    for pos, aa in anarci_out:
-        if aa != "-":
-            resnum = pos[0]
-            insertion = pos[1].strip() if pos[1].strip() else ""
-            output_positions.append(f"{resnum}{insertion}")
+    for pos, _aa in anarci_out:
+        resnum = pos[0]
+        insertion = pos[1].strip() if pos[1].strip() else ""
+        output_positions.append(f"{resnum}{insertion}")
 
     return {
         "output_positions": output_positions,
-        "chain_type": out.chain_type,
+        "chain_type": chain_type,
         "sequence": input_data.sequence,
     }
 
