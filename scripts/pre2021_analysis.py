@@ -18,10 +18,12 @@ import argparse
 import csv
 import json
 import tempfile
-import urllib.request
+import time
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional
+
+import requests
 
 from Bio.PDB import PDBIO, PDBParser, Select
 
@@ -41,12 +43,13 @@ IMGT_REGIONS = {
 }
 
 
-def fetch_imgt_pdb(pdb_id: str, output_path: str) -> bool:
+def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
     """Fetch IMGT-numbered PDB from SAbDab.
 
     Args:
         pdb_id: 4-letter PDB ID
         output_path: Path to save the PDB file
+        max_retries: Maximum number of retry attempts
 
     Returns:
         True if successful, False otherwise
@@ -62,24 +65,34 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str) -> bool:
             "Chrome/120.0.0.0 Safari/537.36"
         ),
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Connection": "keep-alive",
     }
 
-    try:
-        request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request, timeout=30) as response:
-            content = response.read()
-            with open(output_path, "wb") as f:
-                f.write(content)
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
 
-        # Verify it's a valid PDB (not an error page)
-        with open(output_path, "r") as f:
-            content = f.read(100)
-            if "ATOM" not in content and "HEADER" not in content:
+            content = response.text
+            # Verify it's a valid PDB (not an error page)
+            if "ATOM" not in content[:500] and "HEADER" not in content[:500]:
+                print(f"Invalid PDB content for {pdb_id}")
                 return False
-        return True
-    except Exception as e:
-        print(f"Failed to fetch {pdb_id}: {e}")
-        return False
+
+            with open(output_path, "w") as f:
+                f.write(content)
+            return True
+
+        except requests.exceptions.RequestException as e:
+            print(f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}")
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
+            else:
+                print(f"Failed to fetch {pdb_id} after {max_retries} attempts")
+                return False
+
+    return False
 
 
 class ChainResidueSelect(Select):
