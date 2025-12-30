@@ -212,3 +212,6 @@ __marimo__/
 
 # etc
 local_test_dir/
+
+# RTD build artifact (README copied for pdoc)
+src/sabr/README.md
