@@ -22,6 +22,7 @@ pre-commit install
 Avoid using type hints outside of function definitions. Type hints should only be used in function signatures (parameters and return types), not for variable assignments or class attributes.
 
 **Do this:**
+
 ```python
 def process_sequence(sequence: str, threshold: float = 0.5) -> list:
     result = []
@@ -31,6 +32,7 @@ def process_sequence(sequence: str, threshold: float = 0.5) -> list:
 ```
 
 **Don't do this:**
+
 ```python
 def process_sequence(sequence: str, threshold: float = 0.5) -> list:
     result: list = []
