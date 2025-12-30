@@ -384,26 +384,40 @@ def main():
 
     total_perfect = 0
     total_count = 0
+    total_failed = 0
 
     for chain_type in ["heavy", "kappa", "lambda"]:
         type_results = results.get(chain_type, [])
         if not type_results:
             continue
 
-        n_perfect = sum(1 for r in type_results if r.get("perfect", False))
-        n_total = len(type_results)
-        total_perfect += n_perfect
-        total_count += n_total
+        # Only count successful cases (no error) in the totals
+        successful = [r for r in type_results if "error" not in r]
+        failed = [r for r in type_results if "error" in r]
 
-        accuracy = round(100 * n_perfect / n_total, 1) if n_total > 0 else 0
-        print(
-            f"{chain_type.upper()}: {n_perfect}/{n_total} perfect ({accuracy}%)"
-        )
+        n_perfect = sum(1 for r in successful if r.get("perfect", False))
+        n_successful = len(successful)
+        n_failed = len(failed)
+        total_perfect += n_perfect
+        total_count += n_successful
+        total_failed += n_failed
+
+        if n_successful > 0:
+            accuracy = round(100 * n_perfect / n_successful, 1)
+            print(
+                f"{chain_type.upper()}: {n_perfect}/{n_successful} perfect "
+                f"({accuracy}%)"
+                + (f" [{n_failed} failed]" if n_failed > 0 else "")
+            )
+        elif n_failed > 0:
+            print(f"{chain_type.upper()}: 0/0 perfect [{n_failed} failed]")
 
     if total_count > 0:
         overall_accuracy = round(100 * total_perfect / total_count, 1)
         print(f"\nOVERALL: {total_perfect}/{total_count} perfect")
         print(f"  Accuracy: {overall_accuracy}%")
+    if total_failed > 0:
+        print(f"  Failed: {total_failed} entries")
 
     # Save results
     with open(args.output, "w") as f:
