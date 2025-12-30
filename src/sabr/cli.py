@@ -17,6 +17,7 @@ Usage:
 """
 
 import logging
+import random
 
 import click
 
@@ -145,6 +146,16 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
+    "--random-seed",
+    "random_seed",
+    type=int,
+    default=None,
+    help=(
+        "Random seed for JAX operations. If not specified, a random seed "
+        "will be generated. Set this for reproducible results."
+    ),
+)
+@click.option(
     "-t",
     "--chain-type",
     "chain_type",
@@ -178,6 +189,7 @@ def main(
     max_residues: int,
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
+    random_seed: int | None,
     chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
@@ -191,6 +203,13 @@ def main(
         overwrite,
     )
 
+    # Generate random seed if not specified
+    if random_seed is None:
+        random_seed = random.randint(0, 2**31 - 1)
+        LOGGER.info(f"Generated random seed: {random_seed}")
+    else:
+        LOGGER.info(f"Using specified random seed: {random_seed}")
+
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
         f"chain={input_chain} output={output_file} "
@@ -200,7 +219,9 @@ def main(
         start_msg += " (extended insertion codes enabled)"
     LOGGER.info(start_msg)
 
-    input_data = mpnn_embeddings.from_pdb(input_pdb, input_chain, max_residues)
+    input_data = mpnn_embeddings.from_pdb(
+        input_pdb, input_chain, max_residues, random_seed=random_seed
+    )
     sequence = input_data.sequence
 
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")

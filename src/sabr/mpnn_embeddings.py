@@ -519,10 +519,7 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
     name = str(data["name"])
     idxs = [str(idx) for idx in data["idxs"]]
 
-    sequence = None
-    if "sequence" in data:
-        seq_str = str(data["sequence"])
-        sequence = seq_str if seq_str else None
+    sequence = str(data["sequence"]) or None if "sequence" in data else None
 
     embedding = MPNNEmbeddings(
         name=name,
