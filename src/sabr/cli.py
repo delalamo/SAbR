@@ -17,17 +17,16 @@ Usage:
 """
 
 import logging
-from typing import Tuple
+import random
+from typing import Optional, Tuple
 
 import click
-from ANARCI import anarci
 
 from sabr import (
-    aln2hmm,
     edit_pdb,
     mpnn_embeddings,
     options,
-    softaligner,
+    renumber,
     util,
 )
 
@@ -133,6 +132,16 @@ LOGGER = logging.getLogger(__name__)
     ),
 )
 @click.option(
+    "--random-seed",
+    "random_seed",
+    type=int,
+    default=None,
+    help=(
+        "Random seed for JAX operations. If not specified, a random seed "
+        "will be generated. Set this for reproducible results."
+    ),
+)
+@click.option(
     "-t",
     "--chain-type",
     "chain_type",
@@ -159,6 +168,7 @@ def main(
     residue_range: Tuple[int, int],
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
+    random_seed: Optional[int],
     chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
@@ -172,6 +182,13 @@ def main(
         overwrite,
     )
 
+    # Generate random seed if not specified
+    if random_seed is None:
+        random_seed = random.randint(0, 2**31 - 1)
+        LOGGER.info(f"Generated random seed: {random_seed}")
+    else:
+        LOGGER.info(f"Using specified random seed: {random_seed}")
+
     start_msg = (
         f"Starting SAbR CLI with input={input_pdb} "
         f"chain={input_chain} output={output_file} "
@@ -182,7 +199,10 @@ def main(
     LOGGER.info(start_msg)
 
     input_data = mpnn_embeddings.from_pdb(
-        input_pdb, input_chain, residue_range=residue_range
+        input_pdb,
+        input_chain,
+        residue_range=residue_range,
+        random_seed=random_seed,
     )
     sequence = input_data.sequence
 
@@ -197,33 +217,16 @@ def main(
         f"{input_pdb} chain {input_chain}"
     )
 
-    aligner = softaligner.SoftAligner()
-    alignment_result = aligner(
-        input_data,
-        deterministic_loop_renumbering=not disable_deterministic_renumbering,
+    # Use shared renumbering pipeline
+    use_deterministic = not disable_deterministic_renumbering
+    anarci_out, detected_chain_type, first_aligned_row = (
+        renumber.run_renumbering_pipeline(
+            input_data,
+            numbering_scheme=numbering_scheme,
+            chain_type=chain_type,
+            deterministic_loop_renumbering=use_deterministic,
+        )
     )
-    hmm_output = aln2hmm.alignment_matrix_to_state_vector(
-        alignment_result.alignment
-    )
-
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-    LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
-
-    # Detect chain type from DE loop for ANARCI numbering if not specified
-    if chain_type == "auto":
-        chain_type = util.detect_chain_type(alignment_result.alignment)
-    else:
-        LOGGER.info(f"Using user-specified chain type: {chain_type}")
-
-    anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        hmm_output.states,
-        subsequence,
-        scheme=numbering_scheme,
-        chain_type=chain_type,
-    )
-
-    anarci_out = [a for a in anarci_out if a[1] != "-"]
 
     edit_pdb.thread_alignment(
         input_pdb,
@@ -232,7 +235,7 @@ def main(
         output_file,
         0,
         len(anarci_out),
-        alignment_start=hmm_output.first_aligned_row,
+        alignment_start=first_aligned_row,
         residue_range=residue_range,
     )
     LOGGER.info(f"Finished renumbering; output written to {output_file}")

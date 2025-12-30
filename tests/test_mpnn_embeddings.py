@@ -367,15 +367,15 @@ def test_save_and_load_without_sequence():
         assert loaded_embedding.sequence is None
 
 
-def test_get_inputs_mpnn_matches_softalign():
-    """Verify that _get_inputs_mpnn produces same output as softalign."""
+def test_get_inputs_matches_softalign():
+    """Verify that _get_inputs produces same output as softalign."""
     from softalign import Input_MPNN
 
     test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
     chain = "H"
 
     # Get outputs from both implementations
-    inputs = mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
+    inputs = mpnn_embeddings._get_inputs(str(test_pdb), chain=chain)
     old_X, old_mask, old_chain, old_res, old_ids = Input_MPNN.get_inputs_mpnn(
         str(test_pdb), chain=chain
     )
@@ -423,18 +423,18 @@ def test_get_inputs_mpnn_matches_softalign():
     )
 
 
-def test_get_inputs_mpnn_sequence_matches_seqio():
-    """Verify that _get_inputs_mpnn sequence matches BioPython SeqIO pdb-atom.
+def test_get_inputs_sequence_matches_seqio():
+    """Verify that _get_inputs sequence matches BioPython SeqIO pdb-atom.
 
-    Note: _get_inputs_mpnn only includes residues with complete backbone atoms
+    Note: _get_inputs only includes residues with complete backbone atoms
     (N, CA, C), while SeqIO includes all residues (with X for those missing
     backbone atoms). So we compare after removing X residues from SeqIO output.
     """
     test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
     chain = "H"
 
-    # Get sequence from _get_inputs_mpnn
-    inputs = mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain=chain)
+    # Get sequence from _get_inputs
+    inputs = mpnn_embeddings._get_inputs(str(test_pdb), chain=chain)
     mpnn_sequence = inputs.sequence
 
     # Get sequence from BioPython SeqIO pdb-atom
@@ -447,7 +447,7 @@ def test_get_inputs_mpnn_sequence_matches_seqio():
     assert seqio_sequence is not None, f"Chain {chain} not found via SeqIO"
 
     # Remove X residues from SeqIO sequence (these are residues missing
-    # backbone atoms, which _get_inputs_mpnn skips)
+    # backbone atoms, which _get_inputs skips)
     seqio_sequence_no_x = seqio_sequence.replace("X", "")
 
     # Both should have the same length and content
@@ -462,11 +462,11 @@ def test_get_inputs_mpnn_sequence_matches_seqio():
     )
 
 
-def test_get_inputs_mpnn_parses_cif_file():
-    """Test that _get_inputs_mpnn correctly parses CIF files."""
+def test_get_inputs_parses_cif_file():
+    """Test that _get_inputs correctly parses CIF files."""
     cif_file = Path(__file__).parent / "data" / "test_minimal.cif"
 
-    inputs = mpnn_embeddings._get_inputs_mpnn(str(cif_file), chain="A")
+    inputs = mpnn_embeddings._get_inputs(str(cif_file), chain="A")
 
     assert isinstance(inputs, mpnn_embeddings.MPNNInputs)
     assert inputs.coords.shape[1] == 2  # 2 residues
@@ -476,30 +476,30 @@ def test_get_inputs_mpnn_parses_cif_file():
     assert inputs.sequence == "AG"
 
 
-def test_get_inputs_mpnn_raises_on_missing_chain():
+def test_get_inputs_raises_on_missing_chain():
     """Test that requesting a non-existent chain raises ValueError."""
     test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
 
     with pytest.raises(
         ValueError, match="Chain 'Z' not found.*Available chains"
     ):
-        mpnn_embeddings._get_inputs_mpnn(str(test_pdb), chain="Z")
+        mpnn_embeddings._get_inputs(str(test_pdb), chain="Z")
 
 
-def test_get_inputs_mpnn_handles_insertion_codes():
+def test_get_inputs_handles_insertion_codes():
     """Test that residues with insertion codes are correctly represented."""
     pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
 
-    inputs = mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
+    inputs = mpnn_embeddings._get_inputs(str(pdb_file), chain="A")
 
     assert len(inputs.residue_ids) == 4
     assert inputs.residue_ids == ["52", "52A", "52B", "53"]
     assert inputs.sequence == "AGST"
 
 
-def test_get_inputs_mpnn_raises_on_empty_chain():
+def test_get_inputs_raises_on_empty_chain():
     """Test that a chain with no valid residues raises ValueError."""
     pdb_file = Path(__file__).parent / "data" / "test_no_backbone.pdb"
 
     with pytest.raises(ValueError, match="No valid residues found"):
-        mpnn_embeddings._get_inputs_mpnn(str(pdb_file), chain="A")
+        mpnn_embeddings._get_inputs(str(pdb_file), chain="A")
