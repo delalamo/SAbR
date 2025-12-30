@@ -42,7 +42,7 @@ IMGT_REGIONS = {
 }
 
 
-def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
+def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
     """Fetch IMGT-numbered PDB from SAbDab.
 
     Args:
@@ -50,8 +50,8 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
         output_path: Path to save the PDB file
         max_retries: Maximum number of retry attempts
 
-    Returns:
-        True if successful, False otherwise
+    Raises:
+        RuntimeError: If the PDB cannot be fetched after all retries
     """
     base_url = "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/pdb"
     url = f"{base_url}/{pdb_id}/?scheme=imgt"
@@ -70,6 +70,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
         "Connection": "keep-alive",
     }
 
+    last_error = None
     for attempt in range(max_retries):
         try:
             response = requests.get(url, headers=headers, timeout=30)
@@ -78,24 +79,28 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> bool:
             content = response.text
             # Verify it's a valid PDB (not an error page)
             if "ATOM" not in content[:500] and "HEADER" not in content[:500]:
-                print(f"Invalid PDB content for {pdb_id}")
-                return False
+                raise RuntimeError(
+                    f"Invalid PDB content for {pdb_id}: "
+                    f"response does not contain ATOM or HEADER records. "
+                    f"First 200 chars: {content[:200]}"
+                )
 
             with open(output_path, "w") as f:
                 f.write(content)
-            return True
+            return
 
         except requests.exceptions.RequestException as e:
+            last_error = e
             print(
                 f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
             )
             if attempt < max_retries - 1:
                 time.sleep(2**attempt)  # Exponential backoff: 1s, 2s, 4s
-            else:
-                print(f"Failed to fetch {pdb_id} after {max_retries} attempts")
-                return False
 
-    return False
+    raise RuntimeError(
+        f"Failed to fetch PDB {pdb_id} from {url} "
+        f"after {max_retries} attempts. Last error: {last_error}"
+    )
 
 
 class ChainResidueSelect(Select):
@@ -373,15 +378,7 @@ def main():
                 # Fetch from SAbDab
                 full_pdb = cache_dir / f"{pdb_id}.pdb"
                 if not full_pdb.exists():
-                    if not fetch_imgt_pdb(pdb_id, str(full_pdb)):
-                        results[chain_type].append(
-                            {
-                                "pdb": f"{pdb_id}_{chain_id}",
-                                "error": "Failed to fetch PDB",
-                                "perfect": False,
-                            }
-                        )
-                        continue
+                    fetch_imgt_pdb(pdb_id, str(full_pdb))
 
                 # Extract chain
                 chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
