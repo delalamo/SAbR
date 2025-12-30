@@ -1,0 +1,41 @@
+name: Pre-2021 SAbDab Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Number of entries to process (0 = all)'
+        required: false
+        default: '50'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: ./.github/actions/setup-python
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Run pre-2021 analysis
+        run: |
+          python scripts/pre2021_analysis.py \
+            --csv scripts/pre2021_pdb_chains.csv \
+            --output pre2021_results.json \
+            --limit ${{ inputs.limit }} \
+            --cache-dir /tmp/pdb_cache
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pre2021-analysis-results
+          path: pre2021_results.json
+          retention-days: 30
