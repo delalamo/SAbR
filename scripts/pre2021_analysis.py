@@ -96,25 +96,18 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
     )
 
 
-class ChainResidueSelect(Select):
-    """BioPython Select class to filter by chain and residue range."""
+class ChainSelect(Select):
+    """BioPython Select class to filter by chain."""
 
-    def __init__(self, chain_id: str, min_res: int = 1, max_res: int = 128):
+    def __init__(self, chain_id: str):
         self.chain_id = chain_id
-        self.min_res = min_res
-        self.max_res = max_res
 
     def accept_chain(self, chain):
         return chain.id == self.chain_id
 
-    def accept_residue(self, residue):
-        res_id = residue.get_id()
-        resnum = res_id[1]
-        return self.min_res <= resnum <= self.max_res
-
 
 def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
-    """Extract a specific chain (residues 1-128) from a PDB file."""
+    """Extract a specific chain from a PDB file."""
     try:
         parser = PDBParser(QUIET=True)
         structure = parser.get_structure("input", src_pdb)
@@ -126,7 +119,7 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
 
         io = PDBIO()
         io.set_structure(structure)
-        io.save(dst_pdb, ChainResidueSelect(chain_id, 1, 128))
+        io.save(dst_pdb, ChainSelect(chain_id))
 
         # Verify output has content
         with open(dst_pdb, "r") as f:
