@@ -64,12 +64,12 @@ def run_renumbering_pipeline(
         deterministic_loop_renumbering=deterministic_loop_renumbering,
     )
 
-    state_vector, imgt_start, imgt_end, first_aligned_row = (
-        aln2hmm.alignment_matrix_to_state_vector(alignment_result.alignment)
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(
+        alignment_result.alignment
     )
 
-    n_aligned = imgt_end - imgt_start
-    subsequence = "-" * imgt_start + sequence[:n_aligned]
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
     # Detect chain type from alignment if not specified
     if chain_type == "auto":
@@ -78,7 +78,7 @@ def run_renumbering_pipeline(
         LOGGER.info(f"Using specified chain type: {chain_type}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        state_vector,
+        hmm_output.states,
         subsequence,
         scheme=numbering_scheme,
         chain_type=chain_type,
@@ -87,7 +87,7 @@ def run_renumbering_pipeline(
     # Remove gap positions
     anarci_out = [a for a in anarci_out if a[1] != "-"]
 
-    return anarci_out, chain_type, first_aligned_row
+    return anarci_out, chain_type, hmm_output.first_aligned_row
 
 
 def _thread_structure(

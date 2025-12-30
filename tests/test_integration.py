@@ -664,7 +664,9 @@ def test_cli_accepts_valid_residue_range(monkeypatch, tmp_path):
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+    )
 
     runner = CliRunner()
     output_pdb = tmp_path / "residue_range_test.pdb"
@@ -698,7 +700,9 @@ def test_cli_accepts_zero_zero_residue_range(monkeypatch, tmp_path):
     dummy_from_pdb = create_dummy_from_pdb()
 
     monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+    monkeypatch.setattr(
+        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+    )
 
     runner = CliRunner()
     output_pdb = tmp_path / "all_residues_test.pdb"
@@ -718,3 +722,128 @@ def test_cli_accepts_zero_zero_residue_range(monkeypatch, tmp_path):
         ],
     )
     assert result.exit_code == 0, result.output
+
+
+def test_from_chain_produces_same_embeddings_as_from_pdb():
+    """Test that from_chain() produces same embeddings as from_pdb().
+
+    This is an integration test that runs the REAL embedding computation
+    (no mocking) and verifies that loading a chain from a structure and
+    calling from_chain() produces identical results to calling from_pdb()
+    directly with the file path.
+    """
+    data = FIXTURES["5omm"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    chain_id = data["chain"]
+    pdb_path = str(data["pdb"])
+
+    # Method 1: from_pdb (file-based)
+    embeddings_from_pdb = mpnn_embeddings.from_pdb(pdb_path, chain_id)
+
+    # Method 2: from_chain (in-memory)
+    parser = PDB.PDBParser(QUIET=True)
+    structure = parser.get_structure("test", pdb_path)
+    chain_obj = structure[0][chain_id]
+    embeddings_from_chain = mpnn_embeddings.from_chain(chain_obj)
+
+    # Verify both methods produce equivalent results
+    assert embeddings_from_pdb.sequence == embeddings_from_chain.sequence, (
+        f"Sequence mismatch:\n"
+        f"from_pdb: {embeddings_from_pdb.sequence}\n"
+        f"from_chain: {embeddings_from_chain.sequence}"
+    )
+
+    assert embeddings_from_pdb.idxs == embeddings_from_chain.idxs, (
+        f"Residue IDs mismatch:\n"
+        f"from_pdb: {embeddings_from_pdb.idxs}\n"
+        f"from_chain: {embeddings_from_chain.idxs}"
+    )
+
+    assert (
+        embeddings_from_pdb.embeddings.shape
+        == embeddings_from_chain.embeddings.shape
+    ), (
+        f"Embeddings shape mismatch: "
+        f"{embeddings_from_pdb.embeddings.shape} vs "
+        f"{embeddings_from_chain.embeddings.shape}"
+    )
+
+    np.testing.assert_allclose(
+        embeddings_from_pdb.embeddings,
+        embeddings_from_chain.embeddings,
+        rtol=1e-5,
+        atol=1e-5,
+        err_msg="Embeddings values differ between from_pdb and from_chain",
+    )
+
+
+def test_renumber_structure_end_to_end():
+    """End-to-end test for renumber_structure() BioPython API.
+
+    This test runs the FULL renumbering pipeline without mocking:
+    1. Load structure with BioPython
+    2. Call renumber_structure()
+    3. Verify the returned structure has valid IMGT numbering
+
+    This ensures the BioPython API works correctly for in-memory processing.
+    """
+    data = FIXTURES["5omm"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    chain_id = data["chain"]
+    pdb_path = str(data["pdb"])
+
+    # Load structure
+    parser = PDB.PDBParser(QUIET=True)
+    structure = parser.get_structure("test", pdb_path)
+
+    # Run renumber_structure (full pipeline, no mocking)
+    renumbered = renumber.renumber_structure(
+        structure,
+        chain=chain_id,
+        numbering_scheme="imgt",
+    )
+
+    # Verify result is a BioPython Structure
+    assert renumbered is not None
+    assert hasattr(renumbered, "get_chains")
+
+    # Get residues from the renumbered chain
+    renumbered_residues = list(renumbered[0][chain_id].get_residues())
+    assert len(renumbered_residues) > 0, "Renumbered chain has no residues"
+
+    # Collect residue numbers (excluding heteroatoms)
+    residue_numbers = []
+    for res in renumbered_residues:
+        hetflag, resseq, icode = res.get_id()
+        if not hetflag.strip():
+            residue_numbers.append(resseq)
+
+    # Verify IMGT numbering constraints:
+    # 1. Residue numbers should generally be in range 1-128 for Fv
+    # 2. Numbers should be mostly increasing (with possible gaps)
+    assert len(residue_numbers) > 50, (
+        f"Expected >50 residues, got {len(residue_numbers)}"
+    )
+
+    # Check that the maximum residue number is reasonable for IMGT
+    max_resnum = max(residue_numbers)
+    assert max_resnum <= 150, (
+        f"Maximum residue number {max_resnum} exceeds expected IMGT range"
+    )
+
+    # Verify the structure can be saved (basic integrity check)
+    from io import StringIO
+
+    from Bio.PDB import PDBIO
+
+    io = PDBIO()
+    io.set_structure(renumbered)
+    output = StringIO()
+    io.save(output)
+    pdb_content = output.getvalue()
+    assert len(pdb_content) > 0, "Failed to save renumbered structure"
+    assert "ATOM" in pdb_content, "Output PDB has no ATOM records"
