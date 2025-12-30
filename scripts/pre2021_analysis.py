@@ -21,7 +21,7 @@ import tempfile
 import time
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
@@ -188,51 +188,48 @@ def parse_pdb_residue_ids(pdb_path: str, chain_id: str) -> List[str]:
     return residue_ids
 
 
-def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Optional[Dict]:
+def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
     Returns:
         Dict with 'output_positions', 'chain_type', 'sequence'
+
+    Raises:
+        RuntimeError: If SAbR pipeline fails
     """
-    try:
-        from anarci import number_sequence_from_alignment
+    from anarci import number_sequence_from_alignment
 
-        # Extract embeddings
-        input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
+    # Extract embeddings
+    input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
 
-        # Align
-        aligner = softaligner.SoftAligner()
-        out = aligner(input_data, deterministic_loop_renumbering=True)
+    # Align
+    aligner = softaligner.SoftAligner()
+    out = aligner(input_data, deterministic_loop_renumbering=True)
 
-        # Convert to state vector
-        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
-            out.alignment
-        )
+    # Convert to state vector
+    sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
 
-        # Build subsequence
-        subsequence = "-" * start + input_data.sequence[: end - start]
+    # Build subsequence
+    subsequence = "-" * start + input_data.sequence[: end - start]
 
-        # Get ANARCI numbering
-        anarci_out, _, _ = number_sequence_from_alignment(
-            sv, subsequence, scheme="imgt", chain_type=out.chain_type
-        )
+    # Get ANARCI numbering
+    anarci_out, _, _ = number_sequence_from_alignment(
+        sv, subsequence, scheme="imgt", chain_type=out.chain_type
+    )
 
-        # Parse output positions
-        output_positions = []
-        for pos, aa in anarci_out:
-            if aa != "-":
-                resnum = pos[0]
-                insertion = pos[1].strip() if pos[1].strip() else ""
-                output_positions.append(f"{resnum}{insertion}")
+    # Parse output positions
+    output_positions = []
+    for pos, aa in anarci_out:
+        if aa != "-":
+            resnum = pos[0]
+            insertion = pos[1].strip() if pos[1].strip() else ""
+            output_positions.append(f"{resnum}{insertion}")
 
-        return {
-            "output_positions": output_positions,
-            "chain_type": out.chain_type,
-            "sequence": input_data.sequence,
-        }
-    except Exception as e:
-        print(f"Error running SAbR on {pdb_path}: {e}")
-        return None
+    return {
+        "output_positions": output_positions,
+        "chain_type": out.chain_type,
+        "sequence": input_data.sequence,
+    }
 
 
 def get_region_for_position(pos_num: int) -> str:
@@ -413,15 +410,6 @@ def main():
 
             # Run SAbR
             sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
-            if sabr_result is None:
-                results[chain_type].append(
-                    {
-                        "pdb": f"{pdb_id}_{chain_id}",
-                        "error": "SAbR failed",
-                        "perfect": False,
-                    }
-                )
-                continue
 
             # Compare
             comparison = compare_positions(
