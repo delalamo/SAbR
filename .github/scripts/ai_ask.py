@@ -19,9 +19,9 @@ def get_pr_diff() -> str:
 
 
 def extract_question(comment_body: str) -> str:
-    """Extract the question from /ask command."""
-    if comment_body.startswith("/ask "):
-        return comment_body[5:].strip()
+    """Extract the question from /ask_claude command."""
+    if comment_body.startswith("/ask_claude "):
+        return comment_body[12:].strip()
     return comment_body.strip()
 
 
@@ -111,7 +111,7 @@ def main() -> None:
     question = extract_question(question_raw)
 
     if not question:
-        print("Error: No question provided after /ask")
+        print("Error: No question provided after /ask_claude")
         sys.exit(1)
 
     print(f"Answering question for {repo_name}#{pr_number}")
