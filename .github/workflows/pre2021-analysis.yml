@@ -8,6 +8,11 @@ on:
         required: false
         default: "50"
         type: string
+      filter_to_imgt:
+        description: "Filter residues to IMGT positions 1-128 only"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -31,7 +36,8 @@ jobs:
             --csv scripts/pre2021_pdb_chains.csv \
             --output pre2021_results.json \
             --limit ${{ inputs.limit }} \
-            --cache-dir /tmp/pdb_cache
+            --cache-dir /tmp/pdb_cache \
+            ${{ inputs.filter_to_imgt == true && '--filter-to-imgt' || '' }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4

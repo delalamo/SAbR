@@ -97,16 +97,25 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
 
 
 class ChainSelect(Select):
-    """BioPython Select class to filter by chain."""
+    """BioPython Select class to filter by chain and optionally by residue."""
 
-    def __init__(self, chain_id: str):
+    def __init__(self, chain_id: str, filter_to_imgt: bool = False):
         self.chain_id = chain_id
+        self.filter_to_imgt = filter_to_imgt
 
     def accept_chain(self, chain):
         return chain.id == self.chain_id
 
+    def accept_residue(self, residue):
+        if not self.filter_to_imgt:
+            return True
+        resnum = residue.get_id()[1]
+        return 1 <= resnum <= 128
 
-def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
+
+def extract_chain_to_pdb(
+    src_pdb: str, chain_id: str, dst_pdb: str, filter_to_imgt: bool = False
+) -> bool:
     """Extract a specific chain from a PDB file."""
     try:
         parser = PDBParser(QUIET=True)
@@ -119,7 +128,7 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
 
         io = PDBIO()
         io.set_structure(structure)
-        io.save(dst_pdb, ChainSelect(chain_id))
+        io.save(dst_pdb, ChainSelect(chain_id, filter_to_imgt))
 
         # Verify output has content
         with open(dst_pdb, "r") as f:
@@ -255,6 +264,11 @@ def main():
         default=None,
         help="Local PDB dir ({dir}/{chain_type}/{pdb}_{chain}.pdb)",
     )
+    parser.add_argument(
+        "--filter-to-imgt",
+        action="store_true",
+        help="Filter residues to IMGT positions 1-128 only",
+    )
     args = parser.parse_args()
 
     # Load entries from CSV
@@ -321,7 +335,7 @@ def main():
                 # Extract chain
                 chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
                 if not extract_chain_to_pdb(
-                    str(full_pdb), chain_id, str(chain_pdb)
+                    str(full_pdb), chain_id, str(chain_pdb), args.filter_to_imgt
                 ):
                     results[chain_type].append(
                         {
