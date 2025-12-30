@@ -18,6 +18,7 @@ Usage:
 
 import logging
 import random
+from typing import Optional
 
 import click
 
@@ -189,7 +190,7 @@ def main(
     max_residues: int,
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
-    random_seed: int | None,
+    random_seed: Optional[int],
     chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
