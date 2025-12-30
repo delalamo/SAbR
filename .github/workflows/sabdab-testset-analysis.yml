@@ -1,0 +1,41 @@
+name: SAbDab Test Set Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Number of entries to process (0 = all)"
+        required: false
+        default: "50"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: ./.github/actions/setup-python
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Run SAbDab test set analysis
+        run: |
+          python scripts/pre2021_analysis.py \
+            --csv scripts/sabdab_testset.csv \
+            --output sabdab_testset_results.json \
+            --limit ${{ inputs.limit }} \
+            --cache-dir /tmp/pdb_cache
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: sabdab-testset-results
+          path: sabdab_testset_results.json
+          retention-days: 30
