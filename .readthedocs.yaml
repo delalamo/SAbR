@@ -11,4 +11,6 @@ build:
   commands:
     - pip install .
     - pip install pdoc
-    - JAX_PLATFORMS=cpu pdoc sabr --docformat google -o $READTHEDOCS_OUTPUT/html
+    # Copy README into package directory so it's always found regardless of install location
+    - cp README.md src/sabr/README.md
+    - JAX_PLATFORMS=cpu pdoc ./src/sabr --docformat google -o $READTHEDOCS_OUTPUT/html
