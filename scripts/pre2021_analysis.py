@@ -53,8 +53,24 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str) -> bool:
     """
     base_url = "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/pdb"
     url = f"{base_url}/{pdb_id}/?scheme=imgt"
+
+    # Use browser-like headers to avoid being blocked by the server
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+
     try:
-        urllib.request.urlretrieve(url, output_path)
+        request = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            content = response.read()
+            with open(output_path, "wb") as f:
+                f.write(content)
+
         # Verify it's a valid PDB (not an error page)
         with open(output_path, "r") as f:
             content = f.read(100)
