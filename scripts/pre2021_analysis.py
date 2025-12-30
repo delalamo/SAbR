@@ -78,10 +78,15 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
 
             content = response.text
             # Verify it's a valid PDB (not an error page)
-            if "ATOM" not in content[:500] and "HEADER" not in content[:500]:
+            # Check for REMARK (SAbDab header) or ATOM records
+            if (
+                "REMARK" not in content[:500]
+                and "ATOM" not in content[:1000]
+                and "HEADER" not in content[:500]
+            ):
                 raise RuntimeError(
                     f"Invalid PDB content for {pdb_id}: "
-                    f"response does not contain ATOM or HEADER records. "
+                    f"response does not contain REMARK, ATOM or HEADER. "
                     f"First 200 chars: {content[:200]}"
                 )
 
