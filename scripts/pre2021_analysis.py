@@ -334,7 +334,18 @@ def main():
                 # Fetch from SAbDab
                 full_pdb = cache_dir / f"{pdb_id}.pdb"
                 if not full_pdb.exists():
-                    fetch_imgt_pdb(pdb_id, str(full_pdb))
+                    try:
+                        fetch_imgt_pdb(pdb_id, str(full_pdb))
+                    except Exception as e:
+                        print(f"Fetch failed for {pdb_id}: {e}")
+                        results[chain_type].append(
+                            {
+                                "pdb": f"{pdb_id}_{chain_id}",
+                                "error": f"Fetch failed: {e}",
+                                "perfect": False,
+                            }
+                        )
+                        continue
 
                 # Extract chain
                 chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
