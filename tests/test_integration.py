@@ -79,15 +79,13 @@ def run_threading_pipeline(
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
 
-    state_vector, imgt_start, imgt_end, _ = (
-        aln2hmm.alignment_matrix_to_state_vector(alignment)
-    )
-    n_aligned = imgt_end - imgt_start
-    subsequence = "-" * imgt_start + sequence[:n_aligned]
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
     anarci_alignment, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
-            state_vector, subsequence, scheme="imgt", chain_type=chain_type
+            hmm_output.states, subsequence, scheme="imgt", chain_type=chain_type
         )
     )
 
@@ -320,21 +318,21 @@ def test_alignment_start_position_correct():
 
     alignment, chain_type = load_alignment_fixture(data["alignment"])
 
-    state_vector, imgt_start, imgt_end, _ = (
-        aln2hmm.alignment_matrix_to_state_vector(alignment)
-    )
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(alignment)
 
-    assert imgt_start == 1, f"Expected imgt_start=1, got {imgt_start}"
+    assert (
+        hmm_output.imgt_start == 1
+    ), f"Expected imgt_start=1, got {hmm_output.imgt_start}"
 
-    first_state = state_vector[0]
+    first_state = hmm_output.states[0]
     assert first_state.residue_number == 2
     assert first_state.insertion_code == "m"
     assert first_state.mapped_residue == 1
 
-    n_aligned = imgt_end - imgt_start
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
     assert n_aligned > 0
 
-    match_states = [s for s in state_vector if s.insertion_code == "m"]
+    match_states = [s for s in hmm_output.states if s.insertion_code == "m"]
     assert len(match_states) > 100
 
 
@@ -386,16 +384,14 @@ def test_n_terminal_extension_numbering_end_to_end(tmp_path):
     assert output.chain_type == "H", f"Expected H, got {output.chain_type}"
 
     # Step 4: Convert alignment to state vector
-    sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
-        output.alignment
-    )
-    n_aligned = end - start
-    subsequence = "-" * start + sequence[:n_aligned]
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(output.alignment)
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
     # Step 5: Run ANARCI numbering
     anarci_out, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
-            sv,
+            hmm_output.states,
             subsequence,
             scheme="imgt",
             chain_type=output.chain_type,
@@ -499,21 +495,21 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     assert output.chain_type is not None, "Chain type should be detected"
 
     # Step 4: Convert alignment to state vector
-    sv, start, end, first_aligned = aln2hmm.alignment_matrix_to_state_vector(
-        output.alignment
-    )
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(output.alignment)
 
     # The alignment should start at column 2 (0-indexed),
     # corresponding to IMGT position 3
-    assert start == 2, f"Expected start=2 (IMGT position 3), got {start}"
+    assert (
+        hmm_output.imgt_start == 2
+    ), f"Expected start=2 (IMGT position 3), got {hmm_output.imgt_start}"
 
-    n_aligned = end - start
-    subsequence = "-" * start + sequence[:n_aligned]
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
     # Step 5: Run ANARCI numbering
     anarci_out, anarci_start, anarci_end = (
         anarci.number_sequence_from_alignment(
-            sv,
+            hmm_output.states,
             subsequence,
             scheme="imgt",
             chain_type=output.chain_type,
@@ -567,3 +563,152 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     assert (
         10 not in residue_ids
     ), "Position 10 should be skipped in IMGT heavy chains"
+
+
+def test_cli_rejects_invalid_residue_range_end_before_start():
+    """Test that CLI rejects residue range where end <= start."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "--residue-range",
+            "50",
+            "10",  # end < start - should fail
+        ],
+    )
+    assert result.exit_code != 0
+    assert "end" in result.output.lower() and "start" in result.output.lower()
+
+
+def test_cli_rejects_invalid_residue_range_equal_values():
+    """Test that CLI rejects residue range where end == start."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "--residue-range",
+            "50",
+            "50",  # end == start - should fail
+        ],
+    )
+    assert result.exit_code != 0
+    assert "end" in result.output.lower() or "greater" in result.output.lower()
+
+
+def test_cli_rejects_negative_residue_range():
+    """Test that CLI rejects negative residue range values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "--residue-range",
+            "-10",
+            "50",  # negative start - should fail
+        ],
+    )
+    assert result.exit_code != 0
+    assert (
+        "negative" in result.output.lower()
+        or "non-negative" in result.output.lower()
+    )
+
+
+def test_cli_accepts_valid_residue_range(monkeypatch, tmp_path):
+    """Test that CLI accepts a valid residue range.
+
+    Uses the full range (matching all residues) to avoid alignment mismatch
+    with the pre-computed fixture alignment.
+    """
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
+
+    DummyAligner = create_dummy_aligner(alignment, chain_type)
+    dummy_from_pdb = create_dummy_from_pdb()
+
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "residue_range_test.pdb"
+    # Use range that covers all residues (1-128) to match fixture
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+            "--residue-range",
+            "1",
+            "128",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+
+
+def test_cli_accepts_zero_zero_residue_range(monkeypatch, tmp_path):
+    """Test that CLI accepts 0 0 residue range (process all)."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
+
+    DummyAligner = create_dummy_aligner(alignment, chain_type)
+    dummy_from_pdb = create_dummy_from_pdb()
+
+    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(cli.softaligner, "SoftAligner", lambda: DummyAligner())
+
+    runner = CliRunner()
+    output_pdb = tmp_path / "all_residues_test.pdb"
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            str(output_pdb),
+            "--overwrite",
+            "--residue-range",
+            "0",
+            "0",
+        ],
+    )
+    assert result.exit_code == 0, result.output

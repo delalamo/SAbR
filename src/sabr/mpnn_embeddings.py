@@ -9,7 +9,6 @@ Key components:
 - MPNNEmbeddings: Dataclass for storing per-residue embeddings
 - from_pdb: Generate embeddings from a PDB or CIF file
 - from_npz: Load pre-computed embeddings from NumPy archive
-- _embed_pdb: Internal function for MPNN embedding computation
 
 Embeddings are 64-dimensional vectors computed for each residue,
 capturing structural and sequence features for alignment.
@@ -22,16 +21,13 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
-import haiku as hk
-import jax
 import numpy as np
 from Bio.PDB import MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
-from jax import numpy as jnp
 
-from sabr import constants, model, util
+from sabr import constants, jax_backend
 
 LOGGER = logging.getLogger(__name__)
 
@@ -356,31 +352,55 @@ class MPNNEmbeddings:
         LOGGER.info(f"Saved embeddings to {output_path_obj}")
 
 
-def _embed_pdb(
-    pdbfile: str, chains: str, max_residues: int = 0
+def from_pdb(
+    pdb_file: str,
+    chain: str,
+    residue_range: Tuple[int, int] = (0, 0),
+    params_name: str = "mpnn_encoder",
+    params_path: str = "sabr.assets",
+    random_seed: int = 0,
 ) -> MPNNEmbeddings:
-    """Return MPNN embeddings for chains in pdbfile using SoftAlign.
+    """
+    Create MPNNEmbeddings from a PDB file.
 
     Args:
-        pdbfile: Path to the PDB file.
-        chains: Chain identifier(s) to embed.
-        max_residues: Maximum number of residues to embed. If 0, embed all.
+        pdb_file: Path to input PDB file (.pdb or .cif).
+        chain: Chain identifier to embed.
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering
+            (inclusive). Use (0, 0) to embed all residues.
+        params_name: Name of the model parameters file.
+        params_path: Package path containing the parameters file.
+        random_seed: Random seed for reproducibility.
 
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    LOGGER.info(f"Embedding PDB {pdbfile} chain {chains}")
-    e2e_model = model.create_e2e_model()
-    if len(chains) > 1:
+    LOGGER.info(f"Embedding PDB {pdb_file} chain {chain}")
+
+    if len(chain) > 1:
         raise NotImplementedError(
             f"Only single chain embedding is supported. "
-            f"Got {len(chains)} chains: '{chains}'. "
+            f"Got {len(chain)} chains: '{chain}'. "
             f"Please specify a single chain identifier."
         )
-    inputs = _get_inputs_mpnn(pdbfile, chain=chains)
-    embeddings = e2e_model.MPNN(
-        inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
-    )[0]
+
+    # Parse structure and extract inputs
+    inputs = _get_inputs_mpnn(pdb_file, chain=chain)
+
+    # Create backend and compute embeddings
+    backend = jax_backend.EmbeddingBackend(
+        params_name=params_name,
+        params_path=params_path,
+        random_seed=random_seed,
+    )
+
+    embeddings = backend.compute_embeddings(
+        coords=inputs.coords,
+        mask=inputs.mask,
+        chain_ids=inputs.chain_ids,
+        residue_indices=inputs.residue_indices,
+    )
+
     if len(inputs.residue_ids) != embeddings.shape[0]:
         raise ValueError(
             f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
@@ -390,53 +410,37 @@ def _embed_pdb(
     ids = inputs.residue_ids
     sequence = inputs.sequence
 
-    if max_residues > 0 and len(ids) > max_residues:
-        LOGGER.info(
-            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
-        )
-        embeddings = embeddings[:max_residues]
-        ids = ids[:max_residues]
-        sequence = sequence[:max_residues]
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        # Find indices where residue numbers fall within range
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                # Skip residues with non-numeric IDs (e.g., insertion codes)
+                continue
 
-    return MPNNEmbeddings(
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+
+    result = MPNNEmbeddings(
         name="INPUT_PDB",
         embeddings=embeddings,
         idxs=ids,
-        stdev=jnp.ones_like(embeddings),
+        stdev=np.ones_like(embeddings),
         sequence=sequence,
-    )
-
-
-def from_pdb(
-    pdb_file: str,
-    chain: str,
-    max_residues: int = 0,
-    params_name: str = "CONT_SW_05_T_3_1",
-    params_path: str = "softalign.models",
-    random_seed: int = 0,
-) -> MPNNEmbeddings:
-    """
-    Create MPNNEmbeddings from a PDB file.
-
-    Args:
-        pdb_file: Path to input PDB file.
-        chain: Chain identifier to embed.
-        max_residues: Maximum residues to embed. If 0, embed all.
-        params_name: Name of the model parameters file.
-        params_path: Package path containing the parameters file.
-        random_seed: Random seed for JAX.
-
-    Returns:
-        MPNNEmbeddings for the specified chain.
-    """
-    model_params = util.read_softalign_params(
-        params_name=params_name, params_path=params_path
-    )
-    key = jax.random.PRNGKey(random_seed)
-    transformed_embed_fn = hk.transform(_embed_pdb)
-
-    result = transformed_embed_fn.apply(
-        model_params, key, pdb_file, chain, max_residues
     )
 
     LOGGER.info(
