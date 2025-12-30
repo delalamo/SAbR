@@ -19,6 +19,7 @@ import csv
 import json
 import tempfile
 import time
+import warnings
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
@@ -28,6 +29,9 @@ from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr import mpnn_embeddings, renumber
 from sabr.constants import IMGT_REGIONS
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 
 def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
