@@ -8,6 +8,7 @@ structures using the MPNN (Message Passing Neural Network) architecture.
 Key components:
 - MPNNEmbeddings: Dataclass for storing per-residue embeddings
 - from_pdb: Generate embeddings from a PDB or CIF file
+- from_chain: Generate embeddings from a BioPython Chain object
 - from_npz: Load pre-computed embeddings from NumPy archive
 
 Embeddings are 64-dimensional vectors computed for each residue,
@@ -21,20 +22,15 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
-from Bio.PDB import MMCIFParser, PDBParser
+from Bio.PDB import Chain, MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
 
 from sabr import constants, jax_backend
 
 LOGGER = logging.getLogger(__name__)
-
-# Constants for CB position calculation (standard protein geometry)
-_CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
-_CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
-_CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
 
 
 @dataclass(frozen=True)
@@ -61,53 +57,46 @@ class MPNNInputs:
     sequence: str
 
 
-def _np_norm(
-    x: np.ndarray, axis: int = -1, keepdims: bool = True
+def _compute_cb(
+    n_coords: np.ndarray, ca_coords: np.ndarray, c_coords: np.ndarray
 ) -> np.ndarray:
-    """Compute Euclidean norm of vector with numerical stability."""
+    """Compute CB (C-beta) coordinates from backbone atoms.
+
+    Uses standard protein geometry constants to calculate the CB position
+    from N, CA, and C backbone atom coordinates.
+
+    Args:
+        n_coords: N atom coordinates [1, 3] or [3].
+        ca_coords: CA atom coordinates [1, 3] or [3].
+        c_coords: C atom coordinates [1, 3] or [3].
+
+    Returns:
+        CB coordinates with same shape as input.
+    """
     eps = 1e-8
-    return np.sqrt(np.square(x).sum(axis=axis, keepdims=keepdims) + eps)
-
-
-def _np_extend(
-    a: np.ndarray,
-    b: np.ndarray,
-    c: np.ndarray,
-    length: float,
-    angle: float,
-    dihedral: float,
-) -> np.ndarray:
-    """Compute 4th coordinate given 3 coordinates and internal geometry."""
 
     def normalize(x: np.ndarray) -> np.ndarray:
-        return x / _np_norm(x)
+        norm = np.sqrt(np.square(x).sum(axis=-1, keepdims=True) + eps)
+        return x / norm
 
-    bc = normalize(b - c)
-    n = normalize(np.cross(b - a, bc))
+    # Compute CB position using internal geometry
+    # a=C, b=N, c=CA for the extension calculation
+    bc = normalize(n_coords - ca_coords)
+    n = normalize(np.cross(n_coords - c_coords, bc))
 
-    d = c + (
+    length = constants.CB_BOND_LENGTH
+    angle = constants.CB_BOND_ANGLE
+    dihedral = constants.CB_DIHEDRAL
+
+    cb = ca_coords + (
         length * np.cos(angle) * bc
         + length * np.sin(angle) * np.cos(dihedral) * np.cross(n, bc)
         + length * np.sin(angle) * np.sin(dihedral) * (-n)
     )
-    return d
+    return cb
 
 
-def _compute_cb(
-    n_coords: np.ndarray, ca_coords: np.ndarray, c_coords: np.ndarray
-) -> np.ndarray:
-    """Compute CB (C-beta) coordinates from backbone atoms."""
-    return _np_extend(
-        c_coords,
-        n_coords,
-        ca_coords,
-        _CB_BOND_LENGTH,
-        _CB_BOND_ANGLE,
-        _CB_DIHEDRAL,
-    )
-
-
-def _get_structure(file_path: str) -> Structure:
+def _parse_structure(file_path: str) -> Structure:
     """Parse a structure file (PDB or CIF format)."""
     path = Path(file_path)
     suffix = path.suffix.lower()
@@ -126,48 +115,24 @@ def _get_structure(file_path: str) -> Structure:
     return parser.get_structure("structure", file_path)
 
 
-def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
-    """Extract coordinates, residue info, and sequence from a PDB or CIF file.
+def _extract_inputs_from_chain(
+    target_chain: Chain.Chain, source_name: str = ""
+) -> MPNNInputs:
+    """Extract coordinates, residue info, and sequence from a Chain object.
 
-    This function provides the same interface as
-    softalign.Input_MPNN.get_inputs_mpnn but uses Biopython for parsing,
-    enabling support for both PDB and CIF formats. It also extracts the
-    amino acid sequence during parsing using the AA_3TO1 dictionary.
+    This is the core extraction logic used by both file-based and
+    structure-based input functions.
 
     Args:
-        file_path: Path to the structure file (.pdb or .cif).
-        chain: Chain identifier to extract. If None, uses first chain.
+        target_chain: BioPython Chain object to extract from.
+        source_name: Source identifier for logging (file path or "structure").
 
     Returns:
         MPNNInputs containing backbone coordinates and residue information.
 
     Raises:
-        ValueError: If the specified chain is not found.
+        ValueError: If no valid residues are found.
     """
-    structure = _get_structure(file_path)
-
-    # Get the first model
-    struct_model = structure[0]
-
-    # Find the target chain
-    target_chain = None
-    if chain is not None:
-        for ch in struct_model:
-            if ch.id == chain:
-                target_chain = ch
-                break
-        if target_chain is None:
-            available = [ch.id for ch in struct_model]
-            raise ValueError(
-                f"Chain '{chain}' not found in {file_path}. "
-                f"Available chains: {available}"
-            )
-    else:
-        # Use first chain
-        target_chain = list(struct_model.get_chains())[0]
-        LOGGER.info(f"No chain specified, using first chain: {target_chain.id}")
-
-    # Extract residue data
     coords_list = []
     ids_list = []
     seq_list = []
@@ -217,7 +182,8 @@ def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
 
     if not coords_list:
         raise ValueError(
-            f"No valid residues found in chain '{chain}' of {file_path}"
+            f"No valid residues found in chain '{target_chain.id}'"
+            + (f" of {source_name}" if source_name else "")
         )
 
     # Stack all coordinates
@@ -237,10 +203,10 @@ def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
     residue_indices = np.arange(n_residues)
 
     sequence = "".join(seq_list)
-    LOGGER.info(
-        f"Extracted {n_residues} residues from chain '{target_chain.id}' "
-        f"in {file_path}"
-    )
+    log_msg = f"Extracted {n_residues} residues from chain '{target_chain.id}'"
+    if source_name:
+        log_msg += f" in {source_name}"
+    LOGGER.info(log_msg)
 
     # Add batch dimension to match softalign output format
     return MPNNInputs(
@@ -253,14 +219,52 @@ def _get_inputs_mpnn(file_path: str, chain: str | None = None) -> MPNNInputs:
     )
 
 
+def _get_inputs(
+    source: Union[str, Chain.Chain], chain: str | None = None
+) -> MPNNInputs:
+    """Extract MPNN inputs from a file path or Chain object.
+
+    Args:
+        source: Either a file path (str) or BioPython Chain object.
+        chain: Chain identifier to extract (only used for file paths).
+
+    Returns:
+        MPNNInputs containing backbone coordinates and residue information.
+    """
+    if isinstance(source, str):
+        structure = _parse_structure(source)
+        source_name = source
+        struct_model = structure[0]
+
+        if chain is not None:
+            for ch in struct_model:
+                if ch.id == chain:
+                    return _extract_inputs_from_chain(ch, source_name)
+            available = [ch.id for ch in struct_model]
+            raise ValueError(
+                f"Chain '{chain}' not found in {source_name}. "
+                f"Available chains: {available}"
+            )
+        else:
+            target_chain = list(struct_model.get_chains())[0]
+            LOGGER.info(
+                f"No chain specified, using first chain: {target_chain.id}"
+            )
+            return _extract_inputs_from_chain(target_chain, source_name)
+    else:
+        # source is a Chain object
+        return _extract_inputs_from_chain(source, "")
+
+
 @dataclass(frozen=True)
 class MPNNEmbeddings:
     """Per-residue embedding tensor and matching residue identifiers.
 
     Can be instantiated from either:
     1. A PDB file (via from_pdb function)
-    2. An NPZ file (via from_npz function)
-    3. Direct construction with embeddings data
+    2. A BioPython Chain (via from_chain function)
+    3. An NPZ file (via from_npz function)
+    4. Direct construction with embeddings data
     """
 
     name: str
@@ -385,7 +389,7 @@ def from_pdb(
         )
 
     # Parse structure and extract inputs
-    inputs = _get_inputs_mpnn(pdb_file, chain=chain)
+    inputs = _get_inputs(pdb_file, chain=chain)
 
     # Create backend and compute embeddings
     backend = jax_backend.EmbeddingBackend(
@@ -450,6 +454,96 @@ def from_pdb(
     return result
 
 
+def from_chain(
+    chain: Chain.Chain,
+    residue_range: Tuple[int, int] = (0, 0),
+    params_name: str = "mpnn_encoder",
+    params_path: str = "sabr.assets",
+    random_seed: int = 0,
+) -> MPNNEmbeddings:
+    """
+    Create MPNNEmbeddings from a BioPython Chain object.
+
+    This function enables in-memory structure processing without requiring
+    the structure to be saved to disk first.
+
+    Args:
+        chain: BioPython Chain object.
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering
+            (inclusive). Use (0, 0) to embed all residues.
+        params_name: Name of the model parameters file.
+        params_path: Package path containing the parameters file.
+        random_seed: Random seed for reproducibility.
+
+    Returns:
+        MPNNEmbeddings for the chain.
+    """
+    LOGGER.info(f"Embedding chain {chain.id}")
+
+    # Extract inputs from chain
+    inputs = _get_inputs(chain)
+
+    # Create backend and compute embeddings
+    backend = jax_backend.EmbeddingBackend(
+        params_name=params_name,
+        params_path=params_path,
+        random_seed=random_seed,
+    )
+
+    embeddings = backend.compute_embeddings(
+        coords=inputs.coords,
+        mask=inputs.mask,
+        chain_ids=inputs.chain_ids,
+        residue_indices=inputs.residue_indices,
+    )
+
+    if len(inputs.residue_ids) != embeddings.shape[0]:
+        raise ValueError(
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
+        )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
+
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                continue
+
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+
+    result = MPNNEmbeddings(
+        name="INPUT_CHAIN",
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=np.ones_like(embeddings),
+        sequence=sequence,
+    )
+
+    LOGGER.info(
+        f"Computed embeddings for chain {chain.id} "
+        f"(length={result.embeddings.shape[0]})"
+    )
+    return result
+
+
 def from_npz(npz_file: str) -> MPNNEmbeddings:
     """
     Create MPNNEmbeddings from an NPZ file.
@@ -466,10 +560,7 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
     name = str(data["name"])
     idxs = [str(idx) for idx in data["idxs"]]
 
-    sequence = None
-    if "sequence" in data:
-        seq_str = str(data["sequence"])
-        sequence = seq_str if seq_str else None
+    sequence = str(data["sequence"]) or None if "sequence" in data else None
 
     embedding = MPNNEmbeddings(
         name=name,

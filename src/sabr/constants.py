@@ -18,6 +18,11 @@ AnarciAlignment = List[Tuple[Tuple[int, str], str]]
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3
 
+# CB (C-beta) position calculation constants (standard protein geometry)
+CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
+CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
+CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
+
 # Smith-Waterman alignment parameters from trained SoftAlign model
 # These are the gap penalties for the affine gap scoring function
 SW_GAP_EXTEND = 0.19424681  # Gap extension penalty
