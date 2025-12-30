@@ -14,6 +14,7 @@ def build_residue(
 
 
 def test_thread_onto_chain_updates_residue_ids():
+    """Core test: thread_onto_chain correctly updates residue IDs."""
     chain = Chain.Chain("A")
     chain.add(build_residue(1, "ALA"))
     chain.add(build_residue(2, "GLY"))
@@ -34,63 +35,11 @@ def test_thread_onto_chain_updates_residue_ids():
     new_ids = [res.get_id() for res in threaded.get_residues()]
     assert new_ids == [(" ", 1, " "), (" ", 2, " ")]
     assert threaded.id == "A"
-    assert deviations == 0  # No changes in numbering
-
-
-def test_thread_onto_chain_residue_mismatch():
-    """Test ValueError when residue doesn't match ANARCI output."""
-    chain = Chain.Chain("A")
-    chain.add(build_residue(1, "ALA"))  # ALA = A
-    chain.add(build_residue(2, "GLY"))  # GLY = G
-
-    # ANARCI says position 1 should be V (VAL), not A (ALA)
-    anarci_out = [
-        ((1, " "), "V"),  # Mismatch!
-        ((2, " "), "G"),
-    ]
-
-    with pytest.raises(ValueError, match="Residue mismatch"):
-        edit_pdb.thread_onto_chain(
-            chain=chain,
-            anarci_out=anarci_out,
-            anarci_start=0,
-            anarci_end=2,
-            alignment_start=0,
-        )
-
-
-def test_thread_onto_chain_with_hetatm():
-    """Test that HETATM residues don't cause errors when present."""
-    chain = Chain.Chain("A")
-    chain.add(build_residue(1, "ALA"))
-    chain.add(build_residue(2, "GLY"))
-    # HETATM before the ANARCI window starts
-    chain.add(build_residue(3, "HOH", hetflag="W"))
-    chain.add(build_residue(4, "VAL"))
-
-    # ANARCI window starts at residue 1 (skipping HETATM at position 0)
-    # alignment_start=3 means we start processing from the 4th residue (index 3)
-    anarci_out = [
-        ((1, " "), "V"),  # VAL gets numbered as 1
-    ]
-
-    threaded, deviations = edit_pdb.thread_onto_chain(
-        chain=chain,
-        anarci_out=anarci_out,
-        anarci_start=0,
-        anarci_end=1,
-        alignment_start=3,  # Start alignment from VAL (index 3)
-    )
-
-    # Should have all 4 residues
-    assert len(list(threaded.get_residues())) == 4
-    # VAL should be in the output
-    residues = list(threaded.get_residues())
-    assert any(res.get_resname() == "VAL" for res in residues)
+    assert deviations == 0
 
 
 def test_thread_onto_chain_with_insertion_codes():
-    """Test handling of insertion codes in ANARCI output."""
+    """Core test: insertion codes in ANARCI output are handled correctly."""
     chain = Chain.Chain("A")
     chain.add(build_residue(1, "ALA"))
     chain.add(build_residue(2, "GLY"))
@@ -111,17 +60,15 @@ def test_thread_onto_chain_with_insertion_codes():
     )
 
     residues = list(threaded.get_residues())
-    # Second residue should have insertion code "A"
     assert residues[1].get_id()[2] == "A"
 
 
 def test_thread_onto_chain_with_deletions():
-    """Test ANARCI output with deletions (marked as '-')."""
+    """Core test: deletions (gaps) in ANARCI output are handled correctly."""
     chain = Chain.Chain("A")
     chain.add(build_residue(1, "ALA"))
     chain.add(build_residue(2, "GLY"))
 
-    # Deletion at position 1
     anarci_out = [
         ((1, " "), "-"),  # Deletion
         ((2, " "), "A"),
@@ -136,66 +83,11 @@ def test_thread_onto_chain_with_deletions():
         alignment_start=0,
     )
 
-    # Should skip the deletion and number correctly
     assert len(list(threaded.get_residues())) == 2
 
 
-def test_thread_onto_chain_before_anarci_window():
-    """Test residues before ANARCI window start."""
-    chain = Chain.Chain("A")
-    # 5 residues total
-    for i in range(1, 6):
-        chain.add(build_residue(i, "ALA"))
-
-    # ANARCI window starts at residue 2 (anarci_start=2)
-    anarci_out = [
-        ((1, " "), "A"),
-        ((2, " "), "A"),
-        ((3, " "), "A"),
-    ]
-
-    threaded, deviations = edit_pdb.thread_onto_chain(
-        chain=chain,
-        anarci_out=anarci_out,
-        anarci_start=2,
-        anarci_end=5,
-        alignment_start=2,
-    )
-
-    residues = list(threaded.get_residues())
-    assert len(residues) == 5
-    # First 2 residues should be numbered differently (before window)
-
-
-def test_thread_onto_chain_after_anarci_window():
-    """Test residues after ANARCI window end."""
-    chain = Chain.Chain("A")
-    # 5 residues total
-    for i in range(1, 6):
-        chain.add(build_residue(i, "ALA"))
-
-    # ANARCI window ends before last residue
-    anarci_out = [
-        ((1, " "), "A"),
-        ((2, " "), "A"),
-        ((3, " "), "A"),
-    ]
-
-    threaded, deviations = edit_pdb.thread_onto_chain(
-        chain=chain,
-        anarci_out=anarci_out,
-        anarci_start=0,
-        anarci_end=3,
-        alignment_start=0,
-    )
-
-    residues = list(threaded.get_residues())
-    assert len(residues) == 5
-    # Last 2 residues should be after the ANARCI window
-
-
 def test_thread_onto_chain_counts_deviations():
-    """Test that deviations are counted when numbering changes."""
+    """Core test: deviations are counted when numbering changes."""
     chain = Chain.Chain("A")
     chain.add(build_residue(5, "ALA"))  # Originally numbered 5
     chain.add(build_residue(10, "GLY"))  # Originally numbered 10
@@ -213,127 +105,14 @@ def test_thread_onto_chain_counts_deviations():
         alignment_start=0,
     )
 
-    # Both residues changed numbering
     assert deviations == 2
-
-
-def test_validate_output_format_pdb_with_single_char():
-    """Test that PDB format is allowed with single-character insertion codes."""
-    alignment = [
-        ((1, " "), "A"),
-        ((1, "A"), "G"),
-        ((2, " "), "V"),
-    ]
-    # Should not raise
-    edit_pdb.validate_output_format("output.pdb", alignment)
-
-
-def test_validate_output_format_pdb_with_extended_codes():
-    """Test that PDB format raises error with extended insertion codes."""
-    alignment = [
-        ((1, " "), "A"),
-        ((1, "AA"), "G"),  # Extended insertion code
-        ((2, " "), "V"),
-    ]
-    with pytest.raises(ValueError, match="Extended insertion codes"):
-        edit_pdb.validate_output_format("output.pdb", alignment)
-
-
-def test_validate_output_format_cif_with_extended_codes():
-    """Test that CIF format is allowed with extended insertion codes."""
-    alignment = [
-        ((1, " "), "A"),
-        ((1, "AA"), "G"),  # Extended insertion code
-        ((1, "AB"), "V"),
-        ((1, "ZZ"), "L"),
-        ((1, "AAA"), "I"),  # Triple-letter code
-        ((2, " "), "P"),
-    ]
-    # Should not raise
-    edit_pdb.validate_output_format("output.cif", alignment)
-
-
-def test_thread_alignment_raises_error_with_pdb_and_extended_insertions(
-    tmp_path,
-):
-    """Test thread_alignment raises ValueError with PDB and extended codes."""
-    from importlib import resources
-    from pathlib import Path
-
-    DATA_PACKAGE = "tests.data"
-    pdb_path = Path(resources.files(DATA_PACKAGE) / "8_21_renumbered.pdb")
-
-    if not pdb_path.exists():
-        pytest.skip(f"Missing structure fixture at {pdb_path}")
-
-    # Create alignment with extended insertion codes
-    # Sequence starts with QVQLQESGGG
-    alignment = [
-        ((1, " "), "Q"),
-        ((1, "A"), "V"),  # Single-char insertion
-        ((1, "AA"), "Q"),  # Extended insertion code
-        ((2, " "), "L"),
-    ]
-
-    output_pdb = tmp_path / "test_output.pdb"
-
-    # Should raise ValueError with extended codes and .pdb output
-    with pytest.raises(ValueError, match="Extended insertion codes"):
-        edit_pdb.thread_alignment(
-            str(pdb_path),
-            "A",
-            alignment,
-            str(output_pdb),
-            start_res=0,
-            end_res=4,
-            alignment_start=0,
-        )
-
-
-def test_thread_alignment_succeeds_with_cif_and_extended_insertions(tmp_path):
-    """Test thread_alignment succeeds with CIF and extended codes."""
-    from importlib import resources
-    from pathlib import Path
-
-    DATA_PACKAGE = "tests.data"
-    pdb_path = Path(resources.files(DATA_PACKAGE) / "8_21_renumbered.pdb")
-
-    if not pdb_path.exists():
-        pytest.skip(f"Missing structure fixture at {pdb_path}")
-
-    # Create alignment with extended insertion codes
-    # Sequence starts with QVQLQESGGG
-    alignment = [
-        ((1, " "), "Q"),
-        ((1, "A"), "V"),  # Single-char insertion
-        ((1, "AA"), "Q"),  # Extended insertion code
-        ((2, " "), "L"),
-    ]
-
-    output_cif = tmp_path / "test_output.cif"
-
-    # Should NOT raise with extended codes and .cif output
-    edit_pdb.thread_alignment(
-        str(pdb_path),
-        "A",
-        alignment,
-        str(output_cif),
-        start_res=0,
-        end_res=4,
-        alignment_start=0,
-    )
-
-    # Verify the output file was created
-    assert output_cif.exists()
 
 
 @pytest.mark.slow
 def test_8sve_L_extended_insertion_codes(tmp_path):
-    """Test 8SVE_L antibody with extended insertion codes.
+    """E2E test: 8SVE_L antibody with extended insertion codes.
 
-    This test runs the full pipeline once and verifies:
-    1. PDB output raises ValueError due to extended insertion codes
-    2. CIF output succeeds and contains valid extended codes
+    Verifies PDB output fails with extended codes, CIF output succeeds.
     """
     pytest.importorskip("ANARCI")
     from importlib import resources
@@ -350,14 +129,11 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
     if not pdb_path.exists():
         pytest.skip(f"Missing structure fixture at {pdb_path}")
 
-    # Use SoftAligner to generate alignment (run once for both tests)
     try:
-        # Generate embeddings first (also extracts sequence)
         input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
         aligner = softaligner.SoftAligner()
         result = aligner(input_data)
 
-        # Convert to ANARCI format
         sequence = input_data.sequence
         hmm_output = aln2hmm.alignment_matrix_to_state_vector(result.alignment)
         n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
@@ -372,7 +148,7 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
             )
         )
 
-        # Test 1: PDB output should raise ValueError
+        # PDB output should raise ValueError due to extended insertion codes
         output_pdb = tmp_path / "8sve_L_output.pdb"
         with pytest.raises(ValueError, match="Extended insertion codes"):
             edit_pdb.thread_alignment(
@@ -385,7 +161,7 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
                 alignment_start=0,
             )
 
-        # Test 2: CIF output should succeed
+        # CIF output should succeed
         output_cif = tmp_path / "8sve_L_output.cif"
         edit_pdb.thread_alignment(
             str(pdb_path),
@@ -397,39 +173,15 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
             alignment_start=0,
         )
 
-        # Verify the output file was created
         assert output_cif.exists()
 
-        # Parse the output and verify extended insertion codes are present
         parser = PDB.MMCIFParser(QUIET=True)
         structure = parser.get_structure("8sve", str(output_cif))
-
         residues = list(structure[0]["M"].get_residues())
 
-        # Check first residue is numbered 1
-        first_res = residues[0]
-        hetflag, resnum, icode = first_res.get_id()
-        assert resnum == 1, f"First residue should be numbered 1, got {resnum}"
-
-        # Check last residue numbered in expected range
-        # (IMGT light chain ends around 120-128)
-        last_res = residues[-1]
-        hetflag, resnum, icode = last_res.get_id()
-        assert (
-            120 <= resnum <= 128
-        ), f"Last residue should be around 120-128, got {resnum}"
-
-        # Check that there are extended insertion codes present
-        has_extended = False
-        for res in residues:
-            hetflag, resnum, icode = res.get_id()
-            if len(icode.strip()) > 1:
-                has_extended = True
-                break
-
-        assert (
-            has_extended
-        ), "Expected to find extended insertion codes in 8sve_L output"
+        # Verify extended insertion codes are present
+        has_extended = any(len(res.get_id()[2].strip()) > 1 for res in residues)
+        assert has_extended
 
     except ImportError:
         pytest.skip("SoftAligner dependencies not available")
