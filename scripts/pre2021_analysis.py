@@ -18,73 +18,105 @@ import argparse
 import csv
 import json
 import tempfile
-import urllib.request
+import time
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
+import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr import aln2hmm, mpnn_embeddings, softaligner
-from sabr.constants import IMGT_LOOPS
-
-# Build IMGT_REGIONS from sabr constants and IMGT framework definitions
-# Framework positions are: FR1=1-26, FR2=39-55, FR3=66-104, FR4=118-128
-IMGT_REGIONS = {
-    "FR1": list(range(1, 27)),
-    "CDR1": list(range(IMGT_LOOPS["CDR1"][0], IMGT_LOOPS["CDR1"][1] + 1)),
-    "FR2": list(range(39, 56)),
-    "CDR2": list(range(IMGT_LOOPS["CDR2"][0], IMGT_LOOPS["CDR2"][1] + 1)),
-    "FR3": list(range(66, 105)),
-    "CDR3": list(range(IMGT_LOOPS["CDR3"][0], IMGT_LOOPS["CDR3"][1] + 1)),
-    "FR4": list(range(118, 129)),
-}
+from sabr import mpnn_embeddings, renumber
+from sabr.constants import IMGT_REGIONS
 
 
-def fetch_imgt_pdb(pdb_id: str, output_path: str) -> bool:
+def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
     """Fetch IMGT-numbered PDB from SAbDab.
 
     Args:
         pdb_id: 4-letter PDB ID
         output_path: Path to save the PDB file
+        max_retries: Maximum number of retry attempts
 
-    Returns:
-        True if successful, False otherwise
+    Raises:
+        RuntimeError: If the PDB cannot be fetched after all retries
     """
     base_url = "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/pdb"
     url = f"{base_url}/{pdb_id}/?scheme=imgt"
-    try:
-        urllib.request.urlretrieve(url, output_path)
-        # Verify it's a valid PDB (not an error page)
-        with open(output_path, "r") as f:
-            content = f.read(100)
-            if "ATOM" not in content and "HEADER" not in content:
-                return False
-        return True
-    except Exception as e:
-        print(f"Failed to fetch {pdb_id}: {e}")
-        return False
+
+    # Use browser-like headers to avoid being blocked by the server
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        ),
+        "Accept-Language": "en-US,en;q=0.9",
+        "Connection": "keep-alive",
+    }
+
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+
+            content = response.text
+            # Verify it's a valid PDB (not an error page)
+            # Check for REMARK (SAbDab header) or ATOM records
+            if (
+                "REMARK" not in content[:500]
+                and "ATOM" not in content[:1000]
+                and "HEADER" not in content[:500]
+            ):
+                raise RuntimeError(
+                    f"Invalid PDB content for {pdb_id}: "
+                    f"response does not contain REMARK, ATOM or HEADER. "
+                    f"First 200 chars: {content[:200]}"
+                )
+
+            with open(output_path, "w") as f:
+                f.write(content)
+            return
+
+        except requests.exceptions.RequestException as e:
+            last_error = e
+            print(
+                f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
+            )
+            if attempt < max_retries - 1:
+                time.sleep(2**attempt)  # Exponential backoff: 1s, 2s, 4s
+
+    raise RuntimeError(
+        f"Failed to fetch PDB {pdb_id} from {url} "
+        f"after {max_retries} attempts. Last error: {last_error}"
+    )
 
 
-class ChainResidueSelect(Select):
-    """BioPython Select class to filter by chain and residue range."""
+class ChainSelect(Select):
+    """BioPython Select class to filter by chain and optionally by residue."""
 
-    def __init__(self, chain_id: str, min_res: int = 1, max_res: int = 128):
+    def __init__(self, chain_id: str, filter_to_imgt: bool = False):
         self.chain_id = chain_id
-        self.min_res = min_res
-        self.max_res = max_res
+        self.filter_to_imgt = filter_to_imgt
 
     def accept_chain(self, chain):
         return chain.id == self.chain_id
 
     def accept_residue(self, residue):
-        res_id = residue.get_id()
-        resnum = res_id[1]
-        return self.min_res <= resnum <= self.max_res
+        if not self.filter_to_imgt:
+            return True
+        resnum = residue.get_id()[1]
+        return 1 <= resnum <= 128
 
 
-def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
-    """Extract a specific chain (residues 1-128) from a PDB file."""
+def extract_chain_to_pdb(
+    src_pdb: str, chain_id: str, dst_pdb: str, filter_to_imgt: bool = False
+) -> bool:
+    """Extract a specific chain from a PDB file."""
     try:
         parser = PDBParser(QUIET=True)
         structure = parser.get_structure("input", src_pdb)
@@ -96,7 +128,7 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
 
         io = PDBIO()
         io.set_structure(structure)
-        io.save(dst_pdb, ChainResidueSelect(chain_id, 1, 128))
+        io.save(dst_pdb, ChainSelect(chain_id, filter_to_imgt))
 
         # Verify output has content
         with open(dst_pdb, "r") as f:
@@ -110,87 +142,39 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
         return False
 
 
-def parse_pdb_residue_ids(pdb_path: str, chain_id: str) -> List[str]:
-    """Parse residue IDs from a PDB file for a specific chain using BioPython.
-
-    Returns:
-        List of residue ID strings (e.g., ['1', '2', '27A', '27B', ...])
-    """
-    parser = PDBParser(QUIET=True)
-    structure = parser.get_structure("input", pdb_path)
-
-    residue_ids = []
-    for chain in structure[0]:
-        if chain.id != chain_id:
-            continue
-
-        for residue in chain.get_residues():
-            # Skip heteroatoms
-            hetflag = residue.get_id()[0]
-            if hetflag.strip():
-                continue
-
-            res_id = residue.get_id()
-            resnum = res_id[1]
-            icode = res_id[2].strip()
-
-            # Filter to residues 1-128
-            if resnum < 1 or resnum > 128:
-                continue
-
-            if icode:
-                residue_ids.append(f"{resnum}{icode}")
-            else:
-                residue_ids.append(str(resnum))
-
-    return residue_ids
-
-
-def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Optional[Dict]:
+def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
     Returns:
-        Dict with 'output_positions', 'chain_type', 'sequence'
+        Dict with input_positions, output_positions, chain_type, sequence.
+
+    Raises:
+        RuntimeError: If SAbR pipeline fails
     """
-    try:
-        from anarci import number_sequence_from_alignment
+    # Extract embeddings (also provides input residue IDs)
+    input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
 
-        # Extract embeddings
-        input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
+    # Run the renumbering pipeline (handles alignment and ANARCI)
+    anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
+        input_data,
+        numbering_scheme="imgt",
+        chain_type="auto",
+        deterministic_loop_renumbering=True,
+    )
 
-        # Align
-        aligner = softaligner.SoftAligner()
-        out = aligner(input_data, deterministic_loop_renumbering=True)
+    # Parse output positions from ANARCI alignment
+    output_positions = []
+    for pos, _aa in anarci_out:
+        resnum = pos[0]
+        insertion = pos[1].strip() if pos[1].strip() else ""
+        output_positions.append(f"{resnum}{insertion}")
 
-        # Convert to state vector
-        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
-            out.alignment
-        )
-
-        # Build subsequence
-        subsequence = "-" * start + input_data.sequence[: end - start]
-
-        # Get ANARCI numbering
-        anarci_out, _, _ = number_sequence_from_alignment(
-            sv, subsequence, scheme="imgt", chain_type=out.chain_type
-        )
-
-        # Parse output positions
-        output_positions = []
-        for pos, aa in anarci_out:
-            if aa != "-":
-                resnum = pos[0]
-                insertion = pos[1].strip() if pos[1].strip() else ""
-                output_positions.append(f"{resnum}{insertion}")
-
-        return {
-            "output_positions": output_positions,
-            "chain_type": out.chain_type,
-            "sequence": input_data.sequence,
-        }
-    except Exception as e:
-        print(f"Error running SAbR on {pdb_path}: {e}")
-        return None
+    return {
+        "input_positions": input_data.idxs,
+        "output_positions": output_positions,
+        "chain_type": chain_type,
+        "sequence": input_data.sequence,
+    }
 
 
 def get_region_for_position(pos_num: int) -> str:
@@ -280,6 +264,11 @@ def main():
         default=None,
         help="Local PDB dir ({dir}/{chain_type}/{pdb}_{chain}.pdb)",
     )
+    parser.add_argument(
+        "--filter-to-imgt",
+        action="store_true",
+        help="Filter residues to IMGT positions 1-128 only",
+    )
     args = parser.parse_args()
 
     # Load entries from CSV
@@ -341,20 +330,12 @@ def main():
                 # Fetch from SAbDab
                 full_pdb = cache_dir / f"{pdb_id}.pdb"
                 if not full_pdb.exists():
-                    if not fetch_imgt_pdb(pdb_id, str(full_pdb)):
-                        results[chain_type].append(
-                            {
-                                "pdb": f"{pdb_id}_{chain_id}",
-                                "error": "Failed to fetch PDB",
-                                "perfect": False,
-                            }
-                        )
-                        continue
+                    fetch_imgt_pdb(pdb_id, str(full_pdb))
 
                 # Extract chain
                 chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
                 if not extract_chain_to_pdb(
-                    str(full_pdb), chain_id, str(chain_pdb)
+                    str(full_pdb), chain_id, str(chain_pdb), args.filter_to_imgt
                 ):
                     results[chain_type].append(
                         {
@@ -365,31 +346,22 @@ def main():
                     )
                     continue
 
-            # Parse input positions (from IMGT-numbered PDB)
-            input_positions = parse_pdb_residue_ids(str(chain_pdb), chain_id)
-            if not input_positions:
+            # Run SAbR (also extracts input positions from PDB)
+            try:
+                sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
+            except Exception as e:
+                print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")
                 results[chain_type].append(
                     {
                         "pdb": f"{pdb_id}_{chain_id}",
-                        "error": "No residues found",
+                        "error": f"SAbR failed: {e}",
                         "perfect": False,
                     }
                 )
                 continue
 
-            # Run SAbR
-            sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
-            if sabr_result is None:
-                results[chain_type].append(
-                    {
-                        "pdb": f"{pdb_id}_{chain_id}",
-                        "error": "SAbR failed",
-                        "perfect": False,
-                    }
-                )
-                continue
-
-            # Compare
+            # Compare input positions (from IMGT-numbered PDB) with SAbR output
+            input_positions = sabr_result["input_positions"]
             comparison = compare_positions(
                 input_positions, sabr_result["output_positions"]
             )
@@ -412,26 +384,40 @@ def main():
 
     total_perfect = 0
     total_count = 0
+    total_failed = 0
 
     for chain_type in ["heavy", "kappa", "lambda"]:
         type_results = results.get(chain_type, [])
         if not type_results:
             continue
 
-        n_perfect = sum(1 for r in type_results if r.get("perfect", False))
-        n_total = len(type_results)
-        total_perfect += n_perfect
-        total_count += n_total
+        # Only count successful cases (no error) in the totals
+        successful = [r for r in type_results if "error" not in r]
+        failed = [r for r in type_results if "error" in r]
 
-        accuracy = round(100 * n_perfect / n_total, 1) if n_total > 0 else 0
-        print(
-            f"{chain_type.upper()}: {n_perfect}/{n_total} perfect ({accuracy}%)"
-        )
+        n_perfect = sum(1 for r in successful if r.get("perfect", False))
+        n_successful = len(successful)
+        n_failed = len(failed)
+        total_perfect += n_perfect
+        total_count += n_successful
+        total_failed += n_failed
+
+        if n_successful > 0:
+            accuracy = round(100 * n_perfect / n_successful, 1)
+            print(
+                f"{chain_type.upper()}: {n_perfect}/{n_successful} perfect "
+                f"({accuracy}%)"
+                + (f" [{n_failed} failed]" if n_failed > 0 else "")
+            )
+        elif n_failed > 0:
+            print(f"{chain_type.upper()}: 0/0 perfect [{n_failed} failed]")
 
     if total_count > 0:
         overall_accuracy = round(100 * total_perfect / total_count, 1)
         print(f"\nOVERALL: {total_perfect}/{total_count} perfect")
         print(f"  Accuracy: {overall_accuracy}%")
+    if total_failed > 0:
+        print(f"  Failed: {total_failed} entries")
 
     # Save results
     with open(args.output, "w") as f:
