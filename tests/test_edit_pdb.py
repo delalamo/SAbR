@@ -352,15 +352,16 @@ def test_8sve_L_raises_error_with_pdb_output(tmp_path):
 
         # Convert to ANARCI format
         sequence = input_data.sequence
-        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
-            result.alignment
-        )
-        n_aligned = end - start
-        subsequence = "-" * start + sequence[:n_aligned]
+        hmm_output = aln2hmm.alignment_matrix_to_state_vector(result.alignment)
+        n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+        subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
-                sv, subsequence, scheme="imgt", chain_type=result.chain_type
+                hmm_output.states,
+                subsequence,
+                scheme="imgt",
+                chain_type=result.chain_type,
             )
         )
 
@@ -410,15 +411,16 @@ def test_8sve_L_succeeds_with_cif_output_and_correct_numbering(tmp_path):
 
         # Convert to ANARCI format
         sequence = input_data.sequence
-        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
-            result.alignment
-        )
-        n_aligned = end - start
-        subsequence = "-" * start + sequence[:n_aligned]
+        hmm_output = aln2hmm.alignment_matrix_to_state_vector(result.alignment)
+        n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+        subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
         anarci_out, anarci_start, anarci_end = (
             anarci.number_sequence_from_alignment(
-                sv, subsequence, scheme="imgt", chain_type=result.chain_type
+                hmm_output.states,
+                subsequence,
+                scheme="imgt",
+                chain_type=result.chain_type,
             )
         )
 

@@ -2,7 +2,7 @@ import importlib
 
 import numpy as np
 
-from sabr import constants, mpnn_embeddings, softaligner
+from sabr import softaligner
 
 
 def make_aligner() -> softaligner.SoftAligner:
@@ -13,25 +13,6 @@ def test_files_resolves():
     # will raise if not importable
     pkg = importlib.import_module("sabr.assets")
     assert importlib.resources.files(pkg) is not None
-
-
-def test_normalize_orders_indices():
-    embed = np.vstack(
-        [np.full((1, constants.EMBED_DIM), i, dtype=float) for i in range(3)]
-    )
-    mp = mpnn_embeddings.MPNNEmbeddings(
-        name="demo",
-        embeddings=embed,
-        stdev=embed,
-        idxs=["3", "1", "2"],
-    )
-    aligner = make_aligner()
-
-    normalized = aligner.normalize(mp)
-
-    assert normalized.idxs == [1, 2, 3]
-    expected = np.vstack([embed[1], embed[2], embed[0]])
-    assert np.array_equal(normalized.embeddings, expected)
 
 
 def test_correct_gap_numbering_places_expected_ones():

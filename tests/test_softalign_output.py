@@ -1,4 +1,3 @@
-import jax.numpy as jnp
 import numpy as np
 import pytest
 
@@ -7,7 +6,7 @@ from sabr import softalign_output
 
 def test_softalignoutput_valid_creation():
     """Test successful creation with matching shapes."""
-    alignment = jnp.ones((3, 4), dtype=int)
+    alignment = np.ones((3, 4), dtype=int)
     idxs1 = ["a", "b", "c"]
     idxs2 = ["1", "2", "3", "4"]
 
@@ -30,8 +29,8 @@ def test_softalignoutput_valid_creation():
 
 def test_softalignoutput_with_sim_matrix():
     """Test creation with non-None sim_matrix."""
-    alignment = jnp.ones((2, 2), dtype=int)
-    sim_matrix = jnp.array([[0.8, 0.2], [0.3, 0.9]])
+    alignment = np.ones((2, 2), dtype=int)
+    sim_matrix = np.array([[0.8, 0.2], [0.3, 0.9]])
     idxs1 = ["x", "y"]
     idxs2 = ["1", "2"]
 
@@ -51,7 +50,7 @@ def test_softalignoutput_with_sim_matrix():
 
 def test_softalignoutput_alignment_idxs1_mismatch():
     """Test ValueError when alignment.shape[0] != len(idxs1)."""
-    alignment = jnp.ones((3, 4), dtype=int)
+    alignment = np.ones((3, 4), dtype=int)
     idxs1 = ["a", "b"]  # Only 2, but alignment has 3 rows
     idxs2 = ["1", "2", "3", "4"]
 
@@ -71,7 +70,7 @@ def test_softalignoutput_alignment_idxs1_mismatch():
 
 def test_softalignoutput_alignment_idxs2_mismatch():
     """Test ValueError when alignment.shape[1] != len(idxs2)."""
-    alignment = jnp.ones((3, 4), dtype=int)
+    alignment = np.ones((3, 4), dtype=int)
     idxs1 = ["a", "b", "c"]
     idxs2 = ["1", "2"]  # Only 2, but alignment has 4 columns
 
@@ -91,7 +90,7 @@ def test_softalignoutput_alignment_idxs2_mismatch():
 
 def test_softalignoutput_empty_alignment():
     """Test with empty alignment and empty idxs."""
-    alignment = jnp.array([], dtype=int).reshape(0, 0)
+    alignment = np.array([], dtype=int).reshape(0, 0)
     idxs1 = []
     idxs2 = []
 
@@ -111,7 +110,7 @@ def test_softalignoutput_empty_alignment():
 
 def test_softalignoutput_single_element():
     """Test with minimal 1x1 alignment."""
-    alignment = jnp.array([[1]], dtype=int)
+    alignment = np.array([[1]], dtype=int)
     idxs1 = ["a"]
     idxs2 = ["1"]
 
@@ -149,7 +148,7 @@ def test_softalignoutput_numpy_array():
 
 def test_softalignoutput_negative_score():
     """Test that negative scores are allowed."""
-    alignment = jnp.ones((2, 2), dtype=int)
+    alignment = np.ones((2, 2), dtype=int)
     idxs1 = ["a", "b"]
     idxs2 = ["1", "2"]
 

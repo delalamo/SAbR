@@ -1,4 +1,3 @@
-import jax.numpy as jnp
 import numpy as np
 import pytest
 
@@ -22,7 +21,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
 
 
 def test_softalignoutput_holds_passed_values():
-    alignment = jnp.ones((2, 2), dtype=int)
+    alignment = np.ones((2, 2), dtype=int)
     output = softalign_output.SoftAlignOutput(
         alignment=alignment,
         score=1.5,

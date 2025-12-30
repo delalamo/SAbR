@@ -76,7 +76,7 @@ def thread_onto_chain(
     anarci_start: int,
     anarci_end: int,
     alignment_start: int,
-    max_residues: int = 0,
+    residue_range: Tuple[int, int] = (0, 0),
 ) -> Tuple[Chain.Chain, int]:
     """Return a deep-copied chain renumbered by the ANARCI window.
 
@@ -91,15 +91,22 @@ def thread_onto_chain(
         anarci_start: Starting position in the ANARCI window.
         anarci_end: Ending position in the ANARCI window.
         alignment_start: Offset where alignment begins in the sequence.
-        max_residues: Maximum residues to process (0 = all).
+        residue_range: Tuple of (start, end) residue numbers to process
+            (inclusive). Use (0, 0) to process all residues.
 
     Returns:
         Tuple of (new_chain, deviation_count).
     """
+    start_res, end_res = residue_range
+    range_str = (
+        f" (residue_range={start_res}-{end_res})"
+        if residue_range != (0, 0)
+        else ""
+    )
     LOGGER.info(
         f"Threading chain {chain.id} with ANARCI window "
         f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
-        + (f" (max_residues={max_residues})" if max_residues > 0 else "")
+        + range_str
     )
     new_chain = Chain.Chain(chain.id)
     aligned_residue_idx = -1
@@ -107,12 +114,16 @@ def thread_onto_chain(
     deviations = 0
 
     for pdb_idx, res in enumerate(chain.get_residues()):
-        if max_residues > 0 and res.id[1] > max_residues:
-            LOGGER.info(
-                f"Stopping at residue index {res.id[1]} "
-                f"(max_residues={max_residues})"
-            )
-            break
+        res_num = res.id[1]
+        # Skip residues outside the specified range
+        if residue_range != (0, 0):
+            if res_num < start_res:
+                continue
+            if res_num > end_res:
+                LOGGER.info(
+                    f"Stopping at residue {res_num} (end of range {end_res})"
+                )
+                break
 
         is_in_aligned_region = pdb_idx >= alignment_start
         is_hetatm = res.get_id()[0].strip() != ""
@@ -166,7 +177,7 @@ def thread_alignment(
     start_res: int,
     end_res: int,
     alignment_start: int,
-    max_residues: int = 0,
+    residue_range: Tuple[int, int] = (0, 0),
 ) -> int:
     """Write the renumbered chain to ``output_pdb`` and return the structure.
 
@@ -178,8 +189,8 @@ def thread_alignment(
         start_res: Start residue index from ANARCI.
         end_res: End residue index from ANARCI.
         alignment_start: Offset where alignment begins in the sequence.
-        max_residues: Maximum number of residues to process. If 0,
-            process all residues.
+        residue_range: Tuple of (start, end) residue numbers to process
+            (inclusive). Use (0, 0) to process all residues.
 
     Returns:
         Number of residue ID deviations from original numbering.
@@ -210,7 +221,12 @@ def thread_alignment(
             new_model.add(ch)
         else:
             new_chain, deviations = thread_onto_chain(
-                ch, alignment, start_res, end_res, alignment_start, max_residues
+                ch,
+                alignment,
+                start_res,
+                end_res,
+                alignment_start,
+                residue_range,
             )
             new_model.add(new_chain)
             all_devs += deviations
