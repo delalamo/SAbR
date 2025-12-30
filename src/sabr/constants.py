@@ -57,6 +57,18 @@ IMGT_LOOPS = {
     "CDR3": (105, 117),
 }
 
+# Full IMGT region definitions including frameworks and CDRs
+# Framework positions: FR1=1-26, FR2=39-55, FR3=66-104, FR4=118-128
+IMGT_REGIONS = {
+    "FR1": list(range(1, 27)),
+    "CDR1": list(range(27, 39)),
+    "FR2": list(range(39, 56)),
+    "CDR2": list(range(56, 66)),
+    "FR3": list(range(66, 105)),
+    "CDR3": list(range(105, 118)),
+    "FR4": list(range(118, 129)),
+}
+
 # Framework anchor positions for CDR renumbering
 # These are conserved framework residues used to identify CDR boundaries.
 # CDR residues are determined by counting rows between these anchors.

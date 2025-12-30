@@ -27,19 +27,7 @@ import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr import mpnn_embeddings, renumber
-from sabr.constants import IMGT_LOOPS
-
-# Build IMGT_REGIONS from sabr constants and IMGT framework definitions
-# Framework positions are: FR1=1-26, FR2=39-55, FR3=66-104, FR4=118-128
-IMGT_REGIONS = {
-    "FR1": list(range(1, 27)),
-    "CDR1": list(range(IMGT_LOOPS["CDR1"][0], IMGT_LOOPS["CDR1"][1] + 1)),
-    "FR2": list(range(39, 56)),
-    "CDR2": list(range(IMGT_LOOPS["CDR2"][0], IMGT_LOOPS["CDR2"][1] + 1)),
-    "FR3": list(range(66, 105)),
-    "CDR3": list(range(IMGT_LOOPS["CDR3"][0], IMGT_LOOPS["CDR3"][1] + 1)),
-    "FR4": list(range(118, 129)),
-}
+from sabr.constants import IMGT_REGIONS
 
 
 def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
@@ -152,52 +140,16 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
         return False
 
 
-def parse_pdb_residue_ids(pdb_path: str, chain_id: str) -> List[str]:
-    """Parse residue IDs from a PDB file for a specific chain using BioPython.
-
-    Returns:
-        List of residue ID strings (e.g., ['1', '2', '27A', '27B', ...])
-    """
-    parser = PDBParser(QUIET=True)
-    structure = parser.get_structure("input", pdb_path)
-
-    residue_ids = []
-    for chain in structure[0]:
-        if chain.id != chain_id:
-            continue
-
-        for residue in chain.get_residues():
-            # Skip heteroatoms
-            hetflag = residue.get_id()[0]
-            if hetflag.strip():
-                continue
-
-            res_id = residue.get_id()
-            resnum = res_id[1]
-            icode = res_id[2].strip()
-
-            # Filter to residues 1-128
-            if resnum < 1 or resnum > 128:
-                continue
-
-            if icode:
-                residue_ids.append(f"{resnum}{icode}")
-            else:
-                residue_ids.append(str(resnum))
-
-    return residue_ids
-
-
 def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
     Returns:
-        Dict with 'output_positions', 'chain_type', 'sequence'
+        Dict with input_positions, output_positions, chain_type, sequence.
 
     Raises:
         RuntimeError: If SAbR pipeline fails
     """
-    # Extract embeddings
+    # Extract embeddings (also provides input residue IDs)
     input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
@@ -216,6 +168,7 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
         output_positions.append(f"{resnum}{insertion}")
 
     return {
+        "input_positions": input_data.idxs,
         "output_positions": output_positions,
         "chain_type": chain_type,
         "sequence": input_data.sequence,
@@ -386,19 +339,7 @@ def main():
                     )
                     continue
 
-            # Parse input positions (from IMGT-numbered PDB)
-            input_positions = parse_pdb_residue_ids(str(chain_pdb), chain_id)
-            if not input_positions:
-                results[chain_type].append(
-                    {
-                        "pdb": f"{pdb_id}_{chain_id}",
-                        "error": "No residues found",
-                        "perfect": False,
-                    }
-                )
-                continue
-
-            # Run SAbR
+            # Run SAbR (also extracts input positions from PDB)
             try:
                 sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
             except Exception as e:
@@ -412,7 +353,8 @@ def main():
                 )
                 continue
 
-            # Compare
+            # Compare input positions (from IMGT-numbered PDB) with SAbR output
+            input_positions = sabr_result["input_positions"]
             comparison = compare_positions(
                 input_positions, sabr_result["output_positions"]
             )
