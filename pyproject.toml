@@ -75,3 +75,9 @@ line_length = 80
 [tool.flake8]
 max-line-length = 80
 extend-ignore = ["E203", "W503"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (skipped by default, use -m '' to include)",
+]
+addopts = "-m 'not slow'"

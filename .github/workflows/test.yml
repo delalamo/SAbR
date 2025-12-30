@@ -15,4 +15,5 @@ jobs:
           submodules: true
       - uses: ./.github/actions/setup-python
       - run: pip install -e .[test]
-      - run: pytest --cov=sabr --cov-report=term-missing
+      - name: Run all tests (including slow tests)
+        run: pytest -m "" --cov=sabr --cov-report=term-missing
