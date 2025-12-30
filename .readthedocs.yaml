@@ -1,0 +1,14 @@
+version: 2
+
+submodules:
+  include: all
+  recursive: true
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.11"
+  commands:
+    - pip install .
+    - pip install pdoc
+    - JAX_PLATFORMS=cpu pdoc sabr --docformat google -o $READTHEDOCS_OUTPUT/html
