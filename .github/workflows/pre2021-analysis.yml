@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: 'Number of entries to process (0 = all)'
+        description: "Number of entries to process (0 = all)"
         required: false
-        default: '50'
+        default: "50"
         type: string
 
 permissions:

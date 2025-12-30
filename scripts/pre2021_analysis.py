@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Pre-2021 SAbDab Analysis Script.
 
-This script evaluates SAbR numbering accuracy on pre-August 2021 SAbDab structures.
-It reads a CSV file with PDB IDs and chains, fetches IMGT-numbered structures from
-SAbDab, runs the SAbR pipeline, and compares output to expected IMGT numbering.
+This script evaluates SAbR numbering accuracy on pre-August 2021 SAbDab
+structures. It reads a CSV file with PDB IDs and chains, fetches IMGT-numbered
+structures from SAbDab, runs the SAbR pipeline, and compares output to
+expected IMGT numbering.
 
 Usage:
-    python pre2021_analysis.py --csv pre2021_pdb_chains.csv --output results.json
-    python pre2021_analysis.py --csv pre2021_pdb_chains.csv --limit 10  # Test with subset
+    python pre2021_analysis.py --csv pre2021_pdb_chains.csv
+    python pre2021_analysis.py --csv pre2021_pdb_chains.csv --limit 10
 """
 
 import argparse
@@ -19,21 +20,21 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from Bio.PDB import PDBParser, PDBIO, Select
+from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr import mpnn_embeddings, softaligner, aln2hmm
+from sabr import aln2hmm, mpnn_embeddings, softaligner
 from sabr.constants import IMGT_LOOPS
 
 # Build IMGT_REGIONS from sabr constants and IMGT framework definitions
 # Framework positions are: FR1=1-26, FR2=39-55, FR3=66-104, FR4=118-128
 IMGT_REGIONS = {
-    'FR1': list(range(1, 27)),
-    'CDR1': list(range(IMGT_LOOPS['CDR1'][0], IMGT_LOOPS['CDR1'][1] + 1)),
-    'FR2': list(range(39, 56)),
-    'CDR2': list(range(IMGT_LOOPS['CDR2'][0], IMGT_LOOPS['CDR2'][1] + 1)),
-    'FR3': list(range(66, 105)),
-    'CDR3': list(range(IMGT_LOOPS['CDR3'][0], IMGT_LOOPS['CDR3'][1] + 1)),
-    'FR4': list(range(118, 129)),
+    "FR1": list(range(1, 27)),
+    "CDR1": list(range(IMGT_LOOPS["CDR1"][0], IMGT_LOOPS["CDR1"][1] + 1)),
+    "FR2": list(range(39, 56)),
+    "CDR2": list(range(IMGT_LOOPS["CDR2"][0], IMGT_LOOPS["CDR2"][1] + 1)),
+    "FR3": list(range(66, 105)),
+    "CDR3": list(range(IMGT_LOOPS["CDR3"][0], IMGT_LOOPS["CDR3"][1] + 1)),
+    "FR4": list(range(118, 129)),
 }
 
 
@@ -47,13 +48,14 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str) -> bool:
     Returns:
         True if successful, False otherwise
     """
-    url = f"https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/pdb/{pdb_id}/?scheme=imgt"
+    base_url = "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/pdb"
+    url = f"{base_url}/{pdb_id}/?scheme=imgt"
     try:
         urllib.request.urlretrieve(url, output_path)
         # Verify it's a valid PDB (not an error page)
-        with open(output_path, 'r') as f:
+        with open(output_path, "r") as f:
             content = f.read(100)
-            if 'ATOM' not in content and 'HEADER' not in content:
+            if "ATOM" not in content and "HEADER" not in content:
                 return False
         return True
     except Exception as e:
@@ -79,7 +81,7 @@ class ChainResidueSelect(Select):
 
 
 def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
-    """Extract a specific chain (residues 1-128) from a PDB file using BioPython."""
+    """Extract a specific chain (residues 1-128) from a PDB file."""
     try:
         parser = PDBParser(QUIET=True)
         structure = parser.get_structure("input", src_pdb)
@@ -94,9 +96,9 @@ def extract_chain_to_pdb(src_pdb: str, chain_id: str, dst_pdb: str) -> bool:
         io.save(dst_pdb, ChainResidueSelect(chain_id, 1, 128))
 
         # Verify output has content
-        with open(dst_pdb, 'r') as f:
+        with open(dst_pdb, "r") as f:
             content = f.read()
-            if 'ATOM' not in content:
+            if "ATOM" not in content:
                 return False
 
         return True
@@ -158,28 +160,30 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Optional[Dict]:
         out = aligner(input_data, deterministic_loop_renumbering=True)
 
         # Convert to state vector
-        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(out.alignment)
+        sv, start, end, _ = aln2hmm.alignment_matrix_to_state_vector(
+            out.alignment
+        )
 
         # Build subsequence
-        subsequence = "-" * start + input_data.sequence[:end-start]
+        subsequence = "-" * start + input_data.sequence[: end - start]
 
         # Get ANARCI numbering
         anarci_out, _, _ = number_sequence_from_alignment(
-            sv, subsequence, scheme='imgt', chain_type=out.chain_type
+            sv, subsequence, scheme="imgt", chain_type=out.chain_type
         )
 
         # Parse output positions
         output_positions = []
         for pos, aa in anarci_out:
-            if aa != '-':
+            if aa != "-":
                 resnum = pos[0]
-                insertion = pos[1].strip() if pos[1].strip() else ''
+                insertion = pos[1].strip() if pos[1].strip() else ""
                 output_positions.append(f"{resnum}{insertion}")
 
         return {
-            'output_positions': output_positions,
-            'chain_type': out.chain_type,
-            'sequence': input_data.sequence
+            "output_positions": output_positions,
+            "chain_type": out.chain_type,
+            "sequence": input_data.sequence,
         }
     except Exception as e:
         print(f"Error running SAbR on {pdb_path}: {e}")
@@ -191,10 +195,12 @@ def get_region_for_position(pos_num: int) -> str:
     for reg_name, positions in IMGT_REGIONS.items():
         if pos_num in positions:
             return reg_name
-    return 'unknown'
+    return "unknown"
 
 
-def compare_positions(input_positions: List[str], output_positions: List[str]) -> Dict:
+def compare_positions(
+    input_positions: List[str], output_positions: List[str]
+) -> Dict:
     """Compare input and output IMGT positions.
 
     Returns:
@@ -213,47 +219,59 @@ def compare_positions(input_positions: List[str], output_positions: List[str]) -
             perfect = False
             # Determine region based on output position
             try:
-                out_num = int(''.join(c for c in out if c.isdigit()))
+                out_num = int("".join(c for c in out if c.isdigit()))
                 region = get_region_for_position(out_num)
                 deviations[region].append((i, inp, out))
             except ValueError:
-                deviations['unknown'].append((i, inp, out))
+                deviations["unknown"].append((i, inp, out))
 
     # Length mismatch
     if len(input_positions) != len(output_positions):
         perfect = False
-        deviations['length_mismatch'].append((
-            f"input={len(input_positions)}",
-            f"output={len(output_positions)}"
-        ))
+        deviations["length_mismatch"].append(
+            (f"input={len(input_positions)}", f"output={len(output_positions)}")
+        )
 
     return {
-        'perfect': perfect,
-        'deviations': dict(deviations),
-        'n_deviations': sum(len(v) for v in deviations.values())
+        "perfect": perfect,
+        "deviations": dict(deviations),
+        "n_deviations": sum(len(v) for v in deviations.values()),
     }
 
 
 def load_csv(csv_path: str) -> List[Dict]:
     """Load PDB entries from CSV file."""
     entries = []
-    with open(csv_path, 'r') as f:
+    with open(csv_path, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            entries.append({
-                'pdb_id': row['pdb_id'],
-                'chain': row['chain'],
-                'chain_type': row['chain_type']
-            })
+            entries.append(
+                {
+                    "pdb_id": row["pdb_id"],
+                    "chain": row["chain"],
+                    "chain_type": row["chain_type"],
+                }
+            )
     return entries
 
 
 def main():
     parser = argparse.ArgumentParser(description="Pre-2021 SAbDab Analysis")
-    parser.add_argument('--csv', required=True, help='Path to CSV file with PDB IDs and chains')
-    parser.add_argument('--output', default='pre2021_results.json', help='Output JSON file')
-    parser.add_argument('--limit', type=int, default=0, help='Limit number of entries to process (0 = all)')
-    parser.add_argument('--cache-dir', default=None, help='Directory to cache downloaded PDBs')
+    parser.add_argument(
+        "--csv", required=True, help="Path to CSV file with PDB IDs and chains"
+    )
+    parser.add_argument(
+        "--output", default="pre2021_results.json", help="Output JSON file"
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Limit number of entries to process (0 = all)",
+    )
+    parser.add_argument(
+        "--cache-dir", default=None, help="Directory to cache downloaded PDBs"
+    )
     args = parser.parse_args()
 
     # Load entries from CSV
@@ -261,23 +279,25 @@ def main():
     print(f"Loaded {len(entries)} entries from {args.csv}")
 
     if args.limit > 0:
-        entries = entries[:args.limit]
+        entries = entries[: args.limit]
         print(f"Limited to {len(entries)} entries")
 
     # Group by chain type
     by_type = defaultdict(list)
     for entry in entries:
-        by_type[entry['chain_type']].append(entry)
+        by_type[entry["chain_type"]].append(entry)
 
     # Set up cache directory
-    cache_dir = Path(args.cache_dir) if args.cache_dir else Path(tempfile.mkdtemp())
+    cache_dir = (
+        Path(args.cache_dir) if args.cache_dir else Path(tempfile.mkdtemp())
+    )
     cache_dir.mkdir(parents=True, exist_ok=True)
     print(f"Using cache directory: {cache_dir}")
 
     # Results
-    results = {'heavy': [], 'kappa': [], 'lambda': []}
+    results = {"heavy": [], "kappa": [], "lambda": []}
 
-    for chain_type in ['heavy', 'kappa', 'lambda']:
+    for chain_type in ["heavy", "kappa", "lambda"]:
         type_entries = by_type.get(chain_type, [])
         if not type_entries:
             continue
@@ -288,61 +308,75 @@ def main():
             if (i + 1) % 10 == 0:
                 print(f"  Progress: {i+1}/{len(type_entries)}")
 
-            pdb_id = entry['pdb_id']
-            chain_id = entry['chain']
+            pdb_id = entry["pdb_id"]
+            chain_id = entry["chain"]
 
             # Fetch or use cached PDB
             full_pdb = cache_dir / f"{pdb_id}.pdb"
             if not full_pdb.exists():
                 if not fetch_imgt_pdb(pdb_id, str(full_pdb)):
-                    results[chain_type].append({
-                        'pdb': f"{pdb_id}_{chain_id}",
-                        'error': 'Failed to fetch PDB',
-                        'perfect': False
-                    })
+                    results[chain_type].append(
+                        {
+                            "pdb": f"{pdb_id}_{chain_id}",
+                            "error": "Failed to fetch PDB",
+                            "perfect": False,
+                        }
+                    )
                     continue
 
             # Extract chain
             chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
-            if not extract_chain_to_pdb(str(full_pdb), chain_id, str(chain_pdb)):
-                results[chain_type].append({
-                    'pdb': f"{pdb_id}_{chain_id}",
-                    'error': 'Failed to extract chain',
-                    'perfect': False
-                })
+            if not extract_chain_to_pdb(
+                str(full_pdb), chain_id, str(chain_pdb)
+            ):
+                results[chain_type].append(
+                    {
+                        "pdb": f"{pdb_id}_{chain_id}",
+                        "error": "Failed to extract chain",
+                        "perfect": False,
+                    }
+                )
                 continue
 
             # Parse input positions (from IMGT-numbered PDB)
             input_positions = parse_pdb_residue_ids(str(chain_pdb), chain_id)
             if not input_positions:
-                results[chain_type].append({
-                    'pdb': f"{pdb_id}_{chain_id}",
-                    'error': 'No residues found',
-                    'perfect': False
-                })
+                results[chain_type].append(
+                    {
+                        "pdb": f"{pdb_id}_{chain_id}",
+                        "error": "No residues found",
+                        "perfect": False,
+                    }
+                )
                 continue
 
             # Run SAbR
             sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
             if sabr_result is None:
-                results[chain_type].append({
-                    'pdb': f"{pdb_id}_{chain_id}",
-                    'error': 'SAbR failed',
-                    'perfect': False
-                })
+                results[chain_type].append(
+                    {
+                        "pdb": f"{pdb_id}_{chain_id}",
+                        "error": "SAbR failed",
+                        "perfect": False,
+                    }
+                )
                 continue
 
             # Compare
-            comparison = compare_positions(input_positions, sabr_result['output_positions'])
+            comparison = compare_positions(
+                input_positions, sabr_result["output_positions"]
+            )
 
-            results[chain_type].append({
-                'pdb': f"{pdb_id}_{chain_id}",
-                'chain_type_detected': sabr_result['chain_type'],
-                'n_residues': len(input_positions),
-                'perfect': comparison['perfect'],
-                'n_deviations': comparison['n_deviations'],
-                'deviations': comparison['deviations']
-            })
+            results[chain_type].append(
+                {
+                    "pdb": f"{pdb_id}_{chain_id}",
+                    "chain_type_detected": sabr_result["chain_type"],
+                    "n_residues": len(input_positions),
+                    "perfect": comparison["perfect"],
+                    "n_deviations": comparison["n_deviations"],
+                    "deviations": comparison["deviations"],
+                }
+            )
 
     # Generate summary
     print("\n" + "=" * 60)
@@ -352,28 +386,31 @@ def main():
     total_perfect = 0
     total_count = 0
 
-    for chain_type in ['heavy', 'kappa', 'lambda']:
+    for chain_type in ["heavy", "kappa", "lambda"]:
         type_results = results.get(chain_type, [])
         if not type_results:
             continue
 
-        n_perfect = sum(1 for r in type_results if r.get('perfect', False))
+        n_perfect = sum(1 for r in type_results if r.get("perfect", False))
         n_total = len(type_results)
         total_perfect += n_perfect
         total_count += n_total
 
         accuracy = round(100 * n_perfect / n_total, 1) if n_total > 0 else 0
-        print(f"{chain_type.upper()}: {n_perfect}/{n_total} perfect ({accuracy}%)")
+        print(
+            f"{chain_type.upper()}: {n_perfect}/{n_total} perfect ({accuracy}%)"
+        )
 
     if total_count > 0:
         overall_accuracy = round(100 * total_perfect / total_count, 1)
-        print(f"\nOVERALL: {total_perfect}/{total_count} perfect ({overall_accuracy}%)")
+        print(f"\nOVERALL: {total_perfect}/{total_count} perfect")
+        print(f"  Accuracy: {overall_accuracy}%")
 
     # Save results
-    with open(args.output, 'w') as f:
+    with open(args.output, "w") as f:
         json.dump(results, f, indent=2)
     print(f"\nResults saved to: {args.output}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
