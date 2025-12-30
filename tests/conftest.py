@@ -1,9 +1,80 @@
 """Shared test fixtures and utilities for SAbR tests."""
 
-from typing import Any, Dict, List, Optional
+from importlib import resources
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
-from Bio import SeqIO
+import pytest
+from Bio import PDB, SeqIO
+
+DATA_PACKAGE = "tests.data"
+
+
+def resolve_data_path(filename: str) -> Path:
+    """Resolve a test data file path."""
+    return Path(resources.files(DATA_PACKAGE) / filename)
+
+
+# Shared fixtures dictionary with test data paths and metadata
+FIXTURES = {
+    "8_21": {
+        "pdb": resolve_data_path("8_21_renumbered.pdb"),
+        "chain": "A",
+        "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
+        "embeddings": resolve_data_path("8_21_renumbered_embeddings.npz"),
+        "min_deviations": 0,
+        "max_deviations": 0,
+    },
+    "5omm": {
+        "pdb": resolve_data_path("5omm_imgt.pdb"),
+        "chain": "C",
+        "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
+        "embeddings": resolve_data_path("5omm_imgt_embeddings.npz"),
+        "min_deviations": 5,
+        "max_deviations": 200,
+    },
+    "test_heavy_chain": {
+        "pdb": resolve_data_path("test_heavy_chain.pdb"),
+        "chain": "F",
+        "alignment": resolve_data_path("test_heavy_chain_alignment.npz"),
+        "embeddings": resolve_data_path("test_heavy_chain_embeddings.npz"),
+        "min_deviations": 0,
+        "max_deviations": 25,
+    },
+}
+
+
+def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
+    """Load an alignment fixture from disk."""
+    if not path.exists():
+        pytest.skip(f"Missing alignment fixture at {path}")
+    data = np.load(path, allow_pickle=True)
+    alignment = data["alignment"]
+    chain_type = data["chain_type"].item()
+    return alignment, chain_type
+
+
+def extract_residue_ids_from_pdb(
+    pdb_path: Path, chain: str
+) -> List[Tuple[str, int, str]]:
+    """Extract residue IDs from a PDB file path."""
+    parser = PDB.PDBParser(QUIET=True)
+    structure = parser.get_structure("structure", pdb_path)
+    return extract_residue_ids_from_structure(structure, chain)
+
+
+def extract_residue_ids_from_structure(
+    structure: PDB.Structure.Structure, chain: str
+) -> List[Tuple[str, int, str]]:
+    """Extract residue IDs from a BioPython structure."""
+    residues = []
+    for res in structure[0][chain]:
+        hetflag, resseq, icode = res.get_id()
+        if hetflag.strip():
+            continue
+        residues.append((hetflag, resseq, icode))
+    return residues
 
 
 class DummyResult:
