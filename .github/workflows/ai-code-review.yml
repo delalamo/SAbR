@@ -9,7 +9,7 @@ on:
         required: true
         type: number
 
-  # Comment trigger - maintainers comment "/review", "/ask", or "/dismiss" on a PR
+  # Comment trigger - maintainers comment "/review_claude", "/ask_claude", or "/dismiss" on a PR
   issue_comment:
     types: [created]
 
@@ -20,13 +20,13 @@ permissions:
 jobs:
   ai-review:
     runs-on: ubuntu-latest
-    # Only run for /review command
+    # Only run for /review_claude command
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request &&
-       contains(github.event.comment.body, '/review') &&
-       !startsWith(github.event.comment.body, '/ask') &&
+       contains(github.event.comment.body, '/review_claude') &&
+       !startsWith(github.event.comment.body, '/ask_claude') &&
        !startsWith(github.event.comment.body, '/dismiss') &&
        (github.event.comment.author_association == 'OWNER' ||
         github.event.comment.author_association == 'MEMBER' ||
@@ -88,11 +88,11 @@ jobs:
 
   ai-ask:
     runs-on: ubuntu-latest
-    # Only run for /ask command
+    # Only run for /ask_claude command
     if: |
       github.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, '/ask ') &&
+      startsWith(github.event.comment.body, '/ask_claude ') &&
       (github.event.comment.author_association == 'OWNER' ||
        github.event.comment.author_association == 'MEMBER' ||
        github.event.comment.author_association == 'COLLABORATOR')
