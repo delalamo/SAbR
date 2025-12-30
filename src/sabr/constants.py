@@ -33,20 +33,7 @@ DEFAULT_TEMPERATURE = 1e-4
 # FR1 spans IMGT positions 1-26, but correction focuses on positions 6-12
 FR1_ANCHOR_START_COL = 5  # 0-indexed column for IMGT position 6
 FR1_ANCHOR_END_COL = 11  # 0-indexed column for IMGT position 12
-FR1_POSITION_10_COL = 9  # 0-indexed column for IMGT position 10
 FR1_KAPPA_RESIDUE_COUNT = 7  # Kappa chains have 7 residues in positions 6-12
-
-# Legacy FR1 constants (kept for compatibility)
-LIGHT_CHAIN_FR1_START = 5  # 0-indexed column for position 6
-LIGHT_CHAIN_FR1_END = 9  # 0-indexed column for position 10
-
-# FR3/DE loop region constants (0-indexed columns)
-# DE loop spans IMGT positions 79-84
-# Heavy chains: 6 residues (79, 80, 81, 82, 83, 84)
-# Light chains: 4 residues (79, 80, 83, 84) - skip 81, 82
-DE_LOOP_START_COL = 78  # 0-indexed column for IMGT position 79
-DE_LOOP_END_COL = 83  # 0-indexed column for IMGT position 84
-DE_LOOP_HEAVY_THRESHOLD = 5  # >= 5 residues indicates heavy chain
 
 # FR3 positions 81-84 (0-indexed columns)
 FR3_POS81_COL = 80
@@ -57,20 +44,6 @@ FR3_POS84_COL = 83
 # C-terminus correction positions (0-indexed)
 # Used to detect and fix unassigned residues at the end of FW4
 C_TERMINUS_ANCHOR_POSITION = 124  # 0-indexed for IMGT position 125
-
-C_TERMINUS_LAST_POSITIONS = (
-    125,
-    126,
-    127,
-)  # 0-indexed for positions 126, 127, 128
-
-
-IMGT_FRAMEWORKS = {
-    "FW1": list(range(1, 27)),
-    "FW2": list(range(39, 56)),
-    "FW3": list(range(66, 105)),
-    "FW4": list(range(118, 129)),
-}
 
 # Loop definitions are inclusive (CDR start position, CDR end position)
 IMGT_LOOPS = {
@@ -95,12 +68,6 @@ CDR_ANCHORS = {
     ),  # position 54 (55 is last FW2, added linearly) and 66 (first FW3)
     "CDR3": (104, 118),  # position 104 (last FW3) and 118 (first FW4)
 }
-
-NON_CDR_RESIDUES = sum(IMGT_FRAMEWORKS.values(), [])
-CDR_RESIDUES = [x for x in range(1, 129) if x not in NON_CDR_RESIDUES]
-
-# For testing purposes
-ADDITIONAL_GAPS = []
 
 AA_3TO1 = {
     "ALA": "A",

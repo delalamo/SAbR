@@ -69,9 +69,28 @@ class State:
             raise IndexError(f"State index out of range: {index}")
 
 
+@dataclass(frozen=True)
+class Aln2HmmOutput:
+    """Output from alignment_matrix_to_state_vector conversion.
+
+    Attributes:
+        states: List of State objects representing the HMM state vector.
+        imgt_start: First IMGT column index (0-indexed), for leading dashes.
+        imgt_end: Value such that n_aligned = imgt_end - imgt_start gives the
+            number of sequence positions to include after the leading dashes.
+        first_aligned_row: First sequence row (0-indexed) that is aligned,
+            used for alignment_start in thread_alignment.
+    """
+
+    states: List[State]
+    imgt_start: int
+    imgt_end: int
+    first_aligned_row: int
+
+
 def alignment_matrix_to_state_vector(
     matrix: np.ndarray,
-) -> Tuple[List[State], int, int, int]:
+) -> Aln2HmmOutput:
     """Return an HMMER-style state vector from a binary alignment matrix.
 
     The alignment matrix has shape (n_residues, n_imgt_positions) where:
@@ -85,13 +104,11 @@ def alignment_matrix_to_state_vector(
     position.
 
     Returns:
-        states: List of State objects representing the HMM state vector
-        imgt_start: First IMGT column index (0-indexed), used for leading dashes
-        imgt_end: Value such that subsequence =
-             "-" * imgt_start + sequence[:imgt_end-imgt_start]
-             has sufficient length for all mapped_residue values
-        first_aligned_row: First sequence row (0-indexed) that is aligned,
-             used for alignment_start in thread_alignment
+        Aln2HmmOutput containing:
+            - states: List of State objects representing the HMM state vector
+            - imgt_start: First IMGT column index (0-indexed)
+            - imgt_end: Value such that n_aligned = imgt_end - imgt_start
+            - first_aligned_row: First sequence row (0-indexed) that is aligned
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be 2D")
@@ -162,7 +179,12 @@ def alignment_matrix_to_state_vector(
     imgt_start = path[0][0]
     imgt_end = max_row + 1 + imgt_start
 
-    return states, imgt_start, imgt_end, first_aligned_row
+    return Aln2HmmOutput(
+        states=states,
+        imgt_start=imgt_start,
+        imgt_end=imgt_end,
+        first_aligned_row=first_aligned_row,
+    )
 
 
 def report_output(states: List[State]) -> None:

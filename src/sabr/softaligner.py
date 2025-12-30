@@ -85,45 +85,30 @@ class SoftAligner:
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
         """
-        self.all_embeddings = self.read_embeddings(
+        self.unified_embedding = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
         self.temperature = temperature
         self._backend = jax_backend.AlignmentBackend(random_seed=random_seed)
 
-    def normalize(
-        self, mp: mpnn_embeddings.MPNNEmbeddings
-    ) -> mpnn_embeddings.MPNNEmbeddings:
-        """Return embeddings reordered by sorted integer indices.
-
-        Deprecated: Use mp.sorted_by_index() directly instead.
-        """
-        return mp.sorted_by_index()
-
     def read_embeddings(
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ) -> List[mpnn_embeddings.MPNNEmbeddings]:
+    ) -> mpnn_embeddings.MPNNEmbeddings:
         """Load packaged reference embeddings as ``MPNNEmbeddings``."""
-        out_embeddings = []
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
-            data = np.load(p, allow_pickle=True)["arr_0"].item()
-            for name, embeddings_dict in data.items():
-                out_embeddings.append(
-                    mpnn_embeddings.MPNNEmbeddings(
-                        name=name,
-                        embeddings=embeddings_dict.get("array"),
-                        stdev=embeddings_dict.get("stdev"),
-                        idxs=embeddings_dict.get("idxs"),
-                    )
-                )
-        if len(out_embeddings) == 0:
-            raise RuntimeError(f"Couldn't load from {path}")
-        LOGGER.info(f"Loaded {len(out_embeddings)} embeddings from {path}")
-        return out_embeddings
+            data = np.load(p, allow_pickle=True)
+            embedding = mpnn_embeddings.MPNNEmbeddings(
+                name=str(data["name"]),
+                embeddings=data["array"],
+                stdev=data["stdev"],
+                idxs=list(data["idxs"]),
+            )
+        LOGGER.info(f"Loaded embeddings from {path}")
+        return embedding
 
     def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
         """Redistribute loop gaps to an alternating IMGT-style pattern."""
@@ -536,16 +521,14 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        unified_embedding = self.all_embeddings[0]
-
         alignment, sim_matrix, score = self._backend.align(
             input_embeddings=input_data.embeddings,
-            target_embeddings=unified_embedding.embeddings,
-            target_stdev=unified_embedding.stdev,
+            target_embeddings=self.unified_embedding.embeddings,
+            target_stdev=self.unified_embedding.stdev,
             temperature=self.temperature,
         )
 
-        aln = self.fix_aln(alignment, unified_embedding.idxs)
+        aln = self.fix_aln(alignment, self.unified_embedding.idxs)
         aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:

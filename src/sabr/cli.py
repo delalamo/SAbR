@@ -202,12 +202,12 @@ def main(
         input_data,
         deterministic_loop_renumbering=not disable_deterministic_renumbering,
     )
-    state_vector, imgt_start, imgt_end, first_aligned_row = (
-        aln2hmm.alignment_matrix_to_state_vector(alignment_result.alignment)
+    hmm_output = aln2hmm.alignment_matrix_to_state_vector(
+        alignment_result.alignment
     )
 
-    n_aligned = imgt_end - imgt_start
-    subsequence = "-" * imgt_start + sequence[:n_aligned]
+    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
+    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
     LOGGER.info(f">identified_seq (len {len(subsequence)})\n{subsequence}")
 
     # Detect chain type from DE loop for ANARCI numbering if not specified
@@ -217,7 +217,7 @@ def main(
         LOGGER.info(f"Using user-specified chain type: {chain_type}")
 
     anarci_out, start_res, end_res = anarci.number_sequence_from_alignment(
-        state_vector,
+        hmm_output.states,
         subsequence,
         scheme=numbering_scheme,
         chain_type=chain_type,
@@ -232,7 +232,7 @@ def main(
         output_file,
         0,
         len(anarci_out),
-        alignment_start=first_aligned_row,
+        alignment_start=hmm_output.first_aligned_row,
         residue_range=residue_range,
     )
     LOGGER.info(f"Finished renumbering; output written to {output_file}")
