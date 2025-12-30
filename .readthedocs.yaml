@@ -9,8 +9,8 @@ build:
   tools:
     python: "3.11"
   commands:
-    # Install dependencies (but we'll run pdoc on source dir to keep README.md accessible)
     - pip install .
     - pip install pdoc
-    # Use source path so __file__ resolves to src/sabr and README.md can be found
+    # Copy README into package directory so it's always found regardless of install location
+    - cp README.md src/sabr/README.md
     - JAX_PLATFORMS=cpu pdoc ./src/sabr --docformat google -o $READTHEDOCS_OUTPUT/html
