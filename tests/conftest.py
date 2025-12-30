@@ -68,7 +68,10 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
     """
 
     def dummy_from_pdb(
-        pdb_file: str, chain: str, max_residues: int = 0, **kwargs: Any
+        pdb_file: str,
+        chain: str,
+        residue_range: tuple = (0, 0),
+        **kwargs: Any,
     ) -> DummyEmbeddings:
         # Extract real sequence from PDB file to match alignment expectations
         sequence = None
@@ -81,9 +84,11 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
             sequence = "A" * n_residues
 
         actual_n_residues = len(sequence)
-        if max_residues > 0:
-            actual_n_residues = min(actual_n_residues, max_residues)
-            sequence = sequence[:max_residues]
+        start_res, end_res = residue_range
+        if residue_range != (0, 0):
+            # Filter by residue range
+            actual_n_residues = min(actual_n_residues, end_res - start_res + 1)
+            sequence = sequence[: end_res - start_res + 1]
 
         return DummyEmbeddings(
             name=f"{pdb_file}_{chain}",

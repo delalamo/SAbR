@@ -22,16 +22,13 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional, Tuple, Union
 
-import haiku as hk
-import jax
 import numpy as np
 from Bio.PDB import Chain, MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
-from jax import numpy as jnp
 
-from sabr import constants, model, util
+from sabr import constants, jax_backend
 
 LOGGER = logging.getLogger(__name__)
 
@@ -359,36 +356,54 @@ class MPNNEmbeddings:
         LOGGER.info(f"Saved embeddings to {output_path_obj}")
 
 
-def _embed(
-    source: Union[str, Chain.Chain],
-    chain: str | None = None,
-    max_residues: int = 0,
-    name: str = "INPUT",
+def from_pdb(
+    pdb_file: str,
+    chain: str,
+    residue_range: Tuple[int, int] = (0, 0),
+    params_name: str = "mpnn_encoder",
+    params_path: str = "sabr.assets",
+    random_seed: int = 0,
 ) -> MPNNEmbeddings:
-    """Core embedding function for both file and chain inputs.
+    """
+    Create MPNNEmbeddings from a PDB file.
 
     Args:
-        source: Either a file path (str) or BioPython Chain object.
-        chain: Chain identifier (only used for file paths).
-        max_residues: Maximum number of residues to embed. If 0, embed all.
-        name: Name for the resulting embeddings.
+        pdb_file: Path to input PDB file (.pdb or .cif).
+        chain: Chain identifier to embed.
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering
+            (inclusive). Use (0, 0) to embed all residues.
+        params_name: Name of the model parameters file.
+        params_path: Package path containing the parameters file.
+        random_seed: Random seed for reproducibility.
 
     Returns:
         MPNNEmbeddings for the specified chain.
     """
-    if isinstance(source, str):
-        source_desc = f"{source} chain {chain}"
-    else:
-        source_desc = f"chain {source.id}"
+    LOGGER.info(f"Embedding PDB {pdb_file} chain {chain}")
 
-    LOGGER.info(f"Embedding {source_desc}")
+    if len(chain) > 1:
+        raise NotImplementedError(
+            f"Only single chain embedding is supported. "
+            f"Got {len(chain)} chains: '{chain}'. "
+            f"Please specify a single chain identifier."
+        )
 
-    e2e_model = model.create_e2e_model()
+    # Parse structure and extract inputs
+    inputs = _get_inputs(pdb_file, chain=chain)
 
-    inputs = _get_inputs(source, chain=chain)
-    embeddings = e2e_model.MPNN(
-        inputs.coords, inputs.mask, inputs.chain_ids, inputs.residue_indices
-    )[0]
+    # Create backend and compute embeddings
+    backend = jax_backend.EmbeddingBackend(
+        params_name=params_name,
+        params_path=params_path,
+        random_seed=random_seed,
+    )
+
+    embeddings = backend.compute_embeddings(
+        coords=inputs.coords,
+        mask=inputs.mask,
+        chain_ids=inputs.chain_ids,
+        residue_indices=inputs.residue_indices,
+    )
 
     if len(inputs.residue_ids) != embeddings.shape[0]:
         raise ValueError(
@@ -399,60 +414,37 @@ def _embed(
     ids = inputs.residue_ids
     sequence = inputs.sequence
 
-    if max_residues > 0 and len(ids) > max_residues:
-        LOGGER.info(
-            f"Truncating embeddings from {len(ids)} to {max_residues} residues"
-        )
-        embeddings = embeddings[:max_residues]
-        ids = ids[:max_residues]
-        sequence = sequence[:max_residues]
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        # Find indices where residue numbers fall within range
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                # Skip residues with non-numeric IDs (e.g., insertion codes)
+                continue
 
-    return MPNNEmbeddings(
-        name=name,
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+
+    result = MPNNEmbeddings(
+        name="INPUT_PDB",
         embeddings=embeddings,
         idxs=ids,
-        stdev=jnp.ones_like(embeddings),
+        stdev=np.ones_like(embeddings),
         sequence=sequence,
-    )
-
-
-def from_pdb(
-    pdb_file: str,
-    chain: str,
-    max_residues: int = 0,
-    params_name: str = "CONT_SW_05_T_3_1",
-    params_path: str = "softalign.models",
-    random_seed: int = 0,
-) -> MPNNEmbeddings:
-    """
-    Create MPNNEmbeddings from a PDB or CIF file.
-
-    Args:
-        pdb_file: Path to input structure file (.pdb or .cif).
-        chain: Chain identifier to embed.
-        max_residues: Maximum residues to embed. If 0, embed all.
-        params_name: Name of the model parameters file.
-        params_path: Package path containing the parameters file.
-        random_seed: Random seed for JAX.
-
-    Returns:
-        MPNNEmbeddings for the specified chain.
-    """
-    model_params = util.read_softalign_params(
-        params_name=params_name, params_path=params_path
-    )
-    key = jax.random.PRNGKey(random_seed)
-
-    def _embed_pdb(
-        pdbfile: str, chain_id: str, max_res: int = 0
-    ) -> MPNNEmbeddings:
-        return _embed(
-            pdbfile, chain=chain_id, max_residues=max_res, name="INPUT_PDB"
-        )
-
-    transformed_embed_fn = hk.transform(_embed_pdb)
-    result = transformed_embed_fn.apply(
-        model_params, key, pdb_file, chain, max_residues
     )
 
     LOGGER.info(
@@ -464,9 +456,9 @@ def from_pdb(
 
 def from_chain(
     chain: Chain.Chain,
-    max_residues: int = 0,
-    params_name: str = "CONT_SW_05_T_3_1",
-    params_path: str = "softalign.models",
+    residue_range: Tuple[int, int] = (0, 0),
+    params_name: str = "mpnn_encoder",
+    params_path: str = "sabr.assets",
     random_seed: int = 0,
 ) -> MPNNEmbeddings:
     """
@@ -477,24 +469,73 @@ def from_chain(
 
     Args:
         chain: BioPython Chain object.
-        max_residues: Maximum residues to embed. If 0, embed all.
+        residue_range: Tuple of (start, end) residue numbers in PDB numbering
+            (inclusive). Use (0, 0) to embed all residues.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
-        random_seed: Random seed for JAX.
+        random_seed: Random seed for reproducibility.
 
     Returns:
         MPNNEmbeddings for the chain.
     """
-    model_params = util.read_softalign_params(
-        params_name=params_name, params_path=params_path
+    LOGGER.info(f"Embedding chain {chain.id}")
+
+    # Extract inputs from chain
+    inputs = _get_inputs(chain)
+
+    # Create backend and compute embeddings
+    backend = jax_backend.EmbeddingBackend(
+        params_name=params_name,
+        params_path=params_path,
+        random_seed=random_seed,
     )
-    key = jax.random.PRNGKey(random_seed)
 
-    def _embed_chain(ch: Chain.Chain, max_res: int = 0) -> MPNNEmbeddings:
-        return _embed(ch, max_residues=max_res, name="INPUT_CHAIN")
+    embeddings = backend.compute_embeddings(
+        coords=inputs.coords,
+        mask=inputs.mask,
+        chain_ids=inputs.chain_ids,
+        residue_indices=inputs.residue_indices,
+    )
 
-    transformed_embed_fn = hk.transform(_embed_chain)
-    result = transformed_embed_fn.apply(model_params, key, chain, max_residues)
+    if len(inputs.residue_ids) != embeddings.shape[0]:
+        raise ValueError(
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
+        )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
+
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                continue
+
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+
+    result = MPNNEmbeddings(
+        name="INPUT_CHAIN",
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=np.ones_like(embeddings),
+        sequence=sequence,
+    )
 
     LOGGER.info(
         f"Computed embeddings for chain {chain.id} "

@@ -18,7 +18,7 @@ Usage:
 
 import logging
 import random
-from typing import Optional
+from typing import Optional, Tuple
 
 import click
 
@@ -97,30 +97,15 @@ LOGGER = logging.getLogger(__name__)
     help="Enable verbose logging.",
 )
 @click.option(
-    "--max-residues",
-    "max_residues",
+    "--residue-range",
+    "residue_range",
+    nargs=2,
     type=int,
-    default=0,
+    default=(0, 0),
     help=(
-        "Maximum number of residues to process from the chain. "
-        "If 0 (default), process all residues."
-    ),
-)
-@click.option(
-    "-t",
-    "--chain-type",
-    "chain_type",
-    type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
-        case_sensitive=False,
-    ),
-    default="auto",
-    show_default=True,
-    help=(
-        "Expected chain type. This is used for logging and validation. "
-        "Chain type is auto-detected from the alignment. "
-        "'H'/'heavy' for heavy chain, 'K'/'kappa' for kappa light chain, "
-        "'L'/'lambda' for lambda light chain, 'auto' for auto-detection."
+        "Range of residues to process as START END in PDB numbering "
+        "(inclusive). Use '0 0' (default) to process all residues. "
+        "Example: --residue-range 1 120 processes residues 1-120."
     ),
 )
 @click.option(
@@ -166,14 +151,7 @@ LOGGER = logging.getLogger(__name__)
         ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
         case_sensitive=False,
     ),
-    callback=lambda ctx, param, value: {
-        "heavy": "H",
-        "kappa": "K",
-        "lambda": "L",
-    }.get(
-        value.lower(),
-        value.upper() if value.upper() in ("H", "K", "L") else value,
-    ),
+    callback=lambda ctx, param, value: options.normalize_chain_type(value),
     help=(
         "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
         "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
@@ -187,7 +165,7 @@ def main(
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
-    max_residues: int,
+    residue_range: Tuple[int, int],
     extended_insertions: bool,
     disable_deterministic_renumbering: bool,
     random_seed: Optional[int],
@@ -199,7 +177,7 @@ def main(
         input_pdb,
         input_chain,
         output_file,
-        max_residues,
+        residue_range,
         extended_insertions,
         overwrite,
     )
@@ -221,15 +199,18 @@ def main(
     LOGGER.info(start_msg)
 
     input_data = mpnn_embeddings.from_pdb(
-        input_pdb, input_chain, max_residues, random_seed=random_seed
+        input_pdb,
+        input_chain,
+        residue_range=residue_range,
+        random_seed=random_seed,
     )
     sequence = input_data.sequence
 
     LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
-    if max_residues > 0:
+    if residue_range != (0, 0):
         LOGGER.info(
-            f"Will truncate output to {max_residues} residues "
-            f"(max_residues flag)"
+            f"Processing residues {residue_range[0]}-{residue_range[1]} "
+            f"(residue_range flag)"
         )
     LOGGER.info(
         f"Fetched sequence of length {len(sequence)} from "
@@ -255,7 +236,7 @@ def main(
         0,
         len(anarci_out),
         alignment_start=first_aligned_row,
-        max_residues=max_residues,
+        residue_range=residue_range,
     )
     LOGGER.info(f"Finished renumbering; output written to {output_file}")
 

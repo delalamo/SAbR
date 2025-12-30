@@ -7,7 +7,6 @@ alignments.
 
 Key components:
 - SoftAligner: Main class for running alignments
-- _align_fn: Internal alignment function using the SoftAlign neural model
 
 The alignment process includes:
 1. Embedding comparison against unified reference
@@ -20,62 +19,11 @@ import logging
 from importlib.resources import as_file, files
 from typing import List, Optional, Tuple
 
-import haiku as hk
-import jax
 import numpy as np
-from jax import numpy as jnp
 
-from sabr import constants, model, mpnn_embeddings, softalign_output, util
+from sabr import constants, jax_backend, mpnn_embeddings, softalign_output, util
 
 LOGGER = logging.getLogger(__name__)
-
-
-def _align_fn(
-    input: mpnn_embeddings.MPNNEmbeddings,
-    target: mpnn_embeddings.MPNNEmbeddings,
-    temperature: float = constants.DEFAULT_TEMPERATURE,
-) -> softalign_output.SoftAlignOutput:
-    """Align two embedding sets with the SoftAlign model and return result."""
-    input_array = input.embeddings
-    target_array = target.embeddings
-    target_stdev = jnp.array(target.stdev)
-    target_array = target_array / target_stdev
-
-    LOGGER.info(
-        f"Running align_fn with input shape {input_array.shape}, "
-        f"target shape {target_array.shape}, temperature={temperature}"
-    )
-    e2e_model = model.create_e2e_model()
-    if input_array.ndim != 2 or target_array.ndim != 2:
-        raise ValueError(
-            "align_fn expects 2D arrays; got shapes "
-            f"{input_array.shape} and {target_array.shape}"
-        )
-    for array_shape in (input_array.shape, target_array.shape):
-        if array_shape[1] != constants.EMBED_DIM:
-            raise ValueError(
-                f"last dim must be {constants.EMBED_DIM}; got "
-                f"{input_array.shape} and {target_array.shape}"
-            )
-    lens = jnp.array([input_array.shape[0], target_array.shape[0]])[None, :]
-    batched_input = jnp.array(input_array[None, :])
-    batched_target = jnp.array(target_array[None, :])
-    alignment, sim_matrix, score = e2e_model.align(
-        batched_input, batched_target, lens, temperature
-    )
-    LOGGER.debug(
-        "Alignment complete: alignment shape "
-        f"{alignment.shape}, sim_matrix shape {sim_matrix.shape}, "
-        f"score={float(score[0])}"
-    )
-    return softalign_output.SoftAlignOutput(
-        alignment=np.asarray(alignment[0]),
-        sim_matrix=np.asarray(sim_matrix[0]),
-        score=float(score[0]),
-        chain_type=None,
-        idxs1=input.idxs,
-        idxs2=target.idxs,
-    )
 
 
 def find_nearest_occupied_column(
@@ -123,69 +71,44 @@ class SoftAligner:
 
     def __init__(
         self,
-        params_name: str = "CONT_SW_05_T_3_1",
-        params_path: str = "softalign.models",
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
         temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
     ) -> None:
         """
-        Initialize the SoftAligner by loading model parameters and embeddings.
+        Initialize the SoftAligner by loading reference embeddings and backend.
+
+        Args:
+            embeddings_name: Name of the reference embeddings file.
+            embeddings_path: Package path containing the embeddings file.
+            temperature: Alignment temperature parameter.
+            random_seed: Random seed for reproducibility.
         """
-        self.all_embeddings = self.read_embeddings(
+        self.unified_embedding = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
-        self.model_params = util.read_softalign_params(
-            params_name=params_name, params_path=params_path
-        )
         self.temperature = temperature
-        self.key = jax.random.PRNGKey(random_seed)
-        self.transformed_align_fn = hk.transform(_align_fn)
-
-    def normalize(
-        self, mp: mpnn_embeddings.MPNNEmbeddings
-    ) -> mpnn_embeddings.MPNNEmbeddings:
-        """Return embeddings reordered by sorted integer indices."""
-        idxs_int = [int(x) for x in mp.idxs]
-        order = np.argsort(np.asarray(idxs_int, dtype=np.int64))
-        if not np.array_equal(order, np.arange(len(order))):
-            norm_msg = (
-                f"Normalizing embedding order for {mp.name} "
-                f"(size={len(order)})"
-            )
-            LOGGER.debug(norm_msg)
-        return mpnn_embeddings.MPNNEmbeddings(
-            name=mp.name,
-            embeddings=mp.embeddings[order, ...],
-            idxs=[idxs_int[i] for i in order],
-            stdev=mp.stdev[order, ...],
-        )
+        self._backend = jax_backend.AlignmentBackend(random_seed=random_seed)
 
     def read_embeddings(
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ) -> List[mpnn_embeddings.MPNNEmbeddings]:
+    ) -> mpnn_embeddings.MPNNEmbeddings:
         """Load packaged reference embeddings as ``MPNNEmbeddings``."""
-        out_embeddings = []
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
-            data = np.load(p, allow_pickle=True)["arr_0"].item()
-            for name, embeddings_dict in data.items():
-                out_embeddings.append(
-                    mpnn_embeddings.MPNNEmbeddings(
-                        name=name,
-                        embeddings=embeddings_dict.get("array"),
-                        stdev=embeddings_dict.get("stdev"),
-                        idxs=embeddings_dict.get("idxs"),
-                    )
-                )
-        if len(out_embeddings) == 0:
-            raise RuntimeError(f"Couldn't load from {path}")
-        LOGGER.info(f"Loaded {len(out_embeddings)} embeddings from {path}")
-        return out_embeddings
+            data = np.load(p, allow_pickle=True)
+            embedding = mpnn_embeddings.MPNNEmbeddings(
+                name=str(data["name"]),
+                embeddings=data["array"],
+                stdev=data["stdev"],
+                idxs=list(data["idxs"]),
+            )
+        LOGGER.info(f"Loaded embeddings from {path}")
+        return embedding
 
     def correct_gap_numbering(self, sub_aln: np.ndarray) -> np.ndarray:
         """Redistribute loop gaps to an alternating IMGT-style pattern."""
@@ -232,25 +155,12 @@ class SoftAligner:
         pos12_col = constants.FR1_ANCHOR_END_COL
 
         # Find rows aligned to positions near anchors 6 and 12
-        # Search within a small range to find the anchor residues
-        start_row = None
-        end_row = None
-
-        # Find first residue in range around position 6
-        for col in range(pos6_col, pos6_col + 3):
-            if aln[:, col].sum() >= 1:
-                rows = np.where(aln[:, col] == 1)[0]
-                if len(rows) > 0:
-                    start_row = int(rows[0])
-                    break
-
-        # Find first residue in range around position 12
-        for col in range(pos12_col, pos12_col + 3):
-            if aln[:, col].sum() >= 1:
-                rows = np.where(aln[:, col] == 1)[0]
-                if len(rows) > 0:
-                    end_row = int(rows[0])
-                    break
+        start_row, _ = find_nearest_occupied_column(
+            aln, pos6_col, search_range=2, direction="forward"
+        )
+        end_row, _ = find_nearest_occupied_column(
+            aln, pos12_col, search_range=2, direction="forward"
+        )
 
         if start_row is None or end_row is None or start_row >= end_row:
             LOGGER.debug(
@@ -444,24 +354,165 @@ class SoftAligner:
 
         return aln
 
+    def _correct_cdr_loop(
+        self,
+        aln: np.ndarray,
+        loop_name: str,
+        cdr_start: int,
+        cdr_end: int,
+    ) -> np.ndarray:
+        """Apply deterministic correction to a single CDR loop region.
+
+        Finds anchor positions flanking the loop, counts residues between them,
+        assigns framework positions linearly, and CDR positions in an
+        alternating IMGT pattern.
+
+        Args:
+            aln: The alignment matrix to correct.
+            loop_name: Name of the loop (e.g., "CDR1", "CDR2", "CDR3").
+            cdr_start: First IMGT position of the CDR (1-indexed).
+            cdr_end: Last IMGT position of the CDR (1-indexed).
+
+        Returns:
+            Corrected alignment matrix.
+        """
+        anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
+        anchor_start_col = anchor_start - 1
+        anchor_end_col = anchor_end - 1
+
+        anchor_start_row, _ = find_nearest_occupied_column(
+            aln, anchor_start_col, search_range=2, direction="both"
+        )
+        anchor_end_row, _ = find_nearest_occupied_column(
+            aln, anchor_end_col, search_range=2, direction="both"
+        )
+
+        if anchor_start_row is None or anchor_end_row is None:
+            LOGGER.warning(
+                f"Skipping {loop_name}; missing anchor at position "
+                f"{anchor_start} (col {anchor_start_col}±2) or "
+                f"{anchor_end} (col {anchor_end_col}±2)"
+            )
+            return aln
+
+        if anchor_start_row >= anchor_end_row:
+            LOGGER.warning(
+                f"Skipping {loop_name}; anchor start row "
+                f"({anchor_start_row}) >= end row ({anchor_end_row})"
+            )
+            return aln
+
+        # Calculate FW positions between anchors (outside CDR range)
+        fw_before_cdr = list(range(anchor_start + 1, cdr_start))
+        fw_after_cdr = list(range(cdr_end + 1, anchor_end))
+        n_fw_before = len(fw_before_cdr)
+        n_fw_after = len(fw_after_cdr)
+
+        # Rows between anchors (exclusive of anchor rows)
+        intermediate_rows = list(range(anchor_start_row + 1, anchor_end_row))
+        n_residues = len(intermediate_rows)
+
+        if n_residues < n_fw_before + n_fw_after:
+            LOGGER.warning(
+                f"Skipping {loop_name}; not enough residues "
+                f"({n_residues}) between anchors for FW positions "
+                f"({n_fw_before} + {n_fw_after})"
+            )
+            return aln
+
+        n_cdr_residues = n_residues - n_fw_before - n_fw_after
+
+        LOGGER.info(
+            f"{loop_name}: anchors at {anchor_start} (row "
+            f"{anchor_start_row}) and {anchor_end} (row "
+            f"{anchor_end_row}). {n_residues} residues: "
+            f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
+        )
+
+        # Clear alignments for intermediate rows in the region
+        region_start_col = anchor_start
+        region_end_col = anchor_end - 1
+        for row in intermediate_rows:
+            aln[row, region_start_col:region_end_col] = 0
+
+        # Assign FW positions before CDR (linear assignment)
+        for i, pos in enumerate(fw_before_cdr):
+            row = intermediate_rows[i]
+            aln[row, pos - 1] = 1
+
+        # Assign FW positions after CDR (linear assignment)
+        for i, pos in enumerate(fw_after_cdr):
+            row = intermediate_rows[-(n_fw_after - i)]
+            aln[row, pos - 1] = 1
+
+        # Assign CDR positions using alternating pattern
+        if n_cdr_residues > 0:
+            cdr_rows = intermediate_rows[n_fw_before:]
+            if n_fw_after > 0:
+                cdr_rows = cdr_rows[:-n_fw_after]
+
+            cdr_start_col = cdr_start - 1
+            n_cdr_positions = cdr_end - cdr_start + 1
+
+            sub_aln = np.zeros(
+                (n_cdr_residues, n_cdr_positions), dtype=aln.dtype
+            )
+            sub_aln = self.correct_gap_numbering(sub_aln)
+            for i, row in enumerate(cdr_rows):
+                aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = (
+                    sub_aln[i, :]
+                )
+
+        return aln
+
+    def _apply_deterministic_corrections(
+        self, aln: np.ndarray
+    ) -> Tuple[np.ndarray, str]:
+        """Apply all deterministic alignment corrections.
+
+        Applies corrections in order: CDR loops, FR1, FR3 (light chains),
+        and C-terminus.
+
+        Args:
+            aln: The raw alignment matrix.
+
+        Returns:
+            Tuple of (corrected alignment, detected chain type).
+        """
+        # Correct all CDR loops
+        for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
+            aln = self._correct_cdr_loop(aln, loop_name, cdr_start, cdr_end)
+
+        # Detect chain type from DE loop (positions 81-82)
+        detected_chain_type = util.detect_chain_type(aln)
+        is_light_chain = detected_chain_type in ("K", "L")
+
+        # Apply FR1 correction
+        aln = self.correct_fr1_alignment(aln, chain_type=detected_chain_type)
+
+        # FR3 positions 81-82: Heavy chains have them, light chains don't
+        if is_light_chain:
+            aln = self.correct_fr3_alignment(
+                aln, input_has_pos81=False, input_has_pos82=False
+            )
+
+        # Apply C-terminus correction
+        aln = self.correct_c_terminus(aln)
+
+        return aln, detected_chain_type
+
     def __call__(
         self,
         input_data: mpnn_embeddings.MPNNEmbeddings,
         deterministic_loop_renumbering: bool = True,
     ) -> softalign_output.SoftAlignOutput:
-        """
-        Align input embeddings against the unified reference embedding.
+        """Align input embeddings against the unified reference embedding.
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
             deterministic_loop_renumbering: Whether to apply deterministic
-                renumbering corrections for:
-                - Light chain FR1 positions 7-10
-                - DE loop positions 80-85 (all chains)
-                - CDR loops (CDR1, CDR2, CDR3) for all chains
-                - C-terminus positions 126-128 (all chains)
-                When False, raw alignment output used without corrections
-                Default is True.
+                renumbering corrections for CDR loops, FR1, FR3, and
+                C-terminus. Default is True.
 
         Returns:
             SoftAlignOutput with the best alignment.
@@ -470,147 +521,29 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        # Use the single unified embedding
-        unified_embedding = self.all_embeddings[0]
-        out = self.transformed_align_fn.apply(
-            self.model_params,
-            self.key,
-            input_data,
-            unified_embedding,
-            self.temperature,
+        alignment, sim_matrix, score = self._backend.align(
+            input_embeddings=input_data.embeddings,
+            target_embeddings=self.unified_embedding.embeddings,
+            target_stdev=self.unified_embedding.stdev,
+            temperature=self.temperature,
         )
-        aln = self.fix_aln(out.alignment, unified_embedding.idxs)
+
+        aln = self.fix_aln(alignment, self.unified_embedding.idxs)
         aln = np.array(aln, dtype=int)
 
         if deterministic_loop_renumbering:
-            for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-                # Get framework anchor positions for this CDR
-                anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
-
-                # Find rows at anchor positions (0-indexed columns)
-                anchor_start_col = anchor_start - 1
-                anchor_end_col = anchor_end - 1
-
-                anchor_start_row, found_start_col = (
-                    find_nearest_occupied_column(
-                        aln, anchor_start_col, search_range=2, direction="both"
-                    )
-                )
-                anchor_end_row, found_end_col = find_nearest_occupied_column(
-                    aln, anchor_end_col, search_range=2, direction="both"
-                )
-
-                if anchor_start_row is None or anchor_end_row is None:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; missing anchor at position "
-                        f"{anchor_start} (col {anchor_start_col}±2) or "
-                        f"{anchor_end} (col {anchor_end_col}±2)"
-                    )
-                    continue
-
-                if anchor_start_row >= anchor_end_row:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; anchor start row "
-                        f"({anchor_start_row}) >= end row ({anchor_end_row})"
-                    )
-                    continue
-
-                # Calculate FW positions between anchors (outside CDR range)
-                # These are positions after anchor_start but before cdr_start
-                # and positions after cdr_end but before anchor_end
-                fw_before_cdr = list(range(anchor_start + 1, cdr_start))
-                fw_after_cdr = list(range(cdr_end + 1, anchor_end))
-                n_fw_before = len(fw_before_cdr)
-                n_fw_after = len(fw_after_cdr)
-
-                # Rows between anchors (exclusive of anchor rows)
-                intermediate_rows = list(
-                    range(anchor_start_row + 1, anchor_end_row)
-                )
-                n_residues = len(intermediate_rows)
-
-                if n_residues < n_fw_before + n_fw_after:
-                    LOGGER.warning(
-                        f"Skipping {loop_name}; not enough residues "
-                        f"({n_residues}) between anchors for FW positions "
-                        f"({n_fw_before} + {n_fw_after})"
-                    )
-                    continue
-
-                # CDR residues are the rows between FW regions
-                n_cdr_residues = n_residues - n_fw_before - n_fw_after
-
-                LOGGER.info(
-                    f"{loop_name}: anchors at {anchor_start} (row "
-                    f"{anchor_start_row}) and {anchor_end} (row "
-                    f"{anchor_end_row}). {n_residues} residues: "
-                    f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
-                )
-
-                # Clear alignments for intermediate rows in the region
-                region_start_col = anchor_start
-                region_end_col = anchor_end - 1
-                for row in intermediate_rows:
-                    aln[row, region_start_col:region_end_col] = 0
-
-                # Assign FW positions before CDR (linear assignment)
-                for i, pos in enumerate(fw_before_cdr):
-                    row = intermediate_rows[i]
-                    aln[row, pos - 1] = 1  # pos-1 for 0-indexed column
-
-                # Assign FW positions after CDR (linear assignment)
-                for i, pos in enumerate(fw_after_cdr):
-                    row = intermediate_rows[-(n_fw_after - i)]
-                    aln[row, pos - 1] = 1  # pos-1 for 0-indexed column
-
-                # Assign CDR positions using alternating pattern
-                if n_cdr_residues > 0:
-                    cdr_rows = intermediate_rows[n_fw_before:]
-                    if n_fw_after > 0:
-                        cdr_rows = cdr_rows[:-n_fw_after]
-
-                    cdr_start_col = cdr_start - 1  # 0-indexed
-                    n_cdr_positions = cdr_end - cdr_start + 1
-
-                    sub_aln = np.zeros(
-                        (n_cdr_residues, n_cdr_positions), dtype=aln.dtype
-                    )
-                    sub_aln = self.correct_gap_numbering(sub_aln)
-                    for i, row in enumerate(cdr_rows):
-                        aln[
-                            row, cdr_start_col : cdr_start_col + n_cdr_positions
-                        ] = sub_aln[i, :]
-
-            # Detect chain type from DE loop (positions 81-82)
-            detected_chain_type = util.detect_chain_type(aln)
-            is_light_chain = detected_chain_type in ("K", "L")
-
-            # Apply FR1 correction - uses residue counting to determine
-            # if position 10 should be occupied
-            aln = self.correct_fr1_alignment(
-                aln, chain_type=detected_chain_type
+            aln, detected_chain_type = self._apply_deterministic_corrections(
+                aln
             )
-
-            # FR3 positions 81-82: Heavy chains have them, light chains don't
-            if is_light_chain:
-                aln = self.correct_fr3_alignment(
-                    aln,
-                    input_has_pos81=False,  # Light chains never have 81
-                    input_has_pos82=False,  # Light chains never have 82
-                )
-
-            # Apply C-terminus correction for unassigned trailing residues
-            aln = self.correct_c_terminus(aln)
         else:
-            # Detect chain type when deterministic renumbering is disabled
             detected_chain_type = util.detect_chain_type(aln)
             LOGGER.info(f"Detected chain type: {detected_chain_type}")
 
         return softalign_output.SoftAlignOutput(
             chain_type=detected_chain_type,
             alignment=aln,
-            score=out.score,
-            sim_matrix=None,
+            score=score,
+            sim_matrix=sim_matrix,
             idxs1=input_data.idxs,
             idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
         )
