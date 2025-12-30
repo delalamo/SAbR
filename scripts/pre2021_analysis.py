@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Pre-2021 SAbDab Analysis Script.
+"""SAbDab Analysis Script.
 
-This script evaluates SAbR numbering accuracy on pre-August 2021 SAbDab
-structures. It reads a CSV file with PDB IDs and chains, fetches IMGT-numbered
-structures from SAbDab, runs the SAbR pipeline, and compares output to
-expected IMGT numbering.
+This script evaluates SAbR numbering accuracy on IMGT-numbered SAbDab
+structures. It reads a CSV file with PDB IDs and chains, optionally fetches
+structures from SAbDab or uses local files, runs SAbR pipeline, and compares
+output to expected IMGT numbering.
 
 Usage:
-    python pre2021_analysis.py --csv pre2021_pdb_chains.csv
-    python pre2021_analysis.py --csv pre2021_pdb_chains.csv --limit 10
+    # Fetch from SAbDab
+    python pre2021_analysis.py --csv pdb_chains.csv
+
+    # Use local PDB files ({pdb-dir}/{chain_type}/{pdb}_{chain}.pdb)
+    python pre2021_analysis.py --csv pdb_chains.csv --pdb-dir ./testset
 """
 
 import argparse
@@ -256,12 +259,12 @@ def load_csv(csv_path: str) -> List[Dict]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pre-2021 SAbDab Analysis")
+    parser = argparse.ArgumentParser(description="SAbDab Analysis")
     parser.add_argument(
         "--csv", required=True, help="Path to CSV file with PDB IDs and chains"
     )
     parser.add_argument(
-        "--output", default="pre2021_results.json", help="Output JSON file"
+        "--output", default="analysis_results.json", help="Output JSON file"
     )
     parser.add_argument(
         "--limit",
@@ -271,6 +274,11 @@ def main():
     )
     parser.add_argument(
         "--cache-dir", default=None, help="Directory to cache downloaded PDBs"
+    )
+    parser.add_argument(
+        "--pdb-dir",
+        default=None,
+        help="Local PDB dir ({dir}/{chain_type}/{pdb}_{chain}.pdb)",
     )
     args = parser.parse_args()
 
@@ -287,12 +295,17 @@ def main():
     for entry in entries:
         by_type[entry["chain_type"]].append(entry)
 
-    # Set up cache directory
+    # Set up directories
+    pdb_dir = Path(args.pdb_dir) if args.pdb_dir else None
     cache_dir = (
         Path(args.cache_dir) if args.cache_dir else Path(tempfile.mkdtemp())
     )
     cache_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Using cache directory: {cache_dir}")
+
+    if pdb_dir:
+        print(f"Using local PDB directory: {pdb_dir}")
+    else:
+        print(f"Fetching from SAbDab, cache directory: {cache_dir}")
 
     # Results
     results = {"heavy": [], "kappa": [], "lambda": []}
@@ -311,32 +324,46 @@ def main():
             pdb_id = entry["pdb_id"]
             chain_id = entry["chain"]
 
-            # Fetch or use cached PDB
-            full_pdb = cache_dir / f"{pdb_id}.pdb"
-            if not full_pdb.exists():
-                if not fetch_imgt_pdb(pdb_id, str(full_pdb)):
+            # Try local PDB first, then fetch from SAbDab
+            if pdb_dir:
+                # Local files: {pdb_dir}/{chain_type}/{pdb}_{chain}.pdb
+                chain_pdb = pdb_dir / chain_type / f"{pdb_id}_{chain_id}.pdb"
+                if not chain_pdb.exists():
                     results[chain_type].append(
                         {
                             "pdb": f"{pdb_id}_{chain_id}",
-                            "error": "Failed to fetch PDB",
+                            "error": "Local PDB not found",
                             "perfect": False,
                         }
                     )
                     continue
+            else:
+                # Fetch from SAbDab
+                full_pdb = cache_dir / f"{pdb_id}.pdb"
+                if not full_pdb.exists():
+                    if not fetch_imgt_pdb(pdb_id, str(full_pdb)):
+                        results[chain_type].append(
+                            {
+                                "pdb": f"{pdb_id}_{chain_id}",
+                                "error": "Failed to fetch PDB",
+                                "perfect": False,
+                            }
+                        )
+                        continue
 
-            # Extract chain
-            chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
-            if not extract_chain_to_pdb(
-                str(full_pdb), chain_id, str(chain_pdb)
-            ):
-                results[chain_type].append(
-                    {
-                        "pdb": f"{pdb_id}_{chain_id}",
-                        "error": "Failed to extract chain",
-                        "perfect": False,
-                    }
-                )
-                continue
+                # Extract chain
+                chain_pdb = cache_dir / f"{pdb_id}_{chain_id}.pdb"
+                if not extract_chain_to_pdb(
+                    str(full_pdb), chain_id, str(chain_pdb)
+                ):
+                    results[chain_type].append(
+                        {
+                            "pdb": f"{pdb_id}_{chain_id}",
+                            "error": "Failed to extract chain",
+                            "perfect": False,
+                        }
+                    )
+                    continue
 
             # Parse input positions (from IMGT-numbered PDB)
             input_positions = parse_pdb_residue_ids(str(chain_pdb), chain_id)
