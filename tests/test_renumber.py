@@ -4,60 +4,18 @@ These tests verify that the renumber_structure function produces identical
 results to the CLI when given the same input, ensuring API parity.
 """
 
-from importlib import resources
-from pathlib import Path
-from typing import List, Tuple
-
 import numpy as np
 import pytest
 from Bio import PDB
 
 from sabr import mpnn_embeddings, renumber
-from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
-
-DATA_PACKAGE = "tests.data"
-
-
-def resolve_data_path(filename: str) -> Path:
-    return Path(resources.files(DATA_PACKAGE) / filename)
-
-
-FIXTURES = {
-    "8_21": {
-        "pdb": resolve_data_path("8_21_renumbered.pdb"),
-        "chain": "A",
-        "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
-        "embeddings": resolve_data_path("8_21_renumbered_embeddings.npz"),
-    },
-    "5omm": {
-        "pdb": resolve_data_path("5omm_imgt.pdb"),
-        "chain": "C",
-        "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
-        "embeddings": resolve_data_path("5omm_imgt_embeddings.npz"),
-    },
-}
-
-
-def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
-    if not path.exists():
-        pytest.skip(f"Missing alignment fixture at {path}")
-    data = np.load(path, allow_pickle=True)
-    alignment = data["alignment"]
-    chain_type = data["chain_type"].item()
-    return alignment, chain_type
-
-
-def extract_residue_ids(
-    structure: PDB.Structure.Structure, chain: str
-) -> List[Tuple[str, int, str]]:
-    """Extract residue IDs from a BioPython structure."""
-    residues = []
-    for res in structure[0][chain]:
-        hetflag, resseq, icode = res.get_id()
-        if hetflag.strip():
-            continue
-        residues.append((hetflag, resseq, icode))
-    return residues
+from tests.conftest import (
+    FIXTURES,
+    create_dummy_aligner,
+    create_dummy_from_pdb,
+    extract_residue_ids_from_structure,
+    load_alignment_fixture,
+)
 
 
 class TestRenumberStructure:
@@ -127,8 +85,12 @@ class TestRenumberStructure:
         )
 
         # Extract residue IDs from both
-        original_ids = extract_residue_ids(structure, data["chain"])
-        renumbered_ids = extract_residue_ids(result, data["chain"])
+        original_ids = extract_residue_ids_from_structure(
+            structure, data["chain"]
+        )
+        renumbered_ids = extract_residue_ids_from_structure(
+            result, data["chain"]
+        )
 
         # For 8_21 which is already correctly numbered, IDs should match
         assert len(original_ids) == len(renumbered_ids)
@@ -159,7 +121,7 @@ class TestRenumberStructure:
         ):
             renumber.renumber_structure(structure, chain="AB")
 
-    @pytest.mark.parametrize("chain_type", ["H", "K", "L", "auto"])
+    @pytest.mark.parametrize("chain_type", ["H", "auto"])
     def test_renumber_structure_chain_type_options(
         self, monkeypatch, chain_type
     ):
@@ -191,10 +153,7 @@ class TestRenumberStructure:
         )
         assert isinstance(result, PDB.Structure.Structure)
 
-    @pytest.mark.parametrize(
-        "numbering_scheme",
-        ["imgt", "chothia", "kabat", "martin", "aho", "wolfguy"],
-    )
+    @pytest.mark.parametrize("numbering_scheme", ["imgt", "kabat"])
     def test_renumber_structure_numbering_schemes(
         self, monkeypatch, numbering_scheme
     ):

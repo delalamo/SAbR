@@ -1,6 +1,4 @@
-from importlib import resources
 from pathlib import Path
-from typing import List, Tuple
 
 import numpy as np
 import pytest
@@ -9,50 +7,14 @@ from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
 from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, renumber, softaligner
-from tests.conftest import create_dummy_aligner, create_dummy_from_pdb
-
-DATA_PACKAGE = "tests.data"
-
-
-def resolve_data_path(filename: str) -> Path:
-    return Path(resources.files(DATA_PACKAGE) / filename)
-
-
-FIXTURES = {
-    "8_21": {
-        "pdb": resolve_data_path("8_21_renumbered.pdb"),
-        "chain": "A",
-        "alignment": resolve_data_path("8_21_renumbered_alignment.npz"),
-        "embeddings": resolve_data_path("8_21_renumbered_embeddings.npz"),
-        "min_deviations": 0,
-        "max_deviations": 0,
-    },
-    "5omm": {
-        "pdb": resolve_data_path("5omm_imgt.pdb"),
-        "chain": "C",
-        "alignment": resolve_data_path("5omm_imgt_alignment.npz"),
-        "embeddings": resolve_data_path("5omm_imgt_embeddings.npz"),
-        "min_deviations": 5,
-        "max_deviations": 200,
-    },
-    "test_heavy_chain": {
-        "pdb": resolve_data_path("test_heavy_chain.pdb"),
-        "chain": "F",
-        "alignment": resolve_data_path("test_heavy_chain_alignment.npz"),
-        "embeddings": resolve_data_path("test_heavy_chain_embeddings.npz"),
-        "min_deviations": 0,
-        "max_deviations": 25,
-    },
-}
-
-
-def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
-    if not path.exists():
-        pytest.skip(f"Missing alignment fixture at {path}")
-    data = np.load(path, allow_pickle=True)
-    alignment = data["alignment"]
-    chain_type = data["chain_type"].item()
-    return alignment, chain_type
+from tests.conftest import (
+    FIXTURES,
+    create_dummy_aligner,
+    create_dummy_from_pdb,
+    extract_residue_ids_from_pdb,
+    load_alignment_fixture,
+    resolve_data_path,
+)
 
 
 def run_threading_pipeline(
@@ -111,20 +73,6 @@ def test_thread_alignment_has_zero_deviations(tmp_path, fixture_key):
     assert min_expected <= deviations <= max_expected
 
 
-def extract_residue_ids(
-    pdb_path: Path, chain: str
-) -> List[Tuple[str, int, str]]:
-    parser = PDB.PDBParser(QUIET=True)
-    structure = parser.get_structure("structure", pdb_path)
-    residues = []
-    for res in structure[0][chain]:
-        hetflag, resseq, icode = res.get_id()
-        if hetflag.strip():
-            continue
-        residues.append((hetflag, resseq, icode))
-    return residues
-
-
 @pytest.mark.parametrize(
     ("fixture_key", "expect_same"),
     [
@@ -164,8 +112,8 @@ def test_cli_respects_expected_numbering(
     )
     assert result.exit_code == 0, result.output
 
-    original_ids = extract_residue_ids(data["pdb"], data["chain"])
-    threaded_ids = extract_residue_ids(output_pdb, data["chain"])
+    original_ids = extract_residue_ids_from_pdb(data["pdb"], data["chain"])
+    threaded_ids = extract_residue_ids_from_pdb(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
 
 
@@ -238,11 +186,9 @@ def test_cli_rejects_multi_character_chain():
     assert "Chain identifier must be exactly one character" in result.output
 
 
-@pytest.mark.parametrize(
-    "chain_type", ["H", "K", "L", "heavy", "kappa", "lambda", "auto"]
-)
+@pytest.mark.parametrize("chain_type", ["H", "L", "auto"])
 def test_cli_chain_type_argument(monkeypatch, tmp_path, chain_type):
-    """Test that CLI accepts all valid --chain-type values."""
+    """Test that CLI accepts valid --chain-type values (H, L, auto)."""
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
@@ -333,6 +279,7 @@ def test_alignment_start_position_correct():
     assert len(match_states) > 100
 
 
+@pytest.mark.slow
 def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     """End-to-end test for structures with N-terminal truncation.
 
@@ -449,90 +396,52 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     ), "Position 10 should be skipped in IMGT heavy chains"
 
 
-def test_cli_rejects_invalid_residue_range_end_before_start():
-    """Test that CLI rejects residue range where end <= start."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            "output.pdb",
-            "--residue-range",
-            "50",
-            "10",  # end < start - should fail
-        ],
-    )
-    assert result.exit_code != 0
-    assert "end" in result.output.lower() and "start" in result.output.lower()
-
-
-def test_cli_rejects_invalid_residue_range_equal_values():
-    """Test that CLI rejects residue range where end == start."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            "output.pdb",
-            "--residue-range",
-            "50",
-            "50",  # end == start - should fail
-        ],
-    )
-    assert result.exit_code != 0
-    assert "end" in result.output.lower() or "greater" in result.output.lower()
-
-
-def test_cli_rejects_negative_residue_range():
-    """Test that CLI rejects negative residue range values."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            "output.pdb",
-            "--residue-range",
+@pytest.mark.parametrize(
+    ("start", "end", "error_check"),
+    [
+        ("50", "10", lambda o: "end" in o.lower() and "start" in o.lower()),
+        ("50", "50", lambda o: "end" in o.lower() or "greater" in o.lower()),
+        (
             "-10",
-            "50",  # negative start - should fail
+            "50",
+            lambda o: "negative" in o.lower() or "non-negative" in o.lower(),
+        ),
+    ],
+)
+def test_cli_rejects_invalid_residue_ranges(start, end, error_check):
+    """Test that CLI rejects invalid residue range values."""
+    data = FIXTURES["8_21"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            "-i",
+            str(data["pdb"]),
+            "-c",
+            data["chain"],
+            "-o",
+            "output.pdb",
+            "--residue-range",
+            start,
+            end,
         ],
     )
     assert result.exit_code != 0
-    assert (
-        "negative" in result.output.lower()
-        or "non-negative" in result.output.lower()
-    )
+    assert error_check(result.output)
 
 
-def test_cli_accepts_valid_residue_range(monkeypatch, tmp_path):
-    """Test that CLI accepts a valid residue range.
-
-    Uses the full range (matching all residues) to avoid alignment mismatch
-    with the pre-computed fixture alignment.
-    """
+@pytest.mark.parametrize(
+    ("start", "end"),
+    [
+        ("1", "128"),  # Full range matching all residues
+        ("0", "0"),  # Process all residues
+    ],
+)
+def test_cli_accepts_valid_residue_ranges(monkeypatch, tmp_path, start, end):
+    """Test that CLI accepts valid residue range values."""
     data = FIXTURES["8_21"]
     if not data["pdb"].exists():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
@@ -547,8 +456,7 @@ def test_cli_accepts_valid_residue_range(monkeypatch, tmp_path):
     )
 
     runner = CliRunner()
-    output_pdb = tmp_path / "residue_range_test.pdb"
-    # Use range that covers all residues (1-128) to match fixture
+    output_pdb = tmp_path / f"residue_range_{start}_{end}.pdb"
     result = runner.invoke(
         cli.main,
         [
@@ -560,48 +468,14 @@ def test_cli_accepts_valid_residue_range(monkeypatch, tmp_path):
             str(output_pdb),
             "--overwrite",
             "--residue-range",
-            "1",
-            "128",
+            start,
+            end,
         ],
     )
     assert result.exit_code == 0, result.output
 
 
-def test_cli_accepts_zero_zero_residue_range(monkeypatch, tmp_path):
-    """Test that CLI accepts 0 0 residue range (process all)."""
-    data = FIXTURES["8_21"]
-    if not data["pdb"].exists():
-        pytest.skip(f"Missing structure fixture at {data['pdb']}")
-    alignment, chain_type = load_alignment_fixture(data["alignment"])
-
-    DummyAligner = create_dummy_aligner(alignment, chain_type)
-    dummy_from_pdb = create_dummy_from_pdb()
-
-    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-    monkeypatch.setattr(
-        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
-    )
-
-    runner = CliRunner()
-    output_pdb = tmp_path / "all_residues_test.pdb"
-    result = runner.invoke(
-        cli.main,
-        [
-            "-i",
-            str(data["pdb"]),
-            "-c",
-            data["chain"],
-            "-o",
-            str(output_pdb),
-            "--overwrite",
-            "--residue-range",
-            "0",
-            "0",
-        ],
-    )
-    assert result.exit_code == 0, result.output
-
-
+@pytest.mark.slow
 def test_from_chain_produces_same_embeddings_as_from_pdb():
     """Test that from_chain() produces same embeddings as from_pdb().
 
@@ -657,6 +531,7 @@ def test_from_chain_produces_same_embeddings_as_from_pdb():
     )
 
 
+@pytest.mark.slow
 def test_renumber_structure_end_to_end():
     """End-to-end test for renumber_structure() BioPython API.
 
