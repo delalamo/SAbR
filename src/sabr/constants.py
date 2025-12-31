@@ -25,8 +25,11 @@ CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
 
 # Smith-Waterman alignment parameters from trained SoftAlign model
 # These are the gap penalties for the affine gap scoring function
-SW_GAP_EXTEND = 0.19424681  # Gap extension penalty
-SW_GAP_OPEN = -2.5441809  # Gap opening penalty
+# Trained with negativity constraint to ensure proper penalty behavior
+SW_GAP_EXTEND = (
+    -0.01879286952316761
+)  # Gap extension penalty (negative = penalty)
+SW_GAP_OPEN = -3.4361660480499268  # Gap opening penalty
 
 # IMGT numbering constants
 IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
