@@ -23,10 +23,12 @@ CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
 CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
 CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
 
-# Smith-Waterman alignment parameters from trained SoftAlign model
+# Smith-Waterman alignment parameters from fine-tuned SoftAlign model
 # These are the gap penalties for the affine gap scoring function
-SW_GAP_EXTEND = 0.19424681  # Gap extension penalty
-SW_GAP_OPEN = -2.5441809  # Gap opening penalty
+# Fine-tuned from CONT_SW_05_T_3_1 with LR=3e-5, achieving val loss 115.81
+# (4.8% improvement over baseline 121.69)
+SW_GAP_EXTEND = -0.175027  # Gap extension penalty (negative = penalty)
+SW_GAP_OPEN = -2.525591  # Gap opening penalty
 
 # IMGT numbering constants
 IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
