@@ -28,7 +28,7 @@ import numpy as np
 from Bio.PDB import Chain, MMCIFParser, PDBParser
 from Bio.PDB.Structure import Structure
 
-from sabr import constants, jax_backend
+from sabr import constants, jax_backend, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -272,6 +272,9 @@ class MPNNEmbeddings:
     idxs: List[str]
     stdev: Optional[np.ndarray] = None
     sequence: Optional[str] = None
+    gap_mask: Optional[np.ndarray] = (
+        None  # Boolean [N-1], True = gap after residue i
+    )
 
     def __post_init__(self) -> None:
         if self.embeddings.shape[0] != len(self.idxs):
@@ -439,12 +442,24 @@ def from_pdb(
         else:
             LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
 
+    # Compute gap mask from backbone coordinates
+    coords_for_gaps = inputs.coords[0]  # [N, 4, 3]
+    if residue_range != (0, 0) and keep_indices:
+        coords_for_gaps = coords_for_gaps[keep_indices]
+
+    gap_indices = util.detect_backbone_gaps(coords_for_gaps)
+    n_residues_final = coords_for_gaps.shape[0]
+    gap_mask = np.array(
+        [i in gap_indices for i in range(n_residues_final - 1)], dtype=bool
+    )
+
     result = MPNNEmbeddings(
         name="INPUT_PDB",
         embeddings=embeddings,
         idxs=ids,
         stdev=np.ones_like(embeddings),
         sequence=sequence,
+        gap_mask=gap_mask if n_residues_final > 1 else None,
     )
 
     LOGGER.info(
@@ -529,12 +544,24 @@ def from_chain(
         else:
             LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
 
+    # Compute gap mask from backbone coordinates
+    coords_for_gaps = inputs.coords[0]  # [N, 4, 3]
+    if residue_range != (0, 0) and keep_indices:
+        coords_for_gaps = coords_for_gaps[keep_indices]
+
+    gap_indices = util.detect_backbone_gaps(coords_for_gaps)
+    n_residues_final = coords_for_gaps.shape[0]
+    gap_mask = np.array(
+        [i in gap_indices for i in range(n_residues_final - 1)], dtype=bool
+    )
+
     result = MPNNEmbeddings(
         name="INPUT_CHAIN",
         embeddings=embeddings,
         idxs=ids,
         stdev=np.ones_like(embeddings),
         sequence=sequence,
+        gap_mask=gap_mask if n_residues_final > 1 else None,
     )
 
     LOGGER.info(
