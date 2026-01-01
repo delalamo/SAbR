@@ -336,7 +336,7 @@ class SoftAligner:
         for i in range(n_unassigned_trailing):
             row_to_assign = last_assigned_row + 1 + i
             if next_col >= n_cols:
-                LOGGER.warning(
+                LOGGER.debug(
                     f"C-terminus: cannot assign row {row_to_assign}, "
                     f"no more IMGT positions available (max col {n_cols - 1})"
                 )
