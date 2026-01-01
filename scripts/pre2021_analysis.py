@@ -189,22 +189,39 @@ def get_region_for_position(pos_num: int) -> str:
     return "unknown"
 
 
+def _position_in_imgt_range(pos: str) -> bool:
+    """Check if a position string is within IMGT range 1-128."""
+    try:
+        pos_num = int("".join(c for c in pos if c.isdigit()))
+        return 1 <= pos_num <= 128
+    except ValueError:
+        return False
+
+
 def compare_positions(
     input_positions: List[str], output_positions: List[str]
 ) -> Dict:
     """Compare input and output IMGT positions.
 
+    Only compares residues with positions 1-128 (IMGT variable region).
+
     Returns:
         Dict with deviations categorized by region.
     """
+    # Filter to IMGT positions 1-128 only
+    input_filtered = [p for p in input_positions if _position_in_imgt_range(p)]
+    output_filtered = [
+        p for p in output_positions if _position_in_imgt_range(p)
+    ]
+
     deviations = defaultdict(list)
     perfect = True
 
-    min_len = min(len(input_positions), len(output_positions))
+    min_len = min(len(input_filtered), len(output_filtered))
 
     for i in range(min_len):
-        inp = input_positions[i]
-        out = output_positions[i]
+        inp = input_filtered[i]
+        out = output_filtered[i]
 
         if inp != out:
             perfect = False
@@ -217,10 +234,13 @@ def compare_positions(
                 deviations["unknown"].append((i, inp, out))
 
     # Length mismatch
-    if len(input_positions) != len(output_positions):
+    if len(input_filtered) != len(output_filtered):
         perfect = False
         deviations["length_mismatch"].append(
-            (f"input={len(input_positions)}", f"output={len(output_positions)}")
+            (
+                f"input={len(input_filtered)}",
+                f"output={len(output_filtered)}",
+            )
         )
 
     return {
