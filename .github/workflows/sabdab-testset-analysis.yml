@@ -32,7 +32,7 @@ jobs:
 
       - name: Run SAbDab test set analysis
         run: |
-          python scripts/pre2021_analysis.py \
+          python scripts/imgt_benchmark.py \
             --csv scripts/sabdab_testset.csv \
             --output sabdab_testset_results.json \
             --limit ${{ inputs.limit }} \

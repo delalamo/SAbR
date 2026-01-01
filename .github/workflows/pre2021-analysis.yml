@@ -32,7 +32,7 @@ jobs:
 
       - name: Run pre-2021 analysis
         run: |
-          python scripts/pre2021_analysis.py \
+          python scripts/imgt_benchmark.py \
             --csv scripts/pre2021_pdb_chains.csv \
             --output pre2021_results.json \
             --limit ${{ inputs.limit }} \
