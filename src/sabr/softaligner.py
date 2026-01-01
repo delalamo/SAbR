@@ -388,10 +388,41 @@ class SoftAligner:
         )
 
         if anchor_start_row is None or anchor_end_row is None:
+            # Build detailed info about what's nearby, searching away from CDRs
+            details = []
+            if anchor_start_row is None:
+                # Search backward (away from CDR) with larger range
+                closest_row, closest_col = find_nearest_occupied_column(
+                    aln, anchor_start_col, search_range=10, direction="backward"
+                )
+                if closest_row is not None:
+                    details.append(
+                        f"closest residue to start anchor {anchor_start}: "
+                        f"row {closest_row} at IMGT position {closest_col + 1}"
+                    )
+                else:
+                    details.append(
+                        f"no residues found near start anchor {anchor_start}"
+                    )
+            if anchor_end_row is None:
+                # Search forward (away from CDR) with larger range
+                closest_row, closest_col = find_nearest_occupied_column(
+                    aln, anchor_end_col, search_range=10, direction="forward"
+                )
+                if closest_row is not None:
+                    details.append(
+                        f"closest residue to end anchor {anchor_end}: "
+                        f"row {closest_row} at IMGT position {closest_col + 1}"
+                    )
+                else:
+                    details.append(
+                        f"no residues found near end anchor {anchor_end}"
+                    )
+            detail_str = "; ".join(details) if details else ""
             LOGGER.warning(
                 f"Skipping {loop_name}; missing anchor at position "
                 f"{anchor_start} (col {anchor_start_col}±2) or "
-                f"{anchor_end} (col {anchor_end_col}±2)"
+                f"{anchor_end} (col {anchor_end_col}±2). {detail_str}"
             )
             return aln
 
