@@ -127,7 +127,7 @@ class SoftAligner:
 
         return aln
 
-    def correct_fr1_alignment(
+    def _correct_fr1_alignment(
         self,
         aln: np.ndarray,
         chain_type: Optional[str] = None,
@@ -214,7 +214,7 @@ class SoftAligner:
 
         return aln
 
-    def correct_fr3_alignment(
+    def _correct_fr3_alignment(
         self,
         aln: np.ndarray,
         input_has_pos81: bool = False,
@@ -587,13 +587,13 @@ class SoftAligner:
         is_light_chain = detected_chain_type in ("K", "L")
 
         # Apply FR1 correction
-        aln = self.correct_fr1_alignment(
+        aln = self._correct_fr1_alignment(
             aln, chain_type=detected_chain_type, gap_indices=gap_indices
         )
 
         # FR3 positions 81-82: Heavy chains have them, light chains don't
         if is_light_chain:
-            aln = self.correct_fr3_alignment(
+            aln = self._correct_fr3_alignment(
                 aln,
                 input_has_pos81=False,
                 input_has_pos82=False,
