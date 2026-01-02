@@ -22,13 +22,13 @@ Supported file formats:
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import FrozenSet, List, Optional, Tuple, Union
 
 import gemmi
 import numpy as np
 from Bio.PDB import Chain
 
-from sabr import constants, jax_backend
+from sabr import constants, jax_backend, util
 
 LOGGER = logging.getLogger(__name__)
 
@@ -351,6 +351,16 @@ class MPNNEmbeddings:
     2. A BioPython Chain (via from_chain function)
     3. An NPZ file (via from_npz function)
     4. Direct construction with embeddings data
+
+    Attributes:
+        name: Identifier for the embedding source.
+        embeddings: Per-residue embeddings array of shape [N, EMBED_DIM].
+        idxs: List of residue ID strings matching embedding rows.
+        stdev: Standard deviation array for embeddings (optional).
+        sequence: Amino acid sequence as one-letter codes (optional).
+        gap_indices: FrozenSet of row indices where structural gaps occur.
+            Each index i means there is a gap AFTER residue i (between
+            residue i and i+1). None if gap detection was not performed.
     """
 
     name: str
@@ -358,6 +368,7 @@ class MPNNEmbeddings:
     idxs: List[str]
     stdev: Optional[np.ndarray] = None
     sequence: Optional[str] = None
+    gap_indices: Optional[FrozenSet[int]] = None
 
     def __post_init__(self) -> None:
         if self.embeddings.shape[0] != len(self.idxs):
@@ -442,6 +453,36 @@ class MPNNEmbeddings:
         LOGGER.info(f"Saved embeddings to {output_path_obj}")
 
 
+def _compute_gap_indices(
+    coords: np.ndarray,
+    keep_indices: Optional[List[int]] = None,
+) -> Optional[FrozenSet[int]]:
+    """Compute structural gap indices from backbone coordinates.
+
+    Args:
+        coords: Full backbone coordinates [1, N, 4, 3] or [N, 4, 3].
+        keep_indices: If provided, only consider these residue indices.
+            An empty list results in None (no residues to analyze).
+
+    Returns:
+        FrozenSet of gap indices after filtering, or None if < 2 residues.
+    """
+    # Remove batch dimension if present
+    if coords.ndim == 4 and coords.shape[0] == 1:
+        coords = coords[0]
+
+    # Filter to keep_indices if specified (empty list = no residues)
+    if keep_indices is not None:
+        if len(keep_indices) < 2:
+            return None
+        coords = coords[keep_indices]
+
+    if coords.shape[0] < 2:
+        return None
+
+    return util.detect_backbone_gaps(coords)
+
+
 def from_pdb(
     pdb_file: str,
     chain: str,
@@ -524,6 +565,12 @@ def from_pdb(
             sequence = "".join(sequence[i] for i in keep_indices)
         else:
             LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+            keep_indices = None
+    else:
+        keep_indices = None
+
+    # Compute gap indices from backbone coordinates
+    gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
 
     result = MPNNEmbeddings(
         name="INPUT_PDB",
@@ -531,6 +578,7 @@ def from_pdb(
         idxs=ids,
         stdev=np.ones_like(embeddings),
         sequence=sequence,
+        gap_indices=gap_indices,
     )
 
     LOGGER.info(
@@ -614,6 +662,12 @@ def from_chain(
             sequence = "".join(sequence[i] for i in keep_indices)
         else:
             LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+            keep_indices = None
+    else:
+        keep_indices = None
+
+    # Compute gap indices from backbone coordinates
+    gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
 
     result = MPNNEmbeddings(
         name="INPUT_CHAIN",
@@ -621,6 +675,7 @@ def from_chain(
         idxs=ids,
         stdev=np.ones_like(embeddings),
         sequence=sequence,
+        gap_indices=gap_indices,
     )
 
     LOGGER.info(

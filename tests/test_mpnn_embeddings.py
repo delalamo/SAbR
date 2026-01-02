@@ -503,3 +503,143 @@ def test_get_inputs_raises_on_empty_chain():
 
     with pytest.raises(ValueError, match="No valid residues found"):
         mpnn_embeddings._get_inputs(str(pdb_file), chain="A")
+
+
+class TestGapIndices:
+    """Tests for gap_indices field in MPNNEmbeddings."""
+
+    def test_gap_indices_default_is_none(self):
+        """Test that gap_indices defaults to None."""
+        embedding = np.random.rand(3, constants.EMBED_DIM)
+        idxs = ["1", "2", "3"]
+
+        mp = mpnn_embeddings.MPNNEmbeddings(
+            name="test", embeddings=embedding, idxs=idxs
+        )
+
+        assert mp.gap_indices is None
+
+    def test_gap_indices_accepts_frozenset(self):
+        """Test that gap_indices accepts a FrozenSet."""
+        embedding = np.random.rand(5, constants.EMBED_DIM)
+        idxs = ["1", "2", "3", "4", "5"]
+        gap_indices = frozenset({1, 3})
+
+        mp = mpnn_embeddings.MPNNEmbeddings(
+            name="test",
+            embeddings=embedding,
+            idxs=idxs,
+            gap_indices=gap_indices,
+        )
+
+        assert mp.gap_indices == frozenset({1, 3})
+        assert 1 in mp.gap_indices
+        assert 3 in mp.gap_indices
+        assert 2 not in mp.gap_indices
+
+    def test_gap_indices_empty_frozenset(self):
+        """Test that gap_indices accepts an empty FrozenSet."""
+        embedding = np.random.rand(3, constants.EMBED_DIM)
+        idxs = ["1", "2", "3"]
+        gap_indices = frozenset()
+
+        mp = mpnn_embeddings.MPNNEmbeddings(
+            name="test",
+            embeddings=embedding,
+            idxs=idxs,
+            gap_indices=gap_indices,
+        )
+
+        assert mp.gap_indices == frozenset()
+        assert len(mp.gap_indices) == 0
+
+    def test_gap_indices_is_immutable(self):
+        """Test that gap_indices is immutable (FrozenSet)."""
+        embedding = np.random.rand(3, constants.EMBED_DIM)
+        idxs = ["1", "2", "3"]
+        gap_indices = frozenset({0})
+
+        mp = mpnn_embeddings.MPNNEmbeddings(
+            name="test",
+            embeddings=embedding,
+            idxs=idxs,
+            gap_indices=gap_indices,
+        )
+
+        # FrozenSet should not have add/remove methods that work
+        assert isinstance(mp.gap_indices, frozenset)
+        with pytest.raises(AttributeError):
+            mp.gap_indices.add(1)
+
+
+class TestComputeGapIndices:
+    """Tests for _compute_gap_indices helper function."""
+
+    def test_returns_none_for_single_residue(self):
+        """Test that single residue returns None (no gaps possible)."""
+        coords = np.zeros((1, 1, 4, 3))
+
+        result = mpnn_embeddings._compute_gap_indices(coords)
+
+        assert result is None
+
+    def test_returns_frozenset_for_multiple_residues(self):
+        """Test that multiple residues return a FrozenSet."""
+        coords = np.zeros((1, 3, 4, 3))
+        # Set up normal peptide bonds
+        coords[0, 0, 2, :] = [0, 0, 0]  # C of residue 0
+        coords[0, 1, 0, :] = [1.3, 0, 0]  # N of residue 1
+        coords[0, 1, 2, :] = [2.6, 0, 0]  # C of residue 1
+        coords[0, 2, 0, :] = [3.9, 0, 0]  # N of residue 2
+
+        result = mpnn_embeddings._compute_gap_indices(coords)
+
+        assert isinstance(result, frozenset)
+        assert len(result) == 0  # No gaps
+
+    def test_detects_gap_in_coordinates(self):
+        """Test that gap is detected from coordinates."""
+        coords = np.zeros((1, 3, 4, 3))
+        # Set up a gap between residues 0 and 1
+        coords[0, 0, 2, :] = [0, 0, 0]  # C of residue 0
+        coords[0, 1, 0, :] = [10, 0, 0]  # N of residue 1 (far away = gap)
+        coords[0, 1, 2, :] = [11.3, 0, 0]  # C of residue 1
+        coords[0, 2, 0, :] = [12.6, 0, 0]  # N of residue 2
+
+        result = mpnn_embeddings._compute_gap_indices(coords)
+
+        assert 0 in result  # Gap after residue 0
+
+    def test_filters_by_keep_indices(self):
+        """Test that keep_indices filters the coordinates."""
+        coords = np.zeros((1, 5, 4, 3))
+        # Set up coordinates with a gap at index 2 (between original 2 and 3)
+        for i in range(5):
+            coords[0, i, 0, :] = [i * 3.8, 0, 0]  # N
+            coords[0, i, 2, :] = [i * 3.8 + 2.5, 0, 0]  # C
+        # Create gap between residue 2 and 3
+        coords[0, 3, 0, :] = [20, 0, 0]
+
+        # Without filtering - gap at index 2
+        result_all = mpnn_embeddings._compute_gap_indices(coords)
+        assert 2 in result_all
+
+        # Filter to only keep [0, 1, 2] - no gap in this subset
+        result_filtered = mpnn_embeddings._compute_gap_indices(
+            coords, keep_indices=[0, 1, 2]
+        )
+        assert result_filtered is not None
+        assert 2 not in result_filtered
+
+    def test_handles_3d_coords(self):
+        """Test that 3D coords (without batch dim) work correctly."""
+        coords = np.zeros((3, 4, 3))
+        coords[0, 2, :] = [0, 0, 0]  # C of residue 0
+        coords[1, 0, :] = [5, 0, 0]  # N of residue 1 (gap)
+        coords[1, 2, :] = [6.3, 0, 0]  # C of residue 1
+        coords[2, 0, :] = [7.6, 0, 0]  # N of residue 2
+
+        result = mpnn_embeddings._compute_gap_indices(coords)
+
+        assert isinstance(result, frozenset)
+        assert 0 in result

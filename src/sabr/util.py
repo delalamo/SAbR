@@ -4,11 +4,15 @@
 This module provides helper functions for:
 - Configuring logging
 - Detecting antibody chain types from alignments
+- Detecting structural gaps from backbone coordinates
 """
 
 import logging
+from typing import FrozenSet
 
 import numpy as np
+
+from sabr import constants
 
 LOGGER = logging.getLogger(__name__)
 
@@ -80,3 +84,107 @@ def detect_chain_type(alignment: np.ndarray) -> str:
                 "residues in DE loop (< 5), position 10 unoccupied"
             )
             return "L"
+
+
+def detect_backbone_gaps(
+    coords: np.ndarray,
+    threshold: float = constants.PEPTIDE_BOND_MAX_DISTANCE,
+) -> FrozenSet[int]:
+    """Detect structural gaps in backbone by checking C-N bond distances.
+
+    A gap indicates missing residues in the structure, where the backbone
+    carbonyl carbon (C) of residue i is too far from the backbone nitrogen
+    (N) of residue i+1. Standard peptide bond C-N distance is ~1.32-1.35 Å.
+
+    Args:
+        coords: Backbone coordinates with shape [N, 4, 3] where the 4
+            atoms are [N, CA, C, CB] in order. Can also be [1, N, 4, 3].
+        threshold: Maximum allowed C-N distance in Angstroms. Distances
+            above this indicate a structural gap.
+
+    Returns:
+        FrozenSet of row indices where gaps occur. Each index i in the set
+        means there is a gap AFTER residue i (between residue i and i+1).
+
+    Raises:
+        ValueError: If coords has invalid shape.
+    """
+    # Handle batch dimension if present
+    if coords.ndim == 4 and coords.shape[0] == 1:
+        coords = coords[0]
+
+    if coords.ndim != 3 or coords.shape[1] != 4 or coords.shape[2] != 3:
+        raise ValueError(f"Expected coords shape [N, 4, 3], got {coords.shape}")
+
+    n_residues = coords.shape[0]
+    if n_residues <= 1:
+        return frozenset()
+
+    # Extract C atoms (all but last residue) and N atoms (all but first)
+    c_coords = coords[:-1, constants.BACKBONE_C_IDX, :]  # [N-1, 3]
+    n_coords = coords[1:, constants.BACKBONE_N_IDX, :]  # [N-1, 3]
+
+    # Vectorized distance calculation
+    distances = np.linalg.norm(c_coords - n_coords, axis=1)
+
+    # Find gaps (where distance exceeds threshold)
+    gap_mask = distances > threshold
+    gap_indices = set(np.where(gap_mask)[0])
+
+    # Log summary at INFO, details at DEBUG to avoid noise on large structures
+    if gap_indices:
+        if len(gap_indices) <= 3:
+            gap_list = ", ".join(str(i) for i in sorted(gap_indices))
+            LOGGER.info(
+                f"Detected {len(gap_indices)} structural gap(s) at: {gap_list}"
+            )
+        else:
+            first_three = sorted(gap_indices)[:3]
+            gap_list = ", ".join(str(i) for i in first_three)
+            LOGGER.info(
+                f"Detected {len(gap_indices)} structural gaps "
+                f"(first 3: {gap_list}, ...)"
+            )
+        for idx in sorted(gap_indices):
+            LOGGER.debug(
+                f"Gap between residues {idx} and {idx + 1}: "
+                f"C-N distance = {distances[idx]:.2f} Å "
+                f"(threshold: {threshold} Å)"
+            )
+
+    return frozenset(gap_indices)
+
+
+def has_gap_in_region(
+    gap_indices: FrozenSet[int],
+    start_row: int,
+    end_row: int,
+) -> bool:
+    """Check if there is a structural gap within a region of residues.
+
+    A gap at index i represents a structural break between residue i and
+    residue i+1 (the C-N peptide bond distance is too large). This function
+    checks whether any such gap would split the region.
+
+    Args:
+        gap_indices: FrozenSet of indices where gaps occur. A gap at index i
+            indicates a break between residues at rows i and i+1.
+        start_row: First row index of the region (inclusive).
+        end_row: Last row index of the region (inclusive).
+
+    Returns:
+        True if any internal gap exists. We check gap indices from start_row
+        to end_row-1 because a gap at index i affects residues i and i+1;
+        a gap at end_row would be between end_row and end_row+1, which extends
+        outside the region.
+
+    Example:
+        For region [5, 10] inclusive, we check gap indices 5-9:
+        - gap 5: break between residues 5-6 (both in region)
+        - gap 9: break between residues 9-10 (both in region)
+        - gap 10: break between residues 10-11 (11 is outside region)
+    """
+    for i in range(start_row, end_row):
+        if i in gap_indices:
+            return True
+    return False
