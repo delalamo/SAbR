@@ -376,6 +376,7 @@ def _compute_gap_indices(
     Args:
         coords: Full backbone coordinates [1, N, 4, 3] or [N, 4, 3].
         keep_indices: If provided, only consider these residue indices.
+            An empty list results in None (no residues to analyze).
 
     Returns:
         FrozenSet of gap indices after filtering, or None if < 2 residues.
@@ -384,8 +385,10 @@ def _compute_gap_indices(
     if coords.ndim == 4 and coords.shape[0] == 1:
         coords = coords[0]
 
-    # Filter to keep_indices if specified
-    if keep_indices:
+    # Filter to keep_indices if specified (empty list = no residues)
+    if keep_indices is not None:
+        if len(keep_indices) < 2:
+            return None
         coords = coords[keep_indices]
 
     if coords.shape[0] < 2:

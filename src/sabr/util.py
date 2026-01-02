@@ -131,11 +131,26 @@ def detect_backbone_gaps(
     gap_mask = distances > threshold
     gap_indices = set(np.where(gap_mask)[0])
 
-    for idx in gap_indices:
-        LOGGER.info(
-            f"Structural gap detected between residues {idx} and {idx + 1}: "
-            f"C-N distance = {distances[idx]:.2f} Å (threshold: {threshold} Å)"
-        )
+    # Log summary at INFO, details at DEBUG to avoid noise on large structures
+    if gap_indices:
+        if len(gap_indices) <= 3:
+            gap_list = ", ".join(str(i) for i in sorted(gap_indices))
+            LOGGER.info(
+                f"Detected {len(gap_indices)} structural gap(s) at: {gap_list}"
+            )
+        else:
+            first_three = sorted(gap_indices)[:3]
+            gap_list = ", ".join(str(i) for i in first_three)
+            LOGGER.info(
+                f"Detected {len(gap_indices)} structural gaps "
+                f"(first 3: {gap_list}, ...)"
+            )
+        for idx in sorted(gap_indices):
+            LOGGER.debug(
+                f"Gap between residues {idx} and {idx + 1}: "
+                f"C-N distance = {distances[idx]:.2f} Å "
+                f"(threshold: {threshold} Å)"
+            )
 
     return frozenset(gap_indices)
 
