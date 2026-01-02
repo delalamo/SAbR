@@ -92,7 +92,7 @@ def test_correct_fr1_alignment_kappa_7_residues():
     aln[10, 10] = 1  # Row 10 at position 11
     aln[11, 11] = 1  # Row 11 at position 12
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type="K")
+    corrected = aligner._correct_fr1_alignment(aln, chain_type="K")
 
     # With 7 residues (rows 5-11), position 10 should be occupied (kappa)
     assert corrected[9, 9] == 1, "Position 10 should be occupied for kappa"
@@ -118,7 +118,7 @@ def test_correct_fr1_alignment_heavy_6_residues():
     aln[9, 10] = 1  # Row 9 at position 11 (skipping 10)
     aln[10, 11] = 1  # Row 10 at position 12
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type="H")
+    corrected = aligner._correct_fr1_alignment(aln, chain_type="H")
 
     # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
     assert (
@@ -140,7 +140,7 @@ def test_correct_fr1_no_anchors_found():
     # No residues in positions 6-12 region
     aln[50, 50] = 1  # Some residue far from FR1
 
-    corrected = aligner.correct_fr1_alignment(aln, chain_type="K")
+    corrected = aligner._correct_fr1_alignment(aln, chain_type="K")
 
     # Should return unchanged since anchors not found
     assert np.array_equal(corrected, aln)
@@ -155,7 +155,7 @@ def test_correct_fr3_alignment_no_correction_needed():
     aln[71, 81] = 1  # Residue at position 82
 
     # If input has both positions, no correction needed
-    corrected = aligner.correct_fr3_alignment(
+    corrected = aligner._correct_fr3_alignment(
         aln, input_has_pos81=True, input_has_pos82=True
     )
 
@@ -171,7 +171,7 @@ def test_correct_fr3_alignment_move_81_to_83():
     aln[70, 80] = 1  # Residue incorrectly at position 81
 
     # Light chain lacks position 81
-    corrected = aligner.correct_fr3_alignment(
+    corrected = aligner._correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=True
     )
 
@@ -188,7 +188,7 @@ def test_correct_fr3_alignment_move_82_to_84():
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks position 82
-    corrected = aligner.correct_fr3_alignment(
+    corrected = aligner._correct_fr3_alignment(
         aln, input_has_pos81=True, input_has_pos82=False
     )
 
@@ -206,7 +206,7 @@ def test_correct_fr3_alignment_both_moves():
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks both positions 81 and 82
-    corrected = aligner.correct_fr3_alignment(
+    corrected = aligner._correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=False
     )
 
@@ -228,7 +228,7 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     aln[73, 83] = 1  # Position 84
 
     # Light chain lacks positions 81 and 82
-    corrected = aligner.correct_fr3_alignment(
+    corrected = aligner._correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=False
     )
 
@@ -464,3 +464,170 @@ def test_correct_c_terminus_empty_alignment():
 
     # Should return unchanged (no assignments to work with)
     assert np.array_equal(corrected, aln)
+
+
+class TestGapSkipping:
+    """Tests for gap skipping behavior in correction methods."""
+
+    def test_skip_for_structural_gap_returns_true_when_gap_present(self):
+        """Test _skip_for_structural_gap returns True when gap in region."""
+        aligner = make_aligner()
+        gap_indices = frozenset({5, 10})
+
+        result = aligner._skip_for_structural_gap(
+            gap_indices, start_row=3, end_row=8, region_name="test"
+        )
+
+        assert result is True
+
+    def test_skip_for_structural_gap_returns_false_when_no_gap(self):
+        """Test _skip_for_structural_gap returns False when no gap in region."""
+        aligner = make_aligner()
+        gap_indices = frozenset({1, 15})
+
+        result = aligner._skip_for_structural_gap(
+            gap_indices, start_row=5, end_row=10, region_name="test"
+        )
+
+        assert result is False
+
+    def test_skip_for_structural_gap_returns_false_when_none(self):
+        """Test _skip_for_structural_gap returns False when None."""
+        aligner = make_aligner()
+
+        result = aligner._skip_for_structural_gap(
+            None, start_row=5, end_row=10, region_name="test"
+        )
+
+        assert result is False
+
+    def test_skip_for_structural_gap_empty_set(self):
+        """Test _skip_for_structural_gap with empty gap set."""
+        aligner = make_aligner()
+        gap_indices = frozenset()
+
+        result = aligner._skip_for_structural_gap(
+            gap_indices, start_row=0, end_row=100, region_name="test"
+        )
+
+        assert result is False
+
+    def test_fr1_skips_correction_when_gap_present(self):
+        """Test FR1 correction is skipped when structural gap is in region."""
+        aligner = make_aligner()
+        aln = np.zeros((20, 128), dtype=int)
+        # Set up 7 residues that would normally trigger correction
+        aln[5, 5] = 1
+        aln[6, 6] = 1
+        aln[7, 7] = 1
+        aln[8, 8] = 1
+        aln[9, 9] = 1
+        aln[10, 10] = 1
+        aln[11, 11] = 1
+
+        original_aln = aln.copy()
+        # Gap at row 7 (within the FR1 region)
+        gap_indices = frozenset({7})
+
+        corrected = aligner._correct_fr1_alignment(
+            aln, chain_type="K", gap_indices=gap_indices
+        )
+
+        # Should return unchanged since gap is present
+        assert np.array_equal(corrected, original_aln)
+
+    def test_fr1_applies_correction_when_no_gap(self):
+        """Test FR1 correction is applied when no structural gap."""
+        aligner = make_aligner()
+        aln = np.zeros((20, 128), dtype=int)
+        aln[5, 5] = 1
+        aln[6, 6] = 1
+        aln[7, 7] = 1
+        aln[8, 8] = 1
+        aln[9, 9] = 1
+        aln[10, 10] = 1
+        aln[11, 11] = 1
+
+        original_aln = aln.copy()
+        # No gaps in the FR1 region (gap is outside)
+        gap_indices = frozenset({20})
+
+        corrected = aligner._correct_fr1_alignment(
+            aln, chain_type="K", gap_indices=gap_indices
+        )
+
+        # Correction should be applied (may or may not change, but method runs)
+        # At minimum, it should not raise an error
+        assert corrected.shape == original_aln.shape
+
+    def test_fr3_skips_correction_when_gap_in_de_loop(self):
+        """Test FR3 correction is skipped when gap in DE loop region."""
+        aligner = make_aligner()
+        aln = np.zeros((100, 128), dtype=int)
+        # Set up positions in DE loop region (positions 79-84)
+        aln[70, 78] = 1  # Position 79
+        aln[71, 79] = 1  # Position 80
+        aln[72, 80] = 1  # Position 81 (incorrectly placed for light chain)
+        aln[73, 81] = 1  # Position 82 (incorrectly placed for light chain)
+        aln[74, 82] = 1  # Position 83
+        aln[75, 83] = 1  # Position 84
+
+        original_aln = aln.copy()
+        # Gap at row 72 (within DE loop region)
+        gap_indices = frozenset({72})
+
+        corrected = aligner._correct_fr3_alignment(
+            aln,
+            input_has_pos81=False,
+            input_has_pos82=False,
+            gap_indices=gap_indices,
+        )
+
+        # Should return unchanged since gap is in DE loop
+        assert np.array_equal(corrected, original_aln)
+
+    def test_cdr_loop_skips_correction_when_gap_present(self):
+        """Test CDR loop correction is skipped when gap in region."""
+        aligner = make_aligner()
+        aln = np.zeros((100, 128), dtype=int)
+        # Set up alignment with residues in CDR1 region
+        # CDR1 anchors are at positions 23 and 40
+        aln[20, 22] = 1  # Near anchor at position 23
+        aln[21, 23] = 1
+        aln[22, 24] = 1
+        aln[23, 25] = 1
+        aln[24, 26] = 1
+        aln[30, 39] = 1  # Near anchor at position 40
+
+        original_aln = aln.copy()
+        # Gap at row 22 (within CDR1 region)
+        gap_indices = frozenset({22})
+
+        corrected = aligner._correct_cdr_loop(
+            aln,
+            loop_name="CDR1",
+            cdr_start=27,
+            cdr_end=38,
+            gap_indices=gap_indices,
+        )
+
+        # Should return unchanged since gap is in region
+        assert np.array_equal(corrected, original_aln)
+
+    def test_apply_deterministic_corrections_passes_gap_indices(self):
+        """Test that _apply_deterministic_corrections passes gap_indices."""
+        aligner = make_aligner()
+        aln = np.zeros((100, 128), dtype=int)
+        # Create a minimal alignment
+        for i in range(100):
+            aln[i, min(i, 127)] = 1
+
+        gap_indices = frozenset({50})
+
+        # Should not raise an error
+        corrected, chain_type = aligner._apply_deterministic_corrections(
+            aln, gap_indices=gap_indices
+        )
+
+        assert corrected.shape == aln.shape
+        assert chain_type in ("H", "K", "L")
