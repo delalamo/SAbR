@@ -17,7 +17,7 @@ The alignment process includes:
 
 import logging
 from importlib.resources import as_file, files
-from typing import List, Optional, Tuple
+from typing import FrozenSet, List, Optional, Tuple
 
 import numpy as np
 
@@ -127,13 +127,42 @@ class SoftAligner:
 
         return aln
 
-    def correct_fr1_alignment(
+    def _skip_for_structural_gap(
+        self,
+        gap_indices: Optional[FrozenSet[int]],
+        start_row: int,
+        end_row: int,
+        region_name: str,
+    ) -> bool:
+        """Check if deterministic correction should be skipped due to a gap.
+
+        Args:
+            gap_indices: FrozenSet of row indices where structural gaps occur.
+            start_row: First row index of the region to check.
+            end_row: Last row index of the region to check (inclusive).
+            region_name: Name of the region for logging.
+
+        Returns:
+            True if a gap is found and correction should be skipped.
+        """
+        if gap_indices and util.has_gap_in_region(
+            gap_indices, start_row, end_row
+        ):
+            LOGGER.warning(
+                f"Skipping {region_name} deterministic correction; "
+                f"structural gap detected between rows {start_row} and "
+                f"{end_row}. Using embedding similarity instead."
+            )
+            return True
+        return False
+
+    def _correct_fr1_alignment(
         self,
         aln: np.ndarray,
         chain_type: Optional[str] = None,
+        gap_indices: Optional[FrozenSet[int]] = None,
     ) -> np.ndarray:
-        """
-        Fix FR1 alignment issues in positions 6-12 deterministically.
+        """Fix FR1 alignment issues in positions 6-12 deterministically.
 
         Uses anchor positions 6 and 12 to count residues and determine if
         position 10 should be occupied:
@@ -144,11 +173,14 @@ class SoftAligner:
         positions 6-12 with or without position 10.
 
         Args:
-            aln: The alignment matrix
-            chain_type: The chain type (used for logging)
+            aln: The alignment matrix.
+            chain_type: The chain type (used for logging).
+            gap_indices: FrozenSet of row indices where structural gaps occur.
+                If a gap is found in the region, deterministic correction
+                is skipped and embedding similarity is used instead.
 
         Returns:
-            Corrected alignment matrix
+            Corrected alignment matrix.
         """
         # Anchor columns (0-indexed)
         pos6_col = constants.FR1_ANCHOR_START_COL
@@ -167,6 +199,12 @@ class SoftAligner:
                 f"FR1 correction: could not find anchor positions "
                 f"(start_row={start_row}, end_row={end_row})"
             )
+            return aln
+
+        # Check for structural gaps in the region
+        if self._skip_for_structural_gap(
+            gap_indices, start_row, end_row, "FR1"
+        ):
             return aln
 
         # Count residues between anchors (inclusive)
@@ -199,14 +237,14 @@ class SoftAligner:
 
         return aln
 
-    def correct_fr3_alignment(
+    def _correct_fr3_alignment(
         self,
         aln: np.ndarray,
         input_has_pos81: bool = False,
         input_has_pos82: bool = False,
+        gap_indices: Optional[FrozenSet[int]] = None,
     ) -> np.ndarray:
-        """
-        Fix FR3 alignment issues in positions 81-84 for light chains.
+        """Fix FR3 alignment issues in positions 81-84 for light chains.
 
         Light chains (kappa and lambda) typically skip positions 81-82 in IMGT
         numbering, having residues at 79, 80, 83, 84, ... instead of the full
@@ -217,17 +255,39 @@ class SoftAligner:
         81-82 instead of 83-84. This function corrects that misalignment.
 
         Args:
-            aln: The alignment matrix
-            input_has_pos81: Whether the input sequence has position 81
-            input_has_pos82: Whether the input sequence has position 82
+            aln: The alignment matrix.
+            input_has_pos81: Whether the input sequence has position 81.
+            input_has_pos82: Whether the input sequence has position 82.
+            gap_indices: FrozenSet of row indices where structural gaps occur.
+                If a gap is found in the DE loop region, deterministic
+                correction is skipped and embedding similarity is used instead.
 
         Returns:
-            Corrected alignment matrix
+            Corrected alignment matrix.
         """
         pos81_col = constants.FR3_POS81_COL
         pos82_col = constants.FR3_POS82_COL
         pos83_col = constants.FR3_POS83_COL
         pos84_col = constants.FR3_POS84_COL
+
+        # Check for structural gaps in DE loop region (positions 79-84)
+        if gap_indices:
+            de_start_col = 78  # 0-indexed for position 79
+            de_end_col = 83  # 0-indexed for position 84
+            de_start_row, _ = find_nearest_occupied_column(
+                aln, de_start_col, search_range=2, direction="both"
+            )
+            de_end_row, _ = find_nearest_occupied_column(
+                aln, de_end_col, search_range=2, direction="both"
+            )
+            if (
+                de_start_row is not None
+                and de_end_row is not None
+                and self._skip_for_structural_gap(
+                    gap_indices, de_start_row, de_end_row, "FR3/DE loop"
+                )
+            ):
+                return aln
 
         pos81_occupied = aln[:, pos81_col].sum() == 1
         pos82_occupied = aln[:, pos82_col].sum() == 1
@@ -360,6 +420,7 @@ class SoftAligner:
         loop_name: str,
         cdr_start: int,
         cdr_end: int,
+        gap_indices: Optional[FrozenSet[int]] = None,
     ) -> np.ndarray:
         """Apply deterministic correction to a single CDR loop region.
 
@@ -372,6 +433,9 @@ class SoftAligner:
             loop_name: Name of the loop (e.g., "CDR1", "CDR2", "CDR3").
             cdr_start: First IMGT position of the CDR (1-indexed).
             cdr_end: Last IMGT position of the CDR (1-indexed).
+            gap_indices: FrozenSet of row indices where structural gaps occur.
+                If a gap is found in the region, deterministic correction
+                is skipped and embedding similarity is used instead.
 
         Returns:
             Corrected alignment matrix.
@@ -431,6 +495,12 @@ class SoftAligner:
                 f"Skipping {loop_name}; anchor start row "
                 f"({anchor_start_row}) >= end row ({anchor_end_row})"
             )
+            return aln
+
+        # Check for structural gaps in the region
+        if self._skip_for_structural_gap(
+            gap_indices, anchor_start_row, anchor_end_row, loop_name
+        ):
             return aln
 
         # Calculate FW positions between anchors (outside CDR range)
@@ -497,34 +567,48 @@ class SoftAligner:
         return aln
 
     def _apply_deterministic_corrections(
-        self, aln: np.ndarray
+        self,
+        aln: np.ndarray,
+        gap_indices: Optional[FrozenSet[int]] = None,
     ) -> Tuple[np.ndarray, str]:
         """Apply all deterministic alignment corrections.
 
         Applies corrections in order: CDR loops, FR1, FR3 (light chains),
-        and C-terminus.
+        and C-terminus. Regions with structural gaps (as indicated by
+        gap_indices) will skip deterministic correction and rely on
+        embedding similarity instead.
 
         Args:
             aln: The raw alignment matrix.
+            gap_indices: FrozenSet of row indices where structural gaps occur.
+                Gaps are detected from backbone C-N distances exceeding
+                the threshold. If None, no gap checking is performed.
 
         Returns:
             Tuple of (corrected alignment, detected chain type).
         """
         # Correct all CDR loops
         for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-            aln = self._correct_cdr_loop(aln, loop_name, cdr_start, cdr_end)
+            aln = self._correct_cdr_loop(
+                aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
+            )
 
         # Detect chain type from DE loop (positions 81-82)
         detected_chain_type = util.detect_chain_type(aln)
         is_light_chain = detected_chain_type in ("K", "L")
 
         # Apply FR1 correction
-        aln = self.correct_fr1_alignment(aln, chain_type=detected_chain_type)
+        aln = self._correct_fr1_alignment(
+            aln, chain_type=detected_chain_type, gap_indices=gap_indices
+        )
 
         # FR3 positions 81-82: Heavy chains have them, light chains don't
         if is_light_chain:
-            aln = self.correct_fr3_alignment(
-                aln, input_has_pos81=False, input_has_pos82=False
+            aln = self._correct_fr3_alignment(
+                aln,
+                input_has_pos81=False,
+                input_has_pos82=False,
+                gap_indices=gap_indices,
             )
 
         # Apply C-terminus correction
@@ -562,9 +646,16 @@ class SoftAligner:
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
         aln = np.array(aln, dtype=int)
 
+        # Log gap information if present
+        gap_indices = input_data.gap_indices
+        if gap_indices:
+            LOGGER.info(
+                f"Detected {len(gap_indices)} structural gap(s) in input"
+            )
+
         if deterministic_loop_renumbering:
             aln, detected_chain_type = self._apply_deterministic_corrections(
-                aln
+                aln, gap_indices=gap_indices
             )
         else:
             detected_chain_type = util.detect_chain_type(aln)
