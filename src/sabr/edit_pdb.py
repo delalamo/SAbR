@@ -172,6 +172,7 @@ def _thread_gemmi_chain(
     chain: gemmi.Chain,
     anarci_out: AnarciAlignment,
     anarci_start: int,
+    anarci_end: int,
     alignment_start: int,
     residue_range: Tuple[int, int] = (0, 0),
 ) -> int:
@@ -181,6 +182,7 @@ def _thread_gemmi_chain(
         chain: Gemmi Chain object to renumber (modified in-place).
         anarci_out: ANARCI alignment output as list of ((resnum, icode), aa).
         anarci_start: Starting position in the ANARCI window.
+        anarci_end: Ending position in the ANARCI window.
         alignment_start: Offset where alignment begins in the sequence.
         residue_range: Tuple of (start, end) residue numbers to process
             (inclusive). Use (0, 0) to process all residues.
@@ -189,6 +191,16 @@ def _thread_gemmi_chain(
         Number of residue ID deviations from original numbering.
     """
     start_res, end_res = residue_range
+    range_str = (
+        f" (residue_range={start_res}-{end_res})"
+        if residue_range != (0, 0)
+        else ""
+    )
+    LOGGER.info(
+        f"Threading chain {chain.name} with ANARCI window "
+        f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
+        + range_str
+    )
 
     aligned_residue_idx = -1
     last_imgt_pos = None
@@ -322,6 +334,7 @@ def thread_alignment(
                 ch,
                 alignment,
                 start_res,
+                end_res,
                 alignment_start,
                 residue_range,
             )
