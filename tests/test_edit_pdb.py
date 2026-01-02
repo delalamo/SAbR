@@ -1,4 +1,3 @@
-import gemmi
 import pytest
 from Bio.PDB import Chain, Residue
 
@@ -175,23 +174,26 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
         assert output_cif.exists()
 
-        # Use Gemmi to read the output CIF file
-        structure = gemmi.read_structure(str(output_cif))
+        # Use BioPython to read the CIF (Gemmi can't handle extended icodes)
+        from Bio.PDB.MMCIFParser import MMCIFParser
+
+        parser = MMCIFParser(QUIET=True)
+        structure = parser.get_structure("test", str(output_cif))
         model = structure[0]
 
         # Find chain M in the structure
-        chain_m = None
-        for ch in model:
-            if ch.name == "M":
-                chain_m = ch
-                break
+        chain_m = model["M"]
         assert chain_m is not None, "Chain M not found in output"
 
-        # Verify extended insertion codes are present
-        # Note: Gemmi only stores single-char insertion codes in seqid.icode
-        # Extended insertion codes are stored differently in mmCIF
-        residues = [res for res in chain_m if res.het_flag == "A"]
+        # Verify residues are present and extended insertion codes work
+        residues = [
+            res for res in chain_m.get_residues() if not res.id[0].strip()
+        ]
         assert len(residues) > 0
+
+        # Check that we have extended insertion codes (multi-char like 'AA')
+        icodes = [res.id[2] for res in residues if len(res.id[2].strip()) > 1]
+        assert len(icodes) > 0, "Expected extended insertion codes in output"
 
     except ImportError:
         pytest.skip("SoftAligner dependencies not available")

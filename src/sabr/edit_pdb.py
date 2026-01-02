@@ -24,19 +24,25 @@ from typing import Tuple
 
 import gemmi
 from Bio.PDB import Chain
+from Bio.PDB.mmcifio import MMCIFIO
 
 from sabr.constants import AA_3TO1, AnarciAlignment
 
 LOGGER = logging.getLogger(__name__)
 
 
+def _has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
+    """Check if alignment contains extended (multi-char) insertion codes."""
+    return any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
+
+
 def validate_output_format(
     output_path: str, alignment: AnarciAlignment
 ) -> None:
     """Validate that the output format supports the insertion codes used."""
-    has_extended = any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
-
-    if has_extended and not output_path.endswith(".cif"):
+    if _has_extended_insertion_codes(alignment) and not output_path.endswith(
+        ".cif"
+    ):
         raise ValueError(
             "Extended insertion codes detected in alignment. "
             "PDB format only supports single-character insertion codes. "
@@ -283,6 +289,77 @@ def _thread_gemmi_chain(
     return deviations
 
 
+def _thread_alignment_biopython(
+    pdb_file: str,
+    chain_id: str,
+    alignment: AnarciAlignment,
+    output_cif: str,
+    start_res: int,
+    end_res: int,
+    alignment_start: int,
+    residue_range: Tuple[int, int] = (0, 0),
+) -> int:
+    """Thread alignment using BioPython for CIF output with extended icodes.
+
+    This fallback is used when extended insertion codes (multi-character like
+    "AA", "AB") are present, which Gemmi cannot handle.
+
+    Args:
+        pdb_file: Path to input PDB/CIF file.
+        chain_id: Chain identifier to renumber.
+        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
+        output_cif: Path to output CIF file.
+        start_res: Start residue index from ANARCI.
+        end_res: End residue index from ANARCI.
+        alignment_start: Offset where alignment begins in the sequence.
+        residue_range: Tuple of (start, end) residue numbers to process.
+
+    Returns:
+        Number of residue ID deviations from original numbering.
+    """
+    from Bio.PDB import PDBParser
+    from Bio.PDB.MMCIFParser import MMCIFParser
+
+    LOGGER.info(
+        f"Using BioPython fallback for extended insertion codes: "
+        f"{pdb_file} chain {chain_id}"
+    )
+
+    # Parse input file
+    if pdb_file.endswith(".cif"):
+        parser = MMCIFParser(QUIET=True)
+    else:
+        parser = PDBParser(QUIET=True)
+
+    structure = parser.get_structure("structure", pdb_file)
+
+    # Find and renumber the target chain
+    model = structure[0]
+    chain = model[chain_id]
+
+    # Thread the chain using BioPython's thread_onto_chain
+    threaded_chain, deviations = thread_onto_chain(
+        chain,
+        alignment,
+        start_res,
+        end_res,
+        alignment_start,
+        residue_range,
+    )
+
+    # Replace the chain in the model
+    model.detach_child(chain_id)
+    model.add(threaded_chain)
+
+    # Write output CIF using BioPython's MMCIFIO
+    io = MMCIFIO()
+    io.set_structure(structure)
+    io.save(output_cif)
+
+    LOGGER.info(f"Saved threaded structure to {output_cif}")
+    return deviations
+
+
 def thread_alignment(
     pdb_file: str,
     chain: str,
@@ -295,7 +372,8 @@ def thread_alignment(
 ) -> int:
     """Write the renumbered chain to ``output_pdb`` and return the structure.
 
-    Uses Gemmi for fast file I/O operations.
+    Uses Gemmi for fast file I/O operations. Falls back to BioPython when
+    extended insertion codes are present (Gemmi only supports single-char).
 
     Args:
         pdb_file: Path to input PDB file.
@@ -315,6 +393,19 @@ def thread_alignment(
         ValueError: If extended insertion codes are used but output is not .cif.
     """
     validate_output_format(output_pdb, alignment)
+
+    # Use BioPython fallback for extended insertion codes (Gemmi limitation)
+    if _has_extended_insertion_codes(alignment) and output_pdb.endswith(".cif"):
+        return _thread_alignment_biopython(
+            pdb_file,
+            chain,
+            alignment,
+            output_pdb,
+            start_res,
+            end_res,
+            alignment_start,
+            residue_range,
+        )
 
     LOGGER.info(
         f"Threading alignment for {pdb_file} chain {chain}; "
