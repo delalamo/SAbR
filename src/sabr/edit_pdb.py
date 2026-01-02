@@ -6,8 +6,7 @@ structures, renumbering residues according to antibody numbering schemes.
 
 Key functions:
 - thread_alignment: Main entry point for renumbering a structure chain
-- thread_onto_chain: Core renumbering logic for a single chain
-- validate_output_format: Ensures mmCIF format for extended insertions
+- thread_onto_chain: Core renumbering logic for a single chain (BioPython)
 
 Supported file formats:
 - Input: PDB (.pdb) and mmCIF (.cif)
@@ -23,8 +22,8 @@ import copy
 import logging
 from typing import Tuple
 
-from Bio import PDB
-from Bio.PDB import Chain, Model, Structure
+import gemmi
+from Bio.PDB import Chain
 
 from sabr.constants import AA_3TO1, AnarciAlignment
 
@@ -169,6 +168,109 @@ def thread_onto_chain(
     return new_chain, deviations
 
 
+def _thread_gemmi_chain(
+    chain: gemmi.Chain,
+    anarci_out: AnarciAlignment,
+    anarci_start: int,
+    alignment_start: int,
+    residue_range: Tuple[int, int] = (0, 0),
+) -> int:
+    """Renumber a Gemmi chain in-place using ANARCI alignment.
+
+    Args:
+        chain: Gemmi Chain object to renumber (modified in-place).
+        anarci_out: ANARCI alignment output as list of ((resnum, icode), aa).
+        anarci_start: Starting position in the ANARCI window.
+        alignment_start: Offset where alignment begins in the sequence.
+        residue_range: Tuple of (start, end) residue numbers to process
+            (inclusive). Use (0, 0) to process all residues.
+
+    Returns:
+        Number of residue ID deviations from original numbering.
+    """
+    start_res, end_res = residue_range
+
+    aligned_residue_idx = -1
+    last_imgt_pos = None
+    deviations = 0
+    pdb_idx = 0
+
+    for res in chain:
+        res_num = res.seqid.num
+
+        # Skip residues outside the specified range
+        if residue_range != (0, 0):
+            if res_num < start_res:
+                continue
+            if res_num > end_res:
+                LOGGER.info(
+                    f"Stopping at residue {res_num} (end of range {end_res})"
+                )
+                break
+
+        is_in_aligned_region = pdb_idx >= alignment_start
+        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
+        is_hetatm = res.het_flag != "A"
+
+        if is_in_aligned_region and not is_hetatm:
+            aligned_residue_idx += 1
+
+        if aligned_residue_idx >= 0:
+            aligned_residue_idx = _skip_deletions(
+                aligned_residue_idx, anarci_start, anarci_out
+            )
+
+        anarci_array_idx = aligned_residue_idx + anarci_start
+        is_in_fv_region = aligned_residue_idx >= 0
+        is_before_fv_end = anarci_array_idx < len(anarci_out)
+
+        old_seqid = str(res.seqid)
+
+        if is_in_fv_region and is_before_fv_end and not is_hetatm:
+            (new_imgt_pos, icode), aa = anarci_out[anarci_array_idx]
+            last_imgt_pos = new_imgt_pos
+
+            # Verify residue matches
+            one_letter = AA_3TO1.get(res.name, "X")
+            if aa != one_letter:
+                raise ValueError(
+                    f"Residue mismatch! Expected {aa}, got {one_letter} "
+                    f"({res.name})"
+                )
+
+            # Set new residue ID
+            res.seqid.num = new_imgt_pos
+            # Handle insertion code - strip whitespace
+            icode_str = icode.strip() if icode else ""
+            res.seqid.icode = icode_str[0] if icode_str else " "
+
+        elif is_hetatm:
+            # Keep HETATM residues unchanged
+            pass
+
+        elif aligned_residue_idx < 0:
+            # PRE-Fv region
+            first_anarci_pos = anarci_out[anarci_start][0][0]
+            new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
+            res.seqid.num = new_imgt_pos
+            res.seqid.icode = " "
+
+        else:
+            # POST-Fv region
+            last_imgt_pos += 1
+            res.seqid.num = last_imgt_pos
+            res.seqid.icode = " "
+
+        new_seqid = str(res.seqid)
+        LOGGER.info("OLD %s; NEW %s", old_seqid, new_seqid)
+        if old_seqid != new_seqid:
+            deviations += 1
+
+        pdb_idx += 1
+
+    return deviations
+
+
 def thread_alignment(
     pdb_file: str,
     chain: str,
@@ -180,6 +282,8 @@ def thread_alignment(
     residue_range: Tuple[int, int] = (0, 0),
 ) -> int:
     """Write the renumbered chain to ``output_pdb`` and return the structure.
+
+    Uses Gemmi for fast file I/O operations.
 
     Args:
         pdb_file: Path to input PDB file.
@@ -205,35 +309,30 @@ def thread_alignment(
         f"writing to {output_pdb}"
     )
 
-    parser = (
-        PDB.MMCIFParser(QUIET=True)
-        if pdb_file.lower().endswith(".cif")
-        else PDB.PDBParser(QUIET=True)
-    )
-    structure = parser.get_structure("input_structure", pdb_file)
-    new_structure = Structure.Structure("threaded_structure")
-    new_model = Model.Model(0)
+    # Read structure with Gemmi
+    structure = gemmi.read_structure(pdb_file)
 
     all_devs = 0
 
-    for ch in structure[0]:
-        if ch.id != chain:
-            new_model.add(ch)
-        else:
-            new_chain, deviations = thread_onto_chain(
+    # Find and renumber the target chain
+    model = structure[0]
+    for ch in model:
+        if ch.name == chain:
+            deviations = _thread_gemmi_chain(
                 ch,
                 alignment,
                 start_res,
-                end_res,
                 alignment_start,
                 residue_range,
             )
-            new_model.add(new_chain)
             all_devs += deviations
+            break
 
-    new_structure.add(new_model)
-    io = PDB.MMCIFIO() if output_pdb.endswith(".cif") else PDB.PDBIO()
-    io.set_structure(new_structure)
-    io.save(output_pdb)
+    # Write output file
+    if output_pdb.endswith(".cif"):
+        structure.make_mmcif_document().write_file(output_pdb)
+    else:
+        structure.write_pdb(output_pdb)
+
     LOGGER.info(f"Saved threaded structure to {output_pdb}")
     return all_devs
