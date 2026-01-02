@@ -17,6 +17,7 @@ authors = [
 dependencies = [
   "biopython>=1.85",
   "click>=8.1",
+  "gemmi>=0.7",
   "jax>=0.4.20",
   "jaxlib>=0.4.20",
   "numpy>=2.4",
