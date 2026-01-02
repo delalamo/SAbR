@@ -217,7 +217,8 @@ class TestHasGapInRegion:
         """Verify no detection when gap is outside region bounds."""
         gap_indices = frozenset({5})
 
-        assert has_gap_in_region(gap_indices, 0, 5) is False  # 5 not in [0, 5)
+        # Region [0,5]: residues 0-5, check gaps 0-4. Gap 5 is between 5-6.
+        assert has_gap_in_region(gap_indices, 0, 5) is False
         assert has_gap_in_region(gap_indices, 6, 10) is False
         assert has_gap_in_region(gap_indices, 10, 15) is False
 
@@ -225,9 +226,12 @@ class TestHasGapInRegion:
         """Verify detection when one of multiple gaps is in region."""
         gap_indices = frozenset({2, 8, 15})
 
-        assert has_gap_in_region(gap_indices, 5, 10) is True  # 8 is in region
-        assert has_gap_in_region(gap_indices, 0, 3) is True  # 2 is in region
-        assert has_gap_in_region(gap_indices, 3, 8) is False  # Neither 2 nor 8
+        # Region [5,10]: check gaps 5-9. Gap 8 is in range.
+        assert has_gap_in_region(gap_indices, 5, 10) is True
+        # Region [0,3]: check gaps 0-2. Gap 2 is in range.
+        assert has_gap_in_region(gap_indices, 0, 3) is True
+        # Region [3,8]: check gaps 3-7. Neither 2 nor 8 is in range.
+        assert has_gap_in_region(gap_indices, 3, 8) is False
 
     def test_empty_gap_set(self):
         """Verify no detection with empty gap set."""
@@ -236,20 +240,25 @@ class TestHasGapInRegion:
         assert has_gap_in_region(gap_indices, 0, 100) is False
 
     def test_region_boundary_behavior(self):
-        """Verify correct boundary behavior (start inclusive, end exclusive)."""
+        """Verify gap at end_row is NOT checked (it's outside the region)."""
         gap_indices = frozenset({5})
 
-        # Gap at 5 means gap AFTER residue 5 (between 5 and 6)
-        # Region [5, 10) should include checking index 5
+        # Gap at index 5 = break between residues 5 and 6.
+        # Region [5, 10] (inclusive): residues 5,6,7,8,9,10
+        # Internal gaps are indices 5,6,7,8,9 (between consecutive pairs)
+        # Gap 5 (between 5-6) is internal, so detected.
         assert has_gap_in_region(gap_indices, 5, 10) is True
 
-        # Region [0, 5) should NOT include index 5
+        # Region [0, 5] (inclusive): residues 0,1,2,3,4,5
+        # Internal gaps are indices 0,1,2,3,4 (between consecutive pairs)
+        # Gap 5 (between 5-6) is NOT internal since 6 is outside region.
         assert has_gap_in_region(gap_indices, 0, 5) is False
 
     def test_single_residue_region(self):
-        """Verify behavior with single-residue region."""
+        """Verify behavior with two-residue region."""
         gap_indices = frozenset({5})
 
-        # Region [5, 6) includes only index 5
+        # Region [5, 6] (inclusive): residues 5,6. Gap 5 is between them.
         assert has_gap_in_region(gap_indices, 5, 6) is True
+        # Region [4, 5] (inclusive): residues 4,5. Gap 5 is between 5-6.
         assert has_gap_in_region(gap_indices, 4, 5) is False
