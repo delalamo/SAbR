@@ -23,6 +23,19 @@ CB_BOND_LENGTH = 1.522  # C-CA bond length in Angstroms
 CB_BOND_ANGLE = 1.927  # N-CA-CB angle in radians (~110.5 degrees)
 CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
 
+# Peptide bond geometry for gap detection
+# Standard C-N peptide bond length is ~1.32-1.35 Å
+# A gap (missing residue) is detected when C-N distance exceeds threshold
+PEPTIDE_BOND_MAX_DISTANCE = (
+    2.0  # Angstroms; above this indicates structural gap
+)
+
+# Backbone atom indices in coordinate arrays [N, CA, C, CB]
+BACKBONE_N_IDX = 0
+BACKBONE_CA_IDX = 1
+BACKBONE_C_IDX = 2
+BACKBONE_CB_IDX = 3
+
 # Smith-Waterman alignment parameters from fine-tuned SoftAlign model
 # These are the gap penalties for the affine gap scoring function
 # Fine-tuned from CONT_SW_05_T_3_1 with LR=3e-5, achieving val loss 115.81
