@@ -85,8 +85,15 @@ class SoftAligner:
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
         """
+        # Load full embeddings (used when deterministic_loop_renumbering=False)
         self.unified_embedding = self.read_embeddings(
             embeddings_name=embeddings_name,
+            embeddings_path=embeddings_path,
+        )
+        # Load reduced embeddings without variable positions (used when
+        # deterministic_loop_renumbering=True)
+        self.unified_embedding_no_cdr = self.read_embeddings(
+            embeddings_name="embeddings_no_cdr.npz",
             embeddings_path=embeddings_path,
         )
         self.temperature = temperature
@@ -627,7 +634,10 @@ class SoftAligner:
             input_data: Pre-computed MPNN embeddings for the query chain.
             deterministic_loop_renumbering: Whether to apply deterministic
                 renumbering corrections for CDR loops, FR1, FR3, and
-                C-terminus. Default is True.
+                C-terminus. Default is True. When enabled, uses reduced
+                reference embeddings (without CDR/variable positions) and
+                zero gap penalties at positions where variable regions
+                were removed.
 
         Returns:
             SoftAlignOutput with the best alignment.
@@ -636,14 +646,39 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
+        # Choose reference embeddings based on deterministic flag
+        if deterministic_loop_renumbering:
+            # Use reduced embeddings without variable positions
+            ref_embedding = self.unified_embedding_no_cdr
+            # Create gap matrices with zeros at CDR boundaries
+            query_len = input_data.embeddings.shape[0]
+            idxs_int = [int(x) for x in ref_embedding.idxs]
+            gap_matrix, open_matrix = (
+                jax_backend.create_gap_penalty_for_reduced_reference(
+                    query_len, idxs_int
+                )
+            )
+            LOGGER.info(
+                f"Using reduced reference ({len(idxs_int)} positions) "
+                f"with position-dependent gap penalties"
+            )
+        else:
+            # Use full embeddings with uniform gap penalties
+            ref_embedding = self.unified_embedding
+            gap_matrix = None
+            open_matrix = None
+
         alignment, sim_matrix, score = self._backend.align(
             input_embeddings=input_data.embeddings,
-            target_embeddings=self.unified_embedding.embeddings,
-            target_stdev=self.unified_embedding.stdev,
+            target_embeddings=ref_embedding.embeddings,
+            target_stdev=ref_embedding.stdev,
             temperature=self.temperature,
+            gap_matrix=gap_matrix,
+            open_matrix=open_matrix,
         )
 
-        aln = self.fix_aln(alignment, self.unified_embedding.idxs)
+        # Expand alignment to full 128 positions (CDR columns added as zeros)
+        aln = self.fix_aln(alignment, ref_embedding.idxs)
         # Use round() instead of truncation to handle values like 0.9999999
         # which should be 1 but would otherwise truncate to 0
         aln = np.round(aln).astype(int)
