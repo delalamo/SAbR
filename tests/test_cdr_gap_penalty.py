@@ -193,7 +193,11 @@ class TestReducedEmbeddings:
             assert "name" in data, "Should have 'name' key"
 
     def test_embeddings_no_cdr_excludes_variable_positions(self):
-        """Test that reduced embeddings excludes CDR and variable positions."""
+        """Test that reduced embeddings excludes CDR and position 10.
+
+        Note: DE loop positions 81-82 are NOT excluded because they are
+        present in heavy chains. Removing them caused misalignment issues.
+        """
         from importlib.resources import files, as_file
 
         pkg_files = files("sabr.assets")
@@ -203,17 +207,21 @@ class TestReducedEmbeddings:
             idxs = [int(x) for x in data["idxs"]]
 
         # Variable positions that should be excluded
+        # Note: 81-82 are NOT excluded (kept for heavy chain compatibility)
         variable_positions = (
             set(range(27, 39)) |    # CDR1: 27-38
             set(range(56, 66)) |    # CDR2: 56-65
             set(range(105, 118)) |  # CDR3: 105-117
-            {10} |                  # Position 10
-            {81, 82}                # DE loop
+            {10}                    # Position 10
         )
 
         # Check none of the variable positions are present
         for pos in variable_positions:
             assert pos not in idxs, f"Variable position {pos} should not be in reduced embeddings"
+
+        # DE loop positions 81-82 SHOULD be present
+        assert 81 in idxs, "Position 81 should be in reduced embeddings"
+        assert 82 in idxs, "Position 82 should be in reduced embeddings"
 
     def test_embeddings_no_cdr_has_framework_positions(self):
         """Test that reduced embeddings includes framework positions."""

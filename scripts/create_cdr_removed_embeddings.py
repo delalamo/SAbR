@@ -23,13 +23,15 @@ from pathlib import Path
 # All variable positions to remove:
 # - CDR1: 27-38, CDR2: 56-65, CDR3: 105-117
 # - Position 10 (missing in lambda/heavy chains)
-# - DE loop positions 81-82 (missing in light chains)
+# Note: DE loop positions 81-82 are NOT removed because they are present
+# in heavy chains and removing them causes misalignment. FR3 correction
+# handles the light chain case where 81-82 are absent.
 VARIABLE_POSITIONS = (
     set(range(27, 39)) |    # CDR1: positions 27-38
     set(range(56, 66)) |    # CDR2: positions 56-65
     set(range(105, 118)) |  # CDR3: positions 105-117
-    {10} |                  # Position 10 (lambda/heavy variability)
-    {81, 82}                # DE loop (light chain variability)
+    {10}                    # Position 10 (lambda/heavy variability)
+    # Note: {81, 82} intentionally NOT removed - handled by FR3 correction
 )
 
 

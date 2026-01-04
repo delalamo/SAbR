@@ -577,6 +577,7 @@ class SoftAligner:
         self,
         aln: np.ndarray,
         gap_indices: Optional[FrozenSet[int]] = None,
+        chain_type_override: Optional[str] = None,
     ) -> Tuple[np.ndarray, str]:
         """Apply all deterministic alignment corrections.
 
@@ -590,6 +591,9 @@ class SoftAligner:
             gap_indices: FrozenSet of row indices where structural gaps occur.
                 Gaps are detected from backbone C-N distances exceeding
                 the threshold. If None, no gap checking is performed.
+            chain_type_override: If provided, use this chain type instead of
+                detecting from the alignment. Useful when alignment was done
+                with reduced embeddings that don't have DE loop positions.
 
         Returns:
             Tuple of (corrected alignment, detected chain type).
@@ -600,8 +604,12 @@ class SoftAligner:
                 aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
             )
 
-        # Detect chain type from DE loop (positions 81-82)
-        detected_chain_type = util.detect_chain_type(aln)
+        # Detect chain type from DE loop (positions 81-82) or use override
+        if chain_type_override is not None:
+            detected_chain_type = chain_type_override
+            LOGGER.info(f"Using overridden chain type: {detected_chain_type}")
+        else:
+            detected_chain_type = util.detect_chain_type(aln)
         is_light_chain = detected_chain_type in ("K", "L")
 
         # Apply FR1 correction
@@ -691,8 +699,26 @@ class SoftAligner:
             )
 
         if deterministic_loop_renumbering:
-            aln, detected_chain_type = self._apply_deterministic_corrections(
-                aln, gap_indices=gap_indices
+            # When using reduced embeddings, detect chain type using FULL
+            # embeddings alignment to avoid confusion from missing DE loop
+            # positions (81-82) which would make heavy chains look like light
+            full_alignment, _, _ = self._backend.align(
+                input_embeddings=input_data.embeddings,
+                target_embeddings=self.unified_embedding.embeddings,
+                target_stdev=self.unified_embedding.stdev,
+                temperature=self.temperature,
+            )
+            full_aln = self.fix_aln(full_alignment, self.unified_embedding.idxs)
+            full_aln = np.round(full_aln).astype(int)
+            detected_chain_type = util.detect_chain_type(full_aln)
+            LOGGER.info(
+                f"Detected chain type from full alignment: {detected_chain_type}"
+            )
+
+            # Apply deterministic corrections using the reduced alignment
+            # but with correctly detected chain type
+            aln, _ = self._apply_deterministic_corrections(
+                aln, gap_indices=gap_indices, chain_type_override=detected_chain_type
             )
         else:
             detected_chain_type = util.detect_chain_type(aln)
