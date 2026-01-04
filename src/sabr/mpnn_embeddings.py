@@ -24,9 +24,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import FrozenSet, List, Optional, Tuple, Union
 
+import gemmi
 import numpy as np
-from Bio.PDB import Chain, MMCIFParser, PDBParser
-from Bio.PDB.Structure import Structure
+from Bio.PDB import Chain
 
 from sabr import constants, jax_backend, util
 
@@ -96,32 +96,116 @@ def _compute_cb(
     return cb
 
 
-def _parse_structure(file_path: str) -> Structure:
-    """Parse a structure file (PDB or CIF format)."""
-    path = Path(file_path)
-    suffix = path.suffix.lower()
+def _extract_inputs_from_gemmi_chain(
+    chain: gemmi.Chain, source_name: str = ""
+) -> MPNNInputs:
+    """Extract coordinates, residue info, and sequence from a Gemmi Chain.
 
-    if suffix == ".cif":
-        parser = MMCIFParser(QUIET=True)
-        LOGGER.debug(f"Using MMCIFParser for {file_path}")
-    elif suffix == ".pdb":
-        parser = PDBParser(QUIET=True)
-        LOGGER.debug(f"Using PDBParser for {file_path}")
-    else:
+    Args:
+        chain: Gemmi Chain object to extract from.
+        source_name: Source identifier for logging (file path or "structure").
+
+    Returns:
+        MPNNInputs containing backbone coordinates and residue information.
+
+    Raises:
+        ValueError: If no valid residues are found.
+    """
+    coords_list = []
+    ids_list = []
+    seq_list = []
+
+    for residue in chain:
+        # Skip heteroatoms (water, ligands, etc.)
+        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
+        if residue.het_flag != "A":
+            continue
+
+        # Check if all backbone atoms are present
+        n_atom = residue.find_atom("N", "*")
+        ca_atom = residue.find_atom("CA", "*")
+        c_atom = residue.find_atom("C", "*")
+
+        if not (n_atom and ca_atom and c_atom):
+            # Skip residues missing backbone atoms
+            continue
+
+        n_coord = np.array([n_atom.pos.x, n_atom.pos.y, n_atom.pos.z])
+        ca_coord = np.array([ca_atom.pos.x, ca_atom.pos.y, ca_atom.pos.z])
+        c_coord = np.array([c_atom.pos.x, c_atom.pos.y, c_atom.pos.z])
+
+        # Extract one-letter amino acid code (X for unknown residues)
+        resname = residue.name
+        one_letter = constants.AA_3TO1.get(resname, "X")
+        seq_list.append(one_letter)
+
+        # Compute CB position
+        cb_coord = _compute_cb(
+            n_coord.reshape(1, 3),
+            ca_coord.reshape(1, 3),
+            c_coord.reshape(1, 3),
+        ).reshape(3)
+
+        # Store coordinates [N, CA, C, CB]
+        residue_coords = np.stack(
+            [n_coord, ca_coord, c_coord, cb_coord], axis=0
+        )
+        coords_list.append(residue_coords)
+
+        # Generate residue ID string
+        resnum = residue.seqid.num
+        icode = residue.seqid.icode.strip()
+        if icode and icode != " ":
+            id_str = f"{resnum}{icode}"
+        else:
+            id_str = str(resnum)
+        ids_list.append(id_str)
+
+    if not coords_list:
         raise ValueError(
-            f"Unrecognized file format: {suffix}. Expected .pdb or .cif"
+            f"No valid residues found in chain '{chain.name}'"
+            + (f" of {source_name}" if source_name else "")
         )
 
-    return parser.get_structure("structure", file_path)
+    # Stack all coordinates
+    coords = np.stack(coords_list, axis=0)  # [N, 4, 3]
+
+    # Filter out any residues with NaN coordinates
+    valid_mask = ~np.isnan(coords).any(axis=(1, 2))
+    coords = coords[valid_mask]
+    ids_list = [ids_list[i] for i in range(len(ids_list)) if valid_mask[i]]
+    seq_list = [seq_list[i] for i in range(len(seq_list)) if valid_mask[i]]
+
+    n_residues = coords.shape[0]
+
+    # Create output arrays with batch dimension
+    mask = np.ones(n_residues)
+    chain_ids = np.ones(n_residues)
+    residue_indices = np.arange(n_residues)
+
+    sequence = "".join(seq_list)
+    log_msg = f"Extracted {n_residues} residues from chain '{chain.name}'"
+    if source_name:
+        log_msg += f" in {source_name}"
+    LOGGER.info(log_msg)
+
+    # Add batch dimension to match softalign output format
+    return MPNNInputs(
+        coords=coords[None, :],  # [1, N, 4, 3]
+        mask=mask[None, :],  # [1, N]
+        chain_ids=chain_ids[None, :],  # [1, N]
+        residue_indices=residue_indices[None, :],  # [1, N]
+        residue_ids=ids_list,
+        sequence=sequence,
+    )
 
 
-def _extract_inputs_from_chain(
+def _extract_inputs_from_biopython_chain(
     target_chain: Chain.Chain, source_name: str = ""
 ) -> MPNNInputs:
-    """Extract coordinates, residue info, and sequence from a Chain object.
+    """Extract coordinates, residue info, and sequence from a BioPython Chain.
 
-    This is the core extraction logic used by both file-based and
-    structure-based input functions.
+    This is the core extraction logic used by the from_chain function.
 
     Args:
         target_chain: BioPython Chain object to extract from.
@@ -232,28 +316,30 @@ def _get_inputs(
         MPNNInputs containing backbone coordinates and residue information.
     """
     if isinstance(source, str):
-        structure = _parse_structure(source)
+        # Use Gemmi for fast file parsing
+        structure = gemmi.read_structure(source)
         source_name = source
-        struct_model = structure[0]
+        model = structure[0]
 
         if chain is not None:
-            for ch in struct_model:
-                if ch.id == chain:
-                    return _extract_inputs_from_chain(ch, source_name)
-            available = [ch.id for ch in struct_model]
+            for ch in model:
+                if ch.name == chain:
+                    return _extract_inputs_from_gemmi_chain(ch, source_name)
+            available = [ch.name for ch in model]
             raise ValueError(
                 f"Chain '{chain}' not found in {source_name}. "
                 f"Available chains: {available}"
             )
         else:
-            target_chain = list(struct_model.get_chains())[0]
+            # Use first chain
+            target_chain = list(model)[0]
             LOGGER.info(
-                f"No chain specified, using first chain: {target_chain.id}"
+                f"No chain specified, using first chain: {target_chain.name}"
             )
-            return _extract_inputs_from_chain(target_chain, source_name)
+            return _extract_inputs_from_gemmi_chain(target_chain, source_name)
     else:
-        # source is a Chain object
-        return _extract_inputs_from_chain(source, "")
+        # source is a BioPython Chain object
+        return _extract_inputs_from_biopython_chain(source, "")
 
 
 @dataclass(frozen=True)

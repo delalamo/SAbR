@@ -119,7 +119,6 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
     from pathlib import Path
 
     from ANARCI import anarci
-    from Bio import PDB
 
     from sabr import aln2hmm, mpnn_embeddings, softaligner
 
@@ -175,13 +174,26 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
         assert output_cif.exists()
 
-        parser = PDB.MMCIFParser(QUIET=True)
-        structure = parser.get_structure("8sve", str(output_cif))
-        residues = list(structure[0]["M"].get_residues())
+        # Use BioPython to read the CIF (Gemmi can't handle extended icodes)
+        from Bio.PDB.MMCIFParser import MMCIFParser
 
-        # Verify extended insertion codes are present
-        has_extended = any(len(res.get_id()[2].strip()) > 1 for res in residues)
-        assert has_extended
+        parser = MMCIFParser(QUIET=True)
+        structure = parser.get_structure("test", str(output_cif))
+        model = structure[0]
+
+        # Find chain M in the structure
+        chain_m = model["M"]
+        assert chain_m is not None, "Chain M not found in output"
+
+        # Verify residues are present and extended insertion codes work
+        residues = [
+            res for res in chain_m.get_residues() if not res.id[0].strip()
+        ]
+        assert len(residues) > 0
+
+        # Check that we have extended insertion codes (multi-char like 'AA')
+        icodes = [res.id[2] for res in residues if len(res.id[2].strip()) > 1]
+        assert len(icodes) > 0, "Expected extended insertion codes in output"
 
     except ImportError:
         pytest.skip("SoftAligner dependencies not available")

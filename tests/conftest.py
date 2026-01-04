@@ -4,6 +4,7 @@ from importlib import resources
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+import gemmi
 import numpy as np
 import pytest
 from Bio import PDB, SeqIO
@@ -58,10 +59,29 @@ def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
 def extract_residue_ids_from_pdb(
     pdb_path: Path, chain: str
 ) -> List[Tuple[str, int, str]]:
-    """Extract residue IDs from a PDB file path."""
-    parser = PDB.PDBParser(QUIET=True)
-    structure = parser.get_structure("structure", pdb_path)
-    return extract_residue_ids_from_structure(structure, chain)
+    """Extract residue IDs from a PDB file path using Gemmi."""
+    structure = gemmi.read_structure(str(pdb_path))
+    return extract_residue_ids_from_gemmi_structure(structure, chain)
+
+
+def extract_residue_ids_from_gemmi_structure(
+    structure: gemmi.Structure, chain: str
+) -> List[Tuple[str, int, str]]:
+    """Extract residue IDs from a Gemmi structure."""
+    residues = []
+    model = structure[0]
+    for ch in model:
+        if ch.name != chain:
+            continue
+        for res in ch:
+            if res.het_flag != "A":  # Skip non-amino acid residues
+                continue
+            # Map Gemmi het_flag to BioPython format: 'A' -> ' '
+            hetflag = " " if res.het_flag == "A" else "H_" + res.name
+            resnum = res.seqid.num
+            icode = res.seqid.icode if res.seqid.icode.strip() else " "
+            residues.append((hetflag, resnum, icode))
+    return residues
 
 
 def extract_residue_ids_from_structure(
