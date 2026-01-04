@@ -644,7 +644,7 @@ class SoftAligner:
         )
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
-        aln = np.array(aln, dtype=int)
+        aln = np.round(aln).astype(int)
 
         # Log gap information if present
         gap_indices = input_data.gap_indices
