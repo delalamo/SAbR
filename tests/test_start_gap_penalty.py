@@ -32,14 +32,14 @@ class TestSWStartGapPenalty:
 
         # Should work with penalize_start_gap=False (default)
         score_no_penalty, aln_no_penalty = sw_func(
-            sim, lens, gap, open_pen, temp, False
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
         )
         assert score_no_penalty is not None
         assert aln_no_penalty is not None
 
         # Should work with penalize_start_gap=True
         score_with_penalty, aln_with_penalty = sw_func(
-            sim, lens, gap, open_pen, temp, True
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
         )
         assert score_with_penalty is not None
         assert aln_with_penalty is not None
@@ -64,8 +64,8 @@ class TestSWStartGapPenalty:
         open_pen = -1.0
         temp = 0.1  # Low temperature for more deterministic alignment
 
-        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, False)
-        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, True)
+        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
+        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
 
         # Scores should be very similar when alignment starts at position 1
         # Small difference may exist due to soft-max behavior
@@ -90,8 +90,8 @@ class TestSWStartGapPenalty:
         open_pen = -1.0
         temp = 0.1
 
-        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, False)
-        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, True)
+        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
+        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
 
         # Score with penalty should be lower because alignment starts late
         assert float(score_with_penalty) < float(score_no_penalty)
@@ -119,8 +119,8 @@ class TestSWStartGapPenalty:
         lens = (2, 4)
         temp = 0.1
 
-        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, False)
-        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, True)
+        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
+        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
 
         # Expected penalty for starting at col 2: open + gap * 1 = -1.0 + -0.5
         expected_penalty = open_pen + gap * 1  # = -1.5
@@ -144,11 +144,13 @@ class TestSWStartGapPenalty:
         open_pen = -1.0
         temp = 1.0
 
-        scores, alns = sw_func(sim, lens, gap, open_pen, temp, False)
+        # For batched version, must pass gap_matrix and open_matrix (as None) positionally
+        # because vmap expects all 8 arguments
+        scores, alns = sw_func(sim, lens, gap, open_pen, temp, None, None, False)
         assert scores.shape == (2,)
         assert alns.shape == (2, 2, 2)
 
-        scores_pen, alns_pen = sw_func(sim, lens, gap, open_pen, temp, True)
+        scores_pen, alns_pen = sw_func(sim, lens, gap, open_pen, temp, None, None, True)
         assert scores_pen.shape == (2,)
         assert alns_pen.shape == (2, 2, 2)
 
@@ -163,7 +165,7 @@ class TestSWStartGapPenalty:
         temp = 1.0
 
         # Call with penalize_start_gap=False should match original behavior
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, False)
+        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
 
         # Score should be reasonable (positive for this favorable matrix)
         assert float(score) > 0
@@ -225,7 +227,7 @@ class TestStartGapPenaltyEdgeCases:
         temp = 1.0
 
         # Should work without error
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, True)
+        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
         assert score is not None
         assert aln.shape == (2, 2)
 
@@ -245,7 +247,7 @@ class TestStartGapPenaltyEdgeCases:
         temp = 1.0
 
         # Should work without error
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, True)
+        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
         assert score is not None
         assert aln.shape == (4, 3)
 
@@ -260,8 +262,8 @@ class TestStartGapPenaltyEdgeCases:
         open_pen = -1.0
         temp = 0.5
 
-        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, False)
-        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, True)
+        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
+        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
 
         # For diagonal alignment starting at position 1, scores should be close
         assert abs(float(score_no_pen) - float(score_with_pen)) < 2.0
