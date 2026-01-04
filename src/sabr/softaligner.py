@@ -75,6 +75,7 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
         temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
+        penalize_start_gap: bool = True,
     ) -> None:
         """
         Initialize the SoftAligner by loading reference embeddings and backend.
@@ -84,12 +85,17 @@ class SoftAligner:
             embeddings_path: Package path containing the embeddings file.
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
+            penalize_start_gap: If True, penalize alignments that start after
+                reference position 1. This encourages alignments to begin at
+                the N-terminus. Penalty = gap_open + gap_extend * (j-1) for
+                starting at reference column j > 0.
         """
         self.unified_embedding = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
         self.temperature = temperature
+        self.penalize_start_gap = penalize_start_gap
         self._backend = jax_backend.AlignmentBackend(random_seed=random_seed)
 
     def read_embeddings(
@@ -641,6 +647,7 @@ class SoftAligner:
             target_embeddings=self.unified_embedding.embeddings,
             target_stdev=self.unified_embedding.stdev,
             temperature=self.temperature,
+            penalize_start_gap=self.penalize_start_gap,
         )
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)

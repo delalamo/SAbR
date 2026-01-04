@@ -147,6 +147,7 @@ def _run_alignment_fn(
     target_embeddings: np.ndarray,
     target_stdev: np.ndarray,
     temperature: float,
+    penalize_start_gap: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray, float]:
     """Run soft alignment between embedding sets.
 
@@ -158,6 +159,9 @@ def _run_alignment_fn(
         target_embeddings: Reference embeddings [M, embed_dim].
         target_stdev: Standard deviation for normalization [M, embed_dim].
         temperature: Alignment temperature (lower = more deterministic).
+        penalize_start_gap: If True, penalize alignments that start after
+            reference position 1. Penalty = gap_open + gap_extend * (j-1)
+            for starting at reference column j > 0.
 
     Returns:
         Tuple of (alignment_matrix, similarity_matrix, alignment_score).
@@ -177,7 +181,7 @@ def _run_alignment_fn(
 
     # Run alignment
     alignment, sim_matrix, score = model.align(
-        batched_input, batched_target, lens, temperature
+        batched_input, batched_target, lens, temperature, penalize_start_gap
     )
 
     # Remove batch dimension from outputs
@@ -289,6 +293,7 @@ class AlignmentBackend:
         target_embeddings: np.ndarray,
         target_stdev: np.ndarray,
         temperature: float = constants.DEFAULT_TEMPERATURE,
+        penalize_start_gap: bool = False,
     ) -> Tuple[np.ndarray, np.ndarray, float]:
         """Align input embeddings against target embeddings.
 
@@ -297,6 +302,9 @@ class AlignmentBackend:
             target_embeddings: Reference embeddings [M, embed_dim].
             target_stdev: Standard deviation for normalization [M, embed_dim].
             temperature: Alignment temperature parameter.
+            penalize_start_gap: If True, penalize alignments that start after
+                reference position 1. Penalty = gap_open + gap_extend * (j-1)
+                for starting at reference column j > 0.
 
         Returns:
             Tuple of (alignment, similarity_matrix, score) as numpy.
@@ -308,6 +316,7 @@ class AlignmentBackend:
             target_embeddings,
             target_stdev,
             temperature,
+            penalize_start_gap,
         )
 
         return (
