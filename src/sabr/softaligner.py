@@ -644,8 +644,6 @@ class SoftAligner:
         )
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
-        # Use round() instead of truncation to handle values like 0.9999999
-        # which should be 1 but would otherwise truncate to 0
         aln = np.round(aln).astype(int)
 
         # Log gap information if present
