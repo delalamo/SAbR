@@ -16,9 +16,9 @@ Usage:
     python scripts/create_cdr_removed_embeddings.py
 """
 
-import numpy as np
 from pathlib import Path
 
+import numpy as np
 
 # All variable positions to remove:
 # - CDR1: 27-38, CDR2: 56-65, CDR3: 105-117
@@ -27,10 +27,10 @@ from pathlib import Path
 # in heavy chains and removing them causes misalignment. FR3 correction
 # handles the light chain case where 81-82 are absent.
 VARIABLE_POSITIONS = (
-    set(range(27, 39)) |    # CDR1: positions 27-38
-    set(range(56, 66)) |    # CDR2: positions 56-65
-    set(range(105, 118)) |  # CDR3: positions 105-117
-    {10}                    # Position 10 (lambda/heavy variability)
+    set(range(27, 39))  # CDR1: positions 27-38
+    | set(range(56, 66))  # CDR2: positions 56-65
+    | set(range(105, 118))  # CDR3: positions 105-117
+    | {10}  # Position 10 (lambda/heavy variability)
     # Note: {81, 82} intentionally NOT removed - handled by FR3 correction
 )
 
@@ -48,10 +48,10 @@ def main():
     data = np.load(src, allow_pickle=True)
 
     # Get original data
-    idxs = data['idxs']        # IMGT position strings
-    array = data['array']      # Embeddings (122, 64)
-    stdev = data['stdev']      # Standard deviation (122, 64)
-    name = str(data['name'])
+    idxs = data["idxs"]  # IMGT position strings
+    array = data["array"]  # Embeddings (122, 64)
+    _ = data["stdev"]  # Standard deviation (unused - we set to ones)
+    name = str(data["name"])
 
     print(f"Original embeddings: {len(idxs)} positions, shape={array.shape}")
     print(f"Original name: {name}")
@@ -60,14 +60,16 @@ def main():
     keep_mask = np.array([int(idx) not in VARIABLE_POSITIONS for idx in idxs])
 
     # Filter out variable positions from idxs and array
-    new_idxs = idxs[keep_mask]      # Filter out variable position strings
-    new_array = array[keep_mask]    # Filter out variable embeddings
+    new_idxs = idxs[keep_mask]  # Filter out variable position strings
+    new_array = array[keep_mask]  # Filter out variable embeddings
 
-    # Set stdev to all ones (uniform scaling, no position-specific normalization)
+    # Set stdev to all ones (uniform scaling, no normalization)
     new_stdev = np.ones_like(new_array)
 
     # Report what was removed
-    removed_positions = [int(idx) for idx, keep in zip(idxs, keep_mask) if not keep]
+    removed_positions = [
+        int(idx) for idx, keep in zip(idxs, keep_mask) if not keep
+    ]
     print(f"\nRemoved {len(removed_positions)} variable positions:")
     print(f"  {sorted(removed_positions)}")
 
@@ -79,8 +81,8 @@ def main():
     # Identify the jumps (where CDRs were removed)
     jumps = []
     for i in range(1, len(remaining_positions)):
-        if remaining_positions[i] - remaining_positions[i-1] > 1:
-            jumps.append((remaining_positions[i-1], remaining_positions[i]))
+        if remaining_positions[i] - remaining_positions[i - 1] > 1:
+            jumps.append((remaining_positions[i - 1], remaining_positions[i]))
     print(f"\nPosition jumps (CDR boundaries): {jumps}")
 
     # Save new embeddings file
@@ -90,7 +92,7 @@ def main():
         array=new_array,
         stdev=new_stdev,
         idxs=new_idxs,
-        name='unified_no_cdr'
+        name="unified_no_cdr",
     )
 
     print(f"\nCreated: {dst}")
@@ -100,9 +102,9 @@ def main():
 
     # Verify the saved file
     verify = np.load(dst, allow_pickle=True)
-    assert len(verify['idxs']) == len(new_idxs), "idxs mismatch"
-    assert verify['array'].shape == new_array.shape, "array shape mismatch"
-    assert np.allclose(verify['stdev'], 1.0), "stdev should be all ones"
+    assert len(verify["idxs"]) == len(new_idxs), "idxs mismatch"
+    assert verify["array"].shape == new_array.shape, "array shape mismatch"
+    assert np.allclose(verify["stdev"], 1.0), "stdev should be all ones"
     print("\nVerification: OK")
 
     return 0

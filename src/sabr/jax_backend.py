@@ -43,16 +43,21 @@ def create_gap_penalty_for_reduced_reference(
         idxs: List of IMGT position integers for the reduced reference.
 
     Returns:
-        Tuple of (gap_extend_matrix, gap_open_matrix) with shape (query_len, target_len).
-        Positions where IMGT numbering has jumps have zero penalty.
+        Tuple of (gap_extend_matrix, gap_open_matrix) with shape
+        (query_len, target_len). Positions where IMGT numbering has
+        jumps have zero penalty.
     """
     target_len = len(idxs)
 
     # Start with normal penalties (as numpy arrays)
-    gap_extend = np.full((query_len, target_len), constants.SW_GAP_EXTEND, dtype=np.float32)
-    gap_open = np.full((query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32)
+    gap_extend = np.full(
+        (query_len, target_len), constants.SW_GAP_EXTEND, dtype=np.float32
+    )
+    gap_open = np.full(
+        (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
+    )
 
-    # Find columns where IMGT positions have jumps (CDRs/variable regions were removed)
+    # Find columns where IMGT positions have jumps (CDRs were removed)
     for i in range(1, target_len):
         if idxs[i] - idxs[i - 1] > 1:  # Jump in IMGT numbering
             # Set zero penalty for this column (crossing removed CDR region)
@@ -60,6 +65,7 @@ def create_gap_penalty_for_reduced_reference(
             gap_open[:, i] = 0.0
 
     return gap_extend, gap_open
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -225,8 +231,12 @@ def _run_alignment_fn(
 
     # Run alignment
     alignment, sim_matrix, score = model.align(
-        batched_input, batched_target, lens, temperature,
-        gap_matrix=batched_gap_matrix, open_matrix=batched_open_matrix
+        batched_input,
+        batched_target,
+        lens,
+        temperature,
+        gap_matrix=batched_gap_matrix,
+        open_matrix=batched_open_matrix,
     )
 
     # Remove batch dimension from outputs
@@ -348,8 +358,8 @@ class AlignmentBackend:
             target_embeddings: Reference embeddings [M, embed_dim].
             target_stdev: Standard deviation for normalization [M, embed_dim].
             temperature: Alignment temperature parameter.
-            gap_matrix: Optional position-dependent gap extension penalties [N, M].
-            open_matrix: Optional position-dependent gap open penalties [N, M].
+            gap_matrix: Optional gap extension penalties [N, M].
+            open_matrix: Optional gap open penalties [N, M].
 
         Returns:
             Tuple of (alignment, similarity_matrix, score) as numpy.

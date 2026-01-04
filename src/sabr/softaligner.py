@@ -712,13 +712,16 @@ class SoftAligner:
             full_aln = np.round(full_aln).astype(int)
             detected_chain_type = util.detect_chain_type(full_aln)
             LOGGER.info(
-                f"Detected chain type from full alignment: {detected_chain_type}"
+                "Detected chain type from full alignment: "
+                f"{detected_chain_type}"
             )
 
             # Apply deterministic corrections using the reduced alignment
             # but with correctly detected chain type
             aln, _ = self._apply_deterministic_corrections(
-                aln, gap_indices=gap_indices, chain_type_override=detected_chain_type
+                aln,
+                gap_indices=gap_indices,
+                chain_type_override=detected_chain_type,
             )
         else:
             detected_chain_type = util.detect_chain_type(aln)
