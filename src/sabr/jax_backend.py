@@ -179,11 +179,15 @@ def _run_alignment_fn(
     batched_input = jnp.array(input_embeddings[None, :])
     batched_target = jnp.array(target_normalized[None, :])
 
-    # Run alignment
-    # Pass None for gap_matrix and open_matrix (position-dependent penalties not used here)
+    # Run alignment (pass None for gap_matrix/open_matrix)
     alignment, sim_matrix, score = model.align(
-        batched_input, batched_target, lens, temperature,
-        None, None, penalize_start_gap
+        batched_input,
+        batched_target,
+        lens,
+        temperature,
+        None,
+        None,
+        penalize_start_gap,
     )
 
     # Remove batch dimension from outputs

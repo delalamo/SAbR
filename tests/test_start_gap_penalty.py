@@ -8,11 +8,9 @@ Penalty formula for starting at reference column j > 0:
     penalty = gap_open + gap_extend * (j - 1)
 """
 
-import jax
 import jax.numpy as jnp
 import numpy as np
 import pytest
-
 from softalign import SW
 
 
@@ -54,18 +52,24 @@ class TestSWStartGapPenalty:
 
         # Create a similarity matrix that strongly favors starting at column 0
         # 3x3 matrix where diagonal is strongly preferred
-        sim = jnp.array([
-            [10.0, -5.0, -5.0],
-            [-5.0, 10.0, -5.0],
-            [-5.0, -5.0, 10.0],
-        ])
+        sim = jnp.array(
+            [
+                [10.0, -5.0, -5.0],
+                [-5.0, 10.0, -5.0],
+                [-5.0, -5.0, 10.0],
+            ]
+        )
         lens = (3, 3)
         gap = -0.5
         open_pen = -1.0
         temp = 0.1  # Low temperature for more deterministic alignment
 
-        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
-        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score_no_penalty, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
+        )
+        score_with_penalty, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
 
         # Scores should be very similar when alignment starts at position 1
         # Small difference may exist due to soft-max behavior
@@ -81,17 +85,23 @@ class TestSWStartGapPenalty:
 
         # Create a similarity matrix that favors starting at column 2
         # (i.e., skipping columns 0 and 1)
-        sim = jnp.array([
-            [-10.0, -10.0, 10.0, 10.0],
-            [-10.0, -10.0, 10.0, 10.0],
-        ])
+        sim = jnp.array(
+            [
+                [-10.0, -10.0, 10.0, 10.0],
+                [-10.0, -10.0, 10.0, 10.0],
+            ]
+        )
         lens = (2, 4)
         gap = -0.5
         open_pen = -1.0
         temp = 0.1
 
-        score_no_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
-        score_with_penalty, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score_no_penalty, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
+        )
+        score_with_penalty, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
 
         # Score with penalty should be lower because alignment starts late
         assert float(score_with_penalty) < float(score_no_penalty)
@@ -112,15 +122,21 @@ class TestSWStartGapPenalty:
 
         # Matrix that forces alignment to start at column 2 (0-indexed)
         # Very negative values at columns 0,1 force skipping them
-        sim = jnp.array([
-            [-10.0, -10.0, 10.0, 10.0],
-            [-10.0, -10.0, 10.0, 10.0],
-        ])
+        sim = jnp.array(
+            [
+                [-10.0, -10.0, 10.0, 10.0],
+                [-10.0, -10.0, 10.0, 10.0],
+            ]
+        )
         lens = (2, 4)
         temp = 0.1
 
-        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
-        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score_no_pen, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
+        )
+        score_with_pen, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
 
         # Expected penalty for starting at col 2: open + gap * 1 = -1.0 + -0.5
         expected_penalty = open_pen + gap * 1  # = -1.5
@@ -130,27 +146,90 @@ class TestSWStartGapPenalty:
         # Allow some tolerance due to soft-max behavior
         assert abs(score_diff - expected_penalty) < 0.5
 
+    def test_start_gap_penalty_increases_with_column(self):
+        """Test that penalty increases by gap_extend for each later column.
+
+        Penalty formula: open + gap * (j-1) for column j > 0
+        Column 0 has no penalty, column 1 has open, column 2 has open+gap, etc.
+        """
+        sw_func = SW.sw_affine(batch=False)
+
+        gap = -1.0
+        open_pen = -2.0
+        temp = 0.01  # Very low temp for near-deterministic behavior
+        lens = (3, 5)
+
+        # Diagonal alignment starting at column 0 (no penalty)
+        sim_col0 = jnp.array(
+            [
+                [10.0, -50.0, -50.0, -50.0, -50.0],
+                [-50.0, 10.0, -50.0, -50.0, -50.0],
+                [-50.0, -50.0, 10.0, -50.0, -50.0],
+            ]
+        )
+        score_col0, _ = sw_func(
+            sim_col0, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
+
+        # Diagonal alignment starting at column 1 (penalty = open)
+        sim_col1 = jnp.array(
+            [
+                [-50.0, 10.0, -50.0, -50.0, -50.0],
+                [-50.0, -50.0, 10.0, -50.0, -50.0],
+                [-50.0, -50.0, -50.0, 10.0, -50.0],
+            ]
+        )
+        score_col1, _ = sw_func(
+            sim_col1, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
+
+        # Diagonal alignment starting at column 2 (penalty = open + gap)
+        sim_col2 = jnp.array(
+            [
+                [-50.0, -50.0, 10.0, -50.0, -50.0],
+                [-50.0, -50.0, -50.0, 10.0, -50.0],
+                [-50.0, -50.0, -50.0, -50.0, 10.0],
+            ]
+        )
+        score_col2, _ = sw_func(
+            sim_col2, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
+
+        # Col0 -> Col1 should differ by open (first penalty)
+        diff_0_to_1 = float(score_col1) - float(score_col0)
+        # Col1 -> Col2 should differ by gap (additional extension)
+        diff_1_to_2 = float(score_col2) - float(score_col1)
+
+        assert abs(diff_0_to_1 - open_pen) < 0.5, f"col0->1: {diff_0_to_1}"
+        assert abs(diff_1_to_2 - gap) < 0.5, f"col1->2: {diff_1_to_2}"
+
     def test_batched_sw_affine_with_start_gap_penalty(self):
         """Test that batched version works with start gap penalty."""
         sw_func = SW.sw_affine(batch=True)
 
         # Batch of 2 similarity matrices
-        sim = jnp.array([
-            [[1.0, 0.5], [0.5, 1.0]],
-            [[1.0, 0.3], [0.3, 1.0]],
-        ])
+        sim = jnp.array(
+            [
+                [[1.0, 0.5], [0.5, 1.0]],
+                [[1.0, 0.3], [0.3, 1.0]],
+            ]
+        )
         lens = jnp.array([[2, 2], [2, 2]])
         gap = -0.5
         open_pen = -1.0
         temp = 1.0
 
-        # For batched version, must pass gap_matrix and open_matrix (as None) positionally
-        # because vmap expects all 8 arguments
-        scores, alns = sw_func(sim, lens, gap, open_pen, temp, None, None, False)
+        # For batched version, must pass gap_matrix and open_matrix (as None)
+        # positionally because vmap expects all 8 arguments
+        scores, alns = sw_func(
+            sim, lens, gap, open_pen, temp, None, None, False
+        )
         assert scores.shape == (2,)
         assert alns.shape == (2, 2, 2)
 
-        scores_pen, alns_pen = sw_func(sim, lens, gap, open_pen, temp, None, None, True)
+        scores_pen, alns_pen = sw_func(
+            sim, lens, gap, open_pen, temp, None, None, True
+        )
         assert scores_pen.shape == (2,)
         assert alns_pen.shape == (2, 2, 2)
 
@@ -165,7 +244,9 @@ class TestSWStartGapPenalty:
         temp = 1.0
 
         # Call with penalize_start_gap=False should match original behavior
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
+        score, aln = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
+        )
 
         # Score should be reasonable (positive for this favorable matrix)
         assert float(score) > 0
@@ -200,12 +281,18 @@ class TestStartGapPenaltyIntegration:
 
         # Should work with both settings
         aln_false, sim_false, score_false = backend.align(
-            input_emb, target_emb, target_stdev,
-            temperature=1.0, penalize_start_gap=False
+            input_emb,
+            target_emb,
+            target_stdev,
+            temperature=1.0,
+            penalize_start_gap=False,
         )
         aln_true, sim_true, score_true = backend.align(
-            input_emb, target_emb, target_stdev,
-            temperature=1.0, penalize_start_gap=True
+            input_emb,
+            target_emb,
+            target_stdev,
+            temperature=1.0,
+            penalize_start_gap=True,
         )
 
         assert aln_false.shape == aln_true.shape
@@ -219,7 +306,7 @@ class TestStartGapPenaltyEdgeCases:
         """Test with a small 2x2 matrix (minimum size for sw_affine)."""
         sw_func = SW.sw_affine(batch=False)
 
-        # Note: sw_affine uses x[:-1,:-1] internally, so minimum usable size is 2x2
+        # Note: sw_affine uses x[:-1,:-1] internally, so min size is 2x2
         sim = jnp.array([[5.0, 3.0], [3.0, 5.0]])
         lens = (2, 2)
         gap = -0.5
@@ -227,7 +314,9 @@ class TestStartGapPenaltyEdgeCases:
         temp = 1.0
 
         # Should work without error
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score, aln = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
         assert score is not None
         assert aln.shape == (2, 2)
 
@@ -235,19 +324,23 @@ class TestStartGapPenaltyEdgeCases:
         """Test with query longer than reference."""
         sw_func = SW.sw_affine(batch=False)
 
-        sim = jnp.array([
-            [1.0, 0.5, 0.3],
-            [0.5, 1.0, 0.3],
-            [0.3, 0.3, 1.0],
-            [0.2, 0.2, 0.5],
-        ])
+        sim = jnp.array(
+            [
+                [1.0, 0.5, 0.3],
+                [0.5, 1.0, 0.3],
+                [0.3, 0.3, 1.0],
+                [0.2, 0.2, 0.5],
+            ]
+        )
         lens = (4, 3)
         gap = -0.5
         open_pen = -1.0
         temp = 1.0
 
         # Should work without error
-        score, aln = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score, aln = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
         assert score is not None
         assert aln.shape == (4, 3)
 
@@ -262,8 +355,12 @@ class TestStartGapPenaltyEdgeCases:
         open_pen = -1.0
         temp = 0.5
 
-        score_no_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=False)
-        score_with_pen, _ = sw_func(sim, lens, gap, open_pen, temp, penalize_start_gap=True)
+        score_no_pen, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=False
+        )
+        score_with_pen, _ = sw_func(
+            sim, lens, gap, open_pen, temp, penalize_start_gap=True
+        )
 
         # For diagonal alignment starting at position 1, scores should be close
         assert abs(float(score_no_pen) - float(score_with_pen)) < 2.0
