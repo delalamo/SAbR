@@ -1,7 +1,8 @@
 import numpy as np
 import pytest
 
-from sabr import mpnn_embeddings, softalign_output
+from sabr.alignment import SoftAlignOutput
+from sabr.embeddings import MPNNEmbeddings
 
 
 def test_mpnnembeddings_shape_mismatch_raises():
@@ -10,7 +11,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
     idx = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
-        mpnn_embeddings.MPNNEmbeddings(
+        MPNNEmbeddings(
             name="test_case", embeddings=embedding, stdev=embedding, idxs=idx
         )
 
@@ -22,7 +23,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
 
 def test_softalignoutput_holds_passed_values():
     alignment = np.ones((2, 2), dtype=int)
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=1.5,
         sim_matrix=None,

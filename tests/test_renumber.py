@@ -4,7 +4,9 @@ import numpy as np
 import pytest
 from Bio import PDB
 
-from sabr import mpnn_embeddings, renumber
+import sabr.alignment.soft_aligner as soft_aligner_module
+from sabr import renumber
+from sabr.embeddings import mpnn as mpnn_embeddings_module
 from tests.conftest import (
     FIXTURES,
     DummyEmbeddings,
@@ -29,9 +31,11 @@ class TestRenumberStructure:
         DummyAligner = create_dummy_aligner(alignment, chain_type)
         dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
         monkeypatch.setattr(
-            renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+            mpnn_embeddings_module, "from_chain", dummy_from_chain
+        )
+        monkeypatch.setattr(
+            soft_aligner_module, "SoftAligner", lambda: DummyAligner()
         )
 
         parser = PDB.PDBParser(QUIET=True)
@@ -58,10 +62,12 @@ class TestRenumberStructure:
         dummy_from_pdb = create_dummy_from_pdb()
         dummy_from_chain = self._create_dummy_from_chain()
 
-        monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
-        monkeypatch.setattr(mpnn_embeddings, "from_chain", dummy_from_chain)
+        monkeypatch.setattr(mpnn_embeddings_module, "from_pdb", dummy_from_pdb)
         monkeypatch.setattr(
-            renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+            mpnn_embeddings_module, "from_chain", dummy_from_chain
+        )
+        monkeypatch.setattr(
+            soft_aligner_module, "SoftAligner", lambda: DummyAligner()
         )
 
         parser = PDB.PDBParser(QUIET=True)
@@ -121,7 +127,7 @@ class TestRunRenumberingPipeline:
 
         DummyAligner = create_dummy_aligner(alignment, chain_type)
         monkeypatch.setattr(
-            renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+            soft_aligner_module, "SoftAligner", lambda: DummyAligner()
         )
 
         n_residues = alignment.shape[0]

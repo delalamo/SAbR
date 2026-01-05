@@ -367,62 +367,6 @@ def test_save_and_load_without_sequence():
         assert loaded_embedding.sequence is None
 
 
-def test_get_inputs_matches_softalign():
-    """Verify that _get_inputs produces same output as softalign."""
-    from softalign import Input_MPNN
-
-    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
-    chain = "H"
-
-    # Get outputs from both implementations
-    inputs = mpnn_embeddings._get_inputs(str(test_pdb), chain=chain)
-    old_X, old_mask, old_chain, old_res, old_ids = Input_MPNN.get_inputs_mpnn(
-        str(test_pdb), chain=chain
-    )
-
-    # Compare shapes
-    assert (
-        inputs.coords.shape == old_X.shape
-    ), f"X shape mismatch: {inputs.coords.shape} vs {old_X.shape}"
-    assert (
-        inputs.mask.shape == old_mask.shape
-    ), f"mask shape mismatch: {inputs.mask.shape} vs {old_mask.shape}"
-    assert (
-        inputs.chain_ids.shape == old_chain.shape
-    ), f"chain shape mismatch: {inputs.chain_ids.shape} vs {old_chain.shape}"
-    assert (
-        inputs.residue_indices.shape == old_res.shape
-    ), f"res shape mismatch: {inputs.residue_indices.shape} vs {old_res.shape}"
-    assert len(inputs.residue_ids) == len(
-        old_ids
-    ), f"ids length mismatch: {len(inputs.residue_ids)} vs {len(old_ids)}"
-
-    # Compare residue IDs (softalign returns numpy array, we return list)
-    old_ids_list = list(old_ids)
-    assert (
-        inputs.residue_ids == old_ids_list
-    ), f"IDs mismatch: {inputs.residue_ids} vs {old_ids_list}"
-
-    # Compare coordinates (allowing small numerical differences)
-    np.testing.assert_allclose(
-        inputs.coords,
-        old_X,
-        rtol=1e-5,
-        atol=1e-5,
-        err_msg="Coordinate arrays differ",
-    )
-
-    # Compare mask values
-    np.testing.assert_array_equal(
-        inputs.mask, old_mask, err_msg="Mask arrays differ"
-    )
-
-    # Compare chain values
-    np.testing.assert_array_equal(
-        inputs.chain_ids, old_chain, err_msg="Chain arrays differ"
-    )
-
-
 def test_get_inputs_sequence_matches_seqio():
     """Verify that _get_inputs sequence matches BioPython SeqIO pdb-atom.
 

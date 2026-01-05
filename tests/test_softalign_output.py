@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from sabr import softalign_output
+from sabr.alignment import SoftAlignOutput
 
 
 def test_softalignoutput_valid_creation():
@@ -10,7 +10,7 @@ def test_softalignoutput_valid_creation():
     idxs1 = ["a", "b", "c"]
     idxs2 = ["1", "2", "3", "4"]
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
@@ -34,7 +34,7 @@ def test_softalignoutput_with_sim_matrix():
     idxs1 = ["x", "y"]
     idxs2 = ["1", "2"]
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=2.0,
         sim_matrix=sim_matrix,
@@ -55,7 +55,7 @@ def test_softalignoutput_alignment_idxs1_mismatch():
     idxs2 = ["1", "2", "3", "4"]
 
     with pytest.raises(ValueError) as excinfo:
-        softalign_output.SoftAlignOutput(
+        SoftAlignOutput(
             alignment=alignment,
             score=1.0,
             sim_matrix=None,
@@ -75,7 +75,7 @@ def test_softalignoutput_alignment_idxs2_mismatch():
     idxs2 = ["1", "2"]  # Only 2, but alignment has 4 columns
 
     with pytest.raises(ValueError) as excinfo:
-        softalign_output.SoftAlignOutput(
+        SoftAlignOutput(
             alignment=alignment,
             score=1.0,
             sim_matrix=None,
@@ -94,7 +94,7 @@ def test_softalignoutput_empty_alignment():
     idxs1 = []
     idxs2 = []
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=0.0,
         sim_matrix=None,
@@ -114,7 +114,7 @@ def test_softalignoutput_single_element():
     idxs1 = ["a"]
     idxs2 = ["1"]
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=1.0,
         sim_matrix=None,
@@ -134,7 +134,7 @@ def test_softalignoutput_numpy_array():
     idxs1 = ["x", "y"]
     idxs2 = ["1", "2", "3"]
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
@@ -152,7 +152,7 @@ def test_softalignoutput_negative_score():
     idxs1 = ["a", "b"]
     idxs2 = ["1", "2"]
 
-    output = softalign_output.SoftAlignOutput(
+    output = SoftAlignOutput(
         alignment=alignment,
         score=-5.0,
         sim_matrix=None,

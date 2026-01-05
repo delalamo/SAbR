@@ -2,11 +2,11 @@ import importlib
 
 import numpy as np
 
-from sabr import softaligner
+from sabr.alignment import SoftAligner
 
 
-def make_aligner() -> softaligner.SoftAligner:
-    return softaligner.SoftAligner.__new__(softaligner.SoftAligner)
+def make_aligner() -> SoftAligner:
+    return SoftAligner.__new__(SoftAligner)
 
 
 def test_files_resolves():

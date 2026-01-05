@@ -120,7 +120,8 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
     from ANARCI import anarci
 
-    from sabr import aln2hmm, mpnn_embeddings, softaligner
+    from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
+    from sabr.embeddings import from_pdb
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -129,12 +130,12 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
         pytest.skip(f"Missing structure fixture at {pdb_path}")
 
     try:
-        input_data = mpnn_embeddings.from_pdb(str(pdb_path), "M")
-        aligner = softaligner.SoftAligner()
+        input_data = from_pdb(str(pdb_path), "M")
+        aligner = SoftAligner()
         result = aligner(input_data)
 
         sequence = input_data.sequence
-        hmm_output = aln2hmm.alignment_matrix_to_state_vector(result.alignment)
+        hmm_output = alignment_matrix_to_state_vector(result.alignment)
         n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
         subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 

@@ -6,7 +6,13 @@ from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-from sabr import aln2hmm, cli, edit_pdb, mpnn_embeddings, renumber, softaligner
+import sabr.alignment.soft_aligner as soft_aligner_module
+from sabr import renumber
+from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
+from sabr.cli import main as cli_main
+from sabr.embeddings import from_pdb as mpnn_from_pdb
+from sabr.embeddings import mpnn as mpnn_embeddings_module
+from sabr.structure import thread_alignment
 from tests.conftest import (
     FIXTURES,
     create_dummy_aligner,
@@ -32,7 +38,7 @@ def run_threading_pipeline(
     if sequence is None:
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
 
-    hmm_output = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    hmm_output = alignment_matrix_to_state_vector(alignment)
     n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
     subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
@@ -43,7 +49,7 @@ def run_threading_pipeline(
     )
 
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
-    return edit_pdb.thread_alignment(
+    return thread_alignment(
         str(pdb_path),
         chain,
         anarci_alignment,
@@ -93,15 +99,15 @@ def test_cli_produces_correct_numbering(
     DummyAligner = create_dummy_aligner(alignment, chain_type)
     dummy_from_pdb = create_dummy_from_pdb()
 
-    monkeypatch.setattr(mpnn_embeddings, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(mpnn_embeddings_module, "from_pdb", dummy_from_pdb)
     monkeypatch.setattr(
-        renumber.softaligner, "SoftAligner", lambda: DummyAligner()
+        soft_aligner_module, "SoftAligner", lambda: DummyAligner()
     )
 
     runner = CliRunner()
     output_pdb = tmp_path / f"{fixture_key}_cli.pdb"
     result = runner.invoke(
-        cli.main,
+        cli_main,
         [
             "-i",
             str(data["pdb"]),
@@ -130,7 +136,7 @@ def test_alignment_start_position_correct():
         pytest.skip(f"Missing structure fixture at {data['pdb']}")
 
     alignment, chain_type = load_alignment_fixture(data["alignment"])
-    hmm_output = aln2hmm.alignment_matrix_to_state_vector(alignment)
+    hmm_output = alignment_matrix_to_state_vector(alignment)
 
     assert hmm_output.imgt_start == 1
     first_state = hmm_output.states[0]
@@ -155,11 +161,11 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
             break
     assert sequence is not None
 
-    embeddings = mpnn_embeddings.from_pdb(str(pdb_path), chain)
-    aligner = softaligner.SoftAligner()
+    embeddings = mpnn_from_pdb(str(pdb_path), chain)
+    aligner = SoftAligner()
     output = aligner(embeddings)
 
-    hmm_output = aln2hmm.alignment_matrix_to_state_vector(output.alignment)
+    hmm_output = alignment_matrix_to_state_vector(output.alignment)
     assert hmm_output.imgt_start == 2  # Structure starts at IMGT position 3
 
     n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
@@ -175,7 +181,7 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     )
 
     output_pdb = tmp_path / "8_21_ntrunc_threaded.pdb"
-    deviations = edit_pdb.thread_alignment(
+    deviations = thread_alignment(
         str(pdb_path),
         chain,
         anarci_out,
@@ -198,12 +204,14 @@ def test_from_chain_produces_same_embeddings_as_from_pdb():
     chain_id = data["chain"]
     pdb_path = str(data["pdb"])
 
-    embeddings_from_pdb = mpnn_embeddings.from_pdb(pdb_path, chain_id)
+    embeddings_from_pdb = mpnn_from_pdb(pdb_path, chain_id)
 
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("test", pdb_path)
     chain_obj = structure[0][chain_id]
-    embeddings_from_chain = mpnn_embeddings.from_chain(chain_obj)
+    from sabr.embeddings import from_chain as mpnn_from_chain
+
+    embeddings_from_chain = mpnn_from_chain(chain_obj)
 
     assert embeddings_from_pdb.sequence == embeddings_from_chain.sequence
     assert embeddings_from_pdb.idxs == embeddings_from_chain.idxs
