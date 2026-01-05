@@ -69,10 +69,12 @@ source = "vcs"
 [tool.black]
 line-length = 80
 target-version = ["py311"]
+extend-exclude = "external/"
 
 [tool.isort]
 profile = "black"
 line_length = 80
+skip_glob = ["external/*"]
 
 [tool.flake8]
 max-line-length = 80
