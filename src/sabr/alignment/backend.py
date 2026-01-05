@@ -131,9 +131,11 @@ class AlignmentBackend:
         Returns:
             Tuple of (alignment, similarity_matrix, score) as numpy.
         """
+        # Split key to ensure statistical independence on each call
+        self.key, subkey = jax.random.split(self.key)
         alignment, sim_matrix, score = self._transformed_fn.apply(
             self._params,
-            self.key,
+            subkey,
             input_embeddings,
             target_embeddings,
             target_stdev,
