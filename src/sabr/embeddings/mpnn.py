@@ -176,6 +176,90 @@ def _compute_gap_indices(
     return detect_backbone_gaps(coords)
 
 
+def _create_embeddings(
+    inputs,
+    name: str,
+    residue_range: Tuple[int, int],
+    params_name: str,
+    params_path: str,
+    random_seed: int,
+) -> MPNNEmbeddings:
+    """Create MPNNEmbeddings from extracted inputs.
+
+    This is a shared helper for from_pdb and from_chain.
+
+    Args:
+        inputs: MPNNInputs with coordinates and residue info.
+        name: Identifier for the embedding source.
+        residue_range: Tuple of (start, end) residue numbers (inclusive).
+            Use (0, 0) to embed all residues.
+        params_name: Name of the model parameters file.
+        params_path: Package path containing the parameters file.
+        random_seed: Random seed for reproducibility.
+
+    Returns:
+        MPNNEmbeddings for the structure.
+    """
+    backend = EmbeddingBackend(
+        params_name=params_name,
+        params_path=params_path,
+        random_seed=random_seed,
+    )
+
+    embeddings = backend.compute_embeddings(
+        coords=inputs.coords,
+        mask=inputs.mask,
+        chain_ids=inputs.chain_ids,
+        residue_indices=inputs.residue_indices,
+    )
+
+    if len(inputs.residue_ids) != embeddings.shape[0]:
+        raise ValueError(
+            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
+            f"rows ({embeddings.shape[0]})"
+        )
+
+    ids = inputs.residue_ids
+    sequence = inputs.sequence
+    keep_indices = None
+
+    # Filter by residue range if specified
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        keep_indices = []
+        for i, res_id in enumerate(ids):
+            try:
+                res_num = int(res_id)
+                if start_res <= res_num <= end_res:
+                    keep_indices.append(i)
+            except ValueError:
+                continue
+
+        if keep_indices:
+            LOGGER.info(
+                f"Filtering to residue range {start_res}-{end_res}: "
+                f"{len(keep_indices)} of {len(ids)} residues"
+            )
+            embeddings = embeddings[keep_indices]
+            ids = [ids[i] for i in keep_indices]
+            sequence = "".join(sequence[i] for i in keep_indices)
+        else:
+            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+            keep_indices = None
+
+    # Compute gap indices from backbone coordinates
+    gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
+
+    return MPNNEmbeddings(
+        name=name,
+        embeddings=embeddings,
+        idxs=ids,
+        stdev=np.ones_like(embeddings),
+        sequence=sequence,
+        gap_indices=gap_indices,
+    )
+
+
 def from_pdb(
     pdb_file: str,
     chain: str,
@@ -208,70 +292,14 @@ def from_pdb(
             f"Please specify a single chain identifier."
         )
 
-    # Parse structure and extract inputs
     inputs = get_inputs(pdb_file, chain=chain)
-
-    # Create backend and compute embeddings
-    backend = EmbeddingBackend(
-        params_name=params_name,
-        params_path=params_path,
-        random_seed=random_seed,
-    )
-
-    embeddings = backend.compute_embeddings(
-        coords=inputs.coords,
-        mask=inputs.mask,
-        chain_ids=inputs.chain_ids,
-        residue_indices=inputs.residue_indices,
-    )
-
-    if len(inputs.residue_ids) != embeddings.shape[0]:
-        raise ValueError(
-            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
-            f"rows ({embeddings.shape[0]})"
-        )
-
-    ids = inputs.residue_ids
-    sequence = inputs.sequence
-
-    # Filter by residue range if specified
-    start_res, end_res = residue_range
-    if residue_range != (0, 0):
-        # Find indices where residue numbers fall within range
-        keep_indices = []
-        for i, res_id in enumerate(ids):
-            try:
-                res_num = int(res_id)
-                if start_res <= res_num <= end_res:
-                    keep_indices.append(i)
-            except ValueError:
-                # Skip residues with non-numeric IDs (e.g., insertion codes)
-                continue
-
-        if keep_indices:
-            LOGGER.info(
-                f"Filtering to residue range {start_res}-{end_res}: "
-                f"{len(keep_indices)} of {len(ids)} residues"
-            )
-            embeddings = embeddings[keep_indices]
-            ids = [ids[i] for i in keep_indices]
-            sequence = "".join(sequence[i] for i in keep_indices)
-        else:
-            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
-            keep_indices = None
-    else:
-        keep_indices = None
-
-    # Compute gap indices from backbone coordinates
-    gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
-
-    result = MPNNEmbeddings(
-        name="INPUT_PDB",
-        embeddings=embeddings,
-        idxs=ids,
-        stdev=np.ones_like(embeddings),
-        sequence=sequence,
-        gap_indices=gap_indices,
+    result = _create_embeddings(
+        inputs,
+        "INPUT_PDB",
+        residue_range,
+        params_name,
+        params_path,
+        random_seed,
     )
 
     LOGGER.info(
@@ -307,68 +335,14 @@ def from_chain(
     """
     LOGGER.info(f"Embedding chain {chain.id}")
 
-    # Extract inputs from chain
     inputs = get_inputs(chain)
-
-    # Create backend and compute embeddings
-    backend = EmbeddingBackend(
-        params_name=params_name,
-        params_path=params_path,
-        random_seed=random_seed,
-    )
-
-    embeddings = backend.compute_embeddings(
-        coords=inputs.coords,
-        mask=inputs.mask,
-        chain_ids=inputs.chain_ids,
-        residue_indices=inputs.residue_indices,
-    )
-
-    if len(inputs.residue_ids) != embeddings.shape[0]:
-        raise ValueError(
-            f"IDs length ({len(inputs.residue_ids)}) does not match embeddings "
-            f"rows ({embeddings.shape[0]})"
-        )
-
-    ids = inputs.residue_ids
-    sequence = inputs.sequence
-
-    # Filter by residue range if specified
-    start_res, end_res = residue_range
-    if residue_range != (0, 0):
-        keep_indices = []
-        for i, res_id in enumerate(ids):
-            try:
-                res_num = int(res_id)
-                if start_res <= res_num <= end_res:
-                    keep_indices.append(i)
-            except ValueError:
-                continue
-
-        if keep_indices:
-            LOGGER.info(
-                f"Filtering to residue range {start_res}-{end_res}: "
-                f"{len(keep_indices)} of {len(ids)} residues"
-            )
-            embeddings = embeddings[keep_indices]
-            ids = [ids[i] for i in keep_indices]
-            sequence = "".join(sequence[i] for i in keep_indices)
-        else:
-            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
-            keep_indices = None
-    else:
-        keep_indices = None
-
-    # Compute gap indices from backbone coordinates
-    gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
-
-    result = MPNNEmbeddings(
-        name="INPUT_CHAIN",
-        embeddings=embeddings,
-        idxs=ids,
-        stdev=np.ones_like(embeddings),
-        sequence=sequence,
-        gap_indices=gap_indices,
+    result = _create_embeddings(
+        inputs,
+        "INPUT_CHAIN",
+        residue_range,
+        params_name,
+        params_path,
+        random_seed,
     )
 
     LOGGER.info(

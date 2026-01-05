@@ -3,6 +3,15 @@ import importlib
 import numpy as np
 
 from sabr.alignment import SoftAligner
+from sabr.alignment.corrections import (
+    _skip_for_structural_gap,
+    apply_deterministic_corrections,
+    correct_c_terminus,
+    correct_cdr_loop,
+    correct_fr1_alignment,
+    correct_fr3_alignment,
+    correct_gap_numbering,
+)
 
 
 def make_aligner() -> SoftAligner:
@@ -16,10 +25,9 @@ def test_files_resolves():
 
 
 def test_correct_gap_numbering_places_expected_ones():
-    aligner = make_aligner()
     sub_aln = np.zeros((3, 3), dtype=int)
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     assert corrected[0, 0] == 1
     assert corrected[-1, -1] == 1
@@ -38,10 +46,9 @@ def test_fix_aln_expands_to_imgt_width():
 
 def test_correct_gap_numbering_non_square():
     """Test correct_gap_numbering with non-square matrices."""
-    aligner = make_aligner()
     sub_aln = np.zeros((3, 5), dtype=int)
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     # Should place min(3,5) = 3 ones
     assert corrected.sum() == 3
@@ -49,10 +56,9 @@ def test_correct_gap_numbering_non_square():
 
 def test_correct_gap_numbering_single_element():
     """Test with 1x1 matrix."""
-    aligner = make_aligner()
     sub_aln = np.zeros((1, 1), dtype=int)
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     assert corrected[0, 0] == 1
     assert corrected.sum() == 1
@@ -80,7 +86,6 @@ def test_fix_aln_preserves_dtype():
 
 def test_correct_fr1_alignment_kappa_7_residues():
     """Test FR1 correction with 7 residues (kappa - position 10 filled)."""
-    aligner = make_aligner()
     aln = np.zeros((20, 128), dtype=int)
     # Set up 7 residues in rows 5-11 aligned near positions 6-12
     # The function uses anchor counting, so place them at positions 6 and 12
@@ -92,7 +97,7 @@ def test_correct_fr1_alignment_kappa_7_residues():
     aln[10, 10] = 1  # Row 10 at position 11
     aln[11, 11] = 1  # Row 11 at position 12
 
-    corrected = aligner._correct_fr1_alignment(aln, chain_type="K")
+    corrected = correct_fr1_alignment(aln, chain_type="K")
 
     # With 7 residues (rows 5-11), position 10 should be occupied (kappa)
     assert corrected[9, 9] == 1, "Position 10 should be occupied for kappa"
@@ -108,7 +113,6 @@ def test_correct_fr1_alignment_kappa_7_residues():
 
 def test_correct_fr1_alignment_heavy_6_residues():
     """Test FR1 correction with 6 residues (heavy/lambda - position 10 gap)."""
-    aligner = make_aligner()
     aln = np.zeros((20, 128), dtype=int)
     # Set up 6 residues in rows 5-10 aligned near positions 6-12
     aln[5, 5] = 1  # Row 5 at position 6
@@ -118,7 +122,7 @@ def test_correct_fr1_alignment_heavy_6_residues():
     aln[9, 10] = 1  # Row 9 at position 11 (skipping 10)
     aln[10, 11] = 1  # Row 10 at position 12
 
-    corrected = aligner._correct_fr1_alignment(aln, chain_type="H")
+    corrected = correct_fr1_alignment(aln, chain_type="H")
 
     # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
     assert (
@@ -135,12 +139,11 @@ def test_correct_fr1_alignment_heavy_6_residues():
 
 def test_correct_fr1_no_anchors_found():
     """Test FR1 correction when anchor positions cannot be found."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # No residues in positions 6-12 region
     aln[50, 50] = 1  # Some residue far from FR1
 
-    corrected = aligner._correct_fr1_alignment(aln, chain_type="K")
+    corrected = correct_fr1_alignment(aln, chain_type="K")
 
     # Should return unchanged since anchors not found
     assert np.array_equal(corrected, aln)
@@ -148,14 +151,13 @@ def test_correct_fr1_no_anchors_found():
 
 def test_correct_fr3_alignment_no_correction_needed():
     """Test FR3 correction when input has positions 81 and 82."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # Set up positions 81 and 82 (cols 80 and 81) occupied
     aln[70, 80] = 1  # Residue at position 81
     aln[71, 81] = 1  # Residue at position 82
 
     # If input has both positions, no correction needed
-    corrected = aligner._correct_fr3_alignment(
+    corrected = correct_fr3_alignment(
         aln, input_has_pos81=True, input_has_pos82=True
     )
 
@@ -165,13 +167,12 @@ def test_correct_fr3_alignment_no_correction_needed():
 
 def test_correct_fr3_alignment_move_81_to_83():
     """Test FR3 correction: move residue from pos 81 to pos 83."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # Position 81 (col 80) has a residue, position 83 (col 82) is empty
     aln[70, 80] = 1  # Residue incorrectly at position 81
 
     # Light chain lacks position 81
-    corrected = aligner._correct_fr3_alignment(
+    corrected = correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=True
     )
 
@@ -182,13 +183,12 @@ def test_correct_fr3_alignment_move_81_to_83():
 
 def test_correct_fr3_alignment_move_82_to_84():
     """Test FR3 correction: move residue from pos 82 to pos 84."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # Position 82 (col 81) has a residue, position 84 (col 83) is empty
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks position 82
-    corrected = aligner._correct_fr3_alignment(
+    corrected = correct_fr3_alignment(
         aln, input_has_pos81=True, input_has_pos82=False
     )
 
@@ -199,14 +199,13 @@ def test_correct_fr3_alignment_move_82_to_84():
 
 def test_correct_fr3_alignment_both_moves():
     """Test FR3 correction: move both 81->83 and 82->84."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # Positions 81 and 82 have residues, 83 and 84 are empty
     aln[70, 80] = 1  # Residue incorrectly at position 81
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks both positions 81 and 82
-    corrected = aligner._correct_fr3_alignment(
+    corrected = correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=False
     )
 
@@ -219,7 +218,6 @@ def test_correct_fr3_alignment_both_moves():
 
 def test_correct_fr3_alignment_83_84_already_occupied():
     """Test FR3 correction when target positions are already occupied."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
     # All positions 81-84 have residues
     aln[70, 80] = 1  # Position 81
@@ -228,7 +226,7 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     aln[73, 83] = 1  # Position 84
 
     # Light chain lacks positions 81 and 82
-    corrected = aligner._correct_fr3_alignment(
+    corrected = correct_fr3_alignment(
         aln, input_has_pos81=False, input_has_pos82=False
     )
 
@@ -245,12 +243,11 @@ def test_correct_gap_numbering_5_residue_cdr():
     A 5-residue CDR-H3 (positions 105-117, 13 columns) should produce:
     105, 106, 107, 116, 117 (columns 0, 1, 2, 11, 12 in sub-alignment).
     """
-    aligner = make_aligner()
 
     # 5 residues, 13 possible positions (like CDR-H3: 105-117)
     sub_aln = np.zeros((5, 13), dtype=int)
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     # Check anchor points: first residue -> first column, last -> last
     assert corrected[0, 0] == 1  # Residue 0 -> position 105
@@ -271,12 +268,11 @@ def test_correct_gap_numbering_6_residue_cdr():
     A 6-residue CDR-H3 (positions 105-117, 13 columns) should produce:
     105, 106, 107, 115, 116, 117 (columns 0, 1, 2, 10, 11, 12).
     """
-    aligner = make_aligner()
 
     # 6 residues, 13 possible positions
     sub_aln = np.zeros((6, 13), dtype=int)
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     # Check anchor points
     assert corrected[0, 0] == 1  # Residue 0 -> position 105
@@ -299,7 +295,6 @@ def test_correct_gap_numbering_always_applies_imgt_pattern():
     correct_gap_numbering should always redistribute according to
     IMGT rules.
     """
-    aligner = make_aligner()
 
     # Create an alignment with non-IMGT gap distribution
     sub_aln = np.zeros((4, 8), dtype=int)
@@ -308,7 +303,7 @@ def test_correct_gap_numbering_always_applies_imgt_pattern():
     sub_aln[2, 5] = 1  # Wrong intermediate
     sub_aln[3, 7] = 1  # Correct anchor
 
-    corrected = aligner.correct_gap_numbering(sub_aln)
+    corrected = correct_gap_numbering(sub_aln)
 
     # Should apply IMGT pattern regardless of input
     assert corrected[0, 0] == 1  # First anchor
@@ -326,13 +321,12 @@ def test_correct_gap_numbering_preserves_anchor_points():
     and the last residue must always map to the last column (C-terminal anchor).
     This is critical for maintaining CDR boundary positions.
     """
-    aligner = make_aligner()
 
     # Test various loop sizes
     for n_residues in range(2, 15):
         for n_positions in range(n_residues, 20):
             sub_aln = np.zeros((n_residues, n_positions), dtype=int)
-            corrected = aligner.correct_gap_numbering(sub_aln)
+            corrected = correct_gap_numbering(sub_aln)
 
             # First residue (row 0) must map to first column (col 0)
             assert corrected[0, 0] == 1, (
@@ -352,7 +346,6 @@ def test_correct_c_terminus_no_correction_needed():
 
     When all residues are already assigned, no correction should be applied.
     """
-    aligner = make_aligner()
     aln = np.zeros((120, 128), dtype=int)
 
     # Set up an alignment where all rows have assignments
@@ -360,7 +353,7 @@ def test_correct_c_terminus_no_correction_needed():
     for i in range(120):
         aln[i, min(i, 127)] = 1
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Should not change since all rows are assigned
     assert np.array_equal(corrected, aln)
@@ -372,7 +365,6 @@ def test_correct_c_terminus_assigns_trailing_residues():
     When residues after position 125 are unassigned, they should be
     deterministically assigned to positions 126, 127, 128.
     """
-    aligner = make_aligner()
     aln = np.zeros((120, 128), dtype=int)
 
     # Set up alignment: residues 0-116 assigned to IMGT positions 1-117
@@ -382,7 +374,7 @@ def test_correct_c_terminus_assigns_trailing_residues():
         aln[i, i] = 1
     aln[117, 124] = 1  # Last assigned is row 117 at col 124 (IMGT pos 125)
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Residues 118, 119 should now be assigned to cols 125, 126 (IMGT 126, 127)
     assert corrected[118, 125] == 1, "Row 118 should be assigned to col 125"
@@ -395,7 +387,6 @@ def test_correct_c_terminus_respects_max_imgt_position():
     Even if there are many trailing unassigned residues, we can only
     assign up to position 128 (0-indexed: 127).
     """
-    aligner = make_aligner()
     aln = np.zeros((130, 128), dtype=int)
 
     # Set up alignment: residues 0-124 assigned, last at col 124 (IMGT 125)
@@ -405,7 +396,7 @@ def test_correct_c_terminus_respects_max_imgt_position():
     # Residues 125-129 are unassigned (5 residues)
     # But we only have positions 126, 127, 128 available (3 positions)
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Only 3 residues should be assigned (to positions 126, 127, 128)
     assert corrected[125, 125] == 1, "Row 125 should be assigned to col 125"
@@ -423,7 +414,6 @@ def test_correct_c_terminus_skips_if_last_col_too_early():
     If the last assigned column is before position 125 (0-indexed: 124),
     the correction should not be applied as this indicates a different issue.
     """
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
 
     # Set up alignment: last assigned position is 100 (0-indexed: 99)
@@ -431,7 +421,7 @@ def test_correct_c_terminus_skips_if_last_col_too_early():
     for i in range(90):
         aln[i, i] = 1
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Should not change since last assigned col (89) < anchor position (124)
     assert np.array_equal(corrected, aln)
@@ -439,7 +429,6 @@ def test_correct_c_terminus_skips_if_last_col_too_early():
 
 def test_correct_c_terminus_single_trailing_residue():
     """Test C-terminus correction with a single trailing unassigned residue."""
-    aligner = make_aligner()
     aln = np.zeros((118, 128), dtype=int)
 
     # Set up: residues 0-116 assigned, last at position 126 (0-indexed: 125)
@@ -449,7 +438,7 @@ def test_correct_c_terminus_single_trailing_residue():
 
     # Row 117 is unassigned
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Row 117 should be assigned to col 126 (IMGT pos 127)
     assert corrected[117, 126] == 1, "Row 117 should be assigned to col 126"
@@ -457,10 +446,9 @@ def test_correct_c_terminus_single_trailing_residue():
 
 def test_correct_c_terminus_empty_alignment():
     """Test C-terminus correction with an empty alignment matrix."""
-    aligner = make_aligner()
     aln = np.zeros((100, 128), dtype=int)
 
-    corrected = aligner.correct_c_terminus(aln)
+    corrected = correct_c_terminus(aln)
 
     # Should return unchanged (no assignments to work with)
     assert np.array_equal(corrected, aln)
@@ -471,10 +459,9 @@ class TestGapSkipping:
 
     def test_skip_for_structural_gap_returns_true_when_gap_present(self):
         """Test _skip_for_structural_gap returns True when gap in region."""
-        aligner = make_aligner()
         gap_indices = frozenset({5, 10})
 
-        result = aligner._skip_for_structural_gap(
+        result = _skip_for_structural_gap(
             gap_indices, start_row=3, end_row=8, region_name="test"
         )
 
@@ -482,10 +469,9 @@ class TestGapSkipping:
 
     def test_skip_for_structural_gap_returns_false_when_no_gap(self):
         """Test _skip_for_structural_gap returns False when no gap in region."""
-        aligner = make_aligner()
         gap_indices = frozenset({1, 15})
 
-        result = aligner._skip_for_structural_gap(
+        result = _skip_for_structural_gap(
             gap_indices, start_row=5, end_row=10, region_name="test"
         )
 
@@ -493,9 +479,8 @@ class TestGapSkipping:
 
     def test_skip_for_structural_gap_returns_false_when_none(self):
         """Test _skip_for_structural_gap returns False when None."""
-        aligner = make_aligner()
 
-        result = aligner._skip_for_structural_gap(
+        result = _skip_for_structural_gap(
             None, start_row=5, end_row=10, region_name="test"
         )
 
@@ -503,10 +488,9 @@ class TestGapSkipping:
 
     def test_skip_for_structural_gap_empty_set(self):
         """Test _skip_for_structural_gap with empty gap set."""
-        aligner = make_aligner()
         gap_indices = frozenset()
 
-        result = aligner._skip_for_structural_gap(
+        result = _skip_for_structural_gap(
             gap_indices, start_row=0, end_row=100, region_name="test"
         )
 
@@ -514,7 +498,6 @@ class TestGapSkipping:
 
     def test_fr1_skips_correction_when_gap_present(self):
         """Test FR1 correction is skipped when structural gap is in region."""
-        aligner = make_aligner()
         aln = np.zeros((20, 128), dtype=int)
         # Set up 7 residues that would normally trigger correction
         aln[5, 5] = 1
@@ -529,7 +512,7 @@ class TestGapSkipping:
         # Gap at row 7 (within the FR1 region)
         gap_indices = frozenset({7})
 
-        corrected = aligner._correct_fr1_alignment(
+        corrected = correct_fr1_alignment(
             aln, chain_type="K", gap_indices=gap_indices
         )
 
@@ -538,7 +521,6 @@ class TestGapSkipping:
 
     def test_fr1_applies_correction_when_no_gap(self):
         """Test FR1 correction is applied when no structural gap."""
-        aligner = make_aligner()
         aln = np.zeros((20, 128), dtype=int)
         aln[5, 5] = 1
         aln[6, 6] = 1
@@ -552,7 +534,7 @@ class TestGapSkipping:
         # No gaps in the FR1 region (gap is outside)
         gap_indices = frozenset({20})
 
-        corrected = aligner._correct_fr1_alignment(
+        corrected = correct_fr1_alignment(
             aln, chain_type="K", gap_indices=gap_indices
         )
 
@@ -562,7 +544,6 @@ class TestGapSkipping:
 
     def test_fr3_skips_correction_when_gap_in_de_loop(self):
         """Test FR3 correction is skipped when gap in DE loop region."""
-        aligner = make_aligner()
         aln = np.zeros((100, 128), dtype=int)
         # Set up positions in DE loop region (positions 79-84)
         aln[70, 78] = 1  # Position 79
@@ -576,7 +557,7 @@ class TestGapSkipping:
         # Gap at row 72 (within DE loop region)
         gap_indices = frozenset({72})
 
-        corrected = aligner._correct_fr3_alignment(
+        corrected = correct_fr3_alignment(
             aln,
             input_has_pos81=False,
             input_has_pos82=False,
@@ -588,7 +569,6 @@ class TestGapSkipping:
 
     def test_cdr_loop_skips_correction_when_gap_present(self):
         """Test CDR loop correction is skipped when gap in region."""
-        aligner = make_aligner()
         aln = np.zeros((100, 128), dtype=int)
         # Set up alignment with residues in CDR1 region
         # CDR1 anchors are at positions 23 and 40
@@ -603,7 +583,7 @@ class TestGapSkipping:
         # Gap at row 22 (within CDR1 region)
         gap_indices = frozenset({22})
 
-        corrected = aligner._correct_cdr_loop(
+        corrected = correct_cdr_loop(
             aln,
             loop_name="CDR1",
             cdr_start=27,
@@ -616,7 +596,6 @@ class TestGapSkipping:
 
     def test_apply_deterministic_corrections_passes_gap_indices(self):
         """Test that _apply_deterministic_corrections passes gap_indices."""
-        aligner = make_aligner()
         aln = np.zeros((100, 128), dtype=int)
         # Create a minimal alignment
         for i in range(100):
@@ -625,7 +604,7 @@ class TestGapSkipping:
         gap_indices = frozenset({50})
 
         # Should not raise an error
-        corrected, chain_type = aligner._apply_deterministic_corrections(
+        corrected, chain_type = apply_deterministic_corrections(
             aln, gap_indices=gap_indices
         )
 
