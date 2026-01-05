@@ -26,12 +26,14 @@ import gemmi
 from Bio.PDB import Chain
 from Bio.PDB.mmcifio import MMCIFIO
 
-from sabr.constants import AA_3TO1, AnarciAlignment
+from sabr.core.constants import AA_3TO1
+from sabr.core.types import AnarciAlignment
+from sabr.structure.io import read_structure_biopython
 
 LOGGER = logging.getLogger(__name__)
 
 
-def _has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
+def has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
     """Check if alignment contains extended (multi-char) insertion codes."""
     return any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
 
@@ -40,7 +42,7 @@ def validate_output_format(
     output_path: str, alignment: AnarciAlignment
 ) -> None:
     """Validate that the output format supports the insertion codes used."""
-    if _has_extended_insertion_codes(alignment) and not output_path.endswith(
+    if has_extended_insertion_codes(alignment) and not output_path.endswith(
         ".cif"
     ):
         raise ValueError(
@@ -317,21 +319,12 @@ def _thread_alignment_biopython(
     Returns:
         Number of residue ID deviations from original numbering.
     """
-    from Bio.PDB import PDBParser
-    from Bio.PDB.MMCIFParser import MMCIFParser
-
     LOGGER.info(
         f"Using BioPython fallback for extended insertion codes: "
         f"{pdb_file} chain {chain_id}"
     )
 
-    # Parse input file
-    if pdb_file.endswith(".cif"):
-        parser = MMCIFParser(QUIET=True)
-    else:
-        parser = PDBParser(QUIET=True)
-
-    structure = parser.get_structure("structure", pdb_file)
+    structure = read_structure_biopython(pdb_file)
 
     # Find and renumber the target chain
     model = structure[0]
@@ -395,7 +388,7 @@ def thread_alignment(
     validate_output_format(output_pdb, alignment)
 
     # Use BioPython fallback for extended insertion codes (Gemmi limitation)
-    if _has_extended_insertion_codes(alignment) and output_pdb.endswith(".cif"):
+    if has_extended_insertion_codes(alignment) and output_pdb.endswith(".cif"):
         return _thread_alignment_biopython(
             pdb_file,
             chain,

@@ -12,7 +12,7 @@ from typing import FrozenSet
 
 import numpy as np
 
-from sabr import constants
+from sabr.core import constants
 
 LOGGER = logging.getLogger(__name__)
 

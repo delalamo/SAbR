@@ -30,14 +30,16 @@ from typing import Optional, Tuple
 from ANARCI import anarci
 from Bio.PDB import Chain, Model, Structure
 
-from sabr import aln2hmm, edit_pdb, mpnn_embeddings, softaligner, util
-from sabr.constants import AnarciAlignment
+from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
+from sabr.core import AnarciAlignment, detect_chain_type
+from sabr.embeddings import MPNNEmbeddings, from_chain
+from sabr.structure import thread_onto_chain
 
 LOGGER = logging.getLogger(__name__)
 
 
 def run_renumbering_pipeline(
-    embeddings: mpnn_embeddings.MPNNEmbeddings,
+    embeddings: MPNNEmbeddings,
     numbering_scheme: str = "imgt",
     chain_type: str = "auto",
     deterministic_loop_renumbering: bool = True,
@@ -58,22 +60,20 @@ def run_renumbering_pipeline(
     """
     sequence = embeddings.sequence
 
-    aligner = softaligner.SoftAligner()
+    aligner = SoftAligner()
     alignment_result = aligner(
         embeddings,
         deterministic_loop_renumbering=deterministic_loop_renumbering,
     )
 
-    hmm_output = aln2hmm.alignment_matrix_to_state_vector(
-        alignment_result.alignment
-    )
+    hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
 
     n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
     subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
     # Detect chain type from alignment if not specified
     if chain_type == "auto":
-        chain_type = util.detect_chain_type(alignment_result.alignment)
+        chain_type = detect_chain_type(alignment_result.alignment)
     else:
         LOGGER.info(f"Using specified chain type: {chain_type}")
 
@@ -121,7 +121,7 @@ def _thread_structure(
             new_model.add(new_chain)
         else:
             # Renumber the target chain
-            new_chain, _ = edit_pdb.thread_onto_chain(
+            new_chain, _ = thread_onto_chain(
                 chain,
                 anarci_alignment,
                 0,  # start_res
@@ -253,7 +253,7 @@ def renumber_structure(
 
     # Get the chain object and generate embeddings
     chain_obj = working_structure[0][chain]
-    embeddings = mpnn_embeddings.from_chain(chain_obj)
+    embeddings = from_chain(chain_obj)
 
     LOGGER.info(
         f"Processing chain {chain} with {len(embeddings.idxs)} residues"

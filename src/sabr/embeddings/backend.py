@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
-"""JAX/Haiku backend for neural network operations.
+"""JAX/Haiku backend for embedding generation.
 
-This module encapsulates all JAX and Haiku dependencies, providing
-numpy-based interfaces for the rest of the codebase. All JAX/Haiku
-imports are contained within this module.
-
-Key components:
-- EmbeddingBackend: Generates MPNN embeddings from protein structures
-- AlignmentBackend: Performs soft alignment between embedding sets
+This module provides the EmbeddingBackend class which encapsulates all
+JAX and Haiku dependencies for generating MPNN embeddings from protein
+structure coordinates.
 
 Public interfaces accept and return numpy arrays only.
 """
 
 import logging
 from importlib.resources import files
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 import haiku as hk
 import jax
 import numpy as np
 from jax import numpy as jnp
-from softalign import END_TO_END_MODELS
 
-from sabr import constants
+from sabr.core import constants
+from sabr.nn import END_TO_END
 
 LOGGER = logging.getLogger(__name__)
 
@@ -94,14 +90,14 @@ def load_mpnn_params(
     return params
 
 
-def create_e2e_model() -> END_TO_END_MODELS.END_TO_END:
+def _create_e2e_model() -> END_TO_END:
     """Create an END_TO_END model with standard SAbR configuration.
 
     Returns:
         An END_TO_END model instance configured for antibody embedding
         and alignment with 64-dimensional embeddings and 3 MPNN layers.
     """
-    return END_TO_END_MODELS.END_TO_END(
+    return END_TO_END(
         constants.EMBED_DIM,
         constants.EMBED_DIM,
         constants.EMBED_DIM,
@@ -112,10 +108,6 @@ def create_e2e_model() -> END_TO_END_MODELS.END_TO_END:
         dropout=0.0,
         augment_eps=0.0,
     )
-
-
-# Module-level functions for Haiku transforms
-# These must be defined at module level for hk.transform to work correctly
 
 
 def _compute_embeddings_fn(
@@ -138,50 +130,8 @@ def _compute_embeddings_fn(
     Returns:
         Embeddings array with shape [1, N, embed_dim].
     """
-    model = create_e2e_model()
+    model = _create_e2e_model()
     return model.MPNN(coords, mask, chain_ids, residue_indices)
-
-
-def _run_alignment_fn(
-    input_embeddings: np.ndarray,
-    target_embeddings: np.ndarray,
-    target_stdev: np.ndarray,
-    temperature: float,
-) -> Tuple[np.ndarray, np.ndarray, float]:
-    """Run soft alignment between embedding sets.
-
-    This function runs inside hk.transform and uses the END_TO_END model
-    to align query embeddings against reference embeddings.
-
-    Args:
-        input_embeddings: Query embeddings [N, embed_dim].
-        target_embeddings: Reference embeddings [M, embed_dim].
-        target_stdev: Standard deviation for normalization [M, embed_dim].
-        temperature: Alignment temperature (lower = more deterministic).
-
-    Returns:
-        Tuple of (alignment_matrix, similarity_matrix, alignment_score).
-    """
-    model = create_e2e_model()
-
-    # Normalize target by stdev
-    target_stdev_jax = jnp.array(target_stdev)
-    target_normalized = target_embeddings / target_stdev_jax
-
-    # Prepare batched inputs (model expects batch dimension)
-    lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[
-        None, :
-    ]
-    batched_input = jnp.array(input_embeddings[None, :])
-    batched_target = jnp.array(target_normalized[None, :])
-
-    # Run alignment
-    alignment, sim_matrix, score = model.align(
-        batched_input, batched_target, lens, temperature
-    )
-
-    # Remove batch dimension from outputs
-    return alignment[0], sim_matrix[0], score[0]
 
 
 class EmbeddingBackend:
@@ -241,77 +191,3 @@ class EmbeddingBackend:
         )
         # Convert from JAX array to numpy and remove batch dimension
         return np.asarray(result[0])
-
-
-class AlignmentBackend:
-    """Backend for performing soft alignment between embedding sets.
-
-    This class encapsulates the JAX/Haiku operations needed to run
-    the SoftAlign alignment algorithm.
-
-    Attributes:
-        gap_extend: Gap extension penalty for Smith-Waterman.
-        gap_open: Gap opening penalty for Smith-Waterman.
-        key: JAX PRNG key for random operations.
-    """
-
-    def __init__(
-        self,
-        gap_extend: float = constants.SW_GAP_EXTEND,
-        gap_open: float = constants.SW_GAP_OPEN,
-        random_seed: int = 0,
-    ) -> None:
-        """Initialize the alignment backend.
-
-        Args:
-            gap_extend: Gap extension penalty.
-            gap_open: Gap opening penalty.
-            random_seed: Random seed for JAX PRNG.
-        """
-        self.gap_extend = gap_extend
-        self.gap_open = gap_open
-        self.key = jax.random.PRNGKey(random_seed)
-
-        # Create params dict with alignment penalties
-        # These are the only parameters needed for the align operation
-        self._params = {
-            "~": {
-                "gap": jnp.array([self.gap_extend]),
-                "open": jnp.array([self.gap_open]),
-            }
-        }
-        self._transformed_fn = hk.transform(_run_alignment_fn)
-        LOGGER.info("Initialized AlignmentBackend")
-
-    def align(
-        self,
-        input_embeddings: np.ndarray,
-        target_embeddings: np.ndarray,
-        target_stdev: np.ndarray,
-        temperature: float = constants.DEFAULT_TEMPERATURE,
-    ) -> Tuple[np.ndarray, np.ndarray, float]:
-        """Align input embeddings against target embeddings.
-
-        Args:
-            input_embeddings: Query embeddings [N, embed_dim].
-            target_embeddings: Reference embeddings [M, embed_dim].
-            target_stdev: Standard deviation for normalization [M, embed_dim].
-            temperature: Alignment temperature parameter.
-
-        Returns:
-            Tuple of (alignment, similarity_matrix, score) as numpy.
-        """
-        alignment, sim_matrix, score = self._transformed_fn.apply(
-            self._params,
-            self.key,
-            input_embeddings,
-            target_embeddings,
-            target_stdev,
-            temperature,
-        )
-
-        return (
-            np.asarray(alignment),
-            np.asarray(sim_matrix),
-            float(score),
-        )
