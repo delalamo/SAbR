@@ -115,12 +115,14 @@ class DummyEmbeddings:
         idxs: List[str],
         stdev: Optional[np.ndarray] = None,
         sequence: Optional[str] = None,
+        gap_indices: Optional[frozenset] = None,
     ) -> None:
         self.name = name
         self.embeddings = embeddings
         self.idxs = idxs
         self.stdev = stdev
         self.sequence = sequence
+        self.gap_indices = gap_indices
 
 
 def create_dummy_aligner(
