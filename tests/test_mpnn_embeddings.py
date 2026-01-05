@@ -5,7 +5,10 @@ import numpy as np
 import pytest
 from Bio import SeqIO
 
-from sabr import constants, mpnn_embeddings
+from sabr.core import constants
+from sabr.embeddings import mpnn as mpnn_embeddings
+from sabr.embeddings.inputs import MPNNInputs
+from sabr.embeddings.inputs import get_inputs as _get_inputs
 
 
 def test_mpnnembeddings_valid_creation_with_defaults():
@@ -378,7 +381,7 @@ def test_get_inputs_sequence_matches_seqio():
     chain = "H"
 
     # Get sequence from _get_inputs
-    inputs = mpnn_embeddings._get_inputs(str(test_pdb), chain=chain)
+    inputs = _get_inputs(str(test_pdb), chain=chain)
     mpnn_sequence = inputs.sequence
 
     # Get sequence from BioPython SeqIO pdb-atom
@@ -410,9 +413,9 @@ def test_get_inputs_parses_cif_file():
     """Test that _get_inputs correctly parses CIF files."""
     cif_file = Path(__file__).parent / "data" / "test_minimal.cif"
 
-    inputs = mpnn_embeddings._get_inputs(str(cif_file), chain="A")
+    inputs = _get_inputs(str(cif_file), chain="A")
 
-    assert isinstance(inputs, mpnn_embeddings.MPNNInputs)
+    assert isinstance(inputs, MPNNInputs)
     assert inputs.coords.shape[1] == 2  # 2 residues
     assert inputs.coords.shape[2] == 4  # N, CA, C, CB
     assert inputs.coords.shape[3] == 3  # x, y, z
@@ -427,14 +430,14 @@ def test_get_inputs_raises_on_missing_chain():
     with pytest.raises(
         ValueError, match="Chain 'Z' not found.*Available chains"
     ):
-        mpnn_embeddings._get_inputs(str(test_pdb), chain="Z")
+        _get_inputs(str(test_pdb), chain="Z")
 
 
 def test_get_inputs_handles_insertion_codes():
     """Test that residues with insertion codes are correctly represented."""
     pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
 
-    inputs = mpnn_embeddings._get_inputs(str(pdb_file), chain="A")
+    inputs = _get_inputs(str(pdb_file), chain="A")
 
     assert len(inputs.residue_ids) == 4
     assert inputs.residue_ids == ["52", "52A", "52B", "53"]
@@ -446,7 +449,7 @@ def test_get_inputs_raises_on_empty_chain():
     pdb_file = Path(__file__).parent / "data" / "test_no_backbone.pdb"
 
     with pytest.raises(ValueError, match="No valid residues found"):
-        mpnn_embeddings._get_inputs(str(pdb_file), chain="A")
+        _get_inputs(str(pdb_file), chain="A")
 
 
 class TestGapIndices:

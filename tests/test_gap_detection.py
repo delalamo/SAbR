@@ -4,8 +4,8 @@
 import numpy as np
 import pytest
 
-from sabr import constants
-from sabr.util import detect_backbone_gaps, has_gap_in_region
+from sabr.core import constants
+from sabr.core.util import detect_backbone_gaps, has_gap_in_region
 
 
 class TestDetectBackboneGaps:

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from sabr import aln2hmm
+from sabr.alignment import hmm as aln2hmm
 
 
 def test_alignment_matrix_to_state_vector_basic():

@@ -1,7 +1,7 @@
 import pytest
 from Bio.PDB import Chain, Residue
 
-from sabr import edit_pdb
+from sabr.structure import threading as edit_pdb
 
 
 def build_residue(
