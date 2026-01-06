@@ -9,6 +9,7 @@ This package provides structure file handling including:
 
 from sabr.structure.io import read_structure_biopython, read_structure_gemmi
 from sabr.structure.threading import (
+    AnarciAlignment,
     has_extended_insertion_codes,
     thread_alignment,
     thread_onto_chain,
@@ -20,6 +21,7 @@ __all__ = [
     "read_structure_gemmi",
     "read_structure_biopython",
     # Threading
+    "AnarciAlignment",
     "thread_alignment",
     "thread_onto_chain",
     "validate_output_format",

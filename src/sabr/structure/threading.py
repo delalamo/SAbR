@@ -20,15 +20,18 @@ The renumbering process handles three regions:
 
 import copy
 import logging
-from typing import Tuple
+from typing import List, Tuple
 
 import gemmi
 from Bio.PDB import Chain
 from Bio.PDB.mmcifio import MMCIFIO
 
 from sabr.core.constants import AA_3TO1
-from sabr.core.types import AnarciAlignment
 from sabr.structure.io import read_structure_biopython
+
+# Type alias for ANARCI alignment output:
+# list of ((residue_number, insertion_code), amino_acid)
+AnarciAlignment = List[Tuple[Tuple[int, str], str]]
 
 LOGGER = logging.getLogger(__name__)
 

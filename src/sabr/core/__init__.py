@@ -33,7 +33,6 @@ from sabr.core.constants import (
     SW_GAP_EXTEND,
     SW_GAP_OPEN,
 )
-from sabr.core.types import AnarciAlignment
 from sabr.core.util import (
     configure_logging,
     detect_backbone_gaps,
@@ -69,8 +68,6 @@ __all__ = [
     "IMGT_REGIONS",
     "CDR_ANCHORS",
     "AA_3TO1",
-    # Types
-    "AnarciAlignment",
     # Utilities
     "configure_logging",
     "detect_chain_type",

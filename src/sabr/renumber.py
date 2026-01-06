@@ -31,9 +31,10 @@ from ANARCI import anarci
 from Bio.PDB import Chain, Model, Structure
 
 from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
-from sabr.core import AnarciAlignment, detect_chain_type
+from sabr.core import detect_chain_type
 from sabr.embeddings import MPNNEmbeddings, from_chain
 from sabr.structure import thread_onto_chain
+from sabr.structure.threading import AnarciAlignment
 
 LOGGER = logging.getLogger(__name__)
 
