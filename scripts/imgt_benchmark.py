@@ -17,6 +17,7 @@ Usage:
 import argparse
 import csv
 import json
+import sys
 import tempfile
 import time
 import warnings
@@ -77,7 +78,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
                 and "ATOM" not in content[:1000]
                 and "HEADER" not in content[:500]
             ):
-                raise RuntimeError(
+                raise ValueError(
                     f"Invalid PDB content for {pdb_id}: "
                     f"response does not contain REMARK, ATOM or HEADER. "
                     f"First 200 chars: {content[:200]}"
@@ -87,7 +88,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
                 f.write(content)
             return
 
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, ValueError) as e:
             last_error = e
             print(
                 f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
@@ -99,6 +100,41 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
         f"Failed to fetch PDB {pdb_id} from {url} "
         f"after {max_retries} attempts. Last error: {last_error}"
     )
+
+
+def check_sabdab_available() -> None:
+    """Check if SAbDab server is available.
+
+    Raises:
+        SystemExit: If the server is unavailable after retries
+    """
+    base_url = "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab"
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+    }
+
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(base_url, headers=headers, timeout=30)
+            if response.status_code < 500:
+                print(
+                    f"SAbDab server is available (HTTP {response.status_code})"
+                )
+                return
+        except requests.exceptions.RequestException as e:
+            print(
+                f"Server check attempt {attempt + 1}/{max_retries} failed: {e}"
+            )
+            if attempt < max_retries - 1:
+                time.sleep(2**attempt)
+
+    print("ERROR: SAbDab server is unavailable. Exiting.")
+    sys.exit(1)
 
 
 class ChainSelect(Select):
@@ -155,9 +191,17 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
 
     Raises:
         RuntimeError: If SAbR pipeline fails
+        ValueError: If structural gaps are detected in the PDB
     """
     # Extract embeddings (also provides input residue IDs)
     input_data = from_pdb(pdb_path, chain_id)
+
+    # Skip structures with backbone gaps
+    if input_data.gap_indices:
+        gap_positions = sorted(input_data.gap_indices)
+        raise ValueError(
+            f"Structural gaps detected at positions: {gap_positions}"
+        )
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
     anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
@@ -320,6 +364,8 @@ def main():
         print(f"Using local PDB directory: {pdb_dir}")
     else:
         print(f"Fetching from SAbDab, cache directory: {cache_dir}")
+        # Check if SAbDab is available before starting
+        check_sabdab_available()
 
     # Results
     results = {"heavy": [], "kappa": [], "lambda": []}
