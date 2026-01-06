@@ -27,8 +27,9 @@ from typing import Dict, List
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr import mpnn_embeddings, renumber
-from sabr.constants import IMGT_REGIONS
+from sabr import renumber
+from sabr.core.constants import IMGT_REGIONS
+from sabr.embeddings import from_pdb
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -156,7 +157,7 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
         RuntimeError: If SAbR pipeline fails
     """
     # Extract embeddings (also provides input residue IDs)
-    input_data = mpnn_embeddings.from_pdb(pdb_path, chain_id)
+    input_data = from_pdb(pdb_path, chain_id)
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
     anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
