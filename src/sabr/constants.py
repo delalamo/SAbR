@@ -8,12 +8,6 @@ This module defines constants used throughout the SAbR package including:
 - Alignment parameters
 """
 
-from typing import List, Tuple
-
-# Type alias for ANARCI alignment output:
-# list of ((residue_number, insertion_code), amino_acid)
-AnarciAlignment = List[Tuple[Tuple[int, str], str]]
-
 # Neural network configuration
 EMBED_DIM = 64
 N_MPNN_LAYERS = 3

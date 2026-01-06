@@ -1,5 +1,5 @@
 name: "Test Package Imports"
-description: "Test that sabr, softalign, and ANARCI modules can be imported and CLI works"
+description: "Test that sabr and ANARCI modules can be imported and CLI works"
 
 inputs:
   test-cli:
@@ -24,7 +24,6 @@ runs:
           MODE_SUFFIX=" ($INSTALL_MODE)"
         fi
         python -c "import sabr; print('✅ sabr import OK${MODE_SUFFIX}')"
-        python -c "import softalign; print('✅ softalign import OK${MODE_SUFFIX}')"
         python -c "import ANARCI; print('✅ ANARCI import OK${MODE_SUFFIX}')"
 
     - name: Test sabr CLI

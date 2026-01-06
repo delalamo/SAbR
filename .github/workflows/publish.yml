@@ -38,7 +38,6 @@ jobs:
         run: |
           source .venv/bin/activate
           python -c "import sabr; print('✅ sabr import OK')"
-          python -c "import softalign; print('✅ softalign import OK')"
           python -c "import ANARCI; print('✅ ANARCI import OK')"
           sabr --help > /dev/null && echo "✅ sabr CLI OK"
 

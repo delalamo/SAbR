@@ -22,13 +22,11 @@ from typing import Optional, Tuple
 
 import click
 
-from sabr import (
-    edit_pdb,
-    mpnn_embeddings,
-    options,
-    renumber,
-    util,
-)
+from sabr.cli.options import normalize_chain_type, validate_inputs
+from sabr.cli.renumber import run_renumbering_pipeline
+from sabr.embeddings.mpnn import from_pdb
+from sabr.structure.threading import thread_alignment
+from sabr.util import configure_logging
 
 LOGGER = logging.getLogger(__name__)
 
@@ -151,7 +149,7 @@ LOGGER = logging.getLogger(__name__)
         ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
         case_sensitive=False,
     ),
-    callback=lambda ctx, param, value: options.normalize_chain_type(value),
+    callback=lambda ctx, param, value: normalize_chain_type(value),
     help=(
         "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
         "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
@@ -172,8 +170,8 @@ def main(
     chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
-    util.configure_logging(verbose)
-    options.validate_inputs(
+    configure_logging(verbose)
+    validate_inputs(
         input_pdb,
         input_chain,
         output_file,
@@ -198,7 +196,7 @@ def main(
         start_msg += " (extended insertion codes enabled)"
     LOGGER.info(start_msg)
 
-    input_data = mpnn_embeddings.from_pdb(
+    input_data = from_pdb(
         input_pdb,
         input_chain,
         residue_range=residue_range,
@@ -220,7 +218,7 @@ def main(
     # Use shared renumbering pipeline
     use_deterministic = not disable_deterministic_renumbering
     anarci_out, detected_chain_type, first_aligned_row = (
-        renumber.run_renumbering_pipeline(
+        run_renumbering_pipeline(
             input_data,
             numbering_scheme=numbering_scheme,
             chain_type=chain_type,
@@ -228,7 +226,7 @@ def main(
         )
     )
 
-    edit_pdb.thread_alignment(
+    thread_alignment(
         input_pdb,
         input_chain,
         anarci_out,

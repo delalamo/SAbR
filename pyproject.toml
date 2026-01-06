@@ -38,7 +38,7 @@ Homepage = "https://github.com/delalamo/sabr"
 Issues = "https://github.com/delalamo/sabr/issues"
 
 [project.scripts]
-sabr = "sabr.cli:main"
+sabr = "sabr.cli.main:main"
 
 # ----------------------------------------
 # Include external submodules in the build
@@ -48,14 +48,11 @@ packages = ["src/sabr"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "external/ANARCI/src/ANARCI" = "ANARCI"
-"external/SoftAlign/softalign" = "softalign"
 
-# Optionally, include any data files you want in the wheel
 [tool.hatch.build]
 include = [
   "src/sabr/**",
   "external/ANARCI/src/ANARCI/**",
-  "external/SoftAlign/softalign/**",
   "README.md",
   "LICENSE"
 ]
