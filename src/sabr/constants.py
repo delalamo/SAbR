@@ -21,9 +21,7 @@ CB_DIHEDRAL = -2.143  # N-CA-C-CB dihedral angle in radians
 # Standard C-N peptide bond length is ~1.32-1.35 Å
 PEPTIDE_BOND_LENGTH = 1.33  # Expected C-N peptide bond length in Angstroms
 # A gap (missing residue) is detected when C-N distance exceeds threshold
-PEPTIDE_BOND_MAX_DISTANCE = (
-    2 * PEPTIDE_BOND_LENGTH  # ~2.66 Å; above this indicates structural gap
-)
+PEPTIDE_BOND_MAX_DISTANCE = 2 * PEPTIDE_BOND_LENGTH
 
 # Backbone atom indices in coordinate arrays [N, CA, C, CB]
 BACKBONE_N_IDX = 0
