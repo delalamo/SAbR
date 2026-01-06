@@ -77,7 +77,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
                 and "ATOM" not in content[:1000]
                 and "HEADER" not in content[:500]
             ):
-                raise RuntimeError(
+                raise ValueError(
                     f"Invalid PDB content for {pdb_id}: "
                     f"response does not contain REMARK, ATOM or HEADER. "
                     f"First 200 chars: {content[:200]}"
@@ -87,7 +87,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
                 f.write(content)
             return
 
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, ValueError) as e:
             last_error = e
             print(
                 f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
