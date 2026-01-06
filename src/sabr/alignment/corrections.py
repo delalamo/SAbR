@@ -101,7 +101,6 @@ def _skip_for_structural_gap(
 
 def correct_fr1_alignment(
     aln: np.ndarray,
-    chain_type: Optional[str] = None,
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
     """Fix FR1 alignment issues in positions 6-12 deterministically.
@@ -116,7 +115,6 @@ def correct_fr1_alignment(
 
     Args:
         aln: The alignment matrix.
-        chain_type: The chain type (used for logging).
         gap_indices: FrozenSet of row indices where structural gaps occur.
             If a gap is found in the region, deterministic correction
             is skipped and embedding similarity is used instead.
@@ -537,9 +535,7 @@ def apply_deterministic_corrections(
     is_light_chain = detected_chain_type in ("K", "L")
 
     # Apply FR1 correction
-    aln = correct_fr1_alignment(
-        aln, chain_type=detected_chain_type, gap_indices=gap_indices
-    )
+    aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
     if is_light_chain:

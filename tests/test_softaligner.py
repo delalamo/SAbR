@@ -97,7 +97,7 @@ def test_correct_fr1_alignment_kappa_7_residues():
     aln[10, 10] = 1  # Row 10 at position 11
     aln[11, 11] = 1  # Row 11 at position 12
 
-    corrected = correct_fr1_alignment(aln, chain_type="K")
+    corrected = correct_fr1_alignment(aln)
 
     # With 7 residues (rows 5-11), position 10 should be occupied (kappa)
     assert corrected[9, 9] == 1, "Position 10 should be occupied for kappa"
@@ -122,7 +122,7 @@ def test_correct_fr1_alignment_heavy_6_residues():
     aln[9, 10] = 1  # Row 9 at position 11 (skipping 10)
     aln[10, 11] = 1  # Row 10 at position 12
 
-    corrected = correct_fr1_alignment(aln, chain_type="H")
+    corrected = correct_fr1_alignment(aln)
 
     # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
     assert (
@@ -143,7 +143,7 @@ def test_correct_fr1_no_anchors_found():
     # No residues in positions 6-12 region
     aln[50, 50] = 1  # Some residue far from FR1
 
-    corrected = correct_fr1_alignment(aln, chain_type="K")
+    corrected = correct_fr1_alignment(aln)
 
     # Should return unchanged since anchors not found
     assert np.array_equal(corrected, aln)
@@ -512,9 +512,7 @@ class TestGapSkipping:
         # Gap at row 7 (within the FR1 region)
         gap_indices = frozenset({7})
 
-        corrected = correct_fr1_alignment(
-            aln, chain_type="K", gap_indices=gap_indices
-        )
+        corrected = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
         # Should return unchanged since gap is present
         assert np.array_equal(corrected, original_aln)
@@ -534,9 +532,7 @@ class TestGapSkipping:
         # No gaps in the FR1 region (gap is outside)
         gap_indices = frozenset({20})
 
-        corrected = correct_fr1_alignment(
-            aln, chain_type="K", gap_indices=gap_indices
-        )
+        corrected = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
         # Correction should be applied (may or may not change, but method runs)
         # At minimum, it should not raise an error
