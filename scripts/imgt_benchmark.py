@@ -155,9 +155,17 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
 
     Raises:
         RuntimeError: If SAbR pipeline fails
+        ValueError: If structural gaps are detected in the PDB
     """
     # Extract embeddings (also provides input residue IDs)
     input_data = from_pdb(pdb_path, chain_id)
+
+    # Skip structures with backbone gaps
+    if input_data.gap_indices:
+        gap_positions = sorted(input_data.gap_indices)
+        raise ValueError(
+            f"Structural gaps detected at positions: {gap_positions}"
+        )
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
     anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
