@@ -6,7 +6,7 @@ on:
       limit:
         description: "Number of entries to process (0 = all)"
         required: false
-        default: "50"
+        default: "75"
         type: string
       filter_to_imgt:
         description: "Filter residues to IMGT positions 1-128 only"

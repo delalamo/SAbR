@@ -196,12 +196,22 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     # Extract embeddings (also provides input residue IDs)
     input_data = from_pdb(pdb_path, chain_id)
 
-    # Skip structures with backbone gaps
+    # Skip structures with backbone gaps in IMGT range (positions 1-128)
     if input_data.gap_indices:
-        gap_positions = sorted(input_data.gap_indices)
-        raise ValueError(
-            f"Structural gaps detected at positions: {gap_positions}"
-        )
+        gaps_in_imgt_range = []
+        for gap_idx in input_data.gap_indices:
+            residue_id = input_data.idxs[gap_idx]
+            try:
+                residue_num = int("".join(c for c in residue_id if c.isdigit()))
+                if 1 <= residue_num <= 128:
+                    gaps_in_imgt_range.append(residue_id)
+            except ValueError:
+                pass
+        if gaps_in_imgt_range:
+            raise ValueError(
+                f"Structural gaps detected within IMGT range (1-128) "
+                f"at positions: {sorted(gaps_in_imgt_range)}"
+            )
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
     anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
