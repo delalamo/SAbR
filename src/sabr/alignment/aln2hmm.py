@@ -11,8 +11,8 @@ for use with ANARCI numbering schemes. The conversion process:
 
 Key components:
     State: Dataclass representing an HMM state (match/insert/delete)
+    Aln2HmmOutput: Output dataclass with report() method for logging
     alignment_matrix_to_state_vector: Main conversion function
-    report_output: Logging utility for state vectors
 
 The alignment matrix format:
     - Rows: Sequence positions (0-indexed)
@@ -82,6 +82,16 @@ class Aln2HmmOutput:
     imgt_start: int
     imgt_end: int
     first_aligned_row: int
+
+    def report(self) -> None:
+        """Log each HMM state at INFO level for debugging purposes."""
+        LOGGER.info(f"Reporting {len(self.states)} HMM states")
+        for idx, state in enumerate(self.states):
+            mapped = state.mapped_residue
+            LOGGER.info(
+                f"{idx} (({state.residue_number}, '{state.insertion_code}'), "
+                f"{mapped})"
+            )
 
 
 def alignment_matrix_to_state_vector(
@@ -165,8 +175,6 @@ def alignment_matrix_to_state_vector(
         else:
             states.append(State(imgt_pos, "d", None))
 
-    report_output(states)
-
     max_row = (
         max(last_aligned_row, max(orphan_rows))
         if orphan_rows
@@ -175,24 +183,11 @@ def alignment_matrix_to_state_vector(
     imgt_start = path[0][0]
     imgt_end = max_row + 1 + imgt_start
 
-    return Aln2HmmOutput(
+    output = Aln2HmmOutput(
         states=states,
         imgt_start=imgt_start,
         imgt_end=imgt_end,
         first_aligned_row=first_aligned_row,
     )
-
-
-def report_output(states: List[State]) -> None:
-    """Log each HMM state at INFO level for debugging purposes.
-
-    Args:
-        states: List of State objects to log.
-    """
-    LOGGER.info(f"Reporting {len(states)} HMM states")
-    for idx, state in enumerate(states):
-        mapped = state.mapped_residue
-        LOGGER.info(
-            f"{idx} (({state.residue_number}, '{state.insertion_code}'), "
-            f"{mapped})"
-        )
+    output.report()
+    return output

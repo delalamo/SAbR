@@ -9,6 +9,11 @@ This package provides the alignment functionality for SAbR including:
 - Deterministic correction functions
 """
 
+from sabr.alignment.aln2hmm import (
+    Aln2HmmOutput,
+    State,
+    alignment_matrix_to_state_vector,
+)
 from sabr.alignment.backend import AlignmentBackend
 from sabr.alignment.corrections import (
     apply_deterministic_corrections,
@@ -18,12 +23,6 @@ from sabr.alignment.corrections import (
     correct_fr3_alignment,
     correct_gap_numbering,
     find_nearest_occupied_column,
-)
-from sabr.alignment.hmm import (
-    Aln2HmmOutput,
-    State,
-    alignment_matrix_to_state_vector,
-    report_output,
 )
 from sabr.alignment.output import SoftAlignOutput
 from sabr.alignment.soft_aligner import SoftAligner
@@ -37,7 +36,6 @@ __all__ = [
     "State",
     "Aln2HmmOutput",
     "alignment_matrix_to_state_vector",
-    "report_output",
     # Corrections
     "apply_deterministic_corrections",
     "correct_cdr_loop",
