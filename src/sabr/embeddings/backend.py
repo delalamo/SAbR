@@ -10,7 +10,7 @@ Public interfaces accept and return numpy arrays only.
 
 import logging
 from importlib.resources import files
-from typing import Any, Dict
+from typing import Any, Dict, List, Tuple
 
 import haiku as hk
 import jax
@@ -19,6 +19,49 @@ from jax import numpy as jnp
 
 from sabr import constants
 from sabr.nn.end_to_end import END_TO_END
+
+
+def create_gap_penalty_for_reduced_reference(
+    query_len: int,
+    idxs: List[int],
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Create gap penalty matrices with zeros where IMGT positions have jumps.
+
+    When variable positions are removed from the reference, there are jumps
+    in the IMGT position sequence. Gap penalties should be zero at these
+    boundaries to avoid penalizing the natural gaps where CDRs were removed.
+
+    Example: idxs = [1, 2, ..., 26, 39, 40, ...]
+             Gap from 26→39 (CDR1 removed) should have zero penalty
+
+    Args:
+        query_len: Length of the query sequence.
+        idxs: List of IMGT position integers for the reduced reference.
+
+    Returns:
+        Tuple of (gap_extend_matrix, gap_open_matrix) with shape
+        (query_len, target_len). Positions where IMGT numbering has
+        jumps have zero penalty.
+    """
+    target_len = len(idxs)
+
+    # Start with normal penalties (as numpy arrays)
+    gap_extend = np.full(
+        (query_len, target_len), constants.SW_GAP_EXTEND, dtype=np.float32
+    )
+    gap_open = np.full(
+        (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
+    )
+
+    # Find columns where IMGT positions have jumps (CDRs were removed)
+    for i in range(1, target_len):
+        if idxs[i] - idxs[i - 1] > 1:  # Jump in IMGT numbering
+            # Set zero penalty for this column (crossing removed CDR region)
+            gap_extend[:, i] = 0.0
+            gap_open[:, i] = 0.0
+
+    return gap_extend, gap_open
+
 
 LOGGER = logging.getLogger(__name__)
 

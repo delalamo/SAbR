@@ -104,6 +104,12 @@ class SoftAligner:
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
+        # Load reduced embeddings without variable positions (used when
+        # deterministic_loop_renumbering=True for gap penalty calculation)
+        self.unified_embedding_no_cdr = self.read_embeddings(
+            embeddings_name="embeddings_no_cdr.npz",
+            embeddings_path=embeddings_path,
+        )
         self.temperature = temperature
         self._backend = AlignmentBackend(random_seed=random_seed)
 
