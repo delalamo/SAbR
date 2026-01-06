@@ -126,9 +126,7 @@ class TestRunRenumberingPipeline:
         alignment, chain_type = load_alignment_fixture(data["alignment"])
 
         DummyAligner = create_dummy_aligner(alignment, chain_type)
-        monkeypatch.setattr(
-            soft_aligner_module, "SoftAligner", lambda: DummyAligner()
-        )
+        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
