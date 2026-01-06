@@ -26,6 +26,8 @@ def _run_alignment_fn(
     target_embeddings: np.ndarray,
     target_stdev: np.ndarray,
     temperature: float,
+    penalize_start_gap: bool = False,
+    penalize_end_gap: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray, float]:
     """Run soft alignment between embedding sets.
 
@@ -37,6 +39,10 @@ def _run_alignment_fn(
         target_embeddings: Reference embeddings [M, embed_dim].
         target_stdev: Standard deviation for normalization [M, embed_dim].
         temperature: Alignment temperature (lower = more deterministic).
+        penalize_start_gap: Penalize alignments starting after position 1
+            of the reference (N-terminus anchoring).
+        penalize_end_gap: Penalize alignments ending before the last
+            position of the reference (C-terminus anchoring).
 
     Returns:
         Tuple of (alignment_matrix, similarity_matrix, alignment_score).
@@ -51,6 +57,8 @@ def _run_alignment_fn(
         soft_max=False,
         dropout=0.0,
         augment_eps=0.0,
+        penalize_start_gap=penalize_start_gap,
+        penalize_end_gap=penalize_end_gap,
     )
 
     target_stdev_jax = jnp.array(target_stdev)
@@ -78,6 +86,8 @@ class AlignmentBackend:
     Attributes:
         gap_extend: Gap extension penalty for Smith-Waterman.
         gap_open: Gap opening penalty for Smith-Waterman.
+        penalize_start_gap: Penalize alignments starting after position 1.
+        penalize_end_gap: Penalize alignments ending before the last position.
         key: JAX PRNG key for random operations.
     """
 
@@ -86,6 +96,8 @@ class AlignmentBackend:
         gap_extend: float = constants.SW_GAP_EXTEND,
         gap_open: float = constants.SW_GAP_OPEN,
         random_seed: int = 0,
+        penalize_start_gap: bool = True,
+        penalize_end_gap: bool = True,
     ) -> None:
         """Initialize the alignment backend.
 
@@ -93,9 +105,15 @@ class AlignmentBackend:
             gap_extend: Gap extension penalty.
             gap_open: Gap opening penalty.
             random_seed: Random seed for JAX PRNG.
+            penalize_start_gap: Penalize alignments starting after position 1
+                of the reference (N-terminus anchoring). Default True.
+            penalize_end_gap: Penalize alignments ending before the last
+                position of the reference (C-terminus anchoring). Default True.
         """
         self.gap_extend = gap_extend
         self.gap_open = gap_open
+        self.penalize_start_gap = penalize_start_gap
+        self.penalize_end_gap = penalize_end_gap
         self.key = jax.random.PRNGKey(random_seed)
         self._params = {
             "~": {
@@ -132,6 +150,8 @@ class AlignmentBackend:
             target_embeddings,
             target_stdev,
             temperature,
+            self.penalize_start_gap,
+            self.penalize_end_gap,
         )
 
         return (

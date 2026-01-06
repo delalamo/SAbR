@@ -40,6 +40,8 @@ class END_TO_END:
         dropout: float = 0.0,
         affine: bool = False,
         soft_max: bool = False,
+        penalize_start_gap: bool = False,
+        penalize_end_gap: bool = False,
     ):
         """Initialize the end-to-end model.
 
@@ -53,6 +55,10 @@ class END_TO_END:
             dropout: Dropout rate for encoder layers.
             affine: Use affine gap penalties (gap open + extend).
             soft_max: Use softmax alignment instead of Smith-Waterman.
+            penalize_start_gap: Penalize alignments starting after position 1
+                of the reference (N-terminus anchoring).
+            penalize_end_gap: Penalize alignments ending before the last
+                position of the reference (C-terminus anchoring).
         """
         super(END_TO_END, self).__init__()
 
@@ -72,6 +78,8 @@ class END_TO_END:
             self.my_sw_func = jax.jit(smith_waterman.sw(batch=True))
         self.siz = node_features
         self.soft_max = soft_max
+        self.penalize_start_gap = penalize_start_gap
+        self.penalize_end_gap = penalize_end_gap
 
     def align(self, h_V1, h_V2, lens, t):
         """Align two sets of embeddings.
@@ -98,7 +106,13 @@ class END_TO_END:
         if not self.soft_max:
             if self.affine:
                 scores, soft_aln = self.my_sw_func(
-                    sim_matrix, lens, gap[0], popen[0], t
+                    sim_matrix,
+                    lens,
+                    gap[0],
+                    popen[0],
+                    t,
+                    self.penalize_start_gap,
+                    self.penalize_end_gap,
                 )
             else:
                 scores, soft_aln = self.my_sw_func(sim_matrix, lens, gap[0], t)

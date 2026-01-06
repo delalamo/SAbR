@@ -90,6 +90,8 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
         temperature: float = constants.DEFAULT_TEMPERATURE,
         random_seed: int = 0,
+        penalize_start_gap: bool = True,
+        penalize_end_gap: bool = True,
     ) -> None:
         """
         Initialize the SoftAligner by loading reference embeddings and backend.
@@ -99,13 +101,21 @@ class SoftAligner:
             embeddings_path: Package path containing the embeddings file.
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
+            penalize_start_gap: Penalize alignments starting after position 1
+                of the reference (N-terminus anchoring). Default True.
+            penalize_end_gap: Penalize alignments ending before the last
+                position of the reference (C-terminus anchoring). Default True.
         """
         self.unified_embedding = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
         self.temperature = temperature
-        self._backend = AlignmentBackend(random_seed=random_seed)
+        self._backend = AlignmentBackend(
+            random_seed=random_seed,
+            penalize_start_gap=penalize_start_gap,
+            penalize_end_gap=penalize_end_gap,
+        )
 
     def read_embeddings(
         self,
