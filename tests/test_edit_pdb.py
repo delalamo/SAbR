@@ -120,8 +120,9 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
     from ANARCI import anarci
 
-    from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
-    from sabr.embeddings import from_pdb
+    from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
+    from sabr.alignment.soft_aligner import SoftAligner
+    from sabr.embeddings.mpnn import from_pdb
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")

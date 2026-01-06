@@ -17,8 +17,8 @@ from typing import FrozenSet, Optional, Tuple
 
 import numpy as np
 
-from sabr.core import constants
-from sabr.core.util import detect_chain_type, has_gap_in_region
+from sabr import constants
+from sabr.util import detect_chain_type, has_gap_in_region
 
 LOGGER = logging.getLogger(__name__)
 

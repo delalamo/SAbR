@@ -28,8 +28,8 @@ import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr.cli import renumber
-from sabr.core.constants import IMGT_REGIONS
-from sabr.embeddings import from_pdb
+from sabr.constants import IMGT_REGIONS
+from sabr.embeddings.mpnn import from_pdb
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")

@@ -17,7 +17,7 @@ import gemmi
 import numpy as np
 from Bio.PDB import Chain
 
-from sabr.core import constants
+from sabr import constants
 
 LOGGER = logging.getLogger(__name__)
 

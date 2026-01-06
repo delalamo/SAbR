@@ -1,4 +1,4 @@
-from sabr.core import constants
+from sabr import constants
 
 
 def test_imgt_loops_are_within_range():

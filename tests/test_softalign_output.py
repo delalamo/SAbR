@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from sabr.alignment import SoftAlignOutput
+from sabr.alignment.soft_aligner import SoftAlignOutput
 
 
 def test_softalignoutput_valid_creation():

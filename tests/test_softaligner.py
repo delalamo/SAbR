@@ -2,7 +2,6 @@ import importlib
 
 import numpy as np
 
-from sabr.alignment import SoftAligner
 from sabr.alignment.corrections import (
     _skip_for_structural_gap,
     apply_deterministic_corrections,
@@ -12,6 +11,7 @@ from sabr.alignment.corrections import (
     correct_fr3_alignment,
     correct_gap_numbering,
 )
+from sabr.alignment.soft_aligner import SoftAligner
 
 
 def make_aligner() -> SoftAligner:

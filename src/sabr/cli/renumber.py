@@ -30,11 +30,11 @@ from typing import Optional, Tuple
 from ANARCI import anarci
 from Bio.PDB import Chain, Model, Structure
 
-from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
-from sabr.core import detect_chain_type
-from sabr.embeddings import MPNNEmbeddings, from_chain
-from sabr.structure import thread_onto_chain
-from sabr.structure.threading import AnarciAlignment
+from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
+from sabr.alignment.soft_aligner import SoftAligner
+from sabr.embeddings.mpnn import MPNNEmbeddings, from_chain
+from sabr.structure.threading import AnarciAlignment, thread_onto_chain
+from sabr.util import detect_chain_type
 
 LOGGER = logging.getLogger(__name__)
 

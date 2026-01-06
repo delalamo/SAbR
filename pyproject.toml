@@ -41,19 +41,14 @@ Issues = "https://github.com/delalamo/sabr/issues"
 sabr = "sabr.cli:main"
 
 # ----------------------------------------
-# Include external submodules in the build
+# Build configuration
 # ----------------------------------------
 [tool.hatch.build.targets.wheel]
 packages = ["src/sabr"]
 
-[tool.hatch.build.targets.wheel.force-include]
-"external/ANARCI/src/ANARCI" = "ANARCI"
-
-# Optionally, include any data files you want in the wheel
 [tool.hatch.build]
 include = [
   "src/sabr/**",
-  "external/ANARCI/src/ANARCI/**",
   "README.md",
   "LICENSE"
 ]

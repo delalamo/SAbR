@@ -7,12 +7,13 @@ from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
 import sabr.alignment.soft_aligner as soft_aligner_module
-from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
-from sabr.cli import main as cli_main
+from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
+from sabr.alignment.soft_aligner import SoftAligner
 from sabr.cli import renumber
-from sabr.embeddings import from_pdb as mpnn_from_pdb
+from sabr.cli.main import main as cli_main
 from sabr.embeddings import mpnn as mpnn_embeddings_module
-from sabr.structure import thread_alignment
+from sabr.embeddings.mpnn import from_pdb as mpnn_from_pdb
+from sabr.structure.threading import thread_alignment
 from tests.conftest import (
     FIXTURES,
     create_dummy_aligner,
@@ -209,7 +210,7 @@ def test_from_chain_produces_same_embeddings_as_from_pdb():
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("test", pdb_path)
     chain_obj = structure[0][chain_id]
-    from sabr.embeddings import from_chain as mpnn_from_chain
+    from sabr.embeddings.mpnn import from_chain as mpnn_from_chain
 
     embeddings_from_chain = mpnn_from_chain(chain_obj)
 

@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from Bio import SeqIO
 
-from sabr.core import constants
+from sabr import constants
 from sabr.embeddings import mpnn as mpnn_embeddings
 from sabr.embeddings.inputs import MPNNInputs
 from sabr.embeddings.inputs import get_inputs as _get_inputs

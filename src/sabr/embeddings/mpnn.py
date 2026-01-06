@@ -27,10 +27,10 @@ from typing import FrozenSet, List, Optional, Tuple
 import numpy as np
 from Bio.PDB import Chain
 
-from sabr.core import constants
-from sabr.core.util import detect_backbone_gaps
+from sabr import constants
 from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.inputs import get_inputs
+from sabr.util import detect_backbone_gaps
 
 LOGGER = logging.getLogger(__name__)
 

@@ -15,8 +15,8 @@ import jax
 import numpy as np
 from jax import numpy as jnp
 
-from sabr.core import constants
-from sabr.nn import END_TO_END
+from sabr import constants
+from sabr.nn.end_to_end import END_TO_END
 
 LOGGER = logging.getLogger(__name__)
 

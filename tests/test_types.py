@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from sabr.alignment import SoftAlignOutput
-from sabr.embeddings import MPNNEmbeddings
+from sabr.alignment.soft_aligner import SoftAlignOutput
+from sabr.embeddings.mpnn import MPNNEmbeddings
 
 
 def test_mpnnembeddings_shape_mismatch_raises():

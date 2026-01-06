@@ -26,7 +26,7 @@ import gemmi
 from Bio.PDB import Chain
 from Bio.PDB.mmcifio import MMCIFIO
 
-from sabr.core.constants import AA_3TO1
+from sabr.constants import AA_3TO1
 from sabr.structure.io import read_structure_biopython
 
 # Type alias for ANARCI alignment output:
