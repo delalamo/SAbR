@@ -163,11 +163,14 @@ class TestDetectBackboneGaps:
 
     def test_default_threshold_matches_constant(self):
         """Verify default threshold uses PEPTIDE_BOND_MAX_DISTANCE constant."""
-        assert constants.PEPTIDE_BOND_MAX_DISTANCE == 2.0
+        assert (
+            constants.PEPTIDE_BOND_MAX_DISTANCE
+            == 2 * constants.PEPTIDE_BOND_LENGTH
+        )
 
         coords = np.zeros((2, 4, 3))
         coords[0, 2, :] = [0, 0, 0]
-        coords[1, 0, :] = [2.5, 0, 0]  # Above 2.0 Å
+        coords[1, 0, :] = [3.0, 0, 0]  # Above 2.66 Å threshold
 
         # Using default should detect gap
         gaps = detect_backbone_gaps(coords)
