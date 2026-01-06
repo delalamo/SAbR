@@ -160,11 +160,9 @@ def _compute_gap_indices(
     Returns:
         FrozenSet of gap indices after filtering, or None if < 2 residues.
     """
-    # Remove batch dimension if present
     if coords.ndim == 4 and coords.shape[0] == 1:
         coords = coords[0]
 
-    # Filter to keep_indices if specified (empty list = no residues)
     if keep_indices is not None:
         if len(keep_indices) < 2:
             return None

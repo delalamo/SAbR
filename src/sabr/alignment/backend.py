@@ -53,23 +53,19 @@ def _run_alignment_fn(
         augment_eps=0.0,
     )
 
-    # Normalize target by stdev
     target_stdev_jax = jnp.array(target_stdev)
     target_normalized = target_embeddings / target_stdev_jax
 
-    # Prepare batched inputs (model expects batch dimension)
     lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[
         None, :
     ]
     batched_input = jnp.array(input_embeddings[None, :])
     batched_target = jnp.array(target_normalized[None, :])
 
-    # Run alignment
     alignment, sim_matrix, score = model.align(
         batched_input, batched_target, lens, temperature
     )
 
-    # Remove batch dimension from outputs
     return alignment[0], sim_matrix[0], score[0]
 
 
@@ -101,9 +97,6 @@ class AlignmentBackend:
         self.gap_extend = gap_extend
         self.gap_open = gap_open
         self.key = jax.random.PRNGKey(random_seed)
-
-        # Create params dict with alignment penalties
-        # These are the only parameters needed for the align operation
         self._params = {
             "~": {
                 "gap": jnp.array([self.gap_extend]),
@@ -131,7 +124,6 @@ class AlignmentBackend:
         Returns:
             Tuple of (alignment, similarity_matrix, score) as numpy.
         """
-        # Split key to ensure statistical independence on each call
         self.key, subkey = jax.random.split(self.key)
         alignment, sim_matrix, score = self._transformed_fn.apply(
             self._params,
