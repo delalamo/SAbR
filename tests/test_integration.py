@@ -7,9 +7,9 @@ from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
 import sabr.alignment.soft_aligner as soft_aligner_module
-from sabr import renumber
 from sabr.alignment import SoftAligner, alignment_matrix_to_state_vector
 from sabr.cli import main as cli_main
+from sabr.cli import renumber
 from sabr.embeddings import from_pdb as mpnn_from_pdb
 from sabr.embeddings import mpnn as mpnn_embeddings_module
 from sabr.structure import thread_alignment

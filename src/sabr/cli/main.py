@@ -23,9 +23,9 @@ from typing import Optional, Tuple
 import click
 
 from sabr.cli.options import normalize_chain_type, validate_inputs
+from sabr.cli.renumber import run_renumbering_pipeline
 from sabr.core.util import configure_logging
 from sabr.embeddings import from_pdb
-from sabr.renumber import run_renumbering_pipeline
 from sabr.structure import thread_alignment
 
 LOGGER = logging.getLogger(__name__)

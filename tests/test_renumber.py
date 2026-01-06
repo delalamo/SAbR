@@ -5,7 +5,7 @@ import pytest
 from Bio import PDB
 
 import sabr.alignment.soft_aligner as soft_aligner_module
-from sabr import renumber
+from sabr.cli import renumber
 from sabr.embeddings import mpnn as mpnn_embeddings_module
 from tests.conftest import (
     FIXTURES,

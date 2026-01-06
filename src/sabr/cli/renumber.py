@@ -11,7 +11,7 @@ Key functions:
 
 Example usage:
     from Bio.PDB import PDBParser
-    from sabr import renumber
+    from sabr.cli import renumber
 
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("antibody", "input.pdb")
@@ -218,7 +218,7 @@ def renumber_structure(
 
     Example:
         >>> from Bio.PDB import PDBParser
-        >>> from sabr import renumber
+        >>> from sabr.cli import renumber
         >>> parser = PDBParser(QUIET=True)
         >>> structure = parser.get_structure("ab", "antibody.pdb")
         >>> renumbered = renumber.renumber_structure(structure, chain="H")

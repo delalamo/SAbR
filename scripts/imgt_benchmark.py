@@ -27,7 +27,7 @@ from typing import Dict, List
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr import renumber
+from sabr.cli import renumber
 from sabr.core.constants import IMGT_REGIONS
 from sabr.embeddings import from_pdb
 
