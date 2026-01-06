@@ -149,7 +149,14 @@ def alignment_matrix_to_state_vector(
             f"Found {len(orphan_rows)} orphan residues (CDR insertions)"
         )
 
-    offset = path[0][0]
+    # The offset converts row indices to indices in the padded sequence.
+    # The padded sequence is: '-' * imgt_start + input_seq[first_aligned_row:]
+    # So padded_seq[imgt_start + i] = input_seq[first_aligned_row + i]
+    # For a row r aligned to column c, mapped_residue should be:
+    #   imgt_start + (r - first_aligned_row)
+    #   = r + (imgt_start - first_aligned_row)
+    # Since imgt_start = path[0][0] and first_aligned_row = path[0][1]:
+    offset = path[0][0] - path[0][1]
     states = []
 
     for col in range(path[0][0], path[-1][0] + 1):

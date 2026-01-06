@@ -69,8 +69,12 @@ def run_renumbering_pipeline(
 
     hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
 
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
+    # Build the padded subsequence that ANARCI will use.
+    # The HMM states have mapped_residue indices into this padded sequence.
+    # When the alignment drops leading residues (first_aligned_row > 0),
+    # we must slice from first_aligned_row, not from 0.
+    first_row = hmm_output.first_aligned_row
+    subsequence = "-" * hmm_output.imgt_start + sequence[first_row:]
 
     # Detect chain type from alignment if not specified
     if chain_type == "auto":
