@@ -67,8 +67,8 @@ LOGGER = logging.getLogger(__name__)
     type=click.Path(dir_okay=False, writable=True, path_type=str),
     help=(
         "Destination structure file. Use .pdb extension for PDB format "
-        "or .cif extension for mmCIF format. mmCIF is required when using "
-        "--extended-insertions."
+        "or .cif extension for mmCIF format. mmCIF is required for "
+        "antibodies with extended insertion codes (e.g., very long CDR loops)."
     ),
 )
 @click.option(
@@ -104,17 +104,6 @@ LOGGER = logging.getLogger(__name__)
         "Range of residues to process as START END in PDB numbering "
         "(inclusive). Use '0 0' (default) to process all residues. "
         "Example: --residue-range 1 120 processes residues 1-120."
-    ),
-)
-@click.option(
-    "--extended-insertions",
-    "extended_insertions",
-    is_flag=True,
-    help=(
-        "Enable extended insertion codes (AA, AB, ..., ZZ, AAA, etc.) "
-        "for antibodies with very long CDR loops. Requires mmCIF output "
-        "format (.cif extension). Standard PDB format only supports "
-        "single-character insertion codes (A-Z, max 26 insertions per position)"
     ),
 )
 @click.option(
@@ -164,7 +153,6 @@ def main(
     overwrite: bool,
     verbose: bool,
     residue_range: Tuple[int, int],
-    extended_insertions: bool,
     disable_deterministic_renumbering: bool,
     random_seed: Optional[int],
     chain_type: str,
@@ -176,7 +164,6 @@ def main(
         input_chain,
         output_file,
         residue_range,
-        extended_insertions,
         overwrite,
     )
 
@@ -187,14 +174,11 @@ def main(
     else:
         LOGGER.info(f"Using specified random seed: {random_seed}")
 
-    start_msg = (
+    LOGGER.info(
         f"Starting SAbR CLI with input={input_pdb} "
         f"chain={input_chain} output={output_file} "
         f"scheme={numbering_scheme}"
     )
-    if extended_insertions:
-        start_msg += " (extended insertion codes enabled)"
-    LOGGER.info(start_msg)
 
     input_data = from_pdb(
         input_pdb,

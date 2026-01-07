@@ -37,7 +37,6 @@ def validate_inputs(
     input_chain: str,
     output_file: str,
     residue_range: Tuple[int, int],
-    extended_insertions: bool,
     overwrite: bool,
 ) -> None:
     """Validate CLI inputs and raise ClickException on failure.
@@ -48,7 +47,6 @@ def validate_inputs(
         output_file: Path to output structure file.
         residue_range: Tuple of (start, end) residue numbers in PDB numbering.
             Use (0, 0) to process all residues.
-        extended_insertions: Whether extended insertion codes are enabled.
         overwrite: Whether to overwrite existing output file.
 
     Raises:
@@ -72,12 +70,6 @@ def validate_inputs(
         raise click.ClickException(
             f"Output file must have extension .pdb or .cif. "
             f"Got: '{output_file}'"
-        )
-
-    if extended_insertions and not output_file.endswith(".cif"):
-        raise click.ClickException(
-            "The --extended-insertions option requires mmCIF output format. "
-            "Please use a .cif file extension for the output file."
         )
 
     start_res, end_res = residue_range
