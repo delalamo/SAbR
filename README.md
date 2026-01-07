@@ -61,8 +61,9 @@ Options:
                                   character).  [required]
   -o, --output FILE               Destination structure file. Use .pdb
                                   extension for PDB format or .cif extension
-                                  for mmCIF format. mmCIF is required when
-                                  using --extended-insertions.  [required]
+                                  for mmCIF format. mmCIF is required for
+                                  antibodies with extended insertion codes
+                                  (e.g., very long CDR loops).  [required]
   -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
                                   Numbering scheme.  [default: IMGT]
   --overwrite                     Overwrite the output file if it already
@@ -73,12 +74,6 @@ Options:
                                   to process all residues. Example:
                                   --residue-range 1 120 processes residues
                                   1-120.
-  --extended-insertions           Enable extended insertion codes (AA, AB,
-                                  ..., ZZ, AAA, etc.) for antibodies with very
-                                  long CDR loops. Requires mmCIF output format
-                                  (.cif extension). Standard PDB format only
-                                  supports single-character insertion codes
-                                  (A-Z, max 26 insertions per position).
   --disable-deterministic-renumbering
                                   Disable deterministic renumbering corrections
                                   for loop regions. By default, corrections are
