@@ -185,6 +185,37 @@ def correct_fr1_alignment(
     return aln
 
 
+def _move_or_clear_position(
+    aln: np.ndarray,
+    source_col: int,
+    target_col: int,
+    source_pos: str,
+    target_pos: str,
+) -> None:
+    """Move residue from source to target column, or clear if target occupied.
+
+    Args:
+        aln: The alignment matrix to modify in-place.
+        source_col: Column index of the source position.
+        target_col: Column index of the target position.
+        source_pos: Human-readable source position name (for logging).
+        target_pos: Human-readable target position name (for logging).
+    """
+    target_occupied = aln[:, target_col].sum() == 1
+    if not target_occupied:
+        LOGGER.info(
+            f"Moving residue from position {source_pos} to position "
+            f"{target_pos} (chain lacks position {source_pos})"
+        )
+        aln[:, target_col] = aln[:, source_col]
+    else:
+        LOGGER.info(
+            f"Clearing position {source_pos} (chain lacks position "
+            f"{source_pos}, but position {target_pos} already occupied)"
+        )
+    aln[:, source_col] = 0
+
+
 def correct_fr3_alignment(
     aln: np.ndarray,
     input_has_pos81: bool = False,
@@ -236,41 +267,12 @@ def correct_fr3_alignment(
         ):
             return aln
 
-    pos81_occupied = aln[:, pos81_col].sum() == 1
-    pos82_occupied = aln[:, pos82_col].sum() == 1
-    pos83_occupied = aln[:, pos83_col].sum() == 1
-    pos84_occupied = aln[:, pos84_col].sum() == 1
+    # Move misaligned positions: 81→83 and 82→84
+    if not input_has_pos81 and aln[:, pos81_col].sum() == 1:
+        _move_or_clear_position(aln, pos81_col, pos83_col, "81", "83")
 
-    if not input_has_pos81 and pos81_occupied:
-        if not pos83_occupied:
-            LOGGER.info(
-                "Moving residue from position 81 to position 83 "
-                "(chain lacks position 81)"
-            )
-            aln[:, pos83_col] = aln[:, pos81_col]
-            aln[:, pos81_col] = 0
-            pos83_occupied = True
-        else:
-            LOGGER.info(
-                "Clearing position 81 (chain lacks position 81, "
-                "but position 83 already occupied)"
-            )
-            aln[:, pos81_col] = 0
-
-    if not input_has_pos82 and pos82_occupied:
-        if not pos84_occupied:
-            LOGGER.info(
-                "Moving residue from position 82 to position 84 "
-                "(chain lacks position 82)"
-            )
-            aln[:, pos84_col] = aln[:, pos82_col]
-            aln[:, pos82_col] = 0
-        else:
-            LOGGER.info(
-                "Clearing position 82 (chain lacks position 82, "
-                "but position 84 already occupied)"
-            )
-            aln[:, pos82_col] = 0
+    if not input_has_pos82 and aln[:, pos82_col].sum() == 1:
+        _move_or_clear_position(aln, pos82_col, pos84_col, "82", "84")
 
     return aln
 
@@ -363,6 +365,135 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
     return aln
 
 
+def _find_loop_anchors(
+    aln: np.ndarray,
+    anchor_start_col: int,
+    anchor_end_col: int,
+) -> Tuple[Optional[int], Optional[int]]:
+    """Find anchor rows for a CDR loop.
+
+    Args:
+        aln: The alignment matrix.
+        anchor_start_col: Column index of the start anchor (0-indexed).
+        anchor_end_col: Column index of the end anchor (0-indexed).
+
+    Returns:
+        Tuple of (start_row, end_row) if both anchors found, otherwise
+        contains None for missing anchors.
+    """
+    anchor_start_row, _ = find_nearest_occupied_column(
+        aln, anchor_start_col, search_range=2, direction="both"
+    )
+    anchor_end_row, _ = find_nearest_occupied_column(
+        aln, anchor_end_col, search_range=2, direction="both"
+    )
+    return anchor_start_row, anchor_end_row
+
+
+def _build_anchor_error_details(
+    aln: np.ndarray,
+    anchor_start: int,
+    anchor_end: int,
+    anchor_start_col: int,
+    anchor_end_col: int,
+    anchor_start_row: Optional[int],
+    anchor_end_row: Optional[int],
+) -> str:
+    """Build detailed error message for missing anchors.
+
+    Searches for the closest residues to missing anchors and builds
+    a diagnostic message.
+
+    Args:
+        aln: The alignment matrix.
+        anchor_start: Start anchor position (1-indexed).
+        anchor_end: End anchor position (1-indexed).
+        anchor_start_col: Start anchor column (0-indexed).
+        anchor_end_col: End anchor column (0-indexed).
+        anchor_start_row: Found start row or None.
+        anchor_end_row: Found end row or None.
+
+    Returns:
+        Semicolon-separated string of diagnostic details.
+    """
+    details = []
+    if anchor_start_row is None:
+        # Search backward (away from CDR) with larger range
+        closest_row, closest_col = find_nearest_occupied_column(
+            aln, anchor_start_col, search_range=10, direction="backward"
+        )
+        if closest_row is not None:
+            details.append(
+                f"closest residue to start anchor {anchor_start}: "
+                f"row {closest_row} at IMGT position {closest_col + 1}"
+            )
+        else:
+            details.append(
+                f"no residues found near start anchor {anchor_start}"
+            )
+
+    if anchor_end_row is None:
+        # Search forward (away from CDR) with larger range
+        closest_row, closest_col = find_nearest_occupied_column(
+            aln, anchor_end_col, search_range=10, direction="forward"
+        )
+        if closest_row is not None:
+            details.append(
+                f"closest residue to end anchor {anchor_end}: "
+                f"row {closest_row} at IMGT position {closest_col + 1}"
+            )
+        else:
+            details.append(f"no residues found near end anchor {anchor_end}")
+
+    return "; ".join(details)
+
+
+def _assign_linear_positions(
+    aln: np.ndarray,
+    rows: list,
+    positions: list,
+) -> None:
+    """Assign IMGT positions linearly to rows.
+
+    Args:
+        aln: The alignment matrix to modify in-place.
+        rows: List of row indices to assign.
+        positions: List of IMGT positions (1-indexed) to assign.
+    """
+    for i, pos in enumerate(positions):
+        if i < len(rows):
+            aln[rows[i], pos - 1] = 1
+
+
+def _assign_cdr_positions_alternating(
+    aln: np.ndarray,
+    cdr_rows: list,
+    cdr_start: int,
+    cdr_end: int,
+) -> None:
+    """Assign CDR positions using IMGT alternating pattern.
+
+    Args:
+        aln: The alignment matrix to modify in-place.
+        cdr_rows: List of row indices for CDR residues.
+        cdr_start: First IMGT position of the CDR (1-indexed).
+        cdr_end: Last IMGT position of the CDR (1-indexed).
+    """
+    n_cdr_residues = len(cdr_rows)
+    if n_cdr_residues == 0:
+        return
+
+    cdr_start_col = cdr_start - 1
+    n_cdr_positions = cdr_end - cdr_start + 1
+
+    sub_aln = np.zeros((n_cdr_residues, n_cdr_positions), dtype=aln.dtype)
+    sub_aln = correct_gap_numbering(sub_aln)
+    for i, row in enumerate(cdr_rows):
+        aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[
+            i, :
+        ]
+
+
 def correct_cdr_loop(
     aln: np.ndarray,
     loop_name: str,
@@ -392,45 +523,22 @@ def correct_cdr_loop(
     anchor_start_col = anchor_start - 1
     anchor_end_col = anchor_end - 1
 
-    anchor_start_row, _ = find_nearest_occupied_column(
-        aln, anchor_start_col, search_range=2, direction="both"
-    )
-    anchor_end_row, _ = find_nearest_occupied_column(
-        aln, anchor_end_col, search_range=2, direction="both"
+    # Find anchor rows
+    anchor_start_row, anchor_end_row = _find_loop_anchors(
+        aln, anchor_start_col, anchor_end_col
     )
 
+    # Validate anchors were found
     if anchor_start_row is None or anchor_end_row is None:
-        # Build detailed info about what's nearby, searching away from CDRs
-        details = []
-        if anchor_start_row is None:
-            # Search backward (away from CDR) with larger range
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_start_col, search_range=10, direction="backward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to start anchor {anchor_start}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(
-                    f"no residues found near start anchor {anchor_start}"
-                )
-        if anchor_end_row is None:
-            # Search forward (away from CDR) with larger range
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_end_col, search_range=10, direction="forward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to end anchor {anchor_end}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(
-                    f"no residues found near end anchor {anchor_end}"
-                )
-        detail_str = "; ".join(details) if details else ""
+        detail_str = _build_anchor_error_details(
+            aln,
+            anchor_start,
+            anchor_end,
+            anchor_start_col,
+            anchor_end_col,
+            anchor_start_row,
+            anchor_end_row,
+        )
         LOGGER.warning(
             f"Skipping {loop_name}; missing anchor at position "
             f"{anchor_start} (col {anchor_start_col}±2) or "
@@ -451,7 +559,7 @@ def correct_cdr_loop(
     ):
         return aln
 
-    # Calculate FW positions between anchors (outside CDR range)
+    # Calculate framework positions between anchors (outside CDR range)
     fw_before_cdr = list(range(anchor_start + 1, cdr_start))
     fw_after_cdr = list(range(cdr_end + 1, anchor_end))
     n_fw_before = len(fw_before_cdr)
@@ -479,35 +587,24 @@ def correct_cdr_loop(
     )
 
     # Clear ALL alignments for intermediate rows
-    # (row may have been assigned outside the anchor region)
     for row in intermediate_rows:
         aln[row, :] = 0
 
-    # Assign FW positions before CDR (linear assignment)
-    for i, pos in enumerate(fw_before_cdr):
-        row = intermediate_rows[i]
-        aln[row, pos - 1] = 1
-
-    # Assign FW positions after CDR (linear assignment)
-    for i, pos in enumerate(fw_after_cdr):
-        row = intermediate_rows[-(n_fw_after - i)]
-        aln[row, pos - 1] = 1
+    # Assign framework positions before and after CDR
+    _assign_linear_positions(
+        aln, intermediate_rows[:n_fw_before], fw_before_cdr
+    )
+    _assign_linear_positions(
+        aln,
+        intermediate_rows[-n_fw_after:] if n_fw_after > 0 else [],
+        fw_after_cdr,
+    )
 
     # Assign CDR positions using alternating pattern
-    if n_cdr_residues > 0:
-        cdr_rows = intermediate_rows[n_fw_before:]
-        if n_fw_after > 0:
-            cdr_rows = cdr_rows[:-n_fw_after]
-
-        cdr_start_col = cdr_start - 1
-        n_cdr_positions = cdr_end - cdr_start + 1
-
-        sub_aln = np.zeros((n_cdr_residues, n_cdr_positions), dtype=aln.dtype)
-        sub_aln = correct_gap_numbering(sub_aln)
-        for i, row in enumerate(cdr_rows):
-            aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[
-                i, :
-            ]
+    cdr_rows = intermediate_rows[n_fw_before:]
+    if n_fw_after > 0:
+        cdr_rows = cdr_rows[:-n_fw_after]
+    _assign_cdr_positions_alternating(aln, cdr_rows, cdr_start, cdr_end)
 
     return aln
 

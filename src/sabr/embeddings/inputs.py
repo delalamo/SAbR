@@ -10,8 +10,9 @@ Supports extraction from:
 """
 
 import logging
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Union
+from typing import Iterator, List, Optional, Tuple, Union
 
 import gemmi
 import numpy as np
@@ -85,13 +86,136 @@ def compute_cb(
     return cb
 
 
-def extract_from_gemmi_chain(
-    chain: gemmi.Chain, source_name: str = ""
+class ResidueAdapter(ABC):
+    """Abstract adapter for accessing residue data from different libraries.
+
+    This adapter provides a uniform interface for extracting backbone
+    coordinates and residue information from both Gemmi and BioPython
+    chain objects.
+    """
+
+    @abstractmethod
+    def get_chain_name(self) -> str:
+        """Return the chain identifier."""
+
+    @abstractmethod
+    def iterate_residues(self) -> Iterator:
+        """Iterate over residues in the chain."""
+
+    @abstractmethod
+    def is_heteroatom(self, residue) -> bool:
+        """Check if residue is a heteroatom (water, ligand, etc.)."""
+
+    @abstractmethod
+    def get_backbone_coords(
+        self, residue
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+        """Extract N, CA, C coordinates from residue.
+
+        Returns:
+            Tuple of (N, CA, C) coordinates, or None if backbone incomplete.
+        """
+
+    @abstractmethod
+    def get_residue_name(self, residue) -> str:
+        """Return 3-letter residue name."""
+
+    @abstractmethod
+    def get_residue_id(self, residue) -> str:
+        """Return residue ID string (number + optional insertion code)."""
+
+
+class GemmiResidueAdapter(ResidueAdapter):
+    """Adapter for Gemmi Chain objects."""
+
+    def __init__(self, chain: gemmi.Chain):
+        self._chain = chain
+
+    def get_chain_name(self) -> str:
+        return self._chain.name
+
+    def iterate_residues(self) -> Iterator:
+        return iter(self._chain)
+
+    def is_heteroatom(self, residue) -> bool:
+        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
+        return residue.het_flag != "A"
+
+    def get_backbone_coords(
+        self, residue
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+        n_atom = residue.find_atom("N", "*")
+        ca_atom = residue.find_atom("CA", "*")
+        c_atom = residue.find_atom("C", "*")
+
+        if not (n_atom and ca_atom and c_atom):
+            return None
+
+        n_coord = np.array([n_atom.pos.x, n_atom.pos.y, n_atom.pos.z])
+        ca_coord = np.array([ca_atom.pos.x, ca_atom.pos.y, ca_atom.pos.z])
+        c_coord = np.array([c_atom.pos.x, c_atom.pos.y, c_atom.pos.z])
+        return n_coord, ca_coord, c_coord
+
+    def get_residue_name(self, residue) -> str:
+        return residue.name
+
+    def get_residue_id(self, residue) -> str:
+        resnum = residue.seqid.num
+        icode = residue.seqid.icode.strip()
+        if icode and icode != " ":
+            return f"{resnum}{icode}"
+        return str(resnum)
+
+
+class BioPythonResidueAdapter(ResidueAdapter):
+    """Adapter for BioPython Chain objects."""
+
+    def __init__(self, chain: Chain.Chain):
+        self._chain = chain
+
+    def get_chain_name(self) -> str:
+        return self._chain.id
+
+    def iterate_residues(self) -> Iterator:
+        return self._chain.get_residues()
+
+    def is_heteroatom(self, residue) -> bool:
+        hetflag = residue.get_id()[0]
+        return bool(hetflag.strip())
+
+    def get_backbone_coords(
+        self, residue
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+        try:
+            n_coord = residue["N"].get_coord()
+            ca_coord = residue["CA"].get_coord()
+            c_coord = residue["C"].get_coord()
+            return n_coord, ca_coord, c_coord
+        except KeyError:
+            return None
+
+    def get_residue_name(self, residue) -> str:
+        return residue.get_resname()
+
+    def get_residue_id(self, residue) -> str:
+        res_id = residue.get_id()
+        resnum = res_id[1]
+        icode = res_id[2].strip()
+        if icode:
+            return f"{resnum}{icode}"
+        return str(resnum)
+
+
+def _extract_from_chain(
+    adapter: ResidueAdapter, source_name: str = ""
 ) -> MPNNInputs:
-    """Extract coordinates, residue info, and sequence from a Gemmi Chain.
+    """Extract backbone coordinates and residue info using a ResidueAdapter.
+
+    This is the shared extraction logic used by both Gemmi and BioPython
+    extraction functions.
 
     Args:
-        chain: Gemmi Chain object to extract from.
+        adapter: ResidueAdapter wrapping the chain to extract from.
         source_name: Source identifier for logging (file path or "structure").
 
     Returns:
@@ -104,27 +228,20 @@ def extract_from_gemmi_chain(
     ids_list = []
     seq_list = []
 
-    for residue in chain:
+    for residue in adapter.iterate_residues():
         # Skip heteroatoms (water, ligands, etc.)
-        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
-        if residue.het_flag != "A":
+        if adapter.is_heteroatom(residue):
             continue
 
         # Check if all backbone atoms are present
-        n_atom = residue.find_atom("N", "*")
-        ca_atom = residue.find_atom("CA", "*")
-        c_atom = residue.find_atom("C", "*")
-
-        if not (n_atom and ca_atom and c_atom):
-            # Skip residues missing backbone atoms
+        backbone = adapter.get_backbone_coords(residue)
+        if backbone is None:
             continue
 
-        n_coord = np.array([n_atom.pos.x, n_atom.pos.y, n_atom.pos.z])
-        ca_coord = np.array([ca_atom.pos.x, ca_atom.pos.y, ca_atom.pos.z])
-        c_coord = np.array([c_atom.pos.x, c_atom.pos.y, c_atom.pos.z])
+        n_coord, ca_coord, c_coord = backbone
 
         # Extract one-letter amino acid code (X for unknown residues)
-        resname = residue.name
+        resname = adapter.get_residue_name(residue)
         one_letter = constants.AA_3TO1.get(resname, "X")
         seq_list.append(one_letter)
 
@@ -142,17 +259,12 @@ def extract_from_gemmi_chain(
         coords_list.append(residue_coords)
 
         # Generate residue ID string
-        resnum = residue.seqid.num
-        icode = residue.seqid.icode.strip()
-        if icode and icode != " ":
-            id_str = f"{resnum}{icode}"
-        else:
-            id_str = str(resnum)
-        ids_list.append(id_str)
+        ids_list.append(adapter.get_residue_id(residue))
 
+    chain_name = adapter.get_chain_name()
     if not coords_list:
         raise ValueError(
-            f"No valid residues found in chain '{chain.name}'"
+            f"No valid residues found in chain '{chain_name}'"
             + (f" of {source_name}" if source_name else "")
         )
 
@@ -173,7 +285,7 @@ def extract_from_gemmi_chain(
     residue_indices = np.arange(n_residues)
 
     sequence = "".join(seq_list)
-    log_msg = f"Extracted {n_residues} residues from chain '{chain.name}'"
+    log_msg = f"Extracted {n_residues} residues from chain '{chain_name}'"
     if source_name:
         log_msg += f" in {source_name}"
     LOGGER.info(log_msg)
@@ -187,6 +299,25 @@ def extract_from_gemmi_chain(
         residue_ids=ids_list,
         sequence=sequence,
     )
+
+
+def extract_from_gemmi_chain(
+    chain: gemmi.Chain, source_name: str = ""
+) -> MPNNInputs:
+    """Extract coordinates, residue info, and sequence from a Gemmi Chain.
+
+    Args:
+        chain: Gemmi Chain object to extract from.
+        source_name: Source identifier for logging (file path or "structure").
+
+    Returns:
+        MPNNInputs containing backbone coordinates and residue information.
+
+    Raises:
+        ValueError: If no valid residues are found.
+    """
+    adapter = GemmiResidueAdapter(chain)
+    return _extract_from_chain(adapter, source_name)
 
 
 def extract_from_biopython_chain(
@@ -204,90 +335,8 @@ def extract_from_biopython_chain(
     Raises:
         ValueError: If no valid residues are found.
     """
-    coords_list = []
-    ids_list = []
-    seq_list = []
-
-    for residue in target_chain.get_residues():
-        # Skip heteroatoms (water, ligands, etc.)
-        hetflag = residue.get_id()[0]
-        if hetflag.strip():
-            continue
-
-        # Check if all backbone atoms are present
-        try:
-            n_coord = residue["N"].get_coord()
-            ca_coord = residue["CA"].get_coord()
-            c_coord = residue["C"].get_coord()
-        except KeyError:
-            # Skip residues missing backbone atoms
-            continue
-
-        # Extract one-letter amino acid code (X for unknown residues)
-        resname = residue.get_resname()
-        one_letter = constants.AA_3TO1.get(resname, "X")
-        seq_list.append(one_letter)
-
-        # Compute CB position
-        cb_coord = compute_cb(
-            n_coord.reshape(1, 3),
-            ca_coord.reshape(1, 3),
-            c_coord.reshape(1, 3),
-        ).reshape(3)
-
-        # Store coordinates [N, CA, C, CB]
-        residue_coords = np.stack(
-            [n_coord, ca_coord, c_coord, cb_coord], axis=0
-        )
-        coords_list.append(residue_coords)
-
-        # Generate residue ID string
-        res_id = residue.get_id()
-        resnum = res_id[1]
-        icode = res_id[2].strip()
-        if icode:
-            id_str = f"{resnum}{icode}"
-        else:
-            id_str = str(resnum)
-        ids_list.append(id_str)
-
-    if not coords_list:
-        raise ValueError(
-            f"No valid residues found in chain '{target_chain.id}'"
-            + (f" of {source_name}" if source_name else "")
-        )
-
-    # Stack all coordinates
-    coords = np.stack(coords_list, axis=0)  # [N, 4, 3]
-
-    # Filter out any residues with NaN coordinates
-    valid_mask = ~np.isnan(coords).any(axis=(1, 2))
-    coords = coords[valid_mask]
-    ids_list = [ids_list[i] for i in range(len(ids_list)) if valid_mask[i]]
-    seq_list = [seq_list[i] for i in range(len(seq_list)) if valid_mask[i]]
-
-    n_residues = coords.shape[0]
-
-    # Create output arrays with batch dimension
-    mask = np.ones(n_residues)
-    chain_ids = np.ones(n_residues)
-    residue_indices = np.arange(n_residues)
-
-    sequence = "".join(seq_list)
-    log_msg = f"Extracted {n_residues} residues from chain '{target_chain.id}'"
-    if source_name:
-        log_msg += f" in {source_name}"
-    LOGGER.info(log_msg)
-
-    # Add batch dimension to match expected format
-    return MPNNInputs(
-        coords=coords[None, :],  # [1, N, 4, 3]
-        mask=mask[None, :],  # [1, N]
-        chain_ids=chain_ids[None, :],  # [1, N]
-        residue_indices=residue_indices[None, :],  # [1, N]
-        residue_ids=ids_list,
-        sequence=sequence,
-    )
+    adapter = BioPythonResidueAdapter(target_chain)
+    return _extract_from_chain(adapter, source_name)
 
 
 def get_inputs(
