@@ -7,7 +7,7 @@ ensure proper numbering of CDR loops, framework regions, and termini.
 
 Key corrections:
 - CDR loop corrections (CDR1, CDR2, CDR3)
-- FR1 corrections for positions 6-12
+- FR1 corrections for positions 6-13
 - FR3/DE loop corrections for positions 81-84
 - C-terminus corrections for positions 126-128
 """
@@ -103,15 +103,13 @@ def correct_fr1_alignment(
     aln: np.ndarray,
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
-    """Fix FR1 alignment issues in positions 6-12 deterministically.
+    """Fix FR1 alignment issues in positions 6-13 deterministically.
 
-    Uses anchor positions 6 and 12 to count residues and determine if
-    position 10 should be occupied:
-    - 7 residues between positions 6-12 → position 10 occupied (kappa)
-    - 6 residues between positions 6-12 → position 10 gap (heavy/lambda)
-
-    The residues are then redistributed deterministically to fill
-    positions 6-12 with or without position 10.
+    Uses anchor positions 6 and 13 to count residues and determine the
+    numbering pattern based purely on residue count:
+    - 8 residues: positions 6,7,8,9,10,11,12,13 (include 10)
+    - 7 residues: positions 6,7,8,9,11,12,13 (skip 10)
+    - 6 residues: positions 6,7,8,9,11,12 (skip 10)
 
     Args:
         aln: The alignment matrix.
@@ -148,26 +146,37 @@ def correct_fr1_alignment(
     # Count residues between anchors (inclusive)
     n_residues = end_row - start_row + 1
 
-    # Kappa chains have 7 residues (6,7,8,9,10,11,12)
-    # Heavy/Lambda chains have 6 residues (6,7,8,9,11,12 - skip 10)
-    should_have_pos10 = n_residues >= constants.FR1_KAPPA_RESIDUE_COUNT
+    # Determine target positions based purely on residue count:
+    # - 8 residues: 6,7,8,9,10,11,12,13 (include position 10)
+    # - 7 residues: 6,7,8,9,11,12,13 (skip 10)
+    # - 6 residues: 6,7,8,9,11,12 (skip 10)
+    if n_residues >= 8:
+        pattern = "full_8"
+    elif n_residues == 7:
+        pattern = "skip10_7"
+    else:
+        pattern = "standard_6"
 
     LOGGER.info(
         f"FR1 correction: {n_residues} residues between rows "
-        f"{start_row}-{end_row}, position 10 "
-        f"{'occupied' if should_have_pos10 else 'gap'}"
+        f"{start_row}-{end_row}, pattern={pattern}"
     )
 
-    # Clear the FR1 region (positions 6-12, cols 5-11)
-    aln[start_row : end_row + 1, pos6_col : pos12_col + 1] = 0
+    # Clear ALL assignments for rows being redistributed
+    # (row may have been assigned outside the FR1 column range)
+    for row in range(start_row, end_row + 1):
+        aln[row, :] = 0
 
-    # Redistribute residues deterministically
-    if should_have_pos10:
-        # Kappa: fill positions 6,7,8,9,10,11,12
-        target_cols = [5, 6, 7, 8, 9, 10, 11]  # 0-indexed
+    # Redistribute residues deterministically based on count
+    if pattern == "full_8":
+        # 8 residues: fill positions 6,7,8,9,10,11,12,13
+        target_cols = [5, 6, 7, 8, 9, 10, 11, 12]  # 0-indexed
+    elif pattern == "skip10_7":
+        # 7 residues: fill positions 6,7,8,9,11,12,13 (skip 10)
+        target_cols = [5, 6, 7, 8, 10, 11, 12]  # 0-indexed
     else:
-        # Heavy/Lambda: fill positions 6,7,8,9,11,12 (skip 10)
-        target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed, skip col 9
+        # 6 residues: fill positions 6,7,8,9,11,12 (skip 10)
+        target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed
 
     for i, row in enumerate(range(start_row, end_row + 1)):
         if i < len(target_cols):
@@ -469,11 +478,10 @@ def correct_cdr_loop(
         f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
     )
 
-    # Clear alignments for intermediate rows in the region
-    region_start_col = anchor_start
-    region_end_col = anchor_end - 1
+    # Clear ALL alignments for intermediate rows
+    # (row may have been assigned outside the anchor region)
     for row in intermediate_rows:
-        aln[row, region_start_col:region_end_col] = 0
+        aln[row, :] = 0
 
     # Assign FW positions before CDR (linear assignment)
     for i, pos in enumerate(fw_before_cdr):
@@ -534,7 +542,7 @@ def apply_deterministic_corrections(
     detected_chain_type = detect_chain_type(aln)
     is_light_chain = detected_chain_type in ("K", "L")
 
-    # Apply FR1 correction
+    # Apply FR1 correction (anchor-based, uses residue count only)
     aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
