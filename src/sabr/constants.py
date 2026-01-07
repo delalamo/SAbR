@@ -43,10 +43,10 @@ IMGT_MAX_POSITION = 128  # Maximum position in IMGT numbering scheme
 DEFAULT_TEMPERATURE = 1e-4
 
 # FR1 region constants for alignment correction (0-indexed columns)
-# FR1 spans IMGT positions 1-26, but correction focuses on positions 6-12
+# FR1 spans IMGT positions 1-26, but correction focuses on positions 6-13
 FR1_ANCHOR_START_COL = 5  # 0-indexed column for IMGT position 6
-FR1_ANCHOR_END_COL = 11  # 0-indexed column for IMGT position 12
-FR1_KAPPA_RESIDUE_COUNT = 7  # Kappa chains have 7 residues in positions 6-12
+FR1_ANCHOR_END_COL = 12  # 0-indexed column for IMGT position 13
+FR1_KAPPA_RESIDUE_COUNT = 8  # Kappa chains have 8 residues in positions 6-13
 
 # FR3 positions 81-84 (0-indexed columns)
 FR3_POS81_COL = 80

@@ -17,7 +17,6 @@ pdb_id,chain,chain_type
 6ir1,B,heavy
 4ktd,H,heavy
 3v0w,H,heavy
-5dfw,H,heavy
 6l62,H,heavy
 6nmv,H,heavy
 1yc7,B,heavy
@@ -38,7 +37,6 @@ pdb_id,chain,chain_type
 7l6v,C,heavy
 7jr7,E,heavy
 6yxm,H,heavy
-5f3j,D,heavy
 3w9e,A,heavy
 7kbi,C,heavy
 7joo,H,heavy
@@ -53,7 +51,6 @@ pdb_id,chain,chain_type
 6e9q,G,heavy
 5c6t,H,heavy
 5e8e,B,heavy
-5kov,O,heavy
 7anq,B,heavy
 4x7f,C,heavy
 4hs6,B,heavy
@@ -91,19 +88,9 @@ pdb_id,chain,chain_type
 5f1o,B,heavy
 1mco,H,heavy
 5omm,C,heavy
-2i26,N,heavy
-6x4g,N,heavy
-4hgk,C,heavy
-3moq,A,heavy
-2ywz,A,heavy
-2ywy,A,heavy
-2coq,A,heavy
 9bew,H,heavy
 8en4,C,heavy
 6vug,D,heavy
-7pa7,Q,heavy
-7paa,Z,heavy
-7paa,A,heavy
 8dv6,C,heavy
 7nik,F,heavy
 3mlw,H,heavy
@@ -113,7 +100,6 @@ pdb_id,chain,chain_type
 3qcu,H,heavy
 4ubd,S,heavy
 5u3k,A,heavy
-6uup,A,heavy
 4hfw,B,heavy
 6de7,D,heavy
 7fau,B,heavy
@@ -135,7 +121,6 @@ pdb_id,chain,chain_type
 6xkp,M,heavy
 7paf,B,heavy
 6pzy,I,heavy
-6i07,B,heavy
 6iw2,K,heavy
 4s1q,H,heavy
 6vor,C,heavy
@@ -180,7 +165,6 @@ pdb_id,chain,chain_type
 7ar0,B,heavy
 5xrq,H,heavy
 6ui1,D,heavy
-7det,D,heavy
 6wds,H,heavy
 6ol7,P,heavy
 7rnn,C,heavy
@@ -208,17 +192,14 @@ pdb_id,chain,chain_type
 6cse,H,heavy
 6lz9,H,heavy
 7cm4,H,heavy
-2znw,B,heavy
 4eiz,C,heavy
 6ba5,F,heavy
 6bfq,H,heavy
 7rfb,A,heavy
-6mn7,G,heavy
 4jpw,H,heavy
 4rqq,B,heavy
 4s10,A,heavy
 1jnh,H,heavy
-6oan,B,heavy
 6ute,G,heavy
 5t4z,A,heavy
 5t3z,D,heavy
@@ -282,7 +263,6 @@ pdb_id,chain,chain_type
 6wt3,H,heavy
 1lo4,H,heavy
 7kdu,C,heavy
-6ejg,D,heavy
 6lz4,A,heavy
 2qsc,H,heavy
 3jbf,7,heavy
@@ -344,7 +324,6 @@ pdb_id,chain,chain_type
 7lzp,G,heavy
 4lgp,B,heavy
 7mej,B,heavy
-6kn9,E,heavy
 4r90,H,heavy
 5feh,F,heavy
 6bkc,H,heavy
@@ -394,7 +373,6 @@ pdb_id,chain,chain_type
 1rhh,B,heavy
 5wko,K,heavy
 5w4l,D,heavy
-7k5y,M,heavy
 1ai1,H,heavy
 6ksn,A,heavy
 6gwp,B,heavy
@@ -436,7 +414,6 @@ pdb_id,chain,chain_type
 9bjk,N,heavy
 8oyt,E,heavy
 8s2e,H,heavy
-8yto,A,heavy
 8v5a,Y,heavy
 8zr5,N,heavy
 8p5m,G,heavy
@@ -456,7 +433,6 @@ pdb_id,chain,chain_type
 4b50,A,heavy
 6vi0,H,heavy
 6idk,H,heavy
-1moe,B,heavy
 6wf1,H,heavy
 6mto,H,heavy
 4ydv,H,heavy
@@ -487,7 +463,6 @@ pdb_id,chain,chain_type
 7kcr,H,heavy
 7k84,B,heavy
 6woz,E,heavy
-3wbd,B,heavy
 7kzb,A,heavy
 5b3j,H,heavy
 6x7w,A,heavy
@@ -519,7 +494,6 @@ pdb_id,chain,chain_type
 5ukr,H,heavy
 3eyf,B,heavy
 6eqi,B,heavy
-4p49,A,heavy
 6b0n,D,heavy
 6wzk,C,heavy
 6pef,A,heavy
@@ -540,11 +514,9 @@ pdb_id,chain,chain_type
 7r63,A,heavy
 6cde,M,heavy
 7jkb,B,heavy
-6ikm,K,heavy
 6u53,A,heavy
 3k74,B,heavy
 7lua,i,heavy
-5uk2,H,heavy
 7n9t,D,heavy
 4w2p,B,heavy
 7r74,D,heavy
@@ -564,7 +536,6 @@ pdb_id,chain,chain_type
 4jo4,H,heavy
 7a3t,H,heavy
 1ezv,X,heavy
-7cn2,G,heavy
 7l7r,B,heavy
 6i9i,H,heavy
 6udk,M,heavy
@@ -577,7 +548,6 @@ pdb_id,chain,chain_type
 5w23,H,heavy
 4yqx,H,heavy
 6c08,D,heavy
-6ek2,H,heavy
 4u05,A,heavy
 4yue,H,heavy
 6k7o,F,heavy
@@ -594,10 +564,8 @@ pdb_id,chain,chain_type
 5cd3,G,heavy
 7nfr,B,heavy
 7nj5,F,heavy
-3juy,A,heavy
 6y0e,B,heavy
 6mns,A,heavy
-6ehv,X,heavy
 4xzu,E,heavy
 7n9b,F,heavy
 6e8v,c,heavy
@@ -607,7 +575,6 @@ pdb_id,chain,chain_type
 4glr,J,heavy
 6vy5,H,heavy
 5fgc,E,heavy
-6nou,A,heavy
 3v6o,C,heavy
 1uwg,H,heavy
 1flr,H,heavy
@@ -652,7 +619,6 @@ pdb_id,chain,chain_type
 6xja,H,heavy
 4zto,H,heavy
 3jbd,7,heavy
-1h8o,B,heavy
 5cck,H,heavy
 6p91,H,heavy
 3ld8,C,heavy
@@ -699,9 +665,7 @@ pdb_id,chain,chain_type
 7l6v,E,heavy
 6v7y,F,heavy
 5t33,H,heavy
-5jym,B,heavy
 2x1q,B,heavy
-6tcs,A,heavy
 1ikf,H,heavy
 4w6y,B,heavy
 3jbg,7,heavy
@@ -735,7 +699,6 @@ pdb_id,chain,chain_type
 4f57,H,heavy
 6os0,D,heavy
 7km5,D,heavy
-5dhx,B,heavy
 5mp2,D,heavy
 7lm8,H,heavy
 7n0i,K,heavy
@@ -778,7 +741,6 @@ pdb_id,chain,chain_type
 3ubx,H,heavy
 6ddv,B,heavy
 7f5g,B,heavy
-4p48,A,heavy
 3u0t,D,heavy
 6tyb,H,heavy
 5vta,K,heavy
@@ -792,7 +754,6 @@ pdb_id,chain,chain_type
 4lqf,H,heavy
 3u6r,A,heavy
 7l6v,F,heavy
-6j71,B,heavy
 6knm,A,heavy
 6e3h,H,heavy
 5ivn,A,heavy
@@ -870,7 +831,6 @@ pdb_id,chain,chain_type
 1kxq,G,heavy
 1ghf,H,heavy
 6obe,B,heavy
-5npi,A,heavy
 7mdu,H,heavy
 6oq5,F,heavy
 3j5m,H,heavy
@@ -878,7 +838,6 @@ pdb_id,chain,chain_type
 4uao,C,heavy
 1lk3,I,heavy
 6xrj,E,heavy
-3fku,U,heavy
 6rcv,J,heavy
 7b2q,D,heavy
 7n6p,H,heavy
@@ -961,10 +920,8 @@ pdb_id,chain,chain_type
 3i75,B,heavy
 5ovw,I,heavy
 5tkj,J,heavy
-3etb,I,heavy
 4xvt,H,heavy
 6uye,G,heavy
-2kh2,B,heavy
 6e1k,D,heavy
 6ey6,K,heavy
 5nml,F,heavy
@@ -1241,7 +1198,6 @@ pdb_id,chain,chain_type
 6u6u,L,kappa
 5tpn,L,kappa
 4j6r,L,kappa
-4hgm,A,kappa
 8s2e,L,kappa
 8p5m,L,kappa
 8sw4,L,kappa
@@ -1268,7 +1224,6 @@ pdb_id,chain,chain_type
 4m43,L,kappa
 1ezv,Y,kappa
 4jre,L,kappa
-7cn2,g,kappa
 6i9i,L,kappa
 6udk,N,kappa
 4yqx,L,kappa

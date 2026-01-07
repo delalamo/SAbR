@@ -183,6 +183,10 @@ def extract_chain_to_pdb(
         return False
 
 
+# Minimum number of residues required for a valid antibody chain
+MIN_RESIDUES = 75
+
+
 def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
@@ -191,24 +195,43 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
 
     Raises:
         RuntimeError: If SAbR pipeline fails
-        ValueError: If structural gaps are detected in the PDB
+        ValueError: If structural gaps detected or chain too short
     """
     # Extract embeddings (also provides input residue IDs)
     input_data = from_pdb(pdb_path, chain_id)
 
-    # Skip structures with backbone gaps
-    if input_data.gap_indices:
-        gap_positions = sorted(input_data.gap_indices)
+    # Skip chains with fewer than MIN_RESIDUES (fragments, not full V-regions)
+    if len(input_data.idxs) < MIN_RESIDUES:
         raise ValueError(
-            f"Structural gaps detected at positions: {gap_positions}"
+            f"Chain has only {len(input_data.idxs)} residues, "
+            f"minimum required is {MIN_RESIDUES}"
         )
 
+    # Skip structures with backbone gaps in IMGT range (positions 1-128)
+    if input_data.gap_indices:
+        gaps_in_imgt_range = []
+        for gap_idx in input_data.gap_indices:
+            residue_id = input_data.idxs[gap_idx]
+            try:
+                residue_num = int("".join(c for c in residue_id if c.isdigit()))
+                if 1 <= residue_num <= 128:
+                    gaps_in_imgt_range.append(residue_id)
+            except ValueError:
+                pass
+        if gaps_in_imgt_range:
+            raise ValueError(
+                f"Structural gaps detected within IMGT range (1-128) "
+                f"at positions: {sorted(gaps_in_imgt_range)}"
+            )
+
     # Run the renumbering pipeline (handles alignment and ANARCI)
-    anarci_out, chain_type, _ = renumber.run_renumbering_pipeline(
-        input_data,
-        numbering_scheme="imgt",
-        chain_type="auto",
-        deterministic_loop_renumbering=True,
+    anarci_out, chain_type, first_aligned_row = (
+        renumber.run_renumbering_pipeline(
+            input_data,
+            numbering_scheme="imgt",
+            chain_type="auto",
+            deterministic_loop_renumbering=True,
+        )
     )
 
     # Parse output positions from ANARCI alignment
@@ -218,11 +241,23 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
         insertion = pos[1].strip() if pos[1].strip() else ""
         output_positions.append(f"{resnum}{insertion}")
 
+    # Count total residues (not just IMGT-filtered)
+    n_input_total = len(input_data.idxs)
+    n_output_total = len([p for p, aa in anarci_out if aa != "-"])
+
+    # When alignment drops leading residues (first_aligned_row > 0),
+    # output_positions[j] corresponds to input_data.idxs[first_aligned_row + j].
+    # Slice input_positions to align with output for correct comparison.
+    input_positions = input_data.idxs[first_aligned_row:]
+
     return {
-        "input_positions": input_data.idxs,
+        "input_positions": input_positions,
         "output_positions": output_positions,
         "chain_type": chain_type,
         "sequence": input_data.sequence,
+        "n_input_total": n_input_total,
+        "n_output_total": n_output_total,
+        "first_aligned_row": first_aligned_row,
     }
 
 
@@ -244,11 +279,27 @@ def _position_in_imgt_range(pos: str) -> bool:
 
 
 def compare_positions(
-    input_positions: List[str], output_positions: List[str]
+    input_positions: List[str],
+    output_positions: List[str],
+    n_input_total: int,
+    n_output_total: int,
 ) -> Dict:
     """Compare input and output IMGT positions.
 
     Only compares residues with positions 1-128 (IMGT variable region).
+    Length mismatch is reported only when an input IMGT residue is truly
+    deleted (not renumbered to any output position). This is detected by
+    comparing the count of IMGT-range residues in input vs output.
+
+    Note: ANARCI only numbers the variable domain (positions 1-128), so
+    n_output_total will always be <= the number of IMGT-range residues.
+    Constant domain residues are not included in ANARCI output.
+
+    Args:
+        input_positions: List of input position strings.
+        output_positions: List of output position strings.
+        n_input_total: Total number of input residues (entire chain).
+        n_output_total: Total number of output residues (entire chain).
 
     Returns:
         Dict with deviations categorized by region.
@@ -278,14 +329,20 @@ def compare_positions(
             except ValueError:
                 deviations["unknown"].append((i, inp, out))
 
-    # Length mismatch
-    if len(input_filtered) != len(output_filtered):
+    # Length mismatch in IMGT region indicates a true deletion
+    # (an input IMGT residue that didn't get any output number)
+    # Only report if counts differ - this means a residue was lost
+    n_input_imgt = len(input_filtered)
+    n_output_imgt = len(output_filtered)
+
+    if n_input_imgt != n_output_imgt:
         perfect = False
         deviations["length_mismatch"].append(
-            (
-                f"input={len(input_filtered)}",
-                f"output={len(output_filtered)}",
-            )
+            {
+                "imgt_input": n_input_imgt,
+                "imgt_output": n_output_imgt,
+                "diff": n_input_imgt - n_output_imgt,
+            }
         )
 
     return {
@@ -445,7 +502,10 @@ def main():
             # Compare input positions (from IMGT-numbered PDB) with SAbR output
             input_positions = sabr_result["input_positions"]
             comparison = compare_positions(
-                input_positions, sabr_result["output_positions"]
+                input_positions,
+                sabr_result["output_positions"],
+                sabr_result["n_input_total"],
+                sabr_result["n_output_total"],
             )
 
             results[chain_type].append(
@@ -453,6 +513,8 @@ def main():
                     "pdb": f"{pdb_id}_{chain_id}",
                     "chain_type_detected": sabr_result["chain_type"],
                     "n_residues": len(input_positions),
+                    "n_input_total": sabr_result["n_input_total"],
+                    "n_output_total": sabr_result["n_output_total"],
                     "perfect": comparison["perfect"],
                     "n_deviations": comparison["n_deviations"],
                     "deviations": comparison["deviations"],
