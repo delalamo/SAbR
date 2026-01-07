@@ -84,11 +84,37 @@ def test_fix_aln_preserves_dtype():
     assert expanded.dtype == old_aln.dtype
 
 
-def test_correct_fr1_alignment_kappa_7_residues():
-    """Test FR1 correction with 7 residues (kappa - position 10 filled)."""
+def test_correct_fr1_alignment_7_residues_skip_10():
+    """Test FR1 correction with 7 residues (skip position 10, extend to 13)."""
     aln = np.zeros((20, 128), dtype=int)
-    # Set up 7 residues in rows 5-11 aligned near positions 6-12
-    # The function uses anchor counting, so place them at positions 6 and 12
+    # Set up 7 residues in rows 5-11 aligned at positions 6-13
+    # The function uses anchors at position 6 (col 5) and position 13 (col 12)
+    aln[5, 5] = 1  # Row 5 at position 6
+    aln[6, 6] = 1  # Row 6 at position 7
+    aln[7, 7] = 1  # Row 7 at position 8
+    aln[8, 8] = 1  # Row 8 at position 9
+    aln[9, 9] = 1  # Row 9 at position 10
+    aln[10, 10] = 1  # Row 10 at position 11
+    aln[11, 12] = 1  # Row 11 at position 13 (anchor end)
+
+    corrected = correct_fr1_alignment(aln)
+
+    # With 7 residues (rows 5-11), position 10 is skipped
+    # Pattern: 6,7,8,9,11,12,13 (skip 10)
+    assert corrected[5, 5] == 1  # Position 6
+    assert corrected[6, 6] == 1  # Position 7
+    assert corrected[7, 7] == 1  # Position 8
+    assert corrected[8, 8] == 1  # Position 9
+    assert corrected[9, 9] == 0, "Position 10 should be empty for 7 residues"
+    assert corrected[9, 10] == 1  # Row 9 -> Position 11
+    assert corrected[10, 11] == 1  # Row 10 -> Position 12
+    assert corrected[11, 12] == 1  # Row 11 -> Position 13
+
+
+def test_correct_fr1_alignment_8_residues_include_10():
+    """Test FR1 correction with 8 residues (include position 10)."""
+    aln = np.zeros((20, 128), dtype=int)
+    # Set up 8 residues in rows 5-12
     aln[5, 5] = 1  # Row 5 at position 6
     aln[6, 6] = 1  # Row 6 at position 7
     aln[7, 7] = 1  # Row 7 at position 8
@@ -96,19 +122,20 @@ def test_correct_fr1_alignment_kappa_7_residues():
     aln[9, 9] = 1  # Row 9 at position 10
     aln[10, 10] = 1  # Row 10 at position 11
     aln[11, 11] = 1  # Row 11 at position 12
+    aln[12, 12] = 1  # Row 12 at position 13
 
     corrected = correct_fr1_alignment(aln)
 
-    # With 7 residues (rows 5-11), position 10 should be occupied (kappa)
-    assert corrected[9, 9] == 1, "Position 10 should be occupied for kappa"
-    # Check all 7 positions are filled
+    # With 8 residues (rows 5-12), position 10 should be occupied
+    # Pattern: 6,7,8,9,10,11,12,13
     assert corrected[5, 5] == 1  # Position 6
     assert corrected[6, 6] == 1  # Position 7
     assert corrected[7, 7] == 1  # Position 8
     assert corrected[8, 8] == 1  # Position 9
-    assert corrected[9, 9] == 1  # Position 10
+    assert corrected[9, 9] == 1, "Position 10 should be occupied for 8 residues"
     assert corrected[10, 10] == 1  # Position 11
     assert corrected[11, 11] == 1  # Position 12
+    assert corrected[12, 12] == 1  # Position 13
 
 
 def test_correct_fr1_alignment_heavy_6_residues():

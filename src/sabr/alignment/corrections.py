@@ -7,7 +7,7 @@ ensure proper numbering of CDR loops, framework regions, and termini.
 
 Key corrections:
 - CDR loop corrections (CDR1, CDR2, CDR3)
-- FR1 corrections for positions 6-12
+- FR1 corrections for positions 6-13
 - FR3/DE loop corrections for positions 81-84
 - C-terminus corrections for positions 126-128
 """
@@ -101,20 +101,18 @@ def _skip_for_structural_gap(
 
 def correct_fr1_alignment(
     aln: np.ndarray,
-    chain_type: str = "H",
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
     """Fix FR1 alignment issues in positions 6-13 deterministically.
 
-    Uses anchor positions 6 and 12 to count residues and determine the
-    numbering pattern based on chain type and residue count:
-    - Kappa with 7 residues: positions 6,7,8,9,10,11,12 (include 10)
-    - Heavy/Lambda with 7 residues: positions 6,7,8,9,11,12,13 (skip 10)
+    Uses anchor positions 6 and 13 to count residues and determine the
+    numbering pattern based purely on residue count:
+    - 8 residues: positions 6,7,8,9,10,11,12,13 (include 10)
+    - 7 residues: positions 6,7,8,9,11,12,13 (skip 10)
     - 6 residues: positions 6,7,8,9,11,12 (skip 10)
 
     Args:
         aln: The alignment matrix.
-        chain_type: Detected chain type ("H", "K", or "L").
         gap_indices: FrozenSet of row indices where structural gaps occur.
             If a gap is found in the region, deterministic correction
             is skipped and embedding similarity is used instead.
@@ -148,23 +146,20 @@ def correct_fr1_alignment(
     # Count residues between anchors (inclusive)
     n_residues = end_row - start_row + 1
 
-    # Determine target positions based on residue count and chain type:
-    # - Kappa with 7 residues: 6,7,8,9,10,11,12 (include position 10)
-    # - Heavy/Lambda with 7 residues: 6,7,8,9,11,12,13 (skip 10, extend to 13)
+    # Determine target positions based purely on residue count:
+    # - 8 residues: 6,7,8,9,10,11,12,13 (include position 10)
+    # - 7 residues: 6,7,8,9,11,12,13 (skip 10)
     # - 6 residues: 6,7,8,9,11,12 (skip 10)
-    is_kappa = chain_type == "K"
-    has_7_residues = n_residues >= constants.FR1_KAPPA_RESIDUE_COUNT
-
-    if has_7_residues and is_kappa:
-        pattern = "kappa_7"
-    elif has_7_residues:
-        pattern = "heavy_7"
+    if n_residues >= 8:
+        pattern = "full_8"
+    elif n_residues == 7:
+        pattern = "skip10_7"
     else:
         pattern = "standard_6"
 
     LOGGER.info(
         f"FR1 correction: {n_residues} residues between rows "
-        f"{start_row}-{end_row}, chain_type={chain_type}, pattern={pattern}"
+        f"{start_row}-{end_row}, pattern={pattern}"
     )
 
     # Clear ALL assignments for rows being redistributed
@@ -172,16 +167,16 @@ def correct_fr1_alignment(
     for row in range(start_row, end_row + 1):
         aln[row, :] = 0
 
-    # Redistribute residues deterministically based on pattern
-    if pattern == "kappa_7":
-        # Kappa with 7 residues: fill positions 6,7,8,9,10,11,12
-        target_cols = [5, 6, 7, 8, 9, 10, 11]  # 0-indexed
-    elif pattern == "heavy_7":
-        # Heavy/Lambda with 7 residues: positions 6-9, 11-13 (skip 10)
+    # Redistribute residues deterministically based on count
+    if pattern == "full_8":
+        # 8 residues: fill positions 6,7,8,9,10,11,12,13
+        target_cols = [5, 6, 7, 8, 9, 10, 11, 12]  # 0-indexed
+    elif pattern == "skip10_7":
+        # 7 residues: fill positions 6,7,8,9,11,12,13 (skip 10)
         target_cols = [5, 6, 7, 8, 10, 11, 12]  # 0-indexed
     else:
-        # Standard 6 residues: fill positions 6,7,8,9,11,12 (skip 10)
-        target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed, skip col 9
+        # 6 residues: fill positions 6,7,8,9,11,12 (skip 10)
+        target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed
 
     for i, row in enumerate(range(start_row, end_row + 1)):
         if i < len(target_cols):
@@ -547,10 +542,8 @@ def apply_deterministic_corrections(
     detected_chain_type = detect_chain_type(aln)
     is_light_chain = detected_chain_type in ("K", "L")
 
-    # Apply FR1 correction (uses chain type for 7-residue pattern)
-    aln = correct_fr1_alignment(
-        aln, chain_type=detected_chain_type, gap_indices=gap_indices
-    )
+    # Apply FR1 correction (anchor-based, uses residue count only)
+    aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
     if is_light_chain:
