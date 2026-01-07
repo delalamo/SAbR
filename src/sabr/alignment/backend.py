@@ -24,7 +24,6 @@ LOGGER = logging.getLogger(__name__)
 def _run_alignment_fn(
     input_embeddings: np.ndarray,
     target_embeddings: np.ndarray,
-    target_stdev: np.ndarray,
     temperature: float,
 ) -> Tuple[np.ndarray, np.ndarray, float]:
     """Run soft alignment between embedding sets.
@@ -35,7 +34,6 @@ def _run_alignment_fn(
     Args:
         input_embeddings: Query embeddings [N, embed_dim].
         target_embeddings: Reference embeddings [M, embed_dim].
-        target_stdev: Standard deviation for normalization [M, embed_dim].
         temperature: Alignment temperature (lower = more deterministic).
 
     Returns:
@@ -53,14 +51,11 @@ def _run_alignment_fn(
         augment_eps=0.0,
     )
 
-    target_stdev_jax = jnp.array(target_stdev)
-    target_normalized = target_embeddings / target_stdev_jax
-
     lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[
         None, :
     ]
     batched_input = jnp.array(input_embeddings[None, :])
-    batched_target = jnp.array(target_normalized[None, :])
+    batched_target = jnp.array(target_embeddings[None, :])
 
     alignment, sim_matrix, score = model.align(
         batched_input, batched_target, lens, temperature
@@ -110,7 +105,6 @@ class AlignmentBackend:
         self,
         input_embeddings: np.ndarray,
         target_embeddings: np.ndarray,
-        target_stdev: np.ndarray,
         temperature: float = constants.DEFAULT_TEMPERATURE,
     ) -> Tuple[np.ndarray, np.ndarray, float]:
         """Align input embeddings against target embeddings.
@@ -118,7 +112,6 @@ class AlignmentBackend:
         Args:
             input_embeddings: Query embeddings [N, embed_dim].
             target_embeddings: Reference embeddings [M, embed_dim].
-            target_stdev: Standard deviation for normalization [M, embed_dim].
             temperature: Alignment temperature parameter.
 
         Returns:
@@ -130,7 +123,6 @@ class AlignmentBackend:
             subkey,
             input_embeddings,
             target_embeddings,
-            target_stdev,
             temperature,
         )
 
