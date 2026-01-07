@@ -19,10 +19,7 @@ pdb_id,chain,chain_type
 9q9s,d,heavy
 7fbk,C,heavy
 8ht3,A,heavy
-7spo,D,heavy
 9mvu,D,heavy
-9mgb,A,heavy
-9mgb,G,heavy
 9gcn,D,heavy
 9do2,H,heavy
 9s37,B,heavy
@@ -37,13 +34,11 @@ pdb_id,chain,chain_type
 9cb1,A,heavy
 8k33,B,heavy
 9btl,H,heavy
-9i20,B,heavy
 9fnt,E,heavy
 8zca,C,heavy
 9b7g,H,heavy
 9bnk,H,heavy
 9evz,H,heavy
-7wos,D,heavy
 8uki,H,heavy
 9bdo,B,heavy
 8ulr,H,heavy
@@ -52,7 +47,6 @@ pdb_id,chain,chain_type
 8tdx,A,heavy
 8qxc,C,heavy
 8zu9,B,heavy
-9jhj,E,heavy
 9bjg,H,heavy
 9bjh,I,heavy
 8rpe,B,heavy
@@ -96,7 +90,6 @@ pdb_id,chain,chain_type
 8tnh,H,heavy
 7sp8,C,heavy
 8tqi,E,heavy
-8r4o,F,heavy
 8w0w,H,heavy
 8irw,B,heavy
 8e2n,B,heavy
@@ -140,7 +133,6 @@ pdb_id,chain,chain_type
 8f6l,A,heavy
 8gb6,H,heavy
 7zqt,G,heavy
-8dy5,A,heavy
 8bgg,Y,heavy
 8hhy,G,heavy
 8hc9,D,heavy
