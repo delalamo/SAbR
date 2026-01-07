@@ -147,7 +147,6 @@ def _compute_new_residue_id(
         (new_imgt_pos, icode), expected_aa = anarci_out[anarci_array_idx]
         state.last_imgt_pos = new_imgt_pos
 
-        # Validate residue matches alignment
         one_letter = AA_3TO1.get(resname, "X")
         if expected_aa != one_letter:
             raise ValueError(
@@ -157,7 +156,6 @@ def _compute_new_residue_id(
 
         return (original_het_flag, new_imgt_pos, icode), expected_aa
 
-    # POST_FV region
     state.last_imgt_pos += 1
     return (" ", state.last_imgt_pos, " "), ""
 
@@ -274,7 +272,6 @@ def thread_onto_chain(
 
         anarci_array_idx = state.aligned_residue_idx + anarci_start
 
-        # Classify the residue region
         region = _classify_residue_region(
             pdb_idx,
             state.aligned_residue_idx,
@@ -287,7 +284,6 @@ def thread_onto_chain(
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
 
-        # Compute new residue ID based on region
         new_id_tuple, _ = _compute_new_residue_id(
             region,
             anarci_out,
@@ -378,7 +374,6 @@ def _thread_gemmi_chain(
 
         anarci_array_idx = state.aligned_residue_idx + anarci_start
 
-        # Classify the residue region
         region = _classify_residue_region(
             pdb_idx,
             state.aligned_residue_idx,
@@ -390,8 +385,6 @@ def _thread_gemmi_chain(
 
         old_seqid = str(res.seqid)
 
-        # Compute new residue ID based on region
-        # Use empty string as het_flag placeholder (Gemmi doesn't use it)
         new_id_tuple, _ = _compute_new_residue_id(
             region,
             anarci_out,
@@ -400,15 +393,13 @@ def _thread_gemmi_chain(
             alignment_start,
             pdb_idx,
             state,
-            "",  # Gemmi doesn't need het_flag in the tuple
+            "",
             res.name,
         )
 
-        # Apply new ID to Gemmi residue (None means keep original for HETATM)
         if new_id_tuple is not None:
             _, new_imgt_pos, icode = new_id_tuple
             res.seqid.num = new_imgt_pos
-            # Handle insertion code - strip whitespace, take first char
             icode_str = icode.strip() if icode else ""
             res.seqid.icode = icode_str[0] if icode_str else " "
 
@@ -456,12 +447,9 @@ def _thread_alignment_biopython(
     )
 
     structure = read_structure_biopython(pdb_file)
-
-    # Find and renumber the target chain
     model = structure[0]
     chain = model[chain_id]
 
-    # Thread the chain using BioPython's thread_onto_chain
     threaded_chain, deviations = thread_onto_chain(
         chain,
         alignment,
@@ -471,11 +459,9 @@ def _thread_alignment_biopython(
         residue_range,
     )
 
-    # Replace the chain in the model
     model.detach_child(chain_id)
     model.add(threaded_chain)
 
-    # Write output CIF using BioPython's MMCIFIO
     io = MMCIFIO()
     io.set_structure(structure)
     io.save(output_cif)
@@ -536,12 +522,9 @@ def thread_alignment(
         f"writing to {output_pdb}"
     )
 
-    # Read structure with Gemmi
     structure = gemmi.read_structure(pdb_file)
-
     all_devs = 0
 
-    # Find and renumber the target chain
     model = structure[0]
     for ch in model:
         if ch.name == chain:
@@ -556,7 +539,6 @@ def thread_alignment(
             all_devs += deviations
             break
 
-    # Write output file
     if output_pdb.endswith(".cif"):
         structure.make_mmcif_document().write_file(output_pdb)
     else:

@@ -229,36 +229,29 @@ def _extract_from_chain(
     seq_list = []
 
     for residue in adapter.iterate_residues():
-        # Skip heteroatoms (water, ligands, etc.)
         if adapter.is_heteroatom(residue):
             continue
 
-        # Check if all backbone atoms are present
         backbone = adapter.get_backbone_coords(residue)
         if backbone is None:
             continue
 
         n_coord, ca_coord, c_coord = backbone
 
-        # Extract one-letter amino acid code (X for unknown residues)
         resname = adapter.get_residue_name(residue)
         one_letter = constants.AA_3TO1.get(resname, "X")
         seq_list.append(one_letter)
 
-        # Compute CB position
         cb_coord = compute_cb(
             n_coord.reshape(1, 3),
             ca_coord.reshape(1, 3),
             c_coord.reshape(1, 3),
         ).reshape(3)
 
-        # Store coordinates [N, CA, C, CB]
         residue_coords = np.stack(
             [n_coord, ca_coord, c_coord, cb_coord], axis=0
         )
         coords_list.append(residue_coords)
-
-        # Generate residue ID string
         ids_list.append(adapter.get_residue_id(residue))
 
     chain_name = adapter.get_chain_name()
@@ -268,18 +261,15 @@ def _extract_from_chain(
             + (f" of {source_name}" if source_name else "")
         )
 
-    # Stack all coordinates
     coords = np.stack(coords_list, axis=0)  # [N, 4, 3]
 
-    # Filter out any residues with NaN coordinates
+    # Filter out residues with NaN coordinates
     valid_mask = ~np.isnan(coords).any(axis=(1, 2))
     coords = coords[valid_mask]
     ids_list = [ids_list[i] for i in range(len(ids_list)) if valid_mask[i]]
     seq_list = [seq_list[i] for i in range(len(seq_list)) if valid_mask[i]]
 
     n_residues = coords.shape[0]
-
-    # Create output arrays with batch dimension
     mask = np.ones(n_residues)
     chain_ids = np.ones(n_residues)
     residue_indices = np.arange(n_residues)
@@ -290,7 +280,6 @@ def _extract_from_chain(
         log_msg += f" in {source_name}"
     LOGGER.info(log_msg)
 
-    # Add batch dimension to match expected format
     return MPNNInputs(
         coords=coords[None, :],  # [1, N, 4, 3]
         mask=mask[None, :],  # [1, N]
@@ -352,7 +341,6 @@ def get_inputs(
         MPNNInputs containing backbone coordinates and residue information.
     """
     if isinstance(source, str):
-        # Use Gemmi for fast file parsing
         structure = gemmi.read_structure(source)
         source_name = source
         model = structure[0]
@@ -367,12 +355,10 @@ def get_inputs(
                 f"Available chains: {available}"
             )
         else:
-            # Use first chain
             target_chain = list(model)[0]
             LOGGER.info(
                 f"No chain specified, using first chain: {target_chain.name}"
             )
             return extract_from_gemmi_chain(target_chain, source_name)
     else:
-        # source is a BioPython Chain object
         return extract_from_biopython_chain(source, "")

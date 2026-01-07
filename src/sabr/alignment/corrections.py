@@ -120,11 +120,9 @@ def correct_fr1_alignment(
     Returns:
         Corrected alignment matrix.
     """
-    # Anchor columns (0-indexed)
-    pos6_col = constants.FR1_ANCHOR_START_COL
+    pos6_col = constants.FR1_ANCHOR_START_COL  # 0-indexed
     pos12_col = constants.FR1_ANCHOR_END_COL
 
-    # Find rows aligned to positions near anchors 6 and 12
     start_row, _ = find_nearest_occupied_column(
         aln, pos6_col, search_range=2, direction="forward"
     )
@@ -139,11 +137,9 @@ def correct_fr1_alignment(
         )
         return aln
 
-    # Check for structural gaps in the region
     if _skip_for_structural_gap(gap_indices, start_row, end_row, "FR1"):
         return aln
 
-    # Count residues between anchors (inclusive)
     n_residues = end_row - start_row + 1
 
     # Determine target positions based purely on residue count:
@@ -162,12 +158,9 @@ def correct_fr1_alignment(
         f"{start_row}-{end_row}, pattern={pattern}"
     )
 
-    # Clear ALL assignments for rows being redistributed
-    # (row may have been assigned outside the FR1 column range)
     for row in range(start_row, end_row + 1):
         aln[row, :] = 0
 
-    # Redistribute residues deterministically based on count
     if pattern == "full_8":
         # 8 residues: fill positions 6,7,8,9,10,11,12,13
         target_cols = [5, 6, 7, 8, 9, 10, 11, 12]  # 0-indexed
@@ -248,7 +241,6 @@ def correct_fr3_alignment(
     pos83_col = constants.FR3_POS83_COL
     pos84_col = constants.FR3_POS84_COL
 
-    # Check for structural gaps in DE loop region (positions 79-84)
     if gap_indices:
         de_start_col = 78  # 0-indexed for position 79
         de_end_col = 83  # 0-indexed for position 84
@@ -299,7 +291,6 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
     """
     n_rows, n_cols = aln.shape
 
-    # Find the last row that has any assignment
     row_sums = aln.sum(axis=1)
     assigned_rows = np.where(row_sums > 0)[0]
     if len(assigned_rows) == 0:
@@ -307,7 +298,6 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
 
     last_assigned_row = assigned_rows[-1]
 
-    # Find the last column that has any assignment
     col_sums = aln.sum(axis=0)
     assigned_cols = np.where(col_sums > 0)[0]
     if len(assigned_cols) == 0:
@@ -315,17 +305,12 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
 
     last_assigned_col = assigned_cols[-1]
 
-    # Check if there are unassigned rows after the last assigned row
-    # These are residues that weren't aligned to any IMGT position
+    # Check for unassigned trailing residues (not aligned to any IMGT position)
     n_unassigned_trailing = n_rows - last_assigned_row - 1
-
     if n_unassigned_trailing <= 0:
-        # No unassigned trailing residues
         return aln
 
-    # Only apply the fix if the last assigned column is around
-    # position 125 or 126 (0-indexed: 124 or 125)
-    # This indicates the C-terminus wasn't fully aligned
+    # Only apply fix if last assigned column is near position 125/126
     if last_assigned_col < constants.C_TERMINUS_ANCHOR_POSITION:
         LOGGER.debug(
             f"C-terminus: last assigned col {last_assigned_col} is "
@@ -334,8 +319,6 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
         )
         return aln
 
-    # Assign trailing residues to subsequent IMGT positions
-    # Starting from last_assigned_col + 1, up to position 127 (0-indexed)
     LOGGER.info(
         f"Correcting C-terminus: {n_unassigned_trailing} unassigned "
         f"residues after row {last_assigned_row}, "
@@ -352,9 +335,7 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
             )
             break
 
-        # Clear any existing assignment in this row (shouldn't be any)
         aln[row_to_assign, :] = 0
-        # Assign to the next available IMGT position
         aln[row_to_assign, next_col] = 1
         LOGGER.info(
             f"C-terminus: assigned row {row_to_assign} to "
@@ -523,12 +504,10 @@ def correct_cdr_loop(
     anchor_start_col = anchor_start - 1
     anchor_end_col = anchor_end - 1
 
-    # Find anchor rows
     anchor_start_row, anchor_end_row = _find_loop_anchors(
         aln, anchor_start_col, anchor_end_col
     )
 
-    # Validate anchors were found
     if anchor_start_row is None or anchor_end_row is None:
         detail_str = _build_anchor_error_details(
             aln,
@@ -553,19 +532,18 @@ def correct_cdr_loop(
         )
         return aln
 
-    # Check for structural gaps in the region
     if _skip_for_structural_gap(
         gap_indices, anchor_start_row, anchor_end_row, loop_name
     ):
         return aln
 
-    # Calculate framework positions between anchors (outside CDR range)
+    # Framework positions between anchors (outside CDR range)
     fw_before_cdr = list(range(anchor_start + 1, cdr_start))
     fw_after_cdr = list(range(cdr_end + 1, anchor_end))
     n_fw_before = len(fw_before_cdr)
     n_fw_after = len(fw_after_cdr)
 
-    # Rows between anchors (exclusive of anchor rows)
+    # Rows between anchors (exclusive)
     intermediate_rows = list(range(anchor_start_row + 1, anchor_end_row))
     n_residues = len(intermediate_rows)
 
@@ -586,11 +564,9 @@ def correct_cdr_loop(
         f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
     )
 
-    # Clear ALL alignments for intermediate rows
     for row in intermediate_rows:
         aln[row, :] = 0
 
-    # Assign framework positions before and after CDR
     _assign_linear_positions(
         aln, intermediate_rows[:n_fw_before], fw_before_cdr
     )
@@ -600,7 +576,6 @@ def correct_cdr_loop(
         fw_after_cdr,
     )
 
-    # Assign CDR positions using alternating pattern
     cdr_rows = intermediate_rows[n_fw_before:]
     if n_fw_after > 0:
         cdr_rows = cdr_rows[:-n_fw_after]
@@ -629,7 +604,6 @@ def apply_deterministic_corrections(
     Returns:
         Tuple of (corrected alignment, detected chain type).
     """
-    # Correct all CDR loops
     for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
         aln = correct_cdr_loop(
             aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
@@ -651,7 +625,6 @@ def apply_deterministic_corrections(
             gap_indices=gap_indices,
         )
 
-    # Apply C-terminus correction
     aln = correct_c_terminus(aln)
 
     return aln, detected_chain_type
