@@ -26,7 +26,7 @@ import numpy as np
 from sabr import constants
 from sabr.alignment import corrections
 from sabr.alignment.backend import AlignmentBackend
-from sabr.util import detect_chain_type
+from sabr.util import detect_chain_type, validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
 
@@ -64,16 +64,12 @@ class SoftAlignOutput:
     idxs2: List[str]
 
     def __post_init__(self) -> None:
-        if self.alignment.shape[0] != len(self.idxs1):
-            raise ValueError(
-                f"alignment.shape[0] ({self.alignment.shape[0]}) must match "
-                f"len(idxs1) ({len(self.idxs1)}). "
-            )
-        if self.alignment.shape[1] != len(self.idxs2):
-            raise ValueError(
-                f"alignment.shape[1] ({self.alignment.shape[1]}) must match "
-                f"len(idxs2) ({len(self.idxs2)}). "
-            )
+        validate_array_shape(
+            self.alignment, 0, len(self.idxs1), "alignment", "len(idxs1)"
+        )
+        validate_array_shape(
+            self.alignment, 1, len(self.idxs2), "alignment", "len(idxs2)"
+        )
         LOGGER.debug(
             "Created SoftAlignOutput for "
             f"chain_type={self.chain_type}, alignment_shape="

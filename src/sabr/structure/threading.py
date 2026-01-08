@@ -30,6 +30,7 @@ from Bio.PDB.mmcifio import MMCIFIO
 
 from sabr.constants import AA_3TO1
 from sabr.structure.io import read_structure_biopython
+from sabr.util import format_residue_range, is_in_residue_range
 
 # Type alias for ANARCI alignment output:
 # list of ((residue_number, insertion_code), amino_acid)
@@ -231,12 +232,7 @@ def thread_onto_chain(
     Returns:
         Tuple of (new_chain, deviation_count).
     """
-    start_res, end_res = residue_range
-    range_str = (
-        f" (residue_range={start_res}-{end_res})"
-        if residue_range != (0, 0)
-        else ""
-    )
+    range_str = format_residue_range(residue_range)
     LOGGER.info(
         f"Threading chain {chain.id} with ANARCI window "
         f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
@@ -249,15 +245,15 @@ def thread_onto_chain(
 
     for pdb_idx, res in enumerate(chain.get_residues()):
         res_num = res.id[1]
-        # Skip residues outside the specified range
-        if residue_range != (0, 0):
-            if res_num < start_res:
-                continue
-            if res_num > end_res:
-                LOGGER.info(
-                    f"Stopping at residue {res_num} (end of range {end_res})"
-                )
-                break
+        in_range = is_in_residue_range(res_num, residue_range)
+        if in_range is False:
+            continue
+        if in_range is None:
+            LOGGER.info(
+                f"Stopping at residue {res_num} "
+                f"(end of range {residue_range[1]})"
+            )
+            break
 
         is_in_aligned_region = pdb_idx >= alignment_start
         is_hetatm = res.get_id()[0].strip() != ""
@@ -331,12 +327,7 @@ def _thread_gemmi_chain(
     Returns:
         Number of residue ID deviations from original numbering.
     """
-    start_res, end_res = residue_range
-    range_str = (
-        f" (residue_range={start_res}-{end_res})"
-        if residue_range != (0, 0)
-        else ""
-    )
+    range_str = format_residue_range(residue_range)
     LOGGER.info(
         f"Threading chain {chain.name} with ANARCI window "
         f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
@@ -349,16 +340,15 @@ def _thread_gemmi_chain(
 
     for res in chain:
         res_num = res.seqid.num
-
-        # Skip residues outside the specified range
-        if residue_range != (0, 0):
-            if res_num < start_res:
-                continue
-            if res_num > end_res:
-                LOGGER.info(
-                    f"Stopping at residue {res_num} (end of range {end_res})"
-                )
-                break
+        in_range = is_in_residue_range(res_num, residue_range)
+        if in_range is False:
+            continue
+        if in_range is None:
+            LOGGER.info(
+                f"Stopping at residue {res_num} "
+                f"(end of range {residue_range[1]})"
+            )
+            break
 
         is_in_aligned_region = pdb_idx >= alignment_start
         # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
