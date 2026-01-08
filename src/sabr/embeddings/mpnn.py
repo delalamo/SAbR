@@ -49,7 +49,6 @@ class MPNNEmbeddings:
         name: Identifier for the embedding source.
         embeddings: Per-residue embeddings array of shape [N, EMBED_DIM].
         idxs: List of residue ID strings matching embedding rows.
-        stdev: Standard deviation array for embeddings (optional).
         sequence: Amino acid sequence as one-letter codes (optional).
         gap_indices: FrozenSet of row indices where structural gaps occur.
             Each index i means there is a gap AFTER residue i (between
@@ -59,7 +58,6 @@ class MPNNEmbeddings:
     name: str
     embeddings: np.ndarray
     idxs: List[str]
-    stdev: Optional[np.ndarray] = None
     sequence: Optional[str] = None
     gap_indices: Optional[FrozenSet[int]] = None
 
@@ -77,54 +75,9 @@ class MPNNEmbeddings:
                 f"Error raised for {self.name}"
             )
 
-        n_rows = self.embeddings.shape[0]
-        processed_stdev = self._process_stdev(self.stdev, n_rows)
-        object.__setattr__(self, "stdev", processed_stdev)
-
         LOGGER.debug(
             f"Initialized MPNNEmbeddings for {self.name} "
             f"(shape={self.embeddings.shape})"
-        )
-
-    def _process_stdev(
-        self, stdev: Optional[np.ndarray], n_rows: int
-    ) -> np.ndarray:
-        """Process and validate stdev, returning a properly shaped array."""
-        if stdev is None:
-            return np.ones_like(self.embeddings)
-
-        stdev = np.asarray(stdev)
-
-        if stdev.ndim == 1:
-            if stdev.shape[0] != constants.EMBED_DIM:
-                raise ValueError(
-                    f"1D stdev must have length {constants.EMBED_DIM}, "
-                    f"got {stdev.shape[0]}"
-                )
-            return np.broadcast_to(stdev, (n_rows, constants.EMBED_DIM)).copy()
-
-        if stdev.ndim == 2:
-            if stdev.shape[1] != constants.EMBED_DIM:
-                raise ValueError(
-                    f"stdev.shape[1] ({stdev.shape[1]}) must match "
-                    f"constants.EMBED_DIM ({constants.EMBED_DIM})"
-                )
-            if stdev.shape[0] == 1:
-                return np.broadcast_to(
-                    stdev, (n_rows, constants.EMBED_DIM)
-                ).copy()
-            if stdev.shape[0] < n_rows:
-                raise ValueError(
-                    f"stdev rows fewer than embeddings rows are not allowed: "
-                    f"stdev rows={stdev.shape[0]}, embeddings rows={n_rows}"
-                )
-            if stdev.shape[0] > n_rows:
-                return stdev[:n_rows, :].copy()
-            return stdev
-
-        raise ValueError(
-            f"stdev must be 1D or 2D array compatible with embeddings, "
-            f"got ndim={stdev.ndim}"
         )
 
     def save(self, output_path: str) -> None:
@@ -140,7 +93,6 @@ class MPNNEmbeddings:
             name=self.name,
             embeddings=self.embeddings,
             idxs=np.array(self.idxs),
-            stdev=self.stdev,
             sequence=self.sequence if self.sequence else "",
         )
         LOGGER.info(f"Saved embeddings to {output_path_obj}")
@@ -252,7 +204,6 @@ def _create_embeddings(
         name=name,
         embeddings=embeddings,
         idxs=ids,
-        stdev=np.ones_like(embeddings),
         sequence=sequence,
         gap_indices=gap_indices,
     )
@@ -372,7 +323,6 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
         name=name,
         embeddings=data["embeddings"],
         idxs=idxs,
-        stdev=data["stdev"],
         sequence=sequence,
     )
     LOGGER.info(
