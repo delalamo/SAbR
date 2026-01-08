@@ -107,7 +107,6 @@ class TestRenumberStructure:
                 name="test_chain",
                 embeddings=np.zeros((actual_n_residues, 64)),
                 idxs=[str(i) for i in range(actual_n_residues)],
-                stdev=np.ones((actual_n_residues, 64)),
                 sequence=sequence,
             )
 
@@ -136,7 +135,6 @@ class TestRunRenumberingPipeline:
             name="test",
             embeddings=np.zeros((n_residues, 64)),
             idxs=[str(i) for i in range(n_residues)],
-            stdev=np.ones((n_residues, 64)),
             sequence=dummy_seq,
         )
 

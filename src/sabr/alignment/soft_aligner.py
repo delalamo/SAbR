@@ -122,7 +122,6 @@ class SoftAligner:
             embedding = MPNNEmbeddings(
                 name=str(data["name"]),
                 embeddings=data["array"],
-                stdev=data["stdev"],
                 idxs=list(data["idxs"]),
             )
         LOGGER.info(f"Loaded embeddings from {path}")
@@ -160,7 +159,6 @@ class SoftAligner:
         alignment, sim_matrix, score = self._backend.align(
             input_embeddings=input_data.embeddings,
             target_embeddings=self.unified_embedding.embeddings,
-            target_stdev=self.unified_embedding.stdev,
             temperature=self.temperature,
         )
 

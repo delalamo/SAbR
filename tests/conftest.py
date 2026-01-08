@@ -113,14 +113,12 @@ class DummyEmbeddings:
         name: str,
         embeddings: np.ndarray,
         idxs: List[str],
-        stdev: Optional[np.ndarray] = None,
         sequence: Optional[str] = None,
         gap_indices: Optional[frozenset] = None,
     ) -> None:
         self.name = name
         self.embeddings = embeddings
         self.idxs = idxs
-        self.stdev = stdev
         self.sequence = sequence
         self.gap_indices = gap_indices
 
@@ -187,7 +185,6 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
             name=f"{pdb_file}_{chain}",
             embeddings=np.zeros((actual_n_residues, 64)),
             idxs=[str(i) for i in range(actual_n_residues)],
-            stdev=np.ones((actual_n_residues, 64)),
             sequence=sequence,
         )
 

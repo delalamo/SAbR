@@ -11,9 +11,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
     idx = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
-        MPNNEmbeddings(
-            name="test_case", embeddings=embedding, stdev=embedding, idxs=idx
-        )
+        MPNNEmbeddings(name="test_case", embeddings=embedding, idxs=idx)
 
     # Check key parts of the error message
     msg = str(excinfo.value)
