@@ -120,9 +120,3 @@ io = PDBIO()
 io.set_structure(renumbered)
 io.save("output.pdb")
 ```
-
-## Known issues
-
-- SAbR currently struggles with scFvs for two reasons. First, it is unclear how to assign canonical numbering to multiple domains within a single chain, unless we accept a spacer (e.g., starting chain #2 at 201 instead of 1). Second, it will sometimes align across both chains, introducing a massive insertion in between. It is unclear how to prevent this; please see [issue #2](https://github.com/delalamo/SAbR/issues/2) for details.
-- SAbR sometimes mistakenly includes sheets from the Fab in the VH.
-- The algorithm for renumbering CDRs, which is the same as the one for IMGT, does not account for unassigned residues. So if a residue is missing due to heterogeneity, the CDR numbering algorithm will misnumber other residues in the CDR.
