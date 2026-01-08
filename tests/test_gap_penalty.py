@@ -1,8 +1,7 @@
-"""Tests for position-dependent gap penalties at CDR boundaries.
+"""Tests for position-dependent gap penalties at CDR positions.
 
-This module tests the feature where gap penalties are set to zero at
-positions where variable regions (CDRs) were removed from the reference
-embeddings.
+This module tests the feature where gap penalties are set to zero for all
+positions within CDR regions (CDR1, CDR2, CDR3) as defined in constants.py.
 """
 
 import numpy as np
@@ -17,7 +16,7 @@ class TestCreateGapPenaltyForReducedReference:
     def test_returns_correct_shapes(self):
         """Test that gap matrices have correct shapes."""
         query_len = 100
-        idxs = list(range(1, 27)) + list(range(39, 56))  # Simulate CDR1 gap
+        idxs = list(range(1, 27)) + list(range(39, 56))
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
             query_len, idxs
@@ -26,76 +25,88 @@ class TestCreateGapPenaltyForReducedReference:
         assert gap_extend.shape == (query_len, len(idxs))
         assert gap_open.shape == (query_len, len(idxs))
 
-    def test_uniform_penalties_when_no_jumps(self):
-        """Test uniform penalties when IMGT positions are contiguous."""
+    def test_uniform_penalties_for_framework_only(self):
+        """Test uniform penalties when all positions are in framework."""
         query_len = 50
-        idxs = list(range(1, 27))  # Contiguous positions 1-26
+        # FR1 positions only (1-26, all framework)
+        idxs = list(range(1, 27))
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
             query_len, idxs
         )
 
-        # All values should be the default penalties
+        # All FR1 positions should have normal penalties
         assert np.allclose(gap_extend, constants.SW_GAP_EXTEND)
         assert np.allclose(gap_open, constants.SW_GAP_OPEN)
 
-    def test_zero_penalties_at_cdr1_boundary(self):
-        """Test zero gap penalty at CDR1 boundary (26 -> 39)."""
+    def test_zero_penalties_for_cdr1_positions(self):
+        """Test zero gap penalty for CDR1 positions (27-38)."""
         query_len = 50
-        # Positions 1-26 (FR1) then 39-55 (FR2), skipping CDR1 (27-38)
-        idxs = list(range(1, 27)) + list(range(39, 56))
+        # Include FR1 (1-26), CDR1 (27-38), and FR2 (39-55)
+        idxs = list(range(1, 56))
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
             query_len, idxs
         )
 
-        # Find column index where jump occurs (position 26 -> 39)
-        # idxs[25] = 26, idxs[26] = 39
-        jump_col = 26
-
-        # Column at jump should have zero penalty
-        assert np.allclose(gap_extend[:, jump_col], 0.0)
-        assert np.allclose(gap_open[:, jump_col], 0.0)
-
-        # Columns before and after should have normal penalties
-        assert np.allclose(gap_extend[:, jump_col - 1], constants.SW_GAP_EXTEND)
-        assert np.allclose(gap_open[:, jump_col - 1], constants.SW_GAP_OPEN)
-
-    def test_zero_penalties_at_multiple_boundaries(self):
-        """Test zero gap penalties at multiple CDR boundaries."""
-        query_len = 50
-        # Simulate reduced ref with CDR1 and CDR2 removed
-        idxs = (
-            list(range(1, 27))  # 1-26 (before CDR1)
-            + list(range(39, 56))  # 39-55 (FR2, after CDR1)
-            + list(range(66, 105))  # 66-104 (FR3, after CDR2)
-        )
-
-        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
-            query_len, idxs
-        )
-
-        # Find all jump positions
-        jumps = []
-        for i in range(1, len(idxs)):
-            if idxs[i] - idxs[i - 1] > 1:
-                jumps.append(i)
-
-        # All jump columns should have zero penalty
-        for col in jumps:
+        # CDR1 positions 27-38 should have zero penalty
+        for imgt_pos in range(27, 39):
+            col = idxs.index(imgt_pos)
             assert np.allclose(
                 gap_extend[:, col], 0.0
-            ), f"Gap extend at col {col} should be 0"
+            ), f"CDR1 pos {imgt_pos} should have zero gap_extend"
             assert np.allclose(
                 gap_open[:, col], 0.0
-            ), f"Gap open at col {col} should be 0"
+            ), f"CDR1 pos {imgt_pos} should have zero gap_open"
 
-        # Non-jump columns should have normal penalties
-        non_jumps = [i for i in range(len(idxs)) if i not in jumps]
-        for col in non_jumps:
+        # FR1 and FR2 positions should have normal penalties
+        for imgt_pos in list(range(1, 27)) + list(range(39, 56)):
+            col = idxs.index(imgt_pos)
             assert np.allclose(
                 gap_extend[:, col], constants.SW_GAP_EXTEND
-            ), f"Gap extend at col {col} should be {constants.SW_GAP_EXTEND}"
+            ), f"FR pos {imgt_pos} should have normal gap_extend"
+
+    def test_zero_penalties_for_cdr2_positions(self):
+        """Test zero gap penalty for CDR2 positions (56-65)."""
+        query_len = 50
+        # Include FR2 (39-55), CDR2 (56-65), and FR3 (66-80)
+        idxs = list(range(39, 81))
+
+        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
+            query_len, idxs
+        )
+
+        # CDR2 positions 56-65 should have zero penalty
+        for imgt_pos in range(56, 66):
+            col = idxs.index(imgt_pos)
+            assert np.allclose(gap_extend[:, col], 0.0)
+            assert np.allclose(gap_open[:, col], 0.0)
+
+        # FR2 and FR3 positions should have normal penalties
+        for imgt_pos in list(range(39, 56)) + list(range(66, 81)):
+            col = idxs.index(imgt_pos)
+            assert np.allclose(gap_extend[:, col], constants.SW_GAP_EXTEND)
+
+    def test_zero_penalties_for_cdr3_positions(self):
+        """Test zero gap penalty for CDR3 positions (105-117)."""
+        query_len = 50
+        # Include FR3 end (100-104), CDR3 (105-117), and FR4 (118-128)
+        idxs = list(range(100, 129))
+
+        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
+            query_len, idxs
+        )
+
+        # CDR3 positions 105-117 should have zero penalty
+        for imgt_pos in range(105, 118):
+            col = idxs.index(imgt_pos)
+            assert np.allclose(gap_extend[:, col], 0.0)
+            assert np.allclose(gap_open[:, col], 0.0)
+
+        # FR3 and FR4 positions should have normal penalties
+        for imgt_pos in list(range(100, 105)) + list(range(118, 129)):
+            col = idxs.index(imgt_pos)
+            assert np.allclose(gap_extend[:, col], constants.SW_GAP_EXTEND)
 
     def test_dtype_is_float32(self):
         """Test that gap matrices have float32 dtype."""
@@ -110,16 +121,10 @@ class TestCreateGapPenaltyForReducedReference:
         assert gap_open.dtype == np.float32
 
     def test_with_real_reference_positions(self):
-        """Test with actual reference embedding positions from embeddings.npz."""
-        # The real reference has 122 positions with jumps at:
-        # 31->35 (CDR1 gap of 3)
-        # 59->62 (CDR2 gap of 2)
-        # 72->74 (FR3 gap of 1)
-        query_len = 120
-
-        # Load actual positions from embeddings
-        import numpy as np
+        """Test with actual reference embedding positions."""
         from importlib.resources import as_file, files
+
+        query_len = 120
 
         path = files("sabr.assets") / "embeddings.npz"
         with as_file(path) as p:
@@ -130,16 +135,28 @@ class TestCreateGapPenaltyForReducedReference:
             query_len, idxs
         )
 
-        # Find jumps in actual reference
-        jump_cols = []
-        for i in range(1, len(idxs)):
-            if idxs[i] - idxs[i - 1] > 1:
-                jump_cols.append(i)
+        # Build set of CDR positions
+        cdr_positions = set()
+        for _name, (start, end) in constants.IMGT_LOOPS.items():
+            cdr_positions.update(range(start, end + 1))
 
-        # Should have 3 jumps
-        assert len(jump_cols) == 3
-
-        # All should have zero penalty
-        for col in jump_cols:
+        # All CDR columns should have zero penalty
+        cdr_cols = [i for i, pos in enumerate(idxs) if pos in cdr_positions]
+        for col in cdr_cols:
             assert np.allclose(gap_extend[:, col], 0.0)
             assert np.allclose(gap_open[:, col], 0.0)
+
+        # All non-CDR columns should have normal penalties
+        non_cdr_cols = [
+            i for i, pos in enumerate(idxs) if pos not in cdr_positions
+        ]
+        for col in non_cdr_cols:
+            assert np.allclose(gap_extend[:, col], constants.SW_GAP_EXTEND)
+            assert np.allclose(gap_open[:, col], constants.SW_GAP_OPEN)
+
+    def test_cdr_positions_match_constants(self):
+        """Verify CDR positions used match constants.IMGT_LOOPS."""
+        # CDR1: 27-38, CDR2: 56-65, CDR3: 105-117
+        assert constants.IMGT_LOOPS["CDR1"] == (27, 38)
+        assert constants.IMGT_LOOPS["CDR2"] == (56, 65)
+        assert constants.IMGT_LOOPS["CDR3"] == (105, 117)

@@ -25,14 +25,17 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zeros where IMGT positions have jumps.
+    """Create gap penalty matrices with zeros at CDR positions.
 
-    When variable positions are removed from the reference, there are jumps
-    in the IMGT position sequence. Gap penalties should be zero at these
-    boundaries to avoid penalizing the natural gaps where CDRs were removed.
+    Gap penalties are set to zero for all columns corresponding to CDR
+    positions in the IMGT numbering scheme. This allows flexible alignment
+    within the variable CDR regions while maintaining strict alignment in
+    the conserved framework regions.
 
-    Example: idxs = [1, 2, ..., 26, 39, 40, ...]
-             Gap from 26→39 (CDR1 removed) should have zero penalty
+    CDR positions (from constants.IMGT_LOOPS):
+        - CDR1: positions 27-38
+        - CDR2: positions 56-65
+        - CDR3: positions 105-117
 
     Args:
         query_len: Length of the query sequence.
@@ -40,8 +43,7 @@ def create_gap_penalty_for_reduced_reference(
 
     Returns:
         Tuple of (gap_extend_matrix, gap_open_matrix) with shape
-        (query_len, target_len). Positions where IMGT numbering has
-        jumps have zero penalty.
+        (query_len, target_len). CDR columns have zero penalty.
     """
     target_len = len(idxs)
 
@@ -53,12 +55,16 @@ def create_gap_penalty_for_reduced_reference(
         (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
     )
 
-    # Find columns where IMGT positions have jumps (CDRs were removed)
-    for i in range(1, target_len):
-        if idxs[i] - idxs[i - 1] > 1:  # Jump in IMGT numbering
-            # Set zero penalty for this column (crossing removed CDR region)
-            gap_extend[:, i] = 0.0
-            gap_open[:, i] = 0.0
+    # Build set of all CDR positions from IMGT_LOOPS
+    cdr_positions = set()
+    for _cdr_name, (start, end) in constants.IMGT_LOOPS.items():
+        cdr_positions.update(range(start, end + 1))  # inclusive range
+
+    # Set zero penalty for all columns that correspond to CDR positions
+    for col_idx, imgt_pos in enumerate(idxs):
+        if imgt_pos in cdr_positions:
+            gap_extend[:, col_idx] = 0.0
+            gap_open[:, col_idx] = 0.0
 
     return gap_extend, gap_open
 
