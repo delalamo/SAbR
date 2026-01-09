@@ -21,81 +21,27 @@ from sabr.nn.end_to_end import END_TO_END
 LOGGER = logging.getLogger(__name__)
 
 
-def compute_overhang_penalty(
-    alignment: np.ndarray,
-    idxs: List[int],
-    gap_open: float = constants.SW_GAP_OPEN,
-    gap_extend: float = constants.SW_GAP_EXTEND,
-) -> float:
-    """Compute penalty for unaligned positions at N- and C-termini.
-
-    Smith-Waterman local alignment doesn't penalize unaligned ends. This
-    function adds a penalty for "overhangs" - reference positions that are
-    skipped at the beginning or end of the alignment.
-
-    The penalty is computed as if there were anchor positions at IMGT 0 and
-    IMGT 129. If the alignment starts at IMGT position 2, that's treated as
-    a gap opening (skipping position 1). If it starts at IMGT position 4,
-    that's gap open + 2 * gap extend (skipping positions 1, 2, 3).
-
-    Args:
-        alignment: Alignment matrix [query_len, target_len]. Should be
-            rounded/binarized so we can find first/last aligned columns.
-        idxs: List of IMGT position integers for the reference columns.
-        gap_open: Gap opening penalty (negative value).
-        gap_extend: Gap extension penalty (negative value).
-
-    Returns:
-        Total overhang penalty (negative value, to be added to score).
-    """
-    # Find which reference columns have any alignment
-    col_sums = alignment.sum(axis=0)
-    aligned_cols = np.where(col_sums > 0.5)[0]
-
-    if len(aligned_cols) == 0:
-        # No alignment at all - shouldn't happen, but handle gracefully
-        return 0.0
-
-    first_aligned_col = aligned_cols[0]
-    last_aligned_col = aligned_cols[-1]
-
-    # Get IMGT positions for first and last aligned columns
-    first_imgt = idxs[first_aligned_col]
-    last_imgt = idxs[last_aligned_col]
-
-    penalty = 0.0
-
-    # N-terminal overhang: positions skipped before first alignment
-    # Reference "position 0" is the anchor, so IMGT 1 is the first real position
-    # If first_imgt = 1, no penalty. If first_imgt = 2, skip 1 position, etc.
-    n_skipped_start = first_imgt - 1
-    if n_skipped_start > 0:
-        penalty += gap_open + (n_skipped_start - 1) * gap_extend
-
-    # C-terminal overhang: positions skipped after last alignment
-    # Reference "position 129" is the anchor, so IMGT 128 is the last position
-    # If last_imgt = 128, no penalty. If last_imgt = 123, skip 5 positions.
-    n_skipped_end = 128 - last_imgt
-    if n_skipped_end > 0:
-        penalty += gap_open + (n_skipped_end - 1) * gap_extend
-
-    return penalty
-
-
 def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
+    include_anchors: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zero gap_open in CDRs and position 10.
+    """Create gap penalty matrices with position-dependent penalties.
 
     Gap open penalties are set to zero in CDR regions (IMGT 27-38, 56-65,
     105-117) and at position 10. This allows free gap openings in variable
     loop regions while still penalizing gap extensions to prevent excessive
     insertions.
 
+    When include_anchors=True, the idxs list should include anchor positions
+    0 and 129 at the start and end. The gap penalties between anchors and
+    adjacent positions encode the overhang cost.
+
     Args:
         query_len: Length of the query sequence.
         idxs: List of IMGT position integers for the reduced reference.
+            If include_anchors=True, should start with 0 and end with 129.
+        include_anchors: If True, handle anchor positions 0 and 129.
 
     Returns:
         Tuple of (gap_extend_matrix, gap_open_matrix) with shape
