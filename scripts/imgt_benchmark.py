@@ -411,7 +411,7 @@ def print_interim_statistics(
         print(f"  OVERALL: {total_perfect}/{total_count} ({overall_accuracy}%)")
     if total_failed > 0:
         print(f"  Failed: {total_failed}")
-    print("---\n")
+    print("---\n", flush=True)
 
 
 def main():
