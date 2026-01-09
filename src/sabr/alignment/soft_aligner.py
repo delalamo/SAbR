@@ -27,6 +27,7 @@ from sabr import constants
 from sabr.alignment import corrections
 from sabr.alignment.backend import (
     AlignmentBackend,
+    compute_overhang_penalty,
     create_gap_penalty_for_reduced_reference,
 )
 from sabr.util import detect_chain_type
@@ -173,6 +174,11 @@ class SoftAligner:
             gap_matrix=gap_matrix,
             open_matrix=open_matrix,
         )
+
+        # Compute overhang penalty for unaligned terminal positions
+        # Penalizes alignments that skip N- or C-terminal reference positions
+        overhang_penalty = compute_overhang_penalty(alignment, idxs_int)
+        score += overhang_penalty
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
         aln = np.round(aln).astype(int)
