@@ -56,22 +56,22 @@ FR3_POS84_COL = 83
 # C-terminus correction position
 C_TERMINUS_ANCHOR_POSITION = 124
 
-# CDR loop definitions (inclusive)
-IMGT_LOOPS = {
-    "CDR1": (27, 38),
-    "CDR2": (56, 65),
-    "CDR3": (105, 117),
-}
-
 # Full IMGT region definitions including frameworks and CDRs
 IMGT_REGIONS = {
     "FR1": list(range(1, 27)),
-    "CDR1": list(range(IMGT_LOOPS["CDR1"][0], IMGT_LOOPS["CDR1"][1] + 1)),
+    "CDR1": list(range(27, 39)),
     "FR2": list(range(39, 56)),
-    "CDR2": list(range(IMGT_LOOPS["CDR2"][0], IMGT_LOOPS["CDR2"][1] + 1)),
+    "CDR2": list(range(56, 66)),
     "FR3": list(range(66, 105)),
-    "CDR3": list(range(IMGT_LOOPS["CDR3"][0], IMGT_LOOPS["CDR3"][1] + 1)),
+    "CDR3": list(range(105, 118)),
     "FR4": list(range(118, 129)),
+}
+
+# CDR loop definitions (inclusive)
+IMGT_LOOPS = {
+    "CDR1": (IMGT_REGIONS["CDR1"][0], IMGT_REGIONS["CDR1"][-1]),
+    "CDR2": (IMGT_REGIONS["CDR2"][0], IMGT_REGIONS["CDR2"][-1]),
+    "CDR3": (IMGT_REGIONS["CDR3"][0], IMGT_REGIONS["CDR3"][-1]),
 }
 
 # Anchor points for deterministic renumbering

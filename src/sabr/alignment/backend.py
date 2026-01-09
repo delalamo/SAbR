@@ -25,18 +25,16 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zeros at CDR and FR1 gap positions.
+    """Create gap penalty matrices with zeros at jump and CDR gap positions.
 
-    Gap penalties are set to zero for all columns corresponding to:
-    1. CDR positions in the IMGT numbering scheme (allows flexible alignment
-       within variable CDR regions)
+    Gap penalties are set to zero for:
+    1. Positions where there's a jump in the reference indices (e.g., 31→35,
+       59→62, 72→74). These represent gaps in the reference embedding where
+       the alignment should be able to skip without penalty.
     2. IMGT position 10 (commonly absent in antibody sequences, allowing
-       natural gap between positions 9 and 11)
-
-    CDR positions (from constants.IMGT_LOOPS):
-        - CDR1: positions 27-38
-        - CDR2: positions 56-65
-        - CDR3: positions 105-117
+       natural gap between positions 9 and 11).
+    3. CDR positions when the query is shorter than the reference, allowing
+       shorter CDRs to align without penalty for unused reference CDR positions.
 
     Args:
         query_len: Length of the query sequence.
@@ -44,7 +42,7 @@ def create_gap_penalty_for_reduced_reference(
 
     Returns:
         Tuple of (gap_extend_matrix, gap_open_matrix) with shape
-        (query_len, target_len). CDR and position 10 columns have zero penalty.
+        (query_len, target_len).
     """
     target_len = len(idxs)
 
@@ -56,19 +54,47 @@ def create_gap_penalty_for_reduced_reference(
         (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
     )
 
-    # Build set of all CDR positions from IMGT_LOOPS
-    cdr_positions = set()
-    for _cdr_name, (start, end) in constants.IMGT_LOOPS.items():
-        cdr_positions.update(range(start, end + 1))  # inclusive range
+    # 1. Find columns where there's a jump in reference indices
+    #    Zero penalty at these positions allows skipping reference gaps
+    jump_columns = set()
+    for col_idx in range(1, target_len):
+        if idxs[col_idx] - idxs[col_idx - 1] > 1:
+            jump_columns.add(col_idx)
 
-    # Also add position 10 (FR1 gap position commonly absent in antibodies)
-    zero_penalty_positions = cdr_positions | {10}
+    # 2. Position 10 (FR1 gap position commonly absent in antibodies)
+    pos10_columns = {col_idx for col_idx, pos in enumerate(idxs) if pos == 10}
 
-    # Set zero penalty for all columns that correspond to zero-penalty positions
-    for col_idx, imgt_pos in enumerate(idxs):
-        if imgt_pos in zero_penalty_positions:
-            gap_extend[:, col_idx] = 0.0
-            gap_open[:, col_idx] = 0.0
+    # 3. CDR positions - only zero penalty for excess CDR capacity
+    #    when query is shorter than reference. This allows shorter CDRs
+    #    to align without being penalized for not filling all reference
+    #    CDR positions.
+    cdr_columns = set()
+    if query_len < target_len:
+        # Calculate how many "excess" positions the reference has
+        excess = target_len - query_len
+        # Zero penalty for CDR positions, prioritizing from the end of each CDR
+        # This allows the alignment to skip unused CDR positions
+        for _cdr_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
+            # Find columns in this CDR region
+            cdr_cols_in_region = [
+                col_idx
+                for col_idx, pos in enumerate(idxs)
+                if cdr_start <= pos <= cdr_end
+            ]
+            # Zero out up to 'excess' positions from the end of each CDR
+            # This allows shorter CDRs to not be penalized
+            n_to_zero = min(len(cdr_cols_in_region), excess)
+            if n_to_zero > 0:
+                # Zero from the middle/end of CDR (insertion positions)
+                cdr_columns.update(cdr_cols_in_region[-n_to_zero:])
+
+    # Combine all zero-penalty columns
+    zero_penalty_columns = jump_columns | pos10_columns | cdr_columns
+
+    # Set zero penalty for identified columns
+    for col_idx in zero_penalty_columns:
+        gap_extend[:, col_idx] = 0.0
+        gap_open[:, col_idx] = 0.0
 
     return gap_extend, gap_open
 
