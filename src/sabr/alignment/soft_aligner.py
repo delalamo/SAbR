@@ -25,7 +25,10 @@ import numpy as np
 
 from sabr import constants
 from sabr.alignment import corrections
-from sabr.alignment.backend import AlignmentBackend
+from sabr.alignment.backend import (
+    AlignmentBackend,
+    create_gap_penalty_for_reduced_reference,
+)
 from sabr.util import detect_chain_type
 
 LOGGER = logging.getLogger(__name__)
@@ -156,10 +159,19 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
+        # Create position-dependent gap penalty matrices
+        query_len = input_data.embeddings.shape[0]
+        idxs_int = [int(x) for x in self.unified_embedding.idxs]
+        gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
+            query_len, idxs_int
+        )
+
         alignment, sim_matrix, score = self._backend.align(
             input_embeddings=input_data.embeddings,
             target_embeddings=self.unified_embedding.embeddings,
             temperature=self.temperature,
+            gap_matrix=gap_matrix,
+            open_matrix=open_matrix,
         )
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
