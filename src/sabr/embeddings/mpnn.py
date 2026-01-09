@@ -30,7 +30,7 @@ from Bio.PDB import Chain
 from sabr import constants
 from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.inputs import get_inputs
-from sabr.util import detect_backbone_gaps
+from sabr.util import detect_backbone_gaps, validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
 
@@ -62,18 +62,22 @@ class MPNNEmbeddings:
     gap_indices: Optional[FrozenSet[int]] = None
 
     def __post_init__(self) -> None:
-        if self.embeddings.shape[0] != len(self.idxs):
-            raise ValueError(
-                f"embeddings.shape[0] ({self.embeddings.shape[0]}) must match "
-                f"len(idxs) ({len(self.idxs)}). "
-                f"Error raised for {self.name}"
-            )
-        if self.embeddings.shape[1] != constants.EMBED_DIM:
-            raise ValueError(
-                f"embeddings.shape[1] ({self.embeddings.shape[1]}) must match "
-                f"constants.EMBED_DIM ({constants.EMBED_DIM}). "
-                f"Error raised for {self.name}"
-            )
+        validate_array_shape(
+            self.embeddings,
+            0,
+            len(self.idxs),
+            "embeddings",
+            "len(idxs)",
+            f"Error raised for {self.name}",
+        )
+        validate_array_shape(
+            self.embeddings,
+            1,
+            constants.EMBED_DIM,
+            "embeddings",
+            "constants.EMBED_DIM",
+            f"Error raised for {self.name}",
+        )
 
         LOGGER.debug(
             f"Initialized MPNNEmbeddings for {self.name} "

@@ -20,7 +20,9 @@ The renumbering process handles three regions:
 
 import copy
 import logging
-from typing import List, Tuple
+from dataclasses import dataclass
+from enum import Enum, auto
+from typing import List, Optional, Tuple
 
 import gemmi
 from Bio.PDB import Chain
@@ -28,12 +30,135 @@ from Bio.PDB.mmcifio import MMCIFIO
 
 from sabr.constants import AA_3TO1
 from sabr.structure.io import read_structure_biopython
+from sabr.util import format_residue_range, is_in_residue_range
 
 # Type alias for ANARCI alignment output:
 # list of ((residue_number, insertion_code), amino_acid)
 AnarciAlignment = List[Tuple[Tuple[int, str], str]]
 
 LOGGER = logging.getLogger(__name__)
+
+
+class ResidueRegion(Enum):
+    """Classification of residue regions during threading.
+
+    Residues are classified into one of four regions:
+    - PRE_FV: Residues before the antibody variable region
+    - IN_FV: Residues within the variable region (numbered by ANARCI)
+    - POST_FV: Residues after the variable region
+    - HETATM: Heteroatom residues (water, ligands, etc.)
+    """
+
+    PRE_FV = auto()
+    IN_FV = auto()
+    POST_FV = auto()
+    HETATM = auto()
+
+
+@dataclass
+class RenumberingState:
+    """State maintained during the renumbering process.
+
+    Attributes:
+        aligned_residue_idx: Current index into aligned residues
+            (-1 before start).
+        last_imgt_pos: Last assigned IMGT position number.
+    """
+
+    aligned_residue_idx: int = -1
+    last_imgt_pos: Optional[int] = None
+
+
+def _classify_residue_region(
+    pdb_idx: int,
+    aligned_residue_idx: int,
+    anarci_array_idx: int,
+    alignment_start: int,
+    anarci_len: int,
+    is_hetatm: bool,
+) -> ResidueRegion:
+    """Classify which region a residue belongs to.
+
+    Args:
+        pdb_idx: 0-indexed position in the PDB chain.
+        aligned_residue_idx: Current aligned residue index
+            (-1 before alignment).
+        anarci_array_idx: Index into the ANARCI alignment array.
+        alignment_start: Offset where alignment begins.
+        anarci_len: Total length of ANARCI alignment.
+        is_hetatm: Whether the residue is a heteroatom.
+
+    Returns:
+        ResidueRegion indicating which region the residue belongs to.
+    """
+    if is_hetatm:
+        return ResidueRegion.HETATM
+
+    if aligned_residue_idx < 0:
+        return ResidueRegion.PRE_FV
+
+    if anarci_array_idx < anarci_len:
+        return ResidueRegion.IN_FV
+
+    return ResidueRegion.POST_FV
+
+
+def _compute_new_residue_id(
+    region: ResidueRegion,
+    anarci_out: AnarciAlignment,
+    anarci_array_idx: int,
+    anarci_start: int,
+    alignment_start: int,
+    pdb_idx: int,
+    state: RenumberingState,
+    original_het_flag: str,
+    resname: str,
+) -> Tuple[Tuple[str, int, str], str]:
+    """Compute the new residue ID based on region.
+
+    Args:
+        region: The classified residue region.
+        anarci_out: ANARCI alignment output.
+        anarci_array_idx: Index into the ANARCI alignment array.
+        anarci_start: Start position in ANARCI window.
+        alignment_start: Offset where alignment begins.
+        pdb_idx: 0-indexed position in the PDB chain.
+        state: Current renumbering state (modified in-place for IN_FV/POST_FV).
+        original_het_flag: Original heteroatom flag from the residue.
+        resname: Three-letter residue name.
+
+    Returns:
+        Tuple of (new_id, expected_aa) where new_id is
+        (het_flag, resnum, icode) and expected_aa is the expected
+        amino acid (for validation) or empty string.
+
+    Raises:
+        ValueError: If residue doesn't match expected amino acid in alignment.
+    """
+    if region == ResidueRegion.HETATM:
+        # HETATM residues keep their original ID
+        return None, ""
+
+    if region == ResidueRegion.PRE_FV:
+        first_anarci_pos = anarci_out[anarci_start][0][0]
+        new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
+        return (original_het_flag, new_imgt_pos, " "), ""
+
+    if region == ResidueRegion.IN_FV:
+        (new_imgt_pos, icode), expected_aa = anarci_out[anarci_array_idx]
+        state.last_imgt_pos = new_imgt_pos
+
+        one_letter = AA_3TO1.get(resname, "X")
+        if expected_aa != one_letter:
+            raise ValueError(
+                f"Residue mismatch! Expected {expected_aa}, got {one_letter} "
+                f"({resname})"
+            )
+
+        return (original_het_flag, new_imgt_pos, icode), expected_aa
+
+    state.last_imgt_pos += 1
+    return (" ", state.last_imgt_pos, " "), ""
 
 
 def has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
@@ -107,69 +232,70 @@ def thread_onto_chain(
     Returns:
         Tuple of (new_chain, deviation_count).
     """
-    start_res, end_res = residue_range
-    range_str = (
-        f" (residue_range={start_res}-{end_res})"
-        if residue_range != (0, 0)
-        else ""
-    )
+    range_str = format_residue_range(residue_range)
     LOGGER.info(
         f"Threading chain {chain.id} with ANARCI window "
         f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
         + range_str
     )
+
     new_chain = Chain.Chain(chain.id)
-    aligned_residue_idx = -1
-    last_imgt_pos = None
+    state = RenumberingState()
     deviations = 0
 
     for pdb_idx, res in enumerate(chain.get_residues()):
         res_num = res.id[1]
-        # Skip residues outside the specified range
-        if residue_range != (0, 0):
-            if res_num < start_res:
-                continue
-            if res_num > end_res:
-                LOGGER.info(
-                    f"Stopping at residue {res_num} (end of range {end_res})"
-                )
-                break
+        in_range = is_in_residue_range(res_num, residue_range)
+        if in_range is False:
+            continue
+        if in_range is None:
+            LOGGER.info(
+                f"Stopping at residue {res_num} "
+                f"(end of range {residue_range[1]})"
+            )
+            break
 
         is_in_aligned_region = pdb_idx >= alignment_start
         is_hetatm = res.get_id()[0].strip() != ""
 
         if is_in_aligned_region and not is_hetatm:
-            aligned_residue_idx += 1
+            state.aligned_residue_idx += 1
 
-        if aligned_residue_idx >= 0:
-            aligned_residue_idx = _skip_deletions(
-                aligned_residue_idx, anarci_start, anarci_out
+        if state.aligned_residue_idx >= 0:
+            state.aligned_residue_idx = _skip_deletions(
+                state.aligned_residue_idx, anarci_start, anarci_out
             )
 
-        anarci_array_idx = aligned_residue_idx + anarci_start
-        is_in_fv_region = aligned_residue_idx >= 0
-        is_before_fv_end = anarci_array_idx < len(anarci_out)
+        anarci_array_idx = state.aligned_residue_idx + anarci_start
+
+        region = _classify_residue_region(
+            pdb_idx,
+            state.aligned_residue_idx,
+            anarci_array_idx,
+            alignment_start,
+            len(anarci_out),
+            is_hetatm,
+        )
 
         new_res = copy.deepcopy(res)
         new_res.detach_parent()
 
-        if is_in_fv_region and is_before_fv_end and not is_hetatm:
-            (new_imgt_pos, icode), aa = anarci_out[anarci_array_idx]
-            last_imgt_pos = new_imgt_pos
-            if aa != AA_3TO1[res.get_resname()]:
-                raise ValueError(f"Residue mismatch! {aa} {res.get_resname()}")
-            new_id = (res.get_id()[0], new_imgt_pos, icode)
-        elif is_hetatm:
-            new_id = res.get_id()
-        elif aligned_residue_idx < 0:
-            first_anarci_pos = anarci_out[anarci_start][0][0]
-            new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
-            new_id = (res.get_id()[0], new_imgt_pos, " ")
-        else:
-            last_imgt_pos += 1
-            new_id = (" ", last_imgt_pos, " ")
+        new_id_tuple, _ = _compute_new_residue_id(
+            region,
+            anarci_out,
+            anarci_array_idx,
+            anarci_start,
+            alignment_start,
+            pdb_idx,
+            state,
+            res.get_id()[0],
+            res.get_resname(),
+        )
 
+        # Apply new ID (None means keep original for HETATM)
+        new_id = new_id_tuple if new_id_tuple is not None else res.get_id()
         new_res.id = new_id
+
         LOGGER.info("OLD %s; NEW %s", res.get_id(), new_res.get_id())
         if res.get_id() != new_res.get_id():
             deviations += 1
@@ -201,88 +327,71 @@ def _thread_gemmi_chain(
     Returns:
         Number of residue ID deviations from original numbering.
     """
-    start_res, end_res = residue_range
-    range_str = (
-        f" (residue_range={start_res}-{end_res})"
-        if residue_range != (0, 0)
-        else ""
-    )
+    range_str = format_residue_range(residue_range)
     LOGGER.info(
         f"Threading chain {chain.name} with ANARCI window "
         f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
         + range_str
     )
 
-    aligned_residue_idx = -1
-    last_imgt_pos = None
+    state = RenumberingState()
     deviations = 0
     pdb_idx = 0
 
     for res in chain:
         res_num = res.seqid.num
-
-        # Skip residues outside the specified range
-        if residue_range != (0, 0):
-            if res_num < start_res:
-                continue
-            if res_num > end_res:
-                LOGGER.info(
-                    f"Stopping at residue {res_num} (end of range {end_res})"
-                )
-                break
+        in_range = is_in_residue_range(res_num, residue_range)
+        if in_range is False:
+            continue
+        if in_range is None:
+            LOGGER.info(
+                f"Stopping at residue {res_num} "
+                f"(end of range {residue_range[1]})"
+            )
+            break
 
         is_in_aligned_region = pdb_idx >= alignment_start
         # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
         is_hetatm = res.het_flag != "A"
 
         if is_in_aligned_region and not is_hetatm:
-            aligned_residue_idx += 1
+            state.aligned_residue_idx += 1
 
-        if aligned_residue_idx >= 0:
-            aligned_residue_idx = _skip_deletions(
-                aligned_residue_idx, anarci_start, anarci_out
+        if state.aligned_residue_idx >= 0:
+            state.aligned_residue_idx = _skip_deletions(
+                state.aligned_residue_idx, anarci_start, anarci_out
             )
 
-        anarci_array_idx = aligned_residue_idx + anarci_start
-        is_in_fv_region = aligned_residue_idx >= 0
-        is_before_fv_end = anarci_array_idx < len(anarci_out)
+        anarci_array_idx = state.aligned_residue_idx + anarci_start
+
+        region = _classify_residue_region(
+            pdb_idx,
+            state.aligned_residue_idx,
+            anarci_array_idx,
+            alignment_start,
+            len(anarci_out),
+            is_hetatm,
+        )
 
         old_seqid = str(res.seqid)
 
-        if is_in_fv_region and is_before_fv_end and not is_hetatm:
-            (new_imgt_pos, icode), aa = anarci_out[anarci_array_idx]
-            last_imgt_pos = new_imgt_pos
+        new_id_tuple, _ = _compute_new_residue_id(
+            region,
+            anarci_out,
+            anarci_array_idx,
+            anarci_start,
+            alignment_start,
+            pdb_idx,
+            state,
+            "",
+            res.name,
+        )
 
-            # Verify residue matches
-            one_letter = AA_3TO1.get(res.name, "X")
-            if aa != one_letter:
-                raise ValueError(
-                    f"Residue mismatch! Expected {aa}, got {one_letter} "
-                    f"({res.name})"
-                )
-
-            # Set new residue ID
+        if new_id_tuple is not None:
+            _, new_imgt_pos, icode = new_id_tuple
             res.seqid.num = new_imgt_pos
-            # Handle insertion code - strip whitespace
             icode_str = icode.strip() if icode else ""
             res.seqid.icode = icode_str[0] if icode_str else " "
-
-        elif is_hetatm:
-            # Keep HETATM residues unchanged
-            pass
-
-        elif aligned_residue_idx < 0:
-            # PRE-Fv region
-            first_anarci_pos = anarci_out[anarci_start][0][0]
-            new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
-            res.seqid.num = new_imgt_pos
-            res.seqid.icode = " "
-
-        else:
-            # POST-Fv region
-            last_imgt_pos += 1
-            res.seqid.num = last_imgt_pos
-            res.seqid.icode = " "
 
         new_seqid = str(res.seqid)
         LOGGER.info("OLD %s; NEW %s", old_seqid, new_seqid)
@@ -328,12 +437,9 @@ def _thread_alignment_biopython(
     )
 
     structure = read_structure_biopython(pdb_file)
-
-    # Find and renumber the target chain
     model = structure[0]
     chain = model[chain_id]
 
-    # Thread the chain using BioPython's thread_onto_chain
     threaded_chain, deviations = thread_onto_chain(
         chain,
         alignment,
@@ -343,11 +449,9 @@ def _thread_alignment_biopython(
         residue_range,
     )
 
-    # Replace the chain in the model
     model.detach_child(chain_id)
     model.add(threaded_chain)
 
-    # Write output CIF using BioPython's MMCIFIO
     io = MMCIFIO()
     io.set_structure(structure)
     io.save(output_cif)
@@ -408,12 +512,9 @@ def thread_alignment(
         f"writing to {output_pdb}"
     )
 
-    # Read structure with Gemmi
     structure = gemmi.read_structure(pdb_file)
-
     all_devs = 0
 
-    # Find and renumber the target chain
     model = structure[0]
     for ch in model:
         if ch.name == chain:
@@ -428,7 +529,6 @@ def thread_alignment(
             all_devs += deviations
             break
 
-    # Write output file
     if output_pdb.endswith(".cif"):
         structure.make_mmcif_document().write_file(output_pdb)
     else:
