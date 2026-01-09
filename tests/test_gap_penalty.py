@@ -100,8 +100,6 @@ class TestCreateGapPenaltyForReducedReference:
             idxs = [int(x) for x in data["idxs"]]
 
         query_len = 100  # Shorter than reference (122)
-        target_len = len(idxs)
-        excess = target_len - query_len  # 22 excess positions
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
             query_len, idxs
@@ -112,7 +110,8 @@ class TestCreateGapPenaltyForReducedReference:
         zero_count = 0
         for _cdr_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
             cdr_cols = [
-                col for col, pos in enumerate(idxs)
+                col
+                for col, pos in enumerate(idxs)
                 if cdr_start <= pos <= cdr_end
             ]
             for col in cdr_cols:
@@ -120,7 +119,9 @@ class TestCreateGapPenaltyForReducedReference:
                     zero_count += 1
 
         # Should have some CDR positions zeroed out
-        assert zero_count > 0, "Expected some CDR positions to have zero penalty"
+        assert (
+            zero_count > 0
+        ), "Expected some CDR positions to have zero penalty"
 
     def test_real_reference_with_jumps(self):
         """Test with actual reference embedding that has jumps."""
