@@ -25,14 +25,12 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zeros at jump positions.
+    """Create gap penalty matrices with zero penalty at position 10.
 
-    Gap penalties are set to zero for:
-    1. Positions where there's a jump in the reference indices (e.g., 31→35,
-       59→62, 72→74). These represent gaps in the reference embedding where
-       the alignment should be able to skip without penalty.
-    2. IMGT position 10 (commonly absent in antibody sequences, allowing
-       natural gap between positions 9 and 11).
+    Gap penalties are set to zero only for IMGT position 10, which is
+    commonly absent in antibody sequences. This allows a single free
+    insertion/deletion at position 10 (gap open is zero, but gap extend
+    remains penalized to prevent multiple free gaps).
 
     Args:
         query_len: Length of the query sequence.
@@ -52,23 +50,14 @@ def create_gap_penalty_for_reduced_reference(
         (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
     )
 
-    # 1. Find columns where there's a jump in reference indices
-    #    Zero penalty at these positions allows skipping reference gaps
-    jump_columns = set()
-    for col_idx in range(1, target_len):
-        if idxs[col_idx] - idxs[col_idx - 1] > 1:
-            jump_columns.add(col_idx)
-
-    # 2. Position 10 (FR1 gap position commonly absent in antibodies)
-    pos10_columns = {col_idx for col_idx, pos in enumerate(idxs) if pos == 10}
-
-    # Combine all zero-penalty columns
-    zero_penalty_columns = jump_columns | pos10_columns
-
-    # Set zero penalty for identified columns
-    for col_idx in zero_penalty_columns:
-        gap_extend[:, col_idx] = 0.0
-        gap_open[:, col_idx] = 0.0
+    # Position 10 (FR1 gap position commonly absent in antibodies)
+    # Only zero the gap_open penalty, keep gap_extend to ensure only
+    # one free insertion at this position
+    for col_idx, pos in enumerate(idxs):
+        if pos == 10:
+            gap_open[:, col_idx] = 0.0
+            # gap_extend remains penalized to limit to single insertion
+            break  # Only one position 10 column
 
     return gap_extend, gap_open
 
