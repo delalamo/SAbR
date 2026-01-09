@@ -25,12 +25,13 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zeros at CDR positions.
+    """Create gap penalty matrices with zeros at CDR and FR1 gap positions.
 
-    Gap penalties are set to zero for all columns corresponding to CDR
-    positions in the IMGT numbering scheme. This allows flexible alignment
-    within the variable CDR regions while maintaining strict alignment in
-    the conserved framework regions.
+    Gap penalties are set to zero for all columns corresponding to:
+    1. CDR positions in the IMGT numbering scheme (allows flexible alignment
+       within variable CDR regions)
+    2. IMGT position 10 (commonly absent in antibody sequences, allowing
+       natural gap between positions 9 and 11)
 
     CDR positions (from constants.IMGT_LOOPS):
         - CDR1: positions 27-38
@@ -43,7 +44,7 @@ def create_gap_penalty_for_reduced_reference(
 
     Returns:
         Tuple of (gap_extend_matrix, gap_open_matrix) with shape
-        (query_len, target_len). CDR columns have zero penalty.
+        (query_len, target_len). CDR and position 10 columns have zero penalty.
     """
     target_len = len(idxs)
 
@@ -60,9 +61,12 @@ def create_gap_penalty_for_reduced_reference(
     for _cdr_name, (start, end) in constants.IMGT_LOOPS.items():
         cdr_positions.update(range(start, end + 1))  # inclusive range
 
-    # Set zero penalty for all columns that correspond to CDR positions
+    # Also add position 10 (FR1 gap position commonly absent in antibodies)
+    zero_penalty_positions = cdr_positions | {10}
+
+    # Set zero penalty for all columns that correspond to zero-penalty positions
     for col_idx, imgt_pos in enumerate(idxs):
-        if imgt_pos in cdr_positions:
+        if imgt_pos in zero_penalty_positions:
             gap_extend[:, col_idx] = 0.0
             gap_open[:, col_idx] = 0.0
 

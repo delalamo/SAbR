@@ -1,7 +1,8 @@
-"""Tests for position-dependent gap penalties at CDR positions.
+"""Tests for position-dependent gap penalties at CDR and FR1 gap positions.
 
-This module tests the feature where gap penalties are set to zero for all
-positions within CDR regions (CDR1, CDR2, CDR3) as defined in constants.py.
+This module tests the feature where gap penalties are set to zero for:
+1. CDR regions (CDR1, CDR2, CDR3) as defined in constants.py
+2. IMGT position 10 (commonly absent in antibody sequences)
 """
 
 import numpy as np
@@ -26,7 +27,7 @@ class TestCreateGapPenaltyForReducedReference:
         assert gap_open.shape == (query_len, len(idxs))
 
     def test_uniform_penalties_for_framework_only(self):
-        """Test uniform penalties when all positions are in framework."""
+        """Test uniform penalties for framework positions (except 10)."""
         query_len = 50
         # FR1 positions only (1-26, all framework)
         idxs = list(range(1, 27))
@@ -35,9 +36,16 @@ class TestCreateGapPenaltyForReducedReference:
             query_len, idxs
         )
 
-        # All FR1 positions should have normal penalties
-        assert np.allclose(gap_extend, constants.SW_GAP_EXTEND)
-        assert np.allclose(gap_open, constants.SW_GAP_OPEN)
+        # All FR1 positions except 10 should have normal penalties
+        for imgt_pos in idxs:
+            col = idxs.index(imgt_pos)
+            if imgt_pos == 10:
+                # Position 10 should have zero penalty
+                assert np.allclose(gap_extend[:, col], 0.0)
+                assert np.allclose(gap_open[:, col], 0.0)
+            else:
+                assert np.allclose(gap_extend[:, col], constants.SW_GAP_EXTEND)
+                assert np.allclose(gap_open[:, col], constants.SW_GAP_OPEN)
 
     def test_zero_penalties_for_cdr1_positions(self):
         """Test zero gap penalty for CDR1 positions (27-38)."""
@@ -59,8 +67,10 @@ class TestCreateGapPenaltyForReducedReference:
                 gap_open[:, col], 0.0
             ), f"CDR1 pos {imgt_pos} should have zero gap_open"
 
-        # FR1 and FR2 positions should have normal penalties
+        # FR1 and FR2 positions have normal penalties (except position 10)
         for imgt_pos in list(range(1, 27)) + list(range(39, 56)):
+            if imgt_pos == 10:
+                continue  # Position 10 has zero penalty
             col = idxs.index(imgt_pos)
             assert np.allclose(
                 gap_extend[:, col], constants.SW_GAP_EXTEND
@@ -140,19 +150,53 @@ class TestCreateGapPenaltyForReducedReference:
         for _name, (start, end) in constants.IMGT_LOOPS.items():
             cdr_positions.update(range(start, end + 1))
 
-        # All CDR columns should have zero penalty
-        cdr_cols = [i for i, pos in enumerate(idxs) if pos in cdr_positions]
-        for col in cdr_cols:
+        # Zero penalty positions: CDRs + position 10
+        zero_penalty_positions = cdr_positions | {10}
+
+        # All zero-penalty columns should have zero penalty
+        zero_cols = [
+            i for i, pos in enumerate(idxs) if pos in zero_penalty_positions
+        ]
+        for col in zero_cols:
             assert np.allclose(gap_extend[:, col], 0.0)
             assert np.allclose(gap_open[:, col], 0.0)
 
-        # All non-CDR columns should have normal penalties
-        non_cdr_cols = [
-            i for i, pos in enumerate(idxs) if pos not in cdr_positions
+        # All other columns should have normal penalties
+        normal_cols = [
+            i for i, pos in enumerate(idxs) if pos not in zero_penalty_positions
         ]
-        for col in non_cdr_cols:
+        for col in normal_cols:
             assert np.allclose(gap_extend[:, col], constants.SW_GAP_EXTEND)
             assert np.allclose(gap_open[:, col], constants.SW_GAP_OPEN)
+
+    def test_zero_penalty_for_position_10(self):
+        """Test zero gap penalty for IMGT position 10 (FR1 gap position)."""
+        query_len = 50
+        # Include positions around 10
+        idxs = list(range(1, 20))
+
+        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
+            query_len, idxs
+        )
+
+        # Position 10 should have zero penalty
+        col_10 = idxs.index(10)
+        assert np.allclose(
+            gap_extend[:, col_10], 0.0
+        ), "Position 10 should have zero gap_extend"
+        assert np.allclose(
+            gap_open[:, col_10], 0.0
+        ), "Position 10 should have zero gap_open"
+
+        # Adjacent positions 9 and 11 should have normal penalties
+        col_9 = idxs.index(9)
+        col_11 = idxs.index(11)
+        assert np.allclose(
+            gap_extend[:, col_9], constants.SW_GAP_EXTEND
+        ), "Position 9 should have normal gap_extend"
+        assert np.allclose(
+            gap_extend[:, col_11], constants.SW_GAP_EXTEND
+        ), "Position 11 should have normal gap_extend"
 
     def test_cdr_positions_match_constants(self):
         """Verify CDR positions used match constants.IMGT_LOOPS."""
