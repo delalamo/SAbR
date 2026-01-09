@@ -25,12 +25,12 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zero penalty at position 10.
+    """Create gap penalty matrices with zero gap_open in CDRs and position 10.
 
-    Gap penalties are set to zero only for IMGT position 10, which is
-    commonly absent in antibody sequences. This allows a single free
-    insertion/deletion at position 10 (gap open is zero, but gap extend
-    remains penalized to prevent multiple free gaps).
+    Gap open penalties are set to zero in CDR regions (IMGT 27-38, 56-65,
+    105-117) and at position 10. This allows free gap openings in variable
+    loop regions while still penalizing gap extensions to prevent excessive
+    insertions.
 
     Args:
         query_len: Length of the query sequence.
@@ -50,14 +50,16 @@ def create_gap_penalty_for_reduced_reference(
         (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
     )
 
-    # Position 10 (FR1 gap position commonly absent in antibodies)
-    # Only zero the gap_open penalty, keep gap_extend to ensure only
-    # one free insertion at this position
+    # Build set of CDR positions for fast lookup
+    cdr_positions = set()
+    for cdr_name in ["CDR1", "CDR2", "CDR3"]:
+        cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
+
+    # Zero gap_open for CDR positions and position 10
+    # Keep gap_extend penalized to limit insertions
     for col_idx, pos in enumerate(idxs):
-        if pos == 10:
+        if pos in cdr_positions or pos == 10:
             gap_open[:, col_idx] = 0.0
-            # gap_extend remains penalized to limit to single insertion
-            break  # Only one position 10 column
 
     return gap_extend, gap_open
 
