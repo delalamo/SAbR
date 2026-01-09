@@ -25,7 +25,7 @@ def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Create gap penalty matrices with zeros at jump and CDR gap positions.
+    """Create gap penalty matrices with zeros at jump positions.
 
     Gap penalties are set to zero for:
     1. Positions where there's a jump in the reference indices (e.g., 31→35,
@@ -33,8 +33,6 @@ def create_gap_penalty_for_reduced_reference(
        the alignment should be able to skip without penalty.
     2. IMGT position 10 (commonly absent in antibody sequences, allowing
        natural gap between positions 9 and 11).
-    3. CDR positions when the query is shorter than the reference, allowing
-       shorter CDRs to align without penalty for unused reference CDR positions.
 
     Args:
         query_len: Length of the query sequence.
@@ -64,32 +62,8 @@ def create_gap_penalty_for_reduced_reference(
     # 2. Position 10 (FR1 gap position commonly absent in antibodies)
     pos10_columns = {col_idx for col_idx, pos in enumerate(idxs) if pos == 10}
 
-    # 3. CDR positions - only zero penalty for excess CDR capacity
-    #    when query is shorter than reference. This allows shorter CDRs
-    #    to align without being penalized for not filling all reference
-    #    CDR positions.
-    cdr_columns = set()
-    if query_len < target_len:
-        # Calculate how many "excess" positions the reference has
-        excess = target_len - query_len
-        # Zero penalty for CDR positions, prioritizing from the end of each CDR
-        # This allows the alignment to skip unused CDR positions
-        for _cdr_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-            # Find columns in this CDR region
-            cdr_cols_in_region = [
-                col_idx
-                for col_idx, pos in enumerate(idxs)
-                if cdr_start <= pos <= cdr_end
-            ]
-            # Zero out up to 'excess' positions from the end of each CDR
-            # This allows shorter CDRs to not be penalized
-            n_to_zero = min(len(cdr_cols_in_region), excess)
-            if n_to_zero > 0:
-                # Zero from the middle/end of CDR (insertion positions)
-                cdr_columns.update(cdr_cols_in_region[-n_to_zero:])
-
     # Combine all zero-penalty columns
-    zero_penalty_columns = jump_columns | pos10_columns | cdr_columns
+    zero_penalty_columns = jump_columns | pos10_columns
 
     # Set zero penalty for identified columns
     for col_idx in zero_penalty_columns:
