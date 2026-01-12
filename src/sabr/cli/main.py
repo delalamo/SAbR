@@ -145,6 +145,18 @@ LOGGER = logging.getLogger(__name__)
         "DE loop occupancy."
     ),
 )
+@click.option(
+    "--disable-custom-gap-penalties",
+    "disable_custom_gap_penalties",
+    is_flag=True,
+    help=(
+        "Disable custom gap penalties for alignment. "
+        "By default, custom penalties are applied including: zero gap open "
+        "penalty in CDR regions (IMGT 27-38, 56-65, 105-117), zero gap open "
+        "at position 10, and overhang penalties at sequence termini. "
+        "Use this flag to use uniform gap penalties instead."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -156,6 +168,7 @@ def main(
     disable_deterministic_renumbering: bool,
     random_seed: Optional[int],
     chain_type: str,
+    disable_custom_gap_penalties: bool,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     configure_logging(verbose)
@@ -201,12 +214,14 @@ def main(
 
     # Use shared renumbering pipeline
     use_deterministic = not disable_deterministic_renumbering
+    use_custom_gap_penalties = not disable_custom_gap_penalties
     anarci_out, detected_chain_type, first_aligned_row = (
         run_renumbering_pipeline(
             input_data,
             numbering_scheme=numbering_scheme,
             chain_type=chain_type,
             deterministic_loop_renumbering=use_deterministic,
+            use_custom_gap_penalties=use_custom_gap_penalties,
         )
     )
 
