@@ -188,3 +188,72 @@ def has_gap_in_region(
         if i in gap_indices:
             return True
     return False
+
+
+def format_residue_range(residue_range: tuple) -> str:
+    """Format a residue range tuple as a string for logging.
+
+    Args:
+        residue_range: Tuple of (start, end) residue numbers.
+
+    Returns:
+        Formatted string like " (residue_range=1-128)" or empty if (0, 0).
+    """
+    start_res, end_res = residue_range
+    if residue_range != (0, 0):
+        return f" (residue_range={start_res}-{end_res})"
+    return ""
+
+
+def is_in_residue_range(res_num: int, residue_range: tuple) -> bool | None:
+    """Check if a residue number is within the specified range.
+
+    Args:
+        res_num: The residue number to check.
+        residue_range: Tuple of (start, end) residue numbers (inclusive).
+            Use (0, 0) to include all residues.
+
+    Returns:
+        True if in range, False if before range, None if after range (to signal
+        that iteration should stop).
+    """
+    if residue_range == (0, 0):
+        return True
+    start_res, end_res = residue_range
+    if res_num < start_res:
+        return False
+    if res_num > end_res:
+        return None
+    return True
+
+
+def validate_array_shape(
+    array: np.ndarray,
+    dim: int,
+    expected_size: int,
+    array_name: str,
+    size_name: str,
+    context: str = "",
+) -> None:
+    """Validate that an array dimension matches an expected size.
+
+    Args:
+        array: The numpy array to validate.
+        dim: The dimension index to check.
+        expected_size: The expected size for that dimension.
+        array_name: Name of the array for error messages.
+        size_name: Name of the expected size for error messages.
+        context: Optional context string for error messages.
+
+    Raises:
+        ValueError: If the array dimension doesn't match expected size.
+    """
+    actual_size = array.shape[dim]
+    if actual_size != expected_size:
+        msg = (
+            f"{array_name}.shape[{dim}] ({actual_size}) must match "
+            f"{size_name} ({expected_size})."
+        )
+        if context:
+            msg += f" {context}"
+        raise ValueError(msg)
