@@ -29,6 +29,7 @@ from sabr.alignment.backend import (
     AlignmentBackend,
     create_gap_penalty_for_reduced_reference,
 )
+from sabr.embeddings.mpnn import MPNNEmbeddings
 from sabr.util import detect_chain_type
 
 LOGGER = logging.getLogger(__name__)
@@ -116,9 +117,6 @@ class SoftAligner:
         embeddings_path: str = "sabr.assets",
     ):
         """Load packaged reference embeddings."""
-        # Import here to avoid circular dependency
-        from sabr.embeddings.mpnn import MPNNEmbeddings
-
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)
