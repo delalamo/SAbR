@@ -1,6 +1,8 @@
 import importlib
+import inspect
 
 import numpy as np
+import pytest
 
 from sabr.alignment.corrections import (
     _skip_for_structural_gap,
@@ -12,10 +14,72 @@ from sabr.alignment.corrections import (
     correct_gap_numbering,
 )
 from sabr.alignment.soft_aligner import SoftAligner
+from sabr.cli import renumber
+from tests.conftest import (
+    FIXTURES,
+    DummyEmbeddings,
+    create_dummy_aligner,
+    load_alignment_fixture,
+)
 
 
 def make_aligner() -> SoftAligner:
     return SoftAligner.__new__(SoftAligner)
+
+
+class TestUseCustomGapPenalties:
+    """Tests for the use_custom_gap_penalties parameter."""
+
+    def test_custom_gap_penalties_is_default_true(self):
+        """Test that use_custom_gap_penalties defaults to True."""
+        sig = inspect.signature(SoftAligner.__call__)
+        param = sig.parameters.get("use_custom_gap_penalties")
+        assert param is not None, "use_custom_gap_penalties parameter not found"
+        assert param.default is True, "Default should be True"
+
+    def test_flag_passed_to_aligner_call(self, monkeypatch):
+        """Test that use_custom_gap_penalties flag is passed to __call__."""
+        data = FIXTURES["8_21"]
+        if not data["pdb"].exists():
+            pytest.skip(f"Missing fixture at {data['pdb']}")
+
+        alignment, chain_type = load_alignment_fixture(data["alignment"])
+
+        # Capture kwargs passed to the aligner
+        captured_kwargs = {}
+        DummyAligner = create_dummy_aligner(
+            alignment, chain_type, captured_kwargs
+        )
+        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
+
+        n_residues = alignment.shape[0]
+        dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
+        dummy_seq = dummy_seq[:n_residues]
+
+        dummy_embeddings = DummyEmbeddings(
+            name="test",
+            embeddings=np.zeros((n_residues, 64)),
+            idxs=[str(i) for i in range(n_residues)],
+            sequence=dummy_seq,
+        )
+
+        # Test with use_custom_gap_penalties=True (default)
+        captured_kwargs.clear()
+        renumber.run_renumbering_pipeline(
+            dummy_embeddings,
+            numbering_scheme="imgt",
+            use_custom_gap_penalties=True,
+        )
+        assert captured_kwargs.get("use_custom_gap_penalties") is True
+
+        # Test with use_custom_gap_penalties=False
+        captured_kwargs.clear()
+        renumber.run_renumbering_pipeline(
+            dummy_embeddings,
+            numbering_scheme="imgt",
+            use_custom_gap_penalties=False,
+        )
+        assert captured_kwargs.get("use_custom_gap_penalties") is False
 
 
 def test_files_resolves():
