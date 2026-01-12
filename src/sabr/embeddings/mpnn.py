@@ -116,6 +116,8 @@ def _compute_gap_indices(
     Returns:
         FrozenSet of gap indices after filtering, or None if < 2 residues.
     """
+    # Normalize batch dimension - detect_backbone_gaps also handles this,
+    # but we need 3D coords to do keep_indices slicing
     if coords.ndim == 4 and coords.shape[0] == 1:
         coords = coords[0]
 

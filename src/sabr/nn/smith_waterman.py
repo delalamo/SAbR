@@ -18,6 +18,69 @@ import jax
 import jax.numpy as jnp
 
 
+def _rotate_for_dp(x, NINF, state_dim: int = 1):
+    """Rotate matrix for striped dynamic programming.
+
+    Args:
+        x: Input matrix of shape (a, b).
+        NINF: Negative infinity value for padding.
+        state_dim: State dimension for prev arrays (1 for linear, 3 for affine).
+
+    Returns:
+        Tuple of (sm_dict, prev_tuple, idx_tuple).
+    """
+    a, b = x.shape
+    ar = jnp.arange(a)[::-1, None]
+    br = jnp.arange(b)[None, :]
+    i, j = (br - ar) + (a - 1), (ar + br) // 2
+    n, m = (a + b - 1), (a + b) // 2
+    output = {
+        "x": jnp.full([n, m], NINF).at[i, j].set(x),
+        "o": (jnp.arange(n) + a % 2) % 2,
+    }
+    if state_dim == 1:
+        prev = (jnp.full(m, NINF), jnp.full(m, NINF))
+    else:
+        prev = (jnp.full((m, state_dim), NINF), jnp.full((m, state_dim), NINF))
+    return output, prev, (i, j)
+
+
+def _soft_maximum(x, temp, NINF, axis=None, mask=None):
+    """Compute soft maximum using log-sum-exp."""
+
+    def _logsumexp(y):
+        y = jnp.maximum(y, NINF)
+        if mask is None:
+            return jax.nn.logsumexp(y, axis=axis)
+        else:
+            return y.max(axis) + jnp.log(
+                jnp.sum(
+                    mask * jnp.exp(y - y.max(axis, keepdims=True)),
+                    axis=axis,
+                )
+            )
+
+    return temp * _logsumexp(x / temp)
+
+
+def _cond(cond, true_val, false_val):
+    """Conditional selection."""
+    return cond * true_val + (1 - cond) * false_val
+
+
+def _pad(x, shape, NINF):
+    """Pad array with NINF values."""
+    return jnp.pad(x, shape, constant_values=(NINF, NINF))
+
+
+def _apply_length_mask(x, lengths, NINF):
+    """Apply length mask to similarity matrix."""
+    a, b = x.shape
+    real_a, real_b = lengths
+    mask = (jnp.arange(a) < real_a)[:, None] * (jnp.arange(b) < real_b)[None, :]
+    return x + NINF * (1 - mask), mask
+
+
 def sw(unroll: int = 2, batch: bool = True, NINF: float = -1e30):
     """Create a differentiable Smith-Waterman alignment function.
 
@@ -34,46 +97,14 @@ def sw(unroll: int = 2, batch: bool = True, NINF: float = -1e30):
         (scores, soft_alignment).
     """
 
-    def rotate(x):
-        """Rotate matrix for striped dynamic programming."""
-        a, b = x.shape
-        ar = jnp.arange(a)[::-1, None]
-        br = jnp.arange(b)[None, :]
-        i, j = (br - ar) + (a - 1), (ar + br) // 2
-        n, m = (a + b - 1), (a + b) // 2
-        output = {
-            "x": jnp.full([n, m], NINF).at[i, j].set(x),
-            "o": (jnp.arange(n) + a % 2) % 2,
-        }
-        return output, (jnp.full(m, NINF), jnp.full(m, NINF)), (i, j)
-
     def sco(x, lengths, gap=0, temp=1.0):
         """Compute scoring matrix using soft maximum."""
 
-        def _soft_maximum(x, axis=None, mask=None):
-            def _logsumexp(y):
-                y = jnp.maximum(y, NINF)
-                if mask is None:
-                    return jax.nn.logsumexp(y, axis=axis)
-                else:
-                    return y.max(axis) + jnp.log(
-                        jnp.sum(
-                            mask * jnp.exp(y - y.max(axis, keepdims=True)),
-                            axis=axis,
-                        )
-                    )
-
-            return temp * _logsumexp(x / temp)
-
-        def _cond(cond, true, false):
-            return cond * true + (1 - cond) * false
-
-        def _pad(x, shape):
-            return jnp.pad(x, shape, constant_values=(NINF, NINF))
-
         def _step(prev, sm):
             h2, h1 = prev
-            h1_T = _cond(sm["o"], _pad(h1[:-1], [1, 0]), _pad(h1[1:], [0, 1]))
+            h1_T = _cond(
+                sm["o"], _pad(h1[:-1], [1, 0], NINF), _pad(h1[1:], [0, 1], NINF)
+            )
 
             Align = h2 + sm["x"]
             Turn_0 = h1 + gap
@@ -81,19 +112,13 @@ def sw(unroll: int = 2, batch: bool = True, NINF: float = -1e30):
             Sky = sm["x"]
 
             h0 = jnp.stack([Align, Turn_0, Turn_1, Sky], -1)
-            h0 = _soft_maximum(h0, -1)
+            h0 = _soft_maximum(h0, temp, NINF, axis=-1)
             return (h1, h0), h0
 
-        a, b = x.shape
-        real_a, real_b = lengths
-        mask = (jnp.arange(a) < real_a)[:, None] * (jnp.arange(b) < real_b)[
-            None, :
-        ]
-        x = x + NINF * (1 - mask)
-
-        sm, prev, idx = rotate(x[:-1, :-1])
+        x, mask = _apply_length_mask(x, lengths, NINF)
+        sm, prev, idx = _rotate_for_dp(x[:-1, :-1], NINF, state_dim=1)
         hij = jax.lax.scan(_step, prev, sm, unroll=unroll)[-1][idx]
-        return _soft_maximum(hij + x[1:, 1:], mask=mask[1:, 1:])
+        return _soft_maximum(hij + x[1:, 1:], temp, NINF, mask=mask[1:, 1:])
 
     traceback = jax.value_and_grad(sco)
 
@@ -101,6 +126,16 @@ def sw(unroll: int = 2, batch: bool = True, NINF: float = -1e30):
         return jax.vmap(traceback, (0, 0, None, None))
     else:
         return traceback
+
+
+def _rotate_gap_matrix(x):
+    """Rotate a gap penalty matrix for striped DP, using 0 as fill value."""
+    a, b = x.shape
+    ar = jnp.arange(a)[::-1, None]
+    br = jnp.arange(b)[None, :]
+    i, j = (br - ar) + (a - 1), (ar + br) // 2
+    n, m = (a + b - 1), (a + b) // 2
+    return jnp.full([n, m], 0.0).at[i, j].set(x)
 
 
 def sw_affine(
@@ -129,29 +164,6 @@ def sw_affine(
         gap_matrix and open_matrix are optional position-dependent penalties.
     """
 
-    def rotate(x):
-        """Rotate matrix for vectorized dynamic programming."""
-        a, b = x.shape
-        ar = jnp.arange(a)[::-1, None]
-        br = jnp.arange(b)[None, :]
-        i, j = (br - ar) + (a - 1), (ar + br) // 2
-        n, m = (a + b - 1), (a + b) // 2
-        output = {
-            "x": jnp.full([n, m], NINF).at[i, j].set(x),
-            "o": (jnp.arange(n) + a % 2) % 2,
-        }
-        return output, (jnp.full((m, 3), NINF), jnp.full((m, 3), NINF)), (i, j)
-
-    def rotate_gap_matrix(x):
-        """Rotate a gap penalty matrix for striped DP, using 0 as fill value."""
-        a, b = x.shape
-        ar = jnp.arange(a)[::-1, None]
-        br = jnp.arange(b)[None, :]
-        i, j = (br - ar) + (a - 1), (ar + br) // 2
-        n, m = (a + b - 1), (a + b) // 2
-        # Use 0.0 as fill value (no penalty outside valid region)
-        return jnp.full([n, m], 0.0).at[i, j].set(x)
-
     def sco(
         x,
         lengths,
@@ -174,34 +186,13 @@ def sw_affine(
         """
         use_matrix_gaps = gap_matrix is not None and open_matrix is not None
 
-        def _soft_maximum(x, axis=None, mask=None):
-            def _logsumexp(y):
-                y = jnp.maximum(y, NINF)
-                if mask is None:
-                    return jax.nn.logsumexp(y, axis=axis)
-                else:
-                    return y.max(axis) + jnp.log(
-                        jnp.sum(
-                            mask * jnp.exp(y - y.max(axis, keepdims=True)),
-                            axis=axis,
-                        )
-                    )
-
-            return temp * _logsumexp(x / temp)
-
-        def _cond(cond, true, false):
-            return cond * true + (1 - cond) * false
-
-        def _pad(x, shape):
-            return jnp.pad(x, shape, constant_values=(NINF, NINF))
-
         def _step_scalar(prev, sm):
             """Step using scalar gap penalties."""
             h2, h1 = prev
 
             Align = jnp.pad(h2, [[0, 0], [0, 1]]) + sm["x"][:, None]
-            Right = _cond(sm["o"], _pad(h1[:-1], ([1, 0], [0, 0])), h1)
-            Down = _cond(sm["o"], h1, _pad(h1[1:], ([0, 1], [0, 0])))
+            Right = _cond(sm["o"], _pad(h1[:-1], ([1, 0], [0, 0]), NINF), h1)
+            Down = _cond(sm["o"], h1, _pad(h1[1:], ([0, 1], [0, 0]), NINF))
 
             if penalize_turns:
                 Right = Right + jnp.stack([open, gap, open])
@@ -214,9 +205,9 @@ def sw_affine(
             if restrict_turns:
                 Right = Right[:, :2]
 
-            h0_Align = _soft_maximum(Align, -1)
-            h0_Right = _soft_maximum(Right, -1)
-            h0_Down = _soft_maximum(Down, -1)
+            h0_Align = _soft_maximum(Align, temp, NINF, axis=-1)
+            h0_Right = _soft_maximum(Right, temp, NINF, axis=-1)
+            h0_Down = _soft_maximum(Down, temp, NINF, axis=-1)
             h0 = jnp.stack([h0_Align, h0_Right, h0_Down], axis=-1)
             return (h1, h0), h0
 
@@ -225,19 +216,16 @@ def sw_affine(
             h2, h1 = prev
 
             Align = jnp.pad(h2, [[0, 0], [0, 1]]) + sm["x"][:, None]
-            Right = _cond(sm["o"], _pad(h1[:-1], ([1, 0], [0, 0])), h1)
-            Down = _cond(sm["o"], h1, _pad(h1[1:], ([0, 1], [0, 0])))
+            Right = _cond(sm["o"], _pad(h1[:-1], ([1, 0], [0, 0]), NINF), h1)
+            Down = _cond(sm["o"], h1, _pad(h1[1:], ([0, 1], [0, 0]), NINF))
 
-            # Get position-dependent gap penalties from rotated matrices
-            gap_vals = sm["gap"]  # shape: (m,)
-            open_vals = sm["open"]  # shape: (m,)
+            gap_vals = sm["gap"]
+            open_vals = sm["open"]
 
             if penalize_turns:
-                # Right: [open, gap, open] per position
                 Right = Right + jnp.stack(
                     [open_vals, gap_vals, open_vals], axis=-1
                 )
-                # Down: [open, open, gap] per position
                 Down = Down + jnp.stack(
                     [open_vals, open_vals, gap_vals], axis=-1
                 )
@@ -249,37 +237,29 @@ def sw_affine(
             if restrict_turns:
                 Right = Right[:, :2]
 
-            h0_Align = _soft_maximum(Align, -1)
-            h0_Right = _soft_maximum(Right, -1)
-            h0_Down = _soft_maximum(Down, -1)
+            h0_Align = _soft_maximum(Align, temp, NINF, axis=-1)
+            h0_Right = _soft_maximum(Right, temp, NINF, axis=-1)
+            h0_Down = _soft_maximum(Down, temp, NINF, axis=-1)
             h0 = jnp.stack([h0_Align, h0_Right, h0_Down], axis=-1)
             return (h1, h0), h0
 
-        a, b = x.shape
-        real_a, real_b = lengths
-        mask = (jnp.arange(a) < real_a)[:, None] * (jnp.arange(b) < real_b)[
-            None, :
-        ]
-        x = x + NINF * (1 - mask)
-
-        sm, prev, idx = rotate(x[:-1, :-1])
+        x, mask = _apply_length_mask(x, lengths, NINF)
+        sm, prev, idx = _rotate_for_dp(x[:-1, :-1], NINF, state_dim=3)
 
         if use_matrix_gaps:
-            # Rotate gap matrices the same way as similarity matrix
-            rotated_gap = rotate_gap_matrix(gap_matrix[:-1, :-1])
-            rotated_open = rotate_gap_matrix(open_matrix[:-1, :-1])
-            sm["gap"] = rotated_gap
-            sm["open"] = rotated_open
+            sm["gap"] = _rotate_gap_matrix(gap_matrix[:-1, :-1])
+            sm["open"] = _rotate_gap_matrix(open_matrix[:-1, :-1])
             hij = jax.lax.scan(_step_matrix, prev, sm, unroll=unroll)[-1][idx]
         else:
             hij = jax.lax.scan(_step_scalar, prev, sm, unroll=unroll)[-1][idx]
 
-        return _soft_maximum(hij + x[1:, 1:, None], mask=mask[1:, 1:, None])
+        return _soft_maximum(
+            hij + x[1:, 1:, None], temp, NINF, mask=mask[1:, 1:, None]
+        )
 
     traceback = jax.value_and_grad(sco)
 
     if batch:
-        # gap_matrix and open_matrix are batched along axis 0 if provided
         return jax.vmap(traceback, (0, 0, None, None, None, 0, 0))
     else:
         return traceback
