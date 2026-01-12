@@ -103,13 +103,11 @@ def correct_fr1_alignment(
     aln: np.ndarray,
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
-    """Fix FR1 alignment issues in positions 6-13 deterministically.
+    """Fix FR1 alignment in positions 6-13 deterministically.
 
-    Uses anchor positions 6 and 13 to count residues and determine the
-    numbering pattern based purely on residue count:
-    - 8 residues: positions 6,7,8,9,10,11,12,13 (include 10)
-    - 7 residues: positions 6,7,8,9,11,12,13 (skip 10)
-    - 6 residues: positions 6,7,8,9,11,12 (skip 10)
+    Distributes residues linearly across positions 6-13, skipping position 10
+    unless there are 8+ residues to place. This matches IMGT convention where
+    position 10 is typically only present in kappa light chains.
 
     Args:
         aln: The alignment matrix.
@@ -120,14 +118,11 @@ def correct_fr1_alignment(
     Returns:
         Corrected alignment matrix.
     """
-    pos6_col = constants.FR1_ANCHOR_START_COL  # 0-indexed
-    pos12_col = constants.FR1_ANCHOR_END_COL
-
     start_row, _ = find_nearest_occupied_column(
-        aln, pos6_col, search_range=2, direction="forward"
+        aln, constants.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
     )
     end_row, _ = find_nearest_occupied_column(
-        aln, pos12_col, search_range=2, direction="forward"
+        aln, constants.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
     )
 
     if start_row is None or end_row is None or start_row >= end_row:
@@ -142,38 +137,30 @@ def correct_fr1_alignment(
 
     n_residues = end_row - start_row + 1
 
-    # Determine target positions based purely on residue count:
-    # - 8 residues: 6,7,8,9,10,11,12,13 (include position 10)
-    # - 7 residues: 6,7,8,9,11,12,13 (skip 10)
-    # - 6 residues: 6,7,8,9,11,12 (skip 10)
-    if n_residues >= 8:
-        pattern = "full_8"
-    elif n_residues == 7:
-        pattern = "skip10_7"
+    # Build target positions: 6-13, skip 10 unless we have 8+ residues.
+    # Position 10 is typically only present in kappa chains (8 residues).
+    all_positions = [6, 7, 8, 9, 10, 11, 12, 13]
+    if n_residues < 8:
+        target_positions = [p for p in all_positions if p != 10]
     else:
-        pattern = "standard_6"
+        target_positions = all_positions
 
     LOGGER.info(
-        f"FR1 correction: {n_residues} residues between rows "
-        f"{start_row}-{end_row}, pattern={pattern}"
+        f"FR1 correction: distributing {n_residues} residues "
+        f"(rows {start_row}-{end_row}) across positions "
+        f"{target_positions[0]}-{target_positions[-1]}"
+        f"{' (skipping 10)' if 10 not in target_positions else ''}"
     )
 
+    # Clear intermediate rows
     for row in range(start_row, end_row + 1):
         aln[row, :] = 0
 
-    if pattern == "full_8":
-        # 8 residues: fill positions 6,7,8,9,10,11,12,13
-        target_cols = [5, 6, 7, 8, 9, 10, 11, 12]  # 0-indexed
-    elif pattern == "skip10_7":
-        # 7 residues: fill positions 6,7,8,9,11,12,13 (skip 10)
-        target_cols = [5, 6, 7, 8, 10, 11, 12]  # 0-indexed
-    else:
-        # 6 residues: fill positions 6,7,8,9,11,12 (skip 10)
-        target_cols = [5, 6, 7, 8, 10, 11]  # 0-indexed
-
+    # Distribute residues linearly across available positions
     for i, row in enumerate(range(start_row, end_row + 1)):
-        if i < len(target_cols):
-            aln[row, target_cols[i]] = 1
+        if i < len(target_positions):
+            col = target_positions[i] - 1  # Convert to 0-indexed
+            aln[row, col] = 1
 
     return aln
 
