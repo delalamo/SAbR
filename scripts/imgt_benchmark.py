@@ -368,6 +368,52 @@ def load_csv(csv_path: str) -> List[Dict]:
     return entries
 
 
+def print_interim_statistics(
+    results: Dict, processed_count: int, total_entries: int
+) -> None:
+    """Print interim accuracy statistics during processing.
+
+    Args:
+        results: Dictionary with results for each chain type.
+        processed_count: Number of entries processed so far.
+        total_entries: Total number of entries to process.
+    """
+    print(f"\n--- Interim Statistics ({processed_count}/{total_entries}) ---")
+
+    total_perfect = 0
+    total_count = 0
+    total_failed = 0
+
+    for chain_type in ["heavy", "kappa", "lambda"]:
+        type_results = results.get(chain_type, [])
+        if not type_results:
+            continue
+
+        successful = [r for r in type_results if "error" not in r]
+        failed = [r for r in type_results if "error" in r]
+
+        n_perfect = sum(1 for r in successful if r.get("perfect", False))
+        n_successful = len(successful)
+        n_failed = len(failed)
+        total_perfect += n_perfect
+        total_count += n_successful
+        total_failed += n_failed
+
+        if n_successful > 0:
+            accuracy = round(100 * n_perfect / n_successful, 1)
+            print(
+                f"  {chain_type}: {n_perfect}/{n_successful} ({accuracy}%)"
+                + (f" [{n_failed} failed]" if n_failed > 0 else "")
+            )
+
+    if total_count > 0:
+        overall_accuracy = round(100 * total_perfect / total_count, 1)
+        print(f"  OVERALL: {total_perfect}/{total_count} ({overall_accuracy}%)")
+    if total_failed > 0:
+        print(f"  Failed: {total_failed}")
+    print("---\n", flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description="SAbDab Analysis")
     parser.add_argument(
@@ -427,6 +473,11 @@ def main():
     # Results
     results = {"heavy": [], "kappa": [], "lambda": []}
 
+    # Global counter for periodic reporting
+    total_entries = len(entries)
+    processed_count = 0
+    report_interval = 50
+
     for chain_type in ["heavy", "kappa", "lambda"]:
         type_entries = by_type.get(chain_type, [])
         if not type_entries:
@@ -453,6 +504,11 @@ def main():
                             "perfect": False,
                         }
                     )
+                    processed_count += 1
+                    if processed_count % report_interval == 0:
+                        print_interim_statistics(
+                            results, processed_count, total_entries
+                        )
                     continue
             else:
                 # Fetch from SAbDab
@@ -469,6 +525,11 @@ def main():
                                 "perfect": False,
                             }
                         )
+                        processed_count += 1
+                        if processed_count % report_interval == 0:
+                            print_interim_statistics(
+                                results, processed_count, total_entries
+                            )
                         continue
 
                 # Extract chain
@@ -483,6 +544,11 @@ def main():
                             "perfect": False,
                         }
                     )
+                    processed_count += 1
+                    if processed_count % report_interval == 0:
+                        print_interim_statistics(
+                            results, processed_count, total_entries
+                        )
                     continue
 
             # Run SAbR (also extracts input positions from PDB)
@@ -497,6 +563,11 @@ def main():
                         "perfect": False,
                     }
                 )
+                processed_count += 1
+                if processed_count % report_interval == 0:
+                    print_interim_statistics(
+                        results, processed_count, total_entries
+                    )
                 continue
 
             # Compare input positions (from IMGT-numbered PDB) with SAbR output
@@ -520,6 +591,13 @@ def main():
                     "deviations": comparison["deviations"],
                 }
             )
+
+            # Increment counter and report periodically
+            processed_count += 1
+            if processed_count % report_interval == 0:
+                print_interim_statistics(
+                    results, processed_count, total_entries
+                )
 
     # Generate summary
     print("\n" + "=" * 60)
