@@ -66,6 +66,12 @@ Options:
                                   (e.g., very long CDR loops).  [required]
   -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
                                   Numbering scheme.  [default: IMGT]
+  -t, --chain-type [H|K|L|heavy|kappa|lambda|auto]
+                                  Chain type for ANARCI numbering.
+                                  H/heavy=heavy chain, K/kappa=kappa light,
+                                  L/lambda=lambda light. Use 'auto' (default)
+                                  to detect from DE loop occupancy.
+                                  [default: auto]
   --overwrite                     Overwrite the output file if it already
                                   exists.
   -v, --verbose                   Enable verbose logging.
@@ -74,16 +80,19 @@ Options:
                                   to process all residues. Example:
                                   --residue-range 1 120 processes residues
                                   1-120.
+  --random-seed INTEGER           Random seed for JAX operations. If not
+                                  specified, a random seed will be generated.
+                                  Set this for reproducible results.
   --disable-deterministic-renumbering
                                   Disable deterministic renumbering corrections
                                   for loop regions. By default, corrections are
                                   applied for FR1, DE loop, and CDR loops.
-  -t, --chain-type [H|K|L|heavy|kappa|lambda|auto]
-                                  Chain type for ANARCI numbering.
-                                  H/heavy=heavy chain, K/kappa=kappa light,
-                                  L/lambda=lambda light. Use 'auto' (default)
-                                  to detect from DE loop occupancy.
-                                  [default: auto]
+  --disable-custom-gap-penalties  Disable custom gap penalties for alignment.
+                                  By default, custom penalties are applied
+                                  including: zero gap open penalty in CDR
+                                  regions (IMGT 27-38, 56-65, 105-117), zero
+                                  gap open at position 10, and overhang
+                                  penalties at sequence termini.
   -h, --help                      Show this message and exit.
 ```
 
