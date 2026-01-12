@@ -137,6 +137,7 @@ class SoftAligner:
         self,
         input_data,
         deterministic_loop_renumbering: bool = True,
+        use_custom_gap_penalties: bool = True,
     ) -> SoftAlignOutput:
         """Align input embeddings against the unified reference embedding.
 
@@ -145,6 +146,10 @@ class SoftAligner:
             deterministic_loop_renumbering: Whether to apply deterministic
                 renumbering corrections for CDR loops, FR1, FR3, and
                 C-terminus. Default is True.
+            use_custom_gap_penalties: If True, apply custom gap penalties
+                including zero gap open in CDR regions, zero gap open at
+                position 10, and overhang penalties. If False, use uniform
+                gap penalties. Default is True.
 
         Returns:
             SoftAlignOutput with the best alignment.
@@ -153,36 +158,49 @@ class SoftAligner:
             f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
         )
 
-        # Add anchor columns to reference for overhang penalties.
-        # Anchors at positions 0 and 129 have zero embeddings, so gap penalties
-        # between anchors and real positions enforce overhang cost.
-        query_len = input_data.embeddings.shape[0]
-        idxs_int = [int(x) for x in self.unified_embedding.idxs]
-        augmented_idxs = [0] + idxs_int + [129]
+        if use_custom_gap_penalties:
+            # Add anchor columns to reference for overhang penalties.
+            # Anchors at positions 0 and 129 have zero embeddings, so gap
+            # penalties between anchors and real positions enforce overhang
+            # cost.
+            query_len = input_data.embeddings.shape[0]
+            idxs_int = [int(x) for x in self.unified_embedding.idxs]
+            augmented_idxs = [0] + idxs_int + [129]
 
-        embed_dim = self.unified_embedding.embeddings.shape[1]
-        anchor = np.zeros(
-            (1, embed_dim), dtype=self.unified_embedding.embeddings.dtype
-        )
-        augmented_embeddings = np.concatenate(
-            [anchor, self.unified_embedding.embeddings, anchor], axis=0
-        )
+            embed_dim = self.unified_embedding.embeddings.shape[1]
+            anchor = np.zeros(
+                (1, embed_dim), dtype=self.unified_embedding.embeddings.dtype
+            )
+            augmented_embeddings = np.concatenate(
+                [anchor, self.unified_embedding.embeddings, anchor], axis=0
+            )
 
-        # Create position-dependent gap penalty matrices for augmented reference
-        gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
-            query_len, augmented_idxs, include_anchors=True
-        )
+            # Create position-dependent gap penalty matrices for augmented
+            # reference
+            gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
+                query_len, augmented_idxs, include_anchors=True
+            )
 
-        alignment, sim_matrix, score = self._backend.align(
-            input_embeddings=input_data.embeddings,
-            target_embeddings=augmented_embeddings,
-            temperature=self.temperature,
-            gap_matrix=gap_matrix,
-            open_matrix=open_matrix,
-        )
+            alignment, sim_matrix, score = self._backend.align(
+                input_embeddings=input_data.embeddings,
+                target_embeddings=augmented_embeddings,
+                temperature=self.temperature,
+                gap_matrix=gap_matrix,
+                open_matrix=open_matrix,
+            )
 
-        # Strip anchor columns from alignment result
-        alignment = alignment[:, 1:-1]
+            # Strip anchor columns from alignment result
+            alignment = alignment[:, 1:-1]
+        else:
+            # Use uniform gap penalties without custom modifications
+            LOGGER.info(
+                "Using uniform gap penalties (custom penalties disabled)"
+            )
+            alignment, sim_matrix, score = self._backend.align(
+                input_embeddings=input_data.embeddings,
+                target_embeddings=self.unified_embedding.embeddings,
+                temperature=self.temperature,
+            )
 
         aln = self.fix_aln(alignment, self.unified_embedding.idxs)
         aln = np.round(aln).astype(int)
