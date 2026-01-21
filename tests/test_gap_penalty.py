@@ -110,7 +110,13 @@ class TestCreateGapPenaltyForReducedReference:
         path = files("sabr.assets") / "embeddings.npz"
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)
-            idxs = [int(x) for x in data["idxs"]]
+            # Handle both old unified format and new split format
+            if "idxs" in data:
+                idxs = [int(x) for x in data["idxs"]]
+            else:
+                # New split format - use H chain idxs
+                split_data = data["arr_0"].item()
+                idxs = [int(x) for x in split_data["H"]["idxs"]]
 
         query_len = len(idxs)
 
