@@ -19,11 +19,12 @@ on:
         default: false
         type: boolean
       reference_chain_type:
-        description: "Reference embeddings to use for alignment (H, K, L, or auto)"
+        description: "Reference embeddings to use for alignment"
         required: false
-        default: "auto"
+        default: "match"
         type: choice
         options:
+          - match
           - auto
           - H
           - K
@@ -60,5 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pre2021-analysis-results
-          path: pre2021_results.json
+          path: |
+            pre2021_results.json
+            pre2021_results.tsv
           retention-days: 30
