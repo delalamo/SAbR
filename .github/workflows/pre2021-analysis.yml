@@ -18,6 +18,16 @@ on:
         required: false
         default: false
         type: boolean
+      reference_chain_type:
+        description: "Reference embeddings to use for alignment (H, K, L, or auto)"
+        required: false
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - H
+          - K
+          - L
 
 permissions:
   contents: read
@@ -42,6 +52,7 @@ jobs:
             --output pre2021_results.json \
             --limit ${{ inputs.limit }} \
             --cache-dir /tmp/pdb_cache \
+            --reference-chain-type ${{ inputs.reference_chain_type }} \
             ${{ inputs.filter_to_imgt == true && '--filter-to-imgt' || '' }} \
             ${{ inputs.ignore_variable_length_regions == true && '--ignore-variable-length-regions' || '' }}
 

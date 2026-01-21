@@ -19,7 +19,7 @@ The alignment process includes:
 import logging
 from dataclasses import dataclass
 from importlib.resources import as_file, files
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -82,7 +82,11 @@ class SoftAlignOutput:
 
 
 class SoftAligner:
-    """Align a query embedding against unified reference embeddings."""
+    """Align a query embedding against reference embeddings.
+
+    Supports both unified (single) reference embeddings and split embeddings
+    with separate references for Heavy (H), Kappa (K), and Lambda (L) chains.
+    """
 
     def __init__(
         self,
@@ -100,7 +104,7 @@ class SoftAligner:
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
         """
-        self.unified_embedding = self.read_embeddings(
+        self.embeddings = self.read_embeddings(
             embeddings_name=embeddings_name,
             embeddings_path=embeddings_path,
         )
@@ -111,18 +115,42 @@ class SoftAligner:
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ):
-        """Load packaged reference embeddings."""
+    ) -> Dict[str, MPNNEmbeddings]:
+        """Load packaged reference embeddings.
+
+        Automatically detects the file format:
+        - Old format (has 'array' key): Returns {"unified": embedding}
+        - New split format (has 'arr_0' key): Returns {"H", "K", "L"} dict
+
+        Returns:
+            Dictionary mapping chain type keys to MPNNEmbeddings objects.
+        """
         path = files(embeddings_path) / embeddings_name
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)
-            embedding = MPNNEmbeddings(
-                name=str(data["name"]),
-                embeddings=data["array"],
-                idxs=list(data["idxs"]),
-            )
-        LOGGER.info(f"Loaded embeddings from {path}")
-        return embedding
+
+            if "array" in data:
+                # Old unified format
+                embedding = MPNNEmbeddings(
+                    name=str(data["name"]),
+                    embeddings=data["array"],
+                    idxs=list(data["idxs"]),
+                )
+                LOGGER.info(f"Loaded unified embeddings from {path}")
+                return {"unified": embedding}
+            else:
+                # New split format with H, K, L chain types
+                split_data = data["arr_0"].item()
+                embeddings = {}
+                for chain_type in ["H", "K", "L"]:
+                    chain_data = split_data[chain_type]
+                    embeddings[chain_type] = MPNNEmbeddings(
+                        name=chain_type,
+                        embeddings=chain_data["array"],
+                        idxs=list(chain_data["idxs"]),
+                    )
+                LOGGER.info(f"Loaded split embeddings (H, K, L) from {path}")
+                return embeddings
 
     def fix_aln(self, old_aln: np.ndarray, idxs: List[int]) -> np.ndarray:
         """Expand an alignment onto IMGT positions using saved indices."""
@@ -133,50 +161,36 @@ class SoftAligner:
 
         return aln
 
-    def __call__(
+    def _align_single(
         self,
         input_data,
-        deterministic_loop_renumbering: bool = True,
-        use_custom_gap_penalties: bool = True,
-    ) -> SoftAlignOutput:
-        """Align input embeddings against the unified reference embedding.
+        reference_embedding: MPNNEmbeddings,
+        use_custom_gap_penalties: bool,
+    ):
+        """Align input embeddings against a single reference embedding.
 
         Args:
             input_data: Pre-computed MPNN embeddings for the query chain.
-            deterministic_loop_renumbering: Whether to apply deterministic
-                renumbering corrections for CDR loops, FR1, FR3, and
-                C-terminus. Default is True.
-            use_custom_gap_penalties: If True, apply custom gap penalties
-                including zero gap open in CDR regions, zero gap open at
-                position 10, and overhang penalties. If False, use uniform
-                gap penalties. Default is True.
+            reference_embedding: Reference embedding to align against.
+            use_custom_gap_penalties: Whether to apply custom gap penalties.
 
         Returns:
-            SoftAlignOutput with the best alignment.
+            Tuple of (alignment, sim_matrix, score, reference_idxs).
         """
-        LOGGER.info(
-            f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
-        )
-
         if use_custom_gap_penalties:
             # Add anchor columns to reference for overhang penalties.
-            # Anchors at positions 0 and 129 have zero embeddings, so gap
-            # penalties between anchors and real positions enforce overhang
-            # cost.
             query_len = input_data.embeddings.shape[0]
-            idxs_int = [int(x) for x in self.unified_embedding.idxs]
+            idxs_int = [int(x) for x in reference_embedding.idxs]
             augmented_idxs = [0] + idxs_int + [129]
 
-            embed_dim = self.unified_embedding.embeddings.shape[1]
+            embed_dim = reference_embedding.embeddings.shape[1]
             anchor = np.zeros(
-                (1, embed_dim), dtype=self.unified_embedding.embeddings.dtype
+                (1, embed_dim), dtype=reference_embedding.embeddings.dtype
             )
             augmented_embeddings = np.concatenate(
-                [anchor, self.unified_embedding.embeddings, anchor], axis=0
+                [anchor, reference_embedding.embeddings, anchor], axis=0
             )
 
-            # Create position-dependent gap penalty matrices for augmented
-            # reference
             gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
                 query_len, augmented_idxs, include_anchors=True
             )
@@ -192,17 +206,91 @@ class SoftAligner:
             # Strip anchor columns from alignment result
             alignment = alignment[:, 1:-1]
         else:
-            # Use uniform gap penalties without custom modifications
-            LOGGER.info(
-                "Using uniform gap penalties (custom penalties disabled)"
-            )
             alignment, sim_matrix, score = self._backend.align(
                 input_embeddings=input_data.embeddings,
-                target_embeddings=self.unified_embedding.embeddings,
+                target_embeddings=reference_embedding.embeddings,
                 temperature=self.temperature,
             )
 
-        aln = self.fix_aln(alignment, self.unified_embedding.idxs)
+        return alignment, sim_matrix, score, reference_embedding.idxs
+
+    def __call__(
+        self,
+        input_data,
+        deterministic_loop_renumbering: bool = True,
+        use_custom_gap_penalties: bool = True,
+        reference_chain_type: str = "auto",
+    ) -> SoftAlignOutput:
+        """Align input embeddings against reference embeddings.
+
+        Args:
+            input_data: Pre-computed MPNN embeddings for the query chain.
+            deterministic_loop_renumbering: Whether to apply deterministic
+                renumbering corrections for CDR loops, FR1, FR3, and
+                C-terminus. Default is True.
+            use_custom_gap_penalties: If True, apply custom gap penalties
+                including zero gap open in CDR regions, zero gap open at
+                position 10, and overhang penalties. If False, use uniform
+                gap penalties. Default is True.
+            reference_chain_type: Which reference embeddings to use.
+                "auto" (default): Try all available and pick best by score.
+                "H", "K", "L": Use the specified chain type's embeddings.
+                "unified": Use unified embeddings (for old format files).
+
+        Returns:
+            SoftAlignOutput with the best alignment.
+        """
+        LOGGER.info(
+            f"Aligning embeddings with length={input_data.embeddings.shape[0]}"
+        )
+
+        if not use_custom_gap_penalties:
+            LOGGER.info(
+                "Using uniform gap penalties (custom penalties disabled)"
+            )
+
+        # Determine which embeddings to use
+        if reference_chain_type == "auto":
+            # Try all available embeddings and pick best by score
+            best_result = None
+            best_score = float("-inf")
+            best_chain_type = None
+
+            for chain_type, embedding in self.embeddings.items():
+                alignment, sim_matrix, score, idxs = self._align_single(
+                    input_data, embedding, use_custom_gap_penalties
+                )
+                LOGGER.debug(
+                    f"Alignment score for {chain_type} reference: {score:.4f}"
+                )
+                if score > best_score:
+                    best_score = score
+                    best_result = (alignment, sim_matrix, score, idxs)
+                    best_chain_type = chain_type
+
+            LOGGER.info(
+                f"Selected {best_chain_type} reference embeddings "
+                f"with score {best_score:.4f}"
+            )
+            alignment, sim_matrix, score, ref_idxs = best_result
+        else:
+            # Use specified chain type
+            if reference_chain_type not in self.embeddings:
+                available = list(self.embeddings.keys())
+                raise ValueError(
+                    f"Reference chain type '{reference_chain_type}' not found. "
+                    f"Available: {available}"
+                )
+            embedding = self.embeddings[reference_chain_type]
+            alignment, sim_matrix, score, ref_idxs = self._align_single(
+                input_data, embedding, use_custom_gap_penalties
+            )
+            LOGGER.info(
+                f"Using {reference_chain_type} reference embeddings "
+                f"(score: {score:.4f})"
+            )
+
+        aln = self.fix_aln(alignment, ref_idxs)
         aln = np.round(aln).astype(int)
 
         gap_indices = input_data.gap_indices
