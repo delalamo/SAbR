@@ -469,15 +469,21 @@ def main():
     parser.add_argument(
         "--reference-chain-type",
         default="auto",
-        choices=["H", "K", "L", "auto"],
-        help="Reference embeddings to use (H, K, L, or auto)",
+        choices=["H", "K", "L", "auto", "match"],
+        help=(
+            "Reference embeddings to use: H, K, L, auto, or 'match' "
+            "(use known chain type from CSV: heavy->H, kappa->K, lambda->L)"
+        ),
     )
     args = parser.parse_args()
 
     # Convert disable flags to enable flags
     use_deterministic = not args.disable_deterministic_renumbering
     use_custom_gap_penalties = not args.disable_custom_gap_penalties
-    reference_chain_type = args.reference_chain_type
+    reference_chain_type_arg = args.reference_chain_type
+
+    # Mapping from CSV chain_type to reference embeddings
+    chain_type_to_ref = {"heavy": "H", "kappa": "K", "lambda": "L"}
 
     # Load entries from CSV
     entries = load_csv(args.csv)
@@ -588,13 +594,19 @@ def main():
                     continue
 
             # Run SAbR (also extracts input positions from PDB)
+            # Determine reference chain type for this entry
+            if reference_chain_type_arg == "match":
+                ref_chain_type = chain_type_to_ref.get(chain_type, "auto")
+            else:
+                ref_chain_type = reference_chain_type_arg
+
             try:
                 sabr_result = run_sabr_pipeline(
                     str(chain_pdb),
                     chain_id,
                     deterministic_loop_renumbering=use_deterministic,
                     use_custom_gap_penalties=use_custom_gap_penalties,
-                    reference_chain_type=reference_chain_type,
+                    reference_chain_type=ref_chain_type,
                 )
             except Exception as e:
                 print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")
@@ -687,6 +699,32 @@ def main():
     with open(args.output, "w") as f:
         json.dump(results, f, indent=2)
     print(f"\nResults saved to: {args.output}")
+
+    # Write TSV summary
+    tsv_output = args.output.replace(".json", ".tsv")
+    if tsv_output == args.output:
+        tsv_output = args.output + ".tsv"
+    with open(tsv_output, "w") as f:
+        f.write("chain_type\tperfect\ttotal\taccuracy\tfailed\n")
+        for chain_type in ["heavy", "kappa", "lambda"]:
+            type_results = results.get(chain_type, [])
+            successful = [r for r in type_results if "error" not in r]
+            failed = [r for r in type_results if "error" in r]
+            n_perfect = sum(1 for r in successful if r.get("perfect", False))
+            n_successful = len(successful)
+            n_failed = len(failed)
+            accuracy = (
+                round(100 * n_perfect / n_successful, 1) if n_successful else 0
+            )
+            row = f"{chain_type}\t{n_perfect}\t{n_successful}\t{accuracy}"
+            f.write(f"{row}\t{n_failed}\n")
+        # Overall row
+        overall_acc = (
+            round(100 * total_perfect / total_count, 1) if total_count else 0
+        )
+        row = f"OVERALL\t{total_perfect}\t{total_count}\t{overall_acc}"
+        f.write(f"{row}\t{total_failed}\n")
+    print(f"Summary saved to: {tsv_output}")
 
 
 if __name__ == "__main__":
