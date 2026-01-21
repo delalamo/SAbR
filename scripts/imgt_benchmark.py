@@ -187,8 +187,21 @@ def extract_chain_to_pdb(
 MIN_RESIDUES = 75
 
 
-def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
+def run_sabr_pipeline(
+    pdb_path: str,
+    chain_id: str,
+    deterministic_loop_renumbering: bool = True,
+    use_custom_gap_penalties: bool = True,
+    reference_chain_type: str = "auto",
+) -> Dict:
     """Run full SAbR pipeline on a PDB file.
+
+    Args:
+        pdb_path: Path to PDB file.
+        chain_id: Chain identifier.
+        deterministic_loop_renumbering: Apply deterministic corrections.
+        use_custom_gap_penalties: Use custom gap penalties.
+        reference_chain_type: Which reference embeddings to use for alignment.
 
     Returns:
         Dict with input_positions, output_positions, chain_type, sequence.
@@ -230,7 +243,9 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
             input_data,
             numbering_scheme="imgt",
             chain_type="auto",
-            deterministic_loop_renumbering=True,
+            deterministic_loop_renumbering=deterministic_loop_renumbering,
+            use_custom_gap_penalties=use_custom_gap_penalties,
+            reference_chain_type=reference_chain_type,
         )
     )
 
@@ -441,7 +456,28 @@ def main():
         action="store_true",
         help="Filter residues to IMGT positions 1-128 only",
     )
+    parser.add_argument(
+        "--disable-deterministic-renumbering",
+        action="store_true",
+        help="Disable deterministic renumbering corrections for loop regions",
+    )
+    parser.add_argument(
+        "--disable-custom-gap-penalties",
+        action="store_true",
+        help="Disable custom gap penalties (use uniform penalties instead)",
+    )
+    parser.add_argument(
+        "--reference-chain-type",
+        default="auto",
+        choices=["H", "K", "L", "auto"],
+        help="Reference embeddings to use (H, K, L, or auto)",
+    )
     args = parser.parse_args()
+
+    # Convert disable flags to enable flags
+    use_deterministic = not args.disable_deterministic_renumbering
+    use_custom_gap_penalties = not args.disable_custom_gap_penalties
+    reference_chain_type = args.reference_chain_type
 
     # Load entries from CSV
     entries = load_csv(args.csv)
@@ -553,7 +589,13 @@ def main():
 
             # Run SAbR (also extracts input positions from PDB)
             try:
-                sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
+                sabr_result = run_sabr_pipeline(
+                    str(chain_pdb),
+                    chain_id,
+                    deterministic_loop_renumbering=use_deterministic,
+                    use_custom_gap_penalties=use_custom_gap_penalties,
+                    reference_chain_type=reference_chain_type,
+                )
             except Exception as e:
                 print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")
                 results[chain_type].append(
