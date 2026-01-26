@@ -29,7 +29,7 @@ import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr.cli import renumber
-from sabr.constants import IMGT_REGIONS
+from sabr.constants import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
 from sabr.embeddings.mpnn import from_pdb
 
 # Suppress all warnings
@@ -278,11 +278,17 @@ def _position_in_imgt_range(pos: str) -> bool:
         return False
 
 
+def _get_position_number(pos: str) -> int:
+    """Extract the numeric portion of a position string."""
+    return int("".join(c for c in pos if c.isdigit()))
+
+
 def compare_positions(
     input_positions: List[str],
     output_positions: List[str],
     n_input_total: int,
     n_output_total: int,
+    ignore_variable_length_regions: bool = False,
 ) -> Dict:
     """Compare input and output IMGT positions.
 
@@ -300,6 +306,8 @@ def compare_positions(
         output_positions: List of output position strings.
         n_input_total: Total number of input residues (entire chain).
         n_output_total: Total number of output residues (entire chain).
+        ignore_variable_length_regions: If True, ignore CDRs and positions
+            79-84.
 
     Returns:
         Dict with deviations categorized by region.
@@ -320,10 +328,19 @@ def compare_positions(
         out = output_filtered[i]
 
         if inp != out:
+            # Skip variable-length regions if flag is set
+            if ignore_variable_length_regions:
+                try:
+                    out_num = _get_position_number(out)
+                    if out_num in VARIABLE_LENGTH_POSITIONS:
+                        continue
+                except ValueError:
+                    pass
+
             perfect = False
             # Determine region based on output position
             try:
-                out_num = int("".join(c for c in out if c.isdigit()))
+                out_num = _get_position_number(out)
                 region = get_region_for_position(out_num)
                 deviations[region].append((i, inp, out))
             except ValueError:
@@ -332,8 +349,23 @@ def compare_positions(
     # Length mismatch in IMGT region indicates a true deletion
     # (an input IMGT residue that didn't get any output number)
     # Only report if counts differ - this means a residue was lost
-    n_input_imgt = len(input_filtered)
-    n_output_imgt = len(output_filtered)
+    if ignore_variable_length_regions:
+        # Filter out variable-length positions for length comparison
+        input_for_len = [
+            p
+            for p in input_filtered
+            if _get_position_number(p) not in VARIABLE_LENGTH_POSITIONS
+        ]
+        output_for_len = [
+            p
+            for p in output_filtered
+            if _get_position_number(p) not in VARIABLE_LENGTH_POSITIONS
+        ]
+        n_input_imgt = len(input_for_len)
+        n_output_imgt = len(output_for_len)
+    else:
+        n_input_imgt = len(input_filtered)
+        n_output_imgt = len(output_filtered)
 
     if n_input_imgt != n_output_imgt:
         perfect = False
@@ -440,6 +472,11 @@ def main():
         "--filter-to-imgt",
         action="store_true",
         help="Filter residues to IMGT positions 1-128 only",
+    )
+    parser.add_argument(
+        "--ignore-variable-length-regions",
+        action="store_true",
+        help="Ignore CDRs and positions 79-84 when comparing numbering",
     )
     args = parser.parse_args()
 
@@ -572,11 +609,13 @@ def main():
 
             # Compare input positions (from IMGT-numbered PDB) with SAbR output
             input_positions = sabr_result["input_positions"]
+            ignore_var_len = args.ignore_variable_length_regions
             comparison = compare_positions(
                 input_positions,
                 sabr_result["output_positions"],
                 sabr_result["n_input_total"],
                 sabr_result["n_output_total"],
+                ignore_variable_length_regions=ignore_var_len,
             )
 
             results[chain_type].append(
