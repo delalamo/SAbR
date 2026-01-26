@@ -83,6 +83,15 @@ CDR_ANCHORS = {
     "CDR3": (104, 118),
 }
 
+# Variable-length positions to optionally ignore in benchmarks
+# Includes all CDR positions plus DE loop positions 79-84
+VARIABLE_LENGTH_POSITIONS = set(
+    IMGT_REGIONS["CDR1"]
+    + IMGT_REGIONS["CDR2"]
+    + IMGT_REGIONS["CDR3"]
+    + list(range(79, 85))  # DE loop: 79-84 inclusive
+)
+
 ##################
 # Misc
 

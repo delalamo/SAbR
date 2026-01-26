@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      ignore_variable_length_regions:
+        description: "Ignore variable-length regions (CDRs and positions 79-84)"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -37,7 +42,8 @@ jobs:
             --output pre2021_results.json \
             --limit ${{ inputs.limit }} \
             --cache-dir /tmp/pdb_cache \
-            ${{ inputs.filter_to_imgt == true && '--filter-to-imgt' || '' }}
+            ${{ inputs.filter_to_imgt == true && '--filter-to-imgt' || '' }} \
+            ${{ inputs.ignore_variable_length_regions == true && '--ignore-variable-length-regions' || '' }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4
