@@ -187,8 +187,21 @@ def extract_chain_to_pdb(
 MIN_RESIDUES = 75
 
 
-def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
+def run_sabr_pipeline(
+    pdb_path: str,
+    chain_id: str,
+    deterministic_loop_renumbering: bool = True,
+    use_custom_gap_penalties: bool = True,
+    reference_chain_type: str = "auto",
+) -> Dict:
     """Run full SAbR pipeline on a PDB file.
+
+    Args:
+        pdb_path: Path to PDB file.
+        chain_id: Chain identifier.
+        deterministic_loop_renumbering: Apply deterministic corrections.
+        use_custom_gap_penalties: Use custom gap penalties.
+        reference_chain_type: Which reference embeddings to use for alignment.
 
     Returns:
         Dict with input_positions, output_positions, chain_type, sequence.
@@ -230,7 +243,9 @@ def run_sabr_pipeline(pdb_path: str, chain_id: str) -> Dict:
             input_data,
             numbering_scheme="imgt",
             chain_type="auto",
-            deterministic_loop_renumbering=True,
+            deterministic_loop_renumbering=deterministic_loop_renumbering,
+            use_custom_gap_penalties=use_custom_gap_penalties,
+            reference_chain_type=reference_chain_type,
         )
     )
 
@@ -478,7 +493,34 @@ def main():
         action="store_true",
         help="Ignore CDRs and positions 79-84 when comparing numbering",
     )
+    parser.add_argument(
+        "--disable-deterministic-renumbering",
+        action="store_true",
+        help="Disable deterministic renumbering corrections for loop regions",
+    )
+    parser.add_argument(
+        "--disable-custom-gap-penalties",
+        action="store_true",
+        help="Disable custom gap penalties (use uniform penalties instead)",
+    )
+    parser.add_argument(
+        "--reference-chain-type",
+        default="auto",
+        choices=["H", "K", "L", "auto", "match"],
+        help=(
+            "Reference embeddings to use: H, K, L, auto, or 'match' "
+            "(use known chain type from CSV: heavy->H, kappa->K, lambda->L)"
+        ),
+    )
     args = parser.parse_args()
+
+    # Convert disable flags to enable flags
+    use_deterministic = not args.disable_deterministic_renumbering
+    use_custom_gap_penalties = not args.disable_custom_gap_penalties
+    reference_chain_type_arg = args.reference_chain_type
+
+    # Mapping from CSV chain_type to reference embeddings
+    chain_type_to_ref = {"heavy": "H", "kappa": "K", "lambda": "L"}
 
     # Load entries from CSV
     entries = load_csv(args.csv)
@@ -589,8 +631,20 @@ def main():
                     continue
 
             # Run SAbR (also extracts input positions from PDB)
+            # Determine reference chain type for this entry
+            if reference_chain_type_arg == "match":
+                ref_chain_type = chain_type_to_ref.get(chain_type, "auto")
+            else:
+                ref_chain_type = reference_chain_type_arg
+
             try:
-                sabr_result = run_sabr_pipeline(str(chain_pdb), chain_id)
+                sabr_result = run_sabr_pipeline(
+                    str(chain_pdb),
+                    chain_id,
+                    deterministic_loop_renumbering=use_deterministic,
+                    use_custom_gap_penalties=use_custom_gap_penalties,
+                    reference_chain_type=ref_chain_type,
+                )
             except Exception as e:
                 print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")
                 results[chain_type].append(
@@ -684,6 +738,32 @@ def main():
     with open(args.output, "w") as f:
         json.dump(results, f, indent=2)
     print(f"\nResults saved to: {args.output}")
+
+    # Write TSV summary
+    tsv_output = args.output.replace(".json", ".tsv")
+    if tsv_output == args.output:
+        tsv_output = args.output + ".tsv"
+    with open(tsv_output, "w") as f:
+        f.write("chain_type\tperfect\ttotal\taccuracy\tfailed\n")
+        for chain_type in ["heavy", "kappa", "lambda"]:
+            type_results = results.get(chain_type, [])
+            successful = [r for r in type_results if "error" not in r]
+            failed = [r for r in type_results if "error" in r]
+            n_perfect = sum(1 for r in successful if r.get("perfect", False))
+            n_successful = len(successful)
+            n_failed = len(failed)
+            accuracy = (
+                round(100 * n_perfect / n_successful, 1) if n_successful else 0
+            )
+            row = f"{chain_type}\t{n_perfect}\t{n_successful}\t{accuracy}"
+            f.write(f"{row}\t{n_failed}\n")
+        # Overall row
+        overall_acc = (
+            round(100 * total_perfect / total_count, 1) if total_count else 0
+        )
+        row = f"OVERALL\t{total_perfect}\t{total_count}\t{overall_acc}"
+        f.write(f"{row}\t{total_failed}\n")
+    print(f"Summary saved to: {tsv_output}")
 
 
 if __name__ == "__main__":

@@ -1,8 +1,7 @@
 """Tests for position-dependent gap penalties.
 
-This module tests the feature where gap_open penalties are set to zero for:
-1. CDR positions (IMGT 27-38, 56-65, 105-117)
-2. IMGT position 10 (commonly absent in antibody sequences)
+This module tests the feature where gap_open penalties are set to zero for
+CDR positions (IMGT 27-38, 56-65, 105-117).
 
 Gap extend penalties remain at normal values everywhere to limit insertions.
 """
@@ -40,8 +39,8 @@ class TestCreateGapPenaltyForReducedReference:
         # gap_extend should be SW_GAP_EXTEND everywhere
         assert np.allclose(gap_extend, constants.SW_GAP_EXTEND)
 
-    def test_zero_gap_open_for_position_10(self):
-        """Test zero gap_open penalty for IMGT position 10."""
+    def test_normal_gap_open_for_position_10(self):
+        """Test that position 10 has normal gap_open penalty (not special)."""
         query_len = 50
         idxs = list(range(1, 20))
 
@@ -49,14 +48,14 @@ class TestCreateGapPenaltyForReducedReference:
             query_len, idxs
         )
 
-        # Position 10 should have zero gap_open
+        # Position 10 should have normal gap_open (no special treatment)
         col_10 = idxs.index(10)
-        assert np.allclose(gap_open[:, col_10], 0.0)
+        assert np.allclose(gap_open[:, col_10], constants.SW_GAP_OPEN)
 
-        # gap_extend should still be normal at position 10
+        # gap_extend should be normal at position 10
         assert np.allclose(gap_extend[:, col_10], constants.SW_GAP_EXTEND)
 
-        # Adjacent non-CDR positions should have normal gap_open
+        # Adjacent non-CDR positions should also have normal gap_open
         col_9 = idxs.index(9)
         col_11 = idxs.index(11)
         assert np.allclose(gap_open[:, col_9], constants.SW_GAP_OPEN)
@@ -81,10 +80,6 @@ class TestCreateGapPenaltyForReducedReference:
                 assert np.allclose(
                     gap_open[:, col], 0.0
                 ), f"CDR pos {pos} should have zero gap_open"
-            elif pos == 10:
-                assert np.allclose(
-                    gap_open[:, col], 0.0
-                ), "Position 10 should have zero gap_open"
             else:
                 assert np.allclose(
                     gap_open[:, col], constants.SW_GAP_OPEN
@@ -93,8 +88,8 @@ class TestCreateGapPenaltyForReducedReference:
     def test_framework_positions_have_normal_gap_open(self):
         """Test that framework positions have normal gap_open penalties."""
         query_len = 130
-        # Just FR1 and FR2 positions (no CDRs, no position 10)
-        idxs = list(range(1, 10)) + list(range(11, 27)) + list(range(39, 56))
+        # Just FR1 and FR2 positions (no CDRs)
+        idxs = list(range(1, 27)) + list(range(39, 56))
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(
             query_len, idxs
@@ -110,7 +105,13 @@ class TestCreateGapPenaltyForReducedReference:
         path = files("sabr.assets") / "embeddings.npz"
         with as_file(path) as p:
             data = np.load(p, allow_pickle=True)
-            idxs = [int(x) for x in data["idxs"]]
+            # Handle both old unified format and new split format
+            if "idxs" in data:
+                idxs = [int(x) for x in data["idxs"]]
+            else:
+                # New split format - use H chain idxs
+                split_data = data["arr_0"].item()
+                idxs = [int(x) for x in split_data["H"]["idxs"]]
 
         query_len = len(idxs)
 
@@ -128,7 +129,7 @@ class TestCreateGapPenaltyForReducedReference:
 
         # Check gap_open values
         for col, pos in enumerate(idxs):
-            if pos in cdr_positions or pos == 10:
+            if pos in cdr_positions:
                 assert np.allclose(
                     gap_open[:, col], 0.0
                 ), f"Position {pos} should have zero gap_open"
@@ -170,6 +171,6 @@ class TestCreateGapPenaltyForReducedReference:
         assert np.allclose(gap_open[:, 0], constants.SW_GAP_OPEN)
         assert np.allclose(gap_open[:, -1], constants.SW_GAP_OPEN)
 
-        # Position 10 should still have zero gap_open
+        # Position 10 should have normal gap_open (not special)
         col_10 = idxs.index(10)
-        assert np.allclose(gap_open[:, col_10], 0.0)
+        assert np.allclose(gap_open[:, col_10], constants.SW_GAP_OPEN)
