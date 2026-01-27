@@ -229,9 +229,8 @@ class SoftAligner:
                 renumbering corrections for CDR loops, FR1, FR3, and
                 C-terminus. Default is True.
             use_custom_gap_penalties: If True, apply custom gap penalties
-                including zero gap open in CDR regions, zero gap open at
-                position 10, and overhang penalties. If False, use uniform
-                gap penalties. Default is True.
+                including zero gap open in CDR regions and overhang penalties.
+                If False, use uniform gap penalties. Default is True.
             reference_chain_type: Which reference embeddings to use.
                 "auto" (default): Try all available and pick best by score.
                 "H", "K", "L": Use the specified chain type's embeddings.
