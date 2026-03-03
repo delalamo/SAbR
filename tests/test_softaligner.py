@@ -50,7 +50,9 @@ class TestUseCustomGapPenalties:
         DummyAligner = create_dummy_aligner(
             alignment, chain_type, captured_kwargs
         )
-        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
+        monkeypatch.setattr(
+            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
+        )
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4

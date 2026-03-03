@@ -109,7 +109,9 @@ class TestRenumberStructure:
             mpnn_embeddings_module, "from_chain", dummy_from_chain
         )
         # Patch SoftAligner in the renumber module where it's imported
-        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
+        monkeypatch.setattr(
+            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
+        )
 
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
@@ -171,7 +173,9 @@ class TestRunRenumberingPipeline:
         alignment, chain_type = load_alignment_fixture(data["alignment"])
 
         DummyAligner = create_dummy_aligner(alignment, chain_type)
-        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
+        monkeypatch.setattr(
+            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
+        )
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
@@ -213,7 +217,9 @@ class TestRunRenumberingPipeline:
         DummyAligner = create_dummy_aligner(
             alignment, chain_type, captured_kwargs
         )
-        monkeypatch.setattr(renumber, "SoftAligner", lambda: DummyAligner())
+        monkeypatch.setattr(
+            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
+        )
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
