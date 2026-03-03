@@ -157,6 +157,21 @@ LOGGER = logging.getLogger(__name__)
         "Use this flag to use uniform gap penalties instead."
     ),
 )
+@click.option(
+    "--reference-chain-type",
+    "reference_chain_type",
+    default="auto",
+    show_default=True,
+    type=click.Choice(["H", "K", "L", "auto"], case_sensitive=False),
+    callback=lambda ctx, param, value: (
+        value.upper() if value != "auto" else value
+    ),
+    help=(
+        "Reference embeddings to use for alignment. "
+        "H=heavy chain, K=kappa light, L=lambda light. "
+        "Use 'auto' (default) to try all and select best by score."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -169,6 +184,7 @@ def main(
     random_seed: Optional[int],
     chain_type: str,
     disable_custom_gap_penalties: bool,
+    reference_chain_type: str,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     configure_logging(verbose)
@@ -222,6 +238,7 @@ def main(
             chain_type=chain_type,
             deterministic_loop_renumbering=use_deterministic,
             use_custom_gap_penalties=use_custom_gap_penalties,
+            reference_chain_type=reference_chain_type,
         )
     )
 

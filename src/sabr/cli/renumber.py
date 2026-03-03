@@ -45,6 +45,7 @@ def run_renumbering_pipeline(
     chain_type: str = "auto",
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
+    reference_chain_type: str = "auto",
 ) -> Tuple[AnarciAlignment, str, int]:
     """Run the core renumbering pipeline.
 
@@ -59,6 +60,9 @@ def run_renumbering_pipeline(
         use_custom_gap_penalties: If True, apply custom gap penalties including
             zero gap open in CDR regions, zero gap open at position 10,
             and overhang penalties. If False, use uniform gap penalties.
+        reference_chain_type: Which reference embeddings to use for alignment.
+            "auto" (default): Try all available and pick best by score.
+            "H", "K", "L": Use the specified chain type's embeddings.
 
     Returns:
         Tuple of (anarci_alignment, detected_chain_type, first_aligned_row).
@@ -70,6 +74,7 @@ def run_renumbering_pipeline(
         embeddings,
         deterministic_loop_renumbering=deterministic_loop_renumbering,
         use_custom_gap_penalties=use_custom_gap_penalties,
+        reference_chain_type=reference_chain_type,
     )
 
     hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
@@ -218,6 +223,7 @@ def renumber_structure(
     res_end: Optional[int] = None,
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
+    reference_chain_type: str = "auto",
 ) -> Structure.Structure:
     """Renumber an antibody structure using SAbR.
 
@@ -241,6 +247,9 @@ def renumber_structure(
         use_custom_gap_penalties: If True, apply custom gap penalties including
             zero gap open in CDR regions, zero gap open at position 10,
             and overhang penalties. If False, use uniform gap penalties.
+        reference_chain_type: Which reference embeddings to use for alignment.
+            "auto" (default): Try all available and pick best by score.
+            "H", "K", "L": Use the specified chain type's embeddings.
 
     Returns:
         Renumbered BioPython Structure object.
@@ -300,6 +309,7 @@ def renumber_structure(
             chain_type=chain_type,
             deterministic_loop_renumbering=deterministic_loop_renumbering,
             use_custom_gap_penalties=use_custom_gap_penalties,
+            reference_chain_type=reference_chain_type,
         )
     )
 

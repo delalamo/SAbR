@@ -29,9 +29,8 @@ def create_gap_penalty_for_reduced_reference(
     """Create gap penalty matrices with position-dependent penalties.
 
     Gap open penalties are set to zero in CDR regions (IMGT 27-38, 56-65,
-    105-117) and at position 10. This allows free gap openings in variable
-    loop regions while still penalizing gap extensions to prevent excessive
-    insertions.
+    105-117). This allows free gap openings in variable loop regions while
+    still penalizing gap extensions to prevent excessive insertions.
 
     When include_anchors=True, the idxs list should include anchor positions
     0 and 129 at the start and end. The gap penalties between anchors and
@@ -62,10 +61,10 @@ def create_gap_penalty_for_reduced_reference(
     for cdr_name in ["CDR1", "CDR2", "CDR3"]:
         cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
 
-    # Zero gap_open for CDR positions and position 10
+    # Zero gap_open for CDR positions only
     # Keep gap_extend penalized to limit insertions
     for col_idx, pos in enumerate(idxs):
-        if pos in cdr_positions or pos == 10:
+        if pos in cdr_positions:
             gap_open[:, col_idx] = 0.0
 
     return gap_extend, gap_open
