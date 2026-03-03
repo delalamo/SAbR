@@ -172,6 +172,18 @@ LOGGER = logging.getLogger(__name__)
         "Use 'auto' (default) to try all and select best by score."
     ),
 )
+@click.option(
+    "--noise-level",
+    "noise_level",
+    default=None,
+    show_default="default embeddings",
+    type=click.Choice(["0.0", "0.2", "0.5", "1.0", "2.0"]),
+    help=(
+        "Noise level for OAS MPNN reference embeddings. "
+        "Selects embeddings_noise_{level}.npz as the reference. "
+        "If not specified, the default embeddings.npz is used."
+    ),
+)
 def main(
     input_pdb: str,
     input_chain: str,
@@ -185,6 +197,7 @@ def main(
     chain_type: str,
     disable_custom_gap_penalties: bool,
     reference_chain_type: str,
+    noise_level: Optional[str],
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     configure_logging(verbose)
@@ -231,6 +244,12 @@ def main(
     # Use shared renumbering pipeline
     use_deterministic = not disable_deterministic_renumbering
     use_custom_gap_penalties = not disable_custom_gap_penalties
+    embeddings_name = (
+        f"embeddings_noise_{noise_level}.npz"
+        if noise_level is not None
+        else "embeddings.npz"
+    )
+    LOGGER.info(f"Using reference embeddings: {embeddings_name}")
     anarci_out, detected_chain_type, first_aligned_row = (
         run_renumbering_pipeline(
             input_data,
@@ -239,6 +258,7 @@ def main(
             deterministic_loop_renumbering=use_deterministic,
             use_custom_gap_penalties=use_custom_gap_penalties,
             reference_chain_type=reference_chain_type,
+            embeddings_name=embeddings_name,
         )
     )
 
