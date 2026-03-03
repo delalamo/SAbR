@@ -17,7 +17,10 @@ NOISE_LEVELS = ["0.0", "0.2", "0.5", "1.0", "2.0"]
 
 
 class TestNoiseEmbeddingsLoad:
-    """Tests that each noise-level NPZ file loads with the expected structure."""
+    """Tests that each noise-level NPZ file loads with the expected structure.
+
+    Covers loading, shape, and IMGT index validity for all noise levels.
+    """
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_loads_all_chain_types(self, noise_level):
@@ -32,11 +35,12 @@ class TestNoiseEmbeddingsLoad:
         embeddings_name = f"embeddings_noise_{noise_level}.npz"
         aligner = SoftAligner(embeddings_name=embeddings_name)
         for chain_type, emb in aligner.embeddings.items():
-            assert emb.embeddings.ndim == 2, (
-                f"noise={noise_level}, chain={chain_type}: expected 2D array"
-            )
+            assert (
+                emb.embeddings.ndim == 2
+            ), f"noise={noise_level}, chain={chain_type}: expected 2D array"
             assert emb.embeddings.shape[1] == 64, (
-                f"noise={noise_level}, chain={chain_type}: expected 64-dim embeddings"
+                f"noise={noise_level}, chain={chain_type}: "
+                "expected 64-dim embeddings"
             )
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
@@ -65,7 +69,10 @@ class TestNoiseEmbeddingsLoad:
 
 
 class TestNoiseEmbeddingsAlignment:
-    """Tests that noise-level embeddings produce valid alignments on real PDBs."""
+    """Tests that noise-level embeddings produce valid alignments on real PDBs.
+
+    Uses the 8_21 fixture heavy chain as a representative input.
+    """
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_alignment_shape(self, noise_level):
@@ -98,9 +105,10 @@ class TestNoiseEmbeddingsAlignment:
         result = aligner(input_data)
 
         unique_vals = set(np.unique(result.alignment))
-        assert unique_vals <= {0, 1}, (
-            f"noise={noise_level}: non-binary values in alignment: {unique_vals}"
-        )
+        assert unique_vals <= {
+            0,
+            1,
+        }, f"noise={noise_level}: non-binary values in alignment: {unique_vals}"
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_alignment_each_row_at_most_one(self, noise_level):
@@ -115,9 +123,9 @@ class TestNoiseEmbeddingsAlignment:
         result = aligner(input_data)
 
         row_sums = result.alignment.sum(axis=1)
-        assert (row_sums <= 1).all(), (
-            f"noise={noise_level}: some rows have more than one assignment"
-        )
+        assert (
+            row_sums <= 1
+        ).all(), f"noise={noise_level}: some rows have more than one assignment"
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_chain_type_detected(self, noise_level):
@@ -131,9 +139,11 @@ class TestNoiseEmbeddingsAlignment:
         aligner = SoftAligner(embeddings_name=embeddings_name)
         result = aligner(input_data)
 
-        assert result.chain_type in ("H", "K", "L"), (
-            f"noise={noise_level}: unexpected chain_type={result.chain_type}"
-        )
+        assert result.chain_type in (
+            "H",
+            "K",
+            "L",
+        ), f"noise={noise_level}: unexpected chain_type={result.chain_type}"
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_score_is_finite(self, noise_level):
@@ -147,16 +157,16 @@ class TestNoiseEmbeddingsAlignment:
         aligner = SoftAligner(embeddings_name=embeddings_name)
         result = aligner(input_data)
 
-        assert np.isfinite(result.score), (
-            f"noise={noise_level}: score is not finite: {result.score}"
-        )
+        assert np.isfinite(
+            result.score
+        ), f"noise={noise_level}: score is not finite: {result.score}"
 
 
 class TestNoiseLevelCLI:
     """Tests for the --noise-level CLI argument."""
 
     def test_noise_level_default_omitted(self, tmp_path):
-        """Running without --noise-level should succeed (uses embeddings.npz)."""
+        """Running without --noise-level should succeed."""
         fixture = FIXTURES["8_21"]
         if not fixture["pdb"].exists():
             pytest.skip(f"Missing fixture at {fixture['pdb']}")
@@ -166,9 +176,12 @@ class TestNoiseLevelCLI:
         result = runner.invoke(
             cli_main,
             [
-                "-i", str(fixture["pdb"]),
-                "-c", fixture["chain"],
-                "-o", str(output),
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
                 "--overwrite",
             ],
         )
@@ -186,19 +199,23 @@ class TestNoiseLevelCLI:
         result = runner.invoke(
             cli_main,
             [
-                "-i", str(fixture["pdb"]),
-                "-c", fixture["chain"],
-                "-o", str(output),
-                "--noise-level", noise_level,
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--noise-level",
+                noise_level,
                 "--overwrite",
             ],
         )
-        assert result.exit_code == 0, (
-            f"CLI failed for noise_level={noise_level}: {result.output}"
-        )
-        assert output.exists(), (
-            f"Output file not created for noise_level={noise_level}"
-        )
+        assert (
+            result.exit_code == 0
+        ), f"CLI failed for noise_level={noise_level}: {result.output}"
+        assert (
+            output.exists()
+        ), f"Output file not created for noise_level={noise_level}"
 
     def test_invalid_noise_level_rejected(self, tmp_path):
         """An invalid noise level should cause a non-zero exit code."""
@@ -211,10 +228,14 @@ class TestNoiseLevelCLI:
         result = runner.invoke(
             cli_main,
             [
-                "-i", str(fixture["pdb"]),
-                "-c", fixture["chain"],
-                "-o", str(output),
-                "--noise-level", "0.9",
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--noise-level",
+                "0.9",
             ],
         )
         assert result.exit_code != 0
