@@ -46,6 +46,7 @@ def run_renumbering_pipeline(
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
     reference_chain_type: str = "auto",
+    embeddings_name: str = "embeddings.npz",
 ) -> Tuple[AnarciAlignment, str, int]:
     """Run the core renumbering pipeline.
 
@@ -63,13 +64,16 @@ def run_renumbering_pipeline(
         reference_chain_type: Which reference embeddings to use for alignment.
             "auto" (default): Try all available and pick best by score.
             "H", "K", "L": Use the specified chain type's embeddings.
+        embeddings_name: Name of the reference embeddings NPZ file to load.
+            Defaults to "embeddings.npz". Use "embeddings_noise_{level}.npz"
+            to select a noise-level-specific file.
 
     Returns:
         Tuple of (anarci_alignment, detected_chain_type, first_aligned_row).
     """
     sequence = embeddings.sequence
 
-    aligner = SoftAligner()
+    aligner = SoftAligner(embeddings_name=embeddings_name)
     alignment_result = aligner(
         embeddings,
         deterministic_loop_renumbering=deterministic_loop_renumbering,
@@ -224,6 +228,7 @@ def renumber_structure(
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
     reference_chain_type: str = "auto",
+    embeddings_name: str = "embeddings.npz",
 ) -> Structure.Structure:
     """Renumber an antibody structure using SAbR.
 
@@ -250,6 +255,8 @@ def renumber_structure(
         reference_chain_type: Which reference embeddings to use for alignment.
             "auto" (default): Try all available and pick best by score.
             "H", "K", "L": Use the specified chain type's embeddings.
+        embeddings_name: Name of the reference embeddings NPZ file to load.
+            Defaults to "embeddings.npz".
 
     Returns:
         Renumbered BioPython Structure object.
@@ -310,6 +317,7 @@ def renumber_structure(
             deterministic_loop_renumbering=deterministic_loop_renumbering,
             use_custom_gap_penalties=use_custom_gap_penalties,
             reference_chain_type=reference_chain_type,
+            embeddings_name=embeddings_name,
         )
     )
 
