@@ -7,7 +7,6 @@ ensure proper numbering of CDR loops, framework regions, and termini.
 
 Key corrections:
 - CDR loop corrections (CDR1, CDR2, CDR3)
-- FR1 corrections for positions 6-13
 - FR3/DE loop corrections for positions 81-84
 - C-terminus corrections for positions 126-128
 """
@@ -97,72 +96,6 @@ def _skip_for_structural_gap(
         )
         return True
     return False
-
-
-def correct_fr1_alignment(
-    aln: np.ndarray,
-    gap_indices: Optional[FrozenSet[int]] = None,
-) -> np.ndarray:
-    """Fix FR1 alignment in positions 6-13 deterministically.
-
-    Distributes residues linearly across positions 6-13, skipping position 10
-    unless there are 8+ residues to place. This matches IMGT convention where
-    position 10 is typically only present in kappa light chains.
-
-    Args:
-        aln: The alignment matrix.
-        gap_indices: FrozenSet of row indices where structural gaps occur.
-            If a gap is found in the region, deterministic correction
-            is skipped and embedding similarity is used instead.
-
-    Returns:
-        Corrected alignment matrix.
-    """
-    start_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
-    )
-    end_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
-    )
-
-    if start_row is None or end_row is None or start_row >= end_row:
-        LOGGER.debug(
-            f"FR1 correction: could not find anchor positions "
-            f"(start_row={start_row}, end_row={end_row})"
-        )
-        return aln
-
-    if _skip_for_structural_gap(gap_indices, start_row, end_row, "FR1"):
-        return aln
-
-    n_residues = end_row - start_row + 1
-
-    # Build target positions: 6-13, skip 10 unless we have 8+ residues.
-    # Position 10 is typically only present in kappa chains (8 residues).
-    all_positions = [6, 7, 8, 9, 10, 11, 12, 13]
-    if n_residues < 8:
-        target_positions = [p for p in all_positions if p != 10]
-    else:
-        target_positions = all_positions
-
-    LOGGER.info(
-        f"FR1 correction: distributing {n_residues} residues "
-        f"(rows {start_row}-{end_row}) across positions "
-        f"{target_positions[0]}-{target_positions[-1]}"
-        f"{' (skipping 10)' if 10 not in target_positions else ''}"
-    )
-
-    # Clear intermediate rows
-    for row in range(start_row, end_row + 1):
-        aln[row, :] = 0
-
-    # Distribute residues linearly across available positions
-    for i, row in enumerate(range(start_row, end_row + 1)):
-        if i < len(target_positions):
-            col = target_positions[i] - 1  # Convert to 0-indexed
-            aln[row, col] = 1
-
-    return aln
 
 
 def _move_or_clear_position(
@@ -484,7 +417,7 @@ def apply_deterministic_corrections(
 ) -> Tuple[np.ndarray, str]:
     """Apply all deterministic alignment corrections.
 
-    Applies corrections in order: CDR loops, FR1, FR3 (light chains),
+    Applies corrections in order: CDR loops, FR3 (light chains),
     and C-terminus. Regions with structural gaps (as indicated by
     gap_indices) will skip deterministic correction and rely on
     embedding similarity instead.
@@ -506,9 +439,6 @@ def apply_deterministic_corrections(
     # Detect chain type from DE loop (positions 81-82)
     detected_chain_type = detect_chain_type(aln)
     is_light_chain = detected_chain_type in ("K", "L")
-
-    # Apply FR1 correction (anchor-based, uses residue count only)
-    aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
     if is_light_chain:

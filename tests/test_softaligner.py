@@ -9,7 +9,6 @@ from sabr.alignment.corrections import (
     apply_deterministic_corrections,
     correct_c_terminus,
     correct_cdr_loop,
-    correct_fr1_alignment,
     correct_fr3_alignment,
     correct_gap_numbering,
 )
@@ -148,98 +147,6 @@ def test_fix_aln_preserves_dtype():
     expanded = aligner.fix_aln(old_aln, idxs=["1", "2"])
 
     assert expanded.dtype == old_aln.dtype
-
-
-def test_correct_fr1_alignment_7_residues_skip_10():
-    """Test FR1 correction with 7 residues (skip position 10, extend to 13)."""
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up 7 residues in rows 5-11 aligned at positions 6-13
-    # The function uses anchors at position 6 (col 5) and position 13 (col 12)
-    aln[5, 5] = 1  # Row 5 at position 6
-    aln[6, 6] = 1  # Row 6 at position 7
-    aln[7, 7] = 1  # Row 7 at position 8
-    aln[8, 8] = 1  # Row 8 at position 9
-    aln[9, 9] = 1  # Row 9 at position 10
-    aln[10, 10] = 1  # Row 10 at position 11
-    aln[11, 12] = 1  # Row 11 at position 13 (anchor end)
-
-    corrected = correct_fr1_alignment(aln)
-
-    # With 7 residues (rows 5-11), position 10 is skipped
-    # Pattern: 6,7,8,9,11,12,13 (skip 10)
-    assert corrected[5, 5] == 1  # Position 6
-    assert corrected[6, 6] == 1  # Position 7
-    assert corrected[7, 7] == 1  # Position 8
-    assert corrected[8, 8] == 1  # Position 9
-    assert corrected[9, 9] == 0, "Position 10 should be empty for 7 residues"
-    assert corrected[9, 10] == 1  # Row 9 -> Position 11
-    assert corrected[10, 11] == 1  # Row 10 -> Position 12
-    assert corrected[11, 12] == 1  # Row 11 -> Position 13
-
-
-def test_correct_fr1_alignment_8_residues_include_10():
-    """Test FR1 correction with 8 residues (include position 10)."""
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up 8 residues in rows 5-12
-    aln[5, 5] = 1  # Row 5 at position 6
-    aln[6, 6] = 1  # Row 6 at position 7
-    aln[7, 7] = 1  # Row 7 at position 8
-    aln[8, 8] = 1  # Row 8 at position 9
-    aln[9, 9] = 1  # Row 9 at position 10
-    aln[10, 10] = 1  # Row 10 at position 11
-    aln[11, 11] = 1  # Row 11 at position 12
-    aln[12, 12] = 1  # Row 12 at position 13
-
-    corrected = correct_fr1_alignment(aln)
-
-    # With 8 residues (rows 5-12), position 10 should be occupied
-    # Pattern: 6,7,8,9,10,11,12,13
-    assert corrected[5, 5] == 1  # Position 6
-    assert corrected[6, 6] == 1  # Position 7
-    assert corrected[7, 7] == 1  # Position 8
-    assert corrected[8, 8] == 1  # Position 9
-    assert corrected[9, 9] == 1, "Position 10 should be occupied for 8 residues"
-    assert corrected[10, 10] == 1  # Position 11
-    assert corrected[11, 11] == 1  # Position 12
-    assert corrected[12, 12] == 1  # Position 13
-
-
-def test_correct_fr1_alignment_heavy_6_residues():
-    """Test FR1 correction with 6 residues (heavy/lambda - position 10 gap)."""
-    aln = np.zeros((20, 128), dtype=int)
-    # Set up 6 residues in rows 5-10 aligned near positions 6-12
-    aln[5, 5] = 1  # Row 5 at position 6
-    aln[6, 6] = 1  # Row 6 at position 7
-    aln[7, 7] = 1  # Row 7 at position 8
-    aln[8, 8] = 1  # Row 8 at position 9
-    aln[9, 10] = 1  # Row 9 at position 11 (skipping 10)
-    aln[10, 11] = 1  # Row 10 at position 12
-
-    corrected = correct_fr1_alignment(aln)
-
-    # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
-    assert (
-        corrected[5:11, 9].sum() == 0
-    ), "Position 10 should be empty for heavy"
-    # Check all 6 positions are filled correctly (skip position 10)
-    assert corrected[5, 5] == 1  # Position 6
-    assert corrected[6, 6] == 1  # Position 7
-    assert corrected[7, 7] == 1  # Position 8
-    assert corrected[8, 8] == 1  # Position 9
-    assert corrected[9, 10] == 1  # Position 11
-    assert corrected[10, 11] == 1  # Position 12
-
-
-def test_correct_fr1_no_anchors_found():
-    """Test FR1 correction when anchor positions cannot be found."""
-    aln = np.zeros((100, 128), dtype=int)
-    # No residues in positions 6-12 region
-    aln[50, 50] = 1  # Some residue far from FR1
-
-    corrected = correct_fr1_alignment(aln)
-
-    # Should return unchanged since anchors not found
-    assert np.array_equal(corrected, aln)
 
 
 def test_correct_fr3_alignment_no_correction_needed():
@@ -588,48 +495,6 @@ class TestGapSkipping:
         )
 
         assert result is False
-
-    def test_fr1_skips_correction_when_gap_present(self):
-        """Test FR1 correction is skipped when structural gap is in region."""
-        aln = np.zeros((20, 128), dtype=int)
-        # Set up 7 residues that would normally trigger correction
-        aln[5, 5] = 1
-        aln[6, 6] = 1
-        aln[7, 7] = 1
-        aln[8, 8] = 1
-        aln[9, 9] = 1
-        aln[10, 10] = 1
-        aln[11, 11] = 1
-
-        original_aln = aln.copy()
-        # Gap at row 7 (within the FR1 region)
-        gap_indices = frozenset({7})
-
-        corrected = correct_fr1_alignment(aln, gap_indices=gap_indices)
-
-        # Should return unchanged since gap is present
-        assert np.array_equal(corrected, original_aln)
-
-    def test_fr1_applies_correction_when_no_gap(self):
-        """Test FR1 correction is applied when no structural gap."""
-        aln = np.zeros((20, 128), dtype=int)
-        aln[5, 5] = 1
-        aln[6, 6] = 1
-        aln[7, 7] = 1
-        aln[8, 8] = 1
-        aln[9, 9] = 1
-        aln[10, 10] = 1
-        aln[11, 11] = 1
-
-        original_aln = aln.copy()
-        # No gaps in the FR1 region (gap is outside)
-        gap_indices = frozenset({20})
-
-        corrected = correct_fr1_alignment(aln, gap_indices=gap_indices)
-
-        # Correction should be applied (may or may not change, but method runs)
-        # At minimum, it should not raise an error
-        assert corrected.shape == original_aln.shape
 
     def test_fr3_skips_correction_when_gap_in_de_loop(self):
         """Test FR3 correction is skipped when gap in DE loop region."""
