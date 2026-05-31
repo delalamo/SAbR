@@ -21,7 +21,6 @@ Supported file formats:
 
 import logging
 from dataclasses import dataclass
-from pathlib import Path
 from typing import FrozenSet, List, Optional, Tuple
 
 import numpy as np
@@ -30,6 +29,8 @@ from Bio.PDB import Chain
 from sabr import constants
 from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.inputs import get_inputs
+from sabr.embeddings.schema import load_query_embeddings, save_query_embeddings
+from sabr.structure.residues import ResidueRange, normalize_residue_range
 from sabr.util import detect_backbone_gaps, validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
@@ -91,15 +92,8 @@ class MPNNEmbeddings:
         Args:
             output_path: Path where the NPZ file will be saved.
         """
-        output_path_obj = Path(output_path)
-        np.savez(
-            output_path_obj,
-            name=self.name,
-            embeddings=self.embeddings,
-            idxs=np.array(self.idxs),
-            sequence=self.sequence if self.sequence else "",
-        )
-        LOGGER.info(f"Saved embeddings to {output_path_obj}")
+        save_query_embeddings(self, output_path)
+        LOGGER.info(f"Saved embeddings to {output_path}")
 
 
 def _compute_gap_indices(
@@ -135,10 +129,11 @@ def _compute_gap_indices(
 def _create_embeddings(
     inputs,
     name: str,
-    residue_range: Tuple[int, int],
+    residue_range: ResidueRange | Tuple[int, int] | None,
     params_name: str,
     params_path: str,
     random_seed: int,
+    backend: EmbeddingBackend | None = None,
 ) -> MPNNEmbeddings:
     """Create MPNNEmbeddings from extracted inputs.
 
@@ -156,11 +151,12 @@ def _create_embeddings(
     Returns:
         MPNNEmbeddings for the structure.
     """
-    backend = EmbeddingBackend(
-        params_name=params_name,
-        params_path=params_path,
-        random_seed=random_seed,
-    )
+    if backend is None:
+        backend = EmbeddingBackend(
+            params_name=params_name,
+            params_path=params_path,
+            random_seed=random_seed,
+        )
 
     embeddings = backend.compute_embeddings(
         coords=inputs.coords,
@@ -179,28 +175,22 @@ def _create_embeddings(
     sequence = inputs.sequence
     keep_indices = None
 
-    # Filter by residue range if specified
-    start_res, end_res = residue_range
-    if residue_range != (0, 0):
-        keep_indices = []
-        for i, res_id in enumerate(ids):
-            try:
-                res_num = int(res_id)
-                if start_res <= res_num <= end_res:
-                    keep_indices.append(i)
-            except ValueError:
-                continue
+    normalized_range = normalize_residue_range(residue_range)
+    if normalized_range is not None:
+        keep_indices = [
+            i for i, res_id in enumerate(ids) if normalized_range.contains(res_id)
+        ]
 
         if keep_indices:
             LOGGER.info(
-                f"Filtering to residue range {start_res}-{end_res}: "
+                f"Filtering to residue range {normalized_range}: "
                 f"{len(keep_indices)} of {len(ids)} residues"
             )
             embeddings = embeddings[keep_indices]
             ids = [ids[i] for i in keep_indices]
             sequence = "".join(sequence[i] for i in keep_indices)
         else:
-            LOGGER.warning(f"No residues found in range {start_res}-{end_res}")
+            LOGGER.warning(f"No residues found in range {normalized_range}")
             keep_indices = None
 
     # Compute gap indices from backbone coordinates
@@ -218,10 +208,11 @@ def _create_embeddings(
 def from_pdb(
     pdb_file: str,
     chain: str,
-    residue_range: Tuple[int, int] = (0, 0),
+    residue_range: ResidueRange | Tuple[int, int] | None = None,
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
     random_seed: int = 0,
+    backend: EmbeddingBackend | None = None,
 ) -> MPNNEmbeddings:
     """
     Create MPNNEmbeddings from a PDB file.
@@ -255,6 +246,7 @@ def from_pdb(
         params_name,
         params_path,
         random_seed,
+        backend,
     )
 
     LOGGER.info(
@@ -266,10 +258,11 @@ def from_pdb(
 
 def from_chain(
     chain: Chain.Chain,
-    residue_range: Tuple[int, int] = (0, 0),
+    residue_range: ResidueRange | Tuple[int, int] | None = None,
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
     random_seed: int = 0,
+    backend: EmbeddingBackend | None = None,
 ) -> MPNNEmbeddings:
     """
     Create MPNNEmbeddings from a BioPython Chain object.
@@ -298,6 +291,7 @@ def from_chain(
         params_name,
         params_path,
         random_seed,
+        backend,
     )
 
     LOGGER.info(
@@ -317,22 +311,9 @@ def from_npz(npz_file: str) -> MPNNEmbeddings:
     Returns:
         MPNNEmbeddings object loaded from the file.
     """
-    input_path = Path(npz_file)
-    data = np.load(input_path, allow_pickle=True)
-
-    name = str(data["name"])
-    idxs = [str(idx) for idx in data["idxs"]]
-
-    sequence = str(data["sequence"]) or None if "sequence" in data else None
-
-    embedding = MPNNEmbeddings(
-        name=name,
-        embeddings=data["embeddings"],
-        idxs=idxs,
-        sequence=sequence,
-    )
+    embedding = load_query_embeddings(npz_file)
     LOGGER.info(
-        f"Loaded embeddings from {input_path} "
-        f"(name={name}, length={len(idxs)})"
+        f"Loaded embeddings from {npz_file} "
+        f"(name={embedding.name}, length={len(embedding.idxs)})"
     )
     return embedding

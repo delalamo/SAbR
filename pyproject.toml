@@ -17,7 +17,6 @@ authors = [
 dependencies = [
   "biopython>=1.85",
   "click>=8.1",
-  "gemmi>=0.7",
   "jax>=0.4.20",
   "jaxlib>=0.4.20",
   "numpy>=2.4",
@@ -31,6 +30,17 @@ dependencies = [
 test = [
   "pytest>=7.0",
   "pytest-cov>=4.1",
+]
+docs = [
+  "sphinx>=7",
+  "myst-parser>=2",
+  "sphinx-rtd-theme>=2",
+  "sphinx-click>=5",
+  "sphinx-autodoc-typehints>=2",
+]
+dev = [
+  "pre-commit>=3",
+  "ruff>=0.8",
 ]
 
 [project.urls]
@@ -63,20 +73,29 @@ include = [
 [tool.hatch.version]
 source = "vcs"
 
-[tool.black]
-line-length = 80
-target-version = ["py311"]
+[tool.ruff]
+line-length = 88
+src = ["src", "tests", "scripts"]
+exclude = ["external"]
 
-[tool.isort]
-profile = "black"
-line_length = 80
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C4", "SIM", "ARG", "PTH", "RUF"]
+ignore = [
+  "E501",
+]
 
-[tool.flake8]
-max-line-length = 80
-extend-ignore = ["E203", "W503"]
+[tool.ruff.lint.per-file-ignores]
+"scripts/**" = ["ARG", "B", "PTH", "RUF", "SIM"]
+"src/sabr/nn/**" = ["ARG", "B", "PTH", "RUF", "SIM"]
+"tests/**" = ["ARG", "RUF002", "RUF043", "RUF059", "SIM118"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 
 [tool.pytest.ini_options]
 markers = [
     "slow: marks tests as slow (skipped by default, use -m '' to include)",
+    "golden: exact expected numbering fixture tests",
 ]
 addopts = "-m 'not slow'"

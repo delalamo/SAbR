@@ -28,9 +28,9 @@ from typing import Dict, List
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr.cli import renumber
 from sabr.constants import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
 from sabr.embeddings.mpnn import from_pdb
+from sabr.renumber import run_renumbering_pipeline
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -57,9 +57,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/120.0.0.0 Safari/537.36"
         ),
-        "Accept": (
-            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-        ),
+        "Accept": ("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
         "Accept-Language": "en-US,en;q=0.9",
         "Connection": "keep-alive",
     }
@@ -90,9 +88,7 @@ def fetch_imgt_pdb(pdb_id: str, output_path: str, max_retries: int = 3) -> None:
 
         except (requests.exceptions.RequestException, ValueError) as e:
             last_error = e
-            print(
-                f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}"
-            )
+            print(f"Attempt {attempt + 1}/{max_retries} failed for {pdb_id}: {e}")
             if attempt < max_retries - 1:
                 time.sleep(2**attempt)  # Exponential backoff: 1s, 2s, 4s
 
@@ -122,14 +118,10 @@ def check_sabdab_available() -> None:
         try:
             response = requests.get(base_url, headers=headers, timeout=30)
             if response.status_code < 500:
-                print(
-                    f"SAbDab server is available (HTTP {response.status_code})"
-                )
+                print(f"SAbDab server is available (HTTP {response.status_code})")
                 return
         except requests.exceptions.RequestException as e:
-            print(
-                f"Server check attempt {attempt + 1}/{max_retries} failed: {e}"
-            )
+            print(f"Server check attempt {attempt + 1}/{max_retries} failed: {e}")
             if attempt < max_retries - 1:
                 time.sleep(2**attempt)
 
@@ -238,15 +230,13 @@ def run_sabr_pipeline(
             )
 
     # Run the renumbering pipeline (handles alignment and ANARCI)
-    anarci_out, chain_type, first_aligned_row = (
-        renumber.run_renumbering_pipeline(
-            input_data,
-            numbering_scheme="imgt",
-            chain_type="auto",
-            deterministic_loop_renumbering=deterministic_loop_renumbering,
-            use_custom_gap_penalties=use_custom_gap_penalties,
-            reference_chain_type=reference_chain_type,
-        )
+    anarci_out, chain_type, first_aligned_row = run_renumbering_pipeline(
+        input_data,
+        numbering_scheme="imgt",
+        chain_type="auto",
+        deterministic_loop_renumbering=deterministic_loop_renumbering,
+        use_custom_gap_penalties=use_custom_gap_penalties,
+        reference_chain_type=reference_chain_type,
     )
 
     # Parse output positions from ANARCI alignment
@@ -329,9 +319,7 @@ def compare_positions(
     """
     # Filter to IMGT positions 1-128 only
     input_filtered = [p for p in input_positions if _position_in_imgt_range(p)]
-    output_filtered = [
-        p for p in output_positions if _position_in_imgt_range(p)
-    ]
+    output_filtered = [p for p in output_positions if _position_in_imgt_range(p)]
 
     deviations = defaultdict(list)
     perfect = True
@@ -537,9 +525,7 @@ def main():
 
     # Set up directories
     pdb_dir = Path(args.pdb_dir) if args.pdb_dir else None
-    cache_dir = (
-        Path(args.cache_dir) if args.cache_dir else Path(tempfile.mkdtemp())
-    )
+    cache_dir = Path(args.cache_dir) if args.cache_dir else Path(tempfile.mkdtemp())
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     if pdb_dir:
@@ -566,7 +552,7 @@ def main():
 
         for i, entry in enumerate(type_entries):
             if (i + 1) % 10 == 0:
-                print(f"  Progress: {i+1}/{len(type_entries)}")
+                print(f"  Progress: {i + 1}/{len(type_entries)}")
 
             pdb_id = entry["pdb_id"]
             chain_id = entry["chain"]
@@ -656,9 +642,7 @@ def main():
                 )
                 processed_count += 1
                 if processed_count % report_interval == 0:
-                    print_interim_statistics(
-                        results, processed_count, total_entries
-                    )
+                    print_interim_statistics(results, processed_count, total_entries)
                 continue
 
             # Compare input positions (from IMGT-numbered PDB) with SAbR output
@@ -688,9 +672,7 @@ def main():
             # Increment counter and report periodically
             processed_count += 1
             if processed_count % report_interval == 0:
-                print_interim_statistics(
-                    results, processed_count, total_entries
-                )
+                print_interim_statistics(results, processed_count, total_entries)
 
     # Generate summary
     print("\n" + "=" * 60)
@@ -721,8 +703,7 @@ def main():
             accuracy = round(100 * n_perfect / n_successful, 1)
             print(
                 f"{chain_type.upper()}: {n_perfect}/{n_successful} perfect "
-                f"({accuracy}%)"
-                + (f" [{n_failed} failed]" if n_failed > 0 else "")
+                f"({accuracy}%)" + (f" [{n_failed} failed]" if n_failed > 0 else "")
             )
         elif n_failed > 0:
             print(f"{chain_type.upper()}: 0/0 perfect [{n_failed} failed]")
@@ -752,15 +733,11 @@ def main():
             n_perfect = sum(1 for r in successful if r.get("perfect", False))
             n_successful = len(successful)
             n_failed = len(failed)
-            accuracy = (
-                round(100 * n_perfect / n_successful, 1) if n_successful else 0
-            )
+            accuracy = round(100 * n_perfect / n_successful, 1) if n_successful else 0
             row = f"{chain_type}\t{n_perfect}\t{n_successful}\t{accuracy}"
             f.write(f"{row}\t{n_failed}\n")
         # Overall row
-        overall_acc = (
-            round(100 * total_perfect / total_count, 1) if total_count else 0
-        )
+        overall_acc = round(100 * total_perfect / total_count, 1) if total_count else 0
         row = f"OVERALL\t{total_perfect}\t{total_count}\t{overall_acc}"
         f.write(f"{row}\t{total_failed}\n")
     print(f"Summary saved to: {tsv_output}")

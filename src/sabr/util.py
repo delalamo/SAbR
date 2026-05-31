@@ -135,9 +135,7 @@ def detect_backbone_gaps(
     if gap_indices:
         if len(gap_indices) <= 3:
             gap_list = ", ".join(str(i) for i in sorted(gap_indices))
-            LOGGER.info(
-                f"Detected {len(gap_indices)} structural gap(s) at: {gap_list}"
-            )
+            LOGGER.info(f"Detected {len(gap_indices)} structural gap(s) at: {gap_list}")
         else:
             first_three = sorted(gap_indices)[:3]
             gap_list = ", ".join(str(i) for i in first_three)
@@ -184,10 +182,7 @@ def has_gap_in_region(
         - gap 9: break between residues 9-10 (both in region)
         - gap 10: break between residues 10-11 (11 is outside region)
     """
-    for i in range(start_row, end_row):
-        if i in gap_indices:
-            return True
-    return False
+    return any(i in gap_indices for i in range(start_row, end_row))
 
 
 def format_residue_range(residue_range: tuple) -> str:

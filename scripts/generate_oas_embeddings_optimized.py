@@ -169,9 +169,7 @@ class MultiNoiseEmbeddingBackend:
         coords_jax = jnp.array(coords)
 
         for noise_idx, noise in enumerate(noise_levels):
-            seed_val = (self.base_seed + structure_idx * 100 + noise_idx) % (
-                2**31 - 1
-            )
+            seed_val = (self.base_seed + structure_idx * 100 + noise_idx) % (2**31 - 1)
             key = jax.random.PRNGKey(seed_val)
 
             if noise > 0:
@@ -231,9 +229,7 @@ def load_sorted_structures(csv_path: str, cache_path: str = None) -> list:
                 }
             )
 
-    structures = sorted(
-        structures, key=lambda x: (x["heavy_len"], x["light_len"])
-    )
+    structures = sorted(structures, key=lambda x: (x["heavy_len"], x["light_len"]))
     LOGGER.info(f"Loaded {len(structures)} structures")
 
     if cache_path:
@@ -282,9 +278,9 @@ def update_accumulator(
     """Update running sum/count for each IMGT position."""
     for i, res_id in enumerate(residue_ids):
         if is_valid_residue_id(res_id):
-            accumulators[chain_type][noise][res_id]["sum"] += embeddings[
-                i
-            ].astype(np.float64)
+            accumulators[chain_type][noise][res_id]["sum"] += embeddings[i].astype(
+                np.float64
+            )
             accumulators[chain_type][noise][res_id]["count"] += 1
 
 
@@ -318,9 +314,7 @@ def accumulators_from_serializable(data: dict, noise_levels: list) -> dict:
     return accumulators
 
 
-def save_checkpoint(
-    checkpoint_path: Path, accumulators: dict, last_idx: int
-) -> None:
+def save_checkpoint(checkpoint_path: Path, accumulators: dict, last_idx: int) -> None:
     """Save checkpoint for resume capability."""
     checkpoint = {
         "last_idx": last_idx,
@@ -377,18 +371,16 @@ def save_embeddings_to_dir(
             )
 
             if not valid_positions:
-                LOGGER.warning(
-                    f"No valid positions for {chain_type} at noise {noise}"
-                )
+                LOGGER.warning(f"No valid positions for {chain_type} at noise {noise}")
                 continue
 
             array = np.zeros(
                 (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
             )
             for i, pos in enumerate(valid_positions):
-                array[i] = (
-                    pos_data[pos]["sum"] / pos_data[pos]["count"]
-                ).astype(np.float32)
+                array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
+                    np.float32
+                )
 
             idxs = np.array(valid_positions, dtype="<U3")
 
@@ -434,9 +426,9 @@ def save_intermediate_embeddings(
                 (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
             )
             for i, pos in enumerate(valid_positions):
-                array[i] = (
-                    pos_data[pos]["sum"] / pos_data[pos]["count"]
-                ).astype(np.float32)
+                array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
+                    np.float32
+                )
 
             idxs = np.array(valid_positions, dtype="<U3")
 
@@ -532,9 +524,7 @@ def process_structures(
             idx * 2,
         )
         for noise, emb in emb_H.items():
-            update_accumulator(
-                accumulators, "heavy", noise, inputs_H.residue_ids, emb
-            )
+            update_accumulator(accumulators, "heavy", noise, inputs_H.residue_ids, emb)
         stats["heavy"] += 1
 
         emb_L = backend.compute_all_noise_levels(

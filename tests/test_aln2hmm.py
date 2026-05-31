@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from sabr.alignment import aln2hmm
+from sabr.errors import AlignmentError
 
 
 def test_alignment_matrix_to_state_vector_basic():
@@ -25,7 +26,7 @@ def test_alignment_matrix_to_state_vector_basic():
 
 
 def test_alignment_matrix_to_state_vector_requires_2d():
-    with pytest.raises(ValueError):
+    with pytest.raises(AlignmentError):
         aln2hmm.alignment_matrix_to_state_vector(np.ones(3))
 
 
@@ -105,10 +106,10 @@ def test_alignment_matrix_to_state_vector_complex_path():
 
 
 def test_alignment_matrix_to_state_vector_empty_path():
-    """Test that empty alignment matrix with no path raises ValueError."""
+    """Test that empty alignment matrix with no path raises AlignmentError."""
     matrix = np.zeros((3, 3), dtype=int)
 
-    with pytest.raises(ValueError, match="Alignment matrix contains no path"):
+    with pytest.raises(AlignmentError, match="contains no path"):
         aln2hmm.alignment_matrix_to_state_vector(matrix)
 
 
@@ -135,9 +136,7 @@ def test_alignment_matrix_to_state_vector_insertion_at_end():
     output = aln2hmm.alignment_matrix_to_state_vector(matrix)
 
     # Should handle insertions
-    assert (
-        len(output.states) == 4
-    )  # 1 match + 2 inserts at col 0, 1 match at col 1
+    assert len(output.states) == 4  # 1 match + 2 inserts at col 0, 1 match at col 1
     # Check for insertion states
     insertion_states = [s for s in output.states if s.insertion_code == "i"]
     assert len(insertion_states) == 2

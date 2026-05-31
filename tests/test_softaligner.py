@@ -4,6 +4,7 @@ import inspect
 import numpy as np
 import pytest
 
+import sabr.renumber as renumber
 from sabr.alignment.corrections import (
     _skip_for_structural_gap,
     apply_deterministic_corrections,
@@ -14,7 +15,6 @@ from sabr.alignment.corrections import (
     correct_gap_numbering,
 )
 from sabr.alignment.soft_aligner import SoftAligner
-from sabr.cli import renumber
 from tests.conftest import (
     FIXTURES,
     DummyEmbeddings,
@@ -47,12 +47,8 @@ class TestUseCustomGapPenalties:
 
         # Capture kwargs passed to the aligner
         captured_kwargs = {}
-        DummyAligner = create_dummy_aligner(
-            alignment, chain_type, captured_kwargs
-        )
-        monkeypatch.setattr(
-            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
-        )
+        DummyAligner = create_dummy_aligner(alignment, chain_type, captured_kwargs)
+        monkeypatch.setattr(renumber, "SoftAligner", lambda **kwargs: DummyAligner())
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
@@ -218,9 +214,7 @@ def test_correct_fr1_alignment_heavy_6_residues():
     corrected = correct_fr1_alignment(aln)
 
     # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
-    assert (
-        corrected[5:11, 9].sum() == 0
-    ), "Position 10 should be empty for heavy"
+    assert corrected[5:11, 9].sum() == 0, "Position 10 should be empty for heavy"
     # Check all 6 positions are filled correctly (skip position 10)
     assert corrected[5, 5] == 1  # Position 6
     assert corrected[6, 6] == 1  # Position 7
@@ -250,9 +244,7 @@ def test_correct_fr3_alignment_no_correction_needed():
     aln[71, 81] = 1  # Residue at position 82
 
     # If input has both positions, no correction needed
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=True
-    )
+    corrected = correct_fr3_alignment(aln, input_has_pos81=True, input_has_pos82=True)
 
     # Should not change
     assert np.array_equal(corrected, aln)
@@ -265,9 +257,7 @@ def test_correct_fr3_alignment_move_81_to_83():
     aln[70, 80] = 1  # Residue incorrectly at position 81
 
     # Light chain lacks position 81
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=True
-    )
+    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=True)
 
     # Residue should be moved from pos81 to pos83
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -281,9 +271,7 @@ def test_correct_fr3_alignment_move_82_to_84():
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks position 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln, input_has_pos81=True, input_has_pos82=False)
 
     # Residue should be moved from pos82 to pos84
     assert corrected[71, 81] == 0  # Position 82 cleared
@@ -298,9 +286,7 @@ def test_correct_fr3_alignment_both_moves():
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
     # Light chain lacks both positions 81 and 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=False)
 
     # Both residues should be moved
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -319,9 +305,7 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     aln[73, 83] = 1  # Position 84
 
     # Light chain lacks positions 81 and 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=False)
 
     # Since 83, 84 are occupied, 81, 82 should just be cleared
     assert corrected[70, 80] == 0  # Position 81 cleared

@@ -5,8 +5,8 @@ This module provides functions for extracting backbone coordinates and
 residue information from protein structures for MPNN embedding computation.
 
 Supports extraction from:
-- PDB/mmCIF files (via Gemmi)
 - BioPython Chain objects
+- PDB/mmCIF files parsed with BioPython
 """
 
 import logging
@@ -14,11 +14,12 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Iterator, List, Optional, Tuple, Union
 
-import gemmi
 import numpy as np
 from Bio.PDB import Chain
 
 from sabr import constants
+from sabr.errors import ChainNotFoundError
+from sabr.structure.io import read_structure
 
 LOGGER = logging.getLogger(__name__)
 
@@ -90,8 +91,7 @@ class ResidueAdapter(ABC):
     """Abstract adapter for accessing residue data from different libraries.
 
     This adapter provides a uniform interface for extracting backbone
-    coordinates and residue information from both Gemmi and BioPython
-    chain objects.
+    coordinates and residue information from BioPython chain objects.
     """
 
     @abstractmethod
@@ -123,48 +123,6 @@ class ResidueAdapter(ABC):
     @abstractmethod
     def get_residue_id(self, residue) -> str:
         """Return residue ID string (number + optional insertion code)."""
-
-
-class GemmiResidueAdapter(ResidueAdapter):
-    """Adapter for Gemmi Chain objects."""
-
-    def __init__(self, chain: gemmi.Chain):
-        self._chain = chain
-
-    def get_chain_name(self) -> str:
-        return self._chain.name
-
-    def iterate_residues(self) -> Iterator:
-        return iter(self._chain)
-
-    def is_heteroatom(self, residue) -> bool:
-        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
-        return residue.het_flag != "A"
-
-    def get_backbone_coords(
-        self, residue
-    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray]]:
-        n_atom = residue.find_atom("N", "*")
-        ca_atom = residue.find_atom("CA", "*")
-        c_atom = residue.find_atom("C", "*")
-
-        if not (n_atom and ca_atom and c_atom):
-            return None
-
-        n_coord = np.array([n_atom.pos.x, n_atom.pos.y, n_atom.pos.z])
-        ca_coord = np.array([ca_atom.pos.x, ca_atom.pos.y, ca_atom.pos.z])
-        c_coord = np.array([c_atom.pos.x, c_atom.pos.y, c_atom.pos.z])
-        return n_coord, ca_coord, c_coord
-
-    def get_residue_name(self, residue) -> str:
-        return residue.name
-
-    def get_residue_id(self, residue) -> str:
-        resnum = residue.seqid.num
-        icode = residue.seqid.icode.strip()
-        if icode and icode != " ":
-            return f"{resnum}{icode}"
-        return str(resnum)
 
 
 class BioPythonResidueAdapter(ResidueAdapter):
@@ -206,13 +164,10 @@ class BioPythonResidueAdapter(ResidueAdapter):
         return str(resnum)
 
 
-def _extract_from_chain(
-    adapter: ResidueAdapter, source_name: str = ""
-) -> MPNNInputs:
+def _extract_from_chain(adapter: ResidueAdapter, source_name: str = "") -> MPNNInputs:
     """Extract backbone coordinates and residue info using a ResidueAdapter.
 
-    This is the shared extraction logic used by both Gemmi and BioPython
-    extraction functions.
+    This is the shared extraction logic used by BioPython extraction functions.
 
     Args:
         adapter: ResidueAdapter wrapping the chain to extract from.
@@ -248,9 +203,7 @@ def _extract_from_chain(
             c_coord.reshape(1, 3),
         ).reshape(3)
 
-        residue_coords = np.stack(
-            [n_coord, ca_coord, c_coord, cb_coord], axis=0
-        )
+        residue_coords = np.stack([n_coord, ca_coord, c_coord, cb_coord], axis=0)
         coords_list.append(residue_coords)
         ids_list.append(adapter.get_residue_id(residue))
 
@@ -290,25 +243,6 @@ def _extract_from_chain(
     )
 
 
-def extract_from_gemmi_chain(
-    chain: gemmi.Chain, source_name: str = ""
-) -> MPNNInputs:
-    """Extract coordinates, residue info, and sequence from a Gemmi Chain.
-
-    Args:
-        chain: Gemmi Chain object to extract from.
-        source_name: Source identifier for logging (file path or "structure").
-
-    Returns:
-        MPNNInputs containing backbone coordinates and residue information.
-
-    Raises:
-        ValueError: If no valid residues are found.
-    """
-    adapter = GemmiResidueAdapter(chain)
-    return _extract_from_chain(adapter, source_name)
-
-
 def extract_from_biopython_chain(
     target_chain: Chain.Chain, source_name: str = ""
 ) -> MPNNInputs:
@@ -328,9 +262,7 @@ def extract_from_biopython_chain(
     return _extract_from_chain(adapter, source_name)
 
 
-def get_inputs(
-    source: Union[str, Chain.Chain], chain: str | None = None
-) -> MPNNInputs:
+def get_inputs(source: Union[str, Chain.Chain], chain: str | None = None) -> MPNNInputs:
     """Extract MPNN inputs from a file path or Chain object.
 
     Args:
@@ -341,24 +273,21 @@ def get_inputs(
         MPNNInputs containing backbone coordinates and residue information.
     """
     if isinstance(source, str):
-        structure = gemmi.read_structure(source)
+        structure = read_structure(source)
         source_name = source
         model = structure[0]
 
         if chain is not None:
-            for ch in model:
-                if ch.name == chain:
-                    return extract_from_gemmi_chain(ch, source_name)
-            available = [ch.name for ch in model]
-            raise ValueError(
+            if chain in model:
+                return extract_from_biopython_chain(model[chain], source_name)
+            available = [ch.id for ch in model]
+            raise ChainNotFoundError(
                 f"Chain '{chain}' not found in {source_name}. "
                 f"Available chains: {available}"
             )
         else:
-            target_chain = list(model)[0]
-            LOGGER.info(
-                f"No chain specified, using first chain: {target_chain.name}"
-            )
-            return extract_from_gemmi_chain(target_chain, source_name)
+            target_chain = next(iter(model))
+            LOGGER.info(f"No chain specified, using first chain: {target_chain.id}")
+            return extract_from_biopython_chain(target_chain, source_name)
     else:
         return extract_from_biopython_chain(source, "")

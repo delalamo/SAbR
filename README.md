@@ -7,125 +7,61 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-SAbR (<u>S</U>tructure-based <u>A</u>nti<u>b</u>ody <u>R</u>enumbering) renumbers antibody PDB files using the 3D coordinate of backbone atoms. It uses custom forked versions of [SoftAlign](https://github.com/delalamo/SoftAlign) and [ANARCI](https://github.com/delalamo/ANARCI/tree/master) to align structures to SAbDaB-derived consensus embeddings and renumber to various antibody schemes, respectively.
+SAbR renumbers antibody structure files from 3D coordinates. It computes
+structure embeddings, aligns them to antibody reference embeddings, converts the
+alignment to ANARCI-compatible states, and writes a renumbered PDB or mmCIF
+structure.
 
-## Documentation
+Full documentation is available at [sabr.readthedocs.io](https://sabr.readthedocs.io/).
 
-Full API documentation is available at [sabr.readthedocs.io](https://sabr.readthedocs.io/).
-
-## Installation and use
-
-**Requirements:** Python 3.11 or higher
-
-1. SAbR can be installed into a virtual environment via pip:
+## Installation
 
 ```bash
-# Latest release
 pip install sabr-kit
+```
 
-# Most recent version from Github
+For source installs:
+
+```bash
 git clone --recursive https://github.com/delalamo/SAbR.git
-cd SAbR/
-pip install -e .
+cd SAbR
+pip install -e .[test,docs]
 ```
 
-It can then be run using the `sabr` command (see below).
-
-2. Alternatively, SAbR can be directly run with the latest docker container:
+## CLI
 
 ```bash
-docker run --rm ghcr.io/delalamo/sabr:latest -i input.pdb -o output.pdb -c CHAIN_ID
+sabr -i input.pdb -c H -o output.cif --chain-type heavy
 ```
 
-## Running SAbR
-
-Practical considerations:
-
-- Heavy and light chain structures are similar enough that chain type should be manually declared with `--chain-type` if possible (leave blank if uncertain).
-- It is recommended for now to truncate the query structure to contain only the Fv when running SAbR, as it will sometimes align variable region beta-strands to those in the constant region.
-- When running scFvs, it is recommended to run each variable domain independently.
-
-If running on a Mac with apple silicon, set the environmental variable `JAX_PLATFORMS` to `cpu`.
-
-```bash
-Usage: sabr [OPTIONS]
-
-  Structure-based Antibody Renumbering (SAbR) renumbers antibody structure
-  files using the 3D coordinates of backbone atoms. Supports both PDB and
-  mmCIF input formats.
-
-Options:
-  -i, --input-pdb FILE            Input structure file (PDB or mmCIF format).
-                                  [required]
-  -c, --input-chain TEXT          Chain identifier to renumber (single
-                                  character).  [required]
-  -o, --output FILE               Destination structure file. Use .pdb
-                                  extension for PDB format or .cif extension
-                                  for mmCIF format. mmCIF is required for
-                                  antibodies with extended insertion codes
-                                  (e.g., very long CDR loops).  [required]
-  -n, --numbering-scheme [imgt|chothia|kabat|martin|aho|wolfguy]
-                                  Numbering scheme.  [default: IMGT]
-  -t, --chain-type [H|K|L|heavy|kappa|lambda|auto]
-                                  Chain type for ANARCI numbering.
-                                  H/heavy=heavy chain, K/kappa=kappa light,
-                                  L/lambda=lambda light. Use 'auto' (default)
-                                  to detect from DE loop occupancy.
-                                  [default: auto]
-  --overwrite                     Overwrite the output file if it already
-                                  exists.
-  -v, --verbose                   Enable verbose logging.
-  --residue-range START END       Range of residues to process in PDB
-                                  numbering (inclusive). Use '0 0' (default)
-                                  to process all residues. Example:
-                                  --residue-range 1 120 processes residues
-                                  1-120.
-  --random-seed INTEGER           Random seed for JAX operations. If not
-                                  specified, a random seed will be generated.
-                                  Set this for reproducible results.
-  --disable-deterministic-renumbering
-                                  Disable deterministic renumbering corrections
-                                  for loop regions. By default, corrections are
-                                  applied for FR1, DE loop, and CDR loops.
-  --disable-custom-gap-penalties  Disable custom gap penalties for alignment.
-                                  By default, custom penalties are applied
-                                  including: zero gap open penalty in CDR
-                                  regions (IMGT 27-38, 56-65, 105-117), zero
-                                  gap open at position 10, and overhang
-                                  penalties at sequence termini.
-  -h, --help                      Show this message and exit.
-```
+Use `.cif` output when long CDR insertions may require multi-character
+insertion codes. Custom gap penalties are CDR-only: by default SAbR sets
+gap-open penalties to zero for IMGT CDR positions and keeps gap-extension
+penalties normal.
 
 ## Python API
 
-SAbR can also be used programmatically to renumber BioPython Structure objects directly in memory:
-
 ```python
-from Bio.PDB import PDBParser, PDBIO
-from sabr import renumber
+from pathlib import Path
 
-# Load a structure
-parser = PDBParser(QUIET=True)
-structure = parser.get_structure("antibody", "input.pdb")
+from sabr import RenumberOptions, renumber_file
 
-# Renumber the structure (returns a new BioPython Structure)
-renumbered = renumber.renumber_structure(
-    structure,
-    chain="H",                      # Chain identifier
-    numbering_scheme="imgt",        # imgt, chothia, kabat, martin, aho, wolfguy
-    chain_type="auto",              # H, K, L, or auto
+result = renumber_file(
+    input_path=Path("input.pdb"),
+    chain_id="H",
+    output_path=Path("output.cif"),
+    options=RenumberOptions.from_values(chain_type="heavy", overwrite=True),
 )
 
-# Optionally specify a residue range
-renumbered = renumber.renumber_structure(
-    structure,
-    chain="H",
-    res_start=1,                    # Start at residue 1
-    res_end=128,                    # End at residue 128
-)
+print(result.detected_chain_type.value)
+```
 
-# Save the renumbered structure
-io = PDBIO()
-io.set_structure(renumbered)
-io.save("output.pdb")
+## Development
+
+```bash
+pytest
+JAX_PLATFORMS=cpu pytest -m slow
+sphinx-build -W -b html docs docs/_build/html
+ruff check .
+ruff format --check .
 ```

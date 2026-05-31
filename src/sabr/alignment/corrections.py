@@ -325,8 +325,7 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
         aln[row_to_assign, :] = 0
         aln[row_to_assign, next_col] = 1
         LOGGER.info(
-            f"C-terminus: assigned row {row_to_assign} to "
-            f"IMGT position {next_col + 1}"
+            f"C-terminus: assigned row {row_to_assign} to IMGT position {next_col + 1}"
         )
         next_col += 1
 
@@ -383,9 +382,7 @@ def correct_cdr_loop(
                     f"row {closest_row} at IMGT position {closest_col + 1}"
                 )
             else:
-                details.append(
-                    f"no residues found near start anchor {anchor_start}"
-                )
+                details.append(f"no residues found near start anchor {anchor_start}")
         if anchor_end_row is None:
             closest_row, closest_col = find_nearest_occupied_column(
                 aln, anchor_end_col, search_range=10, direction="forward"
@@ -396,9 +393,7 @@ def correct_cdr_loop(
                     f"row {closest_row} at IMGT position {closest_col + 1}"
                 )
             else:
-                details.append(
-                    f"no residues found near end anchor {anchor_end}"
-                )
+                details.append(f"no residues found near end anchor {anchor_end}")
         LOGGER.warning(
             f"Skipping {loop_name}; missing anchor at position "
             f"{anchor_start} (col {anchor_start_col}±2) or "
@@ -471,9 +466,7 @@ def correct_cdr_loop(
         sub_aln = np.zeros((len(cdr_rows), n_cdr_positions), dtype=aln.dtype)
         sub_aln = correct_gap_numbering(sub_aln)
         for i, row in enumerate(cdr_rows):
-            aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[
-                i, :
-            ]
+            aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[i, :]
 
     return aln
 
@@ -490,7 +483,7 @@ def apply_deterministic_corrections(
     embedding similarity instead.
 
     Args:
-        aln: The raw alignment matrix.
+        aln: The raw alignment matrix. This function does not mutate it.
         gap_indices: FrozenSet of row indices where structural gaps occur.
             Gaps are detected from backbone C-N distances exceeding
             the threshold. If None, no gap checking is performed.
@@ -498,27 +491,29 @@ def apply_deterministic_corrections(
     Returns:
         Tuple of (corrected alignment, detected chain type).
     """
+    corrected = aln.copy()
+
     for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-        aln = correct_cdr_loop(
-            aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
+        corrected = correct_cdr_loop(
+            corrected, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
         )
 
     # Detect chain type from DE loop (positions 81-82)
-    detected_chain_type = detect_chain_type(aln)
+    detected_chain_type = detect_chain_type(corrected)
     is_light_chain = detected_chain_type in ("K", "L")
 
     # Apply FR1 correction (anchor-based, uses residue count only)
-    aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
+    corrected = correct_fr1_alignment(corrected, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
     if is_light_chain:
-        aln = correct_fr3_alignment(
-            aln,
+        corrected = correct_fr3_alignment(
+            corrected,
             input_has_pos81=False,
             input_has_pos82=False,
             gap_indices=gap_indices,
         )
 
-    aln = correct_c_terminus(aln)
+    corrected = correct_c_terminus(corrected)
 
-    return aln, detected_chain_type
+    return corrected, detected_chain_type

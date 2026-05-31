@@ -7,8 +7,9 @@ from Bio import SeqIO
 
 from sabr import constants
 from sabr.embeddings import mpnn as mpnn_embeddings
-from sabr.embeddings.inputs import MPNNInputs
+from sabr.embeddings.inputs import MPNNInputs, compute_cb
 from sabr.embeddings.inputs import get_inputs as _get_inputs
+from sabr.errors import ChainNotFoundError
 
 
 def test_mpnnembeddings_valid_creation_with_defaults():
@@ -16,9 +17,7 @@ def test_mpnnembeddings_valid_creation_with_defaults():
     embedding = np.random.rand(3, constants.EMBED_DIM)
     idxs = ["1", "2", "3"]
 
-    mp = mpnn_embeddings.MPNNEmbeddings(
-        name="test", embeddings=embedding, idxs=idxs
-    )
+    mp = mpnn_embeddings.MPNNEmbeddings(name="test", embeddings=embedding, idxs=idxs)
 
     assert mp.name == "test"
     assert mp.embeddings.shape == (3, constants.EMBED_DIM)
@@ -135,9 +134,7 @@ def test_save_and_load_preserves_embeddings():
 
         loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
 
-        np.testing.assert_array_equal(
-            loaded_embedding.embeddings, embedding.embeddings
-        )
+        np.testing.assert_array_equal(loaded_embedding.embeddings, embedding.embeddings)
 
 
 def test_save_and_load_preserves_idxs():
@@ -170,9 +167,7 @@ def test_round_trip_with_different_idxs_formats():
 
         assert loaded_embedding.idxs == embedding.idxs
         assert loaded_embedding.name == embedding.name
-        np.testing.assert_array_equal(
-            loaded_embedding.embeddings, embedding.embeddings
-        )
+        np.testing.assert_array_equal(loaded_embedding.embeddings, embedding.embeddings)
 
 
 def test_save_and_load_preserves_sequence():
@@ -255,12 +250,34 @@ def test_get_inputs_parses_cif_file():
     assert inputs.sequence == "AG"
 
 
+def test_get_inputs_fourth_atom_channel_is_computed_cb():
+    """Regression test for the historical [N, CA, C, computed CB] contract."""
+    pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
+    inputs = _get_inputs(str(pdb_file), chain="A")
+
+    n_coord = inputs.coords[0, 0, constants.BACKBONE_N_IDX]
+    ca_coord = inputs.coords[0, 0, constants.BACKBONE_CA_IDX]
+    c_coord = inputs.coords[0, 0, constants.BACKBONE_C_IDX]
+    expected_cb = compute_cb(
+        n_coord.reshape(1, 3),
+        ca_coord.reshape(1, 3),
+        c_coord.reshape(1, 3),
+    ).reshape(3)
+
+    np.testing.assert_allclose(
+        inputs.coords[0, 0, constants.BACKBONE_CB_IDX],
+        expected_cb,
+        rtol=1e-6,
+        atol=1e-6,
+    )
+
+
 def test_get_inputs_raises_on_missing_chain():
     """Test that requesting a non-existent chain raises ValueError."""
     test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
 
     with pytest.raises(
-        ValueError, match="Chain 'Z' not found.*Available chains"
+        ChainNotFoundError, match="Chain 'Z' not found.*Available chains"
     ):
         _get_inputs(str(test_pdb), chain="Z")
 

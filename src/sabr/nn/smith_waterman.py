@@ -223,12 +223,8 @@ def sw_affine(
             open_vals = sm["open"]
 
             if penalize_turns:
-                Right = Right + jnp.stack(
-                    [open_vals, gap_vals, open_vals], axis=-1
-                )
-                Down = Down + jnp.stack(
-                    [open_vals, open_vals, gap_vals], axis=-1
-                )
+                Right = Right + jnp.stack([open_vals, gap_vals, open_vals], axis=-1)
+                Down = Down + jnp.stack([open_vals, open_vals, gap_vals], axis=-1)
             else:
                 gap_pen = jnp.stack([open_vals, gap_vals, gap_vals], axis=-1)
                 Right = Right + gap_pen
@@ -253,9 +249,7 @@ def sw_affine(
         else:
             hij = jax.lax.scan(_step_scalar, prev, sm, unroll=unroll)[-1][idx]
 
-        return _soft_maximum(
-            hij + x[1:, 1:, None], temp, NINF, mask=mask[1:, 1:, None]
-        )
+        return _soft_maximum(hij + x[1:, 1:, None], temp, NINF, mask=mask[1:, 1:, None])
 
     traceback = jax.value_and_grad(sco)
 

@@ -1,12 +1,11 @@
 import pytest
 from Bio.PDB import Chain, Residue
 
+from sabr.errors import OutputFormatError
 from sabr.structure import threading as edit_pdb
 
 
-def build_residue(
-    number: int, name: str, hetflag: str = " "
-) -> Residue.Residue:
+def build_residue(number: int, name: str, hetflag: str = " ") -> Residue.Residue:
     """Build a test residue with given number, name, and hetflag."""
     resid = (hetflag, number, " ")
     residue = Residue.Residue(resid, name, " ")
@@ -108,6 +107,49 @@ def test_thread_onto_chain_counts_deviations():
     assert deviations == 2
 
 
+def test_thread_onto_chain_preserves_out_of_range_residues():
+    """Residue ranges renumber only selected residues and preserve the rest."""
+    chain = Chain.Chain("A")
+    chain.add(build_residue(1, "ALA"))
+    chain.add(build_residue(2, "GLY"))
+    chain.add(build_residue(2, "SER", hetflag="H_SER"))
+    chain.add(build_residue(3, "VAL"))
+    chain.add(build_residue(4, "LEU"))
+
+    anarci_out = [
+        ((10, " "), "G"),
+        ((11, " "), "V"),
+    ]
+
+    threaded, deviations = edit_pdb.thread_onto_chain(
+        chain=chain,
+        anarci_out=anarci_out,
+        anarci_start=0,
+        anarci_end=2,
+        alignment_start=0,
+        residue_range=(2, 3),
+    )
+
+    new_ids = [res.get_id() for res in threaded.get_residues()]
+    assert new_ids == [
+        (" ", 1, " "),
+        (" ", 10, " "),
+        ("H_SER", 2, " "),
+        (" ", 11, " "),
+        (" ", 4, " "),
+    ]
+    assert deviations == 2
+
+
+def test_validate_output_format_rejects_extended_codes_for_pdb():
+    alignment = [((100, "AA"), "A")]
+
+    with pytest.raises(OutputFormatError, match="Use mmCIF output"):
+        edit_pdb.validate_output_format("output.pdb", alignment)
+
+    edit_pdb.validate_output_format("output.cif", alignment)
+
+
 @pytest.mark.slow
 def test_8sve_L_extended_insertion_codes(tmp_path):
     """E2E test: 8SVE_L antibody with extended insertion codes.
@@ -140,18 +182,16 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
         n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
         subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
 
-        anarci_out, anarci_start, anarci_end = (
-            anarci.number_sequence_from_alignment(
-                hmm_output.states,
-                subsequence,
-                scheme="imgt",
-                chain_type=result.chain_type,
-            )
+        anarci_out, anarci_start, anarci_end = anarci.number_sequence_from_alignment(
+            hmm_output.states,
+            subsequence,
+            scheme="imgt",
+            chain_type=result.chain_type,
         )
 
-        # PDB output should raise ValueError due to extended insertion codes
+        # PDB output should raise OutputFormatError due to extended insertion codes
         output_pdb = tmp_path / "8sve_L_output.pdb"
-        with pytest.raises(ValueError, match="Extended insertion codes"):
+        with pytest.raises(OutputFormatError, match="Extended insertion codes"):
             edit_pdb.thread_alignment(
                 str(pdb_path),
                 "M",
@@ -176,7 +216,6 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
         assert output_cif.exists()
 
-        # Use BioPython to read the CIF (Gemmi can't handle extended icodes)
         from Bio.PDB.MMCIFParser import MMCIFParser
 
         parser = MMCIFParser(QUIET=True)
@@ -188,9 +227,7 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
         assert chain_m is not None, "Chain M not found in output"
 
         # Verify residues are present and extended insertion codes work
-        residues = [
-            res for res in chain_m.get_residues() if not res.id[0].strip()
-        ]
+        residues = [res for res in chain_m.get_residues() if not res.id[0].strip()]
         assert len(residues) > 0
 
         # Check that we have extended insertion codes (multi-char like 'AA')

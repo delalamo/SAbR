@@ -1,9 +1,11 @@
-from pathlib import Path
+"""Structure-based Antibody Renumbering."""
 
-# Load README as module docstring for pdoc homepage
-# README.md is copied to package dir during RTD build (see .readthedocs.yaml)
-_readme = Path(__file__).resolve().parent / "README.md"
-if _readme.exists():
-    __doc__ = _readme.read_text(encoding="utf-8")
-else:
-    __doc__ = """Structure-based Antibody Renumbering (SAbR)."""
+from sabr.options import RenumberOptions
+from sabr.renumber import RenumberResult, renumber_file, renumber_structure
+
+__all__ = [
+    "RenumberOptions",
+    "RenumberResult",
+    "renumber_file",
+    "renumber_structure",
+]

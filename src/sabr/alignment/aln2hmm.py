@@ -26,6 +26,8 @@ from typing import Iterator, List, Optional
 
 import numpy as np
 
+from sabr.alignment.validation import validate_alignment_matrix
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -84,13 +86,12 @@ class Aln2HmmOutput:
     first_aligned_row: int
 
     def report(self) -> None:
-        """Log each HMM state at INFO level for debugging purposes."""
-        LOGGER.info(f"Reporting {len(self.states)} HMM states")
+        """Log HMM states for debugging purposes."""
+        LOGGER.info(f"Generated {len(self.states)} HMM states")
         for idx, state in enumerate(self.states):
             mapped = state.mapped_residue
-            LOGGER.info(
-                f"{idx} (({state.residue_number}, '{state.insertion_code}'), "
-                f"{mapped})"
+            LOGGER.debug(
+                f"{idx} (({state.residue_number}, '{state.insertion_code}'), {mapped})"
             )
 
 
@@ -116,15 +117,11 @@ def alignment_matrix_to_state_vector(
             - imgt_end: Value such that n_aligned = imgt_end - imgt_start
             - first_aligned_row: First sequence row (0-indexed) that is aligned
     """
-    if matrix.ndim != 2:
-        raise ValueError("matrix must be 2D")
+    validate_alignment_matrix(matrix)
+    matrix = np.round(matrix).astype(int)
     LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
 
     path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
-    if len(path) == 0:
-        raise ValueError(
-            "Alignment matrix contains no path (no non-zero elements found)"
-        )
 
     col_to_rows = {}
     for col, row in path:
@@ -145,9 +142,7 @@ def alignment_matrix_to_state_vector(
     }
 
     if orphan_rows:
-        LOGGER.info(
-            f"Found {len(orphan_rows)} orphan residues (CDR insertions)"
-        )
+        LOGGER.info(f"Found {len(orphan_rows)} orphan residues (CDR insertions)")
 
     # The offset converts row indices to indices in the padded sequence.
     # The padded sequence is: '-' * imgt_start + input_seq[first_aligned_row:]
@@ -183,9 +178,7 @@ def alignment_matrix_to_state_vector(
             states.append(State(imgt_pos, "d", None))
 
     max_row = (
-        max(last_aligned_row, max(orphan_rows))
-        if orphan_rows
-        else last_aligned_row
+        max(last_aligned_row, max(orphan_rows)) if orphan_rows else last_aligned_row
     )
     imgt_start = path[0][0]
     imgt_end = max_row + 1 + imgt_start

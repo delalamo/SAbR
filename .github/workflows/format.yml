@@ -24,14 +24,14 @@ jobs:
 
       - name: Install formatters
         run: |
-          pip install black isort
+          pip install ruff
           npm install -g prettier
 
-      - name: Run black (check only)
-        run: black --check .
+      - name: Run Ruff lint
+        run: ruff check .
 
-      - name: Run isort (check only)
-        run: isort --check-only .
+      - name: Run Ruff format
+        run: ruff format --check .
 
-      - name: Run prettier (check only)
-        run: prettier --check "**/*.{js,ts,css,md}"
+      - name: Run Prettier
+        run: prettier --check "**/*.{js,ts,css,md,yml,yaml,json}"

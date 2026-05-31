@@ -3,6 +3,9 @@ import pytest
 
 from sabr.alignment.soft_aligner import SoftAlignOutput
 from sabr.embeddings.mpnn import MPNNEmbeddings
+from sabr.options import RenumberOptions
+from sabr.structure.residues import ResidueId, ResidueRange
+from sabr.types import ChainType, NumberingScheme
 
 
 def test_mpnnembeddings_shape_mismatch_raises():
@@ -26,6 +29,7 @@ def test_softalignoutput_holds_passed_values():
         score=1.5,
         sim_matrix=None,
         chain_type="mouse",
+        selected_reference="H",
         idxs1=[str(x) for x in range(len(alignment[0]))],
         idxs2=[str(x) for x in range(len(alignment[1]))],
     )
@@ -33,3 +37,32 @@ def test_softalignoutput_holds_passed_values():
     assert output.alignment.shape == (2, 2)
     assert output.score == pytest.approx(1.5)
     assert output.chain_type == "mouse"
+    assert output.selected_reference == "H"
+
+
+def test_residue_id_parses_insertion_codes():
+    assert ResidueId.parse("100A") == ResidueId(100, "A")
+    assert ResidueId.parse((" ", 10, "B")) == ResidueId(10, "B")
+
+
+def test_residue_range_includes_insertion_codes_by_number():
+    residue_range = ResidueRange(10, 20)
+
+    assert residue_range.contains("10")
+    assert residue_range.contains("10A")
+    assert residue_range.contains("20B")
+    assert not residue_range.contains("21")
+
+
+def test_renumber_options_parse_enums_and_auto():
+    options = RenumberOptions.from_values(
+        numbering_scheme="imgt",
+        chain_type="heavy",
+        reference_chain_type="auto",
+        residue_range=(1, 128),
+    )
+
+    assert options.numbering_scheme is NumberingScheme.IMGT
+    assert options.chain_type is ChainType.HEAVY
+    assert options.reference_chain_type == "auto"
+    assert options.residue_range == ResidueRange(1, 128)
