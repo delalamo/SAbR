@@ -117,14 +117,13 @@ def _create_numbering_plan(
     )
 
 
-def _renumber_file(
+def renumber_file(
     input_path: str | Path,
     chain_id: str,
     output_path: str | Path,
     options: RenumberOptions | None = None,
-    reference_embeddings_name: str = DEFAULT_REFERENCE_EMBEDDINGS,
 ) -> RenumberResult:
-    """Renumber one chain using an explicit internal reference embedding set."""
+    """Renumber one chain in a structure file and write the result."""
     options = options or RenumberOptions()
     input_path = Path(input_path)
     output_path = Path(output_path)
@@ -142,7 +141,7 @@ def _renumber_file(
     except (NotImplementedError, ValueError) as exc:
         raise InputStructureError(str(exc)) from exc
 
-    plan = _create_numbering_plan(embeddings, options, reference_embeddings_name)
+    plan = _create_numbering_plan(embeddings, options)
     changed_count = thread_alignment(
         str(input_path),
         chain_id,
@@ -158,16 +157,6 @@ def _renumber_file(
         residue_count=len(embeddings.idxs),
         changed_residue_count=changed_count,
     )
-
-
-def renumber_file(
-    input_path: str | Path,
-    chain_id: str,
-    output_path: str | Path,
-    options: RenumberOptions | None = None,
-) -> RenumberResult:
-    """Renumber one chain in a structure file and write the result."""
-    return _renumber_file(input_path, chain_id, output_path, options)
 
 
 def renumber_structure(

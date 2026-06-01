@@ -62,6 +62,10 @@ def run_threading_pipeline(
     )
 
 
+def _residue_id_strings(ids):
+    return [f"{resseq}{icode.strip()}" for _hetflag, resseq, icode in ids]
+
+
 @pytest.mark.parametrize("fixture_key", ["8_21", "5omm"])
 def test_thread_alignment_has_expected_deviations(tmp_path, fixture_key):
     """Core test: verify threading pipeline produces expected deviations."""
@@ -125,6 +129,37 @@ def test_cli_produces_correct_numbering(
     original_ids = extract_residue_ids_from_pdb(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids_from_pdb(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
+
+
+@pytest.mark.golden
+def test_heavy_fixture_matches_exact_residue_ids(tmp_path):
+    """Golden regression for exact IMGT residue IDs, including insertions."""
+    data = FIXTURES["test_heavy_chain"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
+    run_threading_pipeline(
+        data["pdb"],
+        data["chain"],
+        alignment,
+        chain_type,
+        tmp_path,
+    )
+
+    # TODO: add equivalent exact golden fixtures for kappa and lambda once
+    # saved light-chain alignments are available.
+    output_pdb = tmp_path / f"{data['pdb'].stem}_{data['chain']}_threaded.pdb"
+    expected = [str(pos) for pos in range(2, 10)]
+    expected += [str(pos) for pos in range(11, 30)]
+    expected += [str(pos) for pos in range(37, 60)]
+    expected += [str(pos) for pos in range(62, 73)]
+    expected += [str(pos) for pos in range(74, 112)]
+    expected += ["111A", "111B", "111C", "112C", "112B", "112A"]
+    expected += [str(pos) for pos in range(112, 129)]
+
+    threaded_ids = extract_residue_ids_from_pdb(output_pdb, data["chain"])
+    assert _residue_id_strings(threaded_ids) == expected
 
 
 def test_alignment_start_position_correct():

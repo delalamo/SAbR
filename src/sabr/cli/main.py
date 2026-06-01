@@ -8,10 +8,9 @@ from pathlib import Path
 
 import click
 
-from sabr.embeddings.references import resolve_reference_embeddings_name
 from sabr.errors import SAbRError
 from sabr.options import RenumberOptions
-from sabr.renumber import _renumber_file as renumber_file
+from sabr.renumber import renumber_file
 from sabr.structure.residues import ResidueRange
 
 LOGGER = logging.getLogger(__name__)
@@ -37,11 +36,11 @@ def _validate_chain_id(ctx, _param, value: str) -> str:
 )
 @click.option(
     "-i",
-    "--input-pdb",
-    "input_pdb",
+    "--input",
+    "input_path",
     required=True,
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
-    help="Input structure file (PDB or mmCIF format).",
+    help="Input structure file (.pdb or .cif).",
 )
 @click.option(
     "-c",
@@ -120,17 +119,9 @@ def _validate_chain_id(ctx, _param, value: str) -> str:
         "are zero only in IMGT CDR regions."
     ),
 )
-@click.option(
-    "--noise-level",
-    "noise_level",
-    default=None,
-    show_default="default embeddings",
-    type=click.Choice(["0.0", "0.2", "0.5", "1.0", "2.0"]),
-    help="Noise level for OAS MPNN reference embeddings.",
-)
 @click.version_option(package_name="sabr-kit", prog_name="sabr")
 def main(
-    input_pdb: str,
+    input_path: str,
     input_chain: str,
     output_file: str,
     numbering_scheme: str,
@@ -141,14 +132,11 @@ def main(
     random_seed: int,
     chain_type: str,
     disable_custom_gap_penalties: bool,
-    noise_level: str | None,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
     _configure_logging(verbose)
 
     LOGGER.info("Using random seed: %s", random_seed)
-
-    reference_embeddings = resolve_reference_embeddings_name(noise_level)
 
     try:
         options = RenumberOptions.from_values(
@@ -163,11 +151,10 @@ def main(
             overwrite=overwrite,
         )
         result = renumber_file(
-            input_path=Path(input_pdb),
+            input_path=Path(input_path),
             chain_id=input_chain,
             output_path=Path(output_file),
             options=options,
-            reference_embeddings_name=reference_embeddings,
         )
     except (SAbRError, ValueError) as exc:
         raise click.ClickException(str(exc)) from exc

@@ -29,6 +29,7 @@ import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
 from sabr.embeddings.mpnn import from_pdb
+from sabr.embeddings.references import DEFAULT_REFERENCE_EMBEDDINGS
 from sabr.numbering.imgt import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
 from sabr.options import RenumberOptions
 from sabr.renumber import _create_numbering_plan
@@ -186,6 +187,7 @@ def run_sabr_pipeline(
     chain_id: str,
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
+    reference_embeddings_name: str = DEFAULT_REFERENCE_EMBEDDINGS,
 ) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
@@ -237,6 +239,7 @@ def run_sabr_pipeline(
             deterministic_corrections=deterministic_loop_renumbering,
             custom_gap_penalties=use_custom_gap_penalties,
         ),
+        reference_embeddings_name=reference_embeddings_name,
     )
     anarci_out = plan.alignment
     chain_type = chain_type_value(plan.chain_type)
@@ -494,6 +497,11 @@ def main():
         action="store_true",
         help="Disable custom gap penalties (use uniform penalties instead)",
     )
+    parser.add_argument(
+        "--reference-embeddings",
+        default=DEFAULT_REFERENCE_EMBEDDINGS,
+        help="Packaged reference embeddings NPZ to use for benchmark runs",
+    )
     args = parser.parse_args()
 
     # Convert disable flags to enable flags
@@ -613,6 +621,7 @@ def main():
                     chain_id,
                     deterministic_loop_renumbering=use_deterministic,
                     use_custom_gap_penalties=use_custom_gap_penalties,
+                    reference_embeddings_name=args.reference_embeddings,
                 )
             except Exception as e:
                 print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")

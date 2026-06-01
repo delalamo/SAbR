@@ -73,6 +73,11 @@ def test_renumber_options_auto_chain_type_is_none():
     assert options.chain_type is None
 
 
+def test_renumber_options_rejects_raw_numbering_scheme():
+    with pytest.raises(ValueError, match="numbering_scheme"):
+        RenumberOptions(numbering_scheme="imgt")
+
+
 def test_parse_chain_type_rejects_aliases_and_suffixes():
     for value in ["heavy", "kappa", "lambda", "mouse_H"]:
         with pytest.raises(ValueError, match="H, K, L, or auto"):

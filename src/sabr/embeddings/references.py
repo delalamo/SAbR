@@ -68,7 +68,7 @@ class ReferenceEmbeddings:
 
 
 def resolve_reference_embeddings_name(noise_level: str | None) -> str:
-    """Resolve a CLI noise-level option to a packaged reference embedding file."""
+    """Resolve a benchmark noise-level option to a packaged reference file."""
     if noise_level is None:
         return DEFAULT_REFERENCE_EMBEDDINGS
     try:

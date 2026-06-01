@@ -163,13 +163,12 @@ class TestNoiseEmbeddingsAlignment:
         )
 
 
-class TestNoiseLevelCLI:
-    """Tests for the --noise-level CLI argument."""
+class TestCLIOptions:
+    """Tests for CLI options that should not import or run the model."""
 
     def _patch_renumber_file(self, monkeypatch):
-        def fake_renumber_file(
-            input_path, chain_id, output_path, options, reference_embeddings_name
-        ):
+        def fake_renumber_file(input_path, chain_id, output_path, options):
+            del input_path, chain_id, options
             output_path.write_text("RENUMBERED\n")
             return RenumberResult(
                 output_path=output_path,
@@ -187,8 +186,8 @@ class TestNoiseLevelCLI:
         assert result.exit_code == 0
         assert "sabr" in result.output.lower()
 
-    def test_noise_level_default_omitted(self, monkeypatch, tmp_path):
-        """Running without --noise-level should succeed."""
+    def test_default_reference_cli_runs(self, monkeypatch, tmp_path):
+        """Running without research-only reference controls should succeed."""
         self._patch_renumber_file(monkeypatch)
         fixture = FIXTURES["8_21"]
         if not fixture["pdb"].exists():
@@ -213,12 +212,10 @@ class TestNoiseLevelCLI:
     def test_chain_type_option_sets_embedding_label(self, monkeypatch, tmp_path):
         captured = {}
 
-        def fake_renumber_file(
-            input_path, chain_id, output_path, options, reference_embeddings_name
-        ):
+        def fake_renumber_file(input_path, chain_id, output_path, options):
+            del input_path, chain_id
             output_path.write_text("RENUMBERED\n")
             captured["chain_type"] = options.chain_type
-            captured["reference_embeddings_name"] = reference_embeddings_name
             return RenumberResult(
                 output_path=output_path,
                 chain_type=options.chain_type,
@@ -250,15 +247,12 @@ class TestNoiseLevelCLI:
 
         assert result.exit_code == 0, result.output
         assert captured["chain_type"] is ChainType.HEAVY
-        assert captured["reference_embeddings_name"] == "embeddings.npz"
 
     def test_random_seed_defaults_to_zero(self, monkeypatch, tmp_path):
         captured = {}
 
-        def fake_renumber_file(
-            input_path, chain_id, output_path, options, reference_embeddings_name
-        ):
-            del input_path, chain_id, reference_embeddings_name
+        def fake_renumber_file(input_path, chain_id, output_path, options):
+            del input_path, chain_id
             output_path.write_text("RENUMBERED\n")
             captured["random_seed"] = options.random_seed
             return RenumberResult(
@@ -291,6 +285,43 @@ class TestNoiseLevelCLI:
         assert result.exit_code == 0, result.output
         assert captured["random_seed"] == 0
 
+    def test_input_option_accepts_structure_path(self, monkeypatch, tmp_path):
+        captured = {}
+
+        def fake_renumber_file(input_path, chain_id, output_path, options):
+            del chain_id, options
+            output_path.write_text("RENUMBERED\n")
+            captured["input_path"] = input_path
+            return RenumberResult(
+                output_path=output_path,
+                chain_type=ChainType.HEAVY,
+                residue_count=1,
+                changed_residue_count=1,
+            )
+
+        monkeypatch.setattr("sabr.cli.main.renumber_file", fake_renumber_file)
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "--input",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--overwrite",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        assert captured["input_path"] == fixture["pdb"]
+
     def test_cli_rejects_non_label_chain_type_aliases(self, tmp_path):
         fixture = FIXTURES["8_21"]
         if not fixture["pdb"].exists():
@@ -315,37 +346,7 @@ class TestNoiseLevelCLI:
         assert result.exit_code != 0
         assert "Invalid value for '-t' / '--chain-type'" in result.output
 
-    @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
-    def test_noise_level_option_runs(self, monkeypatch, noise_level, tmp_path):
-        """--noise-level should be accepted and produce output."""
-        self._patch_renumber_file(monkeypatch)
-        fixture = FIXTURES["8_21"]
-        if not fixture["pdb"].exists():
-            pytest.skip(f"Missing fixture at {fixture['pdb']}")
-
-        output = tmp_path / f"out_noise_{noise_level}.pdb"
-        runner = CliRunner()
-        result = runner.invoke(
-            cli_main,
-            [
-                "-i",
-                str(fixture["pdb"]),
-                "-c",
-                fixture["chain"],
-                "-o",
-                str(output),
-                "--noise-level",
-                noise_level,
-                "--overwrite",
-            ],
-        )
-        assert result.exit_code == 0, (
-            f"CLI failed for noise_level={noise_level}: {result.output}"
-        )
-        assert output.exists(), f"Output file not created for noise_level={noise_level}"
-
-    def test_invalid_noise_level_rejected(self, tmp_path):
-        """An invalid noise level should cause a non-zero exit code."""
+    def test_noise_level_option_removed(self, tmp_path):
         fixture = FIXTURES["8_21"]
         if not fixture["pdb"].exists():
             pytest.skip(f"Missing fixture at {fixture['pdb']}")
@@ -362,10 +363,33 @@ class TestNoiseLevelCLI:
                 "-o",
                 str(output),
                 "--noise-level",
-                "0.9",
+                "0.5",
             ],
         )
         assert result.exit_code != 0
+        assert "No such option" in result.output
+
+    def test_input_pdb_option_removed(self, tmp_path):
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "--input-pdb",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+            ],
+        )
+
+        assert result.exit_code != 0
+        assert "No such option" in result.output
 
     def test_reference_chain_type_option_removed(self, tmp_path):
         fixture = FIXTURES["8_21"]
@@ -397,5 +421,8 @@ class TestNoiseLevelCLI:
 
         assert result.exit_code == 0
         assert "--reference-chain-type" not in result.output
+        assert "--noise-level" not in result.output
+        assert "--input-pdb" not in result.output
+        assert "-i, --input" in result.output
         assert "--chain-type [h|k|l|auto]" in result.output
         assert "Chain type embedding label to use" in result.output

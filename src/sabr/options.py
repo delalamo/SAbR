@@ -26,6 +26,8 @@ class RenumberOptions:
     overwrite: bool = False
 
     def __post_init__(self) -> None:
+        if not isinstance(self.numbering_scheme, NumberingScheme):
+            raise ValueError("numbering_scheme must be a NumberingScheme.")
         if self.residue_range is not None and not isinstance(
             self.residue_range, ResidueRange
         ):
