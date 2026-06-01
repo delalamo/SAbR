@@ -4,8 +4,11 @@
 import numpy as np
 import pytest
 
-from sabr import constants
-from sabr.util import detect_backbone_gaps, has_gap_in_region
+from sabr.alignment.gaps import (
+    PEPTIDE_BOND_MAX_DISTANCE,
+    detect_backbone_gaps,
+    has_gap_in_region,
+)
 
 
 class TestDetectBackboneGaps:
@@ -130,9 +133,7 @@ class TestDetectBackboneGaps:
         assert 0 in gaps, "3D distance ~1.73 should exceed 1.5 threshold"
 
         gaps = detect_backbone_gaps(coords, threshold=2.0)
-        assert (
-            0 not in gaps
-        ), "3D distance ~1.73 should not exceed 2.0 threshold"
+        assert 0 not in gaps, "3D distance ~1.73 should not exceed 2.0 threshold"
 
     def test_handles_batch_dimension(self):
         """Verify function handles [1, N, 4, 3] input shape."""
@@ -163,10 +164,7 @@ class TestDetectBackboneGaps:
 
     def test_default_threshold_matches_constant(self):
         """Verify default threshold uses PEPTIDE_BOND_MAX_DISTANCE constant."""
-        assert (
-            constants.PEPTIDE_BOND_MAX_DISTANCE
-            == 2 * constants.PEPTIDE_BOND_LENGTH
-        )
+        assert pytest.approx(2.66) == PEPTIDE_BOND_MAX_DISTANCE
 
         coords = np.zeros((2, 4, 3))
         coords[0, 2, :] = [0, 0, 0]

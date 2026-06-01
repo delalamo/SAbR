@@ -4,10 +4,11 @@ from importlib import resources
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-import gemmi
 import numpy as np
 import pytest
 from Bio import PDB, SeqIO
+
+from sabr.types import ChainType, parse_chain_type
 
 DATA_PACKAGE = "tests.data"
 
@@ -52,36 +53,20 @@ def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
     alignment = data["alignment"]
-    chain_type = data["chain_type"].item()
+    chain_type = str(data["chain_type"].item()).rsplit("_", 1)[-1]
     return alignment, chain_type
 
 
 def extract_residue_ids_from_pdb(
     pdb_path: Path, chain: str
 ) -> List[Tuple[str, int, str]]:
-    """Extract residue IDs from a PDB file path using Gemmi."""
-    structure = gemmi.read_structure(str(pdb_path))
-    return extract_residue_ids_from_gemmi_structure(structure, chain)
-
-
-def extract_residue_ids_from_gemmi_structure(
-    structure: gemmi.Structure, chain: str
-) -> List[Tuple[str, int, str]]:
-    """Extract residue IDs from a Gemmi structure."""
-    residues = []
-    model = structure[0]
-    for ch in model:
-        if ch.name != chain:
-            continue
-        for res in ch:
-            if res.het_flag != "A":  # Skip non-amino acid residues
-                continue
-            # Map Gemmi het_flag to BioPython format: 'A' -> ' '
-            hetflag = " " if res.het_flag == "A" else "H_" + res.name
-            resnum = res.seqid.num
-            icode = res.seqid.icode if res.seqid.icode.strip() else " "
-            residues.append((hetflag, resnum, icode))
-    return residues
+    """Extract residue IDs from a structure file path using BioPython."""
+    if pdb_path.suffix.lower() == ".cif":
+        parser = PDB.MMCIFParser(QUIET=True)
+    else:
+        parser = PDB.PDBParser(QUIET=True)
+    structure = parser.get_structure("test", str(pdb_path))
+    return extract_residue_ids_from_structure(structure, chain)
 
 
 def extract_residue_ids_from_structure(
@@ -102,7 +87,12 @@ class DummyResult:
 
     def __init__(self, alignment: np.ndarray, chain_type: str) -> None:
         self.alignment = alignment
-        self.chain_type = chain_type
+        parsed_chain_type = parse_chain_type(chain_type)
+        if parsed_chain_type is None:
+            parsed_chain_type = ChainType.HEAVY
+        self.selected_chain_type = parsed_chain_type
+        self.score = 1.0
+        self.sim_matrix = None
 
 
 class DummyEmbeddings:
@@ -161,7 +151,7 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
     def dummy_from_pdb(
         pdb_file: str,
         chain: str,
-        residue_range: tuple = (0, 0),
+        residue_range: tuple | None = None,
         **kwargs: Any,
     ) -> DummyEmbeddings:
         # Extract real sequence from PDB file to match alignment expectations
@@ -175,8 +165,12 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
             sequence = "A" * n_residues
 
         actual_n_residues = len(sequence)
-        start_res, end_res = residue_range
-        if residue_range != (0, 0):
+        if residue_range is not None:
+            if hasattr(residue_range, "start"):
+                start_res = residue_range.start
+                end_res = residue_range.end
+            else:
+                start_res, end_res = residue_range
             # Filter by residue range
             actual_n_residues = min(actual_n_residues, end_res - start_res + 1)
             sequence = sequence[: end_res - start_res + 1]

@@ -55,13 +55,15 @@ import numpy as np
 # Add sabr to path for imports when running as script
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from sabr import constants  # noqa: E402
 from sabr.embeddings.backend import (  # noqa: E402
     _convert_numpy_to_jax,
     _unflatten_dict,
 )
 from sabr.embeddings.inputs import get_inputs  # noqa: E402
 from sabr.nn.end_to_end import END_TO_END  # noqa: E402
+
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
 
 try:
     from tqdm import tqdm
@@ -105,11 +107,11 @@ def load_mpnn_params(params_path: str = "sabr.assets") -> dict:
 def create_e2e_model_no_noise() -> END_TO_END:
     """Create END_TO_END model with zero noise (noise applied externally)."""
     return END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
@@ -169,9 +171,7 @@ class MultiNoiseEmbeddingBackend:
         coords_jax = jnp.array(coords)
 
         for noise_idx, noise in enumerate(noise_levels):
-            seed_val = (self.base_seed + structure_idx * 100 + noise_idx) % (
-                2**31 - 1
-            )
+            seed_val = (self.base_seed + structure_idx * 100 + noise_idx) % (2**31 - 1)
             key = jax.random.PRNGKey(seed_val)
 
             if noise > 0:
@@ -231,9 +231,7 @@ def load_sorted_structures(csv_path: str, cache_path: str = None) -> list:
                 }
             )
 
-    structures = sorted(
-        structures, key=lambda x: (x["heavy_len"], x["light_len"])
-    )
+    structures = sorted(structures, key=lambda x: (x["heavy_len"], x["light_len"]))
     LOGGER.info(f"Loaded {len(structures)} structures")
 
     if cache_path:
@@ -262,7 +260,7 @@ def create_accumulators(noise_levels: list) -> dict:
         chain: {
             noise: defaultdict(
                 lambda: {
-                    "sum": np.zeros(constants.EMBED_DIM, dtype=np.float64),
+                    "sum": np.zeros(EMBED_DIM, dtype=np.float64),
                     "count": 0,
                 }
             )
@@ -282,9 +280,9 @@ def update_accumulator(
     """Update running sum/count for each IMGT position."""
     for i, res_id in enumerate(residue_ids):
         if is_valid_residue_id(res_id):
-            accumulators[chain_type][noise][res_id]["sum"] += embeddings[
-                i
-            ].astype(np.float64)
+            accumulators[chain_type][noise][res_id]["sum"] += embeddings[i].astype(
+                np.float64
+            )
             accumulators[chain_type][noise][res_id]["count"] += 1
 
 
@@ -318,9 +316,7 @@ def accumulators_from_serializable(data: dict, noise_levels: list) -> dict:
     return accumulators
 
 
-def save_checkpoint(
-    checkpoint_path: Path, accumulators: dict, last_idx: int
-) -> None:
+def save_checkpoint(checkpoint_path: Path, accumulators: dict, last_idx: int) -> None:
     """Save checkpoint for resume capability."""
     checkpoint = {
         "last_idx": last_idx,
@@ -377,18 +373,14 @@ def save_embeddings_to_dir(
             )
 
             if not valid_positions:
-                LOGGER.warning(
-                    f"No valid positions for {chain_type} at noise {noise}"
-                )
+                LOGGER.warning(f"No valid positions for {chain_type} at noise {noise}")
                 continue
 
-            array = np.zeros(
-                (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
-            )
+            array = np.zeros((len(valid_positions), EMBED_DIM), dtype=np.float32)
             for i, pos in enumerate(valid_positions):
-                array[i] = (
-                    pos_data[pos]["sum"] / pos_data[pos]["count"]
-                ).astype(np.float32)
+                array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
+                    np.float32
+                )
 
             idxs = np.array(valid_positions, dtype="<U3")
 
@@ -430,13 +422,11 @@ def save_intermediate_embeddings(
             if not valid_positions:
                 continue
 
-            array = np.zeros(
-                (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
-            )
+            array = np.zeros((len(valid_positions), EMBED_DIM), dtype=np.float32)
             for i, pos in enumerate(valid_positions):
-                array[i] = (
-                    pos_data[pos]["sum"] / pos_data[pos]["count"]
-                ).astype(np.float32)
+                array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
+                    np.float32
+                )
 
             idxs = np.array(valid_positions, dtype="<U3")
 
@@ -532,9 +522,7 @@ def process_structures(
             idx * 2,
         )
         for noise, emb in emb_H.items():
-            update_accumulator(
-                accumulators, "heavy", noise, inputs_H.residue_ids, emb
-            )
+            update_accumulator(accumulators, "heavy", noise, inputs_H.residue_ids, emb)
         stats["heavy"] += 1
 
         emb_L = backend.compute_all_noise_levels(

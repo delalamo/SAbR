@@ -17,8 +17,9 @@ from typing import FrozenSet, Optional, Tuple
 
 import numpy as np
 
-from sabr import constants
-from sabr.util import detect_chain_type, has_gap_in_region
+from sabr.alignment.gaps import has_gap_in_region
+from sabr.numbering import imgt
+from sabr.types import ChainType, chain_type_value, parse_chain_type
 
 LOGGER = logging.getLogger(__name__)
 
@@ -119,10 +120,10 @@ def correct_fr1_alignment(
         Corrected alignment matrix.
     """
     start_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
+        aln, imgt.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
     )
     end_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
+        aln, imgt.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
     )
 
     if start_row is None or end_row is None or start_row >= end_row:
@@ -198,8 +199,6 @@ def _move_or_clear_position(
 
 def correct_fr3_alignment(
     aln: np.ndarray,
-    input_has_pos81: bool = False,
-    input_has_pos82: bool = False,
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
     """Fix FR3 alignment issues in positions 81-84 for light chains.
@@ -208,14 +207,11 @@ def correct_fr3_alignment(
     numbering, having residues at 79, 80, 83, 84, ... instead of the full
     79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
 
-    When using unified embeddings (which include 81-82 from heavy chains),
-    the aligner may incorrectly place light chain residues at positions
-    81-82 instead of 83-84. This function corrects that misalignment.
+    If the aligner places light-chain residues at positions
+    81-82 instead of 83-84, this function corrects that misalignment.
 
     Args:
         aln: The alignment matrix.
-        input_has_pos81: Whether the input sequence has position 81.
-        input_has_pos82: Whether the input sequence has position 82.
         gap_indices: FrozenSet of row indices where structural gaps occur.
             If a gap is found in the DE loop region, deterministic
             correction is skipped and embedding similarity is used instead.
@@ -223,10 +219,10 @@ def correct_fr3_alignment(
     Returns:
         Corrected alignment matrix.
     """
-    pos81_col = constants.FR3_POS81_COL
-    pos82_col = constants.FR3_POS82_COL
-    pos83_col = constants.FR3_POS83_COL
-    pos84_col = constants.FR3_POS84_COL
+    pos81_col = imgt.FR3_POS81_COL
+    pos82_col = imgt.FR3_POS82_COL
+    pos83_col = imgt.FR3_POS83_COL
+    pos84_col = imgt.FR3_POS84_COL
 
     if gap_indices:
         de_start_col = 78  # 0-indexed for position 79
@@ -247,10 +243,10 @@ def correct_fr3_alignment(
             return aln
 
     # Move misaligned positions: 81→83 and 82→84
-    if not input_has_pos81 and aln[:, pos81_col].sum() == 1:
+    if aln[:, pos81_col].sum() == 1:
         _move_or_clear_position(aln, pos81_col, pos83_col, "81", "83")
 
-    if not input_has_pos82 and aln[:, pos82_col].sum() == 1:
+    if aln[:, pos82_col].sum() == 1:
         _move_or_clear_position(aln, pos82_col, pos84_col, "82", "84")
 
     return aln
@@ -298,11 +294,11 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
         return aln
 
     # Only apply fix if last assigned column is near position 125/126
-    if last_assigned_col < constants.C_TERMINUS_ANCHOR_POSITION:
+    if last_assigned_col < imgt.C_TERMINUS_ANCHOR_POSITION:
         LOGGER.debug(
             f"C-terminus: last assigned col {last_assigned_col} is "
             f"before anchor position "
-            f"{constants.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
+            f"{imgt.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
         )
         return aln
 
@@ -325,8 +321,7 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
         aln[row_to_assign, :] = 0
         aln[row_to_assign, next_col] = 1
         LOGGER.info(
-            f"C-terminus: assigned row {row_to_assign} to "
-            f"IMGT position {next_col + 1}"
+            f"C-terminus: assigned row {row_to_assign} to IMGT position {next_col + 1}"
         )
         next_col += 1
 
@@ -358,7 +353,7 @@ def correct_cdr_loop(
     Returns:
         Corrected alignment matrix.
     """
-    anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
+    anchor_start, anchor_end = imgt.CDR_ANCHORS[loop_name]
     anchor_start_col = anchor_start - 1
     anchor_end_col = anchor_end - 1
 
@@ -370,39 +365,11 @@ def correct_cdr_loop(
         aln, anchor_end_col, search_range=2, direction="both"
     )
 
-    # Handle missing anchors with diagnostic details
     if anchor_start_row is None or anchor_end_row is None:
-        details = []
-        if anchor_start_row is None:
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_start_col, search_range=10, direction="backward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to start anchor {anchor_start}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(
-                    f"no residues found near start anchor {anchor_start}"
-                )
-        if anchor_end_row is None:
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_end_col, search_range=10, direction="forward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to end anchor {anchor_end}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(
-                    f"no residues found near end anchor {anchor_end}"
-                )
         LOGGER.warning(
             f"Skipping {loop_name}; missing anchor at position "
             f"{anchor_start} (col {anchor_start_col}±2) or "
-            f"{anchor_end} (col {anchor_end_col}±2). {'; '.join(details)}"
+            f"{anchor_end} (col {anchor_end_col}±2)."
         )
         return aln
 
@@ -471,17 +438,16 @@ def correct_cdr_loop(
         sub_aln = np.zeros((len(cdr_rows), n_cdr_positions), dtype=aln.dtype)
         sub_aln = correct_gap_numbering(sub_aln)
         for i, row in enumerate(cdr_rows):
-            aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[
-                i, :
-            ]
+            aln[row, cdr_start_col : cdr_start_col + n_cdr_positions] = sub_aln[i, :]
 
     return aln
 
 
 def apply_deterministic_corrections(
     aln: np.ndarray,
+    chain_type: str | ChainType,
     gap_indices: Optional[FrozenSet[int]] = None,
-) -> Tuple[np.ndarray, str]:
+) -> np.ndarray:
     """Apply all deterministic alignment corrections.
 
     Applies corrections in order: CDR loops, FR1, FR3 (light chains),
@@ -490,35 +456,36 @@ def apply_deterministic_corrections(
     embedding similarity instead.
 
     Args:
-        aln: The raw alignment matrix.
+        aln: The raw alignment matrix. This function does not mutate it.
+        chain_type: Selected chain type label from reference embeddings.
         gap_indices: FrozenSet of row indices where structural gaps occur.
             Gaps are detected from backbone C-N distances exceeding
             the threshold. If None, no gap checking is performed.
 
     Returns:
-        Tuple of (corrected alignment, detected chain type).
+        Corrected alignment matrix.
     """
-    for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-        aln = correct_cdr_loop(
-            aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
+    corrected = aln.copy()
+    parsed_chain_type = parse_chain_type(chain_type)
+    if parsed_chain_type is None:
+        raise ValueError("Deterministic corrections require chain type H, K, or L.")
+    chain_type_label = chain_type_value(parsed_chain_type)
+
+    for loop_name, (cdr_start, cdr_end) in imgt.IMGT_LOOPS.items():
+        corrected = correct_cdr_loop(
+            corrected, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
         )
 
-    # Detect chain type from DE loop (positions 81-82)
-    detected_chain_type = detect_chain_type(aln)
-    is_light_chain = detected_chain_type in ("K", "L")
-
     # Apply FR1 correction (anchor-based, uses residue count only)
-    aln = correct_fr1_alignment(aln, gap_indices=gap_indices)
+    corrected = correct_fr1_alignment(corrected, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
-    if is_light_chain:
-        aln = correct_fr3_alignment(
-            aln,
-            input_has_pos81=False,
-            input_has_pos82=False,
+    if chain_type_label in {"K", "L"}:
+        corrected = correct_fr3_alignment(
+            corrected,
             gap_indices=gap_indices,
         )
 
-    aln = correct_c_terminus(aln)
+    corrected = correct_c_terminus(corrected)
 
-    return aln, detected_chain_type
+    return corrected

@@ -21,6 +21,8 @@ pre-commit install
 
 All imports must be placed at the top of the file. Avoid lazy imports (imports inside functions, methods, or conditionals). This keeps dependencies explicit and improves code readability.
 
+Exception: optional or extremely heavy backend dependencies may be imported inside boundary modules with a short comment explaining why.
+
 **Do this:**
 
 ```python
@@ -70,6 +72,31 @@ def process_sequence(sequence: str, threshold: float = 0.5) -> list:
 ```
 
 ## Testing the Full Pipeline
+
+Fast tests:
+
+```bash
+pytest
+```
+
+Slow real-model tests:
+
+```bash
+JAX_PLATFORMS=cpu pytest -m slow
+```
+
+Docs:
+
+```bash
+sphinx-build -W -b html docs docs/_build/html
+```
+
+Formatting and linting:
+
+```bash
+ruff check .
+ruff format --check .
+```
 
 When testing the full renumbering method or testing on specific PDB files, use the benchmark script at `scripts/imgt_benchmark.py`. This script:
 

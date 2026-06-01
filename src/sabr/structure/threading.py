@@ -1,463 +1,207 @@
-#!/usr/bin/env python3
-"""Structure file modification and residue renumbering module.
+"""Thread ANARCI numbering onto BioPython structures."""
 
-This module provides functions for threading ANARCI alignments onto protein
-structures, renumbering residues according to antibody numbering schemes.
-
-Key functions:
-- thread_alignment: Main entry point for renumbering a structure chain
-- thread_onto_chain: Core renumbering logic for a single chain (BioPython)
-
-Supported file formats:
-- Input: PDB (.pdb) and mmCIF (.cif)
-- Output: PDB (.pdb) and mmCIF (.cif)
-
-The renumbering process handles three regions:
-1. PRE-Fv: Residues before the variable region (numbered backwards)
-2. IN-Fv: Variable region residues (ANARCI-assigned numbers)
-3. POST-Fv: Residues after the variable region (sequential numbering)
-"""
+from __future__ import annotations
 
 import copy
 import logging
-from dataclasses import dataclass
-from enum import Enum, auto
-from typing import List, Optional, Tuple
+from pathlib import Path
 
-import gemmi
-from Bio.PDB import Chain
-from Bio.PDB.mmcifio import MMCIFIO
+from Bio.PDB import Chain, Model, Structure
 
-from sabr.constants import AA_3TO1
-from sabr.structure.io import read_structure_biopython
-from sabr.util import format_residue_range, is_in_residue_range
-
-# Type alias for ANARCI alignment output:
-# list of ((residue_number, insertion_code), amino_acid)
-AnarciAlignment = List[Tuple[Tuple[int, str], str]]
+from sabr.errors import ChainNotFoundError, InputStructureError, OutputFormatError
+from sabr.numbering.anarci import AnarciAlignment
+from sabr.structure.io import read_structure, write_structure
+from sabr.structure.residues import AA_3TO1, ResidueId, ResidueRange
 
 LOGGER = logging.getLogger(__name__)
 
 
-class ResidueRegion(Enum):
-    """Classification of residue regions during threading.
-
-    Residues are classified into one of four regions:
-    - PRE_FV: Residues before the antibody variable region
-    - IN_FV: Residues within the variable region (numbered by ANARCI)
-    - POST_FV: Residues after the variable region
-    - HETATM: Heteroatom residues (water, ligands, etc.)
-    """
-
-    PRE_FV = auto()
-    IN_FV = auto()
-    POST_FV = auto()
-    HETATM = auto()
-
-
-@dataclass
-class RenumberingState:
-    """State maintained during the renumbering process.
-
-    Attributes:
-        aligned_residue_idx: Current index into aligned residues
-            (-1 before start).
-        last_imgt_pos: Last assigned IMGT position number.
-    """
-
-    aligned_residue_idx: int = -1
-    last_imgt_pos: Optional[int] = None
-
-
-def _classify_residue_region(
-    pdb_idx: int,
-    aligned_residue_idx: int,
-    anarci_array_idx: int,
-    alignment_start: int,
-    anarci_len: int,
-    is_hetatm: bool,
-) -> ResidueRegion:
-    """Classify which region a residue belongs to.
-
-    Args:
-        pdb_idx: 0-indexed position in the PDB chain.
-        aligned_residue_idx: Current aligned residue index
-            (-1 before alignment).
-        anarci_array_idx: Index into the ANARCI alignment array.
-        alignment_start: Offset where alignment begins.
-        anarci_len: Total length of ANARCI alignment.
-        is_hetatm: Whether the residue is a heteroatom.
-
-    Returns:
-        ResidueRegion indicating which region the residue belongs to.
-    """
-    if is_hetatm:
-        return ResidueRegion.HETATM
-
-    if aligned_residue_idx < 0:
-        return ResidueRegion.PRE_FV
-
-    if anarci_array_idx < anarci_len:
-        return ResidueRegion.IN_FV
-
-    return ResidueRegion.POST_FV
-
-
-def _compute_new_residue_id(
-    region: ResidueRegion,
-    anarci_out: AnarciAlignment,
-    anarci_array_idx: int,
-    anarci_start: int,
-    alignment_start: int,
-    pdb_idx: int,
-    state: RenumberingState,
-    original_het_flag: str,
-    resname: str,
-) -> Tuple[Tuple[str, int, str], str]:
-    """Compute the new residue ID based on region.
-
-    Args:
-        region: The classified residue region.
-        anarci_out: ANARCI alignment output.
-        anarci_array_idx: Index into the ANARCI alignment array.
-        anarci_start: Start position in ANARCI window.
-        alignment_start: Offset where alignment begins.
-        pdb_idx: 0-indexed position in the PDB chain.
-        state: Current renumbering state (modified in-place for IN_FV/POST_FV).
-        original_het_flag: Original heteroatom flag from the residue.
-        resname: Three-letter residue name.
-
-    Returns:
-        Tuple of (new_id, expected_aa) where new_id is
-        (het_flag, resnum, icode) and expected_aa is the expected
-        amino acid (for validation) or empty string.
-
-    Raises:
-        ValueError: If residue doesn't match expected amino acid in alignment.
-    """
-    if region == ResidueRegion.HETATM:
-        # HETATM residues keep their original ID
-        return None, ""
-
-    if region == ResidueRegion.PRE_FV:
-        first_anarci_pos = anarci_out[anarci_start][0][0]
-        new_imgt_pos = first_anarci_pos - (alignment_start - pdb_idx)
-        return (original_het_flag, new_imgt_pos, " "), ""
-
-    if region == ResidueRegion.IN_FV:
-        (new_imgt_pos, icode), expected_aa = anarci_out[anarci_array_idx]
-        state.last_imgt_pos = new_imgt_pos
-
-        one_letter = AA_3TO1.get(resname, "X")
-        if expected_aa != one_letter:
-            raise ValueError(
-                f"Residue mismatch! Expected {expected_aa}, got {one_letter} "
-                f"({resname})"
-            )
-
-        return (original_het_flag, new_imgt_pos, icode), expected_aa
-
-    state.last_imgt_pos += 1
-    return (" ", state.last_imgt_pos, " "), ""
+def _residue_id_from_biopython(residue_id: tuple[str, int, str]) -> ResidueId:
+    return ResidueId(residue_id[1], residue_id[2].strip())
 
 
 def has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
-    """Check if alignment contains extended (multi-char) insertion codes."""
-    return any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
+    """Return whether ANARCI output includes multi-character insertion codes."""
+    return any(len(residue.insertion_code.strip()) > 1 for residue in alignment)
 
 
-def validate_output_format(
-    output_path: str, alignment: AnarciAlignment
-) -> None:
-    """Validate that the output format supports the insertion codes used."""
-    if has_extended_insertion_codes(alignment) and not output_path.endswith(
-        ".cif"
-    ):
-        raise ValueError(
-            "Extended insertion codes detected in alignment. "
-            "PDB format only supports single-character insertion codes. "
-            "Please use mmCIF format (.cif extension) for output."
+def validate_output_format(output_path: str, alignment: AnarciAlignment) -> None:
+    """Validate that the output format can represent assigned residue IDs."""
+    suffix = Path(output_path).suffix.lower()
+    if suffix not in {".pdb", ".cif"}:
+        raise OutputFormatError(
+            f"Output file must have extension .pdb or .cif. Got: {output_path}"
+        )
+    if suffix == ".pdb" and has_extended_insertion_codes(alignment):
+        raise OutputFormatError(
+            "Extended insertion codes detected in alignment. PDB format only "
+            "supports single-character insertion codes. Use mmCIF output (.cif)."
         )
 
 
-def _skip_deletions(
-    anarci_idx: int,
-    anarci_start: int,
-    anarci_out: AnarciAlignment,
-) -> int:
-    """Advance index past any deletion positions ('-') in ANARCI output.
+def _selected_standard_residue(
+    residue,
+    residue_range: ResidueRange | None,
+) -> bool:
+    if residue.get_id()[0].strip():
+        return False
+    if residue_range is None:
+        return True
+    return _residue_id_from_biopython(residue.get_id()).in_range(residue_range)
 
-    Args:
-        anarci_idx: Current 0-indexed count of aligned residues.
-        anarci_start: First index in anarci_out with actual residue.
-        anarci_out: ANARCI alignment output list.
 
-    Returns:
-        Updated index after skipping any deletions.
-    """
-    anarci_array_idx = anarci_idx + anarci_start
-    while (
-        anarci_array_idx < len(anarci_out)
-        and anarci_out[anarci_array_idx][1] == "-"
-    ):
-        anarci_idx += 1
-        anarci_array_idx = anarci_idx + anarci_start
-    return anarci_idx
+def _check_amino_acid(residue, expected_aa: str) -> None:
+    one_letter = AA_3TO1.get(residue.get_resname(), "X")
+    if expected_aa != one_letter:
+        raise InputStructureError(
+            f"Residue mismatch while threading numbering: expected "
+            f"{expected_aa}, got {one_letter} ({residue.get_resname()})."
+        )
+
+
+def _check_duplicate_ids(
+    proposed: list[tuple[object, tuple[str, int, str]]],
+    chain_id: str,
+) -> None:
+    seen = set()
+    for _residue, residue_id in proposed:
+        if residue_id[0].strip():
+            continue
+        if residue_id in seen:
+            raise OutputFormatError(
+                f"Renumbering would create duplicate residue id {residue_id!r} "
+                f"in chain {chain_id}. This usually happens when --residue-range "
+                "preserves residues whose original numbers overlap the target "
+                "numbering. Use a narrower input file or output only the variable "
+                "domain."
+            )
+        seen.add(residue_id)
 
 
 def thread_onto_chain(
     chain: Chain.Chain,
     anarci_out: AnarciAlignment,
-    anarci_start: int,
-    anarci_end: int,
     alignment_start: int,
-    residue_range: Tuple[int, int] = (0, 0),
-) -> Tuple[Chain.Chain, int]:
-    """Return a deep-copied chain renumbered by the ANARCI window.
+    residue_range: ResidueRange | None = None,
+) -> tuple[Chain.Chain, int]:
+    """Return a deep-copied chain with selected residues renumbered.
 
-    This function handles three regions of the chain:
-    1. PRE-Fv: Residues before the antibody variable region
-    2. IN-Fv: Residues within the variable region (numbered by ANARCI)
-    3. POST-Fv: Residues after the variable region
-
-    Args:
-        chain: BioPython Chain object to renumber.
-        anarci_out: ANARCI alignment output as list of ((resnum, icode), aa).
-        anarci_start: Starting position in the ANARCI window.
-        anarci_end: Ending position in the ANARCI window.
-        alignment_start: Offset where alignment begins in the sequence.
-        residue_range: Tuple of (start, end) residue numbers to process
-            (inclusive). Use (0, 0) to process all residues.
-
-    Returns:
-        Tuple of (new_chain, deviation_count).
+    Residues outside ``residue_range`` are preserved unchanged in the output.
+    The range is interpreted against original structure residue numbers.
     """
-    range_str = format_residue_range(residue_range)
     LOGGER.info(
-        f"Threading chain {chain.id} with ANARCI window "
-        f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
-        + range_str
+        "Threading chain %s (alignment_start=%s, residue_range=%s)",
+        chain.id,
+        alignment_start,
+        residue_range or "all",
     )
 
-    new_chain = Chain.Chain(chain.id)
-    state = RenumberingState()
     deviations = 0
+    selected_idx = -1
+    numbering_idx = 0
+    last_position = None
+    proposed = []
 
-    for pdb_idx, res in enumerate(chain.get_residues()):
-        res_num = res.id[1]
-        in_range = is_in_residue_range(res_num, residue_range)
-        if in_range is False:
+    for residue in chain.get_residues():
+        new_residue = copy.deepcopy(residue)
+        new_residue.detach_parent()
+
+        if not _selected_standard_residue(residue, residue_range):
+            proposed.append((new_residue, new_residue.get_id()))
             continue
-        if in_range is None:
-            LOGGER.info(
-                f"Stopping at residue {res_num} "
-                f"(end of range {residue_range[1]})"
+
+        selected_idx += 1
+
+        if selected_idx < alignment_start:
+            if not anarci_out:
+                raise InputStructureError(
+                    "Cannot number residues without ANARCI output."
+                )
+            first_position = anarci_out[0].position
+            new_id = (" ", first_position - (alignment_start - selected_idx), " ")
+        elif numbering_idx < len(anarci_out):
+            numbered_residue = anarci_out[numbering_idx]
+            _check_amino_acid(residue, numbered_residue.amino_acid)
+            new_id = (
+                " ",
+                numbered_residue.position,
+                numbered_residue.insertion_code or " ",
             )
-            break
+            last_position = numbered_residue.position
+            numbering_idx += 1
+        else:
+            if last_position is None:
+                raise InputStructureError(
+                    "Cannot number post-Fv residues before any ANARCI residue "
+                    "was assigned."
+                )
+            last_position += 1
+            new_id = (" ", last_position, " ")
 
-        is_in_aligned_region = pdb_idx >= alignment_start
-        is_hetatm = res.get_id()[0].strip() != ""
-
-        if is_in_aligned_region and not is_hetatm:
-            state.aligned_residue_idx += 1
-
-        if state.aligned_residue_idx >= 0:
-            state.aligned_residue_idx = _skip_deletions(
-                state.aligned_residue_idx, anarci_start, anarci_out
-            )
-
-        anarci_array_idx = state.aligned_residue_idx + anarci_start
-
-        region = _classify_residue_region(
-            pdb_idx,
-            state.aligned_residue_idx,
-            anarci_array_idx,
-            alignment_start,
-            len(anarci_out),
-            is_hetatm,
-        )
-
-        new_res = copy.deepcopy(res)
-        new_res.detach_parent()
-
-        new_id_tuple, _ = _compute_new_residue_id(
-            region,
-            anarci_out,
-            anarci_array_idx,
-            anarci_start,
-            alignment_start,
-            pdb_idx,
-            state,
-            res.get_id()[0],
-            res.get_resname(),
-        )
-
-        # Apply new ID (None means keep original for HETATM)
-        new_id = new_id_tuple if new_id_tuple is not None else res.get_id()
-        new_res.id = new_id
-
-        LOGGER.info("OLD %s; NEW %s", res.get_id(), new_res.get_id())
-        if res.get_id() != new_res.get_id():
+        if residue.get_id() != new_id:
             deviations += 1
-        new_chain.add(new_res)
-        new_res.parent = new_chain
+        proposed.append((new_residue, new_id))
+
+    _check_duplicate_ids(proposed, chain.id)
+
+    new_chain = Chain.Chain(chain.id)
+    for new_residue, new_id in proposed:
+        new_residue.id = new_id
+        new_chain.add(new_residue)
 
     return new_chain, deviations
 
 
-def _thread_gemmi_chain(
-    chain: gemmi.Chain,
-    anarci_out: AnarciAlignment,
-    anarci_start: int,
-    anarci_end: int,
-    alignment_start: int,
-    residue_range: Tuple[int, int] = (0, 0),
-) -> int:
-    """Renumber a Gemmi chain in-place using ANARCI alignment.
-
-    Args:
-        chain: Gemmi Chain object to renumber (modified in-place).
-        anarci_out: ANARCI alignment output as list of ((resnum, icode), aa).
-        anarci_start: Starting position in the ANARCI window.
-        anarci_end: Ending position in the ANARCI window.
-        alignment_start: Offset where alignment begins in the sequence.
-        residue_range: Tuple of (start, end) residue numbers to process
-            (inclusive). Use (0, 0) to process all residues.
-
-    Returns:
-        Number of residue ID deviations from original numbering.
-    """
-    range_str = format_residue_range(residue_range)
-    LOGGER.info(
-        f"Threading chain {chain.name} with ANARCI window "
-        f"[{anarci_start}, {anarci_end}) (alignment_start={alignment_start})"
-        + range_str
-    )
-
-    state = RenumberingState()
+def _copy_structure_with_chain_transform(
+    structure: Structure.Structure,
+    chain_id: str,
+    structure_name: str,
+    transform_chain,
+) -> tuple[Structure.Structure, int]:
+    new_structure = Structure.Structure(structure_name)
+    new_model = Model.Model(0)
     deviations = 0
-    pdb_idx = 0
+    found = False
 
-    for res in chain:
-        res_num = res.seqid.num
-        in_range = is_in_residue_range(res_num, residue_range)
-        if in_range is False:
-            continue
-        if in_range is None:
-            LOGGER.info(
-                f"Stopping at residue {res_num} "
-                f"(end of range {residue_range[1]})"
-            )
-            break
+    for chain in structure[0]:
+        if chain.id != chain_id:
+            new_chain = copy.deepcopy(chain)
+            new_chain.detach_parent()
+        else:
+            found = True
+            new_chain, deviations = transform_chain(chain)
+        new_model.add(new_chain)
 
-        is_in_aligned_region = pdb_idx >= alignment_start
-        # het_flag: 'A' = amino acid, 'H' = HETATM, 'W' = water
-        is_hetatm = res.het_flag != "A"
-
-        if is_in_aligned_region and not is_hetatm:
-            state.aligned_residue_idx += 1
-
-        if state.aligned_residue_idx >= 0:
-            state.aligned_residue_idx = _skip_deletions(
-                state.aligned_residue_idx, anarci_start, anarci_out
-            )
-
-        anarci_array_idx = state.aligned_residue_idx + anarci_start
-
-        region = _classify_residue_region(
-            pdb_idx,
-            state.aligned_residue_idx,
-            anarci_array_idx,
-            alignment_start,
-            len(anarci_out),
-            is_hetatm,
+    if not found:
+        available = [chain.id for chain in structure[0]]
+        raise ChainNotFoundError(
+            f"Chain '{chain_id}' not found in structure. Available chains: {available}"
         )
 
-        old_seqid = str(res.seqid)
-
-        new_id_tuple, _ = _compute_new_residue_id(
-            region,
-            anarci_out,
-            anarci_array_idx,
-            anarci_start,
-            alignment_start,
-            pdb_idx,
-            state,
-            "",
-            res.name,
-        )
-
-        if new_id_tuple is not None:
-            _, new_imgt_pos, icode = new_id_tuple
-            res.seqid.num = new_imgt_pos
-            icode_str = icode.strip() if icode else ""
-            res.seqid.icode = icode_str[0] if icode_str else " "
-
-        new_seqid = str(res.seqid)
-        LOGGER.info("OLD %s; NEW %s", old_seqid, new_seqid)
-        if old_seqid != new_seqid:
-            deviations += 1
-
-        pdb_idx += 1
-
-    return deviations
+    new_structure.add(new_model)
+    return new_structure, deviations
 
 
-def _thread_alignment_biopython(
-    pdb_file: str,
+def thread_numbering_onto_structure(
+    structure: Structure.Structure,
     chain_id: str,
     alignment: AnarciAlignment,
-    output_cif: str,
-    start_res: int,
-    end_res: int,
     alignment_start: int,
-    residue_range: Tuple[int, int] = (0, 0),
-) -> int:
-    """Thread alignment using BioPython for CIF output with extended icodes.
+    residue_range: ResidueRange | None = None,
+) -> tuple[Structure.Structure, int]:
+    """Return a structure with numbering threaded onto one chain."""
 
-    This fallback is used when extended insertion codes (multi-character like
-    "AA", "AB") are present, which Gemmi cannot handle.
+    def transform(chain: Chain.Chain) -> tuple[Chain.Chain, int]:
+        return thread_onto_chain(
+            chain,
+            alignment,
+            alignment_start,
+            residue_range,
+        )
 
-    Args:
-        pdb_file: Path to input PDB/CIF file.
-        chain_id: Chain identifier to renumber.
-        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
-        output_cif: Path to output CIF file.
-        start_res: Start residue index from ANARCI.
-        end_res: End residue index from ANARCI.
-        alignment_start: Offset where alignment begins in the sequence.
-        residue_range: Tuple of (start, end) residue numbers to process.
-
-    Returns:
-        Number of residue ID deviations from original numbering.
-    """
-    LOGGER.info(
-        f"Using BioPython fallback for extended insertion codes: "
-        f"{pdb_file} chain {chain_id}"
+    return _copy_structure_with_chain_transform(
+        structure, chain_id, "renumbered_structure", transform
     )
-
-    structure = read_structure_biopython(pdb_file)
-    model = structure[0]
-    chain = model[chain_id]
-
-    threaded_chain, deviations = thread_onto_chain(
-        chain,
-        alignment,
-        start_res,
-        end_res,
-        alignment_start,
-        residue_range,
-    )
-
-    model.detach_child(chain_id)
-    model.add(threaded_chain)
-
-    io = MMCIFIO()
-    io.set_structure(structure)
-    io.save(output_cif)
-
-    LOGGER.info(f"Saved threaded structure to {output_cif}")
-    return deviations
 
 
 def thread_alignment(
@@ -465,74 +209,18 @@ def thread_alignment(
     chain: str,
     alignment: AnarciAlignment,
     output_pdb: str,
-    start_res: int,
-    end_res: int,
     alignment_start: int,
-    residue_range: Tuple[int, int] = (0, 0),
+    residue_range: ResidueRange | None = None,
 ) -> int:
-    """Write the renumbered chain to ``output_pdb`` and return the structure.
-
-    Uses Gemmi for fast file I/O operations. Falls back to BioPython when
-    extended insertion codes are present (Gemmi only supports single-char).
-
-    Args:
-        pdb_file: Path to input PDB file.
-        chain: Chain identifier to renumber.
-        alignment: ANARCI-style alignment list of ((resnum, icode), aa) tuples.
-        output_pdb: Path to output file (.pdb or .cif).
-        start_res: Start residue index from ANARCI.
-        end_res: End residue index from ANARCI.
-        alignment_start: Offset where alignment begins in the sequence.
-        residue_range: Tuple of (start, end) residue numbers to process
-            (inclusive). Use (0, 0) to process all residues.
-
-    Returns:
-        Number of residue ID deviations from original numbering.
-
-    Raises:
-        ValueError: If extended insertion codes are used but output is not .cif.
-    """
+    """Write a structure file with numbering threaded onto one chain."""
     validate_output_format(output_pdb, alignment)
-
-    # Use BioPython fallback for extended insertion codes (Gemmi limitation)
-    if has_extended_insertion_codes(alignment) and output_pdb.endswith(".cif"):
-        return _thread_alignment_biopython(
-            pdb_file,
-            chain,
-            alignment,
-            output_pdb,
-            start_res,
-            end_res,
-            alignment_start,
-            residue_range,
-        )
-
-    LOGGER.info(
-        f"Threading alignment for {pdb_file} chain {chain}; "
-        f"writing to {output_pdb}"
+    structure = read_structure(pdb_file)
+    renumbered_structure, deviations = thread_numbering_onto_structure(
+        structure,
+        chain,
+        alignment,
+        alignment_start,
+        residue_range,
     )
-
-    structure = gemmi.read_structure(pdb_file)
-    all_devs = 0
-
-    model = structure[0]
-    for ch in model:
-        if ch.name == chain:
-            deviations = _thread_gemmi_chain(
-                ch,
-                alignment,
-                start_res,
-                end_res,
-                alignment_start,
-                residue_range,
-            )
-            all_devs += deviations
-            break
-
-    if output_pdb.endswith(".cif"):
-        structure.make_mmcif_document().write_file(output_pdb)
-    else:
-        structure.write_pdb(output_pdb)
-
-    LOGGER.info(f"Saved threaded structure to {output_pdb}")
-    return all_devs
+    write_structure(renumbered_structure, output_pdb)
+    return deviations

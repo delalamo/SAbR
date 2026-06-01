@@ -5,33 +5,39 @@ import numpy as np
 import pytest
 from Bio import SeqIO
 
-from sabr import constants
 from sabr.embeddings import mpnn as mpnn_embeddings
-from sabr.embeddings.inputs import MPNNInputs
+from sabr.embeddings.inputs import (
+    BACKBONE_C_IDX,
+    BACKBONE_CA_IDX,
+    BACKBONE_CB_IDX,
+    BACKBONE_N_IDX,
+    MPNNInputs,
+    compute_cb,
+)
 from sabr.embeddings.inputs import get_inputs as _get_inputs
+from sabr.embeddings.mpnn import EMBED_DIM
+from sabr.errors import ChainNotFoundError
 
 
-def test_mpnnembeddings_valid_creation_with_defaults():
+def test_query_embeddings_valid_creation_with_defaults():
     """Test successful creation with required fields."""
-    embedding = np.random.rand(3, constants.EMBED_DIM)
+    embedding = np.random.rand(3, EMBED_DIM)
     idxs = ["1", "2", "3"]
 
-    mp = mpnn_embeddings.MPNNEmbeddings(
-        name="test", embeddings=embedding, idxs=idxs
-    )
+    mp = mpnn_embeddings.QueryEmbeddings(name="test", embeddings=embedding, idxs=idxs)
 
     assert mp.name == "test"
-    assert mp.embeddings.shape == (3, constants.EMBED_DIM)
+    assert mp.embeddings.shape == (3, EMBED_DIM)
     assert mp.idxs == idxs
 
 
-def test_mpnnembeddings_embeddings_idxs_mismatch():
+def test_query_embeddings_embeddings_idxs_mismatch():
     """Test ValueError when embeddings rows don't match idxs length."""
-    embedding = np.zeros((2, constants.EMBED_DIM), dtype=float)
+    embedding = np.zeros((2, EMBED_DIM), dtype=float)
     idxs = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
-        mpnn_embeddings.MPNNEmbeddings(
+        mpnn_embeddings.QueryEmbeddings(
             name="test_case", embeddings=embedding, idxs=idxs
         )
 
@@ -40,20 +46,20 @@ def test_mpnnembeddings_embeddings_idxs_mismatch():
     assert "Error raised for test_case" in msg
 
 
-def test_mpnnembeddings_wrong_embedding_dimension():
+def test_query_embeddings_wrong_embedding_dimension():
     """Test ValueError when embeddings dimension is wrong."""
     wrong_dim = 32
     embedding = np.zeros((3, wrong_dim), dtype=float)
     idxs = ["1", "2", "3"]
 
     with pytest.raises(ValueError) as excinfo:
-        mpnn_embeddings.MPNNEmbeddings(
+        mpnn_embeddings.QueryEmbeddings(
             name="wrong_dim", embeddings=embedding, idxs=idxs
         )
 
     msg = str(excinfo.value)
     assert f"embeddings.shape[1] ({wrong_dim})" in msg
-    assert f"constants.EMBED_DIM ({constants.EMBED_DIM})" in msg
+    assert f"EMBED_DIM ({EMBED_DIM})" in msg
 
 
 def test_from_pdb_is_callable():
@@ -77,9 +83,9 @@ def test_save_is_callable():
 
 def create_test_embedding(
     include_sequence: bool = True,
-) -> mpnn_embeddings.MPNNEmbeddings:
-    """Create a test MPNNEmbeddings object."""
-    return mpnn_embeddings.MPNNEmbeddings(
+) -> mpnn_embeddings.QueryEmbeddings:
+    """Create a test QueryEmbeddings object."""
+    return mpnn_embeddings.QueryEmbeddings(
         name="test_chain",
         embeddings=np.random.rand(10, 64),
         idxs=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -100,7 +106,7 @@ def test_save_creates_file():
 
 
 def test_from_npz_returns_embedding():
-    """Test that from_npz returns an MPNNEmbeddings object."""
+    """Test that from_npz returns a QueryEmbeddings object."""
     embedding = create_test_embedding()
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -109,7 +115,7 @@ def test_from_npz_returns_embedding():
 
         loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
 
-        assert isinstance(loaded_embedding, mpnn_embeddings.MPNNEmbeddings)
+        assert isinstance(loaded_embedding, mpnn_embeddings.QueryEmbeddings)
 
 
 def test_save_and_load_preserves_name():
@@ -135,9 +141,7 @@ def test_save_and_load_preserves_embeddings():
 
         loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
 
-        np.testing.assert_array_equal(
-            loaded_embedding.embeddings, embedding.embeddings
-        )
+        np.testing.assert_array_equal(loaded_embedding.embeddings, embedding.embeddings)
 
 
 def test_save_and_load_preserves_idxs():
@@ -155,7 +159,7 @@ def test_save_and_load_preserves_idxs():
 
 def test_round_trip_with_different_idxs_formats():
     """Test save/load with different idx formats (strings, numbers)."""
-    embedding = mpnn_embeddings.MPNNEmbeddings(
+    embedding = mpnn_embeddings.QueryEmbeddings(
         name="mixed_idxs",
         embeddings=np.random.rand(5, 64),
         idxs=["1", "2A", "3", "4B", "5"],
@@ -170,9 +174,7 @@ def test_round_trip_with_different_idxs_formats():
 
         assert loaded_embedding.idxs == embedding.idxs
         assert loaded_embedding.name == embedding.name
-        np.testing.assert_array_equal(
-            loaded_embedding.embeddings, embedding.embeddings
-        )
+        np.testing.assert_array_equal(loaded_embedding.embeddings, embedding.embeddings)
 
 
 def test_save_and_load_preserves_sequence():
@@ -200,6 +202,14 @@ def test_save_and_load_without_sequence():
         loaded_embedding = mpnn_embeddings.from_npz(str(output_path))
 
         assert loaded_embedding.sequence is None
+
+
+def test_from_npz_rejects_legacy_array_schema(tmp_path):
+    path = tmp_path / "legacy.npz"
+    np.savez(path, array=np.zeros((2, EMBED_DIM)), idxs=np.array(["1", "2"]))
+
+    with pytest.raises(ValueError, match="missing keys"):
+        mpnn_embeddings.from_npz(str(path))
 
 
 def test_get_inputs_sequence_matches_seqio():
@@ -255,14 +265,43 @@ def test_get_inputs_parses_cif_file():
     assert inputs.sequence == "AG"
 
 
+def test_get_inputs_fourth_atom_channel_is_computed_cb():
+    """Regression test for the historical [N, CA, C, computed CB] contract."""
+    pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
+    inputs = _get_inputs(str(pdb_file), chain="A")
+
+    n_coord = inputs.coords[0, 0, BACKBONE_N_IDX]
+    ca_coord = inputs.coords[0, 0, BACKBONE_CA_IDX]
+    c_coord = inputs.coords[0, 0, BACKBONE_C_IDX]
+    expected_cb = compute_cb(
+        n_coord.reshape(1, 3),
+        ca_coord.reshape(1, 3),
+        c_coord.reshape(1, 3),
+    ).reshape(3)
+
+    np.testing.assert_allclose(
+        inputs.coords[0, 0, BACKBONE_CB_IDX],
+        expected_cb,
+        rtol=1e-6,
+        atol=1e-6,
+    )
+
+
 def test_get_inputs_raises_on_missing_chain():
     """Test that requesting a non-existent chain raises ValueError."""
     test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
 
     with pytest.raises(
-        ValueError, match="Chain 'Z' not found.*Available chains"
+        ChainNotFoundError, match="Chain 'Z' not found.*Available chains"
     ):
         _get_inputs(str(test_pdb), chain="Z")
+
+
+def test_get_inputs_file_requires_chain():
+    test_pdb = Path(__file__).parent / "data" / "12e8_imgt.pdb"
+
+    with pytest.raises(ValueError, match="chain identifier is required"):
+        _get_inputs(str(test_pdb))
 
 
 def test_get_inputs_handles_insertion_codes():
@@ -285,14 +324,14 @@ def test_get_inputs_raises_on_empty_chain():
 
 
 class TestGapIndices:
-    """Tests for gap_indices field in MPNNEmbeddings."""
+    """Tests for gap_indices field in QueryEmbeddings."""
 
     def test_gap_indices_default_is_none(self):
         """Test that gap_indices defaults to None."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
 
-        mp = mpnn_embeddings.MPNNEmbeddings(
+        mp = mpnn_embeddings.QueryEmbeddings(
             name="test", embeddings=embedding, idxs=idxs
         )
 
@@ -300,11 +339,11 @@ class TestGapIndices:
 
     def test_gap_indices_accepts_frozenset(self):
         """Test that gap_indices accepts a FrozenSet."""
-        embedding = np.random.rand(5, constants.EMBED_DIM)
+        embedding = np.random.rand(5, EMBED_DIM)
         idxs = ["1", "2", "3", "4", "5"]
         gap_indices = frozenset({1, 3})
 
-        mp = mpnn_embeddings.MPNNEmbeddings(
+        mp = mpnn_embeddings.QueryEmbeddings(
             name="test",
             embeddings=embedding,
             idxs=idxs,
@@ -318,11 +357,11 @@ class TestGapIndices:
 
     def test_gap_indices_empty_frozenset(self):
         """Test that gap_indices accepts an empty FrozenSet."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
         gap_indices = frozenset()
 
-        mp = mpnn_embeddings.MPNNEmbeddings(
+        mp = mpnn_embeddings.QueryEmbeddings(
             name="test",
             embeddings=embedding,
             idxs=idxs,
@@ -334,11 +373,11 @@ class TestGapIndices:
 
     def test_gap_indices_is_immutable(self):
         """Test that gap_indices is immutable (FrozenSet)."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
         gap_indices = frozenset({0})
 
-        mp = mpnn_embeddings.MPNNEmbeddings(
+        mp = mpnn_embeddings.QueryEmbeddings(
             name="test",
             embeddings=embedding,
             idxs=idxs,

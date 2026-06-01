@@ -61,9 +61,7 @@ def gather_edges(edges, neighbor_idx):
     Returns:
         Neighbor edge features [B, N, K, C].
     """
-    neighbors = jnp.tile(
-        jnp.expand_dims(neighbor_idx, -1), [1, 1, 1, edges.shape[-1]]
-    )
+    neighbors = jnp.tile(jnp.expand_dims(neighbor_idx, -1), [1, 1, 1, edges.shape[-1]])
     edge_features = jnp.take_along_axis(edges, neighbors, 2)
     return edge_features
 
@@ -83,9 +81,7 @@ def gather_nodes(nodes, neighbor_idx):
         jnp.expand_dims(neighbors_flat, -1), [1, 1, nodes.shape[2]]
     )
     neighbor_features = jnp.take_along_axis(nodes, neighbors_flat, 1)
-    neighbor_features = neighbor_features.reshape(
-        list(neighbor_idx.shape[:3]) + [-1]
-    )
+    neighbor_features = neighbor_features.reshape(list(neighbor_idx.shape[:3]) + [-1])
     return neighbor_features
 
 
@@ -168,9 +164,7 @@ class ProteinFeatures(hk.Module):
 
     def _get_rbf(self, A, B, E_idx):
         """Compute RBF features between two atom types."""
-        D_A_B = jnp.sqrt(
-            jnp.sum((A[:, :, None, :] - B[:, None, :, :]) ** 2, -1) + 1e-6
-        )
+        D_A_B = jnp.sqrt(jnp.sum((A[:, :, None, :] - B[:, None, :, :]) ** 2, -1) + 1e-6)
         D_A_B_neighbors = gather_edges(D_A_B[:, :, :, None], E_idx)[:, :, :, 0]
         RBF_A_B = self._rbf(D_A_B_neighbors)
         return RBF_A_B
@@ -179,7 +173,7 @@ class ProteinFeatures(hk.Module):
         """Extract edge features from backbone coordinates.
 
         Args:
-            X: Backbone coordinates [B, N, 4, 3] (N, CA, C, O/CB).
+            X: Backbone coordinates [B, N, 4, 3] (N, CA, C, computed CB).
             mask: Valid residue mask [B, N].
             residue_idx: Residue indices [B, N].
             chain_labels: Chain identifiers [B, N].
@@ -200,7 +194,7 @@ class ProteinFeatures(hk.Module):
         Ca = X[:, :, 1, :]
         N = X[:, :, 0, :]
         C = X[:, :, 2, :]
-        bb_O = X[:, :, 3, :]  # Backbone oxygen
+        input_cb = X[:, :, 3, :]  # Historical fourth input channel: computed CB.
 
         D_neighbors, E_idx = self._dist(Ca, mask)
 
@@ -209,28 +203,28 @@ class ProteinFeatures(hk.Module):
         RBF_all.append(self._rbf(D_neighbors))  # Ca-Ca
         RBF_all.append(self._get_rbf(N, N, E_idx))
         RBF_all.append(self._get_rbf(C, C, E_idx))
-        RBF_all.append(self._get_rbf(bb_O, bb_O, E_idx))
+        RBF_all.append(self._get_rbf(input_cb, input_cb, E_idx))
         RBF_all.append(self._get_rbf(Cb, Cb, E_idx))
         RBF_all.append(self._get_rbf(Ca, N, E_idx))
         RBF_all.append(self._get_rbf(Ca, C, E_idx))
-        RBF_all.append(self._get_rbf(Ca, bb_O, E_idx))
+        RBF_all.append(self._get_rbf(Ca, input_cb, E_idx))
         RBF_all.append(self._get_rbf(Ca, Cb, E_idx))
         RBF_all.append(self._get_rbf(N, C, E_idx))
-        RBF_all.append(self._get_rbf(N, bb_O, E_idx))
+        RBF_all.append(self._get_rbf(N, input_cb, E_idx))
         RBF_all.append(self._get_rbf(N, Cb, E_idx))
         RBF_all.append(self._get_rbf(Cb, C, E_idx))
-        RBF_all.append(self._get_rbf(Cb, bb_O, E_idx))
-        RBF_all.append(self._get_rbf(bb_O, C, E_idx))
+        RBF_all.append(self._get_rbf(Cb, input_cb, E_idx))
+        RBF_all.append(self._get_rbf(input_cb, C, E_idx))
         RBF_all.append(self._get_rbf(N, Ca, E_idx))
         RBF_all.append(self._get_rbf(C, Ca, E_idx))
-        RBF_all.append(self._get_rbf(bb_O, Ca, E_idx))
+        RBF_all.append(self._get_rbf(input_cb, Ca, E_idx))
         RBF_all.append(self._get_rbf(Cb, Ca, E_idx))
         RBF_all.append(self._get_rbf(C, N, E_idx))
-        RBF_all.append(self._get_rbf(bb_O, N, E_idx))
+        RBF_all.append(self._get_rbf(input_cb, N, E_idx))
         RBF_all.append(self._get_rbf(Cb, N, E_idx))
         RBF_all.append(self._get_rbf(C, Cb, E_idx))
-        RBF_all.append(self._get_rbf(bb_O, Cb, E_idx))
-        RBF_all.append(self._get_rbf(C, bb_O, E_idx))
+        RBF_all.append(self._get_rbf(input_cb, Cb, E_idx))
+        RBF_all.append(self._get_rbf(C, input_cb, E_idx))
         RBF_all = jnp.concatenate(tuple(RBF_all), axis=-1)
 
         # Positional encodings
@@ -335,9 +329,7 @@ class EncLayer(hk.Module):
             Updated (h_V, h_E).
         """
         h_EV = cat_neighbors_nodes(h_V, h_E, E_idx)
-        h_V_expand = jnp.tile(
-            jnp.expand_dims(h_V, -2), [1, 1, h_EV.shape[-2], 1]
-        )
+        h_V_expand = jnp.tile(jnp.expand_dims(h_V, -2), [1, 1, h_EV.shape[-2], 1])
         h_EV = jnp.concatenate([h_V_expand, h_EV], -1)
 
         h_message = self.W3(self.act(self.W2(self.act(self.W1(h_EV)))))
@@ -353,9 +345,7 @@ class EncLayer(hk.Module):
             h_V = mask_V * h_V
 
         h_EV = cat_neighbors_nodes(h_V, h_E, E_idx)
-        h_V_expand = jnp.tile(
-            jnp.expand_dims(h_V, -2), [1, 1, h_EV.shape[-2], 1]
-        )
+        h_V_expand = jnp.tile(jnp.expand_dims(h_V, -2), [1, 1, h_EV.shape[-2], 1])
         h_EV = jnp.concatenate([h_V_expand, h_EV], -1)
         h_message = self.W13(self.act(self.W12(self.act(self.W11(h_EV)))))
         h_E = self.norm3(h_E + self.dropout3(h_message))
@@ -410,9 +400,7 @@ class ENC:
 
         self.W_e = hk.Linear(hidden_dim, with_bias=True, name="W_e")
         self.encoder_layers = [
-            EncLayer(
-                hidden_dim, hidden_dim * 2, dropout=dropout, name="enc" + str(i)
-            )
+            EncLayer(hidden_dim, hidden_dim * 2, dropout=dropout, name="enc" + str(i))
             for i in range(num_encoder_layers)
         ]
 

@@ -2,7 +2,7 @@
 """Embedding generation for SAbR.
 
 This package provides the embedding functionality for SAbR including:
-- MPNNEmbeddings: Dataclass for per-residue embeddings
+- QueryEmbeddings: Dataclass for per-residue query embeddings
 - EmbeddingBackend: JAX/Haiku backend for embedding computation
 - Input extraction from PDB/CIF files and BioPython chains
 """

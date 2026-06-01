@@ -22,19 +22,20 @@ The alignment matrix format:
 
 import logging
 from dataclasses import dataclass
-from typing import Iterator, List, Optional
+from typing import List, NamedTuple, Optional
 
 import numpy as np
+
+from sabr.alignment.validation import validate_alignment_matrix
 
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass(frozen=True)
-class State:
+class State(NamedTuple):
     """Represents an HMM state with residue number and insertion code.
 
-    This dataclass encapsulates a single state in the HMMER-style state vector.
-    It can be unpacked like a tuple for backward compatibility with ANARCI.
+    The tuple shape matches the format consumed by ANARCI:
+    ``((residue_number, insertion_code), mapped_residue)``.
 
     Attributes:
         residue_number: The IMGT position number (1-128).
@@ -46,23 +47,18 @@ class State:
             or None for deletion states. Used by ANARCI to extract residues.
     """
 
-    residue_number: int
-    insertion_code: str
+    position_state: tuple[int, str]
     mapped_residue: Optional[int] = None
 
-    def __iter__(self) -> Iterator:
-        """Allow unpacking like a tuple for backward compatibility."""
-        yield (self.residue_number, self.insertion_code)
-        yield self.mapped_residue
+    @property
+    def residue_number(self) -> int:
+        """IMGT residue number."""
+        return self.position_state[0]
 
-    def __getitem__(self, index: int):
-        """Allow indexing like a tuple for backward compatibility."""
-        if index == 0:
-            return (self.residue_number, self.insertion_code)
-        elif index == 1:
-            return self.mapped_residue
-        else:
-            raise IndexError(f"State index out of range: {index}")
+    @property
+    def insertion_code(self) -> str:
+        """HMM state type: match, insertion, or deletion."""
+        return self.position_state[1]
 
 
 @dataclass(frozen=True)
@@ -84,13 +80,12 @@ class Aln2HmmOutput:
     first_aligned_row: int
 
     def report(self) -> None:
-        """Log each HMM state at INFO level for debugging purposes."""
-        LOGGER.info(f"Reporting {len(self.states)} HMM states")
+        """Log HMM states for debugging purposes."""
+        LOGGER.info(f"Generated {len(self.states)} HMM states")
         for idx, state in enumerate(self.states):
             mapped = state.mapped_residue
-            LOGGER.info(
-                f"{idx} (({state.residue_number}, '{state.insertion_code}'), "
-                f"{mapped})"
+            LOGGER.debug(
+                f"{idx} (({state.residue_number}, '{state.insertion_code}'), {mapped})"
             )
 
 
@@ -116,15 +111,11 @@ def alignment_matrix_to_state_vector(
             - imgt_end: Value such that n_aligned = imgt_end - imgt_start
             - first_aligned_row: First sequence row (0-indexed) that is aligned
     """
-    if matrix.ndim != 2:
-        raise ValueError("matrix must be 2D")
+    validate_alignment_matrix(matrix)
+    matrix = np.round(matrix).astype(int)
     LOGGER.info(f"Converting alignment matrix with shape {matrix.shape}")
 
     path = sorted(np.argwhere(np.transpose(matrix) == 1).tolist())
-    if len(path) == 0:
-        raise ValueError(
-            "Alignment matrix contains no path (no non-zero elements found)"
-        )
 
     col_to_rows = {}
     for col, row in path:
@@ -145,9 +136,7 @@ def alignment_matrix_to_state_vector(
     }
 
     if orphan_rows:
-        LOGGER.info(
-            f"Found {len(orphan_rows)} orphan residues (CDR insertions)"
-        )
+        LOGGER.info(f"Found {len(orphan_rows)} orphan residues (CDR insertions)")
 
     # The offset converts row indices to indices in the padded sequence.
     # The padded sequence is: '-' * imgt_start + input_seq[first_aligned_row:]
@@ -164,10 +153,10 @@ def alignment_matrix_to_state_vector(
 
         if col in col_to_rows:
             rows = col_to_rows[col]
-            states.append(State(imgt_pos, "m", rows[0] + offset))
+            states.append(State((imgt_pos, "m"), rows[0] + offset))
 
             for row in rows[1:]:
-                states.append(State(imgt_pos, "i", row + offset))
+                states.append(State((imgt_pos, "i"), row + offset))
 
             next_matched_row = None
             for next_col in range(col + 1, path[-1][0] + 1):
@@ -178,14 +167,12 @@ def alignment_matrix_to_state_vector(
             if next_matched_row is not None:
                 for orphan_row in range(rows[-1] + 1, next_matched_row):
                     if orphan_row in orphan_rows:
-                        states.append(State(imgt_pos, "i", orphan_row + offset))
+                        states.append(State((imgt_pos, "i"), orphan_row + offset))
         else:
-            states.append(State(imgt_pos, "d", None))
+            states.append(State((imgt_pos, "d"), None))
 
     max_row = (
-        max(last_aligned_row, max(orphan_rows))
-        if orphan_rows
-        else last_aligned_row
+        max(last_aligned_row, max(orphan_rows)) if orphan_rows else last_aligned_row
     )
     imgt_start = path[0][0]
     imgt_end = max_row + 1 + imgt_start

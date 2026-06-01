@@ -10,21 +10,21 @@ Public interfaces accept and return numpy arrays only.
 import logging
 from typing import List, Optional, Tuple
 
-import haiku as hk
-import jax
 import numpy as np
-from jax import numpy as jnp
 
-from sabr import constants
-from sabr.nn.end_to_end import END_TO_END
+from sabr.numbering.imgt import IMGT_REGIONS
 
 LOGGER = logging.getLogger(__name__)
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
+SW_GAP_EXTEND = -0.175027
+SW_GAP_OPEN = -2.525591
+DEFAULT_TEMPERATURE = 1e-4
 
 
 def create_gap_penalty_for_reduced_reference(
     query_len: int,
     idxs: List[int],
-    include_anchors: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """Create gap penalty matrices with position-dependent penalties.
 
@@ -32,15 +32,9 @@ def create_gap_penalty_for_reduced_reference(
     105-117). This allows free gap openings in variable loop regions while
     still penalizing gap extensions to prevent excessive insertions.
 
-    When include_anchors=True, the idxs list should include anchor positions
-    0 and 129 at the start and end. The gap penalties between anchors and
-    adjacent positions encode the overhang cost.
-
     Args:
         query_len: Length of the query sequence.
         idxs: List of IMGT position integers for the reduced reference.
-            If include_anchors=True, should start with 0 and end with 129.
-        include_anchors: If True, handle anchor positions 0 and 129.
 
     Returns:
         Tuple of (gap_extend_matrix, gap_open_matrix) with shape
@@ -49,17 +43,13 @@ def create_gap_penalty_for_reduced_reference(
     target_len = len(idxs)
 
     # Start with normal penalties (as numpy arrays)
-    gap_extend = np.full(
-        (query_len, target_len), constants.SW_GAP_EXTEND, dtype=np.float32
-    )
-    gap_open = np.full(
-        (query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32
-    )
+    gap_extend = np.full((query_len, target_len), SW_GAP_EXTEND, dtype=np.float32)
+    gap_open = np.full((query_len, target_len), SW_GAP_OPEN, dtype=np.float32)
 
     # Build set of CDR positions for fast lookup
     cdr_positions = set()
     for cdr_name in ["CDR1", "CDR2", "CDR3"]:
-        cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
+        cdr_positions.update(IMGT_REGIONS[cdr_name])
 
     # Zero gap_open for CDR positions only
     # Keep gap_extend penalized to limit insertions
@@ -92,21 +82,23 @@ def _run_alignment_fn(
     Returns:
         Tuple of (alignment_matrix, similarity_matrix, alignment_score).
     """
+    from jax import numpy as jnp
+
+    from sabr.nn.end_to_end import END_TO_END
+
     model = END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
         augment_eps=0.0,
     )
 
-    lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[
-        None, :
-    ]
+    lens = jnp.array([input_embeddings.shape[0], target_embeddings.shape[0]])[None, :]
     batched_input = jnp.array(input_embeddings[None, :])
     batched_target = jnp.array(target_embeddings[None, :])
 
@@ -143,8 +135,8 @@ class AlignmentBackend:
 
     def __init__(
         self,
-        gap_extend: float = constants.SW_GAP_EXTEND,
-        gap_open: float = constants.SW_GAP_OPEN,
+        gap_extend: float = SW_GAP_EXTEND,
+        gap_open: float = SW_GAP_OPEN,
         random_seed: int = 0,
     ) -> None:
         """Initialize the alignment backend.
@@ -154,8 +146,15 @@ class AlignmentBackend:
             gap_open: Gap opening penalty.
             random_seed: Random seed for JAX PRNG.
         """
+        # Keep JAX/Haiku imports at the backend boundary. Importing package
+        # metadata, CLI help, and pure tests should not require jaxlib support.
+        import haiku as hk
+        import jax
+        from jax import numpy as jnp
+
         self.gap_extend = gap_extend
         self.gap_open = gap_open
+        self._jax = jax
         self.key = jax.random.PRNGKey(random_seed)
         self._params = {
             "~": {
@@ -170,7 +169,7 @@ class AlignmentBackend:
         self,
         input_embeddings: np.ndarray,
         target_embeddings: np.ndarray,
-        temperature: float = constants.DEFAULT_TEMPERATURE,
+        temperature: float = DEFAULT_TEMPERATURE,
         gap_matrix: Optional[np.ndarray] = None,
         open_matrix: Optional[np.ndarray] = None,
     ) -> Tuple[np.ndarray, np.ndarray, float]:
@@ -186,7 +185,7 @@ class AlignmentBackend:
         Returns:
             Tuple of (alignment, similarity_matrix, score) as numpy.
         """
-        self.key, subkey = jax.random.split(self.key)
+        self.key, subkey = self._jax.random.split(self.key)
         alignment, sim_matrix, score = self._transformed_fn.apply(
             self._params,
             subkey,

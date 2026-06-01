@@ -2,18 +2,19 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
-import sabr.alignment.soft_aligner as soft_aligner_module
+import sabr.renumber as renumber_module
 from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
 from sabr.alignment.soft_aligner import SoftAligner
-from sabr.cli import renumber
 from sabr.cli.main import main as cli_main
-from sabr.embeddings import mpnn as mpnn_embeddings_module
 from sabr.embeddings.mpnn import from_pdb as mpnn_from_pdb
+from sabr.numbering.anarci import build_anarci_subsequence, number_from_alignment
+from sabr.options import RenumberOptions
+from sabr.renumber import renumber_structure
 from sabr.structure.threading import thread_alignment
+from sabr.types import NumberingScheme, parse_chain_type
 from tests.conftest import (
     FIXTURES,
     create_dummy_aligner,
@@ -40,13 +41,15 @@ def run_threading_pipeline(
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
 
     hmm_output = alignment_matrix_to_state_vector(alignment)
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-
-    anarci_alignment, anarci_start, anarci_end = (
-        anarci.number_sequence_from_alignment(
-            hmm_output.states, subsequence, scheme="imgt", chain_type=chain_type
-        )
+    subsequence = build_anarci_subsequence(sequence, hmm_output)
+    parsed_chain_type = parse_chain_type(chain_type)
+    if parsed_chain_type is None:
+        raise AssertionError("Fixture chain type must be concrete")
+    anarci_alignment = number_from_alignment(
+        hmm_output.states,
+        subsequence,
+        NumberingScheme.IMGT,
+        parsed_chain_type,
     )
 
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
@@ -55,10 +58,12 @@ def run_threading_pipeline(
         chain,
         anarci_alignment,
         str(output_pdb),
-        anarci_start,
-        anarci_end,
         alignment_start=0,
     )
+
+
+def _residue_id_strings(ids):
+    return [f"{resseq}{icode.strip()}" for _hetflag, resseq, icode in ids]
 
 
 @pytest.mark.parametrize("fixture_key", ["8_21", "5omm"])
@@ -100,9 +105,9 @@ def test_cli_produces_correct_numbering(
     DummyAligner = create_dummy_aligner(alignment, chain_type)
     dummy_from_pdb = create_dummy_from_pdb()
 
-    monkeypatch.setattr(mpnn_embeddings_module, "from_pdb", dummy_from_pdb)
+    monkeypatch.setattr(renumber_module, "from_pdb", dummy_from_pdb)
     monkeypatch.setattr(
-        soft_aligner_module, "SoftAligner", lambda: DummyAligner()
+        renumber_module, "SoftAligner", lambda **_kwargs: DummyAligner()
     )
 
     runner = CliRunner()
@@ -124,6 +129,37 @@ def test_cli_produces_correct_numbering(
     original_ids = extract_residue_ids_from_pdb(data["pdb"], data["chain"])
     threaded_ids = extract_residue_ids_from_pdb(output_pdb, data["chain"])
     assert (original_ids == threaded_ids) is expect_same
+
+
+@pytest.mark.golden
+def test_heavy_fixture_matches_exact_residue_ids(tmp_path):
+    """Golden regression for exact IMGT residue IDs, including insertions."""
+    data = FIXTURES["test_heavy_chain"]
+    if not data["pdb"].exists():
+        pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+    alignment, chain_type = load_alignment_fixture(data["alignment"])
+    run_threading_pipeline(
+        data["pdb"],
+        data["chain"],
+        alignment,
+        chain_type,
+        tmp_path,
+    )
+
+    # TODO: add equivalent exact golden fixtures for kappa and lambda once
+    # saved light-chain alignments are available.
+    output_pdb = tmp_path / f"{data['pdb'].stem}_{data['chain']}_threaded.pdb"
+    expected = [str(pos) for pos in range(2, 10)]
+    expected += [str(pos) for pos in range(11, 30)]
+    expected += [str(pos) for pos in range(37, 60)]
+    expected += [str(pos) for pos in range(62, 73)]
+    expected += [str(pos) for pos in range(74, 112)]
+    expected += ["111A", "111B", "111C", "112C", "112B", "112A"]
+    expected += [str(pos) for pos in range(112, 129)]
+
+    threaded_ids = extract_residue_ids_from_pdb(output_pdb, data["chain"])
+    assert _residue_id_strings(threaded_ids) == expected
 
 
 def test_alignment_start_position_correct():
@@ -169,16 +205,12 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     hmm_output = alignment_matrix_to_state_vector(output.alignment)
     assert hmm_output.imgt_start == 2  # Structure starts at IMGT position 3
 
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-
-    anarci_out, anarci_start, anarci_end = (
-        anarci.number_sequence_from_alignment(
-            hmm_output.states,
-            subsequence,
-            scheme="imgt",
-            chain_type=output.chain_type,
-        )
+    subsequence = build_anarci_subsequence(sequence, hmm_output)
+    anarci_out = number_from_alignment(
+        hmm_output.states,
+        subsequence,
+        NumberingScheme.IMGT,
+        output.selected_chain_type,
     )
 
     output_pdb = tmp_path / "8_21_ntrunc_threaded.pdb"
@@ -187,8 +219,6 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
         chain,
         anarci_out,
         str(output_pdb),
-        anarci_start,
-        anarci_end,
         alignment_start=0,
     )
 
@@ -237,10 +267,10 @@ def test_renumber_structure_end_to_end():
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("test", pdb_path)
 
-    renumbered = renumber.renumber_structure(
+    renumbered = renumber_structure(
         structure,
-        chain=chain_id,
-        numbering_scheme="imgt",
+        chain_id=chain_id,
+        options=RenumberOptions(),
     )
 
     assert renumbered is not None
@@ -248,8 +278,6 @@ def test_renumber_structure_end_to_end():
     assert len(renumbered_residues) > 50
 
     residue_numbers = [
-        res.get_id()[1]
-        for res in renumbered_residues
-        if not res.get_id()[0].strip()
+        res.get_id()[1] for res in renumbered_residues if not res.get_id()[0].strip()
     ]
     assert max(residue_numbers) <= 150

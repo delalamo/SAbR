@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/setup-python
 
       - name: Install dependencies
-        run: pip install -e .
+        run: pip install -e .[benchmark]
 
       - name: Run SAbDab test set analysis
         run: |

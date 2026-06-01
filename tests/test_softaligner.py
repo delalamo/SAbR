@@ -4,6 +4,7 @@ import inspect
 import numpy as np
 import pytest
 
+import sabr.renumber as renumber
 from sabr.alignment.corrections import (
     _skip_for_structural_gap,
     apply_deterministic_corrections,
@@ -14,7 +15,10 @@ from sabr.alignment.corrections import (
     correct_gap_numbering,
 )
 from sabr.alignment.soft_aligner import SoftAligner
-from sabr.cli import renumber
+from sabr.embeddings.references import ReferenceEmbeddings
+from sabr.numbering.anarci import NumberedResidue
+from sabr.options import RenumberOptions
+from sabr.types import ChainType
 from tests.conftest import (
     FIXTURES,
     DummyEmbeddings,
@@ -25,6 +29,52 @@ from tests.conftest import (
 
 def make_aligner() -> SoftAligner:
     return SoftAligner.__new__(SoftAligner)
+
+
+class ScoredBackend:
+    """Alignment backend whose score is encoded in the reference embedding."""
+
+    def __init__(self) -> None:
+        self.calls = []
+
+    def align(
+        self,
+        input_embeddings,
+        target_embeddings,
+        temperature,
+        gap_matrix=None,
+        open_matrix=None,
+    ):
+        del temperature, gap_matrix, open_matrix
+        score = float(target_embeddings[0, 0])
+        self.calls.append(score)
+        alignment = np.zeros(
+            (input_embeddings.shape[0], target_embeddings.shape[0]), dtype=int
+        )
+        for idx in range(min(alignment.shape)):
+            alignment[idx, idx] = 1
+        return alignment, np.zeros_like(alignment, dtype=float), score
+
+
+def make_reference_embeddings(scores=None):
+    scores = scores or {"H": 1.0, "K": 2.0, "L": 3.0}
+    return {
+        label: ReferenceEmbeddings(
+            name=label,
+            embeddings=np.full((2, 64), score),
+            positions=[1, 2],
+        )
+        for label, score in scores.items()
+    }
+
+
+def make_query_embeddings():
+    return DummyEmbeddings(
+        name="query",
+        embeddings=np.zeros((2, 64)),
+        idxs=["1", "2"],
+        sequence="AG",
+    )
 
 
 class TestUseCustomGapPenalties:
@@ -47,12 +97,8 @@ class TestUseCustomGapPenalties:
 
         # Capture kwargs passed to the aligner
         captured_kwargs = {}
-        DummyAligner = create_dummy_aligner(
-            alignment, chain_type, captured_kwargs
-        )
-        monkeypatch.setattr(
-            renumber, "SoftAligner", lambda **kwargs: DummyAligner()
-        )
+        DummyAligner = create_dummy_aligner(alignment, chain_type, captured_kwargs)
+        monkeypatch.setattr(renumber, "SoftAligner", lambda **kwargs: DummyAligner())
 
         n_residues = alignment.shape[0]
         dummy_seq = "EVQLVESGGGLVQPGGSLRLSCAASGFTFS" * 4
@@ -65,23 +111,107 @@ class TestUseCustomGapPenalties:
             sequence=dummy_seq,
         )
 
+        def fake_numbering_backend(_states, subsequence, _scheme, _chain_type):
+            sequence = subsequence.replace("-", "")
+            return [
+                NumberedResidue(position=idx + 1, insertion_code=" ", amino_acid=aa)
+                for idx, aa in enumerate(sequence)
+            ]
+
+        monkeypatch.setattr(renumber, "number_from_alignment", fake_numbering_backend)
+
         # Test with use_custom_gap_penalties=True (default)
         captured_kwargs.clear()
-        renumber.run_renumbering_pipeline(
+        renumber._create_numbering_plan(
             dummy_embeddings,
-            numbering_scheme="imgt",
-            use_custom_gap_penalties=True,
+            RenumberOptions.from_values(
+                numbering_scheme="imgt",
+                custom_gap_penalties=True,
+            ),
         )
         assert captured_kwargs.get("use_custom_gap_penalties") is True
 
         # Test with use_custom_gap_penalties=False
         captured_kwargs.clear()
-        renumber.run_renumbering_pipeline(
+        renumber._create_numbering_plan(
             dummy_embeddings,
-            numbering_scheme="imgt",
-            use_custom_gap_penalties=False,
+            RenumberOptions.from_values(
+                numbering_scheme="imgt",
+                custom_gap_penalties=False,
+            ),
         )
         assert captured_kwargs.get("use_custom_gap_penalties") is False
+
+
+class TestChainTypeFromEmbeddingLabels:
+    def test_auto_chain_type_uses_highest_scoring_reference_label(self, monkeypatch):
+        backend = ScoredBackend()
+        monkeypatch.setattr(
+            "sabr.alignment.soft_aligner.AlignmentBackend",
+            lambda random_seed: backend,
+        )
+        aligner = SoftAligner(
+            reference_embeddings=make_reference_embeddings(
+                {"H": 1.0, "K": 5.0, "L": 2.0}
+            ),
+        )
+
+        result = aligner(
+            make_query_embeddings(),
+            deterministic_loop_renumbering=False,
+        )
+
+        assert backend.calls == [1.0, 5.0, 2.0]
+        assert result.selected_chain_type is ChainType.KAPPA
+
+    @pytest.mark.parametrize(
+        ("chain_type", "expected_chain_type", "expected_score"),
+        [
+            (ChainType.HEAVY, ChainType.HEAVY, 1.0),
+            (ChainType.KAPPA, ChainType.KAPPA, 2.0),
+            (ChainType.LAMBDA, ChainType.LAMBDA, 3.0),
+        ],
+    )
+    def test_explicit_chain_type_uses_only_requested_embedding_label(
+        self,
+        monkeypatch,
+        chain_type,
+        expected_chain_type,
+        expected_score,
+    ):
+        backend = ScoredBackend()
+        monkeypatch.setattr(
+            "sabr.alignment.soft_aligner.AlignmentBackend",
+            lambda random_seed: backend,
+        )
+        aligner = SoftAligner(reference_embeddings=make_reference_embeddings())
+
+        result = aligner(
+            make_query_embeddings(),
+            deterministic_loop_renumbering=False,
+            chain_type=chain_type,
+        )
+
+        assert backend.calls == [expected_score]
+        assert result.selected_chain_type is expected_chain_type
+
+    def test_invalid_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                reference_embeddings=make_reference_embeddings({"unified": 1.0}),
+            )
+
+    def test_missing_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                reference_embeddings=make_reference_embeddings({"H": 1.0, "K": 2.0}),
+            )
+
+    def test_empty_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                reference_embeddings={},
+            )
 
 
 def test_files_resolves():
@@ -103,7 +233,7 @@ def test_correct_gap_numbering_places_expected_ones():
 def test_fix_aln_expands_to_imgt_width():
     aligner = make_aligner()
     old_aln = np.array([[1, 0, 1], [0, 1, 0]], dtype=int)
-    expanded = aligner.fix_aln(old_aln, idxs=["1", "3", "5"])
+    expanded = aligner._fix_aln(old_aln, idxs=["1", "3", "5"])
 
     assert expanded.shape == (2, 128)
     assert np.array_equal(expanded[:, 0], old_aln[:, 0])
@@ -134,7 +264,7 @@ def test_fix_aln_with_integer_idxs():
     """Test fix_aln with integer indices."""
     aligner = make_aligner()
     old_aln = np.array([[1, 0], [0, 1]], dtype=int)
-    expanded = aligner.fix_aln(old_aln, idxs=[1, 5])
+    expanded = aligner._fix_aln(old_aln, idxs=[1, 5])
 
     assert expanded.shape == (2, 128)
     assert expanded[0, 0] == 1
@@ -145,7 +275,7 @@ def test_fix_aln_preserves_dtype():
     """Test that fix_aln preserves data type."""
     aligner = make_aligner()
     old_aln = np.array([[1.5, 0.3]], dtype=float)
-    expanded = aligner.fix_aln(old_aln, idxs=["1", "2"])
+    expanded = aligner._fix_aln(old_aln, idxs=["1", "2"])
 
     assert expanded.dtype == old_aln.dtype
 
@@ -218,9 +348,7 @@ def test_correct_fr1_alignment_heavy_6_residues():
     corrected = correct_fr1_alignment(aln)
 
     # With 6 residues (rows 5-10), position 10 should be gap (heavy/lambda)
-    assert (
-        corrected[5:11, 9].sum() == 0
-    ), "Position 10 should be empty for heavy"
+    assert corrected[5:11, 9].sum() == 0, "Position 10 should be empty for heavy"
     # Check all 6 positions are filled correctly (skip position 10)
     assert corrected[5, 5] == 1  # Position 6
     assert corrected[6, 6] == 1  # Position 7
@@ -243,18 +371,13 @@ def test_correct_fr1_no_anchors_found():
 
 
 def test_correct_fr3_alignment_no_correction_needed():
-    """Test FR3 correction when input has positions 81 and 82."""
+    """Test FR3 correction leaves already shifted residues unchanged."""
     aln = np.zeros((100, 128), dtype=int)
-    # Set up positions 81 and 82 (cols 80 and 81) occupied
-    aln[70, 80] = 1  # Residue at position 81
-    aln[71, 81] = 1  # Residue at position 82
+    aln[70, 82] = 1  # Residue at position 83
+    aln[71, 83] = 1  # Residue at position 84
 
-    # If input has both positions, no correction needed
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=True
-    )
+    corrected = correct_fr3_alignment(aln)
 
-    # Should not change
     assert np.array_equal(corrected, aln)
 
 
@@ -264,10 +387,7 @@ def test_correct_fr3_alignment_move_81_to_83():
     # Position 81 (col 80) has a residue, position 83 (col 82) is empty
     aln[70, 80] = 1  # Residue incorrectly at position 81
 
-    # Light chain lacks position 81
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=True
-    )
+    corrected = correct_fr3_alignment(aln)
 
     # Residue should be moved from pos81 to pos83
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -280,10 +400,7 @@ def test_correct_fr3_alignment_move_82_to_84():
     # Position 82 (col 81) has a residue, position 84 (col 83) is empty
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
-    # Light chain lacks position 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=True, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln)
 
     # Residue should be moved from pos82 to pos84
     assert corrected[71, 81] == 0  # Position 82 cleared
@@ -297,10 +414,7 @@ def test_correct_fr3_alignment_both_moves():
     aln[70, 80] = 1  # Residue incorrectly at position 81
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
-    # Light chain lacks both positions 81 and 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln)
 
     # Both residues should be moved
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -318,16 +432,56 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     aln[72, 82] = 1  # Position 83
     aln[73, 83] = 1  # Position 84
 
-    # Light chain lacks positions 81 and 82
-    corrected = correct_fr3_alignment(
-        aln, input_has_pos81=False, input_has_pos82=False
-    )
+    corrected = correct_fr3_alignment(aln)
 
     # Since 83, 84 are occupied, 81, 82 should just be cleared
     assert corrected[70, 80] == 0  # Position 81 cleared
     assert corrected[71, 81] == 0  # Position 82 cleared
     assert corrected[72, 82] == 1  # Position 83 unchanged
     assert corrected[73, 83] == 1  # Position 84 unchanged
+
+
+@pytest.mark.parametrize(
+    ("chain_type", "expect_light_chain_shift"),
+    [("H", False), ("K", True), ("L", True)],
+)
+def test_apply_deterministic_corrections_uses_explicit_chain_type_for_fr3(
+    chain_type,
+    expect_light_chain_shift,
+):
+    """FR3 light-chain correction depends only on the supplied chain type."""
+    aln = np.zeros((4, 128), dtype=int)
+    aln[0, 80] = 1
+    aln[1, 81] = 1
+
+    corrected = apply_deterministic_corrections(aln, chain_type)
+
+    if expect_light_chain_shift:
+        assert corrected[0, 80] == 0
+        assert corrected[0, 82] == 1
+        assert corrected[1, 81] == 0
+        assert corrected[1, 83] == 1
+    else:
+        assert np.array_equal(corrected, aln)
+
+
+def test_apply_deterministic_corrections_rejects_auto_chain_type():
+    aln = np.zeros((4, 128), dtype=int)
+
+    with pytest.raises(ValueError, match="require chain type H, K, or L"):
+        apply_deterministic_corrections(aln, "auto")
+
+
+def test_apply_deterministic_corrections_does_not_mutate_input():
+    aln = np.zeros((4, 128), dtype=int)
+    aln[0, 80] = 1
+    aln[1, 81] = 1
+    original = aln.copy()
+
+    corrected = apply_deterministic_corrections(aln, "K")
+
+    assert np.array_equal(aln, original)
+    assert corrected is not aln
 
 
 def test_correct_gap_numbering_5_residue_cdr():
@@ -648,8 +802,6 @@ class TestGapSkipping:
 
         corrected = correct_fr3_alignment(
             aln,
-            input_has_pos81=False,
-            input_has_pos82=False,
             gap_indices=gap_indices,
         )
 
@@ -693,9 +845,6 @@ class TestGapSkipping:
         gap_indices = frozenset({50})
 
         # Should not raise an error
-        corrected, chain_type = apply_deterministic_corrections(
-            aln, gap_indices=gap_indices
-        )
+        corrected = apply_deterministic_corrections(aln, "H", gap_indices=gap_indices)
 
         assert corrected.shape == aln.shape
-        assert chain_type in ("H", "K", "L")

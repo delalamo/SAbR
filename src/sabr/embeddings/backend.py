@@ -9,18 +9,15 @@ Public interfaces accept and return numpy arrays only.
 """
 
 import logging
+from functools import lru_cache
 from importlib.resources import files
 from typing import Any, Dict
 
-import haiku as hk
-import jax
 import numpy as np
-from jax import numpy as jnp
-
-from sabr import constants
-from sabr.nn.end_to_end import END_TO_END
 
 LOGGER = logging.getLogger(__name__)
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
 
 
 def _unflatten_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:
@@ -60,11 +57,14 @@ def _convert_numpy_to_jax(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {k: _convert_numpy_to_jax(v) for k, v in obj.items()}
     elif isinstance(obj, np.ndarray):
+        from jax import numpy as jnp
+
         return jnp.array(obj)
     else:
         return obj
 
 
+@lru_cache(maxsize=None)
 def load_mpnn_params(
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
@@ -81,7 +81,7 @@ def load_mpnn_params(
     package_files = files(params_path)
     npz_path = package_files / f"{params_name}.npz"
 
-    with open(npz_path, "rb") as f:
+    with npz_path.open("rb") as f:
         data = dict(np.load(f, allow_pickle=False))
 
     params = _unflatten_dict(data)
@@ -90,19 +90,21 @@ def load_mpnn_params(
     return params
 
 
-def _create_e2e_model() -> END_TO_END:
+def _create_e2e_model():
     """Create an END_TO_END model with standard SAbR configuration.
 
     Returns:
         An END_TO_END model instance configured for antibody embedding
         and alignment with 64-dimensional embeddings and 3 MPNN layers.
     """
+    from sabr.nn.end_to_end import END_TO_END
+
     return END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
@@ -158,6 +160,11 @@ class EmbeddingBackend:
             params_path: Package path containing the parameters.
             random_seed: Random seed for JAX PRNG.
         """
+        # Keep JAX/Haiku imports at the backend boundary. Importing package
+        # metadata, CLI help, and pure tests should not require jaxlib support.
+        import haiku as hk
+        import jax
+
         self.params = load_mpnn_params(params_name, params_path)
         self.key = jax.random.PRNGKey(random_seed)
         self._transformed_fn = hk.transform(_compute_embeddings_fn)

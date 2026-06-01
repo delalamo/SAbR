@@ -1,63 +1,54 @@
 #!/usr/bin/env python3
-"""Command-line interface for SAbR antibody renumbering.
+"""Command-line interface for SAbR antibody renumbering."""
 
-This module provides the CLI entry point for the SAbR (Structure-based
-Antibody Renumbering) tool. It orchestrates the full renumbering pipeline:
-
-1. Load structure (PDB or mmCIF format) and extract sequence
-2. Generate MPNN embeddings for the target chain
-3. Align embeddings against unified reference using SoftAlign
-4. Convert alignment to HMM state vector
-5. Apply ANARCI numbering scheme (IMGT, Chothia, Kabat, etc.)
-6. Write renumbered structure to output file
-
-Usage:
-    sabr -i input.pdb -c A -o output.pdb -n imgt
-    sabr -i input.cif -c A -o output.cif -n imgt
-"""
+from __future__ import annotations
 
 import logging
-import random
-from typing import Optional, Tuple
+from pathlib import Path
 
 import click
 
-from sabr.cli.options import normalize_chain_type, validate_inputs
-from sabr.cli.renumber import run_renumbering_pipeline
-from sabr.embeddings.mpnn import from_pdb
-from sabr.structure.threading import thread_alignment
-from sabr.util import configure_logging
+from sabr.errors import SAbRError
+from sabr.options import RenumberOptions
+from sabr.renumber import renumber_file
+from sabr.structure.residues import ResidueRange
 
 LOGGER = logging.getLogger(__name__)
+
+
+def _configure_logging(verbose: bool) -> None:
+    level = logging.INFO if verbose else logging.WARNING
+    logging.basicConfig(level=level, force=True)
+
+
+def _validate_chain_id(ctx, _param, value: str) -> str:
+    if len(value) != 1:
+        ctx.fail("Chain identifier must be exactly one character.")
+    return value
 
 
 @click.command(
     context_settings={"help_option_names": ["-h", "--help"]},
     help=(
         "Structure-based Antibody Renumbering (SAbR) renumbers antibody "
-        "structure files using the 3D coordinates of backbone atoms. "
-        "Supports both PDB and mmCIF input formats."
+        "structure files using the 3D coordinates of backbone atoms."
     ),
 )
 @click.option(
     "-i",
-    "--input-pdb",
-    "input_pdb",
+    "--input",
+    "input_path",
     required=True,
     type=click.Path(exists=True, dir_okay=False, readable=True, path_type=str),
-    help="Input structure file (PDB or mmCIF format).",
+    help="Input structure file (.pdb or .cif).",
 )
 @click.option(
     "-c",
     "--input-chain",
     "input_chain",
     required=True,
-    callback=lambda ctx, _, value: (
-        value
-        if len(value) == 1
-        else ctx.fail("Chain identifier must be exactly one character.")
-    ),
-    help="Chain identifier to renumber (single character).",
+    callback=_validate_chain_id,
+    help="Chain identifier to renumber.",
 )
 @click.option(
     "-o",
@@ -65,11 +56,7 @@ LOGGER = logging.getLogger(__name__)
     "output_file",
     required=True,
     type=click.Path(dir_okay=False, writable=True, path_type=str),
-    help=(
-        "Destination structure file. Use .pdb extension for PDB format "
-        "or .cif extension for mmCIF format. mmCIF is required for "
-        "antibodies with extended insertion codes (e.g., very long CDR loops)."
-    ),
+    help="Destination structure file (.pdb or .cif).",
 )
 @click.option(
     "-n",
@@ -83,50 +70,33 @@ LOGGER = logging.getLogger(__name__)
     ),
     help="Numbering scheme.",
 )
-@click.option(
-    "--overwrite",
-    is_flag=True,
-    help="Overwrite the output PDB if it already exists.",
-)
-@click.option(
-    "-v",
-    "--verbose",
-    is_flag=True,
-    help="Enable verbose logging.",
-)
+@click.option("--overwrite", is_flag=True, help="Overwrite the output file.")
+@click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging.")
 @click.option(
     "--residue-range",
     "residue_range",
     nargs=2,
     type=int,
-    default=(0, 0),
+    default=None,
     help=(
-        "Range of residues to process as START END in PDB numbering "
-        "(inclusive). Use '0 0' (default) to process all residues. "
-        "Example: --residue-range 1 120 processes residues 1-120."
+        "Original residue-number range to renumber as START END "
+        "(inclusive). Omit to process all residues; residues outside the "
+        "range are preserved unchanged."
     ),
 )
 @click.option(
     "--disable-deterministic-renumbering",
     "disable_deterministic_renumbering",
     is_flag=True,
-    help=(
-        "Disable deterministic renumbering corrections for loop regions. "
-        "By default, corrections are applied for: "
-        "light chain FR1 positions 7-10, DE loop positions 80-85 (all chains), "
-        "and CDR loops (CDR1, CDR2, CDR3). "
-        "Use this flag to use raw alignment output without corrections."
-    ),
+    help="Disable deterministic renumbering corrections.",
 )
 @click.option(
     "--random-seed",
     "random_seed",
     type=int,
-    default=None,
-    help=(
-        "Random seed for JAX operations. If not specified, a random seed "
-        "will be generated. Set this for reproducible results."
-    ),
+    default=0,
+    show_default=True,
+    help="Random seed for JAX operations.",
 )
 @click.option(
     "-t",
@@ -135,144 +105,66 @@ LOGGER = logging.getLogger(__name__)
     default="auto",
     show_default=True,
     type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        ["H", "K", "L", "auto"],
         case_sensitive=False,
     ),
-    callback=lambda ctx, param, value: normalize_chain_type(value),
-    help=(
-        "Chain type for ANARCI numbering. H/heavy=heavy chain, K/kappa=kappa "
-        "light, L/lambda=lambda light. Use 'auto' (default) to detect from "
-        "DE loop occupancy."
-    ),
+    help="Chain type embedding label to use: H, K, L, or auto.",
 )
 @click.option(
     "--disable-custom-gap-penalties",
     "disable_custom_gap_penalties",
     is_flag=True,
     help=(
-        "Disable custom gap penalties for alignment. "
-        "By default, custom penalties are applied including: zero gap open "
-        "penalty in CDR regions (IMGT 27-38, 56-65, 105-117), zero gap open "
-        "at position 10, and overhang penalties at sequence termini. "
-        "Use this flag to use uniform gap penalties instead."
+        "Disable custom CDR gap penalties. By default, gap-open penalties "
+        "are zero only in IMGT CDR regions."
     ),
 )
-@click.option(
-    "--reference-chain-type",
-    "reference_chain_type",
-    default="auto",
-    show_default=True,
-    type=click.Choice(["H", "K", "L", "auto"], case_sensitive=False),
-    callback=lambda ctx, param, value: (
-        value.upper() if value != "auto" else value
-    ),
-    help=(
-        "Reference embeddings to use for alignment. "
-        "H=heavy chain, K=kappa light, L=lambda light. "
-        "Use 'auto' (default) to try all and select best by score."
-    ),
-)
-@click.option(
-    "--noise-level",
-    "noise_level",
-    default=None,
-    show_default="default embeddings",
-    type=click.Choice(["0.0", "0.2", "0.5", "1.0", "2.0"]),
-    help=(
-        "Noise level for OAS MPNN reference embeddings. "
-        "Selects embeddings_noise_{level}.npz as the reference. "
-        "If not specified, the default embeddings.npz is used."
-    ),
-)
+@click.version_option(package_name="sabr-kit", prog_name="sabr")
 def main(
-    input_pdb: str,
+    input_path: str,
     input_chain: str,
     output_file: str,
     numbering_scheme: str,
     overwrite: bool,
     verbose: bool,
-    residue_range: Tuple[int, int],
+    residue_range: tuple[int, int] | None,
     disable_deterministic_renumbering: bool,
-    random_seed: Optional[int],
+    random_seed: int,
     chain_type: str,
     disable_custom_gap_penalties: bool,
-    reference_chain_type: str,
-    noise_level: Optional[str],
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
-    configure_logging(verbose)
-    validate_inputs(
-        input_pdb,
-        input_chain,
-        output_file,
-        residue_range,
-        overwrite,
-    )
+    _configure_logging(verbose)
 
-    # Generate random seed if not specified
-    if random_seed is None:
-        random_seed = random.randint(0, 2**31 - 1)
-        LOGGER.info(f"Generated random seed: {random_seed}")
-    else:
-        LOGGER.info(f"Using specified random seed: {random_seed}")
+    LOGGER.info("Using random seed: %s", random_seed)
 
-    LOGGER.info(
-        f"Starting SAbR CLI with input={input_pdb} "
-        f"chain={input_chain} output={output_file} "
-        f"scheme={numbering_scheme}"
-    )
-
-    input_data = from_pdb(
-        input_pdb,
-        input_chain,
-        residue_range=residue_range,
-        random_seed=random_seed,
-    )
-    sequence = input_data.sequence
-
-    LOGGER.info(f">input_seq (len {len(sequence)})\n{sequence}")
-    if residue_range != (0, 0):
-        LOGGER.info(
-            f"Processing residues {residue_range[0]}-{residue_range[1]} "
-            f"(residue_range flag)"
-        )
-    LOGGER.info(
-        f"Fetched sequence of length {len(sequence)} from "
-        f"{input_pdb} chain {input_chain}"
-    )
-
-    # Use shared renumbering pipeline
-    use_deterministic = not disable_deterministic_renumbering
-    use_custom_gap_penalties = not disable_custom_gap_penalties
-    embeddings_name = (
-        f"embeddings_noise_{noise_level}.npz"
-        if noise_level is not None
-        else "embeddings.npz"
-    )
-    LOGGER.info(f"Using reference embeddings: {embeddings_name}")
-    anarci_out, detected_chain_type, first_aligned_row = (
-        run_renumbering_pipeline(
-            input_data,
+    try:
+        options = RenumberOptions.from_values(
             numbering_scheme=numbering_scheme,
             chain_type=chain_type,
-            deterministic_loop_renumbering=use_deterministic,
-            use_custom_gap_penalties=use_custom_gap_penalties,
-            reference_chain_type=reference_chain_type,
-            embeddings_name=embeddings_name,
+            deterministic_corrections=not disable_deterministic_renumbering,
+            custom_gap_penalties=not disable_custom_gap_penalties,
+            residue_range=(
+                ResidueRange(*residue_range) if residue_range is not None else None
+            ),
+            random_seed=random_seed,
+            overwrite=overwrite,
         )
-    )
+        result = renumber_file(
+            input_path=Path(input_path),
+            chain_id=input_chain,
+            output_path=Path(output_file),
+            options=options,
+        )
+    except (SAbRError, ValueError) as exc:
+        raise click.ClickException(str(exc)) from exc
 
-    thread_alignment(
-        input_pdb,
-        input_chain,
-        anarci_out,
-        output_file,
-        0,
-        len(anarci_out),
-        alignment_start=first_aligned_row,
-        residue_range=residue_range,
+    LOGGER.info(
+        "Finished renumbering; output=%s chain_type=%s changed_residues=%s",
+        result.output_path,
+        result.chain_type.value,
+        result.changed_residue_count,
     )
-    LOGGER.info(f"Finished renumbering; output written to {output_file}")
 
 
 if __name__ == "__main__":

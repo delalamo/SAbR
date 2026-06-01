@@ -1,13 +1,15 @@
 name: Tests
 permissions:
   contents: read
+
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  test:
+  unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,5 +17,38 @@ jobs:
           submodules: true
       - uses: ./.github/actions/setup-python
       - run: pip install -e .[test]
-      - name: Run all tests (including slow tests)
-        run: pytest -m "" --cov=sabr --cov-report=term-missing
+      - name: Check CLI entry points
+        run: |
+          sabr --help
+          sabr --version
+      - name: Run fast tests
+        run: pytest --cov=sabr --cov-report=term-missing
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: ./.github/actions/setup-python
+      - run: pip install -e .[docs]
+      - name: Build docs
+        run: sphinx-build -W -E -b html docs docs/_build/html
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [unit, docs]
+    steps:
+      - run: echo "Required fast tests and docs completed successfully."
+
+  slow:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: ./.github/actions/setup-python
+      - run: pip install -e .[test]
+      - name: Run slow tests
+        run: JAX_PLATFORMS=cpu pytest -m slow
