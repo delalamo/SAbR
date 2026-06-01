@@ -3,7 +3,7 @@
 
 This package provides the alignment functionality for SAbR including:
 - SoftAligner: Main alignment class
-- SoftAlignOutput: Output dataclass
+- AlignmentResult: Output dataclass
 - AlignmentBackend: JAX/Haiku backend for alignment
 - HMM conversion utilities
 - Deterministic correction functions

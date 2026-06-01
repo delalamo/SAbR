@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from sabr.alignment.soft_aligner import SoftAlignOutput
+from sabr.alignment.soft_aligner import AlignmentResult
 from sabr.embeddings.mpnn import MPNNEmbeddings
 from sabr.options import RenumberOptions
 from sabr.structure.residues import ResidueId, ResidueRange
@@ -22,9 +22,9 @@ def test_mpnnembeddings_shape_mismatch_raises():
     assert "Error raised for test_case" in msg
 
 
-def test_softalignoutput_holds_passed_values():
+def test_alignment_result_holds_passed_values():
     alignment = np.ones((2, 2), dtype=int)
-    output = SoftAlignOutput(
+    output = AlignmentResult(
         alignment=alignment,
         score=1.5,
         sim_matrix=None,

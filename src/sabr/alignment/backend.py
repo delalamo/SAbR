@@ -12,7 +12,9 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-from sabr import constants
+from sabr.alignment.config import DEFAULT_TEMPERATURE, SW_GAP_EXTEND, SW_GAP_OPEN
+from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS
+from sabr.numbering.imgt import IMGT_REGIONS
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,15 +40,13 @@ def create_gap_penalty_for_reduced_reference(
     target_len = len(idxs)
 
     # Start with normal penalties (as numpy arrays)
-    gap_extend = np.full(
-        (query_len, target_len), constants.SW_GAP_EXTEND, dtype=np.float32
-    )
-    gap_open = np.full((query_len, target_len), constants.SW_GAP_OPEN, dtype=np.float32)
+    gap_extend = np.full((query_len, target_len), SW_GAP_EXTEND, dtype=np.float32)
+    gap_open = np.full((query_len, target_len), SW_GAP_OPEN, dtype=np.float32)
 
     # Build set of CDR positions for fast lookup
     cdr_positions = set()
     for cdr_name in ["CDR1", "CDR2", "CDR3"]:
-        cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
+        cdr_positions.update(IMGT_REGIONS[cdr_name])
 
     # Zero gap_open for CDR positions only
     # Keep gap_extend penalized to limit insertions
@@ -84,11 +84,11 @@ def _run_alignment_fn(
     from sabr.nn.end_to_end import END_TO_END
 
     model = END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
@@ -132,8 +132,8 @@ class AlignmentBackend:
 
     def __init__(
         self,
-        gap_extend: float = constants.SW_GAP_EXTEND,
-        gap_open: float = constants.SW_GAP_OPEN,
+        gap_extend: float = SW_GAP_EXTEND,
+        gap_open: float = SW_GAP_OPEN,
         random_seed: int = 0,
     ) -> None:
         """Initialize the alignment backend.
@@ -166,7 +166,7 @@ class AlignmentBackend:
         self,
         input_embeddings: np.ndarray,
         target_embeddings: np.ndarray,
-        temperature: float = constants.DEFAULT_TEMPERATURE,
+        temperature: float = DEFAULT_TEMPERATURE,
         gap_matrix: Optional[np.ndarray] = None,
         open_matrix: Optional[np.ndarray] = None,
     ) -> Tuple[np.ndarray, np.ndarray, float]:

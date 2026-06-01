@@ -5,7 +5,9 @@ import pytest
 from Bio import PDB
 
 import sabr.renumber as renumber
+from sabr.numbering.anarci import NumberedResidue
 from sabr.options import RenumberOptions
+from sabr.structure.residues import AA_3TO1
 from sabr.types import ChainType
 from tests.conftest import (
     FIXTURES,
@@ -18,12 +20,13 @@ from tests.conftest import (
 
 def _fake_numbering_backend(_states, subsequence, _scheme, _chain_type):
     sequence = subsequence.replace("-", "")
-    return [((idx + 1, " "), aa) for idx, aa in enumerate(sequence)]
+    return [
+        NumberedResidue(position=idx + 1, insertion_code=" ", amino_acid=aa)
+        for idx, aa in enumerate(sequence)
+    ]
 
 
 def _dummy_from_chain(chain, **_kwargs):
-    from sabr.constants import AA_3TO1
-
     sequence = ""
     for residue in chain.get_residues():
         if residue.get_id()[0].strip():

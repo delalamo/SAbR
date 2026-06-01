@@ -8,8 +8,9 @@ Gap extend penalties remain at normal values everywhere to limit insertions.
 
 import numpy as np
 
-from sabr import constants
 from sabr.alignment.backend import create_gap_penalty_for_reduced_reference
+from sabr.alignment.config import SW_GAP_EXTEND, SW_GAP_OPEN
+from sabr.numbering.imgt import IMGT_REGIONS
 
 
 class TestCreateGapPenaltyForReducedReference:
@@ -33,27 +34,7 @@ class TestCreateGapPenaltyForReducedReference:
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(query_len, idxs)
 
         # gap_extend should be SW_GAP_EXTEND everywhere
-        assert np.allclose(gap_extend, constants.SW_GAP_EXTEND)
-
-    def test_normal_gap_open_for_position_10(self):
-        """Test that position 10 has normal gap_open penalty (not special)."""
-        query_len = 50
-        idxs = list(range(1, 20))
-
-        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(query_len, idxs)
-
-        # Position 10 should have normal gap_open (no special treatment)
-        col_10 = idxs.index(10)
-        assert np.allclose(gap_open[:, col_10], constants.SW_GAP_OPEN)
-
-        # gap_extend should be normal at position 10
-        assert np.allclose(gap_extend[:, col_10], constants.SW_GAP_EXTEND)
-
-        # Adjacent non-CDR positions should also have normal gap_open
-        col_9 = idxs.index(9)
-        col_11 = idxs.index(11)
-        assert np.allclose(gap_open[:, col_9], constants.SW_GAP_OPEN)
-        assert np.allclose(gap_open[:, col_11], constants.SW_GAP_OPEN)
+        assert np.allclose(gap_extend, SW_GAP_EXTEND)
 
     def test_zero_gap_open_for_cdr_positions(self):
         """Test that CDR positions have zero gap_open penalties."""
@@ -65,7 +46,7 @@ class TestCreateGapPenaltyForReducedReference:
         # CDR positions should have zero gap_open
         cdr_positions = set()
         for cdr_name in ["CDR1", "CDR2", "CDR3"]:
-            cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
+            cdr_positions.update(IMGT_REGIONS[cdr_name])
 
         for col, pos in enumerate(idxs):
             if pos in cdr_positions:
@@ -73,7 +54,7 @@ class TestCreateGapPenaltyForReducedReference:
                     f"CDR pos {pos} should have zero gap_open"
                 )
             else:
-                assert np.allclose(gap_open[:, col], constants.SW_GAP_OPEN), (
+                assert np.allclose(gap_open[:, col], SW_GAP_OPEN), (
                     f"FR pos {pos} should have normal gap_open"
                 )
 
@@ -85,8 +66,8 @@ class TestCreateGapPenaltyForReducedReference:
 
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(query_len, idxs)
 
-        # All positions should have normal gap_open (no CDRs, no pos 10)
-        assert np.allclose(gap_open, constants.SW_GAP_OPEN)
+        # All positions should have normal gap_open because no CDR columns are present.
+        assert np.allclose(gap_open, SW_GAP_OPEN)
 
     def test_real_reference_embeddings(self):
         """Test with actual reference embedding indices."""
@@ -103,12 +84,12 @@ class TestCreateGapPenaltyForReducedReference:
         gap_extend, gap_open = create_gap_penalty_for_reduced_reference(query_len, idxs)
 
         # gap_extend should be normal everywhere
-        assert np.allclose(gap_extend, constants.SW_GAP_EXTEND)
+        assert np.allclose(gap_extend, SW_GAP_EXTEND)
 
         # Build CDR position set
         cdr_positions = set()
         for cdr_name in ["CDR1", "CDR2", "CDR3"]:
-            cdr_positions.update(constants.IMGT_REGIONS[cdr_name])
+            cdr_positions.update(IMGT_REGIONS[cdr_name])
 
         # Check gap_open values
         for col, pos in enumerate(idxs):
@@ -117,7 +98,7 @@ class TestCreateGapPenaltyForReducedReference:
                     f"Position {pos} should have zero gap_open"
                 )
             else:
-                assert np.allclose(gap_open[:, col], constants.SW_GAP_OPEN), (
+                assert np.allclose(gap_open[:, col], SW_GAP_OPEN), (
                     f"Position {pos} should have normal gap_open"
                 )
 
@@ -132,21 +113,7 @@ class TestCreateGapPenaltyForReducedReference:
         assert gap_open.dtype == np.float32
 
     def test_cdr_regions_match_constants(self):
-        """Verify CDR regions used match constants.IMGT_REGIONS."""
-        assert constants.IMGT_REGIONS["CDR1"] == list(range(27, 39))
-        assert constants.IMGT_REGIONS["CDR2"] == list(range(56, 66))
-        assert constants.IMGT_REGIONS["CDR3"] == list(range(105, 118))
-
-    def test_anchor_like_positions_are_not_special(self):
-        """Test that non-CDR positions remain normal, including sentinels."""
-        query_len = 100
-        idxs = [0, *list(range(1, 50)), 129]
-
-        gap_extend, gap_open = create_gap_penalty_for_reduced_reference(query_len, idxs)
-
-        assert np.allclose(gap_open[:, 0], constants.SW_GAP_OPEN)
-        assert np.allclose(gap_open[:, -1], constants.SW_GAP_OPEN)
-
-        # Position 10 should have normal gap_open (not special)
-        col_10 = idxs.index(10)
-        assert np.allclose(gap_open[:, col_10], constants.SW_GAP_OPEN)
+        """Verify CDR regions used match IMGT region constants."""
+        assert IMGT_REGIONS["CDR1"] == list(range(27, 39))
+        assert IMGT_REGIONS["CDR2"] == list(range(56, 66))
+        assert IMGT_REGIONS["CDR3"] == list(range(105, 118))

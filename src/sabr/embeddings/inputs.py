@@ -17,9 +17,10 @@ from typing import Iterator, List, Optional, Tuple, Union
 import numpy as np
 from Bio.PDB import Chain
 
-from sabr import constants
 from sabr.errors import ChainNotFoundError
+from sabr.structure import geometry
 from sabr.structure.io import read_structure
+from sabr.structure.residues import AA_3TO1
 
 LOGGER = logging.getLogger(__name__)
 
@@ -75,9 +76,9 @@ def compute_cb(
     bc = normalize(n_coords - ca_coords)
     n = normalize(np.cross(n_coords - c_coords, bc))
 
-    length = constants.CB_BOND_LENGTH
-    angle = constants.CB_BOND_ANGLE
-    dihedral = constants.CB_DIHEDRAL
+    length = geometry.CB_BOND_LENGTH
+    angle = geometry.CB_BOND_ANGLE
+    dihedral = geometry.CB_DIHEDRAL
 
     cb = ca_coords + (
         length * np.cos(angle) * bc
@@ -194,7 +195,7 @@ def _extract_from_chain(adapter: ResidueAdapter, source_name: str = "") -> MPNNI
         n_coord, ca_coord, c_coord = backbone
 
         resname = adapter.get_residue_name(residue)
-        one_letter = constants.AA_3TO1.get(resname, "X")
+        one_letter = AA_3TO1.get(resname, "X")
         seq_list.append(one_letter)
 
         cb_coord = compute_cb(

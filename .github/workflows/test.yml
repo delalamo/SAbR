@@ -17,6 +17,10 @@ jobs:
           submodules: true
       - uses: ./.github/actions/setup-python
       - run: pip install -e .[test]
+      - name: Check CLI entry points
+        run: |
+          sabr --help
+          sabr --version
       - name: Run fast tests
         run: pytest --cov=sabr --cov-report=term-missing
 
@@ -29,7 +33,7 @@ jobs:
       - uses: ./.github/actions/setup-python
       - run: pip install -e .[docs]
       - name: Build docs
-        run: sphinx-build -W -b html docs docs/_build/html
+        run: sphinx-build -W -E -b html docs docs/_build/html
 
   slow:
     runs-on: ubuntu-latest

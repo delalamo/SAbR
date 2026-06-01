@@ -7,7 +7,7 @@ alignments.
 
 Key components:
 - SoftAligner: Main class for running alignments
-- SoftAlignOutput: Dataclass for alignment results
+- AlignmentResult: Dataclass for alignment results
 
 The alignment process includes:
 1. Embedding comparison against labelled H/K/L references
@@ -22,24 +22,25 @@ from typing import Dict, List, Optional
 
 import numpy as np
 
-from sabr import constants
 from sabr.alignment import corrections
 from sabr.alignment.backend import (
     AlignmentBackend,
     create_gap_penalty_for_reduced_reference,
 )
+from sabr.alignment.config import DEFAULT_TEMPERATURE
 from sabr.alignment.validation import validate_alignment_matrix
-from sabr.embeddings.mpnn import MPNNEmbeddings
-from sabr.embeddings.schema import load_reference_embeddings
+from sabr.embeddings.mpnn import QueryEmbeddings
+from sabr.embeddings.references import ReferenceEmbeddings, load_reference_embeddings
+from sabr.numbering.imgt import IMGT_MAX_POSITION
 from sabr.types import ChainType, chain_type_value, parse_chain_type
-from sabr.util import validate_array_shape
+from sabr.validation import validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
 VALID_REFERENCE_LABELS = {"H", "K", "L"}
 
 
 @dataclass(frozen=True)
-class SoftAlignOutput:
+class AlignmentResult:
     """Alignment matrix and metadata returned by SoftAlign.
 
     This dataclass stores the results of aligning a query antibody sequence
@@ -80,7 +81,7 @@ class SoftAlignOutput:
             self.alignment, 1, len(self.idxs2), "alignment", "len(idxs2)"
         )
         LOGGER.debug(
-            "Created SoftAlignOutput for "
+            "Created AlignmentResult for "
             f"chain_type={self.chain_type}, alignment_shape="
             f"{getattr(self.alignment, 'shape', None)}, score={self.score}"
         )
@@ -97,10 +98,10 @@ class SoftAligner:
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-        temperature: float = constants.DEFAULT_TEMPERATURE,
+        temperature: float = DEFAULT_TEMPERATURE,
         random_seed: int = 0,
         backend: AlignmentBackend | None = None,
-        reference_embeddings: Dict[str, MPNNEmbeddings] | None = None,
+        reference_embeddings: Dict[str, ReferenceEmbeddings] | None = None,
     ) -> None:
         """
         Initialize the SoftAligner by loading reference embeddings and backend.
@@ -125,7 +126,7 @@ class SoftAligner:
 
     @staticmethod
     def _validate_reference_labels(
-        embeddings: Dict[str, MPNNEmbeddings],
+        embeddings: Dict[str, ReferenceEmbeddings],
     ) -> None:
         labels = set(embeddings)
         if labels != VALID_REFERENCE_LABELS:
@@ -143,11 +144,11 @@ class SoftAligner:
         self,
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
-    ) -> Dict[str, MPNNEmbeddings]:
+    ) -> Dict[str, ReferenceEmbeddings]:
         """Load packaged H/K/L reference embeddings.
 
         Returns:
-            Dictionary mapping chain type keys to MPNNEmbeddings objects.
+            Dictionary mapping chain type keys to reference embeddings.
         """
         embeddings = load_reference_embeddings(embeddings_name, embeddings_path)
         LOGGER.info(f"Loaded reference embeddings: {list(embeddings)}")
@@ -155,17 +156,15 @@ class SoftAligner:
 
     def fix_aln(self, old_aln: np.ndarray, idxs: List[int]) -> np.ndarray:
         """Expand an alignment onto IMGT positions using saved indices."""
-        aln = np.zeros(
-            (old_aln.shape[0], constants.IMGT_MAX_POSITION), dtype=old_aln.dtype
-        )
+        aln = np.zeros((old_aln.shape[0], IMGT_MAX_POSITION), dtype=old_aln.dtype)
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
 
         return aln
 
     def _align_single(
         self,
-        input_data,
-        reference_embedding: MPNNEmbeddings,
+        input_data: QueryEmbeddings,
+        reference_embedding: ReferenceEmbeddings,
         use_custom_gap_penalties: bool,
     ):
         """Align input embeddings against a single reference embedding.
@@ -179,11 +178,8 @@ class SoftAligner:
             Tuple of (alignment, sim_matrix, score, reference_idxs).
         """
         if use_custom_gap_penalties:
-            query_len = input_data.embeddings.shape[0]
-            idxs_int = [int(x) for x in reference_embedding.idxs]
-
             gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
-                query_len, idxs_int
+                input_data.embeddings.shape[0], reference_embedding.positions
             )
 
             alignment, sim_matrix, score = self._get_backend().align(
@@ -200,15 +196,15 @@ class SoftAligner:
                 temperature=self.temperature,
             )
 
-        return alignment, sim_matrix, score, reference_embedding.idxs
+        return alignment, sim_matrix, score, reference_embedding.positions
 
     def __call__(
         self,
-        input_data,
+        input_data: QueryEmbeddings,
         deterministic_loop_renumbering: bool = True,
         use_custom_gap_penalties: bool = True,
         chain_type: str | ChainType = "auto",
-    ) -> SoftAlignOutput:
+    ) -> AlignmentResult:
         """Align input embeddings against reference embeddings.
 
         Args:
@@ -224,7 +220,7 @@ class SoftAligner:
                 "H", "K", "L": Use the specified chain type's embeddings.
 
         Returns:
-            SoftAlignOutput with the best alignment.
+            AlignmentResult with the best alignment.
         """
         LOGGER.info(f"Aligning embeddings with length={input_data.embeddings.shape[0]}")
 
@@ -291,12 +287,12 @@ class SoftAligner:
                 aln, selected_reference, gap_indices=gap_indices
             )
 
-        return SoftAlignOutput(
+        return AlignmentResult(
             chain_type=selected_reference,
             selected_reference=selected_reference,
             alignment=aln,
             score=score,
             sim_matrix=sim_matrix,
             idxs1=input_data.idxs,
-            idxs2=[str(x) for x in range(1, constants.IMGT_MAX_POSITION + 1)],
+            idxs2=[str(x) for x in range(1, IMGT_MAX_POSITION + 1)],
         )

@@ -2,7 +2,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from ANARCI import anarci
 from Bio import PDB, SeqIO
 from click.testing import CliRunner
 
@@ -11,9 +10,11 @@ from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
 from sabr.alignment.soft_aligner import SoftAligner
 from sabr.cli.main import main as cli_main
 from sabr.embeddings.mpnn import from_pdb as mpnn_from_pdb
+from sabr.numbering.anarci import build_anarci_subsequence, number_from_alignment
 from sabr.options import RenumberOptions
 from sabr.renumber import renumber_structure
 from sabr.structure.threading import thread_alignment
+from sabr.types import NumberingScheme, parse_chain_type
 from tests.conftest import (
     FIXTURES,
     create_dummy_aligner,
@@ -40,11 +41,15 @@ def run_threading_pipeline(
         raise ValueError(f"Chain {chain} not found in {pdb_path}")
 
     hmm_output = alignment_matrix_to_state_vector(alignment)
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-
-    anarci_alignment, anarci_start, anarci_end = anarci.number_sequence_from_alignment(
-        hmm_output.states, subsequence, scheme="imgt", chain_type=chain_type
+    subsequence = build_anarci_subsequence(sequence, hmm_output)
+    parsed_chain_type = parse_chain_type(chain_type)
+    if parsed_chain_type == "auto":
+        raise AssertionError("Fixture chain type must be concrete")
+    anarci_alignment = number_from_alignment(
+        hmm_output.states,
+        subsequence,
+        NumberingScheme.IMGT,
+        parsed_chain_type,
     )
 
     output_pdb = tmp_path / f"{pdb_path.stem}_{chain}_threaded.pdb"
@@ -53,8 +58,8 @@ def run_threading_pipeline(
         chain,
         anarci_alignment,
         str(output_pdb),
-        anarci_start,
-        anarci_end,
+        0,
+        len(anarci_alignment),
         alignment_start=0,
     )
 
@@ -167,14 +172,15 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     hmm_output = alignment_matrix_to_state_vector(output.alignment)
     assert hmm_output.imgt_start == 2  # Structure starts at IMGT position 3
 
-    n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-    subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-
-    anarci_out, anarci_start, anarci_end = anarci.number_sequence_from_alignment(
+    subsequence = build_anarci_subsequence(sequence, hmm_output)
+    parsed_chain_type = parse_chain_type(output.chain_type)
+    if parsed_chain_type == "auto":
+        raise AssertionError("SoftAligner returned auto chain type")
+    anarci_out = number_from_alignment(
         hmm_output.states,
         subsequence,
-        scheme="imgt",
-        chain_type=output.chain_type,
+        NumberingScheme.IMGT,
+        parsed_chain_type,
     )
 
     output_pdb = tmp_path / "8_21_ntrunc_threaded.pdb"
@@ -183,8 +189,8 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
         chain,
         anarci_out,
         str(output_pdb),
-        anarci_start,
-        anarci_end,
+        0,
+        len(anarci_out),
         alignment_start=0,
     )
 

@@ -15,6 +15,9 @@ from sabr.alignment.corrections import (
     correct_gap_numbering,
 )
 from sabr.alignment.soft_aligner import SoftAligner
+from sabr.embeddings.references import ReferenceEmbeddings
+from sabr.numbering.anarci import NumberedResidue
+from sabr.options import RenumberOptions
 from sabr.types import ChainType
 from tests.conftest import (
     FIXTURES,
@@ -56,10 +59,10 @@ class ScoredBackend:
 def make_reference_embeddings(scores=None):
     scores = scores or {"H": 1.0, "K": 2.0, "L": 3.0}
     return {
-        label: DummyEmbeddings(
+        label: ReferenceEmbeddings(
             name=label,
             embeddings=np.full((2, 64), score),
-            idxs=["1", "2"],
+            positions=[1, 2],
         )
         for label, score in scores.items()
     }
@@ -108,21 +111,34 @@ class TestUseCustomGapPenalties:
             sequence=dummy_seq,
         )
 
+        def fake_numbering_backend(_states, subsequence, _scheme, _chain_type):
+            sequence = subsequence.replace("-", "")
+            return [
+                NumberedResidue(position=idx + 1, insertion_code=" ", amino_acid=aa)
+                for idx, aa in enumerate(sequence)
+            ]
+
+        renumberer = renumber.Renumberer(numbering_backend=fake_numbering_backend)
+
         # Test with use_custom_gap_penalties=True (default)
         captured_kwargs.clear()
-        renumber.run_renumbering_pipeline(
+        renumberer.create_numbering_plan(
             dummy_embeddings,
-            numbering_scheme="imgt",
-            use_custom_gap_penalties=True,
+            RenumberOptions.from_values(
+                numbering_scheme="imgt",
+                custom_gap_penalties=True,
+            ),
         )
         assert captured_kwargs.get("use_custom_gap_penalties") is True
 
         # Test with use_custom_gap_penalties=False
         captured_kwargs.clear()
-        renumber.run_renumbering_pipeline(
+        renumberer.create_numbering_plan(
             dummy_embeddings,
-            numbering_scheme="imgt",
-            use_custom_gap_penalties=False,
+            RenumberOptions.from_values(
+                numbering_scheme="imgt",
+                custom_gap_penalties=False,
+            ),
         )
         assert captured_kwargs.get("use_custom_gap_penalties") is False
 
@@ -462,6 +478,18 @@ def test_apply_deterministic_corrections_rejects_auto_chain_type():
 
     with pytest.raises(ValueError, match="require chain type H, K, or L"):
         apply_deterministic_corrections(aln, "auto")
+
+
+def test_apply_deterministic_corrections_does_not_mutate_input():
+    aln = np.zeros((4, 128), dtype=int)
+    aln[0, 80] = 1
+    aln[1, 81] = 1
+    original = aln.copy()
+
+    corrected = apply_deterministic_corrections(aln, "K")
+
+    assert np.array_equal(aln, original)
+    assert corrected is not aln
 
 
 def test_correct_gap_numbering_5_residue_cdr():

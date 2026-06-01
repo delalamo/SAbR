@@ -9,13 +9,18 @@ from pathlib import Path
 
 import click
 
+from sabr.embeddings.references import resolve_reference_embeddings_name
 from sabr.errors import SAbRError
 from sabr.options import RenumberOptions
 from sabr.renumber import renumber_file
 from sabr.structure.residues import ResidueRange
-from sabr.util import configure_logging
 
 LOGGER = logging.getLogger(__name__)
+
+
+def _configure_logging(verbose: bool) -> None:
+    level = logging.INFO if verbose else logging.WARNING
+    logging.basicConfig(level=level, force=True)
 
 
 def _validate_chain_id(ctx, _param, value: str) -> str:
@@ -139,7 +144,7 @@ def main(
     noise_level: str | None,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
-    configure_logging(verbose)
+    _configure_logging(verbose)
 
     if random_seed is None:
         random_seed = random.randint(0, 2**31 - 1)
@@ -147,11 +152,7 @@ def main(
     else:
         LOGGER.info("Using specified random seed: %s", random_seed)
 
-    reference_embeddings = (
-        f"embeddings_noise_{noise_level}.npz"
-        if noise_level is not None
-        else "embeddings.npz"
-    )
+    reference_embeddings = resolve_reference_embeddings_name(noise_level)
 
     try:
         options = RenumberOptions.from_values(

@@ -7,6 +7,29 @@ from dataclasses import dataclass
 
 _RESIDUE_ID_RE = re.compile(r"^\s*(-?\d+)([A-Za-z]*)\s*$")
 
+AA_3TO1 = {
+    "ALA": "A",
+    "ARG": "R",
+    "ASN": "N",
+    "ASP": "D",
+    "CYS": "C",
+    "GLN": "Q",
+    "GLU": "E",
+    "GLY": "G",
+    "HIS": "H",
+    "ILE": "I",
+    "LEU": "L",
+    "LYS": "K",
+    "MET": "M",
+    "PHE": "F",
+    "PRO": "P",
+    "SER": "S",
+    "THR": "T",
+    "TRP": "W",
+    "TYR": "Y",
+    "VAL": "V",
+}
+
 
 @dataclass(frozen=True, order=True)
 class ResidueId:
@@ -69,7 +92,5 @@ def normalize_residue_range(
         return None
     if isinstance(residue_range, ResidueRange):
         return residue_range
-    if residue_range == (0, 0):
-        return None
     start, end = residue_range
     return ResidueRange(start, end)

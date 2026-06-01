@@ -11,11 +11,10 @@ from typing import Optional
 
 from Bio.PDB import Chain, Model, Structure
 
-from sabr.constants import AA_3TO1
 from sabr.errors import ChainNotFoundError, InputStructureError, OutputFormatError
 from sabr.numbering.anarci import AnarciAlignment
 from sabr.structure.io import read_structure, write_structure
-from sabr.structure.residues import ResidueRange, normalize_residue_range
+from sabr.structure.residues import AA_3TO1, ResidueRange, normalize_residue_range
 
 LOGGER = logging.getLogger(__name__)
 
@@ -59,11 +58,8 @@ def _skip_deletions(
     anarci_start: int,
     anarci_out: AnarciAlignment,
 ) -> int:
-    """Advance past ANARCI deletion rows."""
-    anarci_array_idx = anarci_idx + anarci_start
-    while anarci_array_idx < len(anarci_out) and anarci_out[anarci_array_idx][1] == "-":
-        anarci_idx += 1
-        anarci_array_idx = anarci_idx + anarci_start
+    """Compatibility no-op; numbered alignments do not include deletion rows."""
+    del anarci_start, anarci_out
     return anarci_idx
 
 
@@ -82,12 +78,15 @@ def _compute_new_residue_id(
         return None
 
     if region == ResidueRegion.PRE_FV:
-        first_anarci_pos = anarci_out[anarci_start][0][0]
+        first_anarci_pos = anarci_out[anarci_start].position
         new_imgt_pos = first_anarci_pos - (alignment_start - selected_idx)
         return (original_het_flag, new_imgt_pos, " ")
 
     if region == ResidueRegion.IN_FV:
-        (new_imgt_pos, icode), expected_aa = anarci_out[anarci_array_idx]
+        numbered_residue = anarci_out[anarci_array_idx]
+        new_imgt_pos = numbered_residue.position
+        icode = numbered_residue.insertion_code
+        expected_aa = numbered_residue.amino_acid
         state.last_imgt_pos = new_imgt_pos
 
         one_letter = AA_3TO1.get(resname, "X")
@@ -109,7 +108,7 @@ def _compute_new_residue_id(
 
 def has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
     """Return whether ANARCI output includes multi-character insertion codes."""
-    return any(len(icode.strip()) > 1 for (_, icode), _ in alignment)
+    return any(len(residue.insertion_code.strip()) > 1 for residue in alignment)
 
 
 def validate_output_format(output_path: str, alignment: AnarciAlignment) -> None:

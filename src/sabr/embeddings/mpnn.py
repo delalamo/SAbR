@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """MPNN embedding generation and management module.
 
-This module provides the MPNNEmbeddings dataclass and functions for
+This module provides the QueryEmbeddings dataclass and functions for
 generating, saving, and loading neural network embeddings from protein
 structures using the MPNN (Message Passing Neural Network) architecture.
 
 Key components:
-- MPNNEmbeddings: Dataclass for storing per-residue embeddings
+- QueryEmbeddings: Dataclass for storing per-residue query embeddings
 - from_pdb: Generate embeddings from a PDB or CIF file
 - from_chain: Generate embeddings from a BioPython Chain object
 - from_npz: Load pre-computed embeddings from NumPy archive
@@ -26,19 +26,20 @@ from typing import FrozenSet, List, Optional, Tuple
 import numpy as np
 from Bio.PDB import Chain
 
-from sabr import constants
+from sabr.alignment.gaps import detect_backbone_gaps
 from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.inputs import get_inputs
 from sabr.embeddings.schema import load_query_embeddings, save_query_embeddings
+from sabr.nn.config import EMBED_DIM
 from sabr.structure.residues import ResidueRange, normalize_residue_range
-from sabr.util import detect_backbone_gaps, validate_array_shape
+from sabr.validation import validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class MPNNEmbeddings:
-    """Per-residue embedding tensor and matching residue identifiers.
+class QueryEmbeddings:
+    """Per-residue query embedding tensor and matching residue identifiers.
 
     Can be instantiated from either:
     1. A PDB file (via from_pdb function)
@@ -74,20 +75,20 @@ class MPNNEmbeddings:
         validate_array_shape(
             self.embeddings,
             1,
-            constants.EMBED_DIM,
+            EMBED_DIM,
             "embeddings",
-            "constants.EMBED_DIM",
+            "EMBED_DIM",
             f"Error raised for {self.name}",
         )
 
         LOGGER.debug(
-            f"Initialized MPNNEmbeddings for {self.name} "
+            f"Initialized QueryEmbeddings for {self.name} "
             f"(shape={self.embeddings.shape})"
         )
 
     def save(self, output_path: str) -> None:
         """
-        Save MPNNEmbeddings to an NPZ file.
+        Save query embeddings to an NPZ file.
 
         Args:
             output_path: Path where the NPZ file will be saved.
@@ -126,6 +127,9 @@ def _compute_gap_indices(
     return detect_backbone_gaps(coords)
 
 
+MPNNEmbeddings = QueryEmbeddings
+
+
 def _create_embeddings(
     inputs,
     name: str,
@@ -134,8 +138,8 @@ def _create_embeddings(
     params_path: str,
     random_seed: int,
     backend: EmbeddingBackend | None = None,
-) -> MPNNEmbeddings:
-    """Create MPNNEmbeddings from extracted inputs.
+) -> QueryEmbeddings:
+    """Create query embeddings from extracted inputs.
 
     This is a shared helper for from_pdb and from_chain.
 
@@ -143,13 +147,13 @@ def _create_embeddings(
         inputs: MPNNInputs with coordinates and residue info.
         name: Identifier for the embedding source.
         residue_range: Tuple of (start, end) residue numbers (inclusive).
-            Use (0, 0) to embed all residues.
+            Pass None to embed all residues.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
         random_seed: Random seed for reproducibility.
 
     Returns:
-        MPNNEmbeddings for the structure.
+        QueryEmbeddings for the structure.
     """
     if backend is None:
         backend = EmbeddingBackend(
@@ -196,7 +200,7 @@ def _create_embeddings(
     # Compute gap indices from backbone coordinates
     gap_indices = _compute_gap_indices(inputs.coords, keep_indices)
 
-    return MPNNEmbeddings(
+    return QueryEmbeddings(
         name=name,
         embeddings=embeddings,
         idxs=ids,
@@ -213,21 +217,21 @@ def from_pdb(
     params_path: str = "sabr.assets",
     random_seed: int = 0,
     backend: EmbeddingBackend | None = None,
-) -> MPNNEmbeddings:
+) -> QueryEmbeddings:
     """
-    Create MPNNEmbeddings from a PDB file.
+    Create query embeddings from a PDB file.
 
     Args:
         pdb_file: Path to input PDB file (.pdb or .cif).
         chain: Chain identifier to embed.
         residue_range: Tuple of (start, end) residue numbers in PDB numbering
-            (inclusive). Use (0, 0) to embed all residues.
+            (inclusive). Pass None to embed all residues.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
         random_seed: Random seed for reproducibility.
 
     Returns:
-        MPNNEmbeddings for the specified chain.
+        QueryEmbeddings for the specified chain.
     """
     LOGGER.info(f"Embedding PDB {pdb_file} chain {chain}")
 
@@ -263,9 +267,9 @@ def from_chain(
     params_path: str = "sabr.assets",
     random_seed: int = 0,
     backend: EmbeddingBackend | None = None,
-) -> MPNNEmbeddings:
+) -> QueryEmbeddings:
     """
-    Create MPNNEmbeddings from a BioPython Chain object.
+    Create query embeddings from a BioPython Chain object.
 
     This function enables in-memory structure processing without requiring
     the structure to be saved to disk first.
@@ -273,13 +277,13 @@ def from_chain(
     Args:
         chain: BioPython Chain object.
         residue_range: Tuple of (start, end) residue numbers in PDB numbering
-            (inclusive). Use (0, 0) to embed all residues.
+            (inclusive). Pass None to embed all residues.
         params_name: Name of the model parameters file.
         params_path: Package path containing the parameters file.
         random_seed: Random seed for reproducibility.
 
     Returns:
-        MPNNEmbeddings for the chain.
+        QueryEmbeddings for the chain.
     """
     LOGGER.info(f"Embedding chain {chain.id}")
 
@@ -301,15 +305,15 @@ def from_chain(
     return result
 
 
-def from_npz(npz_file: str) -> MPNNEmbeddings:
+def from_npz(npz_file: str) -> QueryEmbeddings:
     """
-    Create MPNNEmbeddings from an NPZ file.
+    Create query embeddings from an NPZ file.
 
     Args:
         npz_file: Path to the NPZ file to load.
 
     Returns:
-        MPNNEmbeddings object loaded from the file.
+        QueryEmbeddings object loaded from the file.
     """
     embedding = load_query_embeddings(npz_file)
     LOGGER.info(

@@ -55,12 +55,12 @@ import numpy as np
 # Add sabr to path for imports when running as script
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from sabr import constants  # noqa: E402
 from sabr.embeddings.backend import (  # noqa: E402
     _convert_numpy_to_jax,
     _unflatten_dict,
 )
 from sabr.embeddings.inputs import get_inputs  # noqa: E402
+from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS  # noqa: E402
 from sabr.nn.end_to_end import END_TO_END  # noqa: E402
 
 try:
@@ -105,11 +105,11 @@ def load_mpnn_params(params_path: str = "sabr.assets") -> dict:
 def create_e2e_model_no_noise() -> END_TO_END:
     """Create END_TO_END model with zero noise (noise applied externally)."""
     return END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,
@@ -258,7 +258,7 @@ def create_accumulators(noise_levels: list) -> dict:
         chain: {
             noise: defaultdict(
                 lambda: {
-                    "sum": np.zeros(constants.EMBED_DIM, dtype=np.float64),
+                    "sum": np.zeros(EMBED_DIM, dtype=np.float64),
                     "count": 0,
                 }
             )
@@ -374,9 +374,7 @@ def save_embeddings_to_dir(
                 LOGGER.warning(f"No valid positions for {chain_type} at noise {noise}")
                 continue
 
-            array = np.zeros(
-                (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
-            )
+            array = np.zeros((len(valid_positions), EMBED_DIM), dtype=np.float32)
             for i, pos in enumerate(valid_positions):
                 array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
                     np.float32
@@ -422,9 +420,7 @@ def save_intermediate_embeddings(
             if not valid_positions:
                 continue
 
-            array = np.zeros(
-                (len(valid_positions), constants.EMBED_DIM), dtype=np.float32
-            )
+            array = np.zeros((len(valid_positions), EMBED_DIM), dtype=np.float32)
             for i, pos in enumerate(valid_positions):
                 array[i] = (pos_data[pos]["sum"] / pos_data[pos]["count"]).astype(
                     np.float32

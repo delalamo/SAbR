@@ -15,7 +15,7 @@ from typing import Any, Dict
 
 import numpy as np
 
-from sabr import constants
+from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS
 
 LOGGER = logging.getLogger(__name__)
 
@@ -100,11 +100,11 @@ def _create_e2e_model():
     from sabr.nn.end_to_end import END_TO_END
 
     return END_TO_END(
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.EMBED_DIM,
-        constants.N_MPNN_LAYERS,
-        constants.EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        EMBED_DIM,
+        N_MPNN_LAYERS,
+        EMBED_DIM,
         affine=True,
         soft_max=False,
         dropout=0.0,

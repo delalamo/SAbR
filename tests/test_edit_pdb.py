@@ -2,6 +2,7 @@ import pytest
 from Bio.PDB import Chain, Residue
 
 from sabr.errors import OutputFormatError
+from sabr.numbering.anarci import NumberedResidue, numbered_alignment_from_raw
 from sabr.structure import threading as edit_pdb
 
 
@@ -12,6 +13,10 @@ def build_residue(number: int, name: str, hetflag: str = " ") -> Residue.Residue
     return residue
 
 
+def numbered(position: int, amino_acid: str, insertion_code: str = " "):
+    return NumberedResidue(position, insertion_code, amino_acid)
+
+
 def test_thread_onto_chain_updates_residue_ids():
     """Core test: thread_onto_chain correctly updates residue IDs."""
     chain = Chain.Chain("A")
@@ -19,8 +24,8 @@ def test_thread_onto_chain_updates_residue_ids():
     chain.add(build_residue(2, "GLY"))
 
     anarci_out = [
-        ((1, " "), "A"),
-        ((2, " "), "G"),
+        numbered(1, "A"),
+        numbered(2, "G"),
     ]
 
     threaded, deviations = edit_pdb.thread_onto_chain(
@@ -45,9 +50,9 @@ def test_thread_onto_chain_with_insertion_codes():
     chain.add(build_residue(3, "VAL"))
 
     anarci_out = [
-        ((1, " "), "A"),
-        ((1, "A"), "G"),  # Insertion code A
-        ((2, " "), "V"),
+        numbered(1, "A"),
+        numbered(1, "G", "A"),  # Insertion code A
+        numbered(2, "V"),
     ]
 
     threaded, deviations = edit_pdb.thread_onto_chain(
@@ -68,11 +73,13 @@ def test_thread_onto_chain_with_deletions():
     chain.add(build_residue(1, "ALA"))
     chain.add(build_residue(2, "GLY"))
 
-    anarci_out = [
-        ((1, " "), "-"),  # Deletion
-        ((2, " "), "A"),
-        ((3, " "), "G"),
-    ]
+    anarci_out = numbered_alignment_from_raw(
+        [
+            ((1, " "), "-"),  # Deletion
+            ((2, " "), "A"),
+            ((3, " "), "G"),
+        ]
+    )
 
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
@@ -92,8 +99,8 @@ def test_thread_onto_chain_counts_deviations():
     chain.add(build_residue(10, "GLY"))  # Originally numbered 10
 
     anarci_out = [
-        ((1, " "), "A"),  # Renumbered to 1
-        ((2, " "), "G"),  # Renumbered to 2
+        numbered(1, "A"),  # Renumbered to 1
+        numbered(2, "G"),  # Renumbered to 2
     ]
 
     threaded, deviations = edit_pdb.thread_onto_chain(
@@ -117,8 +124,8 @@ def test_thread_onto_chain_preserves_out_of_range_residues():
     chain.add(build_residue(4, "LEU"))
 
     anarci_out = [
-        ((10, " "), "G"),
-        ((11, " "), "V"),
+        numbered(10, "G"),
+        numbered(11, "V"),
     ]
 
     threaded, deviations = edit_pdb.thread_onto_chain(
@@ -142,7 +149,7 @@ def test_thread_onto_chain_preserves_out_of_range_residues():
 
 
 def test_validate_output_format_rejects_extended_codes_for_pdb():
-    alignment = [((100, "AA"), "A")]
+    alignment = [numbered(100, "A", "AA")]
 
     with pytest.raises(OutputFormatError, match="Use mmCIF output"):
         edit_pdb.validate_output_format("output.pdb", alignment)
@@ -160,11 +167,11 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
     from importlib import resources
     from pathlib import Path
 
-    from ANARCI import anarci
-
     from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
     from sabr.alignment.soft_aligner import SoftAligner
     from sabr.embeddings.mpnn import from_pdb
+    from sabr.numbering.anarci import build_anarci_subsequence, number_from_alignment
+    from sabr.types import NumberingScheme, parse_chain_type
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -177,16 +184,16 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
         aligner = SoftAligner()
         result = aligner(input_data)
 
-        sequence = input_data.sequence
         hmm_output = alignment_matrix_to_state_vector(result.alignment)
-        n_aligned = hmm_output.imgt_end - hmm_output.imgt_start
-        subsequence = "-" * hmm_output.imgt_start + sequence[:n_aligned]
-
-        anarci_out, anarci_start, anarci_end = anarci.number_sequence_from_alignment(
+        subsequence = build_anarci_subsequence(input_data.sequence or "", hmm_output)
+        chain_type = parse_chain_type(result.chain_type)
+        if chain_type == "auto":
+            raise AssertionError("SoftAligner returned auto chain type")
+        anarci_out = number_from_alignment(
             hmm_output.states,
             subsequence,
-            scheme="imgt",
-            chain_type=result.chain_type,
+            NumberingScheme.IMGT,
+            chain_type,
         )
 
         # PDB output should raise OutputFormatError due to extended insertion codes
@@ -197,8 +204,8 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
                 "M",
                 anarci_out,
                 str(output_pdb),
-                anarci_start,
-                anarci_end,
+                0,
+                len(anarci_out),
                 alignment_start=0,
             )
 
@@ -209,8 +216,8 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
             "M",
             anarci_out,
             str(output_cif),
-            anarci_start,
-            anarci_end,
+            0,
+            len(anarci_out),
             alignment_start=0,
         )
 

@@ -162,7 +162,11 @@ def create_dummy_from_pdb(n_residues: int = 100) -> Any:
 
         actual_n_residues = len(sequence)
         if residue_range is not None:
-            start_res, end_res = residue_range
+            if hasattr(residue_range, "start"):
+                start_res = residue_range.start
+                end_res = residue_range.end
+            else:
+                start_res, end_res = residue_range
             # Filter by residue range
             actual_n_residues = min(actual_n_residues, end_res - start_res + 1)
             sequence = sequence[: end_res - start_res + 1]

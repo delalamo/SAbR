@@ -28,9 +28,11 @@ from typing import Dict, List
 import requests
 from Bio.PDB import PDBIO, PDBParser, Select
 
-from sabr.constants import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
 from sabr.embeddings.mpnn import from_pdb
-from sabr.renumber import run_renumbering_pipeline
+from sabr.numbering.imgt import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
+from sabr.options import RenumberOptions
+from sabr.renumber import Renumberer
+from sabr.types import chain_type_value
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -184,7 +186,6 @@ def run_sabr_pipeline(
     chain_id: str,
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
-    reference_chain_type: str = "auto",
 ) -> Dict:
     """Run full SAbR pipeline on a PDB file.
 
@@ -193,7 +194,6 @@ def run_sabr_pipeline(
         chain_id: Chain identifier.
         deterministic_loop_renumbering: Apply deterministic corrections.
         use_custom_gap_penalties: Use custom gap penalties.
-        reference_chain_type: Which reference embeddings to use for alignment.
 
     Returns:
         Dict with input_positions, output_positions, chain_type, sequence.
@@ -229,26 +229,30 @@ def run_sabr_pipeline(
                 f"at positions: {sorted(gaps_in_imgt_range)}"
             )
 
-    # Run the renumbering pipeline (handles alignment and ANARCI)
-    anarci_out, chain_type, first_aligned_row = run_renumbering_pipeline(
+    # Run alignment and ANARCI through the public orchestration boundary.
+    plan = Renumberer().create_numbering_plan(
         input_data,
-        numbering_scheme="imgt",
-        chain_type="auto",
-        deterministic_loop_renumbering=deterministic_loop_renumbering,
-        use_custom_gap_penalties=use_custom_gap_penalties,
-        reference_chain_type=reference_chain_type,
+        RenumberOptions.from_values(
+            numbering_scheme="imgt",
+            chain_type="auto",
+            deterministic_corrections=deterministic_loop_renumbering,
+            custom_gap_penalties=use_custom_gap_penalties,
+        ),
     )
+    anarci_out = plan.anarci_alignment
+    chain_type = chain_type_value(plan.detected_chain_type)
+    first_aligned_row = plan.first_aligned_row
 
     # Parse output positions from ANARCI alignment
     output_positions = []
-    for pos, _aa in anarci_out:
-        resnum = pos[0]
-        insertion = pos[1].strip() if pos[1].strip() else ""
+    for numbered_residue in anarci_out:
+        resnum = numbered_residue.position
+        insertion = numbered_residue.insertion_code.strip()
         output_positions.append(f"{resnum}{insertion}")
 
     # Count total residues (not just IMGT-filtered)
     n_input_total = len(input_data.idxs)
-    n_output_total = len([p for p, aa in anarci_out if aa != "-"])
+    n_output_total = len(anarci_out)
 
     # When alignment drops leading residues (first_aligned_row > 0),
     # output_positions[j] corresponds to input_data.idxs[first_aligned_row + j].
@@ -491,24 +495,11 @@ def main():
         action="store_true",
         help="Disable custom gap penalties (use uniform penalties instead)",
     )
-    parser.add_argument(
-        "--reference-chain-type",
-        default="auto",
-        choices=["H", "K", "L", "auto", "match"],
-        help=(
-            "Reference embeddings to use: H, K, L, auto, or 'match' "
-            "(use known chain type from CSV: heavy->H, kappa->K, lambda->L)"
-        ),
-    )
     args = parser.parse_args()
 
     # Convert disable flags to enable flags
     use_deterministic = not args.disable_deterministic_renumbering
     use_custom_gap_penalties = not args.disable_custom_gap_penalties
-    reference_chain_type_arg = args.reference_chain_type
-
-    # Mapping from CSV chain_type to reference embeddings
-    chain_type_to_ref = {"heavy": "H", "kappa": "K", "lambda": "L"}
 
     # Load entries from CSV
     entries = load_csv(args.csv)
@@ -617,19 +608,12 @@ def main():
                     continue
 
             # Run SAbR (also extracts input positions from PDB)
-            # Determine reference chain type for this entry
-            if reference_chain_type_arg == "match":
-                ref_chain_type = chain_type_to_ref.get(chain_type, "auto")
-            else:
-                ref_chain_type = reference_chain_type_arg
-
             try:
                 sabr_result = run_sabr_pipeline(
                     str(chain_pdb),
                     chain_id,
                     deterministic_loop_renumbering=use_deterministic,
                     use_custom_gap_penalties=use_custom_gap_penalties,
-                    reference_chain_type=ref_chain_type,
                 )
             except Exception as e:
                 print(f"SAbR failed for {pdb_id}_{chain_id}: {e}")

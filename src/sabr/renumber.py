@@ -13,7 +13,8 @@ from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
 from sabr.alignment.backend import AlignmentBackend
 from sabr.alignment.soft_aligner import SoftAligner
 from sabr.embeddings.backend import EmbeddingBackend
-from sabr.embeddings.mpnn import MPNNEmbeddings, from_chain, from_pdb
+from sabr.embeddings.mpnn import QueryEmbeddings, from_chain, from_pdb
+from sabr.embeddings.references import ReferenceEmbeddings
 from sabr.errors import (
     AlignmentError,
     ChainNotFoundError,
@@ -31,7 +32,7 @@ from sabr.structure.threading import (
     thread_alignment,
     thread_numbering_onto_structure,
 )
-from sabr.types import ChainType, chain_type_value, parse_chain_type
+from sabr.types import ChainType, parse_chain_type
 
 LOGGER = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ class RenumberResult:
     output_path: Path | None = None
 
 
-ReferenceLoader = Callable[[str], dict[str, MPNNEmbeddings]]
+ReferenceLoader = Callable[[str], dict[str, ReferenceEmbeddings]]
 NumberingBackend = Callable[..., AnarciAlignment]
 
 
@@ -80,7 +81,7 @@ class Renumberer:
 
     def create_numbering_plan(
         self,
-        embeddings: MPNNEmbeddings,
+        embeddings: QueryEmbeddings,
         options: RenumberOptions,
     ) -> NumberingPlan:
         """Run alignment and ANARCI numbering for precomputed embeddings."""
@@ -236,30 +237,6 @@ class Renumberer:
             raise OutputFormatError(
                 f"{output_path} exists, rerun with overwrite enabled to replace it"
             )
-
-
-def run_renumbering_pipeline(
-    embeddings: MPNNEmbeddings,
-    numbering_scheme: str = "imgt",
-    chain_type: str = "auto",
-    deterministic_loop_renumbering: bool = True,
-    use_custom_gap_penalties: bool = True,
-    embeddings_name: str = "embeddings.npz",
-) -> tuple[AnarciAlignment, str, int]:
-    """Internal compatibility helper for scripts during the redesign."""
-    options = RenumberOptions.from_values(
-        numbering_scheme=numbering_scheme,
-        chain_type=chain_type,
-        deterministic_corrections=deterministic_loop_renumbering,
-        custom_gap_penalties=use_custom_gap_penalties,
-        reference_embeddings=embeddings_name,
-    )
-    plan = Renumberer().create_numbering_plan(embeddings, options)
-    return (
-        plan.anarci_alignment,
-        chain_type_value(plan.detected_chain_type),
-        plan.first_aligned_row,
-    )
 
 
 def renumber_file(

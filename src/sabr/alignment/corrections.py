@@ -17,9 +17,9 @@ from typing import FrozenSet, Optional, Tuple
 
 import numpy as np
 
-from sabr import constants
+from sabr.alignment.gaps import has_gap_in_region
+from sabr.numbering import imgt
 from sabr.types import ChainType, chain_type_value, parse_chain_type
-from sabr.util import has_gap_in_region
 
 LOGGER = logging.getLogger(__name__)
 
@@ -120,10 +120,10 @@ def correct_fr1_alignment(
         Corrected alignment matrix.
     """
     start_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
+        aln, imgt.FR1_ANCHOR_START_COL, search_range=2, direction="forward"
     )
     end_row, _ = find_nearest_occupied_column(
-        aln, constants.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
+        aln, imgt.FR1_ANCHOR_END_COL, search_range=2, direction="forward"
     )
 
     if start_row is None or end_row is None or start_row >= end_row:
@@ -223,10 +223,10 @@ def correct_fr3_alignment(
     Returns:
         Corrected alignment matrix.
     """
-    pos81_col = constants.FR3_POS81_COL
-    pos82_col = constants.FR3_POS82_COL
-    pos83_col = constants.FR3_POS83_COL
-    pos84_col = constants.FR3_POS84_COL
+    pos81_col = imgt.FR3_POS81_COL
+    pos82_col = imgt.FR3_POS82_COL
+    pos83_col = imgt.FR3_POS83_COL
+    pos84_col = imgt.FR3_POS84_COL
 
     if gap_indices:
         de_start_col = 78  # 0-indexed for position 79
@@ -298,11 +298,11 @@ def correct_c_terminus(aln: np.ndarray) -> np.ndarray:
         return aln
 
     # Only apply fix if last assigned column is near position 125/126
-    if last_assigned_col < constants.C_TERMINUS_ANCHOR_POSITION:
+    if last_assigned_col < imgt.C_TERMINUS_ANCHOR_POSITION:
         LOGGER.debug(
             f"C-terminus: last assigned col {last_assigned_col} is "
             f"before anchor position "
-            f"{constants.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
+            f"{imgt.C_TERMINUS_ANCHOR_POSITION}, skipping correction"
         )
         return aln
 
@@ -357,7 +357,7 @@ def correct_cdr_loop(
     Returns:
         Corrected alignment matrix.
     """
-    anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
+    anchor_start, anchor_end = imgt.CDR_ANCHORS[loop_name]
     anchor_start_col = anchor_start - 1
     anchor_end_col = anchor_end - 1
 
@@ -499,7 +499,7 @@ def apply_deterministic_corrections(
         raise ValueError("Deterministic corrections require chain type H, K, or L.")
     chain_type_label = chain_type_value(parsed_chain_type)
 
-    for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
+    for loop_name, (cdr_start, cdr_end) in imgt.IMGT_LOOPS.items():
         corrected = correct_cdr_loop(
             corrected, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
         )

@@ -27,3 +27,17 @@ def validate_alignment_matrix(matrix: np.ndarray) -> None:
         raise AlignmentError(
             f"Alignment matrix contains no path, shape={matrix.shape}."
         )
+
+    row_sums = rounded.sum(axis=1)
+    duplicate_rows = np.where(row_sums > 1)[0]
+    if len(duplicate_rows):
+        raise AlignmentError(
+            "Alignment matrix assigns multiple reference positions to query "
+            f"rows: {duplicate_rows.tolist()}."
+        )
+
+    path = np.argwhere(rounded == 1)
+    if len(path) > 1:
+        cols_by_row = path[np.argsort(path[:, 0]), 1]
+        if np.any(np.diff(cols_by_row) < 0):
+            raise AlignmentError("Alignment matrix path must be monotonic.")

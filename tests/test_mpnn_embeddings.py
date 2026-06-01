@@ -5,28 +5,29 @@ import numpy as np
 import pytest
 from Bio import SeqIO
 
-from sabr import constants
 from sabr.embeddings import mpnn as mpnn_embeddings
 from sabr.embeddings.inputs import MPNNInputs, compute_cb
 from sabr.embeddings.inputs import get_inputs as _get_inputs
 from sabr.errors import ChainNotFoundError
+from sabr.nn.config import EMBED_DIM
+from sabr.structure import geometry
 
 
 def test_mpnnembeddings_valid_creation_with_defaults():
     """Test successful creation with required fields."""
-    embedding = np.random.rand(3, constants.EMBED_DIM)
+    embedding = np.random.rand(3, EMBED_DIM)
     idxs = ["1", "2", "3"]
 
     mp = mpnn_embeddings.MPNNEmbeddings(name="test", embeddings=embedding, idxs=idxs)
 
     assert mp.name == "test"
-    assert mp.embeddings.shape == (3, constants.EMBED_DIM)
+    assert mp.embeddings.shape == (3, EMBED_DIM)
     assert mp.idxs == idxs
 
 
 def test_mpnnembeddings_embeddings_idxs_mismatch():
     """Test ValueError when embeddings rows don't match idxs length."""
-    embedding = np.zeros((2, constants.EMBED_DIM), dtype=float)
+    embedding = np.zeros((2, EMBED_DIM), dtype=float)
     idxs = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
@@ -52,7 +53,7 @@ def test_mpnnembeddings_wrong_embedding_dimension():
 
     msg = str(excinfo.value)
     assert f"embeddings.shape[1] ({wrong_dim})" in msg
-    assert f"constants.EMBED_DIM ({constants.EMBED_DIM})" in msg
+    assert f"EMBED_DIM ({EMBED_DIM})" in msg
 
 
 def test_from_pdb_is_callable():
@@ -255,9 +256,9 @@ def test_get_inputs_fourth_atom_channel_is_computed_cb():
     pdb_file = Path(__file__).parent / "data" / "test_insertion_codes.pdb"
     inputs = _get_inputs(str(pdb_file), chain="A")
 
-    n_coord = inputs.coords[0, 0, constants.BACKBONE_N_IDX]
-    ca_coord = inputs.coords[0, 0, constants.BACKBONE_CA_IDX]
-    c_coord = inputs.coords[0, 0, constants.BACKBONE_C_IDX]
+    n_coord = inputs.coords[0, 0, geometry.BACKBONE_N_IDX]
+    ca_coord = inputs.coords[0, 0, geometry.BACKBONE_CA_IDX]
+    c_coord = inputs.coords[0, 0, geometry.BACKBONE_C_IDX]
     expected_cb = compute_cb(
         n_coord.reshape(1, 3),
         ca_coord.reshape(1, 3),
@@ -265,7 +266,7 @@ def test_get_inputs_fourth_atom_channel_is_computed_cb():
     ).reshape(3)
 
     np.testing.assert_allclose(
-        inputs.coords[0, 0, constants.BACKBONE_CB_IDX],
+        inputs.coords[0, 0, geometry.BACKBONE_CB_IDX],
         expected_cb,
         rtol=1e-6,
         atol=1e-6,
@@ -306,7 +307,7 @@ class TestGapIndices:
 
     def test_gap_indices_default_is_none(self):
         """Test that gap_indices defaults to None."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
 
         mp = mpnn_embeddings.MPNNEmbeddings(
@@ -317,7 +318,7 @@ class TestGapIndices:
 
     def test_gap_indices_accepts_frozenset(self):
         """Test that gap_indices accepts a FrozenSet."""
-        embedding = np.random.rand(5, constants.EMBED_DIM)
+        embedding = np.random.rand(5, EMBED_DIM)
         idxs = ["1", "2", "3", "4", "5"]
         gap_indices = frozenset({1, 3})
 
@@ -335,7 +336,7 @@ class TestGapIndices:
 
     def test_gap_indices_empty_frozenset(self):
         """Test that gap_indices accepts an empty FrozenSet."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
         gap_indices = frozenset()
 
@@ -351,7 +352,7 @@ class TestGapIndices:
 
     def test_gap_indices_is_immutable(self):
         """Test that gap_indices is immutable (FrozenSet)."""
-        embedding = np.random.rand(3, constants.EMBED_DIM)
+        embedding = np.random.rand(3, EMBED_DIM)
         idxs = ["1", "2", "3"]
         gap_indices = frozenset({0})
 

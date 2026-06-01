@@ -21,7 +21,22 @@ class NumberedResidue:
     amino_acid: str
 
 
-AnarciAlignment = list[tuple[tuple[int, str], str]]
+AnarciAlignment = list[NumberedResidue]
+
+
+def numbered_alignment_from_raw(
+    raw_alignment: Iterable[tuple[tuple[int, str], str]],
+) -> AnarciAlignment:
+    """Convert raw ANARCI tuple rows to typed numbered residues."""
+    return [
+        NumberedResidue(
+            position=position,
+            insertion_code=insertion_code,
+            amino_acid=amino_acid,
+        )
+        for (position, insertion_code), amino_acid in raw_alignment
+        if amino_acid != "-"
+    ]
 
 
 def build_anarci_subsequence(sequence: str, hmm: Aln2HmmOutput) -> str:
@@ -46,4 +61,4 @@ def number_from_alignment(
     except Exception as exc:  # pragma: no cover - ANARCI owns internals
         raise NumberingError(f"ANARCI numbering failed: {exc}") from exc
 
-    return [item for item in anarci_out if item[1] != "-"]
+    return numbered_alignment_from_raw(anarci_out)
