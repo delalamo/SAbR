@@ -15,6 +15,7 @@ from sabr.alignment.corrections import (
     correct_gap_numbering,
 )
 from sabr.alignment.soft_aligner import SoftAligner
+from sabr.types import ChainType
 from tests.conftest import (
     FIXTURES,
     DummyEmbeddings,
@@ -25,6 +26,52 @@ from tests.conftest import (
 
 def make_aligner() -> SoftAligner:
     return SoftAligner.__new__(SoftAligner)
+
+
+class ScoredBackend:
+    """Alignment backend whose score is encoded in the reference embedding."""
+
+    def __init__(self) -> None:
+        self.calls = []
+
+    def align(
+        self,
+        input_embeddings,
+        target_embeddings,
+        temperature,
+        gap_matrix=None,
+        open_matrix=None,
+    ):
+        del temperature, gap_matrix, open_matrix
+        score = float(target_embeddings[0, 0])
+        self.calls.append(score)
+        alignment = np.zeros(
+            (input_embeddings.shape[0], target_embeddings.shape[0]), dtype=int
+        )
+        for idx in range(min(alignment.shape)):
+            alignment[idx, idx] = 1
+        return alignment, np.zeros_like(alignment, dtype=float), score
+
+
+def make_reference_embeddings(scores=None):
+    scores = scores or {"H": 1.0, "K": 2.0, "L": 3.0}
+    return {
+        label: DummyEmbeddings(
+            name=label,
+            embeddings=np.full((2, 64), score),
+            idxs=["1", "2"],
+        )
+        for label, score in scores.items()
+    }
+
+
+def make_query_embeddings():
+    return DummyEmbeddings(
+        name="query",
+        embeddings=np.zeros((2, 64)),
+        idxs=["1", "2"],
+        sequence="AG",
+    )
 
 
 class TestUseCustomGapPenalties:
@@ -78,6 +125,78 @@ class TestUseCustomGapPenalties:
             use_custom_gap_penalties=False,
         )
         assert captured_kwargs.get("use_custom_gap_penalties") is False
+
+
+class TestChainTypeFromEmbeddingLabels:
+    def test_auto_chain_type_uses_highest_scoring_reference_label(self):
+        backend = ScoredBackend()
+        aligner = SoftAligner(
+            backend=backend,
+            reference_embeddings=make_reference_embeddings(
+                {"H": 1.0, "K": 5.0, "L": 2.0}
+            ),
+        )
+
+        result = aligner(
+            make_query_embeddings(),
+            deterministic_loop_renumbering=False,
+            chain_type="auto",
+        )
+
+        assert backend.calls == [1.0, 5.0, 2.0]
+        assert result.selected_reference == "K"
+        assert result.chain_type == "K"
+
+    @pytest.mark.parametrize(
+        ("chain_type", "expected_label", "expected_score"),
+        [
+            (ChainType.HEAVY, "H", 1.0),
+            (ChainType.KAPPA, "K", 2.0),
+            (ChainType.LAMBDA, "L", 3.0),
+        ],
+    )
+    def test_explicit_chain_type_uses_only_requested_embedding_label(
+        self,
+        chain_type,
+        expected_label,
+        expected_score,
+    ):
+        backend = ScoredBackend()
+        aligner = SoftAligner(
+            backend=backend,
+            reference_embeddings=make_reference_embeddings(),
+        )
+
+        result = aligner(
+            make_query_embeddings(),
+            deterministic_loop_renumbering=False,
+            chain_type=chain_type,
+        )
+
+        assert backend.calls == [expected_score]
+        assert result.selected_reference == expected_label
+        assert result.chain_type == expected_label
+
+    def test_invalid_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                backend=ScoredBackend(),
+                reference_embeddings=make_reference_embeddings({"unified": 1.0}),
+            )
+
+    def test_missing_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                backend=ScoredBackend(),
+                reference_embeddings=make_reference_embeddings({"H": 1.0, "K": 2.0}),
+            )
+
+    def test_empty_reference_embedding_labels_raise(self):
+        with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
+            SoftAligner(
+                backend=ScoredBackend(),
+                reference_embeddings={},
+            )
 
 
 def test_files_resolves():
@@ -312,6 +431,37 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     assert corrected[71, 81] == 0  # Position 82 cleared
     assert corrected[72, 82] == 1  # Position 83 unchanged
     assert corrected[73, 83] == 1  # Position 84 unchanged
+
+
+@pytest.mark.parametrize(
+    ("chain_type", "expect_light_chain_shift"),
+    [("H", False), ("K", True), ("L", True)],
+)
+def test_apply_deterministic_corrections_uses_explicit_chain_type_for_fr3(
+    chain_type,
+    expect_light_chain_shift,
+):
+    """FR3 light-chain correction depends only on the supplied chain type."""
+    aln = np.zeros((4, 128), dtype=int)
+    aln[0, 80] = 1
+    aln[1, 81] = 1
+
+    corrected = apply_deterministic_corrections(aln, chain_type)
+
+    if expect_light_chain_shift:
+        assert corrected[0, 80] == 0
+        assert corrected[0, 82] == 1
+        assert corrected[1, 81] == 0
+        assert corrected[1, 83] == 1
+    else:
+        assert np.array_equal(corrected, aln)
+
+
+def test_apply_deterministic_corrections_rejects_auto_chain_type():
+    aln = np.zeros((4, 128), dtype=int)
+
+    with pytest.raises(ValueError, match="require chain type H, K, or L"):
+        apply_deterministic_corrections(aln, "auto")
 
 
 def test_correct_gap_numbering_5_residue_cdr():
@@ -677,9 +827,6 @@ class TestGapSkipping:
         gap_indices = frozenset({50})
 
         # Should not raise an error
-        corrected, chain_type = apply_deterministic_corrections(
-            aln, gap_indices=gap_indices
-        )
+        corrected = apply_deterministic_corrections(aln, "H", gap_indices=gap_indices)
 
         assert corrected.shape == aln.shape
-        assert chain_type in ("H", "K", "L")

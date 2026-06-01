@@ -2,7 +2,7 @@
 """SoftAlign-based antibody sequence alignment module.
 
 This module provides the SoftAligner class which aligns query antibody
-embeddings against unified reference embeddings to generate IMGT-compatible
+embeddings against chain-labelled reference embeddings to generate IMGT-compatible
 alignments.
 
 Key components:
@@ -10,10 +10,10 @@ Key components:
 - SoftAlignOutput: Dataclass for alignment results
 
 The alignment process includes:
-1. Embedding comparison against unified reference
+1. Embedding comparison against labelled H/K/L references
 2. Deterministic corrections for CDR loops, DE loop, FR1, and C-terminus
 3. Expansion to full 128-position IMGT alignment matrix
-4. Chain type detection from DE loop occupancy
+4. Chain type selection from the chosen reference embedding label
 """
 
 import logging
@@ -31,10 +31,11 @@ from sabr.alignment.backend import (
 from sabr.alignment.validation import validate_alignment_matrix
 from sabr.embeddings.mpnn import MPNNEmbeddings
 from sabr.embeddings.schema import load_reference_embeddings
-from sabr.types import ChainType, chain_type_value
-from sabr.util import detect_chain_type, validate_array_shape
+from sabr.types import ChainType, chain_type_value, parse_chain_type
+from sabr.util import validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
+VALID_REFERENCE_LABELS = {"H", "K", "L"}
 
 
 @dataclass(frozen=True)
@@ -54,8 +55,8 @@ class SoftAlignOutput:
         sim_matrix: Optional similarity matrix of shape (n_query, n_reference)
             containing pairwise similarity scores between query and reference
             embeddings. May be None if not computed.
-        chain_type: Detected antibody chain type: "H" (heavy), "K" (kappa),
-            or "L" (lambda). May be None if not yet detected.
+        chain_type: Antibody chain type selected from the reference embedding
+            label: "H" (heavy), "K" (kappa), or "L" (lambda).
         selected_reference: Reference embedding key selected for alignment.
         idxs1: List of residue identifiers for the query sequence (rows).
             These correspond to PDB residue numbers/insertion codes.
@@ -88,8 +89,8 @@ class SoftAlignOutput:
 class SoftAligner:
     """Align a query embedding against reference embeddings.
 
-    Supports both unified (single) reference embeddings and split embeddings
-    with separate references for Heavy (H), Kappa (K), and Lambda (L) chains.
+    Supports split embeddings with separate references for Heavy (H),
+    Kappa (K), and Lambda (L) chains.
     """
 
     def __init__(
@@ -110,12 +111,28 @@ class SoftAligner:
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
         """
-        self.embeddings = reference_embeddings or self.read_embeddings(
-            embeddings_name=embeddings_name, embeddings_path=embeddings_path
+        self.embeddings = (
+            reference_embeddings
+            if reference_embeddings is not None
+            else self.read_embeddings(
+                embeddings_name=embeddings_name, embeddings_path=embeddings_path
+            )
         )
+        self._validate_reference_labels(self.embeddings)
         self.temperature = temperature
         self._backend = backend
         self._random_seed = random_seed
+
+    @staticmethod
+    def _validate_reference_labels(
+        embeddings: Dict[str, MPNNEmbeddings],
+    ) -> None:
+        labels = set(embeddings)
+        if labels != VALID_REFERENCE_LABELS:
+            raise ValueError(
+                "Reference embeddings must be labelled exactly H, K, and L. "
+                f"Got labels: {sorted(labels)}."
+            )
 
     def _get_backend(self) -> AlignmentBackend:
         if self._backend is None:
@@ -127,11 +144,7 @@ class SoftAligner:
         embeddings_name: str = "embeddings.npz",
         embeddings_path: str = "sabr.assets",
     ) -> Dict[str, MPNNEmbeddings]:
-        """Load packaged reference embeddings.
-
-        Automatically detects the file format:
-        - Old format (has 'array' key): Returns {"unified": embedding}
-        - New split format (has 'arr_0' key): Returns {"H", "K", "L"} dict
+        """Load packaged H/K/L reference embeddings.
 
         Returns:
             Dictionary mapping chain type keys to MPNNEmbeddings objects.
@@ -194,7 +207,7 @@ class SoftAligner:
         input_data,
         deterministic_loop_renumbering: bool = True,
         use_custom_gap_penalties: bool = True,
-        reference_chain_type: str | ChainType = "auto",
+        chain_type: str | ChainType = "auto",
     ) -> SoftAlignOutput:
         """Align input embeddings against reference embeddings.
 
@@ -206,10 +219,9 @@ class SoftAligner:
             use_custom_gap_penalties: If True, apply custom gap penalties
                 by setting gap-open to zero in IMGT CDR regions only.
                 If False, use uniform gap penalties. Default is True.
-            reference_chain_type: Which reference embeddings to use.
+            chain_type: Which reference embeddings to use.
                 "auto" (default): Try all available and pick best by score.
                 "H", "K", "L": Use the specified chain type's embeddings.
-                "unified": Use unified embeddings (for old format files).
 
         Returns:
             SoftAlignOutput with the best alignment.
@@ -220,50 +232,51 @@ class SoftAligner:
             LOGGER.info("Using uniform gap penalties (custom penalties disabled)")
 
         # Determine which embeddings to use
-        reference_key = (
-            chain_type_value(reference_chain_type)
-            if isinstance(reference_chain_type, ChainType)
-            else reference_chain_type
+        requested_chain_type = parse_chain_type(chain_type)
+        requested_label = (
+            "auto"
+            if requested_chain_type == "auto"
+            else chain_type_value(requested_chain_type)
         )
 
-        if reference_key == "auto":
+        if requested_label == "auto":
             # Try all available embeddings and pick best by score
             best_result = None
             best_score = float("-inf")
-            best_chain_type = None
+            best_label = None
 
-            for chain_type, embedding in self.embeddings.items():
+            for label, embedding in self.embeddings.items():
                 alignment, sim_matrix, score, idxs = self._align_single(
                     input_data, embedding, use_custom_gap_penalties
                 )
-                LOGGER.debug(f"Alignment score for {chain_type} reference: {score:.4f}")
+                LOGGER.debug(f"Alignment score for {label} reference: {score:.4f}")
                 if score > best_score:
                     best_score = score
                     best_result = (alignment, sim_matrix, score, idxs)
-                    best_chain_type = chain_type
+                    best_label = label
 
             LOGGER.info(
-                f"Selected {best_chain_type} reference embeddings "
+                f"Selected {best_label} reference embeddings "
                 f"with score {best_score:.4f}"
             )
             alignment, sim_matrix, score, ref_idxs = best_result
-            selected_reference = best_chain_type
+            selected_reference = best_label
         else:
             # Use specified chain type
-            if reference_key not in self.embeddings:
+            if requested_label not in self.embeddings:
                 available = list(self.embeddings.keys())
                 raise ValueError(
-                    f"Reference chain type '{reference_key}' not found. "
+                    f"Chain type embedding label '{requested_label}' not found. "
                     f"Available: {available}"
                 )
-            embedding = self.embeddings[reference_key]
+            embedding = self.embeddings[requested_label]
             alignment, sim_matrix, score, ref_idxs = self._align_single(
                 input_data, embedding, use_custom_gap_penalties
             )
             LOGGER.info(
-                f"Using {reference_key} reference embeddings (score: {score:.4f})"
+                f"Using {requested_label} reference embeddings (score: {score:.4f})"
             )
-            selected_reference = reference_key
+            selected_reference = requested_label
 
         aln = self.fix_aln(alignment, ref_idxs)
         aln = np.round(aln).astype(int)
@@ -274,15 +287,12 @@ class SoftAligner:
             LOGGER.info(f"Detected {len(gap_indices)} structural gap(s) in input")
 
         if deterministic_loop_renumbering:
-            aln, detected_chain_type = corrections.apply_deterministic_corrections(
-                aln, gap_indices=gap_indices
+            aln = corrections.apply_deterministic_corrections(
+                aln, selected_reference, gap_indices=gap_indices
             )
-        else:
-            detected_chain_type = detect_chain_type(aln)
-            LOGGER.info(f"Detected chain type: {detected_chain_type}")
 
         return SoftAlignOutput(
-            chain_type=detected_chain_type,
+            chain_type=selected_reference,
             selected_reference=selected_reference,
             alignment=aln,
             score=score,

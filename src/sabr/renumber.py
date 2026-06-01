@@ -100,7 +100,7 @@ class Renumberer:
                 embeddings,
                 deterministic_loop_renumbering=options.deterministic_corrections,
                 use_custom_gap_penalties=options.custom_gap_penalties,
-                reference_chain_type=options.reference_chain_type,
+                chain_type=options.chain_type,
             )
             hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
         except Exception as exc:
@@ -108,16 +108,9 @@ class Renumberer:
                 raise
             raise AlignmentError(f"Renumbering alignment failed: {exc}") from exc
 
-        if options.chain_type == "auto":
-            detected_chain_type = parse_chain_type(alignment_result.chain_type)
-            if detected_chain_type == "auto":
-                raise AlignmentError("Alignment did not produce a concrete chain type.")
-        else:
-            detected_chain_type = options.chain_type
-            LOGGER.info(
-                "Using specified chain type: %s",
-                chain_type_value(detected_chain_type),
-            )
+        detected_chain_type = parse_chain_type(alignment_result.chain_type)
+        if detected_chain_type == "auto":
+            raise AlignmentError("Alignment did not produce a concrete chain type.")
 
         subsequence = build_anarci_subsequence(embeddings.sequence or "", hmm_output)
         anarci_alignment = self.numbering_backend(
@@ -251,14 +244,12 @@ def run_renumbering_pipeline(
     chain_type: str = "auto",
     deterministic_loop_renumbering: bool = True,
     use_custom_gap_penalties: bool = True,
-    reference_chain_type: str = "auto",
     embeddings_name: str = "embeddings.npz",
 ) -> tuple[AnarciAlignment, str, int]:
     """Internal compatibility helper for scripts during the redesign."""
     options = RenumberOptions.from_values(
         numbering_scheme=numbering_scheme,
         chain_type=chain_type,
-        reference_chain_type=reference_chain_type,
         deterministic_corrections=deterministic_loop_renumbering,
         custom_gap_penalties=use_custom_gap_penalties,
         reference_embeddings=embeddings_name,

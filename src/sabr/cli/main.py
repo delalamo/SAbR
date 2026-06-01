@@ -101,10 +101,10 @@ def _validate_chain_id(ctx, _param, value: str) -> str:
     default="auto",
     show_default=True,
     type=click.Choice(
-        ["H", "K", "L", "heavy", "kappa", "lambda", "auto"],
+        ["H", "K", "L", "auto"],
         case_sensitive=False,
     ),
-    help="Chain type for ANARCI numbering.",
+    help="Chain type embedding label to use: H, K, L, or auto.",
 )
 @click.option(
     "--disable-custom-gap-penalties",
@@ -114,14 +114,6 @@ def _validate_chain_id(ctx, _param, value: str) -> str:
         "Disable custom CDR gap penalties. By default, gap-open penalties "
         "are zero only in IMGT CDR regions."
     ),
-)
-@click.option(
-    "--reference-chain-type",
-    "reference_chain_type",
-    default="auto",
-    show_default=True,
-    type=click.Choice(["H", "K", "L", "auto"], case_sensitive=False),
-    help="Reference embeddings to use for alignment.",
 )
 @click.option(
     "--noise-level",
@@ -144,7 +136,6 @@ def main(
     random_seed: int | None,
     chain_type: str,
     disable_custom_gap_penalties: bool,
-    reference_chain_type: str,
     noise_level: str | None,
 ) -> None:
     """Run the command-line workflow for renumbering antibody structures."""
@@ -166,7 +157,6 @@ def main(
         options = RenumberOptions.from_values(
             numbering_scheme=numbering_scheme,
             chain_type=chain_type,
-            reference_chain_type=reference_chain_type,
             deterministic_corrections=not disable_deterministic_renumbering,
             custom_gap_penalties=not disable_custom_gap_penalties,
             residue_range=(

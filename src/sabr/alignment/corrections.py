@@ -18,7 +18,8 @@ from typing import FrozenSet, Optional, Tuple
 import numpy as np
 
 from sabr import constants
-from sabr.util import detect_chain_type, has_gap_in_region
+from sabr.types import ChainType, chain_type_value, parse_chain_type
+from sabr.util import has_gap_in_region
 
 LOGGER = logging.getLogger(__name__)
 
@@ -208,8 +209,7 @@ def correct_fr3_alignment(
     numbering, having residues at 79, 80, 83, 84, ... instead of the full
     79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
 
-    When using unified embeddings (which include 81-82 from heavy chains),
-    the aligner may incorrectly place light chain residues at positions
+    If the aligner places light chain residues at positions
     81-82 instead of 83-84. This function corrects that misalignment.
 
     Args:
@@ -473,8 +473,9 @@ def correct_cdr_loop(
 
 def apply_deterministic_corrections(
     aln: np.ndarray,
+    chain_type: str | ChainType,
     gap_indices: Optional[FrozenSet[int]] = None,
-) -> Tuple[np.ndarray, str]:
+) -> np.ndarray:
     """Apply all deterministic alignment corrections.
 
     Applies corrections in order: CDR loops, FR1, FR3 (light chains),
@@ -484,29 +485,30 @@ def apply_deterministic_corrections(
 
     Args:
         aln: The raw alignment matrix. This function does not mutate it.
+        chain_type: Selected chain type label from reference embeddings.
         gap_indices: FrozenSet of row indices where structural gaps occur.
             Gaps are detected from backbone C-N distances exceeding
             the threshold. If None, no gap checking is performed.
 
     Returns:
-        Tuple of (corrected alignment, detected chain type).
+        Corrected alignment matrix.
     """
     corrected = aln.copy()
+    parsed_chain_type = parse_chain_type(chain_type)
+    if parsed_chain_type == "auto":
+        raise ValueError("Deterministic corrections require chain type H, K, or L.")
+    chain_type_label = chain_type_value(parsed_chain_type)
 
     for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
         corrected = correct_cdr_loop(
             corrected, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
         )
 
-    # Detect chain type from DE loop (positions 81-82)
-    detected_chain_type = detect_chain_type(corrected)
-    is_light_chain = detected_chain_type in ("K", "L")
-
     # Apply FR1 correction (anchor-based, uses residue count only)
     corrected = correct_fr1_alignment(corrected, gap_indices=gap_indices)
 
     # FR3 positions 81-82: Heavy chains have them, light chains don't
-    if is_light_chain:
+    if chain_type_label in {"K", "L"}:
         corrected = correct_fr3_alignment(
             corrected,
             input_has_pos81=False,
@@ -516,4 +518,4 @@ def apply_deterministic_corrections(
 
     corrected = correct_c_terminus(corrected)
 
-    return corrected, detected_chain_type
+    return corrected

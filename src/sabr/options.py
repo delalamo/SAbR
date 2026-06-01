@@ -11,7 +11,6 @@ from sabr.types import (
     NumberingScheme,
     parse_chain_type,
     parse_numbering_scheme,
-    parse_reference_chain_type,
 )
 
 
@@ -21,7 +20,6 @@ class RenumberOptions:
 
     numbering_scheme: NumberingScheme = NumberingScheme.IMGT
     chain_type: ChainType | Literal["auto"] = "auto"
-    reference_chain_type: ChainType | Literal["auto"] = "auto"
     deterministic_corrections: bool = True
     custom_gap_penalties: bool = True
     residue_range: ResidueRange | None = None
@@ -34,7 +32,6 @@ class RenumberOptions:
         cls,
         numbering_scheme: str | NumberingScheme = NumberingScheme.IMGT,
         chain_type: str | ChainType = "auto",
-        reference_chain_type: str | ChainType = "auto",
         deterministic_corrections: bool = True,
         custom_gap_penalties: bool = True,
         residue_range: ResidueRange | tuple[int, int] | None = None,
@@ -46,7 +43,6 @@ class RenumberOptions:
         return cls(
             numbering_scheme=parse_numbering_scheme(numbering_scheme),
             chain_type=parse_chain_type(chain_type),
-            reference_chain_type=parse_reference_chain_type(reference_chain_type),
             deterministic_corrections=deterministic_corrections,
             custom_gap_penalties=custom_gap_penalties,
             residue_range=normalize_residue_range(residue_range),

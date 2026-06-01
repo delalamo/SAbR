@@ -58,11 +58,9 @@ def test_renumber_options_parse_enums_and_auto():
     options = RenumberOptions.from_values(
         numbering_scheme="imgt",
         chain_type="heavy",
-        reference_chain_type="auto",
         residue_range=(1, 128),
     )
 
     assert options.numbering_scheme is NumberingScheme.IMGT
     assert options.chain_type is ChainType.HEAVY
-    assert options.reference_chain_type == "auto"
     assert options.residue_range == ResidueRange(1, 128)

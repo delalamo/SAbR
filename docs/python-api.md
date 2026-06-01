@@ -21,7 +21,6 @@ renumbered = renumber_structure(
     options=RenumberOptions.from_values(
         numbering_scheme="imgt",
         chain_type="auto",
-        reference_chain_type="auto",
     ),
 )
 ```

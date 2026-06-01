@@ -131,7 +131,7 @@ class TestNoiseEmbeddingsAlignment:
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_chain_type_detected(self, noise_level):
-        """A valid chain type should be detected from the alignment."""
+        """A valid chain type should be selected from the embedding label."""
         fixture = FIXTURES["8_21"]
         if not fixture["pdb"].exists():
             pytest.skip(f"Missing fixture at {fixture['pdb']}")
@@ -211,6 +211,70 @@ class TestNoiseLevelCLI:
         )
         assert result.exit_code == 0, f"CLI failed: {result.output}"
 
+    def test_chain_type_option_sets_embedding_label(self, monkeypatch, tmp_path):
+        captured = {}
+
+        def fake_renumber_file(input_path, chain_id, output_path, options):
+            output_path.write_text("RENUMBERED\n")
+            captured["chain_type"] = options.chain_type
+            return RenumberResult(
+                detected_chain_type=options.chain_type,
+                selected_reference=options.chain_type.value,
+                first_aligned_row=0,
+                residue_count=1,
+                renumbered_count=1,
+                output_path=output_path,
+            )
+
+        monkeypatch.setattr("sabr.cli.main.renumber_file", fake_renumber_file)
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--chain-type",
+                "H",
+                "--overwrite",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        assert captured["chain_type"] is ChainType.HEAVY
+
+    def test_cli_rejects_non_label_chain_type_aliases(self, tmp_path):
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--chain-type",
+                "heavy",
+            ],
+        )
+
+        assert result.exit_code != 0
+        assert "Invalid value for '-t' / '--chain-type'" in result.output
+
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_noise_level_option_runs(self, monkeypatch, noise_level, tmp_path):
         """--noise-level should be accepted and produce output."""
@@ -262,3 +326,36 @@ class TestNoiseLevelCLI:
             ],
         )
         assert result.exit_code != 0
+
+    def test_reference_chain_type_option_removed(self, tmp_path):
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--reference-chain-type",
+                "H",
+            ],
+        )
+
+        assert result.exit_code != 0
+        assert "No such option" in result.output
+
+    def test_reference_chain_type_absent_from_help(self):
+        runner = CliRunner()
+        result = runner.invoke(cli_main, ["--help"])
+
+        assert result.exit_code == 0
+        assert "--reference-chain-type" not in result.output
+        assert "--chain-type [h|k|l|auto]" in result.output
+        assert "Chain type embedding label to use" in result.output

@@ -58,13 +58,6 @@ def parse_chain_type(value: str | ChainType) -> ChainType | AutoChainType:
         ) from exc
 
 
-def parse_reference_chain_type(
-    value: str | ChainType,
-) -> ChainType | AutoChainType:
-    """Parse the reference embedding selector."""
-    return parse_chain_type(value)
-
-
 def parse_numbering_scheme(value: str | NumberingScheme) -> NumberingScheme:
     """Parse user input into a numbering scheme enum."""
     if isinstance(value, NumberingScheme):

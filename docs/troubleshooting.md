@@ -25,7 +25,9 @@ JAX_PLATFORMS=cpu
 Use `.cif` output if SAbR reports extended insertion codes. PDB output cannot
 store multi-character insertion codes.
 
-## Unexpected Chain-Type Detection
+## Unexpected Chain-Type Selection
 
-Pass `--chain-type H`, `--chain-type K`, or `--chain-type L` when the chain type
-is known. Keep `auto` only when the input chain type is uncertain.
+`--chain-type auto` aligns against the labelled `H`, `K`, and `L` reference
+embeddings and uses the best-scoring label for ANARCI. Pass `--chain-type H`,
+`--chain-type K`, or `--chain-type L` when the chain type is known and SAbR
+should align only against that labelled embedding.

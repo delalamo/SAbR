@@ -17,7 +17,6 @@ class EmbeddingSchemaVersion(Enum):
     """Known embedding NPZ schema variants."""
 
     QUERY_V1 = "query-v1"
-    REFERENCE_UNIFIED_V1 = "reference-unified-v1"
     REFERENCE_SPLIT_V1 = "reference-split-v1"
 
 
@@ -62,23 +61,23 @@ def load_reference_embeddings(
     embeddings_name: str = "embeddings.npz",
     embeddings_path: str = "sabr.assets",
 ) -> dict[str, "MPNNEmbeddings"]:
-    """Load packaged reference embeddings in all supported schemas."""
+    """Load packaged split reference embeddings labelled by chain type."""
     from sabr.embeddings.mpnn import MPNNEmbeddings
 
     path = files(embeddings_path) / embeddings_name
     with as_file(path) as concrete_path:
         data = np.load(concrete_path, allow_pickle=True)
 
-        if "array" in data:
-            embedding = MPNNEmbeddings(
-                name=str(data["name"]) if "name" in data else "unified",
-                embeddings=data["array"],
-                idxs=[str(x) for x in data["idxs"]],
-            )
-            return {"unified": embedding}
-
         if "arr_0" in data:
             split_data = data["arr_0"].item()
+            labels = set(split_data)
+            expected_labels = {"H", "K", "L"}
+            if labels != expected_labels:
+                raise ValueError(
+                    f"Reference embeddings must be labelled H, K, and L. "
+                    f"Got labels: {sorted(labels)}."
+                )
+
             embeddings = {}
             for chain_type in ["H", "K", "L"]:
                 chain_data = split_data[chain_type]
@@ -89,4 +88,4 @@ def load_reference_embeddings(
                 )
             return embeddings
 
-    raise ValueError(f"Unsupported reference embedding schema: {path}")
+    raise ValueError(f"Reference embeddings must use the split H/K/L schema: {path}")

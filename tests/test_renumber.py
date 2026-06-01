@@ -6,6 +6,7 @@ from Bio import PDB
 
 import sabr.renumber as renumber
 from sabr.options import RenumberOptions
+from sabr.types import ChainType
 from tests.conftest import (
     FIXTURES,
     DummyEmbeddings,
@@ -116,6 +117,30 @@ class TestRenumberStructure:
         )
         assert captured_kwargs["use_custom_gap_penalties"] is False
 
+    def test_options_control_chain_type_embedding_label(self, monkeypatch):
+        data = FIXTURES["8_21"]
+        if not data["pdb"].exists():
+            pytest.skip(f"Missing structure fixture at {data['pdb']}")
+
+        alignment, chain_type = load_alignment_fixture(data["alignment"])
+        captured_kwargs = {}
+        DummyAligner = create_dummy_aligner(alignment, chain_type, captured_kwargs)
+
+        monkeypatch.setattr(renumber, "from_chain", _dummy_from_chain)
+        monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("test", str(data["pdb"]))
+        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
+
+        renumberer.renumber_structure(
+            structure,
+            chain_id=data["chain"],
+            options=RenumberOptions(chain_type=ChainType.HEAVY),
+        )
+
+        assert captured_kwargs["chain_type"] is ChainType.HEAVY
+
 
 class TestNumberingPlan:
     """Test suite for the alignment-to-numbering boundary."""
@@ -145,3 +170,30 @@ class TestNumberingPlan:
         assert plan.detected_chain_type.value in ("H", "K", "L")
         assert plan.selected_reference in ("H", "K", "L")
         assert isinstance(plan.first_aligned_row, int)
+
+    def test_numbering_plan_passes_embedding_label_to_anarci(self, monkeypatch):
+        alignment = np.eye(3, 128, dtype=int)
+        DummyAligner = create_dummy_aligner(alignment, "K")
+        monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+
+        captured = {}
+
+        def numbering_backend(states, subsequence, scheme, chain_type):
+            captured["chain_type"] = chain_type
+            return _fake_numbering_backend(states, subsequence, scheme, chain_type)
+
+        dummy_embeddings = DummyEmbeddings(
+            name="test",
+            embeddings=np.zeros((alignment.shape[0], 64)),
+            idxs=[str(i) for i in range(alignment.shape[0])],
+            sequence="AAA",
+        )
+        renumberer = renumber.Renumberer(numbering_backend=numbering_backend)
+
+        plan = renumberer.create_numbering_plan(
+            dummy_embeddings,
+            RenumberOptions(),
+        )
+
+        assert plan.detected_chain_type is ChainType.KAPPA
+        assert captured["chain_type"] is ChainType.KAPPA
