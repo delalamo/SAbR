@@ -5,16 +5,13 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 from Bio.PDB import Structure
 
 from sabr.alignment.aln2hmm import alignment_matrix_to_state_vector
-from sabr.alignment.backend import AlignmentBackend
 from sabr.alignment.soft_aligner import SoftAligner
-from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.mpnn import QueryEmbeddings, from_chain, from_pdb
-from sabr.embeddings.references import ReferenceEmbeddings
+from sabr.embeddings.references import DEFAULT_REFERENCE_EMBEDDINGS
 from sabr.errors import (
     AlignmentError,
     ChainNotFoundError,
@@ -31,207 +28,136 @@ from sabr.structure.threading import (
     thread_alignment,
     thread_numbering_onto_structure,
 )
-from sabr.types import ChainType, parse_chain_type
+from sabr.types import ChainType
 
 LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class NumberingPlan:
-    """Internal result of alignment and numbering."""
-
-    anarci_alignment: AnarciAlignment
-    detected_chain_type: ChainType
-    selected_reference: str
+class _NumberingPlan:
+    alignment: AnarciAlignment
+    chain_type: ChainType
     first_aligned_row: int
-    alignment_score: float
+    score: float
 
 
 @dataclass(frozen=True)
 class RenumberResult:
     """Result metadata returned by ``renumber_file``."""
 
-    detected_chain_type: ChainType
-    selected_reference: str
-    first_aligned_row: int
+    output_path: Path
+    chain_type: ChainType
     residue_count: int
-    renumbered_count: int
-    output_path: Path | None = None
+    changed_residue_count: int
 
 
-ReferenceLoader = Callable[[str], dict[str, ReferenceEmbeddings]]
-NumberingBackend = Callable[..., AnarciAlignment]
+def _validate_chain_id(chain_id: str) -> None:
+    if len(chain_id) != 1:
+        raise InputStructureError("Chain identifier must be exactly one character.")
 
 
-class Renumberer:
-    """Orchestrates SAbR embedding, alignment, numbering, and threading."""
-
-    def __init__(
-        self,
-        embedding_backend: EmbeddingBackend | None = None,
-        alignment_backend: AlignmentBackend | None = None,
-        reference_loader: ReferenceLoader | None = None,
-        numbering_backend: NumberingBackend | None = None,
-    ) -> None:
-        self.embedding_backend = embedding_backend
-        self.alignment_backend = alignment_backend
-        self.reference_loader = reference_loader
-        self.numbering_backend = numbering_backend or number_from_alignment
-
-    def create_numbering_plan(
-        self,
-        embeddings: QueryEmbeddings,
-        options: RenumberOptions,
-    ) -> NumberingPlan:
-        """Run alignment and ANARCI numbering for precomputed embeddings."""
-        reference_embeddings = None
-        if self.reference_loader is not None:
-            reference_embeddings = self.reference_loader(options.reference_embeddings)
-
-        aligner = SoftAligner(
-            embeddings_name=options.reference_embeddings,
-            random_seed=options.random_seed,
-            backend=self.alignment_backend,
-            reference_embeddings=reference_embeddings,
+def _validate_file_paths(
+    input_path: Path,
+    output_path: Path,
+    options: RenumberOptions,
+) -> None:
+    if not input_path.exists():
+        raise InputStructureError(f"Input file '{input_path}' does not exist.")
+    if input_path.suffix.lower() not in {".pdb", ".cif"}:
+        raise InputStructureError(
+            f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. Got: '{input_path}'"
+        )
+    if output_path.suffix.lower() not in {".pdb", ".cif"}:
+        raise OutputFormatError(
+            f"Output file must have extension .pdb or .cif. Got: '{output_path}'"
+        )
+    if output_path.exists() and not options.overwrite:
+        raise OutputFormatError(
+            f"{output_path} exists, rerun with overwrite enabled to replace it"
         )
 
-        try:
-            alignment_result = aligner(
-                embeddings,
-                deterministic_loop_renumbering=options.deterministic_corrections,
-                use_custom_gap_penalties=options.custom_gap_penalties,
-                chain_type=options.chain_type,
-            )
-            hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
-        except Exception as exc:
-            if isinstance(exc, AlignmentError):
-                raise
-            raise AlignmentError(f"Renumbering alignment failed: {exc}") from exc
 
-        detected_chain_type = parse_chain_type(alignment_result.chain_type)
-        if detected_chain_type == "auto":
-            raise AlignmentError("Alignment did not produce a concrete chain type.")
+def _create_numbering_plan(
+    embeddings: QueryEmbeddings,
+    options: RenumberOptions,
+    reference_embeddings_name: str = DEFAULT_REFERENCE_EMBEDDINGS,
+) -> _NumberingPlan:
+    """Run alignment and ANARCI numbering for precomputed embeddings."""
+    aligner = SoftAligner(
+        embeddings_name=reference_embeddings_name,
+        random_seed=options.random_seed,
+    )
 
-        subsequence = build_anarci_subsequence(embeddings.sequence or "", hmm_output)
-        anarci_alignment = self.numbering_backend(
-            hmm_output.states,
-            subsequence,
-            options.numbering_scheme,
-            detected_chain_type,
+    try:
+        alignment_result = aligner(
+            embeddings,
+            deterministic_loop_renumbering=options.deterministic_corrections,
+            use_custom_gap_penalties=options.custom_gap_penalties,
+            chain_type=options.chain_type,
         )
+        hmm_output = alignment_matrix_to_state_vector(alignment_result.alignment)
+    except Exception as exc:
+        if isinstance(exc, AlignmentError):
+            raise
+        raise AlignmentError(f"Renumbering alignment failed: {exc}") from exc
 
-        return NumberingPlan(
-            anarci_alignment=anarci_alignment,
-            detected_chain_type=detected_chain_type,
-            selected_reference=alignment_result.selected_reference,
-            first_aligned_row=hmm_output.first_aligned_row,
-            alignment_score=alignment_result.score,
-        )
+    subsequence = build_anarci_subsequence(embeddings.sequence or "", hmm_output)
+    anarci_alignment = number_from_alignment(
+        hmm_output.states,
+        subsequence,
+        options.numbering_scheme,
+        alignment_result.selected_chain_type,
+    )
 
-    def renumber_file(
-        self,
-        input_path: str | Path,
-        chain_id: str,
-        output_path: str | Path,
-        options: RenumberOptions | None = None,
-    ) -> RenumberResult:
-        """Renumber one chain in a structure file and write the result."""
-        options = options or RenumberOptions()
-        input_path = Path(input_path)
-        output_path = Path(output_path)
+    return _NumberingPlan(
+        alignment=anarci_alignment,
+        chain_type=alignment_result.selected_chain_type,
+        first_aligned_row=hmm_output.first_aligned_row,
+        score=alignment_result.score,
+    )
 
-        self._validate_file_paths(input_path, output_path, options)
 
-        try:
-            embeddings = from_pdb(
-                str(input_path),
-                chain_id,
-                residue_range=options.residue_range,
-                random_seed=options.random_seed,
-                backend=self.embedding_backend,
-            )
-        except ValueError as exc:
-            raise InputStructureError(str(exc)) from exc
+def _renumber_file(
+    input_path: str | Path,
+    chain_id: str,
+    output_path: str | Path,
+    options: RenumberOptions | None = None,
+    reference_embeddings_name: str = DEFAULT_REFERENCE_EMBEDDINGS,
+) -> RenumberResult:
+    """Renumber one chain using an explicit internal reference embedding set."""
+    options = options or RenumberOptions()
+    input_path = Path(input_path)
+    output_path = Path(output_path)
 
-        numbering_plan = self.create_numbering_plan(embeddings, options)
-        thread_alignment(
+    _validate_chain_id(chain_id)
+    _validate_file_paths(input_path, output_path, options)
+
+    try:
+        embeddings = from_pdb(
             str(input_path),
             chain_id,
-            numbering_plan.anarci_alignment,
-            str(output_path),
-            alignment_start=numbering_plan.first_aligned_row,
             residue_range=options.residue_range,
+            random_seed=options.random_seed,
         )
+    except (NotImplementedError, ValueError) as exc:
+        raise InputStructureError(str(exc)) from exc
 
-        return RenumberResult(
-            detected_chain_type=numbering_plan.detected_chain_type,
-            selected_reference=numbering_plan.selected_reference,
-            first_aligned_row=numbering_plan.first_aligned_row,
-            residue_count=len(embeddings.idxs),
-            renumbered_count=len(numbering_plan.anarci_alignment),
-            output_path=output_path,
-        )
+    plan = _create_numbering_plan(embeddings, options, reference_embeddings_name)
+    changed_count = thread_alignment(
+        str(input_path),
+        chain_id,
+        plan.alignment,
+        str(output_path),
+        alignment_start=plan.first_aligned_row,
+        residue_range=options.residue_range,
+    )
 
-    def renumber_structure(
-        self,
-        structure: Structure.Structure,
-        chain_id: str,
-        options: RenumberOptions | None = None,
-    ) -> Structure.Structure:
-        """Renumber one chain in an in-memory BioPython structure."""
-        options = options or RenumberOptions()
-        if len(chain_id) != 1:
-            raise InputStructureError("Chain identifier must be exactly one character.")
-
-        try:
-            chain = structure[0][chain_id]
-        except KeyError as exc:
-            available = [chain.id for chain in structure[0]]
-            raise ChainNotFoundError(
-                f"Chain '{chain_id}' not found in structure. Available chains: {available}"
-            ) from exc
-
-        try:
-            embeddings = from_chain(
-                chain,
-                residue_range=options.residue_range,
-                random_seed=options.random_seed,
-                backend=self.embedding_backend,
-            )
-        except ValueError as exc:
-            raise InputStructureError(str(exc)) from exc
-
-        numbering_plan = self.create_numbering_plan(embeddings, options)
-        renumbered_structure, _deviations = thread_numbering_onto_structure(
-            structure,
-            chain_id,
-            numbering_plan.anarci_alignment,
-            numbering_plan.first_aligned_row,
-            residue_range=options.residue_range,
-        )
-        return renumbered_structure
-
-    @staticmethod
-    def _validate_file_paths(
-        input_path: Path,
-        output_path: Path,
-        options: RenumberOptions,
-    ) -> None:
-        if not input_path.exists():
-            raise InputStructureError(f"Input file '{input_path}' does not exist.")
-        if input_path.suffix.lower() not in {".pdb", ".cif"}:
-            raise InputStructureError(
-                f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. "
-                f"Got: '{input_path}'"
-            )
-        if output_path.suffix.lower() not in {".pdb", ".cif"}:
-            raise OutputFormatError(
-                f"Output file must have extension .pdb or .cif. Got: '{output_path}'"
-            )
-        if output_path.exists() and not options.overwrite:
-            raise OutputFormatError(
-                f"{output_path} exists, rerun with overwrite enabled to replace it"
-            )
+    return RenumberResult(
+        output_path=output_path,
+        chain_type=plan.chain_type,
+        residue_count=len(embeddings.idxs),
+        changed_residue_count=changed_count,
+    )
 
 
 def renumber_file(
@@ -241,7 +167,7 @@ def renumber_file(
     options: RenumberOptions | None = None,
 ) -> RenumberResult:
     """Renumber one chain in a structure file and write the result."""
-    return Renumberer().renumber_file(input_path, chain_id, output_path, options)
+    return _renumber_file(input_path, chain_id, output_path, options)
 
 
 def renumber_structure(
@@ -250,4 +176,32 @@ def renumber_structure(
     options: RenumberOptions | None = None,
 ) -> Structure.Structure:
     """Renumber one chain in an in-memory BioPython structure."""
-    return Renumberer().renumber_structure(structure, chain_id, options)
+    options = options or RenumberOptions()
+    _validate_chain_id(chain_id)
+
+    try:
+        chain = structure[0][chain_id]
+    except KeyError as exc:
+        available = [chain.id for chain in structure[0]]
+        raise ChainNotFoundError(
+            f"Chain '{chain_id}' not found in structure. Available chains: {available}"
+        ) from exc
+
+    try:
+        embeddings = from_chain(
+            chain,
+            residue_range=options.residue_range,
+            random_seed=options.random_seed,
+        )
+    except ValueError as exc:
+        raise InputStructureError(str(exc)) from exc
+
+    plan = _create_numbering_plan(embeddings, options)
+    renumbered_structure, _changed_count = thread_numbering_onto_structure(
+        structure,
+        chain_id,
+        plan.alignment,
+        plan.first_aligned_row,
+        residue_range=options.residue_range,
+    )
+    return renumbered_structure

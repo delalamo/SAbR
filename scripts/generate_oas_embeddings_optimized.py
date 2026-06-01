@@ -60,8 +60,10 @@ from sabr.embeddings.backend import (  # noqa: E402
     _unflatten_dict,
 )
 from sabr.embeddings.inputs import get_inputs  # noqa: E402
-from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS  # noqa: E402
 from sabr.nn.end_to_end import END_TO_END  # noqa: E402
+
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
 
 try:
     from tqdm import tqdm

@@ -17,11 +17,17 @@ import numpy as np
 from Bio.PDB import Chain
 
 from sabr.errors import ChainNotFoundError
-from sabr.structure import geometry
 from sabr.structure.io import read_structure
 from sabr.structure.residues import AA_3TO1
 
 LOGGER = logging.getLogger(__name__)
+CB_BOND_LENGTH = 1.522
+CB_BOND_ANGLE = 1.927
+CB_DIHEDRAL = -2.143
+BACKBONE_N_IDX = 0
+BACKBONE_CA_IDX = 1
+BACKBONE_C_IDX = 2
+BACKBONE_CB_IDX = 3
 
 
 @dataclass(frozen=True)
@@ -75,14 +81,10 @@ def compute_cb(
     bc = normalize(n_coords - ca_coords)
     n = normalize(np.cross(n_coords - c_coords, bc))
 
-    length = geometry.CB_BOND_LENGTH
-    angle = geometry.CB_BOND_ANGLE
-    dihedral = geometry.CB_DIHEDRAL
-
     cb = ca_coords + (
-        length * np.cos(angle) * bc
-        + length * np.sin(angle) * np.cos(dihedral) * np.cross(n, bc)
-        + length * np.sin(angle) * np.sin(dihedral) * (-n)
+        CB_BOND_LENGTH * np.cos(CB_BOND_ANGLE) * bc
+        + CB_BOND_LENGTH * np.sin(CB_BOND_ANGLE) * np.cos(CB_DIHEDRAL) * np.cross(n, bc)
+        + CB_BOND_LENGTH * np.sin(CB_BOND_ANGLE) * np.sin(CB_DIHEDRAL) * (-n)
     )
     return cb
 
@@ -197,21 +199,16 @@ def get_inputs(source: Union[str, Chain.Chain], chain: str | None = None) -> MPN
         MPNNInputs containing backbone coordinates and residue information.
     """
     if isinstance(source, str):
+        if chain is None:
+            raise ValueError("A chain identifier is required for file inputs.")
         structure = read_structure(source)
         source_name = source
         model = structure[0]
 
-        if chain is not None:
-            if chain in model:
-                return extract_from_biopython_chain(model[chain], source_name)
-            available = [ch.id for ch in model]
-            raise ChainNotFoundError(
-                f"Chain '{chain}' not found in {source_name}. "
-                f"Available chains: {available}"
-            )
-        else:
-            target_chain = next(iter(model))
-            LOGGER.info(f"No chain specified, using first chain: {target_chain.id}")
-            return extract_from_biopython_chain(target_chain, source_name)
-    else:
-        return extract_from_biopython_chain(source, "")
+        if chain in model:
+            return extract_from_biopython_chain(model[chain], source_name)
+        available = [ch.id for ch in model]
+        raise ChainNotFoundError(
+            f"Chain '{chain}' not found in {source_name}. Available chains: {available}"
+        )
+    return extract_from_biopython_chain(source, "")

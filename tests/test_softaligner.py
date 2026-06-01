@@ -118,11 +118,11 @@ class TestUseCustomGapPenalties:
                 for idx, aa in enumerate(sequence)
             ]
 
-        renumberer = renumber.Renumberer(numbering_backend=fake_numbering_backend)
+        monkeypatch.setattr(renumber, "number_from_alignment", fake_numbering_backend)
 
         # Test with use_custom_gap_penalties=True (default)
         captured_kwargs.clear()
-        renumberer.create_numbering_plan(
+        renumber._create_numbering_plan(
             dummy_embeddings,
             RenumberOptions.from_values(
                 numbering_scheme="imgt",
@@ -133,7 +133,7 @@ class TestUseCustomGapPenalties:
 
         # Test with use_custom_gap_penalties=False
         captured_kwargs.clear()
-        renumberer.create_numbering_plan(
+        renumber._create_numbering_plan(
             dummy_embeddings,
             RenumberOptions.from_values(
                 numbering_scheme="imgt",
@@ -144,10 +144,13 @@ class TestUseCustomGapPenalties:
 
 
 class TestChainTypeFromEmbeddingLabels:
-    def test_auto_chain_type_uses_highest_scoring_reference_label(self):
+    def test_auto_chain_type_uses_highest_scoring_reference_label(self, monkeypatch):
         backend = ScoredBackend()
+        monkeypatch.setattr(
+            "sabr.alignment.soft_aligner.AlignmentBackend",
+            lambda random_seed: backend,
+        )
         aligner = SoftAligner(
-            backend=backend,
             reference_embeddings=make_reference_embeddings(
                 {"H": 1.0, "K": 5.0, "L": 2.0}
             ),
@@ -156,32 +159,32 @@ class TestChainTypeFromEmbeddingLabels:
         result = aligner(
             make_query_embeddings(),
             deterministic_loop_renumbering=False,
-            chain_type="auto",
         )
 
         assert backend.calls == [1.0, 5.0, 2.0]
-        assert result.selected_reference == "K"
-        assert result.chain_type == "K"
+        assert result.selected_chain_type is ChainType.KAPPA
 
     @pytest.mark.parametrize(
-        ("chain_type", "expected_label", "expected_score"),
+        ("chain_type", "expected_chain_type", "expected_score"),
         [
-            (ChainType.HEAVY, "H", 1.0),
-            (ChainType.KAPPA, "K", 2.0),
-            (ChainType.LAMBDA, "L", 3.0),
+            (ChainType.HEAVY, ChainType.HEAVY, 1.0),
+            (ChainType.KAPPA, ChainType.KAPPA, 2.0),
+            (ChainType.LAMBDA, ChainType.LAMBDA, 3.0),
         ],
     )
     def test_explicit_chain_type_uses_only_requested_embedding_label(
         self,
+        monkeypatch,
         chain_type,
-        expected_label,
+        expected_chain_type,
         expected_score,
     ):
         backend = ScoredBackend()
-        aligner = SoftAligner(
-            backend=backend,
-            reference_embeddings=make_reference_embeddings(),
+        monkeypatch.setattr(
+            "sabr.alignment.soft_aligner.AlignmentBackend",
+            lambda random_seed: backend,
         )
+        aligner = SoftAligner(reference_embeddings=make_reference_embeddings())
 
         result = aligner(
             make_query_embeddings(),
@@ -190,27 +193,23 @@ class TestChainTypeFromEmbeddingLabels:
         )
 
         assert backend.calls == [expected_score]
-        assert result.selected_reference == expected_label
-        assert result.chain_type == expected_label
+        assert result.selected_chain_type is expected_chain_type
 
     def test_invalid_reference_embedding_labels_raise(self):
         with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
             SoftAligner(
-                backend=ScoredBackend(),
                 reference_embeddings=make_reference_embeddings({"unified": 1.0}),
             )
 
     def test_missing_reference_embedding_labels_raise(self):
         with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
             SoftAligner(
-                backend=ScoredBackend(),
                 reference_embeddings=make_reference_embeddings({"H": 1.0, "K": 2.0}),
             )
 
     def test_empty_reference_embedding_labels_raise(self):
         with pytest.raises(ValueError, match="labelled exactly H, K, and L"):
             SoftAligner(
-                backend=ScoredBackend(),
                 reference_embeddings={},
             )
 

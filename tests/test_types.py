@@ -2,10 +2,10 @@ import numpy as np
 import pytest
 
 from sabr.alignment.soft_aligner import AlignmentResult
-from sabr.embeddings.mpnn import MPNNEmbeddings
+from sabr.embeddings.mpnn import QueryEmbeddings
 from sabr.options import RenumberOptions
 from sabr.structure.residues import ResidueId, ResidueRange
-from sabr.types import ChainType, NumberingScheme
+from sabr.types import ChainType, NumberingScheme, parse_chain_type
 
 
 def test_mpnnembeddings_shape_mismatch_raises():
@@ -14,7 +14,7 @@ def test_mpnnembeddings_shape_mismatch_raises():
     idx = ["a", "b", "c"]
 
     with pytest.raises(ValueError) as excinfo:
-        MPNNEmbeddings(name="test_case", embeddings=embedding, idxs=idx)
+        QueryEmbeddings(name="test_case", embeddings=embedding, idxs=idx)
 
     # Check key parts of the error message
     msg = str(excinfo.value)
@@ -28,21 +28,22 @@ def test_alignment_result_holds_passed_values():
         alignment=alignment,
         score=1.5,
         sim_matrix=None,
-        chain_type="mouse",
-        selected_reference="H",
-        idxs1=[str(x) for x in range(len(alignment[0]))],
-        idxs2=[str(x) for x in range(len(alignment[1]))],
+        selected_chain_type=ChainType.HEAVY,
     )
 
     assert output.alignment.shape == (2, 2)
     assert output.score == pytest.approx(1.5)
-    assert output.chain_type == "mouse"
-    assert output.selected_reference == "H"
+    assert output.selected_chain_type is ChainType.HEAVY
 
 
 def test_residue_id_parses_insertion_codes():
     assert ResidueId.parse("100A") == ResidueId(100, "A")
-    assert ResidueId.parse((" ", 10, "B")) == ResidueId(10, "B")
+    assert ResidueId.parse("-3B") == ResidueId(-3, "B")
+
+
+def test_residue_id_rejects_biopython_tuple_publicly():
+    with pytest.raises(ValueError, match="Invalid residue id"):
+        ResidueId.parse((" ", 10, "B"))
 
 
 def test_residue_range_includes_insertion_codes_by_number():
@@ -57,10 +58,31 @@ def test_residue_range_includes_insertion_codes_by_number():
 def test_renumber_options_parse_enums_and_auto():
     options = RenumberOptions.from_values(
         numbering_scheme="imgt",
-        chain_type="heavy",
-        residue_range=(1, 128),
+        chain_type="H",
+        residue_range=ResidueRange(1, 128),
     )
 
     assert options.numbering_scheme is NumberingScheme.IMGT
     assert options.chain_type is ChainType.HEAVY
     assert options.residue_range == ResidueRange(1, 128)
+
+
+def test_renumber_options_auto_chain_type_is_none():
+    options = RenumberOptions.from_values(chain_type="auto")
+
+    assert options.chain_type is None
+
+
+def test_parse_chain_type_rejects_aliases_and_suffixes():
+    for value in ["heavy", "kappa", "lambda", "mouse_H"]:
+        with pytest.raises(ValueError, match="H, K, L, or auto"):
+            parse_chain_type(value)
+
+
+def test_negative_residue_ranges_are_valid():
+    assert ResidueRange(-5, 10).contains("-1A")
+
+
+def test_tuple_residue_range_is_not_normalized():
+    with pytest.raises(ValueError, match="ResidueRange"):
+        RenumberOptions.from_values(residue_range=(1, 128))

@@ -15,9 +15,9 @@ from typing import Any, Dict
 
 import numpy as np
 
-from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS
-
 LOGGER = logging.getLogger(__name__)
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
 
 
 def _unflatten_dict(d: Dict[str, Any], sep: str = ".") -> Dict[str, Any]:

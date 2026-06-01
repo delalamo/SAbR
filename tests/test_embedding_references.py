@@ -2,11 +2,11 @@ import numpy as np
 import pytest
 
 from sabr.embeddings.references import (
+    EMBED_DIM,
     ReferenceEmbeddings,
     load_reference_embeddings_from_npz,
     resolve_reference_embeddings_name,
 )
-from sabr.nn.config import EMBED_DIM
 
 
 def _write_reference_npz(path, labels=("H", "K", "L")):
@@ -27,7 +27,7 @@ def test_reference_embeddings_validate_position_rows():
         positions=[1, 2],
     )
 
-    assert embeddings.idxs == ["1", "2"]
+    assert embeddings.positions == [1, 2]
 
 
 def test_reference_loader_requires_split_hkl_schema(tmp_path):

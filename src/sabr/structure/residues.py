@@ -39,12 +39,10 @@ class ResidueId:
     insertion_code: str = ""
 
     @classmethod
-    def parse(cls, value: str | int | tuple) -> "ResidueId":
+    def parse(cls, value: str | int) -> "ResidueId":
         """Parse residue IDs like ``52`` and ``52A``."""
         if isinstance(value, int):
             return cls(value)
-        if isinstance(value, tuple):
-            return cls(int(value[1]), str(value[2]).strip())
 
         match = _RESIDUE_ID_RE.match(str(value))
         if match is None:
@@ -69,28 +67,14 @@ class ResidueRange:
     end: int
 
     def __post_init__(self) -> None:
-        if self.start < 0 or self.end < 0:
-            raise ValueError("Residue range values must be non-negative.")
         if self.end < self.start:
             raise ValueError(
                 f"Residue range end ({self.end}) must be >= start ({self.start})."
             )
 
-    def contains(self, residue_id: ResidueId | str | int | tuple) -> bool:
+    def contains(self, residue_id: ResidueId | str | int) -> bool:
         """Return whether a residue id is included by this range."""
         return ResidueId.parse(residue_id).in_range(self)
 
     def __str__(self) -> str:
         return f"{self.start}-{self.end}"
-
-
-def normalize_residue_range(
-    residue_range: ResidueRange | tuple[int, int] | None,
-) -> ResidueRange | None:
-    """Normalize legacy tuple ranges into ``ResidueRange`` objects."""
-    if residue_range is None:
-        return None
-    if isinstance(residue_range, ResidueRange):
-        return residue_range
-    start, end = residue_range
-    return ResidueRange(start, end)

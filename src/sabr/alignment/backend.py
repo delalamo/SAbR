@@ -12,11 +12,14 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-from sabr.alignment.config import DEFAULT_TEMPERATURE, SW_GAP_EXTEND, SW_GAP_OPEN
-from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS
 from sabr.numbering.imgt import IMGT_REGIONS
 
 LOGGER = logging.getLogger(__name__)
+EMBED_DIM = 64
+N_MPNN_LAYERS = 3
+SW_GAP_EXTEND = -0.175027
+SW_GAP_OPEN = -2.525591
+DEFAULT_TEMPERATURE = 1e-4
 
 
 def create_gap_penalty_for_reduced_reference(

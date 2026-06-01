@@ -1,4 +1,5 @@
-from sabr.nn.config import EMBED_DIM, N_MPNN_LAYERS
+from sabr.embeddings.backend import N_MPNN_LAYERS
+from sabr.embeddings.mpnn import EMBED_DIM
 from sabr.numbering.imgt import IMGT_LOOPS
 from sabr.structure.residues import AA_3TO1
 

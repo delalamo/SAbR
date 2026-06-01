@@ -15,7 +15,6 @@ cli
 python-api
 output-formats
 troubleshooting
-design-notes
 development
 api-reference
 ```

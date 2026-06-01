@@ -58,7 +58,7 @@ result = renumber_file(
     options=RenumberOptions.from_values(chain_type="H", overwrite=True),
 )
 
-print(result.detected_chain_type.value)
+print(result.chain_type.value)
 ```
 
 ## Development

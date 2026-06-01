@@ -8,6 +8,8 @@ import numpy as np
 import pytest
 from Bio import PDB, SeqIO
 
+from sabr.types import ChainType, parse_chain_type
+
 DATA_PACKAGE = "tests.data"
 
 
@@ -51,7 +53,7 @@ def load_alignment_fixture(path: Path) -> Tuple[np.ndarray, str]:
         pytest.skip(f"Missing alignment fixture at {path}")
     data = np.load(path, allow_pickle=True)
     alignment = data["alignment"]
-    chain_type = data["chain_type"].item()
+    chain_type = str(data["chain_type"].item()).rsplit("_", 1)[-1]
     return alignment, chain_type
 
 
@@ -85,8 +87,10 @@ class DummyResult:
 
     def __init__(self, alignment: np.ndarray, chain_type: str) -> None:
         self.alignment = alignment
-        self.chain_type = chain_type
-        self.selected_reference = chain_type.split("_")[-1]
+        parsed_chain_type = parse_chain_type(chain_type)
+        if parsed_chain_type is None:
+            parsed_chain_type = ChainType.HEAVY
+        self.selected_chain_type = parsed_chain_type
         self.score = 1.0
         self.sim_matrix = None
 

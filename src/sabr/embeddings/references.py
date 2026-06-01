@@ -9,10 +9,8 @@ from pathlib import Path
 
 import numpy as np
 
-from sabr.nn.config import EMBED_DIM
-from sabr.validation import validate_array_shape
-
 VALID_REFERENCE_LABELS = {"H", "K", "L"}
+EMBED_DIM = 64
 DEFAULT_REFERENCE_EMBEDDINGS = "embeddings.npz"
 NOISE_REFERENCE_EMBEDDINGS = {
     "0.0": "embeddings_noise_0.0.npz",
@@ -21,6 +19,25 @@ NOISE_REFERENCE_EMBEDDINGS = {
     "1.0": "embeddings_noise_1.0.npz",
     "2.0": "embeddings_noise_2.0.npz",
 }
+
+
+def _validate_array_shape(
+    array: np.ndarray,
+    dim: int,
+    expected_size: int,
+    array_name: str,
+    size_name: str,
+    context: str = "",
+) -> None:
+    actual_size = array.shape[dim]
+    if actual_size != expected_size:
+        msg = (
+            f"{array_name}.shape[{dim}] ({actual_size}) must match "
+            f"{size_name} ({expected_size})."
+        )
+        if context:
+            msg += f" {context}"
+        raise ValueError(msg)
 
 
 @dataclass(frozen=True)
@@ -32,7 +49,7 @@ class ReferenceEmbeddings:
     positions: list[int]
 
     def __post_init__(self) -> None:
-        validate_array_shape(
+        _validate_array_shape(
             self.embeddings,
             0,
             len(self.positions),
@@ -40,7 +57,7 @@ class ReferenceEmbeddings:
             "len(positions)",
             f"Error raised for {self.name}",
         )
-        validate_array_shape(
+        _validate_array_shape(
             self.embeddings,
             1,
             EMBED_DIM,
@@ -48,11 +65,6 @@ class ReferenceEmbeddings:
             "EMBED_DIM",
             f"Error raised for {self.name}",
         )
-
-    @property
-    def idxs(self) -> list[str]:
-        """Return IMGT positions as strings for legacy internal callers."""
-        return [str(position) for position in self.positions]
 
 
 def resolve_reference_embeddings_name(noise_level: str | None) -> str:

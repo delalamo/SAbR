@@ -3,9 +3,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Literal
-
-AutoChainType = Literal["auto"]
 
 
 class ChainType(Enum):
@@ -27,35 +24,26 @@ class NumberingScheme(Enum):
     WOLF_GUY = "wolfguy"
 
 
-def parse_chain_type(value: str | ChainType) -> ChainType | AutoChainType:
-    """Parse user input into a chain type or ``"auto"``."""
+def parse_chain_type(value: str | ChainType | None) -> ChainType | None:
+    """Parse user input into a chain type, with ``None`` meaning auto."""
+    if value is None:
+        return None
     if isinstance(value, ChainType):
         return value
 
     normalized = value.strip().lower()
     if normalized == "auto":
-        return "auto"
-    if normalized.endswith("_h"):
-        return ChainType.HEAVY
-    if normalized.endswith("_k"):
-        return ChainType.KAPPA
-    if normalized.endswith("_l"):
-        return ChainType.LAMBDA
+        return None
 
     aliases = {
         "h": ChainType.HEAVY,
-        "heavy": ChainType.HEAVY,
         "k": ChainType.KAPPA,
-        "kappa": ChainType.KAPPA,
         "l": ChainType.LAMBDA,
-        "lambda": ChainType.LAMBDA,
     }
     try:
         return aliases[normalized]
     except KeyError as exc:
-        raise ValueError(
-            "Chain type must be one of H, K, L, heavy, kappa, lambda, or auto."
-        ) from exc
+        raise ValueError("Chain type must be one of H, K, L, or auto.") from exc
 
 
 def parse_numbering_scheme(value: str | NumberingScheme) -> NumberingScheme:
@@ -72,8 +60,6 @@ def parse_numbering_scheme(value: str | NumberingScheme) -> NumberingScheme:
     raise ValueError(f"Numbering scheme must be one of: {valid}.")
 
 
-def chain_type_value(value: ChainType | AutoChainType) -> str:
+def chain_type_value(value: ChainType) -> str:
     """Return the ANARCI/reference string representation for a chain type."""
-    if value == "auto":
-        return "auto"
     return value.value

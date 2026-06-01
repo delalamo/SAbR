@@ -20,7 +20,6 @@ renumbered = renumber_structure(
     chain_id="H",
     options=RenumberOptions.from_values(
         numbering_scheme="imgt",
-        chain_type="auto",
     ),
 )
 ```

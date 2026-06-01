@@ -21,7 +21,8 @@ Supported file formats:
 
 import logging
 from dataclasses import dataclass
-from typing import FrozenSet, List, Optional, Tuple
+from pathlib import Path
+from typing import FrozenSet, List, Optional
 
 import numpy as np
 from Bio.PDB import Chain
@@ -29,12 +30,30 @@ from Bio.PDB import Chain
 from sabr.alignment.gaps import detect_backbone_gaps
 from sabr.embeddings.backend import EmbeddingBackend
 from sabr.embeddings.inputs import get_inputs
-from sabr.embeddings.schema import load_query_embeddings, save_query_embeddings
-from sabr.nn.config import EMBED_DIM
-from sabr.structure.residues import ResidueRange, normalize_residue_range
-from sabr.validation import validate_array_shape
+from sabr.structure.residues import ResidueRange
 
 LOGGER = logging.getLogger(__name__)
+QUERY_SCHEMA = "query-v1"
+EMBED_DIM = 64
+
+
+def _validate_array_shape(
+    array: np.ndarray,
+    dim: int,
+    expected_size: int,
+    array_name: str,
+    size_name: str,
+    context: str = "",
+) -> None:
+    actual_size = array.shape[dim]
+    if actual_size != expected_size:
+        msg = (
+            f"{array_name}.shape[{dim}] ({actual_size}) must match "
+            f"{size_name} ({expected_size})."
+        )
+        if context:
+            msg += f" {context}"
+        raise ValueError(msg)
 
 
 @dataclass(frozen=True)
@@ -64,7 +83,7 @@ class QueryEmbeddings:
     gap_indices: Optional[FrozenSet[int]] = None
 
     def __post_init__(self) -> None:
-        validate_array_shape(
+        _validate_array_shape(
             self.embeddings,
             0,
             len(self.idxs),
@@ -72,7 +91,7 @@ class QueryEmbeddings:
             "len(idxs)",
             f"Error raised for {self.name}",
         )
-        validate_array_shape(
+        _validate_array_shape(
             self.embeddings,
             1,
             EMBED_DIM,
@@ -93,7 +112,14 @@ class QueryEmbeddings:
         Args:
             output_path: Path where the NPZ file will be saved.
         """
-        save_query_embeddings(self, output_path)
+        np.savez(
+            Path(output_path),
+            schema=QUERY_SCHEMA,
+            name=self.name,
+            embeddings=self.embeddings,
+            idxs=np.array(self.idxs),
+            sequence=self.sequence if self.sequence else "",
+        )
         LOGGER.info(f"Saved embeddings to {output_path}")
 
 
@@ -127,13 +153,10 @@ def _compute_gap_indices(
     return detect_backbone_gaps(coords)
 
 
-MPNNEmbeddings = QueryEmbeddings
-
-
 def _create_embeddings(
     inputs,
     name: str,
-    residue_range: ResidueRange | Tuple[int, int] | None,
+    residue_range: ResidueRange | None,
     params_name: str,
     params_path: str,
     random_seed: int,
@@ -179,22 +202,21 @@ def _create_embeddings(
     sequence = inputs.sequence
     keep_indices = None
 
-    normalized_range = normalize_residue_range(residue_range)
-    if normalized_range is not None:
+    if residue_range is not None:
         keep_indices = [
-            i for i, res_id in enumerate(ids) if normalized_range.contains(res_id)
+            i for i, res_id in enumerate(ids) if residue_range.contains(res_id)
         ]
 
         if keep_indices:
             LOGGER.info(
-                f"Filtering to residue range {normalized_range}: "
+                f"Filtering to residue range {residue_range}: "
                 f"{len(keep_indices)} of {len(ids)} residues"
             )
             embeddings = embeddings[keep_indices]
             ids = [ids[i] for i in keep_indices]
             sequence = "".join(sequence[i] for i in keep_indices)
         else:
-            LOGGER.warning(f"No residues found in range {normalized_range}")
+            LOGGER.warning(f"No residues found in range {residue_range}")
             keep_indices = None
 
     # Compute gap indices from backbone coordinates
@@ -212,7 +234,7 @@ def _create_embeddings(
 def from_pdb(
     pdb_file: str,
     chain: str,
-    residue_range: ResidueRange | Tuple[int, int] | None = None,
+    residue_range: ResidueRange | None = None,
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
     random_seed: int = 0,
@@ -262,7 +284,7 @@ def from_pdb(
 
 def from_chain(
     chain: Chain.Chain,
-    residue_range: ResidueRange | Tuple[int, int] | None = None,
+    residue_range: ResidueRange | None = None,
     params_name: str = "mpnn_encoder",
     params_path: str = "sabr.assets",
     random_seed: int = 0,
@@ -315,7 +337,25 @@ def from_npz(npz_file: str) -> QueryEmbeddings:
     Returns:
         QueryEmbeddings object loaded from the file.
     """
-    embedding = load_query_embeddings(npz_file)
+    input_path = Path(npz_file)
+    data = np.load(input_path, allow_pickle=True)
+    required = {"schema", "name", "embeddings", "idxs", "sequence"}
+    missing = required - set(data.files)
+    if missing:
+        missing_keys = ", ".join(sorted(missing))
+        raise ValueError(f"Embedding file {input_path} is missing keys: {missing_keys}")
+    schema = str(data["schema"])
+    if schema != QUERY_SCHEMA:
+        raise ValueError(
+            f"Embedding file {input_path} uses unsupported schema {schema!r}."
+        )
+    sequence = str(data["sequence"])
+    embedding = QueryEmbeddings(
+        name=str(data["name"]),
+        embeddings=data["embeddings"],
+        idxs=[str(x) for x in data["idxs"]],
+        sequence=sequence or None,
+    )
     LOGGER.info(
         f"Loaded embeddings from {npz_file} "
         f"(name={embedding.name}, length={len(embedding.idxs)})"

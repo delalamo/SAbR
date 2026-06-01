@@ -32,7 +32,7 @@ jobs:
       - uses: ./.github/actions/setup-python
 
       - name: Install dependencies
-        run: pip install -e .
+        run: pip install -e .[benchmark]
 
       - name: Run pre-2021 analysis
         run: |

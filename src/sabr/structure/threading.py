@@ -4,96 +4,20 @@ from __future__ import annotations
 
 import copy
 import logging
-from dataclasses import dataclass
-from enum import Enum, auto
 from pathlib import Path
-from typing import Optional
 
 from Bio.PDB import Chain, Model, Structure
 
 from sabr.errors import ChainNotFoundError, InputStructureError, OutputFormatError
 from sabr.numbering.anarci import AnarciAlignment
 from sabr.structure.io import read_structure, write_structure
-from sabr.structure.residues import AA_3TO1, ResidueRange, normalize_residue_range
+from sabr.structure.residues import AA_3TO1, ResidueId, ResidueRange
 
 LOGGER = logging.getLogger(__name__)
 
 
-class ResidueRegion(Enum):
-    """Classification of residue regions during threading."""
-
-    PRE_FV = auto()
-    IN_FV = auto()
-    POST_FV = auto()
-    HETATM = auto()
-
-
-@dataclass
-class RenumberingState:
-    """State maintained during chain threading."""
-
-    aligned_residue_idx: int = -1
-    last_imgt_pos: Optional[int] = None
-
-
-def _classify_residue_region(
-    selected_idx: int,
-    aligned_residue_idx: int,
-    anarci_array_idx: int,
-    alignment_start: int,
-    anarci_len: int,
-    is_hetatm: bool,
-) -> ResidueRegion:
-    if is_hetatm:
-        return ResidueRegion.HETATM
-    if selected_idx < alignment_start or aligned_residue_idx < 0:
-        return ResidueRegion.PRE_FV
-    if anarci_array_idx < anarci_len:
-        return ResidueRegion.IN_FV
-    return ResidueRegion.POST_FV
-
-
-def _compute_new_residue_id(
-    region: ResidueRegion,
-    anarci_out: AnarciAlignment,
-    anarci_array_idx: int,
-    anarci_start: int,
-    alignment_start: int,
-    selected_idx: int,
-    state: RenumberingState,
-    original_het_flag: str,
-    resname: str,
-) -> tuple[str, int, str] | None:
-    if region == ResidueRegion.HETATM:
-        return None
-
-    if region == ResidueRegion.PRE_FV:
-        first_anarci_pos = anarci_out[anarci_start].position
-        new_imgt_pos = first_anarci_pos - (alignment_start - selected_idx)
-        return (original_het_flag, new_imgt_pos, " ")
-
-    if region == ResidueRegion.IN_FV:
-        numbered_residue = anarci_out[anarci_array_idx]
-        new_imgt_pos = numbered_residue.position
-        icode = numbered_residue.insertion_code
-        expected_aa = numbered_residue.amino_acid
-        state.last_imgt_pos = new_imgt_pos
-
-        one_letter = AA_3TO1.get(resname, "X")
-        if expected_aa != one_letter:
-            raise InputStructureError(
-                f"Residue mismatch while threading numbering: expected "
-                f"{expected_aa}, got {one_letter} ({resname})."
-            )
-
-        return (original_het_flag, new_imgt_pos, icode)
-
-    if state.last_imgt_pos is None:
-        raise InputStructureError(
-            "Cannot number post-Fv residues before any ANARCI residue was assigned."
-        )
-    state.last_imgt_pos += 1
-    return (" ", state.last_imgt_pos, " ")
+def _residue_id_from_biopython(residue_id: tuple[str, int, str]) -> ResidueId:
+    return ResidueId(residue_id[1], residue_id[2].strip())
 
 
 def has_extended_insertion_codes(alignment: AnarciAlignment) -> bool:
@@ -123,76 +47,106 @@ def _selected_standard_residue(
         return False
     if residue_range is None:
         return True
-    return residue_range.contains(residue.get_id())
+    return _residue_id_from_biopython(residue.get_id()).in_range(residue_range)
+
+
+def _check_amino_acid(residue, expected_aa: str) -> None:
+    one_letter = AA_3TO1.get(residue.get_resname(), "X")
+    if expected_aa != one_letter:
+        raise InputStructureError(
+            f"Residue mismatch while threading numbering: expected "
+            f"{expected_aa}, got {one_letter} ({residue.get_resname()})."
+        )
+
+
+def _check_duplicate_ids(
+    proposed: list[tuple[object, tuple[str, int, str]]],
+    chain_id: str,
+) -> None:
+    seen = set()
+    for _residue, residue_id in proposed:
+        if residue_id[0].strip():
+            continue
+        if residue_id in seen:
+            raise OutputFormatError(
+                f"Renumbering would create duplicate residue id {residue_id!r} "
+                f"in chain {chain_id}. This usually happens when --residue-range "
+                "preserves residues whose original numbers overlap the target "
+                "numbering. Use a narrower input file or output only the variable "
+                "domain."
+            )
+        seen.add(residue_id)
 
 
 def thread_onto_chain(
     chain: Chain.Chain,
     anarci_out: AnarciAlignment,
-    anarci_start: int,
     alignment_start: int,
-    residue_range: ResidueRange | tuple[int, int] | None = None,
+    residue_range: ResidueRange | None = None,
 ) -> tuple[Chain.Chain, int]:
     """Return a deep-copied chain with selected residues renumbered.
 
     Residues outside ``residue_range`` are preserved unchanged in the output.
     The range is interpreted against original structure residue numbers.
     """
-    selected_range = normalize_residue_range(residue_range)
     LOGGER.info(
-        "Threading chain %s with ANARCI window starting at %s "
-        "(alignment_start=%s, residue_range=%s)",
+        "Threading chain %s (alignment_start=%s, residue_range=%s)",
         chain.id,
-        anarci_start,
         alignment_start,
-        selected_range or "all",
+        residue_range or "all",
     )
 
-    new_chain = Chain.Chain(chain.id)
-    state = RenumberingState()
     deviations = 0
     selected_idx = -1
+    numbering_idx = 0
+    last_position = None
+    proposed = []
 
     for residue in chain.get_residues():
         new_residue = copy.deepcopy(residue)
         new_residue.detach_parent()
 
-        if not _selected_standard_residue(residue, selected_range):
-            new_chain.add(new_residue)
+        if not _selected_standard_residue(residue, residue_range):
+            proposed.append((new_residue, new_residue.get_id()))
             continue
 
         selected_idx += 1
-        is_in_aligned_region = selected_idx >= alignment_start
 
-        if is_in_aligned_region:
-            state.aligned_residue_idx += 1
+        if selected_idx < alignment_start:
+            if not anarci_out:
+                raise InputStructureError(
+                    "Cannot number residues without ANARCI output."
+                )
+            first_position = anarci_out[0].position
+            new_id = (" ", first_position - (alignment_start - selected_idx), " ")
+        elif numbering_idx < len(anarci_out):
+            numbered_residue = anarci_out[numbering_idx]
+            _check_amino_acid(residue, numbered_residue.amino_acid)
+            new_id = (
+                " ",
+                numbered_residue.position,
+                numbered_residue.insertion_code or " ",
+            )
+            last_position = numbered_residue.position
+            numbering_idx += 1
+        else:
+            if last_position is None:
+                raise InputStructureError(
+                    "Cannot number post-Fv residues before any ANARCI residue "
+                    "was assigned."
+                )
+            last_position += 1
+            new_id = (" ", last_position, " ")
 
-        anarci_array_idx = state.aligned_residue_idx + anarci_start
-        region = _classify_residue_region(
-            selected_idx,
-            state.aligned_residue_idx,
-            anarci_array_idx,
-            alignment_start,
-            len(anarci_out),
-            False,
-        )
-
-        new_id = _compute_new_residue_id(
-            region,
-            anarci_out,
-            anarci_array_idx,
-            anarci_start,
-            alignment_start,
-            selected_idx,
-            state,
-            residue.get_id()[0],
-            residue.get_resname(),
-        )
-        if new_id is not None:
-            new_residue.id = new_id
-
-        if residue.get_id() != new_residue.get_id():
+        if residue.get_id() != new_id:
             deviations += 1
+        proposed.append((new_residue, new_id))
+
+    _check_duplicate_ids(proposed, chain.id)
+
+    new_chain = Chain.Chain(chain.id)
+    for new_residue, new_id in proposed:
+        new_residue.id = new_id
         new_chain.add(new_residue)
 
     return new_chain, deviations
@@ -233,7 +187,7 @@ def thread_numbering_onto_structure(
     chain_id: str,
     alignment: AnarciAlignment,
     alignment_start: int,
-    residue_range: ResidueRange | tuple[int, int] | None = None,
+    residue_range: ResidueRange | None = None,
 ) -> tuple[Structure.Structure, int]:
     """Return a structure with numbering threaded onto one chain."""
 
@@ -241,7 +195,6 @@ def thread_numbering_onto_structure(
         return thread_onto_chain(
             chain,
             alignment,
-            0,
             alignment_start,
             residue_range,
         )
@@ -257,7 +210,7 @@ def thread_alignment(
     alignment: AnarciAlignment,
     output_pdb: str,
     alignment_start: int,
-    residue_range: ResidueRange | tuple[int, int] | None = None,
+    residue_range: ResidueRange | None = None,
 ) -> int:
     """Write a structure file with numbering threaded onto one chain."""
     validate_output_format(output_pdb, alignment)

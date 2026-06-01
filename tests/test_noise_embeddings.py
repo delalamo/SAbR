@@ -50,9 +50,9 @@ class TestNoiseEmbeddingsLoad:
         embeddings_name = f"embeddings_noise_{noise_level}.npz"
         aligner = SoftAligner(embeddings_name=embeddings_name)
         for chain_type, emb in aligner.embeddings.items():
-            assert len(emb.idxs) == emb.embeddings.shape[0], (
+            assert len(emb.positions) == emb.embeddings.shape[0], (
                 f"noise={noise_level}, chain={chain_type}: "
-                f"idxs length {len(emb.idxs)} != rows {emb.embeddings.shape[0]}"
+                f"position count {len(emb.positions)} != rows {emb.embeddings.shape[0]}"
             )
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
@@ -61,11 +61,10 @@ class TestNoiseEmbeddingsLoad:
         embeddings_name = f"embeddings_noise_{noise_level}.npz"
         aligner = SoftAligner(embeddings_name=embeddings_name)
         for chain_type, emb in aligner.embeddings.items():
-            for idx in emb.idxs:
-                pos = int(idx)
+            for pos in emb.positions:
                 assert 1 <= pos <= 128, (
                     f"noise={noise_level}, chain={chain_type}: "
-                    f"idx {idx} outside IMGT range 1-128"
+                    f"position {pos} outside IMGT range 1-128"
                 )
 
 
@@ -141,11 +140,11 @@ class TestNoiseEmbeddingsAlignment:
         aligner = SoftAligner(embeddings_name=embeddings_name)
         result = aligner(input_data)
 
-        assert result.chain_type in (
-            "H",
-            "K",
-            "L",
-        ), f"noise={noise_level}: unexpected chain_type={result.chain_type}"
+        assert result.selected_chain_type in (
+            ChainType.HEAVY,
+            ChainType.KAPPA,
+            ChainType.LAMBDA,
+        ), f"noise={noise_level}: unexpected chain_type={result.selected_chain_type}"
 
     @pytest.mark.parametrize("noise_level", NOISE_LEVELS)
     def test_score_is_finite(self, noise_level):
@@ -168,15 +167,15 @@ class TestNoiseLevelCLI:
     """Tests for the --noise-level CLI argument."""
 
     def _patch_renumber_file(self, monkeypatch):
-        def fake_renumber_file(input_path, chain_id, output_path, options):
+        def fake_renumber_file(
+            input_path, chain_id, output_path, options, reference_embeddings_name
+        ):
             output_path.write_text("RENUMBERED\n")
             return RenumberResult(
-                detected_chain_type=ChainType.HEAVY,
-                selected_reference=options.reference_embeddings,
-                first_aligned_row=0,
-                residue_count=1,
-                renumbered_count=1,
                 output_path=output_path,
+                chain_type=ChainType.HEAVY,
+                residue_count=1,
+                changed_residue_count=1,
             )
 
         monkeypatch.setattr("sabr.cli.main.renumber_file", fake_renumber_file)
@@ -214,16 +213,17 @@ class TestNoiseLevelCLI:
     def test_chain_type_option_sets_embedding_label(self, monkeypatch, tmp_path):
         captured = {}
 
-        def fake_renumber_file(input_path, chain_id, output_path, options):
+        def fake_renumber_file(
+            input_path, chain_id, output_path, options, reference_embeddings_name
+        ):
             output_path.write_text("RENUMBERED\n")
             captured["chain_type"] = options.chain_type
+            captured["reference_embeddings_name"] = reference_embeddings_name
             return RenumberResult(
-                detected_chain_type=options.chain_type,
-                selected_reference=options.chain_type.value,
-                first_aligned_row=0,
-                residue_count=1,
-                renumbered_count=1,
                 output_path=output_path,
+                chain_type=options.chain_type,
+                residue_count=1,
+                changed_residue_count=1,
             )
 
         monkeypatch.setattr("sabr.cli.main.renumber_file", fake_renumber_file)
@@ -250,6 +250,46 @@ class TestNoiseLevelCLI:
 
         assert result.exit_code == 0, result.output
         assert captured["chain_type"] is ChainType.HEAVY
+        assert captured["reference_embeddings_name"] == "embeddings.npz"
+
+    def test_random_seed_defaults_to_zero(self, monkeypatch, tmp_path):
+        captured = {}
+
+        def fake_renumber_file(
+            input_path, chain_id, output_path, options, reference_embeddings_name
+        ):
+            del input_path, chain_id, reference_embeddings_name
+            output_path.write_text("RENUMBERED\n")
+            captured["random_seed"] = options.random_seed
+            return RenumberResult(
+                output_path=output_path,
+                chain_type=ChainType.HEAVY,
+                residue_count=1,
+                changed_residue_count=1,
+            )
+
+        monkeypatch.setattr("sabr.cli.main.renumber_file", fake_renumber_file)
+        fixture = FIXTURES["8_21"]
+        if not fixture["pdb"].exists():
+            pytest.skip(f"Missing fixture at {fixture['pdb']}")
+
+        output = tmp_path / "out.pdb"
+        runner = CliRunner()
+        result = runner.invoke(
+            cli_main,
+            [
+                "-i",
+                str(fixture["pdb"]),
+                "-c",
+                fixture["chain"],
+                "-o",
+                str(output),
+                "--overwrite",
+            ],
+        )
+
+        assert result.exit_code == 0, result.output
+        assert captured["random_seed"] == 0
 
     def test_cli_rejects_non_label_chain_type_aliases(self, tmp_path):
         fixture = FIXTURES["8_21"]

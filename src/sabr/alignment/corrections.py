@@ -467,7 +467,7 @@ def apply_deterministic_corrections(
     """
     corrected = aln.copy()
     parsed_chain_type = parse_chain_type(chain_type)
-    if parsed_chain_type == "auto":
+    if parsed_chain_type is None:
         raise ValueError("Deterministic corrections require chain type H, K, or L.")
     chain_type_label = chain_type_value(parsed_chain_type)
 

@@ -31,7 +31,7 @@ from Bio.PDB import PDBIO, PDBParser, Select
 from sabr.embeddings.mpnn import from_pdb
 from sabr.numbering.imgt import IMGT_REGIONS, VARIABLE_LENGTH_POSITIONS
 from sabr.options import RenumberOptions
-from sabr.renumber import Renumberer
+from sabr.renumber import _create_numbering_plan
 from sabr.types import chain_type_value
 
 # Suppress all warnings
@@ -230,17 +230,16 @@ def run_sabr_pipeline(
             )
 
     # Run alignment and ANARCI through the public orchestration boundary.
-    plan = Renumberer().create_numbering_plan(
+    plan = _create_numbering_plan(
         input_data,
         RenumberOptions.from_values(
             numbering_scheme="imgt",
-            chain_type="auto",
             deterministic_corrections=deterministic_loop_renumbering,
             custom_gap_penalties=use_custom_gap_penalties,
         ),
     )
-    anarci_out = plan.anarci_alignment
-    chain_type = chain_type_value(plan.detected_chain_type)
+    anarci_out = plan.alignment
+    chain_type = chain_type_value(plan.chain_type)
     first_aligned_row = plan.first_aligned_row
 
     # Parse output positions from ANARCI alignment

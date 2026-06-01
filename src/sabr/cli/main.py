@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import logging
-import random
 from pathlib import Path
 
 import click
@@ -12,7 +11,7 @@ import click
 from sabr.embeddings.references import resolve_reference_embeddings_name
 from sabr.errors import SAbRError
 from sabr.options import RenumberOptions
-from sabr.renumber import renumber_file
+from sabr.renumber import _renumber_file as renumber_file
 from sabr.structure.residues import ResidueRange
 
 LOGGER = logging.getLogger(__name__)
@@ -96,8 +95,9 @@ def _validate_chain_id(ctx, _param, value: str) -> str:
     "--random-seed",
     "random_seed",
     type=int,
-    default=None,
-    help="Random seed for JAX operations. If omitted, one is generated.",
+    default=0,
+    show_default=True,
+    help="Random seed for JAX operations.",
 )
 @click.option(
     "-t",
@@ -138,7 +138,7 @@ def main(
     verbose: bool,
     residue_range: tuple[int, int] | None,
     disable_deterministic_renumbering: bool,
-    random_seed: int | None,
+    random_seed: int,
     chain_type: str,
     disable_custom_gap_penalties: bool,
     noise_level: str | None,
@@ -146,11 +146,7 @@ def main(
     """Run the command-line workflow for renumbering antibody structures."""
     _configure_logging(verbose)
 
-    if random_seed is None:
-        random_seed = random.randint(0, 2**31 - 1)
-        LOGGER.info("Generated random seed: %s", random_seed)
-    else:
-        LOGGER.info("Using specified random seed: %s", random_seed)
+    LOGGER.info("Using random seed: %s", random_seed)
 
     reference_embeddings = resolve_reference_embeddings_name(noise_level)
 
@@ -164,7 +160,6 @@ def main(
                 ResidueRange(*residue_range) if residue_range is not None else None
             ),
             random_seed=random_seed,
-            reference_embeddings=reference_embeddings,
             overwrite=overwrite,
         )
         result = renumber_file(
@@ -172,16 +167,16 @@ def main(
             chain_id=input_chain,
             output_path=Path(output_file),
             options=options,
+            reference_embeddings_name=reference_embeddings,
         )
     except (SAbRError, ValueError) as exc:
         raise click.ClickException(str(exc)) from exc
 
     LOGGER.info(
-        "Finished renumbering; output=%s chain_type=%s reference=%s residues=%s",
+        "Finished renumbering; output=%s chain_type=%s changed_residues=%s",
         result.output_path,
-        result.detected_chain_type.value,
-        result.selected_reference,
-        result.renumbered_count,
+        result.chain_type.value,
+        result.changed_residue_count,
     )
 
 

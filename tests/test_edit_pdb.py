@@ -4,6 +4,7 @@ from Bio.PDB import Chain, Residue
 from sabr.errors import OutputFormatError
 from sabr.numbering.anarci import NumberedResidue, numbered_alignment_from_raw
 from sabr.structure import threading as edit_pdb
+from sabr.structure.residues import ResidueRange
 
 
 def build_residue(number: int, name: str, hetflag: str = " ") -> Residue.Residue:
@@ -31,7 +32,6 @@ def test_thread_onto_chain_updates_residue_ids():
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
-        anarci_start=0,
         alignment_start=0,
     )
 
@@ -57,7 +57,6 @@ def test_thread_onto_chain_with_insertion_codes():
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
-        anarci_start=0,
         alignment_start=0,
     )
 
@@ -82,7 +81,6 @@ def test_thread_onto_chain_with_deletions():
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
-        anarci_start=0,
         alignment_start=0,
     )
 
@@ -103,7 +101,6 @@ def test_thread_onto_chain_counts_deviations():
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
-        anarci_start=0,
         alignment_start=0,
     )
 
@@ -127,9 +124,8 @@ def test_thread_onto_chain_preserves_out_of_range_residues():
     threaded, deviations = edit_pdb.thread_onto_chain(
         chain=chain,
         anarci_out=anarci_out,
-        anarci_start=0,
         alignment_start=0,
-        residue_range=(2, 3),
+        residue_range=ResidueRange(2, 3),
     )
 
     new_ids = [res.get_id() for res in threaded.get_residues()]
@@ -141,6 +137,22 @@ def test_thread_onto_chain_preserves_out_of_range_residues():
         (" ", 4, " "),
     ]
     assert deviations == 2
+
+
+def test_thread_onto_chain_rejects_duplicate_standard_ids():
+    chain = Chain.Chain("A")
+    chain.add(build_residue(1, "ALA"))
+    chain.add(build_residue(2, "GLY"))
+
+    anarci_out = [numbered(1, "G")]
+
+    with pytest.raises(OutputFormatError, match="duplicate residue id"):
+        edit_pdb.thread_onto_chain(
+            chain=chain,
+            anarci_out=anarci_out,
+            alignment_start=0,
+            residue_range=ResidueRange(2, 2),
+        )
 
 
 def test_validate_output_format_rejects_extended_codes_for_pdb():
@@ -166,7 +178,7 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
     from sabr.alignment.soft_aligner import SoftAligner
     from sabr.embeddings.mpnn import from_pdb
     from sabr.numbering.anarci import build_anarci_subsequence, number_from_alignment
-    from sabr.types import NumberingScheme, parse_chain_type
+    from sabr.types import NumberingScheme
 
     DATA_PACKAGE = "tests.data"
     pdb_path = Path(resources.files(DATA_PACKAGE) / "8sve_L.pdb")
@@ -181,14 +193,11 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
 
         hmm_output = alignment_matrix_to_state_vector(result.alignment)
         subsequence = build_anarci_subsequence(input_data.sequence or "", hmm_output)
-        chain_type = parse_chain_type(result.chain_type)
-        if chain_type == "auto":
-            raise AssertionError("SoftAligner returned auto chain type")
         anarci_out = number_from_alignment(
             hmm_output.states,
             subsequence,
             NumberingScheme.IMGT,
-            chain_type,
+            result.selected_chain_type,
         )
 
         # PDB output should raise OutputFormatError due to extended insertion codes

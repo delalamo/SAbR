@@ -43,7 +43,7 @@ def run_threading_pipeline(
     hmm_output = alignment_matrix_to_state_vector(alignment)
     subsequence = build_anarci_subsequence(sequence, hmm_output)
     parsed_chain_type = parse_chain_type(chain_type)
-    if parsed_chain_type == "auto":
+    if parsed_chain_type is None:
         raise AssertionError("Fixture chain type must be concrete")
     anarci_alignment = number_from_alignment(
         hmm_output.states,
@@ -171,14 +171,11 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
     assert hmm_output.imgt_start == 2  # Structure starts at IMGT position 3
 
     subsequence = build_anarci_subsequence(sequence, hmm_output)
-    parsed_chain_type = parse_chain_type(output.chain_type)
-    if parsed_chain_type == "auto":
-        raise AssertionError("SoftAligner returned auto chain type")
     anarci_out = number_from_alignment(
         hmm_output.states,
         subsequence,
         NumberingScheme.IMGT,
-        parsed_chain_type,
+        output.selected_chain_type,
     )
 
     output_pdb = tmp_path / "8_21_ntrunc_threaded.pdb"

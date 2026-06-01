@@ -7,14 +7,16 @@ from typing import FrozenSet
 
 import numpy as np
 
-from sabr.structure import geometry
-
 LOGGER = logging.getLogger(__name__)
+PEPTIDE_BOND_LENGTH = 1.33
+PEPTIDE_BOND_MAX_DISTANCE = 2 * PEPTIDE_BOND_LENGTH
+BACKBONE_N_IDX = 0
+BACKBONE_C_IDX = 2
 
 
 def detect_backbone_gaps(
     coords: np.ndarray,
-    threshold: float = geometry.PEPTIDE_BOND_MAX_DISTANCE,
+    threshold: float = PEPTIDE_BOND_MAX_DISTANCE,
 ) -> FrozenSet[int]:
     """Detect structural gaps by checking C-N peptide bond distances."""
     if coords.ndim == 4 and coords.shape[0] == 1:
@@ -27,8 +29,8 @@ def detect_backbone_gaps(
     if n_residues <= 1:
         return frozenset()
 
-    c_coords = coords[:-1, geometry.BACKBONE_C_IDX, :]
-    n_coords = coords[1:, geometry.BACKBONE_N_IDX, :]
+    c_coords = coords[:-1, BACKBONE_C_IDX, :]
+    n_coords = coords[1:, BACKBONE_N_IDX, :]
     distances = np.linalg.norm(c_coords - n_coords, axis=1)
 
     gap_indices = set(np.where(distances > threshold)[0])

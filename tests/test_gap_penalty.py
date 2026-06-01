@@ -8,8 +8,11 @@ Gap extend penalties remain at normal values everywhere to limit insertions.
 
 import numpy as np
 
-from sabr.alignment.backend import create_gap_penalty_for_reduced_reference
-from sabr.alignment.config import SW_GAP_EXTEND, SW_GAP_OPEN
+from sabr.alignment.backend import (
+    SW_GAP_EXTEND,
+    SW_GAP_OPEN,
+    create_gap_penalty_for_reduced_reference,
+)
 from sabr.numbering.imgt import IMGT_REGIONS
 
 

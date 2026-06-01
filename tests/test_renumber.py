@@ -5,6 +5,7 @@ import pytest
 from Bio import PDB
 
 import sabr.renumber as renumber
+from sabr.errors import InputStructureError
 from sabr.numbering.anarci import NumberedResidue
 from sabr.options import RenumberOptions
 from sabr.structure.residues import AA_3TO1
@@ -56,12 +57,12 @@ class TestRenumberStructure:
 
         monkeypatch.setattr(renumber, "from_chain", _dummy_from_chain)
         monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+        monkeypatch.setattr(renumber, "number_from_alignment", _fake_numbering_backend)
 
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
-        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
 
-        result = renumberer.renumber_structure(
+        result = renumber.renumber_structure(
             structure,
             chain_id=data["chain"],
             options=RenumberOptions(),
@@ -80,12 +81,12 @@ class TestRenumberStructure:
 
         monkeypatch.setattr(renumber, "from_chain", _dummy_from_chain)
         monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+        monkeypatch.setattr(renumber, "number_from_alignment", _fake_numbering_backend)
 
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
-        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
 
-        result = renumberer.renumber_structure(
+        result = renumber.renumber_structure(
             structure,
             chain_id=data["chain"],
             options=RenumberOptions(),
@@ -107,13 +108,13 @@ class TestRenumberStructure:
 
         monkeypatch.setattr(renumber, "from_chain", _dummy_from_chain)
         monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+        monkeypatch.setattr(renumber, "number_from_alignment", _fake_numbering_backend)
 
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
-        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
 
         captured_kwargs.clear()
-        renumberer.renumber_structure(
+        renumber.renumber_structure(
             structure,
             chain_id=data["chain"],
             options=RenumberOptions(custom_gap_penalties=False),
@@ -131,18 +132,33 @@ class TestRenumberStructure:
 
         monkeypatch.setattr(renumber, "from_chain", _dummy_from_chain)
         monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+        monkeypatch.setattr(renumber, "number_from_alignment", _fake_numbering_backend)
 
         parser = PDB.PDBParser(QUIET=True)
         structure = parser.get_structure("test", str(data["pdb"]))
-        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
 
-        renumberer.renumber_structure(
+        renumber.renumber_structure(
             structure,
             chain_id=data["chain"],
             options=RenumberOptions(chain_type=ChainType.HEAVY),
         )
 
         assert captured_kwargs["chain_type"] is ChainType.HEAVY
+
+    def test_renumber_structure_rejects_multi_character_chain_id(self):
+        structure = PDB.Structure.Structure("test")
+
+        with pytest.raises(InputStructureError, match="exactly one character"):
+            renumber.renumber_structure(structure, chain_id="AB")
+
+
+def test_renumber_file_rejects_multi_character_chain_id(tmp_path):
+    input_path = tmp_path / "input.pdb"
+    output_path = tmp_path / "output.pdb"
+    input_path.write_text("HEADER TEST\n")
+
+    with pytest.raises(InputStructureError, match="exactly one character"):
+        renumber.renumber_file(input_path, chain_id="AB", output_path=output_path)
 
 
 class TestNumberingPlan:
@@ -156,6 +172,7 @@ class TestNumberingPlan:
         alignment, chain_type = load_alignment_fixture(data["alignment"])
         DummyAligner = create_dummy_aligner(alignment, chain_type)
         monkeypatch.setattr(renumber, "SoftAligner", lambda **_kwargs: DummyAligner())
+        monkeypatch.setattr(renumber, "number_from_alignment", _fake_numbering_backend)
 
         dummy_embeddings = DummyEmbeddings(
             name="test",
@@ -163,15 +180,12 @@ class TestNumberingPlan:
             idxs=[str(i) for i in range(alignment.shape[0])],
             sequence="A" * alignment.shape[0],
         )
-        renumberer = renumber.Renumberer(numbering_backend=_fake_numbering_backend)
-
-        plan = renumberer.create_numbering_plan(
+        plan = renumber._create_numbering_plan(
             dummy_embeddings,
             RenumberOptions(),
         )
 
-        assert plan.detected_chain_type.value in ("H", "K", "L")
-        assert plan.selected_reference in ("H", "K", "L")
+        assert plan.chain_type.value in ("H", "K", "L")
         assert isinstance(plan.first_aligned_row, int)
 
     def test_numbering_plan_passes_embedding_label_to_anarci(self, monkeypatch):
@@ -191,12 +205,12 @@ class TestNumberingPlan:
             idxs=[str(i) for i in range(alignment.shape[0])],
             sequence="AAA",
         )
-        renumberer = renumber.Renumberer(numbering_backend=numbering_backend)
+        monkeypatch.setattr(renumber, "number_from_alignment", numbering_backend)
 
-        plan = renumberer.create_numbering_plan(
+        plan = renumber._create_numbering_plan(
             dummy_embeddings,
             RenumberOptions(),
         )
 
-        assert plan.detected_chain_type is ChainType.KAPPA
+        assert plan.chain_type is ChainType.KAPPA
         assert captured["chain_type"] is ChainType.KAPPA
