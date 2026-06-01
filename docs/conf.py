@@ -7,8 +7,8 @@ author = "Diego del Alamo"
 extensions = [
     "myst_parser",
     "sphinx.ext.autodoc",
-    "sphinx_autodoc_typehints",
     "sphinx_click",
+    "sphinx_autodoc_typehints",
 ]
 
 source_suffix = {
