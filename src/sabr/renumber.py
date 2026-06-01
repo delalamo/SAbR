@@ -27,7 +27,6 @@ from sabr.numbering.anarci import (
     number_from_alignment,
 )
 from sabr.options import RenumberOptions
-from sabr.structure.io import read_structure
 from sabr.structure.threading import (
     thread_alignment,
     thread_numbering_onto_structure,
@@ -160,8 +159,6 @@ class Renumberer:
             chain_id,
             numbering_plan.anarci_alignment,
             str(output_path),
-            0,
-            len(numbering_plan.anarci_alignment),
             alignment_start=numbering_plan.first_aligned_row,
             residue_range=options.residue_range,
         )
@@ -209,8 +206,6 @@ class Renumberer:
             structure,
             chain_id,
             numbering_plan.anarci_alignment,
-            0,
-            len(numbering_plan.anarci_alignment),
             numbering_plan.first_aligned_row,
             residue_range=options.residue_range,
         )
@@ -256,8 +251,3 @@ def renumber_structure(
 ) -> Structure.Structure:
     """Renumber one chain in an in-memory BioPython structure."""
     return Renumberer().renumber_structure(structure, chain_id, options)
-
-
-def load_structure(input_path: str | Path) -> Structure.Structure:
-    """Read a structure file for callers that need BioPython objects."""
-    return read_structure(str(input_path))

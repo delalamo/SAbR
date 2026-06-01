@@ -199,8 +199,6 @@ def _move_or_clear_position(
 
 def correct_fr3_alignment(
     aln: np.ndarray,
-    input_has_pos81: bool = False,
-    input_has_pos82: bool = False,
     gap_indices: Optional[FrozenSet[int]] = None,
 ) -> np.ndarray:
     """Fix FR3 alignment issues in positions 81-84 for light chains.
@@ -209,13 +207,11 @@ def correct_fr3_alignment(
     numbering, having residues at 79, 80, 83, 84, ... instead of the full
     79, 80, 81, 82, 83, 84, ... pattern seen in heavy chains.
 
-    If the aligner places light chain residues at positions
-    81-82 instead of 83-84. This function corrects that misalignment.
+    If the aligner places light-chain residues at positions
+    81-82 instead of 83-84, this function corrects that misalignment.
 
     Args:
         aln: The alignment matrix.
-        input_has_pos81: Whether the input sequence has position 81.
-        input_has_pos82: Whether the input sequence has position 82.
         gap_indices: FrozenSet of row indices where structural gaps occur.
             If a gap is found in the DE loop region, deterministic
             correction is skipped and embedding similarity is used instead.
@@ -247,10 +243,10 @@ def correct_fr3_alignment(
             return aln
 
     # Move misaligned positions: 81→83 and 82→84
-    if not input_has_pos81 and aln[:, pos81_col].sum() == 1:
+    if aln[:, pos81_col].sum() == 1:
         _move_or_clear_position(aln, pos81_col, pos83_col, "81", "83")
 
-    if not input_has_pos82 and aln[:, pos82_col].sum() == 1:
+    if aln[:, pos82_col].sum() == 1:
         _move_or_clear_position(aln, pos82_col, pos84_col, "82", "84")
 
     return aln
@@ -369,35 +365,11 @@ def correct_cdr_loop(
         aln, anchor_end_col, search_range=2, direction="both"
     )
 
-    # Handle missing anchors with diagnostic details
     if anchor_start_row is None or anchor_end_row is None:
-        details = []
-        if anchor_start_row is None:
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_start_col, search_range=10, direction="backward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to start anchor {anchor_start}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(f"no residues found near start anchor {anchor_start}")
-        if anchor_end_row is None:
-            closest_row, closest_col = find_nearest_occupied_column(
-                aln, anchor_end_col, search_range=10, direction="forward"
-            )
-            if closest_row is not None:
-                details.append(
-                    f"closest residue to end anchor {anchor_end}: "
-                    f"row {closest_row} at IMGT position {closest_col + 1}"
-                )
-            else:
-                details.append(f"no residues found near end anchor {anchor_end}")
         LOGGER.warning(
             f"Skipping {loop_name}; missing anchor at position "
             f"{anchor_start} (col {anchor_start_col}±2) or "
-            f"{anchor_end} (col {anchor_end_col}±2). {'; '.join(details)}"
+            f"{anchor_end} (col {anchor_end_col}±2)."
         )
         return aln
 
@@ -511,8 +483,6 @@ def apply_deterministic_corrections(
     if chain_type_label in {"K", "L"}:
         corrected = correct_fr3_alignment(
             corrected,
-            input_has_pos81=False,
-            input_has_pos82=False,
             gap_indices=gap_indices,
         )
 

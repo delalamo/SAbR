@@ -77,8 +77,3 @@ def chain_type_value(value: ChainType | AutoChainType) -> str:
     if value == "auto":
         return "auto"
     return value.value
-
-
-def numbering_scheme_value(value: NumberingScheme) -> str:
-    """Return the string representation expected by ANARCI."""
-    return value.value

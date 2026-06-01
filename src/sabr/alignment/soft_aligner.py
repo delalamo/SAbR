@@ -30,13 +30,16 @@ from sabr.alignment.backend import (
 from sabr.alignment.config import DEFAULT_TEMPERATURE
 from sabr.alignment.validation import validate_alignment_matrix
 from sabr.embeddings.mpnn import QueryEmbeddings
-from sabr.embeddings.references import ReferenceEmbeddings, load_reference_embeddings
+from sabr.embeddings.references import (
+    VALID_REFERENCE_LABELS,
+    ReferenceEmbeddings,
+    load_reference_embeddings,
+)
 from sabr.numbering.imgt import IMGT_MAX_POSITION
 from sabr.types import ChainType, chain_type_value, parse_chain_type
 from sabr.validation import validate_array_shape
 
 LOGGER = logging.getLogger(__name__)
-VALID_REFERENCE_LABELS = {"H", "K", "L"}
 
 
 @dataclass(frozen=True)
@@ -112,13 +115,13 @@ class SoftAligner:
             temperature: Alignment temperature parameter.
             random_seed: Random seed for reproducibility.
         """
-        self.embeddings = (
-            reference_embeddings
-            if reference_embeddings is not None
-            else self.read_embeddings(
-                embeddings_name=embeddings_name, embeddings_path=embeddings_path
+        if reference_embeddings is None:
+            reference_embeddings = load_reference_embeddings(
+                embeddings_name, embeddings_path
             )
-        )
+            LOGGER.info(f"Loaded reference embeddings: {list(reference_embeddings)}")
+
+        self.embeddings = reference_embeddings
         self._validate_reference_labels(self.embeddings)
         self.temperature = temperature
         self._backend = backend
@@ -140,21 +143,7 @@ class SoftAligner:
             self._backend = AlignmentBackend(random_seed=self._random_seed)
         return self._backend
 
-    def read_embeddings(
-        self,
-        embeddings_name: str = "embeddings.npz",
-        embeddings_path: str = "sabr.assets",
-    ) -> Dict[str, ReferenceEmbeddings]:
-        """Load packaged H/K/L reference embeddings.
-
-        Returns:
-            Dictionary mapping chain type keys to reference embeddings.
-        """
-        embeddings = load_reference_embeddings(embeddings_name, embeddings_path)
-        LOGGER.info(f"Loaded reference embeddings: {list(embeddings)}")
-        return embeddings
-
-    def fix_aln(self, old_aln: np.ndarray, idxs: List[int]) -> np.ndarray:
+    def _fix_aln(self, old_aln: np.ndarray, idxs: List[int]) -> np.ndarray:
         """Expand an alignment onto IMGT positions using saved indices."""
         aln = np.zeros((old_aln.shape[0], IMGT_MAX_POSITION), dtype=old_aln.dtype)
         aln[:, np.asarray(idxs, dtype=int) - 1] = old_aln
@@ -177,24 +166,20 @@ class SoftAligner:
         Returns:
             Tuple of (alignment, sim_matrix, score, reference_idxs).
         """
+        gap_matrix = None
+        open_matrix = None
         if use_custom_gap_penalties:
             gap_matrix, open_matrix = create_gap_penalty_for_reduced_reference(
                 input_data.embeddings.shape[0], reference_embedding.positions
             )
 
-            alignment, sim_matrix, score = self._get_backend().align(
-                input_embeddings=input_data.embeddings,
-                target_embeddings=reference_embedding.embeddings,
-                temperature=self.temperature,
-                gap_matrix=gap_matrix,
-                open_matrix=open_matrix,
-            )
-        else:
-            alignment, sim_matrix, score = self._get_backend().align(
-                input_embeddings=input_data.embeddings,
-                target_embeddings=reference_embedding.embeddings,
-                temperature=self.temperature,
-            )
+        alignment, sim_matrix, score = self._get_backend().align(
+            input_embeddings=input_data.embeddings,
+            target_embeddings=reference_embedding.embeddings,
+            temperature=self.temperature,
+            gap_matrix=gap_matrix,
+            open_matrix=open_matrix,
+        )
 
         return alignment, sim_matrix, score, reference_embedding.positions
 
@@ -274,7 +259,7 @@ class SoftAligner:
             )
             selected_reference = requested_label
 
-        aln = self.fix_aln(alignment, ref_idxs)
+        aln = self._fix_aln(alignment, ref_idxs)
         aln = np.round(aln).astype(int)
         validate_alignment_matrix(aln)
 

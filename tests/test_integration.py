@@ -58,8 +58,6 @@ def run_threading_pipeline(
         chain,
         anarci_alignment,
         str(output_pdb),
-        0,
-        len(anarci_alignment),
         alignment_start=0,
     )
 
@@ -189,8 +187,6 @@ def test_n_terminal_truncated_structure_end_to_end(tmp_path):
         chain,
         anarci_out,
         str(output_pdb),
-        0,
-        len(anarci_out),
         alignment_start=0,
     )
 

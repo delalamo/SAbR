@@ -32,7 +32,6 @@ def test_thread_onto_chain_updates_residue_ids():
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=2,
         alignment_start=0,
     )
 
@@ -59,7 +58,6 @@ def test_thread_onto_chain_with_insertion_codes():
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=3,
         alignment_start=0,
     )
 
@@ -85,7 +83,6 @@ def test_thread_onto_chain_with_deletions():
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=3,
         alignment_start=0,
     )
 
@@ -107,7 +104,6 @@ def test_thread_onto_chain_counts_deviations():
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=2,
         alignment_start=0,
     )
 
@@ -132,7 +128,6 @@ def test_thread_onto_chain_preserves_out_of_range_residues():
         chain=chain,
         anarci_out=anarci_out,
         anarci_start=0,
-        anarci_end=2,
         alignment_start=0,
         residue_range=(2, 3),
     )
@@ -204,8 +199,6 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
                 "M",
                 anarci_out,
                 str(output_pdb),
-                0,
-                len(anarci_out),
                 alignment_start=0,
             )
 
@@ -216,8 +209,6 @@ def test_8sve_L_extended_insertion_codes(tmp_path):
             "M",
             anarci_out,
             str(output_cif),
-            0,
-            len(anarci_out),
             alignment_start=0,
         )
 

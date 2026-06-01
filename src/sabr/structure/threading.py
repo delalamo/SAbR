@@ -53,16 +53,6 @@ def _classify_residue_region(
     return ResidueRegion.POST_FV
 
 
-def _skip_deletions(
-    anarci_idx: int,
-    anarci_start: int,
-    anarci_out: AnarciAlignment,
-) -> int:
-    """Compatibility no-op; numbered alignments do not include deletion rows."""
-    del anarci_start, anarci_out
-    return anarci_idx
-
-
 def _compute_new_residue_id(
     region: ResidueRegion,
     anarci_out: AnarciAlignment,
@@ -140,7 +130,6 @@ def thread_onto_chain(
     chain: Chain.Chain,
     anarci_out: AnarciAlignment,
     anarci_start: int,
-    anarci_end: int,
     alignment_start: int,
     residue_range: ResidueRange | tuple[int, int] | None = None,
 ) -> tuple[Chain.Chain, int]:
@@ -149,7 +138,6 @@ def thread_onto_chain(
     Residues outside ``residue_range`` are preserved unchanged in the output.
     The range is interpreted against original structure residue numbers.
     """
-    del anarci_end
     selected_range = normalize_residue_range(residue_range)
     LOGGER.info(
         "Threading chain %s with ANARCI window starting at %s "
@@ -178,11 +166,6 @@ def thread_onto_chain(
 
         if is_in_aligned_region:
             state.aligned_residue_idx += 1
-
-        if state.aligned_residue_idx >= 0:
-            state.aligned_residue_idx = _skip_deletions(
-                state.aligned_residue_idx, anarci_start, anarci_out
-            )
 
         anarci_array_idx = state.aligned_residue_idx + anarci_start
         region = _classify_residue_region(
@@ -249,8 +232,6 @@ def thread_numbering_onto_structure(
     structure: Structure.Structure,
     chain_id: str,
     alignment: AnarciAlignment,
-    start_res: int,
-    end_res: int,
     alignment_start: int,
     residue_range: ResidueRange | tuple[int, int] | None = None,
 ) -> tuple[Structure.Structure, int]:
@@ -260,8 +241,7 @@ def thread_numbering_onto_structure(
         return thread_onto_chain(
             chain,
             alignment,
-            start_res,
-            end_res,
+            0,
             alignment_start,
             residue_range,
         )
@@ -276,8 +256,6 @@ def thread_alignment(
     chain: str,
     alignment: AnarciAlignment,
     output_pdb: str,
-    start_res: int,
-    end_res: int,
     alignment_start: int,
     residue_range: ResidueRange | tuple[int, int] | None = None,
 ) -> int:
@@ -288,8 +266,6 @@ def thread_alignment(
         structure,
         chain,
         alignment,
-        start_res,
-        end_res,
         alignment_start,
         residue_range,
     )

@@ -18,25 +18,6 @@ from sabr.errors import OutputFormatError
 LOGGER = logging.getLogger(__name__)
 
 
-def read_structure_biopython(file_path: str) -> Structure:
-    """Read a structure file using BioPython.
-
-    Args:
-        file_path: Path to PDB or mmCIF file.
-
-    Returns:
-        BioPython Structure object.
-    """
-    if file_path.lower().endswith(".cif"):
-        parser = MMCIFParser(QUIET=True)
-    else:
-        parser = PDBParser(QUIET=True)
-
-    structure = parser.get_structure("structure", file_path)
-    LOGGER.info(f"Read structure from {file_path} using BioPython")
-    return structure
-
-
 def read_structure(file_path: str) -> Structure:
     """Read a PDB or mmCIF file into a BioPython structure."""
     path = Path(file_path)
@@ -44,7 +25,14 @@ def read_structure(file_path: str) -> Structure:
         raise OutputFormatError(
             f"Input file must be a PDB (.pdb) or mmCIF (.cif) file. Got: {path}"
         )
-    return read_structure_biopython(str(path))
+    parser = (
+        MMCIFParser(QUIET=True)
+        if path.suffix.lower() == ".cif"
+        else PDBParser(QUIET=True)
+    )
+    structure = parser.get_structure("structure", str(path))
+    LOGGER.info(f"Read structure from {path} using BioPython")
+    return structure
 
 
 def write_structure(structure: Structure, output_path: str) -> None:

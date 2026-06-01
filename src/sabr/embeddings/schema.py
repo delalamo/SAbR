@@ -2,27 +2,22 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 
+QUERY_SCHEMA = "query-v1"
+
 if TYPE_CHECKING:
     from sabr.embeddings.mpnn import QueryEmbeddings
-
-
-class EmbeddingSchemaVersion(Enum):
-    """Known embedding NPZ schema variants."""
-
-    QUERY_V1 = "query-v1"
 
 
 def save_query_embeddings(embeddings: "QueryEmbeddings", output_path: str) -> None:
     """Save query embeddings using the documented schema."""
     np.savez(
         Path(output_path),
-        schema=EmbeddingSchemaVersion.QUERY_V1.value,
+        schema=QUERY_SCHEMA,
         name=embeddings.name,
         embeddings=embeddings.embeddings,
         idxs=np.array(embeddings.idxs),

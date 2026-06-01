@@ -234,7 +234,7 @@ def test_correct_gap_numbering_places_expected_ones():
 def test_fix_aln_expands_to_imgt_width():
     aligner = make_aligner()
     old_aln = np.array([[1, 0, 1], [0, 1, 0]], dtype=int)
-    expanded = aligner.fix_aln(old_aln, idxs=["1", "3", "5"])
+    expanded = aligner._fix_aln(old_aln, idxs=["1", "3", "5"])
 
     assert expanded.shape == (2, 128)
     assert np.array_equal(expanded[:, 0], old_aln[:, 0])
@@ -265,7 +265,7 @@ def test_fix_aln_with_integer_idxs():
     """Test fix_aln with integer indices."""
     aligner = make_aligner()
     old_aln = np.array([[1, 0], [0, 1]], dtype=int)
-    expanded = aligner.fix_aln(old_aln, idxs=[1, 5])
+    expanded = aligner._fix_aln(old_aln, idxs=[1, 5])
 
     assert expanded.shape == (2, 128)
     assert expanded[0, 0] == 1
@@ -276,7 +276,7 @@ def test_fix_aln_preserves_dtype():
     """Test that fix_aln preserves data type."""
     aligner = make_aligner()
     old_aln = np.array([[1.5, 0.3]], dtype=float)
-    expanded = aligner.fix_aln(old_aln, idxs=["1", "2"])
+    expanded = aligner._fix_aln(old_aln, idxs=["1", "2"])
 
     assert expanded.dtype == old_aln.dtype
 
@@ -372,16 +372,13 @@ def test_correct_fr1_no_anchors_found():
 
 
 def test_correct_fr3_alignment_no_correction_needed():
-    """Test FR3 correction when input has positions 81 and 82."""
+    """Test FR3 correction leaves already shifted residues unchanged."""
     aln = np.zeros((100, 128), dtype=int)
-    # Set up positions 81 and 82 (cols 80 and 81) occupied
-    aln[70, 80] = 1  # Residue at position 81
-    aln[71, 81] = 1  # Residue at position 82
+    aln[70, 82] = 1  # Residue at position 83
+    aln[71, 83] = 1  # Residue at position 84
 
-    # If input has both positions, no correction needed
-    corrected = correct_fr3_alignment(aln, input_has_pos81=True, input_has_pos82=True)
+    corrected = correct_fr3_alignment(aln)
 
-    # Should not change
     assert np.array_equal(corrected, aln)
 
 
@@ -391,8 +388,7 @@ def test_correct_fr3_alignment_move_81_to_83():
     # Position 81 (col 80) has a residue, position 83 (col 82) is empty
     aln[70, 80] = 1  # Residue incorrectly at position 81
 
-    # Light chain lacks position 81
-    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=True)
+    corrected = correct_fr3_alignment(aln)
 
     # Residue should be moved from pos81 to pos83
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -405,8 +401,7 @@ def test_correct_fr3_alignment_move_82_to_84():
     # Position 82 (col 81) has a residue, position 84 (col 83) is empty
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
-    # Light chain lacks position 82
-    corrected = correct_fr3_alignment(aln, input_has_pos81=True, input_has_pos82=False)
+    corrected = correct_fr3_alignment(aln)
 
     # Residue should be moved from pos82 to pos84
     assert corrected[71, 81] == 0  # Position 82 cleared
@@ -420,8 +415,7 @@ def test_correct_fr3_alignment_both_moves():
     aln[70, 80] = 1  # Residue incorrectly at position 81
     aln[71, 81] = 1  # Residue incorrectly at position 82
 
-    # Light chain lacks both positions 81 and 82
-    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=False)
+    corrected = correct_fr3_alignment(aln)
 
     # Both residues should be moved
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -439,8 +433,7 @@ def test_correct_fr3_alignment_83_84_already_occupied():
     aln[72, 82] = 1  # Position 83
     aln[73, 83] = 1  # Position 84
 
-    # Light chain lacks positions 81 and 82
-    corrected = correct_fr3_alignment(aln, input_has_pos81=False, input_has_pos82=False)
+    corrected = correct_fr3_alignment(aln)
 
     # Since 83, 84 are occupied, 81, 82 should just be cleared
     assert corrected[70, 80] == 0  # Position 81 cleared
@@ -810,8 +803,6 @@ class TestGapSkipping:
 
         corrected = correct_fr3_alignment(
             aln,
-            input_has_pos81=False,
-            input_has_pos82=False,
             gap_indices=gap_indices,
         )
 
