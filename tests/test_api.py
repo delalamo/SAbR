@@ -65,6 +65,8 @@ def test_biopython_structure_is_copied_before_numbering(monkeypatch):
     path = DATA / "test_heavy_chain.pdb"
     structure = PDBParser(QUIET=True).get_structure("structure", path)
     original_ids = _bio_ids(structure, "F")
+    structure.header["nested"] = ["original"]
+    original_coords = np.array([atom.coord for atom in structure.get_atoms()])
 
     result = renumber_structure(structure, "F", chain_type="H")
 
@@ -72,6 +74,18 @@ def test_biopython_structure_is_copied_before_numbering(monkeypatch):
     assert result is not structure
     assert _bio_ids(structure, "F") == original_ids
     assert _bio_ids(result, "F") != original_ids
+    np.testing.assert_array_equal(
+        [atom.coord for atom in result.get_atoms()], original_coords
+    )
+    assert [r.resname for r in result.get_residues()] == [
+        r.resname for r in structure.get_residues()
+    ]
+    next(result.get_atoms()).coord[0] += 100
+    result.header["nested"].append("changed")
+    np.testing.assert_array_equal(
+        [atom.coord for atom in structure.get_atoms()], original_coords
+    )
+    assert structure.header["nested"] == ["original"]
 
 
 def test_non_target_content_and_out_of_range_residues_are_preserved(
@@ -369,3 +383,20 @@ def test_invalid_public_options_fail_before_model_execution(kwargs, message):
 def test_unsupported_structure_type_raises_type_error():
     with pytest.raises(TypeError, match="Bio.PDB"):
         renumber_structure(object(), "A")
+
+
+@pytest.mark.parametrize("chain_type", constants.TCR_CHAIN_TYPES)
+@pytest.mark.parametrize("scheme", ("chothia", "kabat", "martin", "wolfguy"))
+def test_invalid_tcr_scheme_fails_before_encoding(
+    monkeypatch, chain_type, scheme
+):
+    monkeypatch.setattr(
+        api,
+        "encode",
+        lambda *args: pytest.fail("unsupported TCR scheme reached encoder"),
+    )
+    structure = PDBParser(QUIET=True).get_structure(
+        "heavy", DATA / "test_heavy_chain.pdb"
+    )
+    with pytest.raises(ValueError, match="only IMGT or AHo"):
+        renumber_structure(structure, "F", chain_type=chain_type, scheme=scheme)

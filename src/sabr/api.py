@@ -120,6 +120,13 @@ class _RenumberOptions:
             self.mode,
         )
         _validate_residue_range(self.residue_range)
+        if (
+            self.chain_type in constants.TCR_CHAIN_TYPES
+            and self.scheme not in ("imgt", "aho")
+        ):
+            raise ValueError(
+                "TCR chain types support only IMGT or AHo numbering."
+            )
         if not isinstance(self.scfv, bool):
             raise ValueError("scfv must be a boolean.")
         if self.scfv and self.chain_type != "auto":

@@ -181,7 +181,7 @@ def extract_chain(
     unknown_hetero = []
     polymer_ids = set()
 
-    # First pass: adapt BioPython/Gemmi metadata and separate recognized
+    # First pass: read Biopython metadata and separate recognized
     # polymer residues from unknown HETATM records that may merely be ligands.
     for index, residue in enumerate(target):
         number = residue.id[1]
@@ -276,6 +276,10 @@ def extract_chain(
     # complete. Modified residues use their canonical parent only for sequence
     # generation; the returned numbering is applied to unchanged source atoms.
     for index, number, insertion_code, parent_name, backbone in normalized:
+        if not np.isfinite(backbone).all():
+            raise ValueError(
+                f"Residue {number}{insertion_code} has non-finite coordinates."
+            )
         n_coord, ca_coord, c_coord = backbone
         residue_coords = np.stack(
             (

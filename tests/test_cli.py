@@ -3,8 +3,10 @@ import logging
 import shutil
 from pathlib import Path
 
+import click
+import numpy as np
 import pytest
-from Bio.PDB import MMCIFParser, PDBParser
+from Bio.PDB import PDBIO, MMCIFParser, PDBParser
 from click.testing import CliRunner
 
 import sabr.cli as cli
@@ -105,6 +107,7 @@ def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):
     assert captured["scfv"] is False
     assert captured["dangerously_allow_structural_gaps"] is False
     assert "pipeline details" not in result.output
+    assert "Numerical backend:" not in result.output
 
 
 @pytest.mark.parametrize("noise_level", ["0.0", "0.2", "0.5", "1.0", "2.0"])
@@ -311,46 +314,56 @@ def test_cli_failure_leaves_no_output_or_temporary_file(monkeypatch, tmp_path):
     assert list(tmp_path.iterdir()) == []
 
 
-def test_real_cli_round_trip(monkeypatch, tmp_path):
+@pytest.mark.parametrize("mode", ("sabr", "softalign"))
+def test_real_cli_round_trip(tmp_path, mode):
+    source = PDBParser(QUIET=True).get_structure(
+        "input", DATA / "test_heavy_chain.pdb"
+    )
+    # The fixture is already IMGT numbered. Offset IDs so a no-op cannot pass.
+    for residue in source[0]["F"]:
+        residue.id = (residue.id[0], residue.id[1] + 500, residue.id[2])
+    input_path = tmp_path / "offset.pdb"
+    writer = PDBIO()
+    writer.set_structure(source)
+    writer.save(str(input_path))
     output = tmp_path / "numbered.pdb"
     result = CliRunner().invoke(
         cli.main,
         [
             "-i",
-            str(DATA / "test_heavy_chain.pdb"),
+            str(input_path),
             "-c",
             "F",
             "-o",
             str(output),
             "-t",
             "H,K",
-        ],
-    )
-    assert result.exit_code == 0, result.output
-    parsed = PDBParser(QUIET=True).get_structure("output", output)
-    assert list(parsed[0]["F"])[-1].id[1] == 128
-
-
-def test_real_softalign_cli_round_trip(tmp_path):
-    output = tmp_path / "softalign-numbered.pdb"
-    result = CliRunner().invoke(
-        cli.main,
-        [
-            "-i",
-            str(DATA / "test_heavy_chain.pdb"),
-            "-c",
-            "F",
-            "-o",
-            str(output),
-            "-t",
-            "H",
             "--mode",
-            "softalign",
+            mode,
         ],
     )
     assert result.exit_code == 0, result.output
     parsed = PDBParser(QUIET=True).get_structure("output", output)
-    assert list(parsed[0]["F"])[-1].id[1] == 128
+    golden = json.loads((DATA / "numbering_baseline.json").read_text())["H"][
+        "schemes"
+    ]["imgt"]
+    assert [(r.id[1], r.id[2].strip()) for r in parsed[0]["F"]] == [
+        (n, code.strip()) for n, code, _ in golden["numbered"]
+    ]
+    assert [r.resname for r in parsed.get_residues()] == [
+        r.resname for r in source.get_residues()
+    ]
+    before, after = list(source.get_atoms()), list(parsed.get_atoms())
+    assert len(before) == len(after)
+    for a, b in zip(before, after, strict=True):
+        assert (a.name, a.altloc, a.element, a.occupancy, a.bfactor) == (
+            b.name,
+            b.altloc,
+            b.element,
+            b.occupancy,
+            b.bfactor,
+        )
+        np.testing.assert_allclose(a.coord, b.coord, rtol=0, atol=0.00051)
 
 
 def test_cli_rejects_structural_gap_without_override(tmp_path):
@@ -430,7 +443,13 @@ def test_cli_accepts_mmcif_input(monkeypatch, tmp_path):
 def test_cli_rejects_unsupported_file_extensions(
     monkeypatch, tmp_path, invalid_side
 ):
-    monkeypatch.setattr(cli, "renumber_structure", _passthrough())
+    monkeypatch.setattr(
+        cli,
+        "renumber_structure",
+        lambda *args, **kwargs: pytest.fail(
+            "unsupported extension reached pipeline"
+        ),
+    )
     input_path = DATA / "test_heavy_chain.pdb"
     output_path = tmp_path / "numbered.pdb"
     if invalid_side == "input":
@@ -447,15 +466,28 @@ def test_cli_rejects_unsupported_file_extensions(
     assert not output_path.exists()
 
 
-def test_writer_failure_removes_partial_temporary_file(monkeypatch, tmp_path):
+@pytest.mark.parametrize(
+    "stage,error",
+    [("write", OSError), ("write", click.ClickException), ("replace", OSError)],
+)
+@pytest.mark.parametrize("existing", [False, True])
+def test_writer_failure_removes_partial_temporary_file(
+    monkeypatch, tmp_path, stage, error, existing
+):
     monkeypatch.setattr(cli, "renumber_structure", _passthrough())
 
     def fail_after_partial_write(structure, path):
-        path.write_text("partial")
-        raise OSError("planned writer failure")
+        if stage == "write":
+            path.write_text("partial")
+        raise error("planned writer failure")
 
-    monkeypatch.setattr(cli, "_write_structure", fail_after_partial_write)
+    if stage == "write":
+        monkeypatch.setattr(cli, "_write_structure", fail_after_partial_write)
+    else:
+        monkeypatch.setattr(cli.os, "replace", fail_after_partial_write)
     output = tmp_path / "failed.pdb"
+    if existing:
+        output.write_bytes(b"original")
     result = CliRunner().invoke(
         cli.main,
         [
@@ -465,11 +497,14 @@ def test_writer_failure_removes_partial_temporary_file(monkeypatch, tmp_path):
             "F",
             "-o",
             str(output),
+            "--overwrite",
         ],
     )
     assert result.exit_code != 0
     assert "planned writer failure" in result.output
-    assert list(tmp_path.iterdir()) == []
+    assert list(tmp_path.iterdir()) == ([output] if existing else [])
+    if existing:
+        assert output.read_bytes() == b"original"
 
 
 def test_cleanup_failure_does_not_replace_original_error(monkeypatch, tmp_path):

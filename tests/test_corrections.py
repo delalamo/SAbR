@@ -184,3 +184,24 @@ def test_standard_de_loop_keeps_the_learned_alignment():
     original = alignment.copy()
     corrected = apply_corrections(alignment)
     np.testing.assert_array_equal(corrected, original)
+
+
+def test_gap_in_cdr1_does_not_suppress_cdr2_repair():
+    alignment = np.eye(128, dtype=int)
+    alignment[30] = 0
+    alignment[58] = 0
+    with pytest.warns(UserWarning, match="Skipping CDR1") as captured:
+        corrected = apply_corrections(alignment, frozenset({30}))
+    assert len(captured) == 1
+    assert not corrected[30].any()
+    assert corrected[58, 58] == 1
+
+
+@pytest.mark.parametrize("anchor_column", [22, 39])
+def test_missing_cdr_anchor_preserves_alignment(anchor_column, caplog):
+    alignment = np.eye(128, dtype=int)
+    alignment[:, anchor_column - 2 : anchor_column + 3] = 0
+    original = alignment.copy()
+    corrected = correct_cdr_loop(alignment, "CDR1", 27, 38)
+    np.testing.assert_array_equal(corrected, original)
+    assert "missing anchor" in caplog.text

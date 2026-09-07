@@ -66,6 +66,7 @@ addopts = "-ra"
 testpaths = ["tests"]
 
 [tool.coverage.run]
+branch = true
 omit = ["src/sabr/_anarci/*"]
 
 [tool.coverage.report]

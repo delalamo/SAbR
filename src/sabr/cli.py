@@ -180,6 +180,10 @@ def main(
         )
     temporary = None
     try:
+        if output_path.suffix.lower() not in (".pdb", ".cif", ".mmcif"):
+            raise ValueError(
+                "Output must use the .pdb, .cif, or .mmcif extension."
+            )
         structure = _read_structure(input_path)
         if input_path.suffix.lower() in (".cif", ".mmcif"):
             LOGGER.warning(
@@ -221,8 +225,6 @@ def main(
         )
         _write_structure(result, temporary)
         os.replace(temporary, resolved_output_path)
-    except click.ClickException:
-        raise
     except Exception as error:
         if temporary is not None and temporary.exists():
             try:
@@ -233,6 +235,8 @@ def main(
                     temporary,
                     cleanup_error,
                 )
+        if isinstance(error, click.ClickException):
+            raise
         if verbose:
             LOGGER.exception("Renumbering failed")
         raise click.ClickException(str(error)) from error

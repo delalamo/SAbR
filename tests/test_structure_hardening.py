@@ -5,8 +5,9 @@ import numpy as np
 import pytest
 from Bio.PDB import PDBParser
 
-from sabr import constants
+from sabr import constants, renumber_structure
 from sabr.structure import (
+    _detect_gaps,
     _new_residue_ids,
     _parent_residue_name,
     _select_backbone,
@@ -47,7 +48,15 @@ def test_altloc_selection_prefers_blank_then_occupancy_then_name():
         for index, name in enumerate(("N", "CA", "C"))
     ]
     assert all(coord[1] == 2 for coord in _select_backbone(a + b, "x"))
-    assert all(coord[1] == 1 for coord in _select_backbone(a + a, "x"))
+    tied_b = [
+        _atom(name, "B", 0.4, (index, 2, 0))
+        for index, name in enumerate(("N", "CA", "C"))
+    ]
+    for atoms in (a + tied_b, tied_b + a):
+        assert all(coord[1] == 1 for coord in _select_backbone(atoms, "x"))
+    shared = [_atom("N", "", 0.1, (0, 3, 0))]
+    selected = _select_backbone(shared + a[1:] + b[1:], "x")
+    assert [coord[1] for coord in selected] == [3, 2, 2]
 
 
 def test_altloc_selection_rejects_incomplete_mixed_conformers():
@@ -178,3 +187,27 @@ def test_query_row_mapping_validates_order_span_and_sequence():
     ):
         with pytest.raises(ValueError, match=message):
             _new_residue_ids(data, malformed)
+
+
+@pytest.mark.parametrize(
+    "distance,expected", [(2.659999, set()), (2.66, set()), (2.660001, {0})]
+)
+def test_gap_detection_threshold_is_strict(distance, expected):
+    coords = np.zeros((2, 4, 3))
+    coords[1, 0, 0] = distance
+    assert _detect_gaps(coords) == expected
+
+
+@pytest.mark.parametrize("value", [np.nan, np.inf, -np.inf])
+def test_nonfinite_coordinates_raise_validation_error_without_arithmetic_errors(
+    value,
+):
+    structure = PDBParser(QUIET=True).get_structure(
+        "heavy", DATA / "test_heavy_chain.pdb"
+    )
+    next(structure.get_atoms()).coord[0] = value
+    with (
+        np.errstate(invalid="raise", divide="raise"),
+        pytest.raises(ValueError, match="non-finite coordinates"),
+    ):
+        renumber_structure(structure, "F")
