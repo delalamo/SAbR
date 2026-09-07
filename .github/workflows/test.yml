@@ -21,6 +21,9 @@ jobs:
       - run: pre-commit run --all-files
 
   test:
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
@@ -35,50 +38,12 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -c constraints.txt -e '.[test]'
-      - run: JAX_PLATFORMS=cpu pytest --cov=sabr --cov-report=term-missing --cov-report=json
-      - uses: actions/upload-artifact@v4
+      - run: JAX_PLATFORMS=cpu pytest --cov=sabr --cov-report=term-missing --cov-report=xml
+      - uses: codecov/codecov-action@v5
         if: matrix.python-version == '3.12' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
-          name: coverage
-          path: coverage.json
-          if-no-files-found: error
-
-  badge-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: python -m unittest discover -s .github/scripts -p 'test_*.py'
-
-  coverage-badge:
-    needs: [lint, test, wheel, badge-tests]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    concurrency:
-      group: publish-readme-badges
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: coverage
-          path: ${{ runner.temp }}/coverage
-      - name: Publish measured coverage
-        env:
-          BADGE_OUTPUT: ${{ runner.temp }}/badges
-          COVERAGE_REPORT: ${{ runner.temp }}/coverage/coverage.json
-        run: |
-          MAIN_REVISION="$(git ls-remote origin refs/heads/main | cut -f1)"
-          if [ "$GITHUB_SHA" != "$MAIN_REVISION" ]; then
-            echo 'Skipping coverage publication for a superseded main revision.'
-            exit 0
-          fi
-          python .github/scripts/readme_badges.py coverage "$COVERAGE_REPORT" "$BADGE_OUTPUT/coverage.json"
-          bash .github/scripts/publish-badges.sh "$BADGE_OUTPUT"
+          files: coverage.xml
+          use_oidc: true
 
   wheel:
     runs-on: ubuntu-latest
