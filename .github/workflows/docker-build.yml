@@ -68,6 +68,7 @@ jobs:
           echo "source_tag=${SOURCE_TAG}" >> "$GITHUB_OUTPUT"
           echo "image_name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
           echo "version_tag=${VERSION_TAG}" >> "$GITHUB_OUTPUT"
+          echo "revision=$(git rev-parse "refs/tags/${SOURCE_TAG}^{commit}")" >> "$GITHUB_OUTPUT"
 
       - name: Checkout tagged source
         uses: actions/checkout@v6
@@ -91,6 +92,9 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ steps.vars.outputs.image_name }}
+          labels: |
+            org.opencontainers.image.version=${{ steps.vars.outputs.version_tag }}
+            org.opencontainers.image.revision=${{ steps.vars.outputs.revision }}
           tags: |
             type=raw,value=${{ steps.vars.outputs.version_tag }}
             type=raw,value=latest
