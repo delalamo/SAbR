@@ -35,7 +35,7 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -c constraints.txt -e '.[test]'
-      - run: JAX_PLATFORMS=cpu pytest --cov=sabr
+      - run: pytest --cov=sabr
 
   wheel:
     runs-on: ubuntu-latest

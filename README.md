@@ -137,13 +137,13 @@ other bundled schemes are antibody-specific.
 
 ```bash
 pip install -c constraints.txt -e '.[test]'
-JAX_PLATFORMS=cpu pytest
+pytest
 pre-commit run --all-files
 ```
 
 `constraints.txt` records the exact canonical development and CI environment.
-Package metadata remains ranged for normal installation. SAbR does not force a
-JAX backend; CPU is simply the canonical CI regression baseline.
+Package metadata remains ranged for normal installation. Inference uses
+NumPy and SciPy on CPU.
 
 The committed tests are self-contained and never download data. They verify
 the fixed asset hashes, encoder and alignment baselines, all numbering schemes,

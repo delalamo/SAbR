@@ -6,7 +6,6 @@ import uuid
 from pathlib import Path
 
 import click
-import jax
 from Bio.PDB import MMCIFIO, PDBIO, MMCIFParser, PDBParser
 
 from sabr import constants, renumber_structure
@@ -187,7 +186,7 @@ def main(
                 "Non-atomic mmCIF categories are not preserved when parsed "
                 "with Biopython."
             )
-        LOGGER.info("JAX backend: %s", jax.default_backend())
+        LOGGER.info("Numerical backend: NumPy/SciPy (CPU)")
         result = renumber_structure(
             structure,
             chain,

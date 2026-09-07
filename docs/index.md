@@ -77,7 +77,7 @@ sabr -i INPUT -c CHAIN -o OUTPUT
 The defaults are IMGT, automatic chain selection, noise level `0.0`, and
 `sabr` mode. SoftAlign mode uses its own fixed references, so `noise_level` is
 ignored in that mode. Normal output contains only warnings and errors. Use
-`--verbose` to show the JAX backend, chain-selection scores, and a traceback
+`--verbose` to show the numerical backend, chain-selection scores, and a traceback
 on failure.
 
 To search only the scFv candidate set, pass `--scfv`. This is equivalent to

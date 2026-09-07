@@ -530,7 +530,7 @@ def test_verbose_mode_reports_backend_and_traceback(monkeypatch, tmp_path):
         ],
     )
     assert result.exit_code != 0
-    assert "JAX backend:" in result.output
+    assert "Numerical backend: NumPy/SciPy (CPU)" in result.output
     assert "Traceback (most recent call last)" in result.output
 
 
