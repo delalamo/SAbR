@@ -15,6 +15,23 @@ on CPU using NumPy and SciPy.
 pip install sabr-kit
 ```
 
+### Docker
+
+With Docker installed and running, pull the image and run SAbR from the
+directory containing `antibody.pdb`:
+
+```bash
+docker pull ghcr.io/delalamo/sabr:latest
+docker run --rm -v "$PWD:/workspace" ghcr.io/delalamo/sabr:latest \
+  -i antibody.pdb -c H -o numbered.pdb
+```
+
+The mounted directory makes the input available inside the container and
+saves `numbered.pdb` back to the same directory on your computer. The image
+runs `sabr` directly; append any of the command-line options below, or use
+`docker run --rm ghcr.io/delalamo/sabr:latest --help` for help. To pin a
+release, replace `latest` with its version tag (without the leading `v`).
+
 ## Command line
 
 Renumber chain `H` using the default IMGT scheme and automatic heavy,
