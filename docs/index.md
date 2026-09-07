@@ -8,7 +8,8 @@ version of the ProteinMPNN encoder from
 
 ## Installation
 
-SAbR requires Python 3.11 or newer.
+SAbR requires Python 3.11 or newer. Both `sabr` and `softalign` modes run
+on CPU using NumPy and SciPy; JAX and Haiku are not required.
 
 ```bash
 pip install sabr-kit
@@ -77,8 +78,8 @@ sabr -i INPUT -c CHAIN -o OUTPUT
 The defaults are IMGT, automatic chain selection, noise level `0.0`, and
 `sabr` mode. SoftAlign mode uses its own fixed references, so `noise_level` is
 ignored in that mode. Normal output contains only warnings and errors. Use
-`--verbose` to show the numerical backend, chain-selection scores, and a traceback
-on failure.
+`--verbose` to show `Numerical backend: NumPy/SciPy (CPU)`, chain-selection
+scores, and a traceback on failure.
 
 To search only the scFv candidate set, pass `--scfv`. This is equivalent to
 `--chain-type HK,HL,KH,LH`; as a compatibility flag it requires the default

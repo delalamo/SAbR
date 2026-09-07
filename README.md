@@ -18,7 +18,8 @@ The complete usage guide is available in the
 
 ## Installation
 
-SAbR requires Python 3.11 or newer.
+SAbR requires Python 3.11 or newer. Both `sabr` and `softalign` modes run
+on CPU using NumPy and SciPy; JAX and Haiku are not required.
 
 ```bash
 pip install sabr-kit
@@ -102,7 +103,8 @@ For unusually long loops that need extended insertion codes, use mmCIF output.
 - The optional `softalign` mode uses `softalign_encoder.npz`,
   `softalign_embeddings.npz`, and the exact penalties in
   `softalign_gap.npz` as one parameter set.
-- Alignment uses the original differentiable affine Smith–Waterman method.
+- Alignment uses the original affine Smith–Waterman recurrence, with soft
+  assignments computed by an explicit NumPy reverse pass.
 - Deterministic CDR gap distribution and DE-loop correction are always
   applied. Between IMGT anchors 79 and 85, DE-loop residues fill 80 first,
   then 84 back through 81; additional residues are inserted after 82.
@@ -142,8 +144,7 @@ pre-commit run --all-files
 ```
 
 `constraints.txt` records the exact canonical development and CI environment.
-Package metadata remains ranged for normal installation. Inference uses
-NumPy and SciPy on CPU.
+Package metadata remains ranged for normal installation.
 
 The committed tests are self-contained and never download data. They verify
 the fixed asset hashes, encoder and alignment baselines, all numbering schemes,
