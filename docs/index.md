@@ -9,7 +9,7 @@ version of the ProteinMPNN encoder from
 ## Installation
 
 SAbR requires Python 3.11 or newer. Both `sabr` and `softalign` modes run
-on CPU using NumPy and SciPy; JAX and Haiku are not required.
+on CPU using NumPy and SciPy.
 
 ```bash
 pip install sabr-kit
