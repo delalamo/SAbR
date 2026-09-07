@@ -5,7 +5,6 @@
 [![Python checks](https://github.com/delalamo/SAbR/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/delalamo/SAbR/actions/workflows/test.yml)
 [![Documentation](https://readthedocs.org/projects/sabr/badge/?version=latest)](https://sabr.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Coverage](https://codecov.io/gh/delalamo/SAbR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/delalamo/SAbR)
 [![Docker build](https://github.com/delalamo/SAbR/actions/workflows/docker-build.yml/badge.svg)](https://github.com/delalamo/SAbR/actions/workflows/docker-build.yml)
 [![PyPI downloads](https://img.shields.io/pypi/dm/sabr-kit)](https://pypi.org/project/sabr-kit/)
 

@@ -3,7 +3,6 @@ __pycache__/
 *.so
 
 .coverage
-coverage.xml
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
