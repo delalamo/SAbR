@@ -1,22 +1,15 @@
-absl-py==2.5.0
 biopython==1.87
 build==1.5.1
 cfgv==3.5.0
 click==8.4.2
 coverage==7.15.0
 distlib==0.4.3
-dm-haiku==0.0.16
 filelock==3.29.7
 identify==2.6.19
 iniconfig==2.3.0
-jax==0.10.2
-jaxlib==0.10.2
-jmp==0.0.4
-ml_dtypes==0.5.4
 nodeenv==1.10.0
 numpy==2.4.6; python_version < "3.12"
 numpy==2.5.1; python_version >= "3.12"
-opt_einsum==3.4.0
 packaging==26.2
 platformdirs==4.10.0
 pluggy==1.6.0
@@ -29,5 +22,4 @@ python-discovery==1.4.4
 PyYAML==6.0.3
 scipy==1.17.1; python_version < "3.12"
 scipy==1.18.0; python_version >= "3.12"
-tabulate==0.10.0
 virtualenv==21.6.1

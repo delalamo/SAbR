@@ -9,6 +9,7 @@ from sabr import constants
 from sabr.alignment import (
     _affine_gap_penalty,
     _affine_score,
+    _affine_value_and_grad,
     _align_reference,
     _alignment_path,
     _concatenate_reference,
@@ -81,7 +82,7 @@ def test_encoder_and_affine_alignment_match_captured_main_baseline():
     data = extract_chain(structure, "F", None)
     embeddings = encode(data.coords)
     np.testing.assert_allclose(
-        embeddings, baseline["embeddings"], rtol=1e-5, atol=2e-6
+        embeddings, baseline["embeddings"], rtol=1e-5, atol=3e-6
     )
     softalign_embeddings = encode(data.coords, "softalign")
     assert softalign_embeddings.shape == embeddings.shape
@@ -100,6 +101,31 @@ def test_encoder_and_affine_alignment_match_captured_main_baseline():
         np.round(reduced), np.round(baseline["reduced_alignment"])
     )
     np.testing.assert_array_equal(positions, baseline["positions"])
+
+
+@pytest.mark.parametrize("shape", ((4, 5), (5, 4)))
+@pytest.mark.parametrize("padded", (False, True))
+@pytest.mark.parametrize("boundary", (-1, 1, (1, 2)))
+def test_affine_reverse_pass_matches_finite_differences(
+    shape, padded, boundary
+):
+    similarities = (
+        np.random.default_rng(214).normal(size=shape).astype(np.float32)
+    )
+    lengths = np.asarray(shape) - int(padded)
+    arguments = (lengths, 0.7, -0.5, -2.0, boundary)
+    _, gradient = _affine_value_and_grad(similarities, *arguments)
+    numerical = np.empty_like(similarities)
+    step = 0.002
+    for index in np.ndindex(shape):
+        plus = similarities.copy()
+        minus = similarities.copy()
+        plus[index] += step
+        minus[index] -= step
+        numerical[index] = (
+            _affine_score(plus, *arguments) - _affine_score(minus, *arguments)
+        ) / (2 * step)
+    np.testing.assert_allclose(gradient, numerical, rtol=0.003, atol=0.0003)
 
 
 def test_every_noise_asset_has_all_chain_references():
@@ -269,13 +295,16 @@ def test_softalign_gap_penalties_reach_affine_alignment(monkeypatch):
         gap_extend,
         gap_open,
         free_gap_boundary,
+        *,
+        with_gradient,
     ):
+        assert with_gradient
         captured["gap_extend"] = gap_extend
         captured["gap_open"] = gap_open
         captured["free_gap_boundary"] = free_gap_boundary
-        return np.asarray([0.0]), np.zeros(np.asarray(similarity).shape)
+        return np.float32(0.0), np.zeros(np.asarray(similarity).shape)
 
-    monkeypatch.setattr("sabr.alignment._AFFINE_ALIGNMENT", fake_affine)
+    monkeypatch.setattr("sabr.alignment._affine_value_and_grad", fake_affine)
     _align_reference(
         np.zeros((1, constants.EMBED_DIM)),
         np.zeros((1, constants.EMBED_DIM)),
@@ -312,8 +341,8 @@ def test_auto_reference_ties_resolve_in_h_k_l_order(monkeypatch):
     )
     monkeypatch.setattr(
         "sabr.alignment._align_reference",
-        lambda query, reference, mode: (
-            np.ones((len(query), 1)),
+        lambda query, reference, mode, score_only=False: (
+            None if score_only else np.ones((len(query), 1)),
             np.zeros((len(query), 3)),
             1.0,
         ),
@@ -324,6 +353,54 @@ def test_auto_reference_ties_resolve_in_h_k_l_order(monkeypatch):
     )
     _, selected, _ = align(np.zeros((1, 64)), frozenset(), "auto", 0.0)
     assert selected == "H"
+
+
+@pytest.mark.parametrize(
+    ("chain_type", "expected_calls"),
+    (
+        ("auto", [False, False, False, True]),
+        ("H,K", [True, True]),
+        ("H", [True]),
+    ),
+)
+def test_reference_search_limits_gradient_work(
+    monkeypatch, chain_type, expected_calls
+):
+    import sabr.alignment as alignment_module
+
+    original = alignment_module._affine_value_and_grad
+    gradient_calls = []
+
+    def capture(*args, **kwargs):
+        gradient_calls.append(kwargs.get("with_gradient", True))
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(alignment_module, "_affine_value_and_grad", capture)
+    baseline = np.load(DATA / "math_baseline.npz")
+    _, selected, _ = align(baseline["embeddings"], frozenset(), chain_type, 0.0)
+    assert selected == "H"
+    assert gradient_calls == expected_calls
+
+
+def test_auto_search_rejects_non_finite_winning_gradient(monkeypatch):
+    references = {
+        chain_type: (np.zeros((1, 64)), (1,))
+        for chain_type in constants.CHAIN_TYPES
+    }
+    monkeypatch.setattr(
+        "sabr.alignment.load_references",
+        lambda noise, mode, scfv=False: references,
+    )
+    monkeypatch.setattr(
+        "sabr.alignment._align_reference",
+        lambda query, reference, mode, score_only=False: (
+            None if score_only else np.full((len(query), 1), np.nan),
+            np.zeros((len(query), 3)),
+            1.0,
+        ),
+    )
+    with pytest.raises(ValueError, match="non-finite"):
+        align(np.zeros((1, 64)), frozenset(), "auto", 0.0)
 
 
 @pytest.mark.parametrize("chain_type", constants.CHAIN_TYPES)

@@ -17,10 +17,8 @@ authors = [
 dependencies = [
   "biopython>=1.87,<2",
   "click>=8.4.2,<9",
-  "jax>=0.10.2,<0.11",
-  "jaxlib>=0.10.2,<0.11",
   "numpy>=2.4.6,<3",
-  "dm-haiku>=0.0.16,<0.1"
+  "scipy>=1.17.1,<2"
 ]
 
 [project.optional-dependencies]

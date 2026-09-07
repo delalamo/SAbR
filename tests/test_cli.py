@@ -84,11 +84,6 @@ def test_cli_maps_the_complete_compact_interface(monkeypatch, tmp_path):
 
 
 def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):
-    monkeypatch.setattr(
-        cli.jax,
-        "default_backend",
-        lambda: pytest.fail("backend initialized for suppressed logging"),
-    )
     captured = {}
     monkeypatch.setattr(cli, "renumber_structure", _passthrough(captured))
     output = tmp_path / "numbered.pdb"
@@ -112,6 +107,7 @@ def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):
     assert captured["scfv"] is False
     assert captured["dangerously_allow_structural_gaps"] is False
     assert "pipeline details" not in result.output
+    assert "Numerical backend:" not in result.output
 
 
 @pytest.mark.parametrize("noise_level", ["0.0", "0.2", "0.5", "1.0", "2.0"])
@@ -569,7 +565,7 @@ def test_verbose_mode_reports_backend_and_traceback(monkeypatch, tmp_path):
         ],
     )
     assert result.exit_code != 0
-    assert "JAX backend:" in result.output
+    assert "Numerical backend: NumPy/SciPy (CPU)" in result.output
     assert "Traceback (most recent call last)" in result.output
 
 

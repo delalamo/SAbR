@@ -1,5 +1,13 @@
 # Structure-based Antibody Renumbering
 
+[![PyPI](https://img.shields.io/pypi/v/sabr-kit)](https://pypi.org/project/sabr-kit/)
+[![Python ≥3.11](https://img.shields.io/badge/python-%E2%89%A53.11-blue?logo=python&logoColor=white)](https://pypi.org/project/sabr-kit/)
+[![Python checks](https://github.com/delalamo/SAbR/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/delalamo/SAbR/actions/workflows/test.yml)
+[![Documentation](https://readthedocs.org/projects/sabr/badge/?version=latest)](https://sabr.readthedocs.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Docker build](https://github.com/delalamo/SAbR/actions/workflows/docker-build.yml/badge.svg)](https://github.com/delalamo/SAbR/actions/workflows/docker-build.yml)
+[![PyPI downloads](https://img.shields.io/pypi/dm/sabr-kit)](https://pypi.org/project/sabr-kit/)
+
 SAbR (Structure-based Antibody Renumbering) assigns antibody residue numbers
 from backbone coordinates. It combines a fine-tuned version of the ProteinMPNN
 encoder from [SoftAlign](https://github.com/jtrinquier/SoftAlign) with the
@@ -129,13 +137,13 @@ other bundled schemes are antibody-specific.
 
 ```bash
 pip install -c constraints.txt -e '.[test]'
-JAX_PLATFORMS=cpu pytest
+pytest
 pre-commit run --all-files
 ```
 
 `constraints.txt` records the exact canonical development and CI environment.
-Package metadata remains ranged for normal installation. SAbR does not force a
-JAX backend; CPU is simply the canonical CI regression baseline.
+Package metadata remains ranged for normal installation. Inference uses
+NumPy and SciPy on CPU.
 
 The committed tests are self-contained and never download data. They verify
 the fixed asset hashes, encoder and alignment baselines, all numbering schemes,
