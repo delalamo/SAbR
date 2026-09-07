@@ -22,7 +22,7 @@ def _linear(x, parameters):
 
 def _norm(x, parameters):
     mean = np.mean(x, axis=-1, keepdims=True)
-    variance = np.var(x, axis=-1, keepdims=True)
+    variance = np.var(x, axis=-1, keepdims=True, mean=mean)
     inv = parameters["scale"] * np.reciprocal(np.sqrt(variance + 1e-5))
     return inv * (x - mean) + parameters["offset"]
 
@@ -46,48 +46,58 @@ def _features(coords, parameters):
     )
     # Stable sorting preserves lower-index precedence when distances tie.
     neighbors = np.argsort(distances, axis=-1, kind="stable")[:, :64]
-    radial = [_rbf(np.take_along_axis(distances, neighbors, axis=1))]
-    pairs = (
-        (n, n),
-        (c, c),
-        (oxygen, oxygen),
-        (cb, cb),
-        (ca, n),
-        (ca, c),
-        (ca, oxygen),
-        (ca, cb),
-        (n, c),
-        (n, oxygen),
-        (n, cb),
-        (cb, c),
-        (cb, oxygen),
-        (oxygen, c),
-        (n, ca),
-        (c, ca),
-        (oxygen, ca),
-        (cb, ca),
-        (c, n),
-        (oxygen, n),
-        (cb, n),
-        (c, cb),
-        (oxygen, cb),
-        (c, oxygen),
-    )
-    # Compute only selected neighbor distances instead of 24 dense N x N
-    # distance matrices. Atom-pair order is part of the trained model.
-    for first, second in pairs:
-        distance = np.sqrt(
-            np.sum((first[:, None] - second[neighbors]) ** 2, axis=-1) + 1e-6
-        )
-        radial.append(_rbf(distance))
-    # Preserve the historical argument inversion: residue indices were
-    # chain labels and all actual positional offsets were zero.
-    positions = np.where(neighbors == np.arange(len(coords))[:, None], 32, 65)
+    # Fill the final feature matrix without retaining every radial block.
     positional = parameters[
         "protein_features/~/positional_encodings/~/embedding_linear"
     ]
-    positional = positional["w"][positions] + positional["b"]
-    edges = np.concatenate((positional, *radial), axis=-1)
+    positional_width = positional["b"].shape[0]
+    edges = np.empty(
+        (*neighbors.shape, positional_width + 25 * 16), dtype=np.float32
+    )
+    # Preserve the historical argument inversion: residue indices were
+    # chain labels and all actual positional offsets were zero.
+    positions = np.where(neighbors == np.arange(len(coords))[:, None], 32, 65)
+    edges[..., :positional_width] = positional["w"][positions] + positional["b"]
+    edges[..., positional_width : positional_width + 16] = _rbf(
+        np.take_along_axis(distances, neighbors, axis=1)
+    )
+    n_neighbors, ca_neighbors, c_neighbors, oxygen_neighbors, cb_neighbors = (
+        atom[neighbors] for atom in (n, ca, c, oxygen, cb)
+    )
+    pairs = (
+        (n, n_neighbors),
+        (c, c_neighbors),
+        (oxygen, oxygen_neighbors),
+        (cb, cb_neighbors),
+        (ca, n_neighbors),
+        (ca, c_neighbors),
+        (ca, oxygen_neighbors),
+        (ca, cb_neighbors),
+        (n, c_neighbors),
+        (n, oxygen_neighbors),
+        (n, cb_neighbors),
+        (cb, c_neighbors),
+        (cb, oxygen_neighbors),
+        (oxygen, c_neighbors),
+        (n, ca_neighbors),
+        (c, ca_neighbors),
+        (oxygen, ca_neighbors),
+        (cb, ca_neighbors),
+        (c, n_neighbors),
+        (oxygen, n_neighbors),
+        (cb, n_neighbors),
+        (c, cb_neighbors),
+        (oxygen, cb_neighbors),
+        (c, oxygen_neighbors),
+    )
+    # Compute only selected neighbor distances instead of 24 dense N x N
+    # distance matrices. Atom-pair order is part of the trained model.
+    for index, (first, second_neighbors) in enumerate(pairs, start=1):
+        distance = np.sqrt(
+            np.sum((first[:, None] - second_neighbors) ** 2, axis=-1) + 1e-6
+        )
+        start = positional_width + index * 16
+        edges[..., start : start + 16] = _rbf(distance)
     edges = _linear(edges, parameters["protein_features/~/edge_embedding"])
     return _norm(edges, parameters["protein_features/~/norm_edges"]), neighbors
 
@@ -97,19 +107,6 @@ def _messages(nodes, edges, neighbors, parameters, prefix, names):
     joined = np.concatenate((center, edges, nodes[neighbors]), axis=-1)
     first, second, third = (parameters[prefix + name] for name in names)
     return _linear(_gelu(_linear(_gelu(_linear(joined, first)), second)), third)
-
-
-def _unflatten_parameters(flat_parameters: dict) -> dict:
-    parameters = {}
-    for key, value in flat_parameters.items():
-        current = parameters
-        parts = key.split(".")
-        for part in parts[:-1]:
-            current = current.setdefault(part, {})
-        value = np.array(value)
-        value.flags.writeable = False
-        current[parts[-1]] = value
-    return parameters
 
 
 @functools.cache
@@ -124,9 +121,14 @@ def load_parameters(mode: str = "sabr") -> dict:
     except KeyError as error:
         raise ValueError(f"mode must be one of {constants.MODES}.") from error
     path = files("sabr.assets") / filename
-    with path.open("rb") as handle:
-        flat_parameters = dict(np.load(handle, allow_pickle=False))
-    return _unflatten_parameters(flat_parameters)
+    parameters = {}
+    with path.open("rb") as handle, np.load(handle, allow_pickle=False) as data:
+        for key in data.files:
+            module, name = key.rsplit(".", 1)
+            value = data[key]
+            value.flags.writeable = False
+            parameters.setdefault(module, {})[name] = value
+    return parameters
 
 
 def encode(coords: np.ndarray, mode: str = "sabr") -> np.ndarray:

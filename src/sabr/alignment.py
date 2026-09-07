@@ -12,8 +12,10 @@ from sabr.corrections import apply_corrections
 LOGGER = logging.getLogger(__name__)
 
 
-def _soft_maximum_with_grad(x, temperature, ninf, axis=-1, mask=None):
-    """Log-sum-exp and its derivative, including historical clipping."""
+def _soft_maximum_with_grad(
+    x, temperature, ninf, axis=-1, mask=None, *, with_gradient=True
+):
+    """Log-sum-exp and optional derivative, including historical clipping."""
     scaled = x / temperature
     clipped = np.maximum(scaled, ninf)
     maximum = np.max(clipped, axis=axis, keepdims=True)
@@ -22,9 +24,10 @@ def _soft_maximum_with_grad(x, temperature, ninf, axis=-1, mask=None):
         weights *= mask
     total = np.sum(weights, axis=axis, keepdims=True)
     value = temperature * (maximum + np.log(total))
-    weights /= total
-    weights *= np.where(scaled > ninf, 1, np.where(scaled == ninf, 0.5, 0))
-    return np.squeeze(value, axis=axis), weights
+    if with_gradient:
+        weights /= total
+        weights *= np.where(scaled > ninf, 1, np.where(scaled == ninf, 0.5, 0))
+    return np.squeeze(value, axis=axis), weights if with_gradient else None
 
 
 def _affine_value_and_grad(
@@ -35,12 +38,15 @@ def _affine_value_and_grad(
     gap_open,
     free_gap_boundary=-1,
     NINF=-1e30,
+    *,
+    with_gradient=True,
 ):
     """Striped affine DP with an explicit reverse pass for soft assignments.
 
     This differentiates the same three-state recurrence as the JAX version;
     it does not replace soft alignment with a hard traceback. Forward and
     reverse sweeps vectorize across each antidiagonal.
+    Score-only calls omit transition storage and return None for the gradient.
     """
     similarities = np.asarray(similarities, dtype=np.float32)
     rows, columns = similarities.shape
@@ -59,31 +65,54 @@ def _affine_value_and_grad(
         np.isin(br, np.atleast_1d(free_gap_boundary)), (a, b)
     )
     states = np.full((count + 2, width, 3), NINF, dtype=np.float32)
-    transitions = np.zeros((count, width, 3, 4), dtype=np.float32)
+    # Match, right and down states have four, two and three predecessors.
+    transitions = (
+        tuple(
+            np.empty((count, width, size), dtype=np.float32)
+            for size in (4, 2, 3)
+        )
+        if with_gradient
+        else ()
+    )
     right_penalty = np.asarray((gap_open, gap_extend, gap_open), np.float32)
     down_penalty = np.asarray((gap_open, gap_open, gap_extend), np.float32)
+    aligned = np.empty((width, 4), dtype=np.float32)
+    right = np.empty((width, 3), dtype=np.float32)
+    down = np.empty((width, 3), dtype=np.float32)
     for index in range(count):
         h2, h1 = states[index], states[index + 1]
-        aligned = np.pad(h2, ((0, 0), (0, 1))) + stripes[index, :, None]
+        aligned[:, :3] = h2
+        aligned[:, 3] = 0
+        aligned += stripes[index, :, None]
         odd = (index + a % 2) % 2
         if odd:
-            right = np.pad(h1[:-1], ((1, 0), (0, 0)), constant_values=NINF)
-            down = h1.copy()
+            right[0] = NINF
+            right[1:] = h1[:-1]
+            down[:] = h1
         else:
-            right = h1.copy()
-            down = np.pad(h1[1:], ((0, 1), (0, 0)), constant_values=NINF)
+            right[:] = h1
+            down[:-1] = h1[1:]
+            down[-1] = NINF
         right += right_penalty
         down += np.where(free[index, :, None], 0, down_penalty)
         for state, candidates in enumerate((aligned, right[:, :2], down)):
             value, weights = _soft_maximum_with_grad(
-                candidates, temperature, NINF
+                candidates, temperature, NINF, with_gradient=with_gradient
             )
             states[index + 2, :, state] = value
-            transitions[index, :, state, : candidates.shape[-1]] = weights
+            if with_gradient:
+                transitions[state][index] = weights
     endings = states[ii + 2, jj] + x[1:, 1:, None]
     score, end_grad = _soft_maximum_with_grad(
-        endings, temperature, NINF, axis=None, mask=mask[1:, 1:, None]
+        endings,
+        temperature,
+        NINF,
+        axis=None,
+        mask=mask[1:, 1:, None],
+        with_gradient=with_gradient,
     )
+    if not with_gradient:
+        return score, None
     adjoints = np.zeros_like(states)
     adjoints[ii + 2, jj] = end_grad
     gradient = np.zeros_like(x)
@@ -91,10 +120,12 @@ def _affine_value_and_grad(
     stripe_gradient = np.zeros_like(stripes)
     for index in range(count - 1, -1, -1):
         incoming = adjoints[index + 2]
-        weighted = transitions[index] * incoming[:, :, None]
-        stripe_gradient[index] = np.sum(weighted[:, 0], axis=-1)
-        adjoints[index] += weighted[:, 0, :3]
-        right, down = weighted[:, 1, :2], weighted[:, 2, :3]
+        aligned, right, down = (
+            transition[index] * incoming[:, state, None]
+            for state, transition in enumerate(transitions)
+        )
+        stripe_gradient[index] = np.sum(aligned, axis=-1)
+        adjoints[index] += aligned[:, :3]
         if (index + a % 2) % 2:
             adjoints[index + 1, :-1, :2] += right[1:]
             adjoints[index + 1] += down
@@ -123,26 +154,8 @@ def _affine_score(
         gap_open,
         free_gap_boundary,
         NINF,
+        with_gradient=False,
     )[0]
-
-
-def _AFFINE_ALIGNMENT(
-    similarities,
-    lengths,
-    temperature,
-    gap_extend,
-    gap_open,
-    free_gap_boundary=-1,
-):
-    results = [
-        _affine_value_and_grad(
-            x, length, temperature, gap_extend, gap_open, free_gap_boundary
-        )
-        for x, length in zip(similarities, lengths)
-    ]
-    return np.asarray([r[0] for r in results]), np.stack(
-        [r[1] for r in results]
-    )
 
 
 @functools.cache
@@ -271,27 +284,30 @@ def _align_reference(
     reference: np.ndarray,
     mode: str = "sabr",
     free_gap_boundary: int | tuple[int, ...] = -1,
+    *,
+    score_only: bool = False,
 ):
-    """Align one reference, optionally allowing free query insertions."""
+    """Align one reference, or return only its similarity matrix and score."""
     anchor = np.zeros((1, reference.shape[1]), dtype=reference.dtype)
     augmented_reference = np.concatenate((anchor, reference, anchor), axis=0)
-    query_batch = np.asarray(query[None, :], dtype=np.float32)
-    reference_batch = np.asarray(augmented_reference[None, :], dtype=np.float32)
-    lengths = np.asarray([[query.shape[0], augmented_reference.shape[0]]])
-    similarity = np.einsum("nia,nja->nij", query_batch, reference_batch)
+    query = np.asarray(query, dtype=np.float32)
+    augmented_reference = np.asarray(augmented_reference, dtype=np.float32)
+    similarity = np.einsum("ia,ja->ij", query, augmented_reference)
+    lengths = np.asarray(similarity.shape)
     gap_extend, gap_open = load_gap_penalties(mode)
-    scores, soft_alignment = _AFFINE_ALIGNMENT(
+    score, soft_alignment = _affine_value_and_grad(
         similarity,
         lengths,
         constants.DEFAULT_TEMPERATURE,
         gap_extend,
         gap_open,
         free_gap_boundary,
+        with_gradient=not score_only,
     )
     return (
-        np.asarray(soft_alignment[0])[:, 1:-1],
-        np.asarray(similarity[0]),
-        float(scores[0]),
+        None if score_only else soft_alignment[:, 1:-1],
+        similarity,
+        float(score),
     )
 
 
@@ -349,6 +365,12 @@ def align(
         candidates = ("K",)
     else:
         candidates = tuple(chain_type.split(","))
+    # Single-domain selection depends only on scores. Multi-domain candidates
+    # need their alignments to calculate terminal gap penalties.
+    # Three candidates amortize recomputing the winner's forward pass.
+    score_only = len(candidates) > 2 and all(
+        len(candidate) == 1 for candidate in candidates
+    )
     best = None
     for candidate in candidates:
         if candidate not in references:
@@ -370,13 +392,17 @@ def align(
                 mode,
                 free_gap_boundary=free_gap_boundaries,
             )
+        elif score_only:
+            reduced, similarity, score = _align_reference(
+                query, reference, mode, score_only=True
+            )
         else:
             reduced, similarity, score = _align_reference(
                 query, reference, mode
             )
         if (
             not np.isfinite(score)
-            or not np.isfinite(reduced).all()
+            or (reduced is not None and not np.isfinite(reduced).all())
             or not np.isfinite(similarity).all()
         ):
             raise ValueError(
@@ -406,6 +432,14 @@ def align(
             )
 
     _, score, selected_type, reduced, positions = best
+    if score_only:
+        reduced, _, _ = _align_reference(
+            query, references[selected_type][0], mode
+        )
+        if not np.isfinite(reduced).all():
+            raise ValueError(
+                f"{selected_type} reference produced a non-finite alignment."
+            )
     domain_count = len(selected_type)
     full_alignment = np.zeros(
         (query.shape[0], domain_count * constants.IMGT_MAX_POSITION),
