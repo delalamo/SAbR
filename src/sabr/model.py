@@ -11,32 +11,47 @@ import numpy as np
 from scipy.special import erfc
 
 from sabr import constants
+from sabr._types import FloatArray, IntArray
 
 
-def _linear(x, parameters):
+def _linear(x: FloatArray, parameters: dict[str, FloatArray]) -> FloatArray:
+    """Map [..., input width] to [..., output width] with saved weights."""
     result = x @ parameters["w"]
     if "b" in parameters:
         result += parameters["b"]
     return result
 
 
-def _norm(x, parameters):
+def _norm(x: FloatArray, parameters: dict[str, FloatArray]) -> FloatArray:
+    """Normalize the final feature axis, preserving all dimensions of x."""
     mean = np.mean(x, axis=-1, keepdims=True)
     variance = np.var(x, axis=-1, keepdims=True, mean=mean)
     inv = parameters["scale"] * np.reciprocal(np.sqrt(variance + 1e-5))
     return inv * (x - mean) + parameters["offset"]
 
 
-def _gelu(x):
+def _gelu(x: FloatArray) -> FloatArray:
+    """Apply the trained exact GELU elementwise without changing shape."""
     return (0.5 * x) * erfc(-x * np.float32(2**-0.5))
 
 
-def _rbf(distances):
+def _rbf(distances: FloatArray) -> FloatArray:
+    """Expand Angstrom distances [...] to [..., 16] radial basis features."""
     centers = np.linspace(2, 22, 16, dtype=np.float32)
     return np.exp(-(((distances[..., None] - centers) / 1.25) ** 2))
 
 
-def _features(coords, parameters):
+def _features(
+    coords: FloatArray, parameters: dict[str, dict[str, FloatArray]]
+) -> tuple[FloatArray, IntArray]:
+    """Map [N, 4, 3] coordinates to [N, K, 64] edges and [N, K] neighbors.
+
+    N is the residue count and K = min(N, 64), including the central residue.
+    The pairwise CA distance matrix is [N, N]; subsequent atom-pair features
+    use only [N, K] distances. The 25 radial blocks each have 16 channels.
+    The fourth coordinate is the historical synthetic CB input, although the
+    trained feature layout calls it oxygen. See ``encode`` for this contract.
+    """
     n, ca, c, oxygen = np.moveaxis(coords, 1, 0)
     b = ca - n
     d = c - ca
@@ -102,7 +117,19 @@ def _features(coords, parameters):
     return _norm(edges, parameters["protein_features/~/norm_edges"]), neighbors
 
 
-def _messages(nodes, edges, neighbors, parameters, prefix, names):
+def _messages(
+    nodes: FloatArray,
+    edges: FloatArray,
+    neighbors: IntArray,
+    parameters: dict[str, dict[str, FloatArray]],
+    prefix: str,
+    names: tuple[str, str, str],
+) -> FloatArray:
+    """Return [N, K, H] messages for [N, H] nodes and [N, K, H] edges.
+
+    ``neighbors`` is [N, K]; concatenated center/edge/neighbor features are
+    [N, K, 3 * H]. Here H is the saved encoder's 64-channel hidden width.
+    """
     center = np.broadcast_to(nodes[:, None], edges.shape)
     joined = np.concatenate((center, edges, nodes[neighbors]), axis=-1)
     first, second, third = (parameters[prefix + name] for name in names)
@@ -110,7 +137,7 @@ def _messages(nodes, edges, neighbors, parameters, prefix, names):
 
 
 @functools.cache
-def load_parameters(mode: str = "sabr") -> dict:
+def load_parameters(mode: str = "sabr") -> dict[str, dict[str, FloatArray]]:
     """Load the immutable encoder parameters for one alignment mode."""
     filenames = {
         "sabr": "mpnn_encoder.npz",
@@ -131,8 +158,15 @@ def load_parameters(mode: str = "sabr") -> dict:
     return parameters
 
 
-def encode(coords: np.ndarray, mode: str = "sabr") -> np.ndarray:
-    """Return 64-dimensional residue embeddings using CPU inference."""
+def encode(coords: FloatArray, mode: str = "sabr") -> FloatArray:
+    """Map finite [N, 4, 3] coordinates to float32 [N, 64] embeddings.
+
+    N must be nonzero. Coordinates are in Angstroms and ordered N, CA, C,
+    synthetic CB as emitted by ``extract_chain``. The saved model consumes
+    that fourth slot as its historical oxygen feature and also computes its
+    own virtual CB. This convention and the historical positional encoding
+    are part of the trained model contract; neither is corrected at inference.
+    """
     parameters = load_parameters(mode)
     coords = np.asarray(coords, dtype=np.float32)
     edges, neighbors = _features(coords, parameters)

@@ -1,4 +1,5 @@
 import hashlib
+from importlib.resources import files
 from pathlib import Path
 
 import numpy as np
@@ -24,7 +25,7 @@ from sabr.numbering import _load_missing_imgt_positions, alignment_to_states
 from sabr.structure import extract_chain
 
 DATA = Path(__file__).parent / "data"
-ASSETS = Path(__file__).parents[1] / "src" / "sabr" / "assets"
+ASSETS = files("sabr.assets")
 
 
 def test_scientific_assets_are_unchanged():

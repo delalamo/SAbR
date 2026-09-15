@@ -1,4 +1,10 @@
-"""Deterministic CDR and DE-loop corrections."""
+"""Deterministic CDR and DE-loop corrections.
+
+Alignment matrices are binary [query residues, 128] arrays for one IMGT
+domain. Columns are zero-based (IMGT position minus one); gap indices mark
+the query row before a peptide break. Corrections mutate and return the
+same matrix, leaving central insertion rows unassigned where appropriate.
+"""
 
 import logging
 import warnings
@@ -22,7 +28,7 @@ def _aligned_row_near(aln: np.ndarray, target_col: int) -> int | None:
     return None
 
 
-def cdr_columns(residue_count: int, position_count: int) -> list:
+def cdr_columns(residue_count: int, position_count: int) -> list[int | None]:
     """Return IMGT's outside-in CDR columns, preserving central insertions."""
     columns = [None] * residue_count
     for index in range(min(residue_count, position_count)):

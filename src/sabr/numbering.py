@@ -19,6 +19,7 @@ from sabr._anarci.schemes import (
     number_wolfguy_heavy,
     number_wolfguy_light,
 )
+from sabr._types import NumberingRecord, NumberingState, NumberingStates
 
 LOGGER = logging.getLogger(__name__)
 
@@ -98,7 +99,7 @@ def alignment_to_states(
     matrix: np.ndarray,
     *,
     ref_positions: tuple[int, ...] | None = None,
-) -> tuple[list[tuple[tuple[int, str], int | None]], int, int]:
+) -> NumberingStates:
     """Translate a query/reference alignment into ANARCI state records.
 
     ``matrix`` uses query residues as rows and reference positions as columns;
@@ -182,7 +183,9 @@ def alignment_to_states(
     return states, imgt_start, first_row
 
 
-def _insert_missing_deletions(states: list, ref_type: str) -> list:
+def _insert_missing_deletions(
+    states: list[NumberingState], ref_type: str
+) -> list[NumberingState]:
     """Add absent reference positions as idempotent deletion states."""
     missing_by_type = _load_missing_imgt_positions()
     if ref_type not in missing_by_type:
@@ -207,7 +210,9 @@ def _insert_missing_deletions(states: list, ref_type: str) -> list:
     return completed
 
 
-def _apply_scheme(states: list, sequence: str, scheme: str, chain_type: str):
+def _apply_scheme(
+    states: list[NumberingState], sequence: str, scheme: str, chain_type: str
+) -> tuple[list[tuple[tuple[int, str], str]], int, int]:
     """Dispatch to a vendored ANARCI numberer through one call signature."""
     if chain_type in _TCR_CHAIN_TYPES and scheme not in ("imgt", "aho"):
         raise ValueError("TCR chain types support only IMGT or AHo numbering.")
@@ -234,7 +239,7 @@ def _number_domain_alignment(
     *,
     ref_type: str | None = None,
     ref_positions: tuple[int, ...] | None = None,
-) -> tuple:
+) -> list[NumberingRecord]:
     """Return query-row records, optionally restoring a reduced reference."""
     states, imgt_start, first_row = alignment_to_states(
         alignment,
@@ -301,12 +306,18 @@ def number_alignment(
     *,
     ref_type: str | None = None,
     ref_positions: tuple[int, ...] | None = None,
-) -> tuple:
+) -> list[NumberingRecord]:
     """Return query-row-to-number records for one alignment.
 
     ``ref_type`` and ``ref_positions`` are opt-in metadata for reduced
     single-domain references. Normal full-width single- and multi-domain
     alignments leave them unset.
+
+    Rows index the Q characters of ``sequence``; columns are absolute IMGT
+    positions in a [Q, 128 * D] matrix for D domains, or [Q, R] for an explicit
+    reduced reference. Returns a list of (query row, number, insertion code,
+    amino acid) tuples. Query rows are zero-based; assigned residue numbers
+    include the numbering stride for domains after the first.
     """
     chain_types = tuple(chain_type)
     is_multidomain = len(chain_types) > 1

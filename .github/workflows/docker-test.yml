@@ -41,17 +41,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Verify installed source and CLI
+      - name: Run full tests and renumbering against the built image
         env:
           EXPECTED_VERSION: ${{ steps.vars.outputs.version }}
-        run: |
-          docker run --rm --entrypoint python --env EXPECTED_VERSION sabr:test \
-            -c 'import importlib.metadata as m, os, sabr; assert m.version("sabr-kit") == os.environ["EXPECTED_VERSION"]'
-          docker run --rm sabr:test --help
-
-      - name: Run a containerized renumbering smoke test
-        run: |
-          docker run --rm \
-            --mount "type=bind,source=${GITHUB_WORKSPACE}/tests/data,target=/data,readonly" \
-            sabr:test \
-            -i /data/1bjm_A.pdb -c A -o /tmp/numbered.pdb
+        run: bash scripts/test_container.sh sabr:test . "$EXPECTED_VERSION"
