@@ -16,7 +16,9 @@ LOGGER = logging.getLogger(__name__)
 def _read_structure(path: Path):
     suffix = path.suffix.lower()
     if suffix == ".pdb":
-        return PDBParser(QUIET=True).get_structure(path.stem, path)
+        return PDBParser(PERMISSIVE=False, QUIET=True).get_structure(
+            path.stem, path
+        )
     if suffix in (".cif", ".mmcif"):
         return MMCIFParser(QUIET=True).get_structure(path.stem, path)
     raise ValueError("Input must use the .pdb, .cif, or .mmcif extension.")
@@ -224,22 +226,34 @@ def main(
             f".tmp{resolved_output_path.suffix}"
         )
         _write_structure(result, temporary)
-        os.replace(temporary, resolved_output_path)
-    except Exception as error:
-        if temporary is not None and temporary.exists():
+        if overwrite:
+            os.replace(temporary, resolved_output_path)
+        else:
+            # Publish the complete file atomically without replacing a path
+            # created after the initial existence check. Both are siblings.
             try:
-                temporary.unlink()
+                os.link(temporary, resolved_output_path)
+            except FileExistsError as error:
+                raise click.ClickException(
+                    f"Output already exists: {resolved_output_path}. "
+                    "Use --overwrite to replace it."
+                ) from error
+    except Exception as error:
+        if isinstance(error, click.ClickException):
+            raise
+        if verbose:
+            LOGGER.exception("Renumbering failed")
+        raise click.ClickException(str(error)) from error
+    finally:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
             except OSError as cleanup_error:
                 LOGGER.warning(
                     "Could not remove temporary output %s: %s",
                     temporary,
                     cleanup_error,
                 )
-        if isinstance(error, click.ClickException):
-            raise
-        if verbose:
-            LOGGER.exception("Renumbering failed")
-        raise click.ClickException(str(error)) from error
 
 
 if __name__ == "__main__":

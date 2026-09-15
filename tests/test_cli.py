@@ -108,6 +108,7 @@ def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):
     assert captured["dangerously_allow_structural_gaps"] is False
     assert "pipeline details" not in result.output
     assert "Numerical backend:" not in result.output
+    assert list(tmp_path.iterdir()) == [output]
 
 
 @pytest.mark.parametrize("noise_level", ["0.0", "0.2", "0.5", "1.0", "2.0"])
@@ -218,6 +219,143 @@ def test_cli_overwrite_protection(monkeypatch, tmp_path):
     assert result.exit_code != 0
     assert "--overwrite" in result.output
     assert output.read_text() == "existing"
+
+
+@pytest.mark.parametrize("overwrite", [False, True])
+@pytest.mark.parametrize("output_format", ["pdb", "cif", "auto-mmcif"])
+def test_cli_destination_created_during_write(
+    monkeypatch, tmp_path, overwrite, output_format
+):
+    requested = tmp_path / (
+        "raced.cif" if output_format == "cif" else "raced.pdb"
+    )
+    output = requested
+    renumber = _passthrough()
+    if output_format == "auto-mmcif":
+        output = requested.with_suffix(".cif")
+        renumber = _with_extended_insertion_code()
+    monkeypatch.setattr(cli, "renumber_structure", renumber)
+    original_write = cli._write_structure
+    expected = []
+
+    def write_with_competing_output(structure, path):
+        original_write(structure, path)
+        expected.append(path.read_bytes())
+        # Simulate another process winning the race after the initial check.
+        with output.open("x") as competing:
+            competing.write("created by another process")
+
+    monkeypatch.setattr(cli, "_write_structure", write_with_competing_output)
+    args = [
+        "-i",
+        str(DATA / "test_heavy_chain.pdb"),
+        "-c",
+        "F",
+        "-o",
+        str(requested),
+    ]
+    if overwrite:
+        args.append("--overwrite")
+    result = CliRunner().invoke(cli.main, args)
+    assert len(expected) == 1
+    if overwrite:
+        assert result.exit_code == 0, result.output
+        assert output.read_bytes() == expected[0]
+    else:
+        assert result.exit_code != 0
+        assert "Output already exists" in result.output
+        assert "--overwrite" in result.output
+        assert output.read_text() == "created by another process"
+    assert list(tmp_path.iterdir()) == [output]
+
+
+def test_cli_preserves_dangling_output_symlink(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli, "renumber_structure", _passthrough())
+    target = tmp_path / "missing.pdb"
+    output = tmp_path / "linked.pdb"
+    output.symlink_to(target)
+    result = CliRunner().invoke(
+        cli.main,
+        [
+            "-i",
+            str(DATA / "test_heavy_chain.pdb"),
+            "-c",
+            "F",
+            "-o",
+            str(output),
+        ],
+    )
+    assert result.exit_code != 0
+    assert "--overwrite" in result.output
+    assert output.is_symlink()
+    assert output.readlink() == target
+    assert not target.exists()
+    assert list(tmp_path.iterdir()) == [output]
+
+
+def test_cli_link_failure_leaves_no_output_or_temporary_file(
+    monkeypatch, tmp_path
+):
+    monkeypatch.setattr(cli, "renumber_structure", _passthrough())
+
+    def fail_link(source, destination):
+        assert source.is_file()
+        raise OSError("hard links unavailable")
+
+    monkeypatch.setattr(cli.os, "link", fail_link)
+    result = CliRunner().invoke(
+        cli.main,
+        [
+            "-i",
+            str(DATA / "test_heavy_chain.pdb"),
+            "-c",
+            "F",
+            "-o",
+            str(tmp_path / "failed.pdb"),
+        ],
+    )
+    assert result.exit_code != 0
+    assert "hard links unavailable" in result.output
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize("existing_output", [False, True])
+def test_cli_rejects_duplicate_pdb_atoms(
+    monkeypatch, tmp_path, existing_output
+):
+    captured = {}
+    monkeypatch.setattr(cli, "renumber_structure", _passthrough(captured))
+    lines = (DATA / "test_heavy_chain.pdb").read_text().splitlines(True)
+    index = next(i for i, line in enumerate(lines) if line.startswith("ATOM"))
+    lines.insert(index + 1, lines[index])
+    input_path = tmp_path / "duplicate.pdb"
+    input_path.write_text("".join(lines))
+    output = tmp_path / "numbered.pdb"
+    if existing_output:
+        output.write_text("existing")
+
+    result = CliRunner().invoke(
+        cli.main,
+        [
+            "-i",
+            str(input_path),
+            "-c",
+            "F",
+            "-o",
+            str(output),
+            "--overwrite",
+        ],
+    )
+    assert result.exit_code != 0
+    assert "defined twice" in result.output
+    assert "line" in result.output
+    assert captured == {}
+    if existing_output:
+        assert output.read_text() == "existing"
+        assert set(tmp_path.iterdir()) == {input_path, output}
+    else:
+        assert not output.exists()
+        assert list(tmp_path.iterdir()) == [input_path]
 
 
 def test_cli_uses_mmcif_for_extended_insertion_codes_by_default(

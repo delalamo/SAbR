@@ -170,6 +170,52 @@ For exceptionally long CDR insertions, use mmCIF output.
 CLI conversion preserves atomic structure content but does not preserve every
 non-atomic mmCIF category.
 
+## Long-CDR numbering support
+
+SAbR extends the bundled ANARCI insertion codes in IMGT, Kabat, Chothia,
+Martin, and AHo: `A`–`Z`, `AA`–`ZZ`, then three-letter codes, up to 5,000
+codes per insertion anchor. These are SAbR extensions of the numbering
+implementation, not claims that the original scheme specifications define
+every such loop. Existing insertion locations and short-loop gap rules are
+preserved. Linear insertions proceed from `Z` to `AA`; IMGT distributes them
+between two central anchors, with the right anchor's codes in reverse
+sequence order.
+
+Supported lengths in residues for the regions renumbered by each scheme:
+
+| Scheme | Chain | CDR1 | CDR2 | CDR3 |
+| --- | --- | ---: | ---: | ---: |
+| IMGT | All supported chains | 10,012 | 10,010 | 10,013 |
+| Kabat | Heavy | 5,013 | 5,008 | 5,010 |
+| Chothia / Martin | Heavy | 5,011 | 5,008 | 5,010 |
+| Kabat / Chothia / Martin | Kappa / lambda | 5,011 | 5,004 | 5,009 |
+| AHo | All supported chains | 5,018 | 5,020 | 5,032 |
+| Wolfguy | Heavy | 49 | 49 | 51 |
+| Wolfguy | Kappa / lambda | 49 | 49 | 49 |
+
+Lengths count residues, excluding alignment deletions, in ANARCI's
+scheme-specific renumbering regions. They are not interchangeable biological
+CDR definitions. All schemes take CDR3 from IMGT alignment positions
+105–117 and their insertions. The CDR1/CDR2 input spans are IMGT 27–38/56–65
+for IMGT, 25–40/56–75 for AHo, 24–40/55–65 for Kabat heavy,
+24–38/55–65 for Chothia and Martin heavy, 24–40/57–67 for their light-chain
+implementations (including Kabat), and 27–40/55–74 (heavy) or 24–40/56–69
+(light) for Wolfguy. Framework-boundary insertions are smoothed before these
+regions are counted. AHo's renumbered FW3 region (IMGT 76–91) also supports
+extended codes, up to 5,016 residues.
+
+Wolfguy uses fixed numbered positions for its loops; SAbR does not add
+insertion anchors to those loops. An unsupported length raises `ValueError`,
+for example: `Wolfguy CDR3 length 52 exceeds the supported limit of 51 residues.`
+The same error format applies when an extended-code scheme exhausts its
+supported codes.
+
+These limits apply to numbering an existing alignment. Structure selections
+remain limited to 1,024 polymer residues before model alignment, and these
+numbering extensions do not guarantee that the model can align every long
+loop. BioPython and mmCIF can retain multi-character codes; switching output
+formats does not bypass numbering or structure-selection limits.
+
 ## Structural gaps and modified residues
 
 A C–N distance above 2.66 Å is treated as a structural gap. SAbR refuses to
