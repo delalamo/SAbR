@@ -78,8 +78,9 @@ do not vary with `--noise-level`, so that option is ignored in this mode.
 
 Use `--scfv` to search only the scFv candidate set. It is equivalent to
 `--chain-type HK,HL,KH,LH` and still requires the default automatic chain type
-when used as a flag. Multi-domain results place successive domains in separate
-1000-number residue blocks: `1–128`, `1001–1128`, `2001–2128`, and so on.
+when used as a flag. Each domain is numbered in the selected scheme, then
+successive domains receive offsets of `0`, `1000`, `2000`, and so on. For
+IMGT, this gives domain ranges `1–128`, `1001–1128`, `2001–2128`, and so on.
 Linker residues continue sequentially from the preceding domain's last number.
 Multi-domain references use the selected parameter mode, so either form can be
 combined with `--mode softalign`.
@@ -100,9 +101,14 @@ arbitrary non-atomic mmCIF categories. It warns for every mmCIF input.
 from Bio.PDB import PDBParser
 from sabr import renumber_structure
 
-structure = PDBParser(QUIET=True).get_structure("antibody", "antibody.pdb")
+structure = PDBParser(PERMISSIVE=False, QUIET=True).get_structure(
+    "antibody", "antibody.pdb"
+)
 numbered = renumber_structure(structure, chain="H")
 ```
+
+Strict PDB parsing matches the CLI and rejects malformed duplicate atom
+records before renumbering.
 
 `renumber_structure` accepts a Biopython `Structure`, never mutates its input,
 and returns a new Biopython `Structure`. Non-target chains, hetero residues,
