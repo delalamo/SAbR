@@ -73,36 +73,40 @@ Other schemes can be implemented following the template above.
 
 # Alphabet used for insertion (last (-1th) is a blank space for no insertion)
 # Extended alphabet: A-Z, then AA-AZ, BA-BZ, ..., ZA-ZZ, then AAA-AAZ, etc.
-# This provides unlimited insertion codes for mmCIF output format.
-def _generate_extended_alphabet(max_codes: int = 5000) -> list:
+# SAbR supports this finite number of insertion codes at each anchor.
+MAX_INSERTION_CODES = 5000
+
+
+def _generate_extended_alphabet(max_codes: int = MAX_INSERTION_CODES) -> list:
     """Generate extended insertion codes: A-Z, AA-AZ, BA-BZ, ..., AAA-AAZ, etc."""
+    if max_codes < 0:
+        raise ValueError("max_codes must be non-negative.")
     codes = []
-    letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-    # Single letters: A-Z
-    codes.extend(list(letters))
-
-    # Double letters: AA-ZZ (26*26 = 676 codes)
-    for first in letters:
-        for second in letters:
-            codes.append(first + second)
-            if len(codes) >= max_codes:
-                codes.append(" ")  # Blank for no insertion
-                return codes
-
-    # Triple letters: AAA-ZZZ (26*26*26 = 17576 codes)
-    for first in letters:
-        for second in letters:
-            for third in letters:
-                codes.append(first + second + third)
-                if len(codes) >= max_codes:
-                    codes.append(" ")  # Blank for no insertion
-                    return codes
-
+    for index in range(1, max_codes + 1):
+        code = ""
+        while index:
+            index, letter = divmod(index - 1, 26)
+            code = chr(ord("A") + letter) + code
+        codes.append(code)
     codes.append(" ")  # Blank for no insertion
     return codes
 
 alphabet = _generate_extended_alphabet()
+
+
+def _check_length(scheme, region, length, limit):
+    """Reject unsupported regions before annotation can truncate or overflow."""
+    if length > limit:
+        raise ValueError(
+            f"{scheme} {region} length {length} exceeds the supported limit "
+            f"of {limit} residues."
+        )
+
+
+def _annotation_order(annotation):
+    """Order linear insertions as blank, A..Z, AA..ZZ, AAA.., not lexically."""
+    number, code = annotation
+    return number, len(code.strip()), code
 
 # Blosum62 matrix. Used in some annotation methods to recognise pre-defined motifs
 blosum62 = {('B', 'N'): 3, ('W', 'L'): -2, ('G', 'G'): 6, ('X', 'S'): 0, ('X', 'D'): -1, ('K', 'G'): -2, ('S', 'E'): 0, ('X', 'M'): -1, ('Y', 'E'): -2, ('W', 'R'): -3, ('I', 'R'): -3, ('X', 'Z'): -1, ('H', 'E'): 0, ('V', 'M'): 1, ('N', 'R'): 0, ('I', 'D'): -3, ('F', 'D'): -3, ('W', 'C'): -2, ('N', 'A'): -2, ('W', 'Q'): -2, ('L', 'Q'): -2, ('S', 'N'): 1, ('Z', 'K'): 1, ('V', 'N'): -3, ('Q', 'N'): 0, ('M', 'K'): -1, ('V', 'H'): -3, ('G', 'E'): -2, ('S', 'L'): -2, ('P', 'R'): -2, ('D', 'A'): -2, ('S', 'C'): -1, ('E', 'D'): 2, ('Y', 'G'): -3, ('W', 'P'): -4, ('X', 'X'): -1, ('Z', 'L'): -3, ('Q', 'A'): -1, ('V', 'Y'): -1, ('W', 'A'): -3, ('G', 'D'): -1, ('X', 'P'): -2, ('K', 'D'): -1, ('T', 'N'): 0, ('Y', 'F'): 3, ('W', 'W'): 11, ('Z', 'M'): -1, ('L', 'D'): -4, ('M', 'R'): -1, ('Y', 'K'): -2, ('F', 'E'): -3, ('M', 'E'): -2, ('S', 'S'): 4, ('X', 'C'): -2, ('Y', 'L'): -1, ('H', 'R'): 0, ('P', 'P'): 7, ('K', 'C'): -3, ('S', 'A'): 1, ('P', 'I'): -3, ('Q', 'Q'): 5, ('L', 'I'): 2, ('P', 'F'): -4, ('B', 'A'): -2, ('Z', 'N'): 0, ('M', 'Q'): 0, ('V', 'I'): 3, ('Q', 'C'): -3, ('I', 'H'): -3, ('Z', 'D'): 1, ('Z', 'P'): -1, ('Y', 'W'): 2, ('T', 'G'): -2, ('B', 'P'): -2, ('P', 'A'): -1, ('C', 'D'): -3, ('Y', 'H'): 2, ('X', 'V'): -1, ('B', 'B'): 4, ('Z', 'F'): -3, ('M', 'L'): 2, ('F', 'G'): -3, ('S', 'M'): -1, ('M', 'G'): -3, ('Z', 'Q'): 3, ('S', 'Q'): 0, ('X', 'A'): 0, ('V', 'T'): 0, ('W', 'F'): 1, ('S', 'H'): -1, ('X', 'N'): -1, ('B', 'Q'): 0, ('K', 'A'): -1, ('I', 'Q'): -3, ('X', 'W'): -2, ('N', 'N'): 6, ('W', 'T'): -2, ('P', 'D'): -1, ('B', 'C'): -3, ('I', 'C'): -1, ('V', 'K'): -2, ('X', 'Y'): -1, ('K', 'R'): 2, ('Z', 'R'): 0, ('W', 'E'): -3, ('T', 'E'): -1, ('B', 'R'): -1, ('L', 'R'): -2, ('Q', 'R'): 1, ('X', 'F'): -1, ('T', 'S'): 1, ('B', 'D'): 4, ('Z', 'A'): -1, ('M', 'N'): -2, ('V', 'D'): -3, ('F', 'A'): -2, ('X', 'E'): -1, ('F', 'H'): -1, ('M', 'A'): -1, ('K', 'Q'): 1, ('Z', 'S'): 0, ('X', 'G'): -1, ('V', 'V'): 4, ('W', 'D'): -4, ('X', 'H'): -1, ('S', 'F'): -2, ('X', 'L'): -1, ('B', 'S'): 0, ('S', 'G'): 0, ('P', 'M'): -2, ('Y', 'M'): -1, ('H', 'D'): -1, ('B', 'E'): 1, ('Z', 'B'): 1, ('I', 'E'): -3, ('V', 'E'): -2, ('X', 'T'): 0, ('X', 'R'): -1, ('R', 'R'): 5, ('Z', 'T'): -1, ('Y', 'D'): -3, ('V', 'W'): -3, ('F', 'L'): 0, ('T', 'C'): -1, ('X', 'Q'): -1, ('B', 'T'): -1, ('K', 'N'): 0, ('T', 'H'): -2, ('Y', 'I'): -1, ('F', 'Q'): -3, ('T', 'I'): -1, ('T', 'Q'): -1, ('P', 'L'): -3, ('R', 'A'): -1, ('B', 'F'): -3, ('Z', 'C'): -3, ('M', 'H'): -2, ('V', 'F'): -1, ('F', 'C'): -2, ('L', 'L'): 4, ('M', 'C'): -1, ('C', 'R'): -3, ('D', 'D'): 6, ('E', 'R'): 0, ('V', 'P'): -2, ('S', 'D'): 0, ('E', 'E'): 5, ('W', 'G'): -2, ('P', 'C'): -3, ('F', 'R'): -3, ('B', 'G'): -1, ('C', 'C'): 9, ('I', 'G'): -4, ('V', 'G'): -3, ('W', 'K'): -3, ('G', 'N'): 0, ('I', 'N'): -3, ('Z', 'V'): -2, ('A', 'A'): 4, ('V', 'Q'): -2, ('F', 'K'): -3, ('T', 'A'): 0, ('B', 'V'): -3, ('K', 'L'): -2, ('L', 'N'): -3, ('Y', 'N'): -2, ('F', 'F'): 6, ('L', 'G'): -4, ('B', 'H'): 0, ('Z', 'E'): 4, ('Q', 'D'): 0, ('X', 'B'): -1, ('Z', 'W'): -3, ('S', 'K'): 0, ('X', 'K'): -1, ('V', 'R'): -3, ('K', 'E'): 1, ('I', 'A'): -1, ('P', 'H'): -2, ('B', 'W'): -4, ('K', 'K'): 5, ('H', 'C'): -3, ('E', 'N'): 0, ('Y', 'Q'): -1, ('H', 'H'): 8, ('B', 'I'): -3, ('C', 'A'): 0, ('I', 'I'): 4, ('V', 'A'): 0, ('W', 'I'): -3, ('T', 'F'): -2, ('V', 'S'): -2, ('T', 'T'): 5, ('F', 'M'): 0, ('L', 'E'): -3, ('M', 'M'): 5, ('Z', 'G'): -2, ('D', 'R'): -2, ('M', 'D'): -3, ('W', 'H'): -2, ('G', 'C'): -3, ('S', 'R'): -1, ('S', 'I'): -2, ('P', 'Q'): -1, ('Y', 'A'): -2, ('X', 'I'): -1, ('E', 'A'): -1, ('B', 'Y'): -3, ('K', 'I'): -3, ('H', 'A'): -2, ('P', 'G'): -2, ('F', 'N'): -3, ('H', 'N'): 1, ('B', 'K'): 0, ('V', 'C'): -1, ('T', 'L'): -1, ('P', 'K'): -1, ('W', 'S'): -3, ('T', 'D'): -1, ('T', 'M'): -1, ('P', 'N'): -2, ('K', 'H'): -1, ('T', 'R'): -1, ('Y', 'R'): -2, ('L', 'C'): -1, ('B', 'L'): -4, ('Z', 'Y'): -2, ('W', 'N'): -4, ('G', 'A'): 0, ('S', 'P'): -1, ('E', 'Q'): 2, ('C', 'N'): -3, ('H', 'Q'): 0, ('D', 'N'): 1, ('Y', 'C'): -2, ('L', 'H'): -3, ('E', 'C'): -4, ('Z', 'H'): 0, ('H', 'G'): -2, ('P', 'E'): -1, ('Y', 'S'): -2, ('G', 'R'): -2, ('B', 'M'): -3, ('Z', 'Z'): 4, ('W', 'M'): -1, ('Y', 'T'): -2, ('Y', 'P'): -3, ('Y', 'Y'): 7, ('T', 'K'): -1, ('Z', 'I'): -3, ('T', 'P'): -1, ('V', 'L'): 1, ('F', 'I'): 0, ('G', 'Q'): -2, ('L', 'A'): -1, ('M', 'I'): 1}
@@ -229,7 +233,7 @@ def smooth_insertions(state_vector):
 
 
 # General function to give annotations for regions that have direct mappings onto the hmm alignment (imgt states)
-def _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions):
+def _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, *, scheme="ANARCI"):
     """
     General function to number a sequence and divide it into different regions
 
@@ -258,6 +262,21 @@ def _number_regions(sequence, state_vector, state_string , region_string,  regio
     start_index, end_index  = None, None
 
     region = None
+    max_insertions = len(alphabet) - 1
+
+    def insertion_code(index, region, state_id):
+        if index == -1:
+            return " "
+        if region in exclude_deletions:
+            # These provisional codes are replaced by the scheme's region
+            # annotations. Keep them nonblank, even for an overlong loop, so
+            # its actual length can be checked before final annotation.
+            return alphabet[index % max_insertions]
+        _check_length(
+            scheme, f"insertions at IMGT position {state_id}",
+            index + 1, max_insertions,
+        )
+        return alphabet[index]
 
     # Iterate over the aligned state vector
     for (state_id, state_type ), si in state_vector:
@@ -279,7 +298,7 @@ def _number_regions(sequence, state_vector, state_string , region_string,  regio
                 insertion = -1 # Reset the insertions
 
             # Add the numbering annotation to the appropriate region list
-            _regions[region].append( ( (state_id + rels[region], alphabet[insertion] ), sequence[si]  ) )
+            _regions[region].append( ( (state_id + rels[region], insertion_code(insertion, region, state_id) ), sequence[si]  ) )
             previous_state_id = state_id # Record the previous state ID
             if start_index is None:
                 start_index = si
@@ -291,7 +310,7 @@ def _number_regions(sequence, state_vector, state_string , region_string,  regio
             insertion +=1 # Increment the insertion annotation index
 
             # Add the numbering annotation to the appropriate region list
-            _regions[region].append( ( (previous_state_id + rels[region], alphabet[insertion]), sequence[si]  ) )
+            _regions[region].append( ( (previous_state_id + rels[region], insertion_code(insertion, region, previous_state_id)), sequence[si]  ) )
             if start_index is None:
                 start_index = si
             end_index = si
@@ -309,14 +328,6 @@ def _number_regions(sequence, state_vector, state_string , region_string,  regio
             insertion = -1 # Reset the insertions
             previous_state_id = state_id # Record the previous state ID, should not be needed (no delete to insert state transition)
 
-
-        # Reset the inssertion index if necessary and allowed. (Means the insertion code is meaningless and will be reannotated)
-        # Use len(alphabet) - 1 since the last element is the blank space for no insertion
-        max_insertions = len(alphabet) - 1
-        if insertion >= max_insertions and region in exclude_deletions:
-            insertion = 0
-
-        assert insertion < max_insertions, f"Too many insertions ({insertion}) for numbering scheme to handle (max {max_insertions})"
 
     return _regions, start_index, end_index
 
@@ -390,7 +401,7 @@ def number_imgt(state_vector, sequence):
 
     exclude_deletions = [1,3,5]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='IMGT')
 
     ###############
     # Renumbering #
@@ -444,11 +455,10 @@ def number_imgt(state_vector, sequence):
 
 
     # CDR3
-    # CDR3 has a range from 105 (inc.) to 118 (exc.). Insertions are placed on 112 and 111 symetrically. IMGT has a technical
-    # maximum length of 65 (13 positions, 26*2 insertions) . In practice ANARCI will not recognise CDR3s of this length.
+    # CDR3 has a range from 105 (inc.) to 118 (exc.). SAbR extends the
+    # symmetric insertions on 112 and 111 with multi-character codes.
     cdr3seq    = "".join([ x[1] for x in _regions[5] if x[1] != "-" ])
     cdr3length = len(cdr3seq)
-    if cdr3length > 117: return [], startindex, endindex # Too many insertions. Do not apply numbering.
     si = 0
     previous_state_id = 104
     for ann in get_imgt_cdr(cdr3length, 13, 105, 118):
@@ -467,9 +477,11 @@ def get_imgt_cdr(length, maxlength, start, end):
     """
     Symmetrically number a CDR loop (e.g. CDRL1/CDRH2 for IMGT)
     @param length:      Define the length of target CDR
-    @param maxlength:   Define the theoretical limit (e.g. L1 = 12 for the IMGT scheme)
+    @param maxlength:   Number of positions before adding insertion codes
     @param start, end:  Start and end position numbers
     """
+    loop = {27: "CDR1", 56: "CDR2", 105: "CDR3"}.get(start, "CDR")
+    _check_length("IMGT", loop, length, maxlength + 2 * (len(alphabet) - 1))
     annotations = [ None for _ in range(max(length, maxlength)) ]
     if length == 0:
         return annotations
@@ -581,9 +593,10 @@ def number_aho(state_vector, sequence, chain_type):
 
     n_regions = 11
 
-    exclude_deletions = [1,3,4,5,7,9]
+    # FW2 (region 4) retains its alignment-placed insertion codes.
+    exclude_deletions = [1,3,5,7,9]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='AHo')
 
     ###############
     # Renumbering #
@@ -669,9 +682,8 @@ def number_aho(state_vector, sequence, chain_type):
     # Insertions are not described in the AHo scheme but must be included as there is a significant number of CDRH1s that are
     # longer than the number of positions.
     insertions = max( length-18 , 0 )
-    if insertions > 26:
-        return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    elif insertions > 0:
+    _check_length("AHo", "CDR1", length, 18 + len(alphabet) - 1)
+    if insertions > 0:
         # They are placed on residue 36 alphabetically.
         insertat = annotations.index( (36, ' ') )+1 # Always 12
         assert insertat == 12, 'AHo numbering failed'
@@ -705,9 +717,8 @@ def number_aho(state_vector, sequence, chain_type):
 
     # Insertions are not described in the AHo scheme but must be included.
     insertions = max( length-20 , 0 )
-    if insertions > 26:
-        return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    elif insertions > 0:
+    _check_length("AHo", "CDR2", length, 20 + len(alphabet) - 1)
+    if insertions > 0:
         # They are placed on residue 63 alphabetically.
         insertat = annotations.index( (63, ' ') )+1 # Always 6
         assert insertat == 6, 'AHo numbering failed'
@@ -726,9 +737,8 @@ def number_aho(state_vector, sequence, chain_type):
 
     # Insertions are not described in the AHo scheme but must be included.
     insertions = max( length-16 , 0 )
-    if insertions > 26:
-        return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    elif insertions > 0:
+    _check_length("AHo", "FW3", length, 16 + len(alphabet) - 1)
+    if insertions > 0:
         # They are placed on residue 85 alphabetically.
         insertat = annotations.index( (85, ' ') )+1 # Always 8
         assert insertat == 8, 'AHo numbering failed'
@@ -754,9 +764,8 @@ def number_aho(state_vector, sequence, chain_type):
 
     # Insertions are not described in the AHo scheme but must be included.
     insertions = max( length-32 , 0 )
-    if insertions > 26:
-        return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    elif insertions > 0:
+    _check_length("AHo", "CDR3", length, 32 + len(alphabet) - 1)
+    if insertions > 0:
         # They are placed on residue 123 alphabetically.
         insertat = annotations.index( (123, ' ') )+1 # Always 17
         assert insertat == 17, 'AHo numbering failed'
@@ -829,7 +838,7 @@ def number_chothia_heavy(state_vector, sequence):
 
     exclude_deletions = [0,2,4,6] # Don't put deletions in these regions
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Chothia')
 
 
     ###############
@@ -857,6 +866,7 @@ def number_chothia_heavy(state_vector, sequence):
     # Chothia H region 3 (index 2)
     # put insertions onto 31
     length = len( _regions[2] )
+    _check_length('Chothia', "CDR1", length, 11 + len(alphabet) - 1)
     insertions = max(length - 11, 0) # Pulled back to the cysteine as heavily engineered cdr1's are not playing nicely
 
     if insertions:
@@ -870,6 +880,7 @@ def number_chothia_heavy(state_vector, sequence):
     # Chothia H region 5 (index 4)
     # put insertions onto 52
     length = len( _regions[4] )
+    _check_length('Chothia', "CDR2", length, 8 + len(alphabet) - 1)
     # 50 to 57 inclusive
     insertions = max(length - 8, 0) # Eight positions can be accounted for, the remainder are insertions
     # Delete in the order, 52, 51, 50,53, 54 ,55, 56, 57
@@ -889,7 +900,6 @@ def number_chothia_heavy(state_vector, sequence):
     # Chothia H region 7 (index 6)
     # put insertions onto 100
     length = len( _regions[6] )
-    if length > 36: return [], startindex, endindex # Too many insertions. Do not apply numbering.
     annotations = get_cdr3_annotations(length, scheme="chothia", chain_type="heavy")
     _numbering[6]  = [ (annotations[i], _regions[6][i][1]) for i in range(length)  ]
 
@@ -897,7 +907,7 @@ def number_chothia_heavy(state_vector, sequence):
     return gap_missing( _numbering ), startindex, endindex
 
 # Light chains
-def number_chothia_light(state_vector, sequence):
+def number_chothia_light(state_vector, sequence, *, scheme="chothia"):
     """
     Apply the Chothia numbering scheme for light chains
 
@@ -947,7 +957,7 @@ def number_chothia_light(state_vector, sequence):
 
     exclude_deletions = [1,3,4,5]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme=scheme.title())
 
     _numbering = [ _regions[0], [], _regions[2], [], _regions[4], [], _regions[6] ]
 
@@ -960,6 +970,7 @@ def number_chothia_light(state_vector, sequence):
     # Chothia L region 2 (index 1)
     # put insertions onto 30
     length = len( _regions[1] )
+    _check_length(scheme.title(), "CDR1", length, 11 + len(alphabet) - 1)
     insertions = max(length - 11, 0) # Eleven positions can be accounted for, the remainder are insertions
     # Delete forward from 31
     annotations  =  [(24, " "),(25, " "), (26, " "), (27, " "), (28, " "),(29, " "),(30, " ")][:max(0,length)]
@@ -972,6 +983,7 @@ def number_chothia_light(state_vector, sequence):
     # Chothia L region 4 (index 3)
     # put insertions onto 52.
     length = len( _regions[3] )
+    _check_length(scheme.title(), "CDR2", length, 4 + len(alphabet) - 1)
     insertions = max( length - 4, 0 )
     if insertions > 0:
         annotations  = [(51, " "),(52, " ")] + [(52, alphabet[i]) for i in range(insertions) ] + [(53, " "),(54, " ")]
@@ -998,8 +1010,7 @@ def number_chothia_light(state_vector, sequence):
     # put insertions onto 95
     length = len( _regions[5] )
 
-    if length > 35: return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    annotations = get_cdr3_annotations(length, scheme="chothia", chain_type="light")
+    annotations = get_cdr3_annotations(length, scheme=scheme, chain_type="light")
     _numbering[5]  = [ (annotations[i], _regions[5][i][1]) for i in range(length)  ]
 
     # Return the full vector and the start and end indices of the numbered region of the sequence
@@ -1060,7 +1071,7 @@ def number_kabat_heavy(state_vector, sequence):
 
     exclude_deletions = [2,4,6]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Kabat')
 
 
     ###############
@@ -1091,6 +1102,7 @@ def number_kabat_heavy(state_vector, sequence):
     # Kabat H region 3 (index 2)
     # Put insertions onto 35. Delete from 35 backwards
     length = len( _regions[2] )
+    _check_length('Kabat', "CDR1", length, 13 + len(alphabet) - 1)
     insertions = max(0,length - 13)
     annotations = [(_,' ') for _ in range(23, 36)][:length]
     annotations += [(35, alphabet[i]) for i in range(insertions) ]
@@ -1100,6 +1112,7 @@ def number_kabat_heavy(state_vector, sequence):
     # Chothia H region 5 (index 4)
     # put insertions onto 52
     length = len( _regions[4] )
+    _check_length('Kabat', "CDR2", length, 8 + len(alphabet) - 1)
     # 50 to 57 inclusive
     insertions = max(length - 8, 0) # Eight positions can be accounted for, the remainder are insertions
     # Delete in the order, 52, 51, 50,53, 54 ,55, 56, 57
@@ -1119,7 +1132,6 @@ def number_kabat_heavy(state_vector, sequence):
     # Chothia H region 7 (index 6)
     # put insertions onto 100
     length = len( _regions[6] )
-    if length > 36: return [], startindex, endindex # Too many insertions. Do not apply numbering.
     annotations = get_cdr3_annotations(length, scheme="kabat", chain_type="heavy") #  Chothia and Kabat the same here
     _numbering[6]  = [ (annotations[i], _regions[6][i][1]) for i in range(length)  ]
 
@@ -1175,7 +1187,7 @@ def number_kabat_light(state_vector, sequence):
 
     exclude_deletions = [1,3,5]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Kabat')
 
     _numbering = [ _regions[0], [], _regions[2], [], _regions[4], [], _regions[6] ]
 
@@ -1188,6 +1200,7 @@ def number_kabat_light(state_vector, sequence):
     # Kabat L region 2 (index 1)
     # put insertions onto 27
     length = len( _regions[1] )
+    _check_length('Kabat', "CDR1", length, 11 + len(alphabet) - 1)
     insertions = max(length - 11, 0) # Eleven positions can be accounted for, the remainder are insertions
     # Delete forward from 28
     annotations  =  [(24, " "),(25, " "), (26, " "), (27, " ")][:max(0,length)]
@@ -1199,6 +1212,7 @@ def number_kabat_light(state_vector, sequence):
     # Chothia L region 4 (index 3)
     # put insertions onto 52.
     length = len( _regions[3] )
+    _check_length('Kabat', "CDR2", length, 4 + len(alphabet) - 1)
     insertions = max( length - 4, 0 )
     if insertions > 0:
         annotations  = [(51, " "),(52, " ")] + [(52, alphabet[i]) for i in range(insertions) ] + [(53, " "),(54, " ")]
@@ -1217,7 +1231,6 @@ def number_kabat_light(state_vector, sequence):
     # put insertions onto 95
     length = len( _regions[5] )
 
-    if length > 35: return [], startindex, endindex # Too many insertions. Do not apply numbering.
     annotations = get_cdr3_annotations(length, scheme="kabat", chain_type="light")
     _numbering[5]  = [ (annotations[i], _regions[5][i][1]) for i in range(length)  ]
 
@@ -1283,7 +1296,7 @@ def number_martin_heavy(state_vector, sequence):
 
     exclude_deletions = [2,4,5,6]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Martin')
 
 
     ###############
@@ -1313,6 +1326,7 @@ def number_martin_heavy(state_vector, sequence):
     # Chothia H region 3 (index 2)
     # put insertions onto 31
     length = len( _regions[2] )
+    _check_length('Martin', "CDR1", length, 11 + len(alphabet) - 1)
     insertions = max(length - 11, 0) # Pulled back to the cysteine as heavily engineered cdr1's are not playing nicely
     if insertions:
         annotations = [(_, " ") for _ in range(23,32)] + [(31, alphabet[i]) for i in range(insertions) ] + [(32," "),(33," ")]
@@ -1324,6 +1338,7 @@ def number_martin_heavy(state_vector, sequence):
     # Chothia H region 5 (index 4)
     # put insertions onto 52
     length = len( _regions[4] )
+    _check_length('Martin', "CDR2", length, 8 + len(alphabet) - 1)
     # 50 to 57 inclusive
     insertions = max(length - 8, 0) # Eight positions can be accounted for, the remainder are insertions
     # Delete in the order, 52, 51, 50,53, 54 ,55, 56, 57
@@ -1350,8 +1365,7 @@ def number_martin_heavy(state_vector, sequence):
     # Chothia H region 7 (index 6)
     # put insertions onto 100
     length = len( _regions[6] )
-    if length > 36: return [], startindex, endindex # Too many insertions. Do not apply numbering.
-    annotations = get_cdr3_annotations(length, scheme="chothia", chain_type="heavy")
+    annotations = get_cdr3_annotations(length, scheme="martin", chain_type="heavy")
     _numbering[6]  = [ (annotations[i], _regions[6][i][1]) for i in range(length)  ]
 
     # Return the full vector and the start and end indices of the numbered region of the sequence
@@ -1385,7 +1399,7 @@ def number_martin_light(state_vector, sequence):
     # The Martin and Chothia specification for light chains are very similar. Martin is more explicit in the location of indels
     # but unlike the heavy chain these are additional instead of changes to the Chothia scheme. Thus, Chothia light is implemented
     # as martin light.
-    return number_chothia_light(state_vector,sequence)
+    return number_chothia_light(state_vector, sequence, scheme="martin")
 
 
 ###########
@@ -1450,7 +1464,7 @@ def number_wolfguy_heavy(state_vector, sequence):
 
     exclude_deletions = [1,3,5]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Wolfguy')
 
     ###############
     # Renumbering #
@@ -1465,6 +1479,7 @@ def number_wolfguy_heavy(state_vector, sequence):
     ordered_deletions = [151]
     for p1,p2 in zip( list(range(152,176)), list(range(199, 175,-1))): ordered_deletions += [ p1,p2 ]
     length = len( _regions[1] )
+    _check_length("Wolfguy", "CDR1", length, len(ordered_deletions))
     annotations = sorted(ordered_deletions[:length])
     _numbering[1]  = [ ((annotations[i]," "), _regions[1][i][1]) for i in range(length)  ]
 
@@ -1476,6 +1491,7 @@ def number_wolfguy_heavy(state_vector, sequence):
     ordered_deletions.append( 271 )
     ordered_deletions = list(range( 299, 290, -1)) + ordered_deletions
     length = len( _regions[3] )
+    _check_length("Wolfguy", "CDR2", length, len(ordered_deletions))
     annotations = sorted(ordered_deletions[:length])
     _numbering[3]  = [ ((annotations[i]," "), _regions[3][i][1]) for i in range(length)  ]
 
@@ -1488,8 +1504,8 @@ def number_wolfguy_heavy(state_vector, sequence):
     ordered_deletions = [ 354, 394, 355, 393, 392 ] + ordered_deletions
     ordered_deletions = [331,332] + [ 399, 398, 351, 352, 397, 353, 396, 395 ] + ordered_deletions
     length = len( _regions[5] )
+    _check_length("Wolfguy", "CDR3", length, len(ordered_deletions))
 
-    if length > len(ordered_deletions): return [], startindex, endindex # Too many insertions. Do not apply numbering.
     annotations = sorted(ordered_deletions[:length])
     _numbering[5]  = [ ((annotations[i]," "), _regions[5][i][1]) for i in range(length)  ]
 
@@ -1549,7 +1565,7 @@ def number_wolfguy_light(state_vector, sequence):
 
     exclude_deletions = [1,3,5,7,9]
 
-    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions)
+    _regions, startindex, endindex = _number_regions(sequence, state_vector, state_string , region_string,  region_index_dict, rels, n_regions, exclude_deletions, scheme='Wolfguy')
 
     ###############
     # Renumbering #
@@ -1577,6 +1593,7 @@ def number_wolfguy_light(state_vector, sequence):
     ordered_deletions = [651] + list(range( 699, 694, -1)) + ordered_deletions + [673]
 
     length = len( _regions[5] )
+    _check_length("Wolfguy", "CDR2", length, len(ordered_deletions))
     annotations = sorted(ordered_deletions[:length])
     _numbering[5]  = [ ((annotations[i]," "), _regions[5][i][1]) for i in range(length)  ]
 
@@ -1594,7 +1611,7 @@ def number_wolfguy_light(state_vector, sequence):
     ordered_deletions.append( 775 )
 
     length = len( _regions[9] )
-    if length > len(ordered_deletions): return [], startindex, endindex # Too many insertions. Do not apply numbering.
+    _check_length("Wolfguy", "CDR3", length, len(ordered_deletions))
     annotations = sorted(ordered_deletions[:length])
     _numbering[9]  = [ ((annotations[i]," "), _regions[9][i][1]) for i in range(length)  ]
 
@@ -1608,6 +1625,7 @@ def _get_wolfguy_L1(seq, length):
     by a set of rules. If the length has not been characterised, we number symmetrically about the
     middle of the loop.
     """
+    _check_length("Wolfguy", "CDR1", length, 49)
 
     # These are the annotations for different lengths of L1 according to the wolfguy definitions.
     L1_sequences = {
@@ -1672,47 +1690,25 @@ def get_cdr3_annotations(length, scheme="imgt", chain_type=""):
     """
     Given a length of a cdr3 give back a list of the annotations that should be applied to the sequence.
 
-    This function should be depreciated
+    SAbR extends linear CDR3 insertions using the shared insertion alphabet.
     """
-    az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    za = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
-
     if scheme=="imgt":
-        start, end = 105, 118 # start (inclusive) end (exclusive)
-        annotations = [None for _ in range(max(length,13))]
-        front = 0
-        back  = -1
-        assert (length-13) < 50, "Too many insertions for numbering scheme to handle" # We ran out of letters.
-        for i in range(min(length,13)):
-            if i%2:
-                annotations[back] = (end+back, " ")
-                back -= 1
-            else:
-                annotations[front] = (start+front, " ")
-                front += 1
-        for i in range(max(0,length-13)): # add insertions onto 111 and 112 in turn
-            if i%2:
-                annotations[back] = (112, za[back+6])
-                back-=1
-            else:
-                annotations[front] = (111, az[front-7])
-                front +=1
-        return annotations
+        return get_imgt_cdr(length, 13, 105, 118)
 
-    elif scheme in [ "chothia", "kabat"] and chain_type=="heavy": # For chothia and kabat
+    elif scheme in [ "chothia", "kabat", "martin"] and chain_type=="heavy":
         # Number forwards from 93
         insertions = max(length - 10, 0)
-        assert insertions < 27, "Too many insertions for numbering scheme to handle" # We ran out of letters.
+        _check_length(scheme.title(), "CDR3", length, 10 + len(alphabet) - 1)
         ordered_deletions = [ (100, ' '), (99,' '), (98,' '), (97,' '), (96,' '), (95,' '), (101,' '),(102,' '),(94,' '), (93,' ') ]
-        annotations = sorted( ordered_deletions[ max(0, 10-length): ] + [ (100,a) for a in az[:insertions ] ] )
+        annotations = sorted( ordered_deletions[ max(0, 10-length): ] + [ (100,a) for a in alphabet[:insertions ] ], key=_annotation_order )
         return annotations
 
-    elif scheme in [ "chothia", "kabat"] and chain_type=="light":
+    elif scheme in [ "chothia", "kabat", "martin"] and chain_type=="light":
         # Number forwards from 89
         insertions = max(length - 9, 0)
-        assert insertions < 27, "Too many insertions for numbering scheme to handle" # We ran out of letters.
+        _check_length(scheme.title(), "CDR3", length, 9 + len(alphabet) - 1)
         ordered_deletions = [ (95,' '),(94,' '),(93,' '),( 92,' '),(91,' '),(96,' '),(97,' '),(90,' '),(89,' ') ]
-        annotations = sorted( ordered_deletions[ max(0, 9-length): ] + [ (95,a) for a in az[:insertions ] ] )
+        annotations = sorted( ordered_deletions[ max(0, 9-length): ] + [ (95,a) for a in alphabet[:insertions ] ], key=_annotation_order )
         return annotations
 
     else:

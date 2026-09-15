@@ -113,6 +113,15 @@ the operation fails with an explanation.
 
 For unusually long loops that need extended insertion codes, use mmCIF output.
 
+IMGT, Kabat, Chothia, Martin, and AHo numbering support up to 5,000 insertion
+codes per anchor (`A`–`Z`, `AA`–`ZZ`, then three-letter codes). Wolfguy retains
+its fixed loop positions: 49 residues per loop, except heavy-chain CDR3
+(51). Unsupported lengths raise an error with the scheme, loop, observed
+length, and supported limit. These are SAbR implementation limits; mmCIF
+does not remove them or the 1,024-residue structure-selection limit. See
+[long-CDR numbering support](docs/index.md#long-cdr-numbering-support) for
+the complete scheme-specific limits.
+
 ## Scientific behavior
 
 - The default `sabr` mode preserves the trained SAbR encoder weights,
