@@ -36,6 +36,16 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -c constraints.txt -e '.[test]'
       - run: pytest --cov=sabr
+      - name: Report the curated biological benchmark
+        if: matrix.python-version == '3.12'
+        run: |
+          python -m benchmarks.antibody.run --output benchmark-sabr.json
+          python -m benchmarks.antibody.run --mode softalign --output benchmark-softalign.json
+      - uses: actions/upload-artifact@v4
+        if: matrix.python-version == '3.12'
+        with:
+          name: antibody-benchmark
+          path: benchmark-*.json
 
   wheel:
     uses: ./.github/workflows/distribution.yml

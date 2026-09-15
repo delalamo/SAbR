@@ -177,6 +177,19 @@ the fixed asset hashes, encoder and alignment baselines, all numbering schemes,
 H/K/L selection, regional corrections, structure-object behavior, and CLI
 failure handling.
 
+The [curated structural benchmark](benchmarks/antibody/README.md) adds
+independent IMGT annotations for conventional antibodies, a VHH with a long
+CDR3, real scFvs in both orientations, diabodies, terminal truncations, and
+non-antibody controls. It reports residue agreement, domain boundaries, and
+rejection rates separately, and tests rotation, translation, and input-numbering
+invariance through the public API in both model modes. The report also records
+known limitations, including acceptance of the two non-antibody controls.
+
+```bash
+python -m benchmarks.antibody.run --output benchmark-sabr.json
+python -m benchmarks.antibody.run --mode softalign --output benchmark-softalign.json
+```
+
 ## License and attribution
 
 SAbR is distributed under the repository license. The vendored ANARCI
