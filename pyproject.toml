@@ -68,7 +68,7 @@ pythonpath = ["."]
 
 [tool.coverage.run]
 branch = true
-omit = ["src/sabr/_anarci/*"]
+omit = ["*/sabr/_anarci/*"]
 
 [tool.coverage.report]
 fail_under = 95

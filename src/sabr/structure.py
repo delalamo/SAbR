@@ -12,20 +12,32 @@ from Bio.PDB.Residue import DisorderedResidue
 from Bio.PDB.Structure import Structure
 
 from sabr import constants
+from sabr._types import FloatArray, NumberingRecord
 
 
 @dataclass(frozen=True, slots=True)
 class _ChainData:
-    """Private, normalized view of the selected polymer residues."""
+    """Selected residues; coords is [N, 4, 3] in Angstroms (N, CA, C, CB).
 
-    coords: np.ndarray
+    Sequence, IDs, and original-chain indices all have length N. A gap index
+    marks the selected row immediately before a detected peptide break.
+    """
+
+    coords: FloatArray
     sequence: str
     residue_ids: tuple[tuple[int, str], ...]
     residue_indices: tuple[int, ...]
     gap_indices: frozenset[int]
 
 
-def _compute_cb(n_coord: np.ndarray, ca_coord: np.ndarray, c_coord: np.ndarray):
+def _compute_cb(
+    n_coord: FloatArray, ca_coord: FloatArray, c_coord: FloatArray
+) -> FloatArray:
+    """Construct a synthetic CB from N/CA/C [..., 3] Angstrom coordinates.
+
+    Input shapes match and the output retains that shape. Geometry follows
+    the fixed bond lengths and angles used to prepare the trained references.
+    """
     epsilon = 1e-8
 
     def normalize(vector):
@@ -145,7 +157,8 @@ def _residue_data(residue) -> tuple:
     return _select_backbone(atoms, label)
 
 
-def _detect_gaps(coords: np.ndarray) -> frozenset:
+def _detect_gaps(coords: FloatArray) -> frozenset[int]:
+    """Find breaks from N - 1 C-to-next-N distances in [N, 4, 3] coordinates."""
     if len(coords) < 2:
         return frozenset()
     distances = np.linalg.norm(coords[:-1, 2] - coords[1:, 0], axis=1)
@@ -158,7 +171,7 @@ def _detect_gaps(coords: np.ndarray) -> frozenset:
 
 
 def extract_chain(
-    structure, chain: str, residue_range: tuple | None
+    structure, chain: str, residue_range: tuple[int, int] | None
 ) -> _ChainData:
     """Normalize selected polymer residues without modifying the structure.
 
@@ -314,7 +327,9 @@ def extract_chain(
     )
 
 
-def _new_residue_ids(data: _ChainData, numbered: list) -> dict:
+def _new_residue_ids(
+    data: _ChainData, numbered: list[NumberingRecord]
+) -> dict[int, tuple[int, str]]:
     if not numbered:
         raise ValueError("ANARCI returned no numbered residues.")
     query_rows = [record[0] for record in numbered]
@@ -351,7 +366,9 @@ def _new_residue_ids(data: _ChainData, numbered: list) -> dict:
     return mapping
 
 
-def _check_collisions(structure, chain: str, mapping: dict) -> None:
+def _check_collisions(
+    structure, chain: str, mapping: dict[int, tuple[int, str]]
+) -> None:
     target = _find_chain(structure, chain)
     final_ids = []
     for index, residue in enumerate(target):
@@ -373,7 +390,7 @@ def apply_numbering(
     structure,
     chain: str,
     data: _ChainData,
-    numbered: list,
+    numbered: list[NumberingRecord],
 ):
     """Return a copy with numbering applied to selected residues."""
     mapping = _new_residue_ids(data, numbered)
