@@ -100,14 +100,15 @@ scores, and a traceback on failure.
 
 To search only the scFv candidate set, pass `--scfv`. This is equivalent to
 `--chain-type HK,HL,KH,LH`; as a compatibility flag it requires the default
-automatic chain type. SAbR places successive domains in separate 1000-number
-residue blocks: `1–128`, `1001–1128`, `2001–2128`, and so on. Every linker
-continues sequentially from the preceding domain's last number. Multi-domain
-references use the selected parameter mode, so either form can be combined
-with `--mode softalign`. Gap-open and gap-extension penalties are disabled for
-query linker residues aligned at every boundary between domain references.
-All other internal gap transitions retain the selected parameter mode's
-normal penalties.
+automatic chain type. Each domain is numbered in the selected scheme, then
+successive domains receive offsets of `0`, `1000`, `2000`, and so on. For
+IMGT, this gives domain ranges `1–128`, `1001–1128`, `2001–2128`, and so on.
+Every linker continues sequentially from the preceding domain's last number.
+Multi-domain references use the selected parameter mode, so either form can be
+combined with `--mode softalign`. Gap-open and gap-extension penalties are
+disabled for query linker residues aligned at every boundary between domain
+references. All other internal gap transitions retain the selected parameter
+mode's normal penalties.
 
 When candidates are compared, SAbR applies the normal affine gap-open and
 gap-extension costs to unaligned query and reference termini of multi-domain
@@ -123,7 +124,9 @@ alignments or their raw scores.
 from Bio.PDB import PDBParser
 from sabr import renumber_structure
 
-structure = PDBParser(QUIET=True).get_structure("antibody", "antibody.pdb")
+structure = PDBParser(PERMISSIVE=False, QUIET=True).get_structure(
+    "antibody", "antibody.pdb"
+)
 numbered = renumber_structure(
     structure,
     chain="H",
@@ -131,6 +134,9 @@ numbered = renumber_structure(
     chain_type="auto",
 )
 ```
+
+Strict PDB parsing matches the CLI and rejects malformed duplicate atom
+records before renumbering.
 
 The function signature is:
 
