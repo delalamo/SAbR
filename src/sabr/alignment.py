@@ -7,15 +7,34 @@ from importlib.resources import files
 import numpy as np
 
 from sabr import constants
+from sabr._types import (
+    AlignmentResult,
+    FloatArray,
+    IntArray,
+    Reference,
+    ReferenceAlignmentResult,
+)
 from sabr.corrections import apply_corrections
 
 LOGGER = logging.getLogger(__name__)
 
 
 def _soft_maximum_with_grad(
-    x, temperature, ninf, axis=-1, mask=None, *, with_gradient=True
-):
-    """Log-sum-exp and optional derivative, including historical clipping."""
+    x: FloatArray,
+    temperature: float,
+    ninf: float,
+    axis: int | None = -1,
+    mask: np.ndarray | None = None,
+    *,
+    with_gradient: bool = True,
+) -> tuple[FloatArray, FloatArray | None]:
+    """Log-sum-exp and optional derivative, including historical clipping.
+
+    ``x`` has arbitrary shape; ``mask`` must broadcast to it. The value drops
+    the reduced axis (all axes for None); its derivative has ``x.shape``.
+    Temperature must be positive and each reduction needs an unmasked entry.
+    The derivative at the clipping threshold is historically one half.
+    """
     scaled = x / temperature
     clipped = np.maximum(scaled, ninf)
     maximum = np.max(clipped, axis=axis, keepdims=True)
@@ -31,22 +50,33 @@ def _soft_maximum_with_grad(
 
 
 def _affine_value_and_grad(
-    similarities,
-    lengths,
-    temperature,
-    gap_extend,
-    gap_open,
-    free_gap_boundary=-1,
-    NINF=-1e30,
+    similarities: FloatArray,
+    lengths: tuple[int, int] | IntArray,
+    temperature: float,
+    gap_extend: float,
+    gap_open: float,
+    free_gap_boundary: int | tuple[int, ...] = -1,
+    NINF: float = -1e30,
     *,
-    with_gradient=True,
-):
+    with_gradient: bool = True,
+) -> tuple[FloatArray, FloatArray | None]:
     """Striped affine DP with an explicit reverse pass for soft assignments.
 
     This differentiates the same three-state recurrence as the JAX version;
     it does not replace soft alignment with a hard traceback. Forward and
     reverse sweeps vectorize across each antidiagonal.
     Score-only calls omit transition storage and return None for the gradient.
+
+    ``similarities`` is [Q, R] with Q, R >= 2; ``lengths`` contains its two
+    unpadded extents. The float32 result is a scalar score and an optional
+    [Q, R] derivative. Temperature is positive; gap values are additive
+    scores, including the trained SoftAlign extension reward. Boundary
+    indices select zero-cost down transitions in reference-column space.
+    The -1 sentinel leaves all gaps penalized.
+
+    With A = Q - 1 and B = R - 1, antidiagonal buffers have A + B - 1 stripes
+    of width floor((A + B) / 2). Their last axis stores match/right/down
+    states; transition buffers store 4/2/3 predecessor weights respectively.
     """
     similarities = np.asarray(similarities, dtype=np.float32)
     rows, columns = similarities.shape
@@ -137,15 +167,15 @@ def _affine_value_and_grad(
 
 
 def _affine_score(
-    similarities,
-    lengths,
-    temperature,
-    gap_extend,
-    gap_open,
-    free_gap_boundary=-1,
-    NINF=-1e30,
-):
-    """Return the historical affine soft-alignment score."""
+    similarities: FloatArray,
+    lengths: tuple[int, int] | IntArray,
+    temperature: float,
+    gap_extend: float,
+    gap_open: float,
+    free_gap_boundary: int | tuple[int, ...] = -1,
+    NINF: float = -1e30,
+) -> FloatArray:
+    """Return a scalar score; shapes follow ``_affine_value_and_grad``."""
     return _affine_value_and_grad(
         similarities,
         lengths,
@@ -163,8 +193,8 @@ def load_references(
     noise_level: float,
     mode: str = "sabr",
     scfv: bool = False,
-) -> dict:
-    """Load single-domain and optional scFv references for one mode."""
+) -> dict[str, Reference]:
+    """Load read-only [R, 64] embeddings and R absolute IMGT positions."""
     if mode == "sabr":
         filename = f"embeddings_noise_{noise_level:.1f}.npz"
     elif mode == "softalign":
@@ -217,8 +247,10 @@ def load_gap_penalties(mode: str = "sabr") -> tuple[float, float]:
         return float(data["gap_extend"]), float(data["gap_open"])
 
 
-def _alignment_path(alignment: np.ndarray) -> np.ndarray:
-    """Validate common matrix invariants and return its assigned path."""
+def _alignment_path(alignment: np.ndarray) -> IntArray:
+    """Validate binary [Q, R] assignments and return [matches, 2] row/column
+    indices in strictly increasing order along both axes.
+    """
     if alignment.ndim != 2 or not np.isfinite(alignment).all():
         raise ValueError("Alignment must be a finite two-dimensional matrix.")
     if not np.isin(alignment, (0, 1)).all():
@@ -264,7 +296,9 @@ def _validate_multidomain_alignment(
             )
 
 
-def _concatenate_reference(references: dict, representation: str) -> tuple:
+def _concatenate_reference(
+    references: dict[str, Reference], representation: str
+) -> Reference:
     """Build one ordered multi-domain reference from single domains."""
     domain_references = [references[domain] for domain in representation]
     embeddings = np.concatenate(
@@ -280,14 +314,19 @@ def _concatenate_reference(references: dict, representation: str) -> tuple:
 
 
 def _align_reference(
-    query: np.ndarray,
-    reference: np.ndarray,
+    query: FloatArray,
+    reference: FloatArray,
     mode: str = "sabr",
     free_gap_boundary: int | tuple[int, ...] = -1,
     *,
     score_only: bool = False,
-):
-    """Align one reference, or return only its similarity matrix and score."""
+) -> ReferenceAlignmentResult:
+    """Align [Q, 64] query and [R, 64] reference embeddings.
+
+    Returns soft assignments [Q, R] (None in score-only mode), float32
+    similarities [Q, R + 2] including zero anchors at both reference ends,
+    and the raw scalar score. Boundary indices refer to the anchored matrix.
+    """
     anchor = np.zeros((1, reference.shape[1]), dtype=reference.dtype)
     augmented_reference = np.concatenate((anchor, reference, anchor), axis=0)
     query = np.asarray(query, dtype=np.float32)
@@ -348,14 +387,22 @@ def _terminal_gap_penalty(
 
 
 def align(
-    query: np.ndarray,
-    gap_indices: frozenset,
+    query: FloatArray,
+    gap_indices: frozenset[int],
     chain_type: str,
     noise_level: float,
     mode: str = "sabr",
     scfv: bool = False,
-) -> tuple:
-    """Align query embeddings and return corrected IMGT alignment metadata."""
+) -> AlignmentResult:
+    """Align [Q, 64] embeddings and return corrected IMGT assignments.
+
+    The binary integer matrix is [Q, 128 * D] for D selected domains, with
+    column zero representing IMGT 1. Unassigned rows can represent insertions
+    or linkers. ``gap_indices`` contains the row before each peptide break.
+    The other results are the selected domain string and raw soft score;
+    terminal gap penalties affect selection only. Rounding, deterministic
+    corrections, and tie order preserve the validated scientific behavior.
+    """
     references = dict(load_references(noise_level, mode, scfv=scfv))
     if chain_type == "auto":
         candidates = (

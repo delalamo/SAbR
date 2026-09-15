@@ -1,4 +1,5 @@
 import json
+from importlib.resources import files
 from pathlib import Path
 
 import numpy as np
@@ -15,13 +16,7 @@ from sabr.structure import (
 )
 
 DATA = Path(__file__).parent / "data"
-ASSET = (
-    Path(__file__).parents[1]
-    / "src"
-    / "sabr"
-    / "assets"
-    / "modified_residues.json"
-)
+ASSET = files("sabr.assets") / "modified_residues.json"
 
 
 def _atom(name, altloc, occupancy, coordinate):

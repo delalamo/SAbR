@@ -1,7 +1,9 @@
 import ast
 from pathlib import Path
 
-SOURCE = Path(__file__).parents[1] / "src" / "sabr"
+import sabr
+
+SOURCE = Path(sabr.__file__).parent
 
 
 def _walk_with_scope(node, inside_function=False, inside_class=False):
@@ -17,7 +19,9 @@ def _walk_with_scope(node, inside_function=False, inside_class=False):
 
 
 def test_no_lazy_imports_or_module_variable_annotations():
-    for path in SOURCE.glob("*.py"):
+    paths = list(SOURCE.glob("*.py"))
+    assert paths, f"No installed source files found in {SOURCE}"
+    for path in paths:
         tree = ast.parse(path.read_text(), filename=str(path))
         for node, inside_function, inside_class in _walk_with_scope(tree):
             if isinstance(node, (ast.Import, ast.ImportFrom)):
