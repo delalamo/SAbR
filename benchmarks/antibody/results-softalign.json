@@ -1,0 +1,912 @@
+{
+  "schema_version": 1,
+  "manifest_sha256": "d4a98133cc5ca209871056c55501c14caf7d49861c71681c0ca50351d7bcdb5b",
+  "mode": "softalign",
+  "scheme": "imgt",
+  "noise_level": 0.0,
+  "summary": {
+    "residue_agreement_all_positives": {
+      "numerator": 1494,
+      "denominator": 1502,
+      "rate": 0.9946737683089214
+    },
+    "residue_agreement_accepted_positives": {
+      "numerator": 1494,
+      "denominator": 1502,
+      "rate": 0.9946737683089214
+    },
+    "exact_domain_boundaries": {
+      "numerator": 12,
+      "denominator": 13,
+      "rate": 0.9230769230769231
+    },
+    "boundary_mean_absolute_error_matched_domains": 0.038461538461538464,
+    "matched_boundary_count": 26,
+    "positive_rejection": {
+      "numerator": 0,
+      "denominator": 9,
+      "rate": 0.0
+    },
+    "negative_rejection": {
+      "numerator": 0,
+      "denominator": 2,
+      "rate": 0.0
+    },
+    "gap_policy_rejection": {
+      "numerator": 2,
+      "denominator": 2,
+      "rate": 1.0
+    },
+    "unexpected_domain_count": 0
+  },
+  "by_category": {
+    "conventional": {
+      "residue_agreement_all_positives": {
+        "numerator": 227,
+        "denominator": 227,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 227,
+        "denominator": 227,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 2,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "diabody_vh_vl": {
+      "residue_agreement_all_positives": {
+        "numerator": 233,
+        "denominator": 233,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 233,
+        "denominator": 233,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "diabody_vl_vh": {
+      "residue_agreement_all_positives": {
+        "numerator": 232,
+        "denominator": 232,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 232,
+        "denominator": 232,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "gap_policy": {
+      "residue_agreement_all_positives": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "exact_domain_boundaries": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "boundary_mean_absolute_error_matched_domains": null,
+      "matched_boundary_count": 0,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "unexpected_domain_count": 0
+    },
+    "negative": {
+      "residue_agreement_all_positives": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "exact_domain_boundaries": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "boundary_mean_absolute_error_matched_domains": null,
+      "matched_boundary_count": 0,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 2,
+        "rate": 0.0
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "scfv_vh_vl": {
+      "residue_agreement_all_positives": {
+        "numerator": 230,
+        "denominator": 230,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 230,
+        "denominator": 230,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 1,
+        "denominator": 2,
+        "rate": 0.5
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.25,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "scfv_vl_vh": {
+      "residue_agreement_all_positives": {
+        "numerator": 228,
+        "denominator": 228,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 228,
+        "denominator": 228,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "truncated": {
+      "residue_agreement_all_positives": {
+        "numerator": 212,
+        "denominator": 220,
+        "rate": 0.9636363636363636
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 212,
+        "denominator": 220,
+        "rate": 0.9636363636363636
+      },
+      "exact_domain_boundaries": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 4,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 2,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    },
+    "vhh_long_cdr3": {
+      "residue_agreement_all_positives": {
+        "numerator": 132,
+        "denominator": 132,
+        "rate": 1.0
+      },
+      "residue_agreement_accepted_positives": {
+        "numerator": 132,
+        "denominator": 132,
+        "rate": 1.0
+      },
+      "exact_domain_boundaries": {
+        "numerator": 1,
+        "denominator": 1,
+        "rate": 1.0
+      },
+      "boundary_mean_absolute_error_matched_domains": 0.0,
+      "matched_boundary_count": 2,
+      "positive_rejection": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0.0
+      },
+      "negative_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "gap_policy_rejection": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "unexpected_domain_count": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "12e8_H",
+      "category": "conventional",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 120,
+      "agreeing_residues": 120,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 119
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 119
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "H"
+    },
+    {
+      "id": "12e8_L",
+      "category": "conventional",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 107,
+      "agreeing_residues": 107,
+      "expected_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 106
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 106
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "K"
+    },
+    {
+      "id": "1mel_A",
+      "category": "vhh_long_cdr3",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 132,
+      "agreeing_residues": 132,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 131
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 131
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "H"
+    },
+    {
+      "id": "1lmk_A",
+      "category": "diabody_vh_vl",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 233,
+      "agreeing_residues": 233,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 120
+        },
+        {
+          "type": "K",
+          "start": 126,
+          "end": 237
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 120
+        },
+        {
+          "type": "K",
+          "start": 126,
+          "end": 237
+        }
+      ],
+      "exact_domains": 2,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "HK"
+    },
+    {
+      "id": "1moe_A",
+      "category": "diabody_vl_vh",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 232,
+      "agreeing_residues": 232,
+      "expected_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 110
+        },
+        {
+          "type": "H",
+          "start": 119,
+          "end": 239
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 110
+        },
+        {
+          "type": "H",
+          "start": 119,
+          "end": 239
+        }
+      ],
+      "exact_domains": 2,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "KH"
+    },
+    {
+      "id": "6nou_A",
+      "category": "scfv_vh_vl",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 230,
+      "agreeing_residues": 230,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 117
+        },
+        {
+          "type": "K",
+          "start": 119,
+          "end": 230
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 118
+        },
+        {
+          "type": "K",
+          "start": 119,
+          "end": 230
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "HK"
+    },
+    {
+      "id": "5kve_L",
+      "category": "scfv_vl_vh",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 228,
+      "agreeing_residues": 228,
+      "expected_domains": [
+        {
+          "type": "K",
+          "start": 1,
+          "end": 113
+        },
+        {
+          "type": "H",
+          "start": 115,
+          "end": 229
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "K",
+          "start": 1,
+          "end": 113
+        },
+        {
+          "type": "H",
+          "start": 115,
+          "end": 229
+        }
+      ],
+      "exact_domains": 2,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "KH"
+    },
+    {
+      "id": "1ubq_A",
+      "category": "negative",
+      "positive": false,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 0,
+      "agreeing_residues": 0,
+      "expected_domains": [],
+      "predicted_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 73
+        }
+      ],
+      "exact_domains": 0,
+      "boundary_errors": [],
+      "mismatches": [],
+      "selected_types": "K"
+    },
+    {
+      "id": "1lyz_A",
+      "category": "negative",
+      "positive": false,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 0,
+      "agreeing_residues": 0,
+      "expected_domains": [],
+      "predicted_domains": [
+        {
+          "type": "K",
+          "start": 0,
+          "end": 123
+        }
+      ],
+      "exact_domains": 0,
+      "boundary_errors": [],
+      "mismatches": [],
+      "selected_types": "K"
+    },
+    {
+      "id": "12e8_H_n_truncated",
+      "category": "truncated",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 110,
+      "agreeing_residues": 110,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 109
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 109
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [],
+      "selected_types": "H"
+    },
+    {
+      "id": "12e8_H_c_truncated",
+      "category": "truncated",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": false,
+      "accepted": true,
+      "error": null,
+      "labeled_residues": 110,
+      "agreeing_residues": 102,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 109
+        }
+      ],
+      "predicted_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 109
+        }
+      ],
+      "exact_domains": 1,
+      "boundary_errors": [
+        [
+          0,
+          0
+        ]
+      ],
+      "mismatches": [
+        {
+          "row": 102,
+          "expected": [
+            111,
+            ""
+          ],
+          "actual": [
+            112,
+            ""
+          ]
+        },
+        {
+          "row": 103,
+          "expected": [
+            112,
+            ""
+          ],
+          "actual": [
+            113,
+            ""
+          ]
+        },
+        {
+          "row": 104,
+          "expected": [
+            113,
+            ""
+          ],
+          "actual": [
+            114,
+            ""
+          ]
+        },
+        {
+          "row": 105,
+          "expected": [
+            114,
+            ""
+          ],
+          "actual": [
+            115,
+            ""
+          ]
+        },
+        {
+          "row": 106,
+          "expected": [
+            115,
+            ""
+          ],
+          "actual": [
+            116,
+            ""
+          ]
+        },
+        {
+          "row": 107,
+          "expected": [
+            116,
+            ""
+          ],
+          "actual": [
+            117,
+            ""
+          ]
+        },
+        {
+          "row": 108,
+          "expected": [
+            117,
+            ""
+          ],
+          "actual": [
+            118,
+            ""
+          ]
+        },
+        {
+          "row": 109,
+          "expected": [
+            118,
+            ""
+          ],
+          "actual": [
+            119,
+            ""
+          ]
+        }
+      ],
+      "selected_types": "H"
+    },
+    {
+      "id": "6nou_A_default_gaps",
+      "category": "gap_policy",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": true,
+      "accepted": false,
+      "error": "1 structural gap was detected in the selected chain. SAbR will not run unless structural gaps are explicitly allowed. Pass --dangerously-allow-structural-gaps on the command line or set dangerously_allow_structural_gaps=True in the Python API.",
+      "labeled_residues": 230,
+      "agreeing_residues": 0,
+      "expected_domains": [
+        {
+          "type": "H",
+          "start": 0,
+          "end": 117
+        },
+        {
+          "type": "K",
+          "start": 119,
+          "end": 230
+        }
+      ],
+      "predicted_domains": [],
+      "exact_domains": 0,
+      "boundary_errors": [],
+      "mismatches": []
+    },
+    {
+      "id": "5kve_L_default_gaps",
+      "category": "gap_policy",
+      "positive": true,
+      "mode": "softalign",
+      "policy_control": true,
+      "accepted": false,
+      "error": "1 structural gap was detected in the selected chain. SAbR will not run unless structural gaps are explicitly allowed. Pass --dangerously-allow-structural-gaps on the command line or set dangerously_allow_structural_gaps=True in the Python API.",
+      "labeled_residues": 228,
+      "agreeing_residues": 0,
+      "expected_domains": [
+        {
+          "type": "K",
+          "start": 1,
+          "end": 113
+        },
+        {
+          "type": "H",
+          "start": 115,
+          "end": 229
+        }
+      ],
+      "predicted_domains": [],
+      "exact_domains": 0,
+      "boundary_errors": [],
+      "mismatches": []
+    }
+  ]
+}

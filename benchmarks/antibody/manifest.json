@@ -1,0 +1,419 @@
+{
+  "schema_version": 1,
+  "scheme": "imgt",
+  "retrieved": "2026-09-15",
+  "annotation_source": "SAbDab 2.1.1, independent IMGT annotations (CC BY 4.0)",
+  "cases": [
+    {
+      "id": "12e8_H",
+      "category": "conventional",
+      "fixture": "fixtures/12e8_H.pdb",
+      "chain": "H",
+      "pdb_id": "12E8",
+      "source_url": "https://files.rcsb.org/download/12E8.pdb",
+      "source_sha256": "c878844d6a622e853b8744a5c52f0ae5f6284a3b64639528226e8ce331923c6a",
+      "fixture_sha256": "bae45d1f906df1962fd112842505f3cbdac8792cbf6c604fca25fad238d4f83b",
+      "options": {},
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/12E8.cif",
+      "residue_mapping_sha256": "9b2e3e56cf310cf69002e54c429cd92c78242a9a801923ebd18994b470ea03be",
+      "labels": "fixtures/12e8_H.csv",
+      "expected_types": "H",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_000012e8",
+      "annotation_sha256": "2668f2c052da0509dd6bd4262cc03dae524ba4c9161a9ec7e2cedae864d10bd2",
+      "annotation_updated_at": "2026-04-30T14:40:52",
+      "segments": [
+        {
+          "id": 616,
+          "chain": "H",
+          "query_start": 0,
+          "query_end": 119,
+          "sequence": "EVQLQQSGAEVVRSGASVKLSCTASGFNIKDYYIHWVKQRPEKGLEWIGWIDPEIGDTEYVPKFQGKATMTADTSSNTAYLQLSSLTSEDTAVYYCNAGHDYDRGRFPYWGQGTLVTVSA"
+        }
+      ],
+      "labels_sha256": "a98ae59804ff691057322f22eb1a18ae83ad6f531198ad674960b451b1ca3032"
+    },
+    {
+      "id": "12e8_L",
+      "category": "conventional",
+      "fixture": "fixtures/12e8_L.pdb",
+      "chain": "L",
+      "pdb_id": "12E8",
+      "source_url": "https://files.rcsb.org/download/12E8.pdb",
+      "source_sha256": "c878844d6a622e853b8744a5c52f0ae5f6284a3b64639528226e8ce331923c6a",
+      "fixture_sha256": "1c469ae856e3c74df55d1cf3fe79a7286cbd5c85fda65725476266f8d95ab750",
+      "options": {},
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/12E8.cif",
+      "residue_mapping_sha256": "9b2e3e56cf310cf69002e54c429cd92c78242a9a801923ebd18994b470ea03be",
+      "labels": "fixtures/12e8_L.csv",
+      "expected_types": "K",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_000012e8",
+      "annotation_sha256": "2668f2c052da0509dd6bd4262cc03dae524ba4c9161a9ec7e2cedae864d10bd2",
+      "annotation_updated_at": "2026-04-30T14:40:52",
+      "segments": [
+        {
+          "id": 617,
+          "chain": "L",
+          "query_start": 0,
+          "query_end": 106,
+          "sequence": "DIVMTQSQKFMSTSVGDRVSITCKASQNVGTAVAWYQQKPGQSPKLMIYSASNRYTGVPDRFTGSGSGTDFTLTISNMQSEDLADYFCQQYSSYPLTFGAGTKLELK"
+        }
+      ],
+      "labels_sha256": "5bda955c9eddbb6fc95a41ce32b81a65f870773069643eb244d052a14c6c3570"
+    },
+    {
+      "id": "1mel_A",
+      "category": "vhh_long_cdr3",
+      "fixture": "fixtures/1mel_A.pdb",
+      "chain": "A",
+      "pdb_id": "1MEL",
+      "source_url": "https://files.rcsb.org/download/1MEL.pdb",
+      "source_sha256": "321aa847a20535c018b12cf340d2e057628dce42b4005c185916dd17bdd24de4",
+      "fixture_sha256": "5588be4a6f20fccd79a7bf10fd5fbd9da992df7f7178b4055ff2772fca3666f7",
+      "options": {},
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/1MEL.cif",
+      "residue_mapping_sha256": "b82586a12aef8e1c5c53399904cf5c70885e92c6884dce9b9620d128bd9d1de0",
+      "labels": "fixtures/1mel_A.csv",
+      "expected_types": "H",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00001mel",
+      "annotation_sha256": "3eb834cfd0005c79200035c82c4c3b60a8d62657208d46d69c1bb6af16fa541e",
+      "annotation_updated_at": "2026-04-30T14:47:49",
+      "segments": [
+        {
+          "id": 569,
+          "chain": "A",
+          "query_start": 0,
+          "query_end": 132,
+          "sequence": "DVQLQASGGGSVQAGGSLRLSCAASGYTIGPYCMGWFRQAPGKEREGVAAINMGGGITYYADSVKGRFTISQDNAKNTVYLLMNSLEPEDTAIYYCAADSTIYASYYECGHGLSTGGYGYDSWGQGTQVTVSS"
+        }
+      ],
+      "labels_sha256": "6e9e60e5d8735b695ad7f0e4bbbc40c104bf606dfdb98fb5b0385415374b963d"
+    },
+    {
+      "id": "1lmk_A",
+      "category": "diabody_vh_vl",
+      "fixture": "fixtures/1lmk_A.pdb",
+      "chain": "A",
+      "pdb_id": "1LMK",
+      "source_url": "https://files.rcsb.org/download/1LMK.pdb",
+      "source_sha256": "a27bdfb2c9d79285ff7fdabdf4de17488c0ba609ee1ca4c32b368eaa1aefe55b",
+      "fixture_sha256": "a45482fc61ffa7305adb1a0342a54e2463830dd43a510c974d03c5eee22c79c8",
+      "options": {
+        "scfv": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/1LMK.cif",
+      "residue_mapping_sha256": "9c0452f0c8551ef2f4c59960c6cae88e6da7b1caed919499ab5d32040c8d52d8",
+      "labels": "fixtures/1lmk_A.csv",
+      "expected_types": "HK",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00001lmk",
+      "annotation_sha256": "fbb7c284a5fd8834d0ece7f7aca6d91e64699a85762273be6539a8ad9f967a19",
+      "annotation_updated_at": "2026-04-30T16:48:20",
+      "segments": [
+        {
+          "id": 160,
+          "chain": "A1",
+          "query_start": 0,
+          "query_end": 120,
+          "sequence": "VQLQQSGTELMKPGRSLKISCKTTGYIFSNYWIEWVKQRPGHGLEWIGKILPGGGSNTYNDKFKGKATFTADTSSNIAYMQLSSLTSEDSAVYYCARGEDYYAYWYVLDYWGQGTTVTVSS"
+        },
+        {
+          "id": 159,
+          "chain": "A2",
+          "query_start": 126,
+          "query_end": 237,
+          "sequence": "DIELTQSPLSLPVSLGDQASISCRSSQSLVHSNGNTSLHWYLKKPGQSPKLLIYKVSTRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYFCSQSTHVPFTFGSGTKLELK"
+        }
+      ],
+      "labels_sha256": "2375cd5fca326f4179a3839efa6dc6f7d3ba36de8eb352c971d508afc62781a2"
+    },
+    {
+      "id": "1moe_A",
+      "category": "diabody_vl_vh",
+      "fixture": "fixtures/1moe_A.pdb",
+      "chain": "A",
+      "pdb_id": "1MOE",
+      "source_url": "https://files.rcsb.org/download/1MOE.pdb",
+      "source_sha256": "4bdaef40fe7eadde9174b82f66255262e2c59de175fe013c07065c6087a6f619",
+      "fixture_sha256": "5029736e5388a285df52bd381dbd9cb7be21912f7469deddd2ac0e32d1bb2555",
+      "options": {
+        "scfv": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/1MOE.cif",
+      "residue_mapping_sha256": "e326b8695069f69653641e05e8d873b862f906e12cd7d6f920e5ad9441667311",
+      "labels": "fixtures/1moe_A.csv",
+      "expected_types": "KH",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00001moe",
+      "annotation_sha256": "1b0e4996e915793e0a08151b5358d65cbb7838adc89c149fc400567a5ac82457",
+      "annotation_updated_at": "2026-04-30T15:18:23",
+      "segments": [
+        {
+          "id": 100,
+          "chain": "A1",
+          "query_start": 0,
+          "query_end": 110,
+          "sequence": "DIVLTQSPASLAVSLGQRATMSCRAGESVDIFGVGFLHWYQQKPGQPPKLLIYRASNLESGIPVRFSGTGSRTDFTLIIDPVEADDVATYYCQQTNEDPYTFGGGTKLEIK"
+        },
+        {
+          "id": 101,
+          "chain": "A2",
+          "query_start": 119,
+          "query_end": 239,
+          "sequence": "EVQLQQSGAELVEPGASVKLSCTASGFNIKDTYMHWVKQRPEQGLEWIGRIDPANGNSKYVPKFQGKATITADTSSNTAYLQLTSLTSEDTAVYYCAPFGYYVSDYAMAYWGQGTSVTVSS"
+        }
+      ],
+      "labels_sha256": "3a5ca0b95e1c4a67938668ac0319d0d414452a7830b2187738dfc7a934a0a8bf"
+    },
+    {
+      "id": "6nou_A",
+      "category": "scfv_vh_vl",
+      "fixture": "fixtures/6nou_A.pdb",
+      "chain": "A",
+      "pdb_id": "6NOU",
+      "source_url": "https://files.rcsb.org/download/6NOU.pdb",
+      "source_sha256": "e88d1325e282649990215e3b3b491682328a4212e286576428bf11afbef41373",
+      "fixture_sha256": "2eda3b23273a41bb47106721391f68b0eac967ab12fe07eab9433064a290bdd9",
+      "options": {
+        "scfv": true,
+        "dangerously_allow_structural_gaps": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/6NOU.cif",
+      "residue_mapping_sha256": "835ece40f0a4f1d03625052ff63ded473c0ac27b7a864c619d9e5b6ab55a371b",
+      "labels": "fixtures/6nou_A.csv",
+      "expected_types": "HK",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00006nou",
+      "annotation_sha256": "3afecc94e4a3a14f57b7105db68e3738e995b0a8149e75cf50809c8ba28dd211",
+      "annotation_updated_at": "2026-04-30T16:23:13",
+      "segments": [
+        {
+          "id": 13328,
+          "chain": "A1",
+          "query_start": 0,
+          "query_end": 118,
+          "sequence": "QVQLVQSGAEVKKPGSSVKVSCKASGYSFTDYHIHWVRQAPGQCLEWMGVINPMYGTTDYNQRFKGRVTITADESTSTAYMELSSLRSEDTAVYYCARYDYFTGTGVYWGQGTLVTVSS"
+        },
+        {
+          "id": 13329,
+          "chain": "A2",
+          "query_start": 144,
+          "query_end": 255,
+          "sequence": "DIVMTQTPLSLSVTPGQPASISCRSSRSLVHSRGNTYLHWYLQKPGQSPQLLIYKVSNRFIGVPDRFSGSGSGTDFTLKISRVEAEDVGVYYCSQSTHLPFTFGCGTKLEIK"
+        }
+      ],
+      "labels_sha256": "e2696049a3d4c1d354985542a92f5f904a76d5679744cf50c134b36640618291"
+    },
+    {
+      "id": "5kve_L",
+      "category": "scfv_vl_vh",
+      "fixture": "fixtures/5kve_L.pdb",
+      "chain": "L",
+      "pdb_id": "5KVE",
+      "source_url": "https://files.rcsb.org/download/5KVE.pdb",
+      "source_sha256": "0f09e6428105921934a5466f65b90f049e9e92959d1a2b3c0abfdaefc9f69607",
+      "fixture_sha256": "36968972658baf7432ccd6f40fa070a6641afb3c2d99b4c6aa0ebd62ef1241d9",
+      "options": {
+        "scfv": true,
+        "dangerously_allow_structural_gaps": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/5KVE.cif",
+      "residue_mapping_sha256": "5547617cdf885f7174a108fd303a2691eeaf14e8842851d45fef33f15c12d500",
+      "labels": "fixtures/5kve_L.csv",
+      "expected_types": "KH",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00005kve",
+      "annotation_sha256": "37cb5484c1139dda32be1cc77c597d07e5f5d6dc8ce4961072b16dac228b4a51",
+      "annotation_updated_at": "2026-04-30T14:08:34",
+      "segments": [
+        {
+          "id": 9517,
+          "chain": "L1",
+          "query_start": 1,
+          "query_end": 113,
+          "sequence": "DIVMSQSPSSLAVSVGEKITMSCKSSQSLLYSNNEKNYLAWYQQKPGQSPKLLIYWASARDSGVPDRFTGSGSGTDFTLTISSVKAEDLAVFYCQQYYSYPYTFGGGTKLEIK"
+        },
+        {
+          "id": 9516,
+          "chain": "L2",
+          "query_start": 129,
+          "query_end": 244,
+          "sequence": "QVQLQQPGAELLKPGASVKLSCKASGYSFSNYWMHWVKQRPGQGPEWIGMIHPNSGNTKYNEKFKNKATLTVDKSSSMVYMQLSSLTSEDSAVFYCARLGNDMDYWGQGTSVTVSS"
+        }
+      ],
+      "labels_sha256": "443c2c16485734d041db69f98a85c38cefd443306c7628c7f760f5552ef5d9fc"
+    },
+    {
+      "id": "1ubq_A",
+      "category": "negative",
+      "fixture": "fixtures/1ubq_A.pdb",
+      "chain": "A",
+      "pdb_id": "1UBQ",
+      "source_url": "https://files.rcsb.org/download/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+      "fixture_sha256": "e778de95fb88f9008b929d3df8ab96abf889e96e645d38f5f11acceca338f9e4",
+      "options": {},
+      "positive": false
+    },
+    {
+      "id": "1lyz_A",
+      "category": "negative",
+      "fixture": "fixtures/1lyz_A.pdb",
+      "chain": "A",
+      "pdb_id": "1LYZ",
+      "source_url": "https://files.rcsb.org/download/1LYZ.pdb",
+      "source_sha256": "28e95e819d4e0fc48acdf44209e37ba06f5c9d5d93d9950d67a760b32964326e",
+      "fixture_sha256": "9e40a7dd9ca4f0940c71755fb162eafb9142f3dba045118cdc7386810f06201c",
+      "options": {},
+      "positive": false
+    },
+    {
+      "id": "12e8_H_n_truncated",
+      "category": "truncated",
+      "fixture": "fixtures/12e8_H.pdb",
+      "chain": "H",
+      "pdb_id": "12E8",
+      "source_url": "https://files.rcsb.org/download/12E8.pdb",
+      "source_sha256": "c878844d6a622e853b8744a5c52f0ae5f6284a3b64639528226e8ce331923c6a",
+      "fixture_sha256": "bae45d1f906df1962fd112842505f3cbdac8792cbf6c604fca25fad238d4f83b",
+      "options": {},
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/12E8.cif",
+      "residue_mapping_sha256": "9b2e3e56cf310cf69002e54c429cd92c78242a9a801923ebd18994b470ea03be",
+      "labels": "fixtures/12e8_H.csv",
+      "expected_types": "H",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_000012e8",
+      "annotation_sha256": "2668f2c052da0509dd6bd4262cc03dae524ba4c9161a9ec7e2cedae864d10bd2",
+      "annotation_updated_at": "2026-04-30T14:40:52",
+      "segments": [
+        {
+          "id": 616,
+          "chain": "H",
+          "query_start": 0,
+          "query_end": 119,
+          "sequence": "EVQLQQSGAEVVRSGASVKLSCTASGFNIKDYYIHWVKQRPEKGLEWIGWIDPEIGDTEYVPKFQGKATMTADTSSNTAYLQLSSLTSEDTAVYYCNAGHDYDRGRFPYWGQGTLVTVSA"
+        }
+      ],
+      "labels_sha256": "a98ae59804ff691057322f22eb1a18ae83ad6f531198ad674960b451b1ca3032",
+      "row_slice": [
+        10,
+        120
+      ],
+      "derived_from": "12e8_H"
+    },
+    {
+      "id": "12e8_H_c_truncated",
+      "category": "truncated",
+      "fixture": "fixtures/12e8_H.pdb",
+      "chain": "H",
+      "pdb_id": "12E8",
+      "source_url": "https://files.rcsb.org/download/12E8.pdb",
+      "source_sha256": "c878844d6a622e853b8744a5c52f0ae5f6284a3b64639528226e8ce331923c6a",
+      "fixture_sha256": "bae45d1f906df1962fd112842505f3cbdac8792cbf6c604fca25fad238d4f83b",
+      "options": {},
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/12E8.cif",
+      "residue_mapping_sha256": "9b2e3e56cf310cf69002e54c429cd92c78242a9a801923ebd18994b470ea03be",
+      "labels": "fixtures/12e8_H.csv",
+      "expected_types": "H",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_000012e8",
+      "annotation_sha256": "2668f2c052da0509dd6bd4262cc03dae524ba4c9161a9ec7e2cedae864d10bd2",
+      "annotation_updated_at": "2026-04-30T14:40:52",
+      "segments": [
+        {
+          "id": 616,
+          "chain": "H",
+          "query_start": 0,
+          "query_end": 119,
+          "sequence": "EVQLQQSGAEVVRSGASVKLSCTASGFNIKDYYIHWVKQRPEKGLEWIGWIDPEIGDTEYVPKFQGKATMTADTSSNTAYLQLSSLTSEDTAVYYCNAGHDYDRGRFPYWGQGTLVTVSA"
+        }
+      ],
+      "labels_sha256": "a98ae59804ff691057322f22eb1a18ae83ad6f531198ad674960b451b1ca3032",
+      "row_slice": [
+        0,
+        110
+      ],
+      "derived_from": "12e8_H"
+    },
+    {
+      "id": "6nou_A_default_gaps",
+      "category": "gap_policy",
+      "fixture": "fixtures/6nou_A.pdb",
+      "chain": "A",
+      "pdb_id": "6NOU",
+      "source_url": "https://files.rcsb.org/download/6NOU.pdb",
+      "source_sha256": "e88d1325e282649990215e3b3b491682328a4212e286576428bf11afbef41373",
+      "fixture_sha256": "2eda3b23273a41bb47106721391f68b0eac967ab12fe07eab9433064a290bdd9",
+      "options": {
+        "scfv": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/6NOU.cif",
+      "residue_mapping_sha256": "835ece40f0a4f1d03625052ff63ded473c0ac27b7a864c619d9e5b6ab55a371b",
+      "labels": "fixtures/6nou_A.csv",
+      "expected_types": "HK",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00006nou",
+      "annotation_sha256": "3afecc94e4a3a14f57b7105db68e3738e995b0a8149e75cf50809c8ba28dd211",
+      "annotation_updated_at": "2026-04-30T16:23:13",
+      "segments": [
+        {
+          "id": 13328,
+          "chain": "A1",
+          "query_start": 0,
+          "query_end": 118,
+          "sequence": "QVQLVQSGAEVKKPGSSVKVSCKASGYSFTDYHIHWVRQAPGQCLEWMGVINPMYGTTDYNQRFKGRVTITADESTSTAYMELSSLRSEDTAVYYCARYDYFTGTGVYWGQGTLVTVSS"
+        },
+        {
+          "id": 13329,
+          "chain": "A2",
+          "query_start": 144,
+          "query_end": 255,
+          "sequence": "DIVMTQTPLSLSVTPGQPASISCRSSRSLVHSRGNTYLHWYLQKPGQSPQLLIYKVSNRFIGVPDRFSGSGSGTDFTLKISRVEAEDVGVYYCSQSTHLPFTFGCGTKLEIK"
+        }
+      ],
+      "labels_sha256": "e2696049a3d4c1d354985542a92f5f904a76d5679744cf50c134b36640618291",
+      "expected_rejection": "structural gap"
+    },
+    {
+      "id": "5kve_L_default_gaps",
+      "category": "gap_policy",
+      "fixture": "fixtures/5kve_L.pdb",
+      "chain": "L",
+      "pdb_id": "5KVE",
+      "source_url": "https://files.rcsb.org/download/5KVE.pdb",
+      "source_sha256": "0f09e6428105921934a5466f65b90f049e9e92959d1a2b3c0abfdaefc9f69607",
+      "fixture_sha256": "36968972658baf7432ccd6f40fa070a6641afb3c2d99b4c6aa0ebd62ef1241d9",
+      "options": {
+        "scfv": true
+      },
+      "positive": true,
+      "residue_mapping_url": "https://files.rcsb.org/download/5KVE.cif",
+      "residue_mapping_sha256": "5547617cdf885f7174a108fd303a2691eeaf14e8842851d45fef33f15c12d500",
+      "labels": "fixtures/5kve_L.csv",
+      "expected_types": "KH",
+      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00005kve",
+      "annotation_sha256": "37cb5484c1139dda32be1cc77c597d07e5f5d6dc8ce4961072b16dac228b4a51",
+      "annotation_updated_at": "2026-04-30T14:08:34",
+      "segments": [
+        {
+          "id": 9517,
+          "chain": "L1",
+          "query_start": 1,
+          "query_end": 113,
+          "sequence": "DIVMSQSPSSLAVSVGEKITMSCKSSQSLLYSNNEKNYLAWYQQKPGQSPKLLIYWASARDSGVPDRFTGSGSGTDFTLTISSVKAEDLAVFYCQQYYSYPYTFGGGTKLEIK"
+        },
+        {
+          "id": 9516,
+          "chain": "L2",
+          "query_start": 129,
+          "query_end": 244,
+          "sequence": "QVQLQQPGAELLKPGASVKLSCKASGYSFSNYWMHWVKQRPGQGPEWIGMIHPNSGNTKYNEKFKNKATLTVDKSSSMVYMQLSSLTSEDSAVFYCARLGNDMDYWGQGTSVTVSS"
+        }
+      ],
+      "labels_sha256": "443c2c16485734d041db69f98a85c38cefd443306c7628c7f760f5552ef5d9fc",
+      "expected_rejection": "structural gap"
+    }
+  ]
+}
