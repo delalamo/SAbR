@@ -200,3 +200,16 @@ python -m benchmarks.antibody.run --mode softalign --output benchmark-softalign.
 
 SAbR is distributed under the repository license. The vendored ANARCI
 numbering code retains its original license in `src/sabr/_anarci/LICENSE`.
+
+If you use SAbR, please cite:
+```bibtex
+@article{delAlamo2026,
+  title = {Structure-based Antibody Renumbering},
+  url = {http://dx.doi.org/10.64898/2026.09.16.751788},
+  DOI = {10.64898/2026.09.16.751788},
+  publisher = {openRxiv},
+  author = {del Alamo,  Diego},
+  year = {2026},
+  month = Sept 
+}
+```
