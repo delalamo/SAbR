@@ -16,16 +16,10 @@ from sabr import constants
 LOGGER = logging.getLogger(__name__)
 
 
-def _aligned_row_near(aln: np.ndarray, target_col: int) -> int | None:
-    """Return the row aligned at or within two columns of a target."""
-    for offset in (0, -1, 1, -2, 2):
-        column = target_col + offset
-        if 0 <= column < aln.shape[1]:
-            rows = np.where(aln[:, column] == 1)[0]
-            if len(rows):
-                return int(rows[0])
-
-    return None
+def _aligned_row(aln: np.ndarray, target_col: int) -> int | None:
+    """Return the exact anchor row; nearby matches have different boundaries."""
+    rows = np.flatnonzero(aln[:, target_col] == 1)
+    return int(rows[0]) if len(rows) else None
 
 
 def cdr_columns(residue_count: int, position_count: int) -> list[int | None]:
@@ -69,16 +63,21 @@ def correct_cdr_loop(
     cdr_end: int,
     gap_indices: frozenset[int] | None = None,
 ) -> np.ndarray:
-    """Place framework and CDR residues between one pair of anchors."""
+    """Place framework and CDR residues between two exact IMGT anchors.
+
+    Missing anchors leave the learned alignment intact: treating a nearby
+    match as the requested position can overwrite or duplicate assignments.
+    """
     anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
     anchor_start_col = anchor_start - 1
     anchor_end_col = anchor_end - 1
 
-    anchor_start_row = _aligned_row_near(aln, anchor_start_col)
-    anchor_end_row = _aligned_row_near(aln, anchor_end_col)
+    anchor_start_row = _aligned_row(aln, anchor_start_col)
+    anchor_end_row = _aligned_row(aln, anchor_end_col)
     if anchor_start_row is None or anchor_end_row is None:
         LOGGER.warning(
-            "Skipping %s; missing anchor near IMGT %d or %d.",
+            "Skipping %s; missing anchor at IMGT %d or %d; "
+            "preserving the learned alignment.",
             loop_name,
             anchor_start,
             anchor_end,
@@ -164,12 +163,13 @@ def correct_de_loop(
     gap_indices: frozenset[int] | None = None,
 ) -> np.ndarray:
     """Assign the residues between IMGT 79 and 85 by loop length."""
-    anchor_79_row = _aligned_row_near(aln, 78)
-    anchor_85_row = _aligned_row_near(aln, 84)
+    anchor_79_row = _aligned_row(aln, 78)
+    anchor_85_row = _aligned_row(aln, 84)
 
     if anchor_79_row is None or anchor_85_row is None:
         LOGGER.warning(
-            "Skipping DE loop correction; missing anchor near IMGT 79 or 85."
+            "Skipping DE loop correction; missing anchor at IMGT 79 or 85; "
+            "preserving the learned alignment."
         )
         return aln
     if anchor_79_row >= anchor_85_row:
