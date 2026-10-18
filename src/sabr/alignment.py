@@ -400,8 +400,8 @@ def align(
     column zero representing IMGT 1. Unassigned rows can represent insertions
     or linkers. ``gap_indices`` contains the row before each peptide break.
     The other results are the selected domain string and raw soft score;
-    terminal gap penalties affect selection only. Rounding, deterministic
-    corrections, and tie order preserve the validated scientific behavior.
+    terminal gap penalties affect selection only. Candidates are corrected
+    and validated in descending score order, preserving input order on ties.
     """
     references = dict(load_references(noise_level, mode, scfv=scfv))
     if chain_type == "auto":
@@ -412,13 +412,14 @@ def align(
         candidates = ("K",)
     else:
         candidates = tuple(chain_type.split(","))
-    # Single-domain selection depends only on scores. Multi-domain candidates
-    # need their alignments to calculate terminal gap penalties.
+    # Rank single domains using scores, then trace candidates until one passes
+    # validation. Multi-domain ranking also needs terminal gap penalties.
     # Three candidates amortize recomputing the winner's forward pass.
     score_only = len(candidates) > 2 and all(
         len(candidate) == 1 for candidate in candidates
     )
-    best = None
+    ranked = []
+    failures = {}
     for candidate in candidates:
         if candidate not in references:
             references[candidate] = _concatenate_reference(
@@ -457,7 +458,12 @@ def align(
             )
         selection_score = score
         if len(candidate) > 1:
-            terminal_penalty = _terminal_gap_penalty(reduced, mode)
+            try:
+                terminal_penalty = _terminal_gap_penalty(reduced, mode)
+            except ValueError as error:
+                failures[candidate] = str(error)
+                LOGGER.info("Rejecting %s reference: %s", candidate, error)
+                continue
             selection_score += terminal_penalty
             LOGGER.info(
                 "%s reference score: %.4f; terminal gap penalty: %.4f; "
@@ -469,27 +475,46 @@ def align(
             )
         else:
             LOGGER.info("%s reference score: %.4f", candidate, score)
-        if best is None or selection_score > best[0]:
-            best = (
-                selection_score,
-                score,
-                candidate,
-                reduced,
-                positions,
-            )
+        ranked.append((selection_score, score, candidate, reduced, positions))
 
-    _, score, selected_type, reduced, positions = best
-    if score_only:
-        reduced, _, _ = _align_reference(
-            query, references[selected_type][0], mode
-        )
-        if not np.isfinite(reduced).all():
-            raise ValueError(
-                f"{selected_type} reference produced a non-finite alignment."
+    for _, score, selected_type, reduced, positions in sorted(
+        ranked, key=lambda result: result[0], reverse=True
+    ):
+        if score_only:
+            reduced, _, _ = _align_reference(
+                query, references[selected_type][0], mode
             )
+            if not np.isfinite(reduced).all():
+                raise ValueError(
+                    f"{selected_type} reference produced "
+                    "a non-finite alignment."
+                )
+        try:
+            corrected = _correct_alignment(
+                reduced, positions, selected_type, gap_indices
+            )
+        except ValueError as error:
+            failures[selected_type] = str(error)
+            LOGGER.info("Rejecting %s reference: %s", selected_type, error)
+            continue
+        return corrected, selected_type, score
+
+    reasons = "; ".join(f"{name}: {failures[name]}" for name in candidates)
+    raise ValueError(
+        f"No valid alignment among requested candidates. {reasons}"
+    )
+
+
+def _correct_alignment(
+    reduced: FloatArray,
+    positions: tuple[int, ...],
+    selected_type: str,
+    gap_indices: frozenset[int],
+) -> IntArray:
+    """Expand into IMGT columns, correct and validate a candidate's path."""
     domain_count = len(selected_type)
     full_alignment = np.zeros(
-        (query.shape[0], domain_count * constants.IMGT_MAX_POSITION),
+        (reduced.shape[0], domain_count * constants.IMGT_MAX_POSITION),
         dtype=reduced.dtype,
     )
     full_alignment[:, np.asarray(positions) - 1] = reduced
@@ -507,4 +532,4 @@ def align(
     else:
         corrected = apply_corrections(full_alignment, gap_indices=gap_indices)
         _alignment_path(corrected)
-    return corrected, selected_type, score
+    return corrected
