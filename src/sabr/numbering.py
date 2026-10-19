@@ -371,9 +371,17 @@ def number_alignment(
 
     domains = []
     for domain in _split_domains(alignment, chain_type):
+        # Some schemes extend terminal numbering into the supplied sequence.
+        # Bound multi-domain inputs so an extension cannot consume a linker
+        # or the next domain's first residue. Keep absolute query-row indices.
+        query_stop = (
+            domain.query_span[1]
+            if is_multidomain and domain.query_span is not None
+            else len(sequence)
+        )
         records = _number_domain_alignment(
-            domain.alignment,
-            sequence,
+            domain.alignment[:query_stop],
+            sequence[:query_stop],
             scheme,
             domain.chain_type,
             ref_type=ref_type,
