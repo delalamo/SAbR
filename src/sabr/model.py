@@ -11,7 +11,7 @@ import numpy as np
 from scipy.special import erfc
 
 from sabr import constants
-from sabr._types import FloatArray, IntArray
+from sabr.types import FloatArray, IntArray
 
 
 def _linear(x: FloatArray, parameters: dict[str, FloatArray]) -> FloatArray:
