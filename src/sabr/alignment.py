@@ -61,6 +61,7 @@ def _affine_value_and_grad(
     NINF: float = -1e30,
     *,
     with_gradient: bool = True,
+    query_gap_indices: frozenset[int] = frozenset(),
 ) -> tuple[FloatArray, FloatArray | None]:
     """Striped affine DP with an explicit reverse pass for soft assignments.
 
@@ -74,7 +75,10 @@ def _affine_value_and_grad(
     [Q, R] derivative. Temperature is positive; gap values are additive
     scores, including the trained SoftAlign extension reward. Boundary
     indices select zero-cost down transitions in reference-column space.
-    The -1 sentinel leaves all gaps penalized.
+    The -1 sentinel leaves down transitions penalized. ``query_gap_indices``
+    contains the query row BEFORE each structural break. Only right-state
+    opening costs (skipping reference residues) are waived at those rows;
+    extension costs and down-state costs are unchanged.
 
     With A = Q - 1 and B = R - 1, antidiagonal buffers have A + B - 1 stripes
     of width floor((A + B) / 2). Their last axis stores match/right/down
@@ -95,6 +99,10 @@ def _affine_value_and_grad(
     free = np.zeros((count, width), dtype=bool)
     free[ii, jj] = np.broadcast_to(
         np.isin(br, np.atleast_1d(free_gap_boundary)), (a, b)
+    )
+    query_break = np.zeros((count, width), dtype=bool)
+    query_break[ii, jj] = np.broadcast_to(
+        np.isin(np.arange(a)[:, None], tuple(query_gap_indices)), (a, b)
     )
     states = np.full((count + 2, width, 3), NINF, dtype=np.float32)
     # Match, right and down states have four, two and three predecessors.
@@ -126,6 +134,7 @@ def _affine_value_and_grad(
             down[:-1] = h1[1:]
             down[-1] = NINF
         right += right_penalty
+        right[query_break[index], 0] -= gap_open
         down += np.where(free[index, :, None], 0, down_penalty)
         for state, candidates in enumerate((aligned, right[:, :2], down)):
             value, weights = _soft_maximum_with_grad(
@@ -322,6 +331,7 @@ def _align_reference(
     free_gap_boundary: int | tuple[int, ...] = -1,
     *,
     score_only: bool = False,
+    query_gap_indices: frozenset[int] = frozenset(),
 ) -> ReferenceAlignmentResult:
     """Align [Q, 64] query and [R, 64] reference embeddings.
 
@@ -344,6 +354,7 @@ def _align_reference(
         gap_open,
         free_gap_boundary,
         with_gradient=not score_only,
+        **({"query_gap_indices": query_gap_indices} if query_gap_indices else {}),
     )
     return (
         None if score_only else soft_alignment[:, 1:-1],
@@ -420,6 +431,7 @@ def align(
     score_only = len(candidates) > 2 and all(
         len(candidate) == 1 for candidate in candidates
     )
+    gap_options = {"query_gap_indices": gap_indices} if gap_indices else {}
     ranked = []
     for candidate in candidates:
         if candidate not in references:
@@ -440,14 +452,15 @@ def align(
                 reference,
                 mode,
                 free_gap_boundary=free_gap_boundaries,
+                **gap_options,
             )
         elif score_only:
             reduced, similarity, score = _align_reference(
-                query, reference, mode, score_only=True
+                query, reference, mode, score_only=True, **gap_options
             )
         else:
             reduced, similarity, score = _align_reference(
-                query, reference, mode
+                query, reference, mode, **gap_options
             )
         if (
             not np.isfinite(score)
@@ -525,7 +538,12 @@ def _evaluate_candidate(
     if candidate.rejection_reason is not None:
         return candidate
     if candidate.raw_alignment is None:
-        reduced, _, _ = _align_reference(query, reference, mode)
+        reduced, _, _ = _align_reference(
+            query,
+            reference,
+            mode,
+            **({"query_gap_indices": gap_indices} if gap_indices else {}),
+        )
         if not np.isfinite(reduced).all():
             raise ValueError(
                 f"{candidate.reference_type} reference produced "
