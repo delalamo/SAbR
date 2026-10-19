@@ -170,6 +170,45 @@ def _detect_gaps(coords: FloatArray) -> frozenset[int]:
     )
 
 
+def _has_peptide_link(residue, chain) -> bool:
+    """Find a C--N contact to polymer chemistry, including outside a range.
+
+    Biopython residues do not retain reliable entity/polymer annotations.
+    Use the peptide-distance threshold and compatible alternate conformers
+    as a fallback for HETATM membership. Inspect N/C independently of CA so
+    linked residues with malformed backbones still reach normal validation.
+    """
+    ends = [
+        atom for atom in residue.get_unpacked_list() if atom.name in ("N", "C")
+    ]
+    if not ends:
+        return False
+    for neighbor in chain:
+        if neighbor is residue:
+            continue
+        if (
+            neighbor.id[0].strip()
+            and _parent_residue_name(neighbor.resname) is None
+        ):
+            continue
+        for partner in neighbor.get_unpacked_list():
+            if partner.name not in ("N", "C"):
+                continue
+            for atom in ends:
+                if atom.name == partner.name:
+                    continue
+                labels = _altloc(atom.altloc), _altloc(partner.altloc)
+                if all(labels) and labels[0] != labels[1]:
+                    continue
+                coords = np.asarray((atom.coord, partner.coord), dtype=float)
+                if np.isfinite(coords).all() and (
+                    np.linalg.norm(coords[0] - coords[1])
+                    <= constants.PEPTIDE_BOND_MAX_DISTANCE
+                ):
+                    return True
+    return False
+
+
 def extract_chain(
     structure, chain: str, residue_range: tuple[int, int] | None
 ) -> _ChainData:
@@ -179,11 +218,11 @@ def extract_chain(
     retains each residue's index in the original chain so numbering can later
     be applied to a same-type clone containing all original hetero residues.
 
-    Unknown HETATM residues need a deliberate second pass. Most are ligands or
-    solvent and should be preserved but ignored; an unknown residue with a
-    complete backbone that is peptide-bonded to a recognized amino acid is
-    instead unsupported polymer chemistry and must fail explicitly. Its
-    neighbors are not known until the first pass has classified the chain.
+    HETATM chemistry alone does not establish polymer membership. A peptide
+    link to an ATOM residue or recognized amino acid is required, including
+    neighbors outside the requested range. Disconnected ligands are ignored;
+    peptide-linked unsupported chemistry still fails explicitly. ATOM
+    polymer fragments remain selected across structural gaps.
     """
     target = _find_chain(structure, chain)
     coords = []
@@ -191,11 +230,9 @@ def extract_chain(
     residue_ids = []
     residue_indices = []
     normalized = []
-    unknown_hetero = []
     polymer_ids = set()
 
-    # First pass: read Biopython metadata and separate recognized
-    # polymer residues from unknown HETATM records that may merely be ligands.
+    # Classify membership before interpreting residue chemistry.
     for index, residue in enumerate(target):
         number = residue.id[1]
         insertion_code = residue.id[2].strip()
@@ -212,6 +249,8 @@ def extract_chain(
             )
 
         parent_name = _parent_residue_name(residue_name)
+        if not is_atom_record and not _has_peptide_link(residue, target):
+            continue
         if parent_name is None and is_atom_record:
             raise ValueError(
                 f"Unsupported polymer residue {residue_name} "
@@ -224,14 +263,10 @@ def extract_chain(
                 "single canonical parent."
             )
         if parent_name is None:
-            try:
-                backbone = _residue_data(residue)
-            except ValueError:
-                continue
-            unknown_hetero.append(
-                (index, residue_name, number, insertion_code, backbone)
+            raise ValueError(
+                f"Unsupported peptide-linked residue {residue_name} "
+                f"{number}{insertion_code}."
             )
-            continue
 
         residue_key = (number, insertion_code)
         if residue_key in polymer_ids:
@@ -250,33 +285,6 @@ def extract_chain(
                 backbone,
             )
         )
-
-    # A backbone-shaped HETATM is safe to ignore only when it is not connected
-    # to the recognized polymer on either side. This catches unsupported
-    # peptide residues without rejecting unrelated ligands or solvent.
-    for index, residue_name, number, insertion_code, backbone in unknown_hetero:
-        previous = next(
-            (entry for entry in reversed(normalized) if entry[0] < index),
-            None,
-        )
-        following = next(
-            (entry for entry in normalized if entry[0] > index),
-            None,
-        )
-        connected = (
-            previous is not None
-            and np.linalg.norm(previous[4][2] - backbone[0])
-            <= constants.PEPTIDE_BOND_MAX_DISTANCE
-        ) or (
-            following is not None
-            and np.linalg.norm(backbone[2] - following[4][0])
-            <= constants.PEPTIDE_BOND_MAX_DISTANCE
-        )
-        if connected:
-            raise ValueError(
-                f"Unsupported peptide-linked residue {residue_name} "
-                f"{number}{insertion_code}."
-            )
 
     if len(normalized) > constants.MAX_SELECTED_RESIDUES:
         raise ValueError(
