@@ -2,12 +2,14 @@
 
 import functools
 import logging
+from dataclasses import replace
 from importlib.resources import files
 
 import numpy as np
 
 from sabr import constants
 from sabr._types import (
+    AlignmentCandidate,
     AlignmentResult,
     FloatArray,
     IntArray,
@@ -419,7 +421,6 @@ def align(
         len(candidate) == 1 for candidate in candidates
     )
     ranked = []
-    failures = {}
     for candidate in candidates:
         if candidate not in references:
             references[candidate] = _concatenate_reference(
@@ -456,53 +457,91 @@ def align(
             raise ValueError(
                 f"{candidate} reference produced a non-finite alignment."
             )
-        selection_score = score
+        result = AlignmentCandidate(
+            reference_type=candidate,
+            reference_positions=positions,
+            raw_score=score,
+            selection_score=score,
+            raw_alignment=reduced,
+        )
         if len(candidate) > 1:
             try:
                 terminal_penalty = _terminal_gap_penalty(reduced, mode)
             except ValueError as error:
-                failures[candidate] = str(error)
-                LOGGER.info("Rejecting %s reference: %s", candidate, error)
+                ranked.append(replace(result, rejection_reason=str(error)))
                 continue
-            selection_score += terminal_penalty
+            result = replace(result, selection_score=score + terminal_penalty)
             LOGGER.info(
                 "%s reference score: %.4f; terminal gap penalty: %.4f; "
                 "selection score: %.4f",
                 candidate,
                 score,
                 terminal_penalty,
-                selection_score,
+                result.selection_score,
             )
         else:
             LOGGER.info("%s reference score: %.4f", candidate, score)
-        ranked.append((selection_score, score, candidate, reduced, positions))
+        ranked.append(result)
 
-    for _, score, selected_type, reduced, positions in sorted(
-        ranked, key=lambda result: result[0], reverse=True
+    failures = {}
+    for candidate in sorted(
+        ranked, key=lambda result: result.selection_score, reverse=True
     ):
-        if score_only:
-            reduced, _, _ = _align_reference(
-                query, references[selected_type][0], mode
+        evaluated = _evaluate_candidate(
+            candidate,
+            query,
+            references[candidate.reference_type][0],
+            gap_indices,
+            mode,
+        )
+        if evaluated.rejection_reason is not None:
+            failures[evaluated.reference_type] = evaluated.rejection_reason
+            LOGGER.info(
+                "Rejecting %s reference: %s",
+                evaluated.reference_type,
+                evaluated.rejection_reason,
             )
-            if not np.isfinite(reduced).all():
-                raise ValueError(
-                    f"{selected_type} reference produced "
-                    "a non-finite alignment."
-                )
-        try:
-            corrected = _correct_alignment(
-                reduced, positions, selected_type, gap_indices
-            )
-        except ValueError as error:
-            failures[selected_type] = str(error)
-            LOGGER.info("Rejecting %s reference: %s", selected_type, error)
             continue
-        return corrected, selected_type, score
+        return (
+            evaluated.corrected_alignment,
+            evaluated.reference_type,
+            evaluated.raw_score,
+        )
 
     reasons = "; ".join(f"{name}: {failures[name]}" for name in candidates)
     raise ValueError(
         f"No valid alignment among requested candidates. {reasons}"
     )
+
+
+def _evaluate_candidate(
+    candidate: AlignmentCandidate,
+    query: FloatArray,
+    reference: FloatArray,
+    gap_indices: frozenset[int],
+    mode: str,
+) -> AlignmentCandidate:
+    """Trace if needed, then correct/validate while retaining diagnostics."""
+    if candidate.rejection_reason is not None:
+        return candidate
+    if candidate.raw_alignment is None:
+        reduced, _, _ = _align_reference(query, reference, mode)
+        if not np.isfinite(reduced).all():
+            raise ValueError(
+                f"{candidate.reference_type} reference produced "
+                "a non-finite alignment."
+            )
+        candidate = replace(candidate, raw_alignment=reduced)
+    try:
+        corrected = _correct_alignment(
+            candidate.raw_alignment,
+            candidate.reference_positions,
+            candidate.reference_type,
+            gap_indices,
+        )
+    except ValueError as error:
+        return replace(candidate, rejection_reason=str(error))
+    return replace(candidate, corrected_alignment=corrected)
 
 
 def _correct_alignment(

@@ -19,7 +19,12 @@ from sabr._anarci.schemes import (
     number_wolfguy_heavy,
     number_wolfguy_light,
 )
-from sabr._types import NumberingRecord, NumberingState, NumberingStates
+from sabr._types import (
+    DomainAssignment,
+    NumberingRecord,
+    NumberingState,
+    NumberingStates,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -298,6 +303,43 @@ def _number_domain_alignment(
     return records
 
 
+def _split_domains(
+    alignment: np.ndarray, chain_type: str
+) -> list[DomainAssignment]:
+    """Describe domain views without conflating columns and residue numbers."""
+    if alignment.ndim != 2:
+        raise ValueError("Alignment matrix must be two-dimensional.")
+    is_multidomain = len(chain_type) > 1
+    if is_multidomain:
+        expected_columns = len(chain_type) * constants.IMGT_MAX_POSITION
+        if alignment.shape[1] != expected_columns:
+            raise ValueError(
+                f"Multi-domain alignment must have {expected_columns} columns."
+            )
+    domains = []
+    for index, domain_type in enumerate(chain_type):
+        start = index * constants.IMGT_MAX_POSITION if is_multidomain else 0
+        end = (
+            start + constants.IMGT_MAX_POSITION
+            if is_multidomain
+            else alignment.shape[1]
+        )
+        matrix = alignment[:, start:end]
+        rows = np.flatnonzero(np.any(matrix == 1, axis=1))
+        domains.append(
+            DomainAssignment(
+                chain_type=domain_type,
+                reference_span=(start, end),
+                query_span=(
+                    (int(rows[0]), int(rows[-1]) + 1) if len(rows) else None
+                ),
+                number_offset=index * constants.DOMAIN_NUMBERING_STRIDE,
+                alignment=matrix,
+            )
+        )
+    return domains
+
+
 def number_alignment(
     alignment: np.ndarray,
     sequence: str,
@@ -327,36 +369,21 @@ def number_alignment(
             "alignments."
         )
 
-    if is_multidomain:
-        expected_columns = len(chain_types) * constants.IMGT_MAX_POSITION
-        if alignment.ndim != 2 or alignment.shape[1] != expected_columns:
-            raise ValueError(
-                f"Multi-domain alignment must have {expected_columns} "
-                "columns."
-            )
-
     domains = []
-    for domain_index, domain_type in enumerate(chain_types):
-        if is_multidomain:
-            start = domain_index * constants.IMGT_MAX_POSITION
-            end = start + constants.IMGT_MAX_POSITION
-            domain_alignment = alignment[:, start:end]
-        else:
-            domain_alignment = alignment
+    for domain in _split_domains(alignment, chain_type):
         records = _number_domain_alignment(
-            domain_alignment,
+            domain.alignment,
             sequence,
             scheme,
-            domain_type,
+            domain.chain_type,
             ref_type=ref_type,
             ref_positions=ref_positions,
         )
-        if domain_index:
-            number_offset = domain_index * constants.DOMAIN_NUMBERING_STRIDE
+        if domain.number_offset:
             records = [
                 (
                     query_row,
-                    number + number_offset,
+                    number + domain.number_offset,
                     insertion_code,
                     amino_acid,
                 )
