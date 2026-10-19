@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from sabr import _types, alignment, numbering
+from sabr import alignment, numbering, types
 
 
 @pytest.mark.parametrize("valid", [False, True])
@@ -11,7 +11,7 @@ def test_candidate_evaluation_keeps_scores_and_diagnostics_separate(
     monkeypatch, valid
 ):
     raw = np.eye(2) if valid else np.ones((2, 2))
-    candidate = _types.AlignmentCandidate(
+    candidate = types.AlignmentCandidate(
         reference_type="H",
         reference_positions=(1, 2),
         raw_alignment=raw.copy(),
