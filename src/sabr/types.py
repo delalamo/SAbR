@@ -1,5 +1,6 @@
-"""Shared tuple contracts; aliases preserve the existing runtime containers."""
+"""Internal result objects and existing tuple-compatible boundary contracts."""
 
+from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
@@ -7,6 +8,41 @@ from numpy.typing import NDArray
 
 FloatArray = NDArray[np.floating[Any]]
 IntArray = NDArray[np.integer[Any]]
+
+
+@dataclass(frozen=True, slots=True, eq=False)
+class AlignmentCandidate:
+    """One reference evaluation, with separate ranking and raw model scores.
+
+    Raw assignments use reduced reference columns; corrected assignments use
+    full IMGT blocks. A score-only candidate has no raw alignment yet. After
+    evaluation, either corrected_alignment or rejection_reason is populated.
+    """
+
+    reference_type: str
+    reference_positions: tuple[int, ...]
+    raw_score: float
+    selection_score: float
+    raw_alignment: FloatArray | None
+    corrected_alignment: IntArray | None = None
+    rejection_reason: str | None = None
+
+
+@dataclass(frozen=True, slots=True, eq=False)
+class DomainAssignment:
+    """A domain view with separate input columns, query rows and output offset.
+
+    Spans are zero-based and half-open; query_span is None for an empty block.
+    alignment retains all query rows and shares storage with its source.
+    number_offset is in the output scheme, independent of reference width.
+    """
+
+    chain_type: str
+    reference_span: tuple[int, int]
+    query_span: tuple[int, int] | None
+    number_offset: int
+    alignment: IntArray
+
 
 # (binary [query residues, 128 * domains], selected reference, raw soft score).
 AlignmentResult = tuple[IntArray, str, float]
