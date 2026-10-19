@@ -6,9 +6,10 @@ import uuid
 from pathlib import Path
 
 import click
-from Bio.PDB import MMCIFIO, PDBIO, MMCIFParser, PDBParser
+from Bio.PDB import PDBParser
 
 from sabr import constants, renumber_structure
+from sabr.io import AnisouMMCIFIO, AnisouMMCIFParser, AnisouPDBIO
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def _read_structure(path: Path):
             path.stem, path
         )
     if suffix in (".cif", ".mmcif"):
-        return MMCIFParser(QUIET=True).get_structure(path.stem, path)
+        return AnisouMMCIFParser(QUIET=True).get_structure(path.stem, path)
     raise ValueError("Input must use the .pdb, .cif, or .mmcif extension.")
 
 
@@ -72,9 +73,9 @@ def _write_structure(structure, path: Path) -> None:
     suffix = path.suffix.lower()
     if suffix == ".pdb":
         _validate_pdb_output(structure)
-        writer = PDBIO()
+        writer = AnisouPDBIO()
     elif suffix in (".cif", ".mmcif"):
-        writer = MMCIFIO()
+        writer = AnisouMMCIFIO()
     else:
         raise ValueError("Output must use the .pdb, .cif, or .mmcif extension.")
     writer.set_structure(structure)
