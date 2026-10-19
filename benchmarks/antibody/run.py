@@ -68,7 +68,6 @@ def evaluate_case(case, mode="sabr"):
         "category": case["category"],
         "positive": case["positive"],
         "mode": mode,
-        "policy_control": "expected_rejection" in case,
         "accepted": False,
         "error": None,
         "labeled_residues": len(labels),
@@ -132,13 +131,10 @@ def evaluate_case(case, mode="sabr"):
 
 
 def summarize(results):
-    """Keep biological acceptance, negative controls and gap policy distinct."""
-    positives = [
-        r for r in results if r["positive"] and not r["policy_control"]
-    ]
+    """Keep biological acceptance and negative controls distinct."""
+    positives = [r for r in results if r["positive"]]
     accepted = [r for r in positives if r["accepted"]]
     negatives = [r for r in results if not r["positive"]]
-    policy = [r for r in results if r["policy_control"]]
     errors = [
         abs(e) for r in positives for pair in r["boundary_errors"] for e in pair
     ]
@@ -171,9 +167,6 @@ def summarize(results):
         ),
         "negative_rejection": ratio(
             sum(not r["accepted"] for r in negatives), len(negatives)
-        ),
-        "gap_policy_rejection": ratio(
-            sum(not r["accepted"] for r in policy), len(policy)
         ),
         "unexpected_domain_count": sum(
             len(r["predicted_domains"]) != len(r["expected_domains"])

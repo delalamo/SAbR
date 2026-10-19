@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "manifest_sha256": "d4a98133cc5ca209871056c55501c14caf7d49861c71681c0ca50351d7bcdb5b",
+  "manifest_sha256": "5b4a89264d212221a0c97ce11e4db9103594f84e7cfeb4ad63559bbc8c7aac40",
   "mode": "softalign",
   "scheme": "imgt",
   "noise_level": 0.0,
@@ -32,11 +32,6 @@
       "denominator": 2,
       "rate": 0.0
     },
-    "gap_policy_rejection": {
-      "numerator": 2,
-      "denominator": 2,
-      "rate": 1.0
-    },
     "unexpected_domain_count": 0
   },
   "by_category": {
@@ -64,11 +59,6 @@
         "rate": 0.0
       },
       "negative_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "gap_policy_rejection": {
         "numerator": 0,
         "denominator": 0,
         "rate": null
@@ -103,11 +93,6 @@
         "denominator": 0,
         "rate": null
       },
-      "gap_policy_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
       "unexpected_domain_count": 0
     },
     "diabody_vl_vh": {
@@ -137,46 +122,6 @@
         "numerator": 0,
         "denominator": 0,
         "rate": null
-      },
-      "gap_policy_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "unexpected_domain_count": 0
-    },
-    "gap_policy": {
-      "residue_agreement_all_positives": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "residue_agreement_accepted_positives": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "exact_domain_boundaries": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "boundary_mean_absolute_error_matched_domains": null,
-      "matched_boundary_count": 0,
-      "positive_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "negative_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "gap_policy_rejection": {
-        "numerator": 2,
-        "denominator": 2,
-        "rate": 1.0
       },
       "unexpected_domain_count": 0
     },
@@ -208,11 +153,6 @@
         "denominator": 2,
         "rate": 0.0
       },
-      "gap_policy_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
       "unexpected_domain_count": 0
     },
     "scfv_vh_vl": {
@@ -239,11 +179,6 @@
         "rate": 0.0
       },
       "negative_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "gap_policy_rejection": {
         "numerator": 0,
         "denominator": 0,
         "rate": null
@@ -278,11 +213,6 @@
         "denominator": 0,
         "rate": null
       },
-      "gap_policy_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
       "unexpected_domain_count": 0
     },
     "truncated": {
@@ -309,11 +239,6 @@
         "rate": 0.0
       },
       "negative_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
-      "gap_policy_rejection": {
         "numerator": 0,
         "denominator": 0,
         "rate": null
@@ -348,11 +273,6 @@
         "denominator": 0,
         "rate": null
       },
-      "gap_policy_rejection": {
-        "numerator": 0,
-        "denominator": 0,
-        "rate": null
-      },
       "unexpected_domain_count": 0
     }
   },
@@ -362,7 +282,6 @@
       "category": "conventional",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 120,
@@ -396,7 +315,6 @@
       "category": "conventional",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 107,
@@ -430,7 +348,6 @@
       "category": "vhh_long_cdr3",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 132,
@@ -464,7 +381,6 @@
       "category": "diabody_vh_vl",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 233,
@@ -512,7 +428,6 @@
       "category": "diabody_vl_vh",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 232,
@@ -560,7 +475,6 @@
       "category": "scfv_vh_vl",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 230,
@@ -608,7 +522,6 @@
       "category": "scfv_vl_vh",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 228,
@@ -656,7 +569,6 @@
       "category": "negative",
       "positive": false,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 0,
@@ -679,7 +591,6 @@
       "category": "negative",
       "positive": false,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 0,
@@ -702,7 +613,6 @@
       "category": "truncated",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 110,
@@ -736,7 +646,6 @@
       "category": "truncated",
       "positive": true,
       "mode": "softalign",
-      "policy_control": false,
       "accepted": true,
       "error": null,
       "labeled_residues": 110,
@@ -853,60 +762,6 @@
         }
       ],
       "selected_types": "H"
-    },
-    {
-      "id": "6nou_A_default_gaps",
-      "category": "gap_policy",
-      "positive": true,
-      "mode": "softalign",
-      "policy_control": true,
-      "accepted": false,
-      "error": "1 structural gap was detected in the selected chain. SAbR will not run unless structural gaps are explicitly allowed. Pass --dangerously-allow-structural-gaps on the command line or set dangerously_allow_structural_gaps=True in the Python API.",
-      "labeled_residues": 230,
-      "agreeing_residues": 0,
-      "expected_domains": [
-        {
-          "type": "H",
-          "start": 0,
-          "end": 117
-        },
-        {
-          "type": "K",
-          "start": 119,
-          "end": 230
-        }
-      ],
-      "predicted_domains": [],
-      "exact_domains": 0,
-      "boundary_errors": [],
-      "mismatches": []
-    },
-    {
-      "id": "5kve_L_default_gaps",
-      "category": "gap_policy",
-      "positive": true,
-      "mode": "softalign",
-      "policy_control": true,
-      "accepted": false,
-      "error": "1 structural gap was detected in the selected chain. SAbR will not run unless structural gaps are explicitly allowed. Pass --dangerously-allow-structural-gaps on the command line or set dangerously_allow_structural_gaps=True in the Python API.",
-      "labeled_residues": 228,
-      "agreeing_residues": 0,
-      "expected_domains": [
-        {
-          "type": "K",
-          "start": 1,
-          "end": 113
-        },
-        {
-          "type": "H",
-          "start": 115,
-          "end": 229
-        }
-      ],
-      "predicted_domains": [],
-      "exact_domains": 0,
-      "boundary_errors": [],
-      "mismatches": []
     }
   ]
 }

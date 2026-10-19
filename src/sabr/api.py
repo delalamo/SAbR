@@ -106,7 +106,6 @@ class _RenumberOptions:
     residue_range: tuple[int, int] | None
     mode: str
     scfv: bool
-    dangerously_allow_structural_gaps: bool = False
 
     def __post_init__(self) -> None:
         self.scheme = _normalize_choice(
@@ -131,10 +130,6 @@ class _RenumberOptions:
             raise ValueError("scfv must be a boolean.")
         if self.scfv and self.chain_type != "auto":
             raise ValueError("scfv requires chain_type='auto'.")
-        if not isinstance(self.dangerously_allow_structural_gaps, bool):
-            raise ValueError(
-                "dangerously_allow_structural_gaps must be a boolean."
-            )
         if self.scfv:
             self.chain_type = ",".join(constants.SCFV_CHAIN_TYPES)
 
@@ -148,7 +143,6 @@ def renumber_structure(
     residue_range: tuple[int, int] | None = None,
     mode: str = "sabr",
     scfv: bool = False,
-    dangerously_allow_structural_gaps: bool = False,
 ):
     """Return a renumbered copy of a Biopython structure.
 
@@ -157,9 +151,8 @@ def renumber_structure(
     accepts a comma-separated set of antibody domain representations such
     as ``"H,K,HK,HL"``, or one TCR type from ``"A,B,G,D"``. TCR types align
     only against the K reference. ``scfv=True`` is equivalent to
-    ``chain_type="HK,HL,KH,LH"``. Structural gaps are rejected before model
-    execution unless ``dangerously_allow_structural_gaps=True`` is explicitly
-    supplied.
+    ``chain_type="HK,HL,KH,LH"``. Structural gaps are detected automatically
+    and waive reference-deletion opening costs at the corresponding boundary.
     """
     options = _RenumberOptions(
         scheme=scheme,
@@ -168,18 +161,8 @@ def renumber_structure(
         residue_range=residue_range,
         mode=mode,
         scfv=scfv,
-        dangerously_allow_structural_gaps=dangerously_allow_structural_gaps,
     )
     data = extract_chain(structure, chain, options.residue_range)
-    if data.gap_indices and not options.dangerously_allow_structural_gaps:
-        count = len(data.gap_indices)
-        noun = "gap was" if count == 1 else "gaps were"
-        raise ValueError(
-            f"{count} structural {noun} detected in the selected chain. "
-            "SAbR will not run unless structural gaps are explicitly allowed. "
-            "Pass --dangerously-allow-structural-gaps on the command line or "
-            "set dangerously_allow_structural_gaps=True in the Python API."
-        )
     embeddings = encode(data.coords, options.mode)
     imgt_alignment, selected_type, score = align(
         embeddings,

@@ -76,12 +76,8 @@ def test_public_api_rescues_vhh_de_loop_deletion():
     chain.detach_child(list(chain)[deleted].id)
     data = extract_chain(structure, case["chain"], None)
     assert data.gap_indices == frozenset({deleted - 1})
-    with pytest.raises(ValueError, match="structural gap"):
-        renumber_structure(structure, case["chain"])
     with pytest.warns(UserWarning, match="Skipping DE loop"):
-        output = renumber_structure(
-            structure, case["chain"], dangerously_allow_structural_gaps=True
-        )
+        output = renumber_structure(structure, case["chain"])
     truth = [
         (e["imgt_position"], e["insertion_code"])
         for e in labels
