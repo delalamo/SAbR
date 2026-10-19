@@ -19,7 +19,7 @@ from sabr._anarci.schemes import (
     number_wolfguy_heavy,
     number_wolfguy_light,
 )
-from sabr._types import (
+from sabr.types import (
     DomainAssignment,
     NumberingRecord,
     NumberingState,
