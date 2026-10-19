@@ -177,8 +177,7 @@
       "source_sha256": "e88d1325e282649990215e3b3b491682328a4212e286576428bf11afbef41373",
       "fixture_sha256": "2eda3b23273a41bb47106721391f68b0eac967ab12fe07eab9433064a290bdd9",
       "options": {
-        "scfv": true,
-        "dangerously_allow_structural_gaps": true
+        "scfv": true
       },
       "positive": true,
       "residue_mapping_url": "https://files.rcsb.org/download/6NOU.cif",
@@ -216,8 +215,7 @@
       "source_sha256": "0f09e6428105921934a5466f65b90f049e9e92959d1a2b3c0abfdaefc9f69607",
       "fixture_sha256": "36968972658baf7432ccd6f40fa070a6641afb3c2d99b4c6aa0ebd62ef1241d9",
       "options": {
-        "scfv": true,
-        "dangerously_allow_structural_gaps": true
+        "scfv": true
       },
       "positive": true,
       "residue_mapping_url": "https://files.rcsb.org/download/5KVE.cif",
@@ -336,84 +334,6 @@
         110
       ],
       "derived_from": "12e8_H"
-    },
-    {
-      "id": "6nou_A_default_gaps",
-      "category": "gap_policy",
-      "fixture": "fixtures/6nou_A.pdb",
-      "chain": "A",
-      "pdb_id": "6NOU",
-      "source_url": "https://files.rcsb.org/download/6NOU.pdb",
-      "source_sha256": "e88d1325e282649990215e3b3b491682328a4212e286576428bf11afbef41373",
-      "fixture_sha256": "2eda3b23273a41bb47106721391f68b0eac967ab12fe07eab9433064a290bdd9",
-      "options": {
-        "scfv": true
-      },
-      "positive": true,
-      "residue_mapping_url": "https://files.rcsb.org/download/6NOU.cif",
-      "residue_mapping_sha256": "835ece40f0a4f1d03625052ff63ded473c0ac27b7a864c619d9e5b6ab55a371b",
-      "labels": "fixtures/6nou_A.csv",
-      "expected_types": "HK",
-      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00006nou",
-      "annotation_sha256": "3afecc94e4a3a14f57b7105db68e3738e995b0a8149e75cf50809c8ba28dd211",
-      "annotation_updated_at": "2026-04-30T16:23:13",
-      "segments": [
-        {
-          "id": 13328,
-          "chain": "A1",
-          "query_start": 0,
-          "query_end": 118,
-          "sequence": "QVQLVQSGAEVKKPGSSVKVSCKASGYSFTDYHIHWVRQAPGQCLEWMGVINPMYGTTDYNQRFKGRVTITADESTSTAYMELSSLRSEDTAVYYCARYDYFTGTGVYWGQGTLVTVSS"
-        },
-        {
-          "id": 13329,
-          "chain": "A2",
-          "query_start": 144,
-          "query_end": 255,
-          "sequence": "DIVMTQTPLSLSVTPGQPASISCRSSRSLVHSRGNTYLHWYLQKPGQSPQLLIYKVSNRFIGVPDRFSGSGSGTDFTLKISRVEAEDVGVYYCSQSTHLPFTFGCGTKLEIK"
-        }
-      ],
-      "labels_sha256": "e2696049a3d4c1d354985542a92f5f904a76d5679744cf50c134b36640618291",
-      "expected_rejection": "structural gap"
-    },
-    {
-      "id": "5kve_L_default_gaps",
-      "category": "gap_policy",
-      "fixture": "fixtures/5kve_L.pdb",
-      "chain": "L",
-      "pdb_id": "5KVE",
-      "source_url": "https://files.rcsb.org/download/5KVE.pdb",
-      "source_sha256": "0f09e6428105921934a5466f65b90f049e9e92959d1a2b3c0abfdaefc9f69607",
-      "fixture_sha256": "36968972658baf7432ccd6f40fa070a6641afb3c2d99b4c6aa0ebd62ef1241d9",
-      "options": {
-        "scfv": true
-      },
-      "positive": true,
-      "residue_mapping_url": "https://files.rcsb.org/download/5KVE.cif",
-      "residue_mapping_sha256": "5547617cdf885f7174a108fd303a2691eeaf14e8842851d45fef33f15c12d500",
-      "labels": "fixtures/5kve_L.csv",
-      "expected_types": "KH",
-      "annotation_url": "https://sabdab.opig.stats.ox.ac.uk/api/frontend/pdb/pdb_00005kve",
-      "annotation_sha256": "37cb5484c1139dda32be1cc77c597d07e5f5d6dc8ce4961072b16dac228b4a51",
-      "annotation_updated_at": "2026-04-30T14:08:34",
-      "segments": [
-        {
-          "id": 9517,
-          "chain": "L1",
-          "query_start": 1,
-          "query_end": 113,
-          "sequence": "DIVMSQSPSSLAVSVGEKITMSCKSSQSLLYSNNEKNYLAWYQQKPGQSPKLLIYWASARDSGVPDRFTGSGSGTDFTLTISSVKAEDLAVFYCQQYYSYPYTFGGGTKLEIK"
-        },
-        {
-          "id": 9516,
-          "chain": "L2",
-          "query_start": 129,
-          "query_end": 244,
-          "sequence": "QVQLQQPGAELLKPGASVKLSCKASGYSFSNYWMHWVKQRPGQGPEWIGMIHPNSGNTKYNEKFKNKATLTVDKSSSMVYMQLSSLTSEDSAVFYCARLGNDMDYWGQGTSVTVSS"
-        }
-      ],
-      "labels_sha256": "443c2c16485734d041db69f98a85c38cefd443306c7628c7f760f5552ef5d9fc",
-      "expected_rejection": "structural gap"
     }
   ]
 }

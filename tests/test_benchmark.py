@@ -72,7 +72,6 @@ def test_cohort_contains_both_scfv_orders_and_distinct_controls():
         "scfv_vl_vh",
         "negative",
         "truncated",
-        "gap_policy",
     }
     assert BY_ID["6nou_A"]["expected_types"] == "HK"
     assert BY_ID["5kve_L"]["expected_types"] == "KH"
@@ -88,10 +87,6 @@ def test_cohort_contains_both_scfv_orders_and_distinct_controls():
 )
 def test_curated_biological_agreement_does_not_regress(case, mode):
     result = _result(case["id"], mode)
-    if "expected_rejection" in case:
-        assert not result["accepted"]
-        assert case["expected_rejection"] in result["error"]
-        return
     assert result["accepted"], result["error"]
     assert result["selected_types"] == case["expected_types"]
     # Reviewed limits describe current discrepancies, not a generated oracle.
@@ -217,7 +212,6 @@ def test_summary_does_not_hide_rejections_or_missing_domains():
     # one of four domains has exact boundaries; four endpoints are matched.
     common = {
         "positive": True,
-        "policy_control": False,
         "accepted": True,
         "labeled_residues": 4,
         "agreeing_residues": 3,
@@ -237,9 +231,8 @@ def test_summary_does_not_hide_rejections_or_missing_domains():
         "boundary_errors": [],
     }
     negative = {**rejected, "positive": False, "labeled_residues": 0}
-    policy = {**rejected, "policy_control": True}
     false_acceptance = {**negative, "accepted": True}
-    result = summarize([common, rejected, negative, false_acceptance, policy])
+    result = summarize([common, rejected, negative, false_acceptance])
     assert result["residue_agreement_all_positives"]["rate"] == 0.5
     assert result["residue_agreement_accepted_positives"]["rate"] == 0.75
     assert result["exact_domain_boundaries"]["rate"] == pytest.approx(1 / 4)
@@ -247,7 +240,6 @@ def test_summary_does_not_hide_rejections_or_missing_domains():
     assert result["matched_boundary_count"] == 4
     assert result["positive_rejection"]["rate"] == 0.5
     assert result["negative_rejection"]["rate"] == 0.5
-    assert result["gap_policy_rejection"]["rate"] == 1
     assert result["unexpected_domain_count"] == 2
     assert summarize([])["residue_agreement_all_positives"]["rate"] is None
     assert (

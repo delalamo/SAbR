@@ -45,10 +45,7 @@ summaries expose this dependence instead of treating the aggregate as a populati
 accuracy estimate. Lambda chains remain covered by the existing fixture tests;
 this initial independent cohort has kappa VLs.
 
-The two scFvs are each run twice: with
-`dangerously_allow_structural_gaps=True` for numbering agreement, and under the
-default gap rejection policy. The latter runs are policy controls and are
-excluded from biological agreement and positive rejection denominators.
+The two scFvs are run with automatic structural-gap handling.
 No linker coordinates are invented and no domains are concatenated in software.
 
 ### Frozen reference labels
@@ -110,7 +107,7 @@ numbered terminal flanks.
   of matched endpoints and cases with a different domain count. Rejected domains
   remain in the exact-boundary denominator and are absent from conditional MAE.
 - **Rejection:** separate counts/rates for positive biological cases,
-  non-antibody controls, and default structural-gap policy controls. A positive
+  non-antibody controls. A positive
   rejection is a false rejection; a negative acceptance is a false acceptance.
   Undefined rates are `null`, not zero.
 
@@ -131,7 +128,6 @@ The checked-in [SAbR report](results-sabr.json) and
 | Mean absolute endpoint error, matched domains | 1/26 residues (0.0385) |
 | Positive rejections | 0/9 |
 | Non-antibody rejections | **0/2: both controls falsely accepted** |
-| Default gap-policy rejections | 2/2 |
 
 The C-terminally truncated VH accounts for all eight numbering disagreements.
 In 6NOU, the VH alignment extends one residue into the linker; numbered variable

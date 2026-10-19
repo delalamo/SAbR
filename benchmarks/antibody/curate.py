@@ -183,8 +183,6 @@ for pdb, chain, category in SELECTIONS:
         )
         if len(segs) > 1:
             case["options"]["scfv"] = True
-        if pdb in ("6nou", "5kve"):
-            case["options"]["dangerously_allow_structural_gaps"] = True
         with (OUT / case["labels"]).open("w", newline="") as f:
             writer = csv.writer(f, lineterminator="\n")
             writer.writerow(
@@ -219,16 +217,4 @@ for name, start, stop in [
         derived_from="12e8_H",
     )
     manifest["cases"].append(base)
-# Same gapped scFvs under the safe default policy, separately from accuracy.
-for original in list(manifest["cases"]):
-    if original["pdb_id"] not in ("6NOU", "5KVE"):
-        continue
-    case = copy.deepcopy(original)
-    case.update(
-        id=original["id"] + "_default_gaps",
-        category="gap_policy",
-        expected_rejection="structural gap",
-    )
-    case["options"].pop("dangerously_allow_structural_gaps")
-    manifest["cases"].append(case)
 (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
