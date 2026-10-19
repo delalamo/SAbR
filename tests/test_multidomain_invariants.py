@@ -2,7 +2,7 @@
 
 Expensive encodings/alignments are cached by fixture and parameter mode.
 Numbering and structure application still run for every scheme. The real
-fixtures and their independent labels/provenance live in benchmarks/antibody.
+fixtures and their independent labels/provenance live in tests/data/antibody.
 """
 
 from functools import lru_cache
@@ -10,9 +10,9 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from antibody_cases import load_case, load_cases
 from Bio.PDB import PDBParser
 
-from benchmarks.antibody.run import load_case, load_cases
 from sabr import constants, renumber_structure
 from sabr.alignment import align
 from sabr.model import encode

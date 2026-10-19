@@ -1,11 +1,6 @@
-"""Report independent IMGT agreement, boundaries, and rejection separately.
+"""Offline test helpers for independently annotated antibody structures."""
 
-Run from the repository root: python -m benchmarks.antibody.run
-"""
-
-import argparse
 import csv
-import hashlib
 import json
 from pathlib import Path
 
@@ -16,7 +11,7 @@ from sabr.alignment import align
 from sabr.model import encode
 from sabr.structure import extract_chain
 
-DATA = Path(__file__).parent
+DATA = Path(__file__).parent / "data" / "antibody"
 
 
 def load_cases():
@@ -173,49 +168,3 @@ def summarize(results):
             for r in positives
         ),
     }
-
-
-def report(mode="sabr"):
-    results = [evaluate_case(case, mode) for case in load_cases()]
-    return {
-        "schema_version": 1,
-        "manifest_sha256": hashlib.sha256(
-            (DATA / "manifest.json").read_bytes()
-        ).hexdigest(),
-        "mode": mode,
-        "scheme": "imgt",
-        "noise_level": 0.0,
-        "summary": summarize(results),
-        "by_category": {
-            category: summarize(
-                [r for r in results if r["category"] == category]
-            )
-            for category in sorted({r["category"] for r in results})
-        },
-        "cases": results,
-    }
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("sabr", "softalign"), default="sabr")
-    parser.add_argument(
-        "--output", type=Path, help="Write detailed JSON report"
-    )
-    args = parser.parse_args()
-    result = report(args.mode)
-    print("Case | Accepted | Residue agreement | Exact domain boundaries")
-    print("--- | --- | --- | ---")
-    for case in result["cases"]:
-        print(
-            f'{case["id"]} | {case["accepted"]} | '
-            f'{case["agreeing_residues"]}/{case["labeled_residues"]} | '
-            f'{case["exact_domains"]}/{len(case["expected_domains"])}'
-        )
-    print(json.dumps(result["summary"], indent=2))
-    if args.output:
-        args.output.write_text(json.dumps(result, indent=2) + "\n")
-
-
-if __name__ == "__main__":
-    main()

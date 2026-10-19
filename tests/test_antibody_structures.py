@@ -5,15 +5,15 @@ from functools import lru_cache
 
 import numpy as np
 import pytest
-from Bio.SeqUtils import seq1
-
-from benchmarks.antibody.run import (
+from antibody_cases import (
     DATA,
     evaluate_case,
     load_case,
     load_cases,
     summarize,
 )
+from Bio.SeqUtils import seq1
+
 from sabr import renumber_structure
 from sabr.structure import extract_chain
 

@@ -65,7 +65,8 @@ def test_gap_aware_reverse_pass_matches_finite_difference():
 
 
 def test_public_api_rescues_vhh_de_loop_deletion():
-    from benchmarks.antibody.run import load_case, load_cases
+    from antibody_cases import load_case, load_cases
+
     from sabr import renumber_structure
     from sabr.structure import extract_chain
 
