@@ -3,6 +3,7 @@ import warnings
 import numpy as np
 import pytest
 
+from sabr.alignment import _alignment_path
 from sabr.corrections import (
     apply_corrections,
     cdr_columns,
@@ -204,4 +205,36 @@ def test_missing_cdr_anchor_preserves_alignment(anchor_column, caplog):
     original = alignment.copy()
     corrected = correct_cdr_loop(alignment, "CDR1", 27, 38)
     np.testing.assert_array_equal(corrected, original)
+    assert "missing anchor" in caplog.text
+
+
+@pytest.mark.parametrize("offset", [-1, 1, -2, 2])
+@pytest.mark.parametrize("side", [0, 1])
+@pytest.mark.parametrize(
+    ("name", "start", "end", "anchors"),
+    [
+        ("CDR1", 27, 38, (23, 40)),
+        ("CDR2", 56, 65, (54, 67)),
+        ("CDR3", 105, 117, (104, 118)),
+        ("DE", 80, 84, (79, 85)),
+    ],
+)
+def test_nearby_residue_is_not_used_as_exact_anchor(
+    name, start, end, anchors, side, offset, caplog
+):
+    # Remove matches preceding this offset in the old fallback search order.
+    search_order = (0, -1, 1, -2, 2)
+    missing = [
+        anchors[side] - 1 + delta
+        for delta in search_order[: search_order.index(offset)]
+    ]
+    alignment = np.delete(np.eye(128, dtype=int), missing, axis=0)
+    original = alignment.copy()
+    _alignment_path(original)
+    if name == "DE":
+        corrected = correct_de_loop(alignment)
+    else:
+        corrected = correct_cdr_loop(alignment, name, start, end)
+    np.testing.assert_array_equal(corrected, original)
+    _alignment_path(corrected)
     assert "missing anchor" in caplog.text
