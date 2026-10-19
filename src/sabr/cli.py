@@ -9,7 +9,7 @@ import click
 from Bio.PDB import PDBParser
 
 from sabr import constants, renumber_structure
-from sabr._io import AnisouMMCIFIO, AnisouMMCIFParser, AnisouPDBIO
+from sabr.io import AnisouMMCIFIO, AnisouMMCIFParser, AnisouPDBIO
 
 LOGGER = logging.getLogger(__name__)
 
