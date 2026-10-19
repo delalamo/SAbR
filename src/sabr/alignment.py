@@ -354,7 +354,11 @@ def _align_reference(
         gap_open,
         free_gap_boundary,
         with_gradient=not score_only,
-        **({"query_gap_indices": query_gap_indices} if query_gap_indices else {}),
+        **(
+            {"query_gap_indices": query_gap_indices}
+            if query_gap_indices
+            else {}
+        ),
     )
     return (
         None if score_only else soft_alignment[:, 1:-1],
