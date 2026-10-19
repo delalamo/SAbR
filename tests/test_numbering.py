@@ -298,7 +298,6 @@ def test_8sve_huge_cdr1_matches_the_accepted_full_mapping():
             "M",
             scheme="imgt",
             chain_type="K",
-            dangerously_allow_structural_gaps=True,
         )
     assert [str(item.message) for item in warnings] == golden["warning"]
     target_residues = [

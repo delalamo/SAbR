@@ -182,21 +182,7 @@ def test_softalign_mode_is_forwarded_to_encoder_and_alignment(monkeypatch):
     }
 
 
-def test_structural_gap_stops_before_model_execution(monkeypatch):
-    structure = PDBParser(QUIET=True).get_structure("gap", DATA / "8sve_L.pdb")
-
-    def unexpected_encode(coords, mode):
-        pytest.fail("encoder ran despite a structural gap")
-
-    monkeypatch.setattr(api, "encode", unexpected_encode)
-    with pytest.raises(
-        ValueError,
-        match="SAbR will not run.*--dangerously-allow-structural-gaps",
-    ):
-        renumber_structure(structure, "M")
-
-
-def test_structural_gap_can_be_explicitly_allowed(monkeypatch):
+def test_structural_gap_is_processed_automatically(monkeypatch):
     captured_modes = {}
     _stub_pipeline(monkeypatch, captured_modes)
     structure = PDBParser(QUIET=True).get_structure("gap", DATA / "8sve_L.pdb")
@@ -204,7 +190,6 @@ def test_structural_gap_can_be_explicitly_allowed(monkeypatch):
     result = renumber_structure(
         structure,
         "M",
-        dangerously_allow_structural_gaps=True,
     )
 
     assert isinstance(result, Structure)
@@ -366,10 +351,6 @@ def test_multiple_models_are_rejected():
         ({"residue_range": (False, 10)}, "residue_range"),
         ({"scfv": "yes"}, "scfv"),
         ({"scfv": True, "chain_type": "H"}, "auto"),
-        (
-            {"dangerously_allow_structural_gaps": "yes"},
-            "dangerously_allow_structural_gaps",
-        ),
     ],
 )
 def test_invalid_public_options_fail_before_model_execution(kwargs, message):

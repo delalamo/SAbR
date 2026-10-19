@@ -144,11 +144,6 @@ def _write_structure(structure, path: Path) -> None:
     help="Equivalent to --chain-type HK,HL,KH,LH.",
 )
 @click.option(
-    "--dangerously-allow-structural-gaps",
-    is_flag=True,
-    help="Run despite structural gaps; results may be invalid.",
-)
-@click.option(
     "--no-mmcif",
     is_flag=True,
     help="Forbid automatic mmCIF output for extended insertion codes.",
@@ -165,7 +160,6 @@ def main(
     mode: str,
     residue_range: tuple | None,
     scfv: bool,
-    dangerously_allow_structural_gaps: bool,
     no_mmcif: bool,
     overwrite: bool,
     verbose: bool,
@@ -176,11 +170,6 @@ def main(
         format="%(levelname)s: %(message)s",
         force=True,
     )
-    if dangerously_allow_structural_gaps:
-        LOGGER.warning(
-            "Structural-gap safety check disabled by "
-            "--dangerously-allow-structural-gaps; results may be invalid."
-        )
     temporary = None
     try:
         if output_path.suffix.lower() not in (".pdb", ".cif", ".mmcif"):
@@ -203,9 +192,6 @@ def main(
             mode=mode,
             residue_range=residue_range,
             scfv=scfv,
-            dangerously_allow_structural_gaps=(
-                dangerously_allow_structural_gaps
-            ),
         )
         resolved_output_path = _resolve_output_path(
             result, output_path, no_mmcif=no_mmcif

@@ -58,7 +58,6 @@ sabr -i INPUT -c CHAIN -o OUTPUT
      [-m sabr|softalign]
      [--residue-range START END]
      [--scfv]
-     [--dangerously-allow-structural-gaps]
      [--no-mmcif]
      [--overwrite] [-v]
 ```
@@ -152,13 +151,11 @@ the complete scheme-specific limits.
   unchanged.
 
 A structural gap is detected when the C–N distance between consecutive
-residues exceeds 2.66 Å. SAbR refuses to run when a structural gap is
-detected. To override this safety check, pass
-`--dangerously-allow-structural-gaps`; a warning is printed before any other
-runtime output. Python API callers can set
-`dangerously_allow_structural_gaps=True`. When overridden, a gap skips only
-the affected CDR or DE-loop correction and other regions continue normally,
-but performance degrades when structural gaps are included in the input.
+residues exceeds 2.66 Å. SAbR handles gaps automatically by waiving
+reference-deletion opening costs at each detected boundary; extension
+costs remain unchanged. A gap skips only the affected CDR or DE-loop
+correction while other regions continue normally. CDR numbering can still
+be inaccurate when residues are missing.
 
 T-cell receptors are not an officially supported SAbR target. For
 experimental use, pass the actual TCR chain type (`A`, `B`, `G`, or `D`) with
@@ -182,6 +179,10 @@ The committed tests are self-contained and never download data. They verify
 the fixed asset hashes, encoder and alignment baselines, all numbering schemes,
 H/K/L selection, regional corrections, structure-object behavior, and CLI
 failure handling.
+
+Independent antibody structure tests use PDB fixtures and SAbDab IMGT labels
+in `tests/data/antibody`. They check residue numbering, domain boundaries,
+coordinate and input-numbering invariance, and real scFv behavior.
 
 ## License and attribution
 

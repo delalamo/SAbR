@@ -87,7 +87,6 @@ sabr -i INPUT -c CHAIN -o OUTPUT
      [-m sabr|softalign]
      [--residue-range START END]
      [--scfv]
-     [--dangerously-allow-structural-gaps]
      [--no-mmcif]
      [--overwrite] [-v]
 ```
@@ -150,7 +149,6 @@ renumber_structure(
     residue_range: tuple[int, int] | None = None,
     mode: str = "sabr",
     scfv: bool = False,
-    dangerously_allow_structural_gaps: bool = False,
 )
 ```
 
@@ -224,16 +222,14 @@ formats does not bypass numbering or structure-selection limits.
 
 ## Structural gaps and modified residues
 
-A C–N distance above 2.66 Å is treated as a structural gap. SAbR refuses to
-run if the selected chain contains one. CLI users can explicitly override the
-safety check with `--dangerously-allow-structural-gaps`, which prints a warning
-before any other runtime output. Python API users can set
-`dangerously_allow_structural_gaps=True`. With the override enabled, a gap
-crossing a CDR or the DE loop between IMGT anchors 79 and 85 retains the
-learned alignment for that region while corrections elsewhere continue.
-Even with the override, performance degrades when structural gaps are
-included. Without a gap crossing that region, DE-loop residues fill 80 first,
-then 84 back through 81; additional residues are inserted after 82.
+A C–N distance above 2.66 Å is treated as a structural gap. Gaps are handled
+automatically: reference-deletion opening costs are waived at each detected
+query boundary, while extension costs remain unchanged. A gap crossing a
+CDR or the DE loop between IMGT anchors 79 and 85 retains the learned
+alignment for that region while corrections elsewhere continue. CDR
+numbering can still be inaccurate when residues are missing. Without a gap
+crossing that region, DE-loop residues fill 80 first, then 84 back through
+81; additional residues are inserted after 82.
 
 Supported modified peptide residues are translated to their canonical parent
 only for sequence generation. Original residue names and atoms are preserved.
