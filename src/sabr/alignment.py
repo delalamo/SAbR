@@ -7,14 +7,14 @@ from importlib.resources import files
 import numpy as np
 
 from sabr import constants
-from sabr._types import (
+from sabr.corrections import apply_corrections
+from sabr.types import (
     AlignmentResult,
     FloatArray,
     IntArray,
     Reference,
     ReferenceAlignmentResult,
 )
-from sabr.corrections import apply_corrections
 
 LOGGER = logging.getLogger(__name__)
 
