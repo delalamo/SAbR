@@ -19,7 +19,7 @@ from sabr._anarci.schemes import (
     number_wolfguy_heavy,
     number_wolfguy_light,
 )
-from sabr._types import NumberingRecord, NumberingState, NumberingStates
+from sabr.types import NumberingRecord, NumberingState, NumberingStates
 
 LOGGER = logging.getLogger(__name__)
 
