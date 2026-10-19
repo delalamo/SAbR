@@ -12,7 +12,7 @@ from Bio.PDB.Residue import DisorderedResidue
 from Bio.PDB.Structure import Structure
 
 from sabr import constants
-from sabr._types import FloatArray, NumberingRecord
+from sabr.types import FloatArray, NumberingRecord
 
 
 @dataclass(frozen=True, slots=True)
