@@ -8,6 +8,7 @@ from sabr.alignment import align, load_references
 from sabr.model import encode
 from sabr.numbering import number_alignment
 from sabr.structure import apply_numbering, extract_chain
+from sabr.unresolved import expand_loop_alignment, missing_between
 
 LOGGER = logging.getLogger(__name__)
 
@@ -153,6 +154,9 @@ def renumber_structure(
     only against the K reference. ``scfv=True`` is equivalent to
     ``chain_type="HK,HL,KH,LH"``. Structural gaps are detected automatically
     and waive reference-deletion opening costs at the corresponding boundary.
+    Unresolved-residue metadata in the structure header restores sequence
+    positions for anchored CDR/DE corrections and numbering. For mmCIF inputs,
+    use ``sabr.io.AnisouMMCIFParser`` to retain that metadata.
     """
     options = _RenumberOptions(
         scheme=scheme,
@@ -182,10 +186,21 @@ def renumber_structure(
         if options.chain_type in constants.TCR_CHAIN_TYPES
         else selected_type
     )
-    numbered = number_alignment(
+    numbering_alignment, sequence, observed_rows = expand_loop_alignment(
         imgt_alignment,
         data.sequence,
+        data.gap_indices,
+        missing_between(structure, chain, data.residue_ids),
+    )
+    numbered = number_alignment(
+        numbering_alignment,
+        sequence,
         options.scheme,
         numbering_type,
     )
+    numbered = [
+        (observed_rows[row], number, insertion, amino_acid)
+        for row, number, insertion, amino_acid in numbered
+        if observed_rows[row] is not None
+    ]
     return apply_numbering(structure, chain, data, numbered)

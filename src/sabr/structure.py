@@ -405,6 +405,14 @@ def apply_numbering(
     _check_collisions(structure, chain, mapping)
 
     result = copy.deepcopy(structure)
+    # These records use the input author IDs, which are no longer valid for
+    # the renumbered chain. Do not let a second call reuse stale gap metadata.
+    if "missing_residues" in result.header:
+        result.header["missing_residues"] = [
+            record
+            for record in result.header["missing_residues"]
+            if record.get("chain") != chain
+        ]
     target = _find_chain(result, chain)
     residues = list(target)
     for residue in residues:

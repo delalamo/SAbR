@@ -153,9 +153,21 @@ the complete scheme-specific limits.
 A structural gap is detected when the C–N distance between consecutive
 residues exceeds 2.66 Å. SAbR handles gaps automatically by waiving
 reference-deletion opening costs at each detected boundary; extension
-costs remain unchanged. A gap skips only the affected CDR or DE-loop
-correction while other regions continue normally. CDR numbering can still
-be inaccurate when residues are missing.
+costs remain unchanged. For CDR and DE-loop numbering, SAbR keeps the
+structural anchors and counts unresolved residues declared in PDB REMARK 465
+or mmCIF `_pdbx_unobs_or_zero_occ_residues` metadata between them. These
+residues occupy sequence positions through scheme conversion, including
+insertion codes, but no atoms are created. Author-number jumps alone are
+never treated as missing sequence. Regions with missing anchors or breaks
+not explained by metadata retain the existing alignment fallback; numbering
+in those regions can still be inaccurate.
+
+The CLI reads this metadata automatically. For in-memory mmCIF inputs, use
+`sabr.io.AnisouMMCIFParser`; Biopython's standard `MMCIFParser` does not retain
+the unresolved-residue category. PDB inputs from `Bio.PDB.PDBParser` already
+retain REMARK 465. Input metadata is unchanged; the returned structure drops
+missing-residue records for the renumbered chain because their original
+author IDs are no longer valid.
 
 T-cell receptors are not an officially supported SAbR target. For
 experimental use, pass the actual TCR chain type (`A`, `B`, `G`, or `D`) with
