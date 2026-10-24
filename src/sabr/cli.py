@@ -7,9 +7,11 @@ from pathlib import Path
 
 import click
 from Bio.PDB import PDBParser
+from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
 from sabr import constants, renumber_structure
 from sabr.io import AnisouMMCIFIO, AnisouMMCIFParser, AnisouPDBIO
+from sabr.unresolved import missing_residues_from_mmcif
 
 LOGGER = logging.getLogger(__name__)
 
@@ -21,7 +23,11 @@ def _read_structure(path: Path):
             path.stem, path
         )
     if suffix in (".cif", ".mmcif"):
-        return AnisouMMCIFParser(QUIET=True).get_structure(path.stem, path)
+        structure = AnisouMMCIFParser(QUIET=True).get_structure(path.stem, path)
+        structure.header["missing_residues"] = missing_residues_from_mmcif(
+            MMCIF2Dict(path)
+        )
+        return structure
     raise ValueError("Input must use the .pdb, .cif, or .mmcif extension.")
 
 

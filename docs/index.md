@@ -222,14 +222,27 @@ formats does not bypass numbering or structure-selection limits.
 
 ## Structural gaps and modified residues
 
-A C–N distance above 2.66 Å is treated as a structural gap. Gaps are handled
-automatically: reference-deletion opening costs are waived at each detected
-query boundary, while extension costs remain unchanged. A gap crossing a
-CDR or the DE loop between IMGT anchors 79 and 85 retains the learned
-alignment for that region while corrections elsewhere continue. CDR
-numbering can still be inaccurate when residues are missing. Without a gap
-crossing that region, DE-loop residues fill 80 first, then 84 back through
-81; additional residues are inserted after 82.
+A C–N distance above 2.66 Å is treated as a structural gap. Reference-deletion
+opening costs are waived at each detected query boundary; extension costs
+remain unchanged. With exact structural anchors and explicit unresolved
+residue metadata (PDB REMARK 465 or mmCIF
+`_pdbx_unobs_or_zero_occ_residues`), CDR and DE-loop corrections count both
+observed and unresolved residues. Virtual residues remain present through
+scheme conversion to preserve insertion codes, then are omitted from output.
+DE-loop residues fill 80 first, then 84 back through 81; additional residues
+are inserted after 82. Gaps without metadata retain the learned alignment
+fallback for that region, so numbering there can still be inaccurate.
+
+The CLI reads metadata automatically using Biopython’s `MMCIF2Dict`. For
+the Python API, `Bio.PDB.PDBParser` retains PDB missing-residue records.
+For mmCIF, use the standard `Bio.PDB.MMCIFParser` with its default author
+chain/residue IDs and pass `mmcif_dict=MMCIF2Dict("input.cif")` to
+`renumber_structure`. This dictionary takes precedence over header records
+and must describe the input structure’s original author IDs. Missing
+records are matched by author chain, model, residue number, and insertion
+code. Number jumps alone do not establish missing sequence. The returned
+structure drops original missing-residue records for the renumbered chain
+to avoid reusing obsolete author IDs; the input structure is unchanged.
 
 Supported modified peptide residues are translated to their canonical parent
 only for sequence generation. Original residue names and atoms are preserved.
