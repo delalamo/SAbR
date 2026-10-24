@@ -144,6 +144,8 @@ def renumber_structure(
     residue_range: tuple[int, int] | None = None,
     mode: str = "sabr",
     scfv: bool = False,
+    *,
+    mmcif_dict: dict | None = None,
 ):
     """Return a renumbered copy of a Biopython structure.
 
@@ -156,7 +158,9 @@ def renumber_structure(
     and waive reference-deletion opening costs at the corresponding boundary.
     Unresolved-residue metadata in the structure header restores sequence
     positions for anchored CDR/DE corrections and numbering. For mmCIF inputs,
-    use ``sabr.io.AnisouMMCIFParser`` to retain that metadata.
+    pass ``mmcif_dict=MMCIF2Dict(path)`` alongside a structure parsed with
+    author chain/residue IDs (the MMCIFParser defaults). Explicit mmCIF data
+    takes precedence over header records and must describe the input IDs.
     """
     options = _RenumberOptions(
         scheme=scheme,
@@ -190,7 +194,7 @@ def renumber_structure(
         imgt_alignment,
         data.sequence,
         data.gap_indices,
-        missing_between(structure, chain, data.residue_ids),
+        missing_between(structure, chain, data.residue_ids, mmcif_dict),
     )
     numbered = number_alignment(
         numbering_alignment,

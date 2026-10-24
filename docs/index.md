@@ -233,9 +233,12 @@ DE-loop residues fill 80 first, then 84 back through 81; additional residues
 are inserted after 82. Gaps without metadata retain the learned alignment
 fallback for that region, so numbering there can still be inaccurate.
 
-The CLI retains the metadata automatically. For the Python API, use
-`Bio.PDB.PDBParser` for PDB files or `sabr.io.AnisouMMCIFParser` for mmCIF
-files; the standard Biopython mmCIF parser discards this category. Missing
+The CLI reads metadata automatically using Biopython’s `MMCIF2Dict`. For
+the Python API, `Bio.PDB.PDBParser` retains PDB missing-residue records.
+For mmCIF, use the standard `Bio.PDB.MMCIFParser` with its default author
+chain/residue IDs and pass `mmcif_dict=MMCIF2Dict("input.cif")` to
+`renumber_structure`. This dictionary takes precedence over header records
+and must describe the input structure’s original author IDs. Missing
 records are matched by author chain, model, residue number, and insertion
 code. Number jumps alone do not establish missing sequence. The returned
 structure drops original missing-residue records for the renumbered chain

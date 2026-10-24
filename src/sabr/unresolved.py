@@ -16,18 +16,65 @@ from sabr.structure import _parent_residue_name
 LOGGER = logging.getLogger(__name__)
 
 
-def missing_between(structure, chain, residue_ids):
+def missing_residues_from_mmcif(data):
+    """Normalize public MMCIF2Dict data to PDB missing-residue records.
+
+    Author IDs must match the structure (MMCIFParser defaults). Only absent
+    polymer residues are included; zero-occupancy coordinates are excluded.
+    """
+    prefix = "_pdbx_unobs_or_zero_occ_residues."
+    names = ("auth_asym_id", "auth_seq_id", "auth_comp_id")
+    records = []
+    if all(prefix + name in data for name in names):
+        count = len(data[prefix + names[0]])
+
+        def value(name, index, default):
+            return data.get(prefix + name, [default] * count)[index]
+
+        for index in range(count):
+            if value("polymer_flag", index, "Y") != "Y":
+                continue
+            # Zero occupancy is distinct from absent coordinates.
+            if value("occupancy_flag", index, "1") != "1":
+                continue
+            try:
+                number = int(value("auth_seq_id", index, "?"))
+                model = value("PDB_model_num", index, "?")
+                model = None if model in ("?", ".") else int(model)
+            except ValueError:
+                continue
+            insertion = value("PDB_ins_code", index, "?")
+            records.append(
+                {
+                    "chain": value("auth_asym_id", index, "?"),
+                    "ssseq": number,
+                    "res_name": value("auth_comp_id", index, "UNK"),
+                    "insertion": (
+                        None if insertion in ("?", ".") else insertion
+                    ),
+                    "model": model,
+                }
+            )
+    return records
+
+
+def missing_between(structure, chain, residue_ids, mmcif_dict=None):
     """Return amino acids explicitly declared missing between selected rows.
 
     PDBParser supplies REMARK 465 records in ``header['missing_residues']``.
-    SAbR's mmCIF parser normalizes the unobserved-residue category to the same
-    representation. Ignore other models/chains and ambiguous author IDs.
+    Optional MMCIF2Dict data supplies the equivalent mmCIF category.
+    Ignore other models/chains and ambiguous author IDs.
     """
     model = next(iter(structure))
     missing = {}
     invalid = set()
     observed = set(residue_ids)
-    for record in structure.header.get("missing_residues", []):
+    records = (
+        missing_residues_from_mmcif(mmcif_dict)
+        if mmcif_dict is not None
+        else structure.header.get("missing_residues", [])
+    )
+    for record in records:
         if record.get("chain") != chain or record.get("model") not in (
             None,
             model.serial_num,

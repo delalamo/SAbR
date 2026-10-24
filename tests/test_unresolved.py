@@ -4,12 +4,16 @@ import io
 
 import numpy as np
 import pytest
-from Bio.PDB import MMCIFIO, PDBParser
+from Bio.PDB import MMCIFIO, MMCIFParser, PDBParser
+from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 
 from sabr.corrections import apply_corrections
-from sabr.io import AnisouMMCIFParser
 from sabr.numbering import number_alignment
-from sabr.unresolved import expand_loop_alignment, missing_between
+from sabr.unresolved import (
+    expand_loop_alignment,
+    missing_between,
+    missing_residues_from_mmcif,
+)
 
 
 @pytest.mark.parametrize(
@@ -130,10 +134,10 @@ def test_cif_metadata_is_retained(tmp_path):
         + "\n".join(category + name for name in names)
         + "\nF 27 GLY A 1 Y 1\nF 28 ALA ? 1 Y 0\nF 29 ALA ? 1 N 1\n#\n"
     )
-    parsed = AnisouMMCIFParser(QUIET=True).get_structure(
-        "test", io.StringIO(text)
-    )
-    assert parsed.header["missing_residues"] == [
+    parsed = MMCIFParser(QUIET=True).get_structure("test", io.StringIO(text))
+    metadata = MMCIF2Dict(io.StringIO(text))
+    assert "missing_residues" not in parsed.header
+    assert missing_residues_from_mmcif(metadata) == [
         {
             "chain": "F",
             "ssseq": 27,
@@ -142,13 +146,15 @@ def test_cif_metadata_is_retained(tmp_path):
             "model": 1,
         }
     ]
-    assert missing_between(parsed, "F", ((27, ""), (30, ""))) == {0: "G"}
+    assert missing_between(parsed, "F", ((27, ""), (30, "")), metadata) == {
+        0: "G"
+    }
 
 
 @pytest.mark.parametrize(
     "positions", [(28, 29), (58, 59), (81, 82), (108, 109)]
 )
-@pytest.mark.parametrize("format", ["pdb", "cif"])
+@pytest.mark.parametrize("format", ["pdb", "cif", "cif-api"])
 def test_public_api_with_unresolved_metadata(positions, format, tmp_path):
     from antibody_cases import load_case, load_cases
     from Bio.PDB import PDBIO
@@ -178,7 +184,7 @@ def test_public_api_with_unresolved_metadata(positions, format, tmp_path):
     path.write_text("".join(remarks) + buffer.getvalue())
     parsed = _read_structure(path)
     assert len(parsed.header["missing_residues"]) == len(removed)
-    if format == "cif":
+    if format.startswith("cif"):
         writer = MMCIFIO()
         writer.set_structure(parsed)
         buffer = io.StringIO()
@@ -199,16 +205,27 @@ def test_public_api_with_unresolved_metadata(positions, format, tmp_path):
         path = tmp_path / "missing.cif"
         path.write_text(text + "#\n")
         parsed = _read_structure(path)
+    options = {}
+    if format == "cif-api":
+        parsed = MMCIFParser(QUIET=True).get_structure("test", path)
+        options["mmcif_dict"] = MMCIF2Dict(path)
+        assert "missing_residues" not in parsed.header
     with pytest.warns(UserWarning, match="Skipping"):
-        output = renumber_structure(parsed, case["chain"])
+        output = renumber_structure(parsed, case["chain"], **options)
     assert [(r.id[1], r.id[2].strip()) for r in output[0][case["chain"]]] == [
         (e["imgt_position"], e["insertion_code"])
         for e in labels
         if e["row"] not in removed
     ]
     assert len(list(output.get_atoms())) == len(list(parsed.get_atoms()))
-    assert output.header["missing_residues"] == []
-    assert len(parsed.header["missing_residues"]) == len(removed)
+    assert not output.header.get("missing_residues")
+    if format == "cif-api":
+        assert "missing_residues" not in parsed.header
+        assert len(missing_residues_from_mmcif(options["mmcif_dict"])) == len(
+            removed
+        )
+    else:
+        assert len(parsed.header["missing_residues"]) == len(removed)
 
 
 def test_two_domains_keep_absolute_observed_rows():
@@ -244,3 +261,5 @@ def test_ambiguous_metadata_does_not_expand_a_gap():
     structure.header["missing_residues"] = [record, record]
     assert missing_between(structure, "F", ((26, ""), (28, ""))) == {0: "G"}
     assert missing_between(structure, "F", ((28, ""), (26, ""))) == {}
+    # Explicit mmCIF data takes precedence, even with no missing category.
+    assert missing_between(structure, "F", ((26, ""), (28, "")), {}) == {}

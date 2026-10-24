@@ -162,12 +162,26 @@ never treated as missing sequence. Regions with missing anchors or breaks
 not explained by metadata retain the existing alignment fallback; numbering
 in those regions can still be inaccurate.
 
-The CLI reads this metadata automatically. For in-memory mmCIF inputs, use
-`sabr.io.AnisouMMCIFParser`; Biopython's standard `MMCIFParser` does not retain
-the unresolved-residue category. PDB inputs from `Bio.PDB.PDBParser` already
-retain REMARK 465. Input metadata is unchanged; the returned structure drops
-missing-residue records for the renumbered chain because their original
-author IDs are no longer valid.
+The CLI reads this metadata automatically with Biopython's `MMCIF2Dict`.
+For in-memory mmCIF inputs, use the standard `MMCIFParser` and supply the
+metadata dictionary explicitly (using the default author chain/residue IDs):
+
+```python
+from Bio.PDB import MMCIFParser
+from Bio.PDB.MMCIF2Dict import MMCIF2Dict
+from sabr import renumber_structure
+
+structure = MMCIFParser(QUIET=True).get_structure("input", "input.cif")
+numbered = renumber_structure(
+    structure, chain="H", mmcif_dict=MMCIF2Dict("input.cif")
+)
+```
+
+PDB inputs from `Bio.PDB.PDBParser` already retain REMARK 465 in their
+headers. Explicit `mmcif_dict` data takes precedence over header records;
+it must describe the input structure's author IDs. Neither input is modified.
+The returned structure drops missing-residue header records for the renumbered
+chain because their original author IDs are no longer valid.
 
 T-cell receptors are not an officially supported SAbR target. For
 experimental use, pass the actual TCR chain type (`A`, `B`, `G`, or `D`) with

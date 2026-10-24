@@ -1,4 +1,4 @@
-"""Biopython adapters for anisotropic tensors and unresolved residues."""
+"""Biopython adapters that preserve atomic anisotropic displacement data."""
 
 import numpy as np
 from Bio.PDB import MMCIFIO, PDBIO, MMCIFParser
@@ -79,52 +79,7 @@ class AnisouMMCIFIO(MMCIFIO):
 
 
 class AnisouMMCIFParser(MMCIFParser):
-    """Read tensors by atom ID and retain unresolved polymer metadata."""
-
-    def get_structure(self, structure_id, filename):
-        structure = super().get_structure(structure_id, filename)
-        # Match PDBParser's REMARK 465 representation. Author identifiers are
-        # required because they also identify residues in the parsed structure.
-        prefix = "_pdbx_unobs_or_zero_occ_residues."
-        data = self._mmcif_dict
-        names = ("auth_asym_id", "auth_seq_id", "auth_comp_id")
-        records = []
-        if (
-            self.auth_chains
-            and self.auth_residues
-            and all(prefix + name in data for name in names)
-        ):
-            count = len(data[prefix + names[0]])
-
-            def value(name, index, default):
-                return data.get(prefix + name, [default] * count)[index]
-
-            for index in range(count):
-                if value("polymer_flag", index, "Y") != "Y":
-                    continue
-                # Zero occupancy is distinct from absent coordinates.
-                if value("occupancy_flag", index, "1") != "1":
-                    continue
-                try:
-                    number = int(value("auth_seq_id", index, "?"))
-                    model = value("PDB_model_num", index, "?")
-                    model = None if model in ("?", ".") else int(model)
-                except ValueError:
-                    continue
-                insertion = value("PDB_ins_code", index, "?")
-                records.append(
-                    {
-                        "chain": value("auth_asym_id", index, "?"),
-                        "ssseq": number,
-                        "res_name": value("auth_comp_id", index, "UNK"),
-                        "insertion": (
-                            None if insertion in ("?", ".") else insertion
-                        ),
-                        "model": model,
-                    }
-                )
-        structure.header["missing_residues"] = records
-        return structure
+    """Read sparse/reordered tensor rows by ID and normalize component order."""
 
     def _build_structure(self, structure_id):
         data = self._mmcif_dict
