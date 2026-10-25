@@ -220,3 +220,137 @@ def test_ghost_vectors_and_unexplained_gap_indices():
     assert sequence == "ACDEF"
     assert gaps == frozenset({2})
     assert rows == tuple(range(5))
+
+
+@pytest.mark.parametrize("metadata_source", ["header", "mmcif"])
+def test_force_detected_gaps_matches_no_annotations(
+    monkeypatch, metadata_source
+):
+    import copy
+    import warnings
+
+    from antibody_cases import load_case, load_cases
+
+    import sabr.api as api
+    from sabr.structure import extract_chain
+
+    case = next(c for c in load_cases() if c["id"] == "1mel_A")
+    structure, labels = load_case(case)
+    target = structure[0][case["chain"]]
+    removed = next(e["row"] for e in labels if e["imgt_position"] == 81)
+    residue = list(target)[removed]
+    record = {
+        "chain": target.id,
+        "ssseq": residue.id[1],
+        "insertion": residue.id[2].strip(),
+        "res_name": residue.resname,
+        "model": None,
+    }
+    target.detach_child(residue.id)
+    unannotated = copy.deepcopy(structure)
+    unannotated.header["missing_residues"] = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        expected = api.renumber_structure(unannotated, target.id)
+    options = {}
+    if metadata_source == "header":
+        structure.header["missing_residues"] = [record]
+    else:
+        prefix = "_pdbx_unobs_or_zero_occ_residues."
+        options["mmcif_dict"] = {
+            prefix + "auth_asym_id": [target.id],
+            prefix + "auth_seq_id": [str(residue.id[1])],
+            prefix + "auth_comp_id": [residue.resname],
+            prefix + "PDB_ins_code": [record["insertion"] or "?"],
+        }
+    data = extract_chain(structure, target.id, None)
+    real_align = api.align
+    calls = []
+
+    def check_align(embeddings, gaps, *args, **kwargs):
+        assert len(embeddings) == len(data.sequence)
+        assert gaps == data.gap_indices
+        calls.append(True)
+        return real_align(embeddings, gaps, *args, **kwargs)
+
+    def unexpected_metadata(*args, **kwargs):
+        pytest.fail("Forced geometry mode must not inspect annotations")
+
+    monkeypatch.setattr(api, "align", check_align)
+    monkeypatch.setattr(api, "missing_between", unexpected_metadata)
+    with pytest.warns(UserWarning, match="Skipping DE loop"):
+        actual = api.renumber_structure(
+            structure, target.id, auto_detect_gaps=True, **options
+        )
+    assert calls == [True]
+    assert [r.id for r in actual[0][target.id]] == [
+        r.id for r in expected[0][target.id]
+    ]
+    np.testing.assert_array_equal(
+        [a.coord for a in actual.get_atoms()],
+        [a.coord for a in structure.get_atoms()],
+    )
+
+
+def test_auto_detect_gaps_requires_boolean():
+    from sabr import renumber_structure
+
+    with pytest.raises(ValueError, match="auto_detect_gaps must be a boolean"):
+        renumber_structure(None, "H", auto_detect_gaps="yes")
+
+
+@pytest.mark.parametrize(
+    "case_id,domain,positions",
+    [
+        ("12e8_H", 0, (11, 12)),
+        ("12e8_H", 0, (119, 120, 121)),
+        ("1mel_A", 0, (104,)),
+        ("6nou_A", 1, (70, 71, 72)),
+    ],
+)
+def test_ghost_framework_gaps_match_independent_labels(
+    case_id, domain, positions
+):
+    from antibody_cases import load_case, load_cases
+
+    from sabr import renumber_structure
+
+    case = next(c for c in load_cases() if c["id"] == case_id)
+    structure, labels = load_case(case)
+    target = structure[0][case["chain"]]
+    residues = list(target)
+    removed = {
+        e["row"]
+        for e in labels
+        if e["domain"] == domain and e["imgt_position"] in positions
+    }
+    assert len(removed) == len(positions)
+    records = []
+    for row in sorted(removed):
+        residue = residues[row]
+        records.append(
+            {
+                "chain": target.id,
+                "ssseq": residue.id[1],
+                "insertion": residue.id[2].strip(),
+                "res_name": residue.resname,
+                "model": None,
+            }
+        )
+        target.detach_child(residue.id)
+    structure.header["missing_residues"] = records
+    result = renumber_structure(structure, target.id, **case["options"])
+    remaining_rows = [row for row in range(len(residues)) if row not in removed]
+    actual = dict(zip(remaining_rows, list(result[0][target.id]), strict=True))
+    for label in labels:
+        if label["row"] in removed:
+            continue
+        residue = actual[label["row"]]
+        assert (residue.id[1], residue.id[2].strip()) == (
+            label["domain"] * 1000 + label["imgt_position"],
+            label["insertion_code"],
+        )
+    np.testing.assert_array_equal(
+        [a.coord for a in result.get_atoms()],
+        [a.coord for a in structure.get_atoms()],
+    )

@@ -232,6 +232,15 @@ opening costs. Unexplained breaks retain the opening-cost waiver and
 correction fallback, with their indices shifted to account for ghost rows.
 No atoms are created; terminal unresolved residues are not added.
 
+Ghost residues are the default when usable missing-residue annotations are
+available. Without them, SAbR automatically uses detected structural gaps
+with zero gap-opening costs. For partially annotated inputs, unexplained
+breaks still use this fallback. To ignore all missing-residue annotations
+and force geometry-only handling, pass `--auto-detect-gaps` (alias
+`--auto_detect_gaps`) on the CLI or `auto_detect_gaps=True` to
+`renumber_structure`. This disables both ghosts and metadata-based loop
+correction; extension costs remain unchanged.
+
 The CLI reads metadata automatically using Biopython’s `MMCIF2Dict`. For
 the Python API, `Bio.PDB.PDBParser` retains PDB missing-residue records.
 For mmCIF, use the standard `Bio.PDB.MMCIFParser` with its default author

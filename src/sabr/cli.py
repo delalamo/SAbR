@@ -154,6 +154,15 @@ def _write_structure(structure, path: Path) -> None:
     is_flag=True,
     help="Forbid automatic mmCIF output for extended insertion codes.",
 )
+@click.option(
+    "--auto-detect-gaps",
+    "--auto_detect_gaps",
+    is_flag=True,
+    help=(
+        "Ignore missing-residue annotations; use detected structural gaps "
+        "with zero gap-opening costs instead of ghost residues."
+    ),
+)
 @click.option("--overwrite", is_flag=True)
 @click.option("-v", "--verbose", is_flag=True)
 def main(
@@ -167,6 +176,7 @@ def main(
     residue_range: tuple | None,
     scfv: bool,
     no_mmcif: bool,
+    auto_detect_gaps: bool,
     overwrite: bool,
     verbose: bool,
 ) -> None:
@@ -198,6 +208,7 @@ def main(
             mode=mode,
             residue_range=residue_range,
             scfv=scfv,
+            auto_detect_gaps=auto_detect_gaps,
         )
         resolved_output_path = _resolve_output_path(
             result, output_path, no_mmcif=no_mmcif
