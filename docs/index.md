@@ -222,16 +222,24 @@ formats does not bypass numbering or structure-selection limits.
 
 ## Structural gaps and modified residues
 
-A C–N distance above 2.66 Å is treated as a structural gap. Reference-deletion
-opening costs are waived at each detected query boundary; extension costs
-remain unchanged. With exact structural anchors and explicit unresolved
-residue metadata (PDB REMARK 465 or mmCIF
-`_pdbx_unobs_or_zero_occ_residues`), CDR and DE-loop corrections count both
-observed and unresolved residues. Virtual residues remain present through
-scheme conversion to preserve insertion codes, then are omitted from output.
-DE-loop residues fill 80 first, then 84 back through 81; additional residues
-are inserted after 82. Gaps without metadata retain the learned alignment
-fallback for that region, so numbering there can still be inaccurate.
+A C–N distance above 2.66 Å is treated as a structural gap. After encoding
+observed coordinates, internal missing residues declared in PDB REMARK 465
+or mmCIF metadata receive zero embedding vectors. The expanded sequence
+passes through alignment, deterministic CDR/DE corrections, and scheme
+conversion before ghost rows are removed. Ghosts contribute zero similarity
+to every reference position, and metadata-filled breaks use normal gap
+opening costs. Unexplained breaks retain the opening-cost waiver and
+correction fallback, with their indices shifted to account for ghost rows.
+No atoms are created; terminal unresolved residues are not added.
+
+Ghost residues are the default when usable missing-residue annotations are
+available. Without them, SAbR automatically uses detected structural gaps
+with zero gap-opening costs. For partially annotated inputs, unexplained
+breaks still use this fallback. To ignore all missing-residue annotations
+and force geometry-only handling, pass `--auto-detect-gaps` (alias
+`--auto_detect_gaps`) on the CLI or `auto_detect_gaps=True` to
+`renumber_structure`. This disables both ghosts and metadata-based loop
+correction; extension costs remain unchanged.
 
 The CLI reads metadata automatically using Biopython’s `MMCIF2Dict`. For
 the Python API, `Bio.PDB.PDBParser` retains PDB missing-residue records.

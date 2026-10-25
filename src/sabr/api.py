@@ -8,7 +8,7 @@ from sabr.alignment import align, load_references
 from sabr.model import encode
 from sabr.numbering import number_alignment
 from sabr.structure import apply_numbering, extract_chain
-from sabr.unresolved import expand_loop_alignment, missing_between
+from sabr.unresolved import insert_ghost_embeddings, missing_between
 
 LOGGER = logging.getLogger(__name__)
 
@@ -107,6 +107,7 @@ class _RenumberOptions:
     residue_range: tuple[int, int] | None
     mode: str
     scfv: bool
+    auto_detect_gaps: bool = False
 
     def __post_init__(self) -> None:
         self.scheme = _normalize_choice(
@@ -127,6 +128,8 @@ class _RenumberOptions:
             raise ValueError(
                 "TCR chain types support only IMGT or AHo numbering."
             )
+        if not isinstance(self.auto_detect_gaps, bool):
+            raise ValueError("auto_detect_gaps must be a boolean.")
         if not isinstance(self.scfv, bool):
             raise ValueError("scfv must be a boolean.")
         if self.scfv and self.chain_type != "auto":
@@ -146,6 +149,7 @@ def renumber_structure(
     scfv: bool = False,
     *,
     mmcif_dict: dict | None = None,
+    auto_detect_gaps: bool = False,
 ):
     """Return a renumbered copy of a Biopython structure.
 
@@ -156,8 +160,14 @@ def renumber_structure(
     only against the K reference. ``scfv=True`` is equivalent to
     ``chain_type="HK,HL,KH,LH"``. Structural gaps are detected automatically
     and waive reference-deletion opening costs at the corresponding boundary.
-    Unresolved-residue metadata in the structure header restores sequence
-    positions for anchored CDR/DE corrections and numbering. For mmCIF inputs,
+    Unresolved-residue metadata inserts zero-embedding ghost rows after
+    encoding and before alignment. They occupy sequence positions through
+    deterministic corrections and scheme conversion, then are removed.
+    Metadata-filled gaps no longer waive opening costs or skip corrections.
+    With no usable annotations, detected structural gaps retain zero opening
+    costs. Set ``auto_detect_gaps=True`` to ignore annotations and force this
+    geometry-only path (no ghosts or metadata-based loop correction).
+    For mmCIF inputs,
     pass ``mmcif_dict=MMCIF2Dict(path)`` alongside a structure parsed with
     author chain/residue IDs (the MMCIFParser defaults). Explicit mmCIF data
     takes precedence over header records and must describe the input IDs.
@@ -169,12 +179,23 @@ def renumber_structure(
         residue_range=residue_range,
         mode=mode,
         scfv=scfv,
+        auto_detect_gaps=auto_detect_gaps,
     )
     data = extract_chain(structure, chain, options.residue_range)
     embeddings = encode(data.coords, options.mode)
+    embeddings, sequence, gaps, observed_rows = insert_ghost_embeddings(
+        embeddings,
+        data.sequence,
+        data.gap_indices,
+        (
+            {}
+            if options.auto_detect_gaps
+            else missing_between(structure, chain, data.residue_ids, mmcif_dict)
+        ),
+    )
     imgt_alignment, selected_type, score = align(
         embeddings,
-        data.gap_indices,
+        gaps,
         options.chain_type,
         options.noise_level,
         mode=options.mode,
@@ -190,14 +211,8 @@ def renumber_structure(
         if options.chain_type in constants.TCR_CHAIN_TYPES
         else selected_type
     )
-    numbering_alignment, sequence, observed_rows = expand_loop_alignment(
-        imgt_alignment,
-        data.sequence,
-        data.gap_indices,
-        missing_between(structure, chain, data.residue_ids, mmcif_dict),
-    )
     numbered = number_alignment(
-        numbering_alignment,
+        imgt_alignment,
         sequence,
         options.scheme,
         numbering_type,
