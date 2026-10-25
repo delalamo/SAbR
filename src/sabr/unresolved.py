@@ -1,19 +1,14 @@
 """Use explicit unresolved-residue metadata between structural anchors.
 
-Virtual rows survive scheme conversion so missing central insertions still
+Zero-embedding ghost rows survive scheme conversion so central insertions still
 occupy their insertion codes. They never enter the encoder or output atoms.
 Author-number jumps alone are not evidence of unresolved sequence.
 """
 
-import logging
-
 import numpy as np
 
 from sabr import constants
-from sabr.corrections import _aligned_row, correct_cdr_loop, correct_de_loop
 from sabr.structure import _parent_residue_name
-
-LOGGER = logging.getLogger(__name__)
 
 
 def missing_residues_from_mmcif(data):
@@ -104,55 +99,35 @@ def missing_between(structure, chain, residue_ids, mmcif_dict=None):
     return result
 
 
-def expand_loop_alignment(alignment, sequence, gaps, missing):
-    """Correct eligible loops on virtual sequence, returning observed row map.
+def insert_ghost_embeddings(embeddings, sequence, gaps, missing):
+    """Insert zero vectors after encoding observed coordinates.
 
-    Both exact anchors must exist. Every detected break in a region must be
-    explained by metadata; otherwise preserve that region's learned alignment.
-    Only anchored regions are expanded, so terminal metadata and linkers do
-    not extend domain spans or alter candidate selection.
+    Metadata-backed breaks become ordinary sequence positions for alignment
+    and deterministic corrections. Unexplained breaks retain their opening
+    discount and correction fallback, with indices shifted into the expanded
+    query. Ghosts survive scheme conversion and are then discarded using the
+    returned expanded-row-to-observed-row map. No coordinates are fabricated.
     """
-    regions = []
-    used = set()
-    for start in range(0, alignment.shape[1], constants.IMGT_MAX_POSITION):
-        domain = alignment[:, start : start + constants.IMGT_MAX_POSITION]
-        anchors = {**constants.CDR_ANCHORS, "DE": (79, 85)}
-        for name, (left, right) in anchors.items():
-            first = _aligned_row(domain, left - 1)
-            last = _aligned_row(domain, right - 1)
-            if first is None or last is None or first >= last:
-                continue
-            boundaries = set(range(first, last))
-            relevant = boundaries.intersection(missing)
-            if not relevant or (boundaries.intersection(gaps) - missing.keys()):
-                continue
-            regions.append((start, name))
-            used.update(relevant)
-    if not used:
-        return alignment, sequence, tuple(range(len(sequence)))
-    rows = []
+    if not missing:
+        return embeddings, sequence, gaps, tuple(range(len(sequence)))
+    size = len(sequence) + sum(len(letters) for letters in missing.values())
+    expanded = np.zeros((size, embeddings.shape[1]), dtype=embeddings.dtype)
     letters = []
     observed_rows = []
-    for row, letter in enumerate(sequence):
-        rows.append(alignment[row])
-        letters.append(letter)
+    remaining_gaps = set()
+    for row, amino_acid in enumerate(sequence):
+        expanded_row = len(letters)
+        expanded[expanded_row] = embeddings[row]
+        letters.append(amino_acid)
         observed_rows.append(row)
-        if row in used:
-            for amino_acid in missing[row]:
-                rows.append(np.zeros(alignment.shape[1], dtype=alignment.dtype))
-                letters.append(amino_acid)
-                observed_rows.append(None)
-    expanded = np.asarray(rows)
-    for start, name in regions:
-        LOGGER.info(
-            "Applying %s correction with unresolved-residue metadata "
-            "in domain %d.",
-            name,
-            start // constants.IMGT_MAX_POSITION + 1,
-        )
-        domain = expanded[:, start : start + constants.IMGT_MAX_POSITION]
-        if name == "DE":
-            correct_de_loop(domain)
-        else:
-            correct_cdr_loop(domain, name, *constants.IMGT_LOOPS[name])
-    return expanded, "".join(letters), tuple(observed_rows)
+        if row in gaps and row not in missing:
+            remaining_gaps.add(expanded_row)
+        unresolved = missing.get(row, "")
+        letters.extend(unresolved)
+        observed_rows.extend([None] * len(unresolved))
+    return (
+        expanded,
+        "".join(letters),
+        frozenset(remaining_gaps),
+        tuple(observed_rows),
+    )

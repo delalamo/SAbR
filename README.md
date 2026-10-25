@@ -153,14 +153,15 @@ the complete scheme-specific limits.
 A structural gap is detected when the C–N distance between consecutive
 residues exceeds 2.66 Å. SAbR handles gaps automatically by waiving
 reference-deletion opening costs at each detected boundary; extension
-costs remain unchanged. For CDR and DE-loop numbering, SAbR keeps the
-structural anchors and counts unresolved residues declared in PDB REMARK 465
-or mmCIF `_pdbx_unobs_or_zero_occ_residues` metadata between them. These
-residues occupy sequence positions through scheme conversion, including
-insertion codes, but no atoms are created. Author-number jumps alone are
-never treated as missing sequence. Regions with missing anchors or breaks
-not explained by metadata retain the existing alignment fallback; numbering
-in those regions can still be inaccurate.
+costs remain unchanged for unexplained gaps. After encoding observed
+coordinates, SAbR inserts all-zero embedding rows for internal unresolved
+residues declared by PDB REMARK 465 or mmCIF metadata. Alignment and
+deterministic CDR/DE corrections operate on the expanded sequence; these
+metadata-filled gaps use normal opening costs. Ghost rows survive scheme
+conversion to preserve insertion codes, then are removed from the output.
+No coordinates or atoms are fabricated. Author-number jumps alone are never
+treated as missing sequence, and terminal unresolved residues are not added.
+Breaks without metadata retain the existing alignment fallback.
 
 The CLI reads this metadata automatically with Biopython's `MMCIF2Dict`.
 For in-memory mmCIF inputs, use the standard `MMCIFParser` and supply the
