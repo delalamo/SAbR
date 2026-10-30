@@ -1,0 +1,22 @@
+pair                                     A      B      C      D helix-1 helix-2
+          G-ALPHA>G-ALPHA             1.00   0.97   0.98   1.00   0.93   0.76
+          G-ALPHA>G-ALPHA1            1.00   1.00   1.00   1.00   0.77   0.84
+          G-ALPHA>G-ALPHA1-LIKE       1.00   0.97   0.90   1.00   0.69   0.74
+          G-ALPHA>G-ALPHA2            1.00   1.00   1.00   1.00   0.54   0.73
+          G-ALPHA>G-ALPHA2-LIKE       0.99   0.98   1.00   1.00   0.54   0.83
+          G-ALPHA>G-BETA              1.00   0.94   1.00   1.00   0.33   0.87
+         G-ALPHA1>G-ALPHA1            1.00   1.00   1.00   1.00   1.00   1.00
+         G-ALPHA1>G-ALPHA1-LIKE       1.00   1.00   1.00   1.00   0.97   0.93
+         G-ALPHA1>G-ALPHA2            1.00   1.00   1.00   1.00   0.84   0.90
+         G-ALPHA1>G-ALPHA2-LIKE       1.00   0.94   1.00   1.00   0.85   0.98
+         G-ALPHA1>G-BETA              1.00   1.00   1.00   1.00   0.78   0.94
+    G-ALPHA1-LIKE>G-ALPHA1-LIKE       0.98   1.00   1.00   1.00   0.93   0.87
+    G-ALPHA1-LIKE>G-ALPHA2            1.00   1.00   1.00   0.97   0.65   0.78
+    G-ALPHA1-LIKE>G-ALPHA2-LIKE       1.00   0.94   0.98   1.00   0.66   0.92
+    G-ALPHA1-LIKE>G-BETA              1.00   0.96   1.00   1.00   0.51   0.85
+         G-ALPHA2>G-ALPHA2            1.00   1.00   1.00   1.00   0.90   0.81
+         G-ALPHA2>G-ALPHA2-LIKE       1.00   0.98   0.98   1.00   0.93   0.89
+         G-ALPHA2>G-BETA              1.00   1.00   1.00   1.00   0.78   0.77
+    G-ALPHA2-LIKE>G-ALPHA2-LIKE       1.00   1.00   1.00   0.99   0.96   0.98
+    G-ALPHA2-LIKE>G-BETA              1.00   0.94   1.00   0.97   0.81   0.71
+           G-BETA>G-BETA              1.00   0.98   1.00   1.00   0.70   1.00

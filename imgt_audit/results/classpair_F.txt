@@ -1,0 +1,5 @@
+  F:cytokine-R -> F:FN/TNC          1.3 ~ 4      8/15  (same=0)
+  F:cytokine-R -> F:FN/TNC           50 ~ 75     13/15  (same=0)
+  F:cytokine-R -> F:FN/TNC         85.3 ~ 84     10/15  (same=0)
+  F:cytokine-R -> F:FN/TNC         96.2 ~ 98     15/20  (same=0)
+  F:cytokine-R -> F:FN/TNC           97 ~ 99     14/25  (same=9)

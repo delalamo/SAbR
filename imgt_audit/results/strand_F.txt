@@ -1,0 +1,4 @@
+pair                                     A      B      C      D      E      F      G
+         F:FN/TNC>F:FN/TNC            0.99   1.00   1.00   0.59   1.00   1.00   0.44
+         F:FN/TNC>F:cytokine-R        0.53   1.00   0.29   0.05   0.67   0.57   0.14
+     F:cytokine-R>F:cytokine-R        0.30   0.94   0.16   0.13   0.43   0.43   0.12

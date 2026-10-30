@@ -1,0 +1,16 @@
+VL lambda A strand: lambda 8/9 = kappa 9/10      n=  228  median CA dist IMGT-pair= 3.71 A  proposed-pair= 0.98 A  proposed closer in  100%
+light-chain D strand: 83/84 = VH 81/82           n=  384  median CA dist IMGT-pair= 5.34 A  proposed-pair= 1.40 A  proposed closer in   97%
+kappa D strand: 83/84 = VH 81/82                 n= 1216  median CA dist IMGT-pair= 6.92 A  proposed-pair= 3.41 A  proposed closer in   97%
+TRBV D strand: 83 = VH 82                        n=  320  median CA dist IMGT-pair= 4.73 A  proposed-pair= 1.94 A  proposed closer in   97%
+TRAV 81/82 = kappa 83/84                         n=  380  median CA dist IMGT-pair=  nan A  proposed-pair= 2.35 A  proposed closer in  nan%
+TRBV C'' strand 66-74 = kappa 65-72              n= 1520  median CA dist IMGT-pair= 4.54 A  proposed-pair= 2.65 A  proposed closer in   85%
+CDR1 base: light 27-29 = VH 28-30                n= 1824  median CA dist IMGT-pair= 4.41 A  proposed-pair= 2.70 A  proposed closer in   92%
+CDR1 base: TRBV 27-28 = VH 28-29                 n=  640  median CA dist IMGT-pair= 2.91 A  proposed-pair= 2.11 A  proposed closer in   71%
+TRDC E strand shifted +1                         n=  336  median CA dist IMGT-pair= 3.56 A  proposed-pair= 0.76 A  proposed closer in   99%
+TRDC G strand 118 = 119                          n=   48  median CA dist IMGT-pair= 2.81 A  proposed-pair= 1.46 A  proposed closer in  100%
+TRGC F strand 97/98 = 95/96                      n=   42  median CA dist IMGT-pair= 6.50 A  proposed-pair= 2.09 A  proposed closer in  100%
+alpha2 helix kink: 72A = alpha1 72               n=  100  median CA dist IMGT-pair=  nan A  proposed-pair= 4.21 A  proposed closer in  nan%
+MHC-II alpha1 helix N-term vs MHC-I alpha2       n=  240  median CA dist IMGT-pair= 8.38 A  proposed-pair= 2.82 A  proposed closer in  100%
+MHC-II beta1 helix C-term vs MHC-I alpha2        n=  120  median CA dist IMGT-pair= 4.71 A  proposed-pair= 2.50 A  proposed closer in   92%
+alpha1-like 43-50 shift                          n=  240  median CA dist IMGT-pair= 2.99 A  proposed-pair= 2.76 A  proposed closer in   43%
+mouse IGHG1*03 CH1 offset +4                     n=  252  median CA dist IMGT-pair=24.78 A  proposed-pair=13.60 A  proposed closer in   86%
