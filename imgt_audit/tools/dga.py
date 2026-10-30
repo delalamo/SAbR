@@ -1,5 +1,5 @@
 """Minimal client for IMGT/DomainGapAlign. Caches raw HTML responses."""
-import hashlib, html, os, re, sys, time
+import glob, hashlib, html, os, re, sys, time
 import requests
 
 URL = "https://www.imgt.org/3Dstructure-DB/cgi/DomainGapAlign.cgi"
@@ -9,9 +9,10 @@ CACHE = os.path.join(os.path.dirname(__file__), "..", "dga_cache")
 def query(name, seq, domtype, displayed=1):
     os.makedirs(CACHE, exist_ok=True)
     key = hashlib.sha1(f"{domtype}|{seq}|{displayed}".encode()).hexdigest()[:16]
+    hits = glob.glob(os.path.join(CACHE, f"*_{key}.html"))
+    if hits:
+        return open(hits[0]).read()
     path = os.path.join(CACHE, f"{name}_{domtype}_{key}.html")
-    if os.path.exists(path):
-        return open(path).read()
     data = {"Sequence": f">{name}\n{seq}", "domtype": domtype, "species": "",
             "SWScore": "0", "displayed": str(displayed), "evalue": "200",
             "gpenal": "-5", "gpenalref": "-20", "submit": "Show"}
@@ -87,7 +88,14 @@ def _split_digit_run(run):
 
 def ruler_labels(hdr_raw, ruler):
     """IMGT label for every non-space ruler column, in order."""
-    toks = _header_tokens(hdr_raw)
+    toks = []
+    for n, s0, e0 in _header_tokens(hdr_raw):
+        txt = str(n)
+        if n > 300 and len(txt) % 2 == 0:      # adjacent numbers printed without a separator, e.g. "3839"
+            h = len(txt) // 2
+            toks += [(int(txt[:h]), s0, s0 + h - 1), (int(txt[h:]), s0 + h, e0)]
+        else:
+            toks.append((n, s0, e0))
     anchors = {}
     for n, s, e in toks:
         for c in (s, e):

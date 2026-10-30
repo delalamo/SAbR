@@ -1,0 +1,11973 @@
+[
+{
+"pdb": "6obz",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ods",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ibu",
+"types": "CV",
+"chains": [
+"B",
+"G"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5yd3",
+"types": "CV",
+"chains": [
+"E1",
+"E2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6bb4",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2ypv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1fns",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6mqc",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6dcv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "8yto",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ub5",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "5obf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1hil",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1f4x",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2otu",
+"types": "CV",
+"chains": [
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2vxt",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4kte",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1t2q",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "4dcq",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2xwt",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7cr5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4isv",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1a6v",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "9ezu",
+"types": "CV",
+"chains": [
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5wuv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3wii",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2brr",
+"types": "CV",
+"chains": [
+"X",
+"Y"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5aam",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3e8u",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wfy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1mvu",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "12e8",
+"types": "CV",
+"chains": [
+"M",
+"P"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7o31",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6nyq",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4lkx",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1uac",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6nha",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7jxc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2xkn",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6azm",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2q8a",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5xcq",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4lci",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4z8f",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2hwz",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mqr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3oz9",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ngy",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6jp7",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3ujj",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4o9h",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6iea",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6c5i",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6s5a",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3nps",
+"types": "CV",
+"chains": [
+"B",
+"C"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5vpl",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6u9s",
+"types": "CV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6ldy",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3uls",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1fgn",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6n16",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3h0t",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3hnt",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5aum",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6gfe",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4m5y",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5dd6",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "9udt",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5nph",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5fcu",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7km6",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4yo0",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6w7s",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5tl5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ncc",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1kcv",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "6bjz",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4d9q",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1rur",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6ug7",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ikc",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1c5c",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mts",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7n3f",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1mex",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6j9o",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4tpr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6cxy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2ck0",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ors",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "4zfo",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2cju",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "5jw5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5w24",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6o24",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3cvi",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4hxa",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3kdm",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5cgy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5wk2",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3i9g",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1nbv",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "4kvc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5kve",
+"types": "CV",
+"chains": [
+"L1",
+"L2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mv5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4jn2",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6bit",
+"types": "CV",
+"chains": [
+"I",
+"K"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4r90",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6apo",
+"types": "CV",
+"chains": [
+"A"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4poz",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4odv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5a2j",
+"types": "CV",
+"chains": [
+"H1",
+"H2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4cmh",
+"types": "CV",
+"chains": [
+"B",
+"C"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3sge",
+"types": "CV",
+"chains": [
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1q72",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5bvj",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4p49",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3s96",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4hpo",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5i4f",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6pxr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4hs6",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5niv",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3aaz",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6ucf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6pef",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4nzu",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1um5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6u1t",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1cr9",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6uce",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mnr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1zan",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "3qq9",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3m8o",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4kq4",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qpx",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1bz7",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4yr6",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6bfs",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5myk",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7str",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6pcu",
+"types": "CV",
+"chains": [
+"E1",
+"E2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5zmj",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4buh",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5n4j",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7y0g",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1a2y",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "1j05",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "6ugs",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7lm9",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6rcq",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7kza",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5tr8",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3ncj",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5yax",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1dlf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "3uzq",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5xct",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ihu",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6id4",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ncc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6pec",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wiy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6pdu",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6i1o",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3liz",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ub6",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7udh",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6xoc",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5w5z",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7kkz",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4m1g",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ock",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6dc4",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5gru",
+"types": "CV",
+"chains": [
+"H2",
+"L1"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3d9a",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1aj7",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6b5r",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6be3",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5az2",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6q19",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6meg",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6p79",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7d9z",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wj0",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1mju",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mqe",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6cnw",
+"types": "CV",
+"chains": [
+"A"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "25c8",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4toy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6vl8",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1fl5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ki5",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ay1",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6kva",
+"types": "CV",
+"chains": [
+"h",
+"l"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5e2w",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3zkm",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7k3q",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3twc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3g5v",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6vbo",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qrg",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1seq",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6x9x",
+"types": "CV",
+"chains": [
+"A"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2qhr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6oor",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5w05",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6qn8",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3u0w",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3phq",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5vxr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qhf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5drx",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5yfi",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4glr",
+"types": "CV",
+"chains": [
+"J",
+"K"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4m43",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2adg",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2dqc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1jgl",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7dm2",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6gxx",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1kiq",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ijv",
+"types": "CV",
+"chains": [
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5v7u",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1y0l",
+"types": "CV",
+"chains": [
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6ztf",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2xzc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2ih3",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6svl",
+"types": "CV",
+"chains": [
+"K",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4wuk",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6qf9",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3mlr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6bzy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5do2",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4nzr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6cwk",
+"types": "CV",
+"chains": [
+"A"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6ltg",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6jbt",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4jam",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5t4z",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5kvg",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1clo",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "3gkz",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3bkj",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "6ehx",
+"types": "CV",
+"chains": [
+"B1",
+"B2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ye4",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7v64",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ywf",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2e27",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1t2j",
+"types": "CV",
+"chains": [
+"A"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4l5f",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5dd5",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1x9q",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6osh",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4p48",
+"types": "CV",
+"chains": [
+"A1",
+"A2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6x8s",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ris",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6z7x",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2zpk",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1ncw",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6flc",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4gxv",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mlk",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5zv3",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6vry",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1il1",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6ehw",
+"types": "CV",
+"chains": [
+"B1",
+"B2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wg8",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mee",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2vxv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4mau",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4gag",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6p60",
+"types": "CV",
+"chains": [
+"J",
+"K"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5kvf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6k0y",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4rgo",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2xqy",
+"types": "CV",
+"chains": [
+"G",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1mqk",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "6vor",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1q9w",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4nwu",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6oc7",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ye3",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6kx1",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1q0x",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "4ebq",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6p4y",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1mam",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "1uwx",
+"types": "CGV",
+"chains": [
+"K",
+"M"
+],
+"entities": [
+"3"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "1gaf",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "1i8k",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "3mnz",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5x4g",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1a3r",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1sbs",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3nzh",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1n4x",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "5tkk",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3g5y",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1kel",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "4aeh",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4yue",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4f57",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1jhl",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3n9g",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3ggw",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ukn",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3iu4",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5gz0",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6nex",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qhz",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5hi4",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7o4y",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4s2s",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6o3k",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4hbc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7bxv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ezi",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5nmv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ygv",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2v17",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5xcv",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6vi2",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5i0z",
+"types": "CV",
+"chains": [
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6bla",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6mtr",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6aq7",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3t65",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3lex",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7rk1",
+"types": "CV",
+"chains": [
+"C1",
+"C2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ty6",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7bei",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "7n3h",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2bmk",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2hkf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "6a76",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4nwt",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6nb8",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qwo",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "8q3j",
+"types": "CV",
+"chains": [
+"B",
+"C"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ik3",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6jwc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "8qf4",
+"types": "CV",
+"chains": [
+"E"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4xcf",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3cx5",
+"types": "CV",
+"chains": [
+"U",
+"V"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3idg",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wkl",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5fcs",
+"types": "CV",
+"chains": [
+"H1",
+"L2"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5ilt",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6x7w",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6zec",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4x8j",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3qcu",
+"types": "CV",
+"chains": [
+"I",
+"M"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3v0w",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3ifn",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1nc2",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5th2",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6lz4",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4hpy",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4g6m",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3v4u",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5drw",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6qnk",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1lk3",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "5jr1",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5xli",
+"types": "CV",
+"chains": [
+"a",
+"c"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "2ajv",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4k2u",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3vfg",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6wk4",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1dvf",
+"types": "CV",
+"chains": [
+"C",
+"D"
+],
+"entities": [
+"3"
+],
+"src": [
+"PF07686",
+"sabdab"
+]
+},
+{
+"pdb": "3mbx",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "1p7k",
+"types": "CGV",
+"chains": [
+"H",
+"L"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"sabdab"
+]
+},
+{
+"pdb": "6qu9",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "4ene",
+"types": "CV",
+"chains": [
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3ntc",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5i1k",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "5i30",
+"types": "CV",
+"chains": [
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "3hzm",
+"types": "CV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"sabdab"
+]
+},
+{
+"pdb": "6eh4",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4udt",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4ww1",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2bnu",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686",
+"stcrdab"
+]
+},
+{
+"pdb": "2nw2",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1oga",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [
+"5"
+],
+"src": [
+"PF07654",
+"stcrdab"
+]
+},
+{
+"pdb": "6at6",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1kgc",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7qpj",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6fun",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4ei6",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7s8i",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4dzb",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6cph",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5tez",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6mra",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6dfv",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5m02",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"G",
+"H"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6ovn",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6pud",
+"types": "CGV",
+"chains": [
+"C",
+"D",
+"E",
+"F"
+],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"stcrdab"
+]
+},
+{
+"pdb": "6vtc",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7n4k",
+"types": "CGV",
+"chains": [
+"A",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2q86",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7n1c",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3qjh",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5d7k",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4g9f",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2ial",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4ms8",
+"types": "CGV",
+"chains": [
+"A",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5c0c",
+"types": "CGV",
+"chains": [
+"D",
+"E",
+"F",
+"G"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7su9",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5ksa",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [
+"2"
+],
+"src": [
+"PF00969",
+"stcrdab"
+]
+},
+{
+"pdb": "3mff",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1lp9",
+"types": "CGV",
+"chains": [
+"H",
+"I",
+"L",
+"M"
+],
+"entities": [
+"5"
+],
+"src": [
+"PF07686",
+"stcrdab"
+]
+},
+{
+"pdb": "6cuh",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6dfx",
+"types": "CGV",
+"chains": [
+"D",
+"E",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5yxn",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5isz",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5nmd",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6lir",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4zdh",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5wlg",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7q9a",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7rrg",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8wte",
+"types": "CGV",
+"chains": [
+"C",
+"D",
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7ea6",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7nme",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8cx4",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"F"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3rug",
+"types": "CGV",
+"chains": [
+"C",
+"D",
+"G",
+"H"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4may",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3rev",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2z35",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2eys",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2cdf",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7dzm",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6v1a",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8eo8",
+"types": "CGV",
+"chains": [
+"P",
+"Q",
+"S",
+"T"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6r2l",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3qi9",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4jrx",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6fr7",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7n1d",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6xc9",
+"types": "CGV",
+"chains": [
+"F",
+"H",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8trl",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2ypl",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8vd0",
+"types": "CGV",
+"chains": [
+"A",
+"C",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6vm8",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6c61",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5jhd",
+"types": "CGV",
+"chains": [
+"F",
+"G",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6vrn",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6ovo",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4y19",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1kb5",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [
+"4"
+],
+"src": [
+"PF07654",
+"stcrdab"
+]
+},
+{
+"pdb": "3vxm",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1fo0",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"H",
+"L"
+],
+"entities": [
+"5"
+],
+"src": [
+"PF07686",
+"stcrdab"
+]
+},
+{
+"pdb": "8d5q",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7rk7",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3o4l",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7ndq",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6rpa",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4en3",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3qeq",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6avg",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6dfq",
+"types": "CGV",
+"chains": [
+"G",
+"H"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4e41",
+"types": "CGV",
+"chains": [
+"F",
+"G",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2esv",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8gon",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5swz",
+"types": "CGV",
+"chains": [
+"F",
+"G",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7z50",
+"types": "CGV",
+"chains": [
+"C",
+"D",
+"F",
+"G"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4z7v",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"G",
+"H"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6xqq",
+"types": "CGV",
+"chains": [
+"A",
+"B"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8trq",
+"types": "CGV",
+"chains": [
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6vma",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "1zgl",
+"types": "CGV",
+"chains": [
+"J",
+"K",
+"U",
+"V"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7t2b",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6u3n",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3ffc",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4jry",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3o6f",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3he7",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "3gsn",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"H",
+"L"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8sgb",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7byd",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6py2",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4z7w",
+"types": "CGV",
+"chains": [
+"C",
+"D",
+"E",
+"F"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6xco",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4c56",
+"types": "CGV",
+"chains": [
+"G",
+"H",
+"J",
+"K"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "5wkf",
+"types": "CGV",
+"chains": [
+"F",
+"G",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6c09",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4mji",
+"types": "CGV",
+"chains": [
+"F",
+"G",
+"I",
+"J"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "2wbj",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6tro",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7sg0",
+"types": "CGV",
+"chains": [
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6mtm",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7ryl",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "8dfw",
+"types": "CGV",
+"chains": [
+"D",
+"G"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4lfh",
+"types": "CGV",
+"chains": [
+"D",
+"G"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7ryn",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "6d7g",
+"types": "CGV",
+"chains": [
+"D",
+"E"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "4lhu",
+"types": "CGV",
+"chains": [
+"A",
+"B",
+"D",
+"G"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "7ryo",
+"types": "CGV",
+"chains": [
+"C",
+"D"
+],
+"entities": [],
+"src": [
+"stcrdab"
+]
+},
+{
+"pdb": "12hp",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1a14",
+"types": "CV",
+"chains": [],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1a6p",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1a7o",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1a7q",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1ac6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1b0w",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1bd2",
+"types": "CGV",
+"chains": [],
+"entities": [
+"4",
+"5"
+],
+"src": [
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1bfv",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1bww",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1cd0",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1eaj",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1eeq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1egj",
+"types": "CGV",
+"chains": [],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1ejo",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1ek3",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1ezv",
+"types": "CV",
+"chains": [],
+"entities": [
+"10",
+"11"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1f58",
+"types": "CGV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1f6l",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1f97",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"PF13927"
+]
+},
+{
+"pdb": "1hkf",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1hnf",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790",
+"PF07686"
+]
+},
+{
+"pdb": "1j1o",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1jfq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1mcp",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1nbq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686",
+"PF13927"
+]
+},
+{
+"pdb": "1neu",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1nez",
+"types": "CGV",
+"chains": [],
+"entities": [
+"1",
+"3"
+],
+"src": [
+"PF00129",
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1ngz",
+"types": "CGV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1nko",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1oaq",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1ohq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1ots",
+"types": "CGV",
+"chains": [],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF07654",
+"PF07686"
+]
+},
+{
+"pdb": "1p4b",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1pew",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1pko",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1pz5",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1qfo",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1sm3",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1smo",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1tvd",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1u3h",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1u9k",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1uyw",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1uz6",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1uz8",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1wt5",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1wtl",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1xed",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1z9m",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2aep",
+"types": "CV",
+"chains": [],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2apb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2aq3",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2atp",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2cd0",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2dlf",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2dqu",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2dru",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790",
+"PF07686"
+]
+},
+{
+"pdb": "2f58",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2fb4",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2fbj",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2g2r",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2g5b",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2hp4",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2if7",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2ij0",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2ipt",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2jju",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2jjv",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2jjw",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2nms",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2o5x",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2oi9",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2or7",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2or8",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2orb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2pet",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2pnd",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2ptt",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2q20",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2q87",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2qsq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2r29",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2vl5",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2yz1",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "2zg1",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "3bi9",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "3bj9",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "3bp6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "3bt2",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "3cdy",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07686"
+]
+},
+{
+"pdb": "1a0q",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1a3l",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1a4j",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1a6z",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1ae6",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ahw",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ai1",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1aif",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1aqk",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1bec",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1bfo",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1bm3",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1c12",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1c5d",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1cf8",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1cic",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2",
+"4"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ck0",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1cl7",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1cly",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1clz",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ct8",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1d5i",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1dbb",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1dfb",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1dn0",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1dqq",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1e4w",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1e4x",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1e6j",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ehl",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1emt",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1etz",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1f11",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fbi",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fdl",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fe8",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fj1",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1flr",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fn4",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fne",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00993",
+"PF07654"
+]
+},
+{
+"pdb": "1fpt",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1frg",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1fv1",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969",
+"PF07654"
+]
+},
+{
+"pdb": "1ggb",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1gpo",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1hdm",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00969",
+"PF00993",
+"PF07654"
+]
+},
+{
+"pdb": "1hez",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1hi6",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1hzh",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1i1c",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1i3r",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969",
+"PF07654"
+]
+},
+{
+"pdb": "1i7z",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1iak",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00969",
+"PF00993",
+"PF07654"
+]
+},
+{
+"pdb": "1igt",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1it9",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1j8h",
+"types": "CG",
+"chains": [],
+"entities": [
+"5"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1jn6",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1jrh",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1jvk",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1k5n",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1k8d",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1kcr",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1kcu",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1kjm",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1kjv",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ktk",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1l6x",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1lil",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1lk2",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1lo0",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1mf2",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1mh5",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1mim",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1mlc",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1mnu",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1n0x",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1n7m",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1nca",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ndg",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1nfd",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1ob1",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1osp",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1p2c",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1pg7",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"4"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1plg",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1psk",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1qfu",
+"types": "CG",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1r0a",
+"types": "CG",
+"chains": [],
+"entities": [
+"6"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1r3j",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1r5v",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF00969",
+"PF07654"
+]
+},
+{
+"pdb": "1rhh",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1rih",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1s5i",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1s7q",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1sy6",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1t3f",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1t4k",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1t7v",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129",
+"PF07654"
+]
+},
+{
+"pdb": "1u6a",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07654"
+]
+},
+{
+"pdb": "1uvq",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00993",
+"PF07654"
+]
+},
+{
+"pdb": "1im9",
+"types": "CV",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "1m4k",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "1n26",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "1nkr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "1olz",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "2c9a",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "2o26",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "3ejj",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "3h8n",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "3mjg",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047",
+"PF13927"
+]
+},
+{
+"pdb": "3p2t",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047",
+"PF13895"
+]
+},
+{
+"pdb": "3p3y",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047",
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "3s35",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "3wyr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "4liq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "4lla",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "4pbv",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "4w4o",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047",
+"PF13895",
+"PF13927"
+]
+},
+{
+"pdb": "4zne",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047",
+"PF13895"
+]
+},
+{
+"pdb": "5vi4",
+"types": "CV",
+"chains": [],
+"entities": [
+"2",
+"3"
+],
+"src": [
+"PF00047",
+"PF13895",
+"PF13927"
+]
+},
+{
+"pdb": "5y32",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "6tyb",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047",
+"PF05790"
+]
+},
+{
+"pdb": "6ue9",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "7aw6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "7kfk",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "8w90",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047",
+"PF05790"
+]
+},
+{
+"pdb": "8y81",
+"types": "CV",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "8yot",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "9d97",
+"types": "CV",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "9fmb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00047"
+]
+},
+{
+"pdb": "1cs6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "1ev2",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "1f2q",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895",
+"PF13927"
+]
+},
+{
+"pdb": "21ir",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "21nx",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895",
+"PF13927"
+]
+},
+{
+"pdb": "2jll",
+"types": "CFV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041",
+"PF13927"
+]
+},
+{
+"pdb": "2v5r",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "2v9t",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "2wv3",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "2yd1",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "2yd3",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "2yd4",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "3k0w",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3kld",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "3mtr",
+"types": "CFV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041",
+"PF13927"
+]
+},
+{
+"pdb": "3ojm",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3qr2",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3rjd",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3s97",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3so5",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "3u83",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4p2y",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4rca",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4u7m",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "4wvr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x5l",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x83",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x9b",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x9f",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x9h",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4x9i",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "4xhq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5e4i",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5e5u",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5eo9",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5i99",
+"types": "CFV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041",
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5k6z",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5lfr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5noi",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5ou7",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895",
+"PF13927"
+]
+},
+{
+"pdb": "5uv6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5v5w",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5vkj",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5vxz",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5xnq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5xpw",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "5xwx",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5xx0",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13927"
+]
+},
+{
+"pdb": "5zo1",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "6a77",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "6eg0",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "6eg1",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "6lyn",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF13927"
+]
+},
+{
+"pdb": "1fnl",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "1ugn",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "21nz",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "2d3v",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "2otp",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "2oz4",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3bfo",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3jz7",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3kgr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3laf",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679",
+"PF13895"
+]
+},
+{
+"pdb": "3nvq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3q2c",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "3ry4",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "4esk",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "4gaf",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "4hwn",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "5eiq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "5yc5",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "6mjo",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "6zdx",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "7o52",
+"types": "CV",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "7r58",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "8edi",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "8grx",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF13895"
+]
+},
+{
+"pdb": "1epf",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "1fhg",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "1u2h",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "1vca",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790",
+"PF07679"
+]
+},
+{
+"pdb": "1wwb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "1wwc",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2a38",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2bk8",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2id5",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2iep",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2j8h",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2v9r",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2xot",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2xy1",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2xy2",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2yd6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2yxm",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "2yz8",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3caf",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3cx2",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3knb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3lcy",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3puc",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3pxh",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3rbs",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "3uto",
+"types": "CFV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041",
+"PF07679"
+]
+},
+{
+"pdb": "3zyi",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4c4k",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4cbp",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4edq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4of6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4of8",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "4v2a",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5aea",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5jdd",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5jdj",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5joe",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5oyj",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "5w59",
+"types": "CV",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6c6m",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6f2o",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6h4l",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6j6y",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6nrq",
+"types": "CV",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6nrx",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6ool",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6s9f",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6sdb",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "6zr7",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "7lbf",
+"types": "CV",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "7lu6",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "8a1f",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "8bxr",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF07679"
+]
+},
+{
+"pdb": "1ccz",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790"
+]
+},
+{
+"pdb": "1cid",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790"
+]
+},
+{
+"pdb": "1hng",
+"types": "CV",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF05790"
+]
+},
+{
+"pdb": "1kcg",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "1zt1",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "2wy3",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3d25",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3d2u",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3fru",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3kyo",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3mre",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3vj6",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "3wl9",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "4iiq",
+"types": "CG",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "4lcy",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "4o2c",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5gsb",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5iue",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5j6h",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5n1y",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5vge",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5weu",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5xos",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "5ymw",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6j2a",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6joz",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6l9k",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6m2j",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6mt6",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6qio",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "6wzy",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7cpo",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7fi9",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7lfk",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7p4b",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7tuc",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "7um2",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "8bp6",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "8e2z",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "8hsw",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "8rop",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "8rwb",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00129"
+]
+},
+{
+"pdb": "2bc4",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00969",
+"PF00993"
+]
+},
+{
+"pdb": "2nna",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00993"
+]
+},
+{
+"pdb": "4p5m",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00969",
+"PF00993"
+]
+},
+{
+"pdb": "5ni9",
+"types": "CG",
+"chains": [],
+"entities": [
+"1",
+"2"
+],
+"src": [
+"PF00969",
+"PF00993"
+]
+},
+{
+"pdb": "6blq",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00993"
+]
+},
+{
+"pdb": "6u3m",
+"types": "CG",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00993"
+]
+},
+{
+"pdb": "2iad",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "2p24",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "2q6w",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "4x5w",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "5ksv",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "5v4m",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "6cpn",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "6xp6",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "6zwa",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "7kei",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "7z0q",
+"types": "CG",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "8vq8",
+"types": "CG",
+"chains": [],
+"entities": [
+"4"
+],
+"src": [
+"PF00969"
+]
+},
+{
+"pdb": "1axi",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1cfb",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1eer",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1f6f",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1qr4",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1tdq",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1ten",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2ck2",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2gee",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2haz",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2ic2",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2nzi",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2ocf",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2rb8",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "2rbl",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3fl7",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3l5i",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3lpw",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3n1f",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3n1m",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3p4l",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "3wih",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4bq6",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4je4",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4jeg",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4lsd",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4lxo",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4m4p",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4n5u",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4n68",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4plo",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4wtx",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "4yfe",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5dc0",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5dc4",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5e4s",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5e53",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5e55",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5e7l",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5fm8",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5fmv",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5fn8",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5j7c",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5kf4",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5n06",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5n48",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "5x83",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6brb",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6hyf",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6mfa",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6pok",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6x38",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6x39",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6x3a",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6xay",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "6ygn",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7e72",
+"types": "F",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7f7r",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7jgu",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7mqy",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7mrk",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7mrm",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7mro",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7opb",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7zcb",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "7zxk",
+"types": "F",
+"chains": [],
+"entities": [
+"2"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8a16",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8afo",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8bnq",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8bw6",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8c7m",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "8d7e",
+"types": "F",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00041"
+]
+},
+{
+"pdb": "1by2",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "2oya",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "2xrc",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "5hrj",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "5ze3",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "6h8m",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "6j02",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "6k0o",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "6sa5",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "7bzz",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "7c00",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "7dpx",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "8h7j",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "9h0m",
+"types": "S",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF00530"
+]
+},
+{
+"pdb": "6kd5",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF15494"
+]
+},
+{
+"pdb": "8s0l",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF15494"
+]
+},
+{
+"pdb": "8v04",
+"types": "S",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF15494"
+]
+},
+{
+"pdb": "8ziy",
+"types": "S",
+"chains": [],
+"entities": [
+"3"
+],
+"src": [
+"PF15494"
+]
+},
+{
+"pdb": "2qj4",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "3hmr",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "3hms",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "4dur",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "6i44",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "6i58",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+},
+{
+"pdb": "6stx",
+"types": "A",
+"chains": [],
+"entities": [
+"1"
+],
+"src": [
+"PF00024"
+]
+}
+]

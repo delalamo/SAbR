@@ -1,0 +1,234 @@
+domains 1954 {'V': 1099, 'C': 631, 'G': 173, 'S': 19, 'A': 5, 'F': 27}
+== family V: {'VH': 403, 'V-LIKE': 53, 'V-KAPPA': 307, 'V-LAMBDA': 85, 'V-ALPHA': 117, 'V-BETA': 122, 'V-DELTA': 6, 'V-GAMMA': 6}
+  class VH: 403 domains, 116 sites, 97 anchors
+  class V-LIKE: 53 domains, 96 sites, 78 anchors
+  class V-KAPPA: 307 domains, 113 sites, 92 anchors
+  class V-LAMBDA: 85 domains, 112 sites, 92 anchors
+  class V-ALPHA: 117 domains, 109 sites, 93 anchors
+  class V-BETA: 122 domains, 107 sites, 88 anchors
+  merge VH -> V: core 1.00 A/86; 86 shared anchors; 10 renamed; order violations 0
+    [('9', '11'), ('69', '70'), ('70', '71'), ('71', '72'), ('72', '72.1'), ('82', '84'), ('83', '84.1'), ('84', '84.2'), ('127', '128'), ('128', '129')]
+  merge V-BETA -> V: core 0.88 A/85; 85 shared anchors; 13 renamed; order violations 0
+    [('2', '3'), ('65', '56.1'), ('66', '65'), ('67', '66'), ('68', '67'), ('69', '71'), ('70', '72'), ('81', '80.1'), ('83', '81'), ('95', '96'), ('98', '97'), ('107', '106.1'), ('127', '128')]
+  merge V-ALPHA -> V: core 0.66 A/89; 89 shared anchors; 10 renamed; order violations 0
+    [('64', '56.2'), ('65', '56.3'), ('66', '56.4'), ('67', '72.1'), ('82', '84'), ('83', '84.1'), ('84', '84.2'), ('107', '106.1'), ('127', '128'), ('128', '130')]
+  merge V-LAMBDA -> V: core 0.69 A/89; 89 shared anchors; 9 renamed; order violations 0
+    [('7', '8'), ('8', '9'), ('9', '10'), ('83', '81'), ('84', '84.1'), ('107', '106.1'), ('108', '106.2'), ('115', '106.3'), ('116', '106.4')]
+  merge V-LIKE -> V: core 0.82 A/77; 77 shared anchors; 23 renamed; order violations 0
+    [('52', '50'), ('53', '51'), ('54', '52'), ('55', '53'), ('56', '54'), ('57', '55'), ('58', '56'), ('63', '65'), ('64', '66'), ('65', '67'), ('73', '74'), ('74', '75'), ('75', '76'), ('76', '77'), ('77', '78'), ('107', '106.1'), ('120', '121'), ('121', '122'), ('122', '123'), ('123', '124'), ('124', '125'), ('125', '126'), ('126', '127')]
+== family C: {'C-LIKE:MHC-I-a3': 54, 'C-LIKE:B2M': 16, 'C-KAPPA': 69, 'CH1': 175, 'C-LAMBDA': 44, 'C-ALPHA': 63, 'C-BETA': 42, 'C-LIKE:MHC-II': 39, 'C-LIKE:IgSF': 103, 'CH2': 10, 'CH3': 8, 'CH4': 3, 'C-DELTA': 2, 'C-GAMMA': 3}
+  class C-LIKE:MHC-I-a3: 54 domains, 92 sites, 90 anchors
+  class C-LIKE:B2M: 16 domains, 99 sites, 98 anchors
+  class C-KAPPA: 69 domains, 106 sites, 105 anchors
+  class CH1: 175 domains, 93 sites, 86 anchors
+  class C-LAMBDA: 44 domains, 105 sites, 101 anchors
+  class C-ALPHA: 63 domains, 89 sites, 83 anchors
+  class C-BETA: 42 domains, 129 sites, 129 anchors
+  class C-LIKE:MHC-II: 39 domains, 93 sites, 85 anchors
+  class C-LIKE:IgSF: 103 domains, 78 sites, 69 anchors
+  class CH2: 10 domains, 104 sites, 101 anchors
+  class CH3: 8 domains, 104 sites, 103 anchors
+  merge CH1 -> C: core 1.17 A/78; 78 shared anchors; 22 renamed; order violations 0
+    [('31', '33'), ('33', '34'), ('43', '42.1'), ('44', '48'), ('45', '48.1'), ('46', '75'), ('82', '81.1'), ('83', '82'), ('84', '83'), ('84.4', '84.5'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('95', '96'), ('96', '96.1'), ('98', '96.2'), ('99', '96.3'), ('100', '99'), ('114', '108.1'), ('115', '113'), ('121', '125')]
+  merge C-LIKE:IgSF -> C: core 1.31 A/57; 57 shared anchors; 44 renamed; order violations 0
+    [('0', '3'), ('1', '4'), ('3', '4.1'), ('11', '8.1'), ('12', '8.2'), ('13', '8.3'), ('14', '8.4'), ('15', '8.5'), ('16', '8.6'), ('27', '28'), ('31', '35'), ('34', '38'), ('35', '39'), ('38', '40'), ('39', '41'), ('40', '42'), ('41', '43'), ('42', '44'), ('86', '47'), ('87', '84.9'), ('88', '85'), ('89', '86'), ('90', '87'), ('91', '88'), ('92', '89'), ('93', '90'), ('94', '91'), ('95', '91.1'), ('96', '92'), ('96.1', '93'), ('97', '94'), ('98', '94.1'), ('99', '96.3'), ('114', '116'), ('115', '117'), ('116', '118'), ('117', '119'), ('118', '120'), ('119', '121'), ('120', '122'), ('121', '123'), ('122', '126'), ('123', '127'), ('124', '128')]
+  merge C-ALPHA -> C: core 1.61 A/43; 43 shared anchors; 80 renamed; order violations 0
+    [('-3', '-6'), ('-2', '-5'), ('-1', '-4'), ('0', '2'), ('1', '3'), ('2', '4'), ('3', '5'), ('4', '6'), ('5', '7'), ('6', '8'), ('7', '8.7'), ('8', '10'), ('10', '13'), ('11', '13.1'), ('17', '15'), ('20', '15.1'), ('21', '19'), ('22', '20'), ('23', '21'), ('24', '22'), ('25', '23'), ('26', '24'), ('27', '24.1'), ('28', '25'), ('29', '25.1'), ('30', '25.2'), ('39', '38.1'), ('40', '38.2'), ('41', '75'), ('42', '75.1'), ('43', '75.2'), ('44', '75.3'), ('45', '75.4'), ('77', '75.5'), ('78', '75.6'), ('79', '77'), ('80', '78'), ('81', '79'), ('82', '79.1'), ('83', '80'), ('84', '81'), ('84.1', '82'), ('84.2', '82.1'), ('84.3', '82.2'), ('84.4', '82.3'), ('84.5', '82.4'), ('84.6', '82.5'), ('84.7', '82.6'), ('84.8', '82.7'), ('84.9', '82.8'), ('84.10', '82.9'), ('84.11', '84.9'), ('84.12', '85'), ('84.13', '86'), ('85', '87'), ('86', '88'), ('87', '89'), ('88', '90'), ('89', '91'), ('90', '92'), ('91', '95'), ('92', '97'), ('101', '98'), ('102', '98.1'), ('103', '98.2'), ('104', '102'), ('105', '103'), ('106', '103.1'), ('107', '103.2'), ('108', '103.3'), ('109', '103.4'), ('110', '103.5'), ('113', '103.6'), ('114', '103.7'), ('115', '105'), ('116', '117'), ('118', '129'), ('119', '130'), ('120', '131'), ('121', '132')]
+  merge C-LIKE:MHC-I-a3 -> C: core 1.25 A/85; 85 shared anchors; 23 renamed; order violations 0
+    [('9', '8.7'), ('11', '10'), ('12', '13'), ('17', '13.2'), ('18', '15.1'), ('82', '81.1'), ('83', '82'), ('84', '83'), ('84.4', '84.5'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('91', '90.1'), ('92', '90.2'), ('93', '90.3'), ('97', '96.2'), ('98', '96.3'), ('99', '98.2'), ('100', '98.3'), ('112', '113'), ('113', '114'), ('121', '125')]
+  merge C-LAMBDA -> C: core 0.94 A/98; 98 shared anchors; 10 renamed; order violations 1
+    [('82', '81.1'), ('83', '81.2'), ('84.3', '84.10'), ('84.4', '84.5'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('114', '109.1'), ('115', '113')]
+  merge C-BETA -> C: core 1.23 A/97; 97 shared anchors; 49 renamed; order violations 5
+    [('-6', '-10'), ('-5', '-9'), ('-4', '-8'), ('-3', '-7'), ('15.1', '16'), ('16', '16.1'), ('82', '81.3'), ('83', '81.1'), ('84', '81.2'), ('84.1', '83'), ('84.2', '84.1'), ('84.3', '84.11'), ('84.4', '84.2'), ('84.5', '84.12'), ('84.6', '84.3'), ('84.7', '84.13'), ('84.8', '84.14'), ('84.9', '84.15'), ('84.10', '84.6'), ('84.11', '84.7'), ('84.12', '84.8'), ('84.13', '84.9'), ('95', '94.1'), ('96', '96.1'), ('96.1', '96.4'), ('97', '96.3'), ('98', '96.5'), ('99', '96.6'), ('100', '99'), ('110', '109.2'), ('111', '109.3'), ('111.1', '109.4'), ('111.2', '109.5'), ('111.3', '109.6'), ('111.4', '109.7'), ('111.5', '109.8'), ('111.6', '109.9'), ('111.7', '109.10'), ('111.8', '109.11'), ('111.9', '109.12'), ('111.10', '109.13'), ('111.11', '109.14'), ('111.12', '109.15'), ('112', '109.16'), ('113', '109.17'), ('114', '109.18'), ('115', '113'), ('124', '126'), ('125', '133')]
+  merge C-LIKE:MHC-II -> C: core 0.98 A/85; 85 shared anchors; 15 renamed; order violations 0
+    [('9', '8.7'), ('82', '81.1'), ('83', '81.2'), ('84', '83'), ('84.4', '84.5'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('91', '90.1'), ('92', '90.2'), ('93', '96.1'), ('94', '96.3'), ('98', '96.5'), ('99', '96.6')]
+  merge C-LIKE:B2M -> C: core 1.19 A/89; 89 shared anchors; 32 renamed; order violations 0
+    [('9', '8.7'), ('11', '10.1'), ('12', '10.2'), ('13', '10.3'), ('14', '10.4'), ('16', '10.5'), ('17', '13.2'), ('18', '15.1'), ('75', '48'), ('76', '75'), ('77', '76'), ('82', '81.1'), ('83', '82'), ('84', '83'), ('84.3', '84.4'), ('84.4', '84.5'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('91', '90.1'), ('92', '90.2'), ('93', '96.1'), ('94', '96.3'), ('95', '96.5'), ('99', '96.6'), ('100', '99'), ('121', '125'), ('122', '134'), ('123', '135'), ('124', '136'), ('125', '137')]
+  merge CH2 -> C: core 1.20 A/91; 91 shared anchors; 28 renamed; order violations 1
+    [('16', '15.2'), ('17', '16.1'), ('30', '29.1'), ('31', '29.2'), ('32', '30'), ('75', '48'), ('76', '75'), ('77', '76'), ('82', '81.1'), ('83', '82'), ('84', '83'), ('84.1', '83.1'), ('84.2', '83.2'), ('84.3', '83.3'), ('84.4', '83.4'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('91', '90.1'), ('95', '94.1'), ('96', '96.1'), ('97', '96.4'), ('98', '96.7'), ('99', '96.5'), ('100', '99'), ('124', '138'), ('125', '139')]
+  merge CH3 -> C: core 1.12 A/99; 99 shared anchors; 23 renamed; order violations 0
+    [('-3', '-11'), ('16', '16.1'), ('75', '48'), ('76', '75.1'), ('82', '81.1'), ('83', '81.2'), ('84', '83'), ('84.1', '83.1'), ('84.2', '83.2'), ('84.3', '83.3'), ('84.4', '83.4'), ('84.5', '84.6'), ('84.6', '84.7'), ('84.7', '84.8'), ('84.8', '84.9'), ('95', '94.1'), ('96', '96.1'), ('97', '96.4'), ('98', '96.7'), ('99', '96.8'), ('112', '113'), ('113', '113.1'), ('115', '114.1')]
+== family F: {'F:FN/TNC': 15, 'F:other': 12}
+  class F:FN/TNC: 15 domains, 87 sites, 86 anchors
+  class F:other: 12 domains, 67 sites, 65 anchors
+  merge F:other -> F: core 0.81 A/63; 63 shared anchors; 45 renamed; order violations 0
+    [('6', '7'), ('7', '8'), ('8', '9'), ('9', '10'), ('10', '12'), ('27', '26.1'), ('39', '34'), ('41', '38'), ('42', '39'), ('43', '40'), ('44', '41'), ('45', '42'), ('46', '43'), ('47', '44'), ('48', '45'), ('52', '79'), ('74', '80'), ('75', '81'), ('76', '82'), ('77', '83'), ('78', '84'), ('80', '84.1'), ('81', '86'), ('96', '95'), ('97', '99'), ('98', '100'), ('99', '101'), ('100', '102'), ('101', '103'), ('102', '104'), ('103', '105'), ('104', '106'), ('105', '107'), ('106', '108'), ('116', '119'), ('117', '120'), ('118', '121'), ('119', '122'), ('120', '123'), ('121', '123.1'), ('122', '124'), ('123', '125'), ('124', '126'), ('125', '127'), ('126', '128')]
+== family G: {'G-ALPHA2': 45, 'G-ALPHA1': 42, 'G-ALPHA': 20, 'G-BETA': 32, 'G-ALPHA2-LIKE': 19, 'G-ALPHA1-LIKE': 15}
+  class G-ALPHA2: 45 domains, 92 sites, 92 anchors
+  class G-ALPHA1: 42 domains, 90 sites, 90 anchors
+  class G-ALPHA: 20 domains, 85 sites, 85 anchors
+  class G-BETA: 32 domains, 93 sites, 90 anchors
+  class G-ALPHA2-LIKE: 19 domains, 86 sites, 79 anchors
+  class G-ALPHA1-LIKE: 15 domains, 68 sites, 63 anchors
+  merge G-ALPHA2 -> G: core 1.63 A/71; 71 shared anchors; 31 renamed; order violations 0
+    [('10', '9.1'), ('16', '15.1'), ('17', '15.2'), ('18', '15.3'), ('20', '19.1'), ('37', '36.1'), ('38', '37'), ('39', '40'), ('42', '43'), ('43', '43.1'), ('55', '54.1'), ('56', '54.2'), ('57', '56'), ('58', '59'), ('59', '59.1'), ('61', '60.1'), ('61.1', '60.2'), ('62', '61'), ('63', '62'), ('65', '64.1'), ('66', '65'), ('69', '68.1'), ('70', '69'), ('72', '71.1'), ('72.1', '72'), ('87', '91'), ('88', '92'), ('89', '93'), ('90', '94'), ('91', '95'), ('92', '96')]
+  merge G-BETA -> G: core 1.62 A/78; 78 shared anchors; 30 renamed; order violations 1
+    [('16', '15.4'), ('17', '15.2'), ('18', '15.3'), ('19', '19.1'), ('42', '40'), ('43', '43.1'), ('54', '53.1'), ('55', '54.1'), ('56', '54.2'), ('57', '54.3'), ('58', '59'), ('59', '59.1'), ('61', '60.1'), ('61.1', '60.2'), ('61.2', '60.3'), ('62', '60.4'), ('63', '62'), ('64', '62.1'), ('65', '64.1'), ('66', '64.2'), ('69', '68.1'), ('70', '71'), ('71', '71.1'), ('83', '84'), ('84', '85'), ('85', '85.1'), ('86', '85.2'), ('87', '85.3'), ('88', '92'), ('89', '97')]
+  merge G-ALPHA -> G: core 1.48 A/73; 73 shared anchors; 19 renamed; order violations 1
+    [('-1', '-2'), ('0', '-1'), ('1', '0'), ('7', '6.1'), ('7.1', '7'), ('19', '14.1'), ('37', '36.1'), ('39', '38.1'), ('43', '43.1'), ('59', '54.4'), ('60', '54.1'), ('61', '54.5'), ('62', '59.1'), ('63', '62'), ('88', '93'), ('89', '98'), ('90', '99'), ('91', '100'), ('92', '101')]
+  merge G-ALPHA2-LIKE -> G: core 1.34 A/78; 78 shared anchors; 42 renamed; order violations 1
+    [('10', '9.1'), ('37', '36.1'), ('39', '38.1'), ('43', '43.1'), ('54', '53.1'), ('55', '54.1'), ('56', '54.2'), ('57', '54.3'), ('58', '54.5'), ('59', '59.1'), ('61.1', '60.5'), ('61.2', '60.2'), ('62', '60.3'), ('63', '60.4'), ('64', '62'), ('65', '62.1'), ('66', '64.1'), ('67', '64.2'), ('68', '67'), ('69', '68'), ('70', '68.1'), ('71', '70'), ('72', '71'), ('72.1', '71.1'), ('73', '72'), ('74', '73'), ('75', '74'), ('76', '75'), ('77', '76'), ('78', '77'), ('79', '78'), ('80', '79'), ('81', '80'), ('82', '81'), ('83', '82'), ('84', '83'), ('85', '84'), ('86', '85'), ('87', '85.3'), ('88', '91'), ('89', '92'), ('90', '93')]
+  merge G-ALPHA1-LIKE -> G: core 0.88 A/63; 63 shared anchors; 30 renamed; order violations 0
+    [('42', '40'), ('48', '43'), ('49', '44'), ('50', '45'), ('50.1', '46'), ('50.2', '47'), ('50.3', '48'), ('62', '60'), ('63', '61'), ('64', '62'), ('65', '63'), ('66', '64'), ('67', '65'), ('68', '66'), ('69', '67'), ('70', '68'), ('71', '69'), ('72', '70'), ('73', '71'), ('74', '72'), ('75', '73'), ('76', '74'), ('77', '75'), ('78', '76'), ('79', '77'), ('80', '78'), ('81', '79'), ('82', '80'), ('83', '81'), ('88', '87')]
+== family S: {'S-DOMAIN': 19}
+  class S-DOMAIN: 19 domains, 97 sites, 92 anchors
+== family A: {'A-DOMAIN': 5}
+  class A-DOMAIN: 5 domains, 86 sites, 82 anchors
+  merge C -> Ig: core 0.80 A/26; 78 shared anchors; 160 renamed; order violations 2
+    [('-11', '-12'), ('-10', '-11'), ('-9', '-10'), ('-8', '-9'), ('-7', '-8'), ('-6', '-7'), ('-5', '-6'), ('-4', '-5'), ('-3', '-4'), ('-2', '-3'), ('-1', '-2'), ('0', '-1'), ('1', '0'), ('8.1', '11'), ('8.2', '12'), ('8.3', '13'), ('8.4', '14'), ('8.5', '15'), ('8.6', '16'), ('8.7', '16.1'), ('9', '16.2'), ('10', '16.3'), ('10.1', '16.4'), ('10.2', '16.5'), ('10.3', '16.6'), ('10.4', '16.7'), ('10.5', '16.8'), ('11', '16.9'), ('12', '16.10'), ('13', '16.11'), ('13.1', '16.12'), ('13.2', '16.13'), ('14', '16.14'), ('15', '16.15'), ('15.1', '16.16'), ('15.2', '16.17'), ('16', '16.18'), ('16.1', '16.19'), ('27', '26.1'), ('28', '26.2'), ('29', '26.3'), ('29.1', '26.4'), ('29.2', '26.5'), ('30', '26.6'), ('33', '26.7'), ('34', '26.8'), ('35', '26.9'), ('45', '50'), ('46', '51'), ('47', '52'), ('48', '53'), ('48.1', '53.1'), ('75', '53.2'), ('75.1', '54'), ('75.2', '68'), ('75.3', '71'), ('75.4', '72.1'), ('75.5', '75'), ('75.6', '76'), ('76', '76.1'), ('82', '84'), ('82.1', '84.1'), ('82.2', '84.3'), ('82.3', '84.4'), ('82.4', '84.5'), ('82.5', '84.6'), ('82.6', '84.7'), ('82.7', '84.8'), ('82.8', '84.9'), ('82.9', '84.10'), ('83', '84.11'), ('83.1', '84.12'), ('83.2', '84.13'), ('83.3', '84.14'), ('83.4', '84.15'), ('84', '84.16'), ('84.1', '84.17'), ('84.2', '84.18'), ('84.3', '84.19'), ('84.4', '84.20'), ('84.5', '84.21'), ('84.6', '84.22'), ('84.7', '84.23'), ('84.8', '84.24'), ('84.9', '84.25'), ('84.10', '84.26'), ('84.11', '84.27'), ('84.12', '84.28'), ('84.13', '84.29'), ('84.14', '84.30'), ('84.15', '84.31'), ('91.1', '92'), ('92', '93'), ('93', '93.1'), ('94', '95'), ('94.1', '98'), ('95', '98.1'), ('96', '98.2'), ('96.1', '98.3'), ('96.2', '98.4'), ('96.3', '99'), ('96.4', '99.1'), ('96.5', '99.2'), ('96.6', '99.3'), ('96.7', '99.4'), ('96.8', '99.5'), ('97', '99.6'), ('98', '99.7'), ('98.1', '99.8'), ('98.2', '99.9'), ('98.3', '99.10'), ('99', '99.11'), ('107', '106.1'), ('108', '106.2'), ('108.1', '106.5'), ('109', '106.6'), ('109.1', '106.7'), ('109.2', '106.8'), ('109.3', '106.9'), ('109.4', '106.10'), ('109.5', '106.11'), ('109.6', '106.12'), ('109.7', '106.13'), ('109.8', '106.14'), ('109.9', '106.15'), ('109.10', '106.16'), ('109.11', '106.17'), ('109.12', '106.18'), ('109.13', '106.19'), ('109.14', '106.20'), ('109.15', '106.21'), ('109.16', '106.22'), ('109.17', '106.23'), ('109.18', '106.24'), ('110', '106.25'), ('113', '106.3'), ('113.1', '106.26'), ('114', '106.27'), ('114.1', '106.28'), ('115', '106.29'), ('116', '106.4'), ('120', '121'), ('121', '121.1'), ('122', '121.2'), ('123', '121.3'), ('124', '121.4'), ('125', '122'), ('126', '125'), ('127', '126'), ('129', '131'), ('130', '132'), ('131', '133'), ('132', '134'), ('133', '135'), ('134', '136'), ('135', '137'), ('136', '138'), ('137', '139'), ('138', '140'), ('139', '141')]
+  merge F -> Ig: core 1.84 A/26; 59 shared anchors; 60 renamed; order violations 2
+    [('3', '2.1'), ('6', '5.1'), ('7', '6'), ('8', '7'), ('9', '7.1'), ('10', '16.1'), ('11', '16.11'), ('12', '16.14'), ('13', '16.16'), ('14', '16.20'), ('17', '16.21'), ('18', '16.22'), ('26', '25.3'), ('26.1', '26'), ('27', '26.1'), ('28', '26.2'), ('29', '26.10'), ('34', '26.9'), ('44', '43.1'), ('45', '43.2'), ('46', '43.3'), ('47', '46'), ('75', '46.1'), ('77', '46.2'), ('79', '46.3'), ('80', '46.4'), ('81', '53.1'), ('82', '54'), ('83', '55'), ('84', '56'), ('84.1', '56.5'), ('84.2', '56.6'), ('85', '83'), ('86', '83.1'), ('87', '86'), ('92', '91.1'), ('93', '91.2'), ('94', '98.1'), ('95', '98.5'), ('96', '98.6'), ('97', '98.7'), ('98', '99.4'), ('99', '99.5'), ('107', '106.1'), ('108', '106.30'), ('109', '106.31'), ('117', '106.32'), ('118', '106.33'), ('119', '106.4'), ('120', '117'), ('121', '117.1'), ('122', '118'), ('123', '119'), ('123.1', '120'), ('124', '121'), ('125', '121.1'), ('126', '121.2'), ('127', '124'), ('128', '125'), ('129', '126')]
+  letterize Ig: 293 anchors, 166 letter sub-sites, cycles broken 0, integer order conflicts 0
+  letterize G: 136 anchors, 32 letter sub-sites, cycles broken 0, integer order conflicts 0
+  letterize S: 92 anchors, 4 letter sub-sites, cycles broken 0, integer order conflicts 0
+  letterize A: 82 anchors, 0 letter sub-sites, cycles broken 0, integer order conflicts 0
+== Ig frame: 293 anchors, frame size 320
+domains with labels out of chain order: 0
+renumbered 1954 domains in 162s
+== evaluation Ig: ALL recall IMGT 0.696 new 0.718 | precision IMGT 0.597 new 0.740 | site-precision new 0.800
+            C-ALPHA x C-ALPHA          recall IMGT 0.942 new 0.976 | precision IMGT 0.886 new 0.985 | site-precision new 0.993
+            C-ALPHA x C-BETA           recall IMGT 0.657 new 0.077 | precision IMGT 0.389 new 0.103 | site-precision new 0.110
+            C-ALPHA x C-KAPPA          recall IMGT 0.311 new 0.426 | precision IMGT 0.190 new 0.483 | site-precision new 0.504
+            C-ALPHA x C-LAMBDA         recall IMGT 0.563 new 0.189 | precision IMGT 0.343 new 0.229 | site-precision new 0.247
+            C-ALPHA x C-LIKE:MHC-I-a3  recall IMGT 0.327 new 0.388 | precision IMGT 0.208 new 0.455 | site-precision new 0.478
+            C-ALPHA x CH1              recall IMGT 0.561 new 0.101 | precision IMGT 0.364 new 0.140 | site-precision new 0.148
+            C-ALPHA x V-ALPHA          recall IMGT 0.062 new 0.573 | precision IMGT 0.054 new 0.748 | site-precision new 0.844
+            C-ALPHA x V-BETA           recall IMGT 0.077 new 0.615 | precision IMGT 0.063 new 0.785 | site-precision new 0.871
+            C-ALPHA x V-KAPPA          recall IMGT 0.088 new 0.598 | precision IMGT 0.072 new 0.775 | site-precision new 0.841
+            C-ALPHA x VH               recall IMGT 0.076 new 0.495 | precision IMGT 0.067 new 0.711 | site-precision new 0.765
+             C-BETA x C-BETA           recall IMGT 0.976 new 0.992 | precision IMGT 0.961 new 0.997 | site-precision new 0.998
+             C-BETA x C-KAPPA          recall IMGT 0.940 new 0.947 | precision IMGT 0.816 new 0.979 | site-precision new 0.980
+             C-BETA x C-LAMBDA         recall IMGT 0.904 new 0.915 | precision IMGT 0.867 new 0.985 | site-precision new 0.990
+             C-BETA x C-LIKE:IgSF      recall IMGT 0.550 new 0.545 | precision IMGT 0.400 new 0.627 | site-precision new 0.671
+             C-BETA x C-LIKE:MHC-I-a3  recall IMGT 0.862 new 0.841 | precision IMGT 0.787 new 0.914 | site-precision new 0.934
+             C-BETA x C-LIKE:MHC-II    recall IMGT 0.899 new 0.886 | precision IMGT 0.837 new 0.956 | site-precision new 0.961
+             C-BETA x CH1              recall IMGT 0.748 new 0.870 | precision IMGT 0.696 new 0.988 | site-precision new 0.989
+             C-BETA x V-ALPHA          recall IMGT 0.211 new 0.221 | precision IMGT 0.200 new 0.302 | site-precision new 0.303
+             C-BETA x V-BETA           recall IMGT 0.122 new 0.118 | precision IMGT 0.111 new 0.151 | site-precision new 0.153
+             C-BETA x V-KAPPA          recall IMGT 0.143 new 0.144 | precision IMGT 0.127 new 0.178 | site-precision new 0.178
+             C-BETA x V-LAMBDA         recall IMGT 0.135 new 0.142 | precision IMGT 0.135 new 0.193 | site-precision new 0.195
+             C-BETA x V-LIKE           recall IMGT 0.419 new 0.409 | precision IMGT 0.358 new 0.548 | site-precision new 0.590
+             C-BETA x VH               recall IMGT 0.140 new 0.131 | precision IMGT 0.117 new 0.172 | site-precision new 0.173
+            C-KAPPA x C-KAPPA          recall IMGT 0.998 new 0.999 | precision IMGT 0.991 new 0.995 | site-precision new 0.996
+            C-KAPPA x C-LAMBDA         recall IMGT 0.974 new 0.985 | precision IMGT 0.918 new 0.986 | site-precision new 0.986
+            C-KAPPA x C-LIKE:IgSF      recall IMGT 0.674 new 0.678 | precision IMGT 0.493 new 0.784 | site-precision new 0.865
+            C-KAPPA x C-LIKE:MHC-I-a3  recall IMGT 0.924 new 0.913 | precision IMGT 0.804 new 0.942 | site-precision new 0.961
+            C-KAPPA x C-LIKE:MHC-II    recall IMGT 0.932 new 0.913 | precision IMGT 0.838 new 0.976 | site-precision new 0.984
+            C-KAPPA x CH1              recall IMGT 0.775 new 0.890 | precision IMGT 0.683 new 0.971 | site-precision new 0.973
+            C-KAPPA x V-ALPHA          recall IMGT 0.748 new 0.711 | precision IMGT 0.635 new 0.902 | site-precision new 0.911
+            C-KAPPA x V-BETA           recall IMGT 0.761 new 0.719 | precision IMGT 0.618 new 0.873 | site-precision new 0.884
+            C-KAPPA x V-KAPPA          recall IMGT 0.693 new 0.678 | precision IMGT 0.597 new 0.872 | site-precision new 0.874
+            C-KAPPA x V-LAMBDA         recall IMGT 0.770 new 0.769 | precision IMGT 0.629 new 0.907 | site-precision new 0.923
+            C-KAPPA x V-LIKE           recall IMGT 0.570 new 0.607 | precision IMGT 0.468 new 0.767 | site-precision new 0.824
+            C-KAPPA x VH               recall IMGT 0.625 new 0.606 | precision IMGT 0.507 new 0.741 | site-precision new 0.750
+           C-LAMBDA x C-LAMBDA         recall IMGT 0.990 new 0.998 | precision IMGT 0.979 new 0.992 | site-precision new 1.000
+           C-LAMBDA x C-LIKE:IgSF      recall IMGT 0.656 new 0.665 | precision IMGT 0.492 new 0.762 | site-precision new 0.832
+           C-LAMBDA x C-LIKE:MHC-I-a3  recall IMGT 0.930 new 0.857 | precision IMGT 0.818 new 0.924 | site-precision new 0.944
+           C-LAMBDA x C-LIKE:MHC-II    recall IMGT 0.963 new 0.893 | precision IMGT 0.858 new 0.966 | site-precision new 0.971
+           C-LAMBDA x CH1              recall IMGT 0.763 new 0.875 | precision IMGT 0.709 new 0.966 | site-precision new 0.969
+           C-LAMBDA x V-ALPHA          recall IMGT 0.737 new 0.736 | precision IMGT 0.617 new 0.895 | site-precision new 0.924
+           C-LAMBDA x V-BETA           recall IMGT 0.758 new 0.751 | precision IMGT 0.619 new 0.883 | site-precision new 0.918
+           C-LAMBDA x V-KAPPA          recall IMGT 0.760 new 0.731 | precision IMGT 0.633 new 0.905 | site-precision new 0.933
+           C-LAMBDA x V-LAMBDA         recall IMGT 0.745 new 0.775 | precision IMGT 0.609 new 0.873 | site-precision new 0.909
+           C-LAMBDA x V-LIKE           recall IMGT 0.623 new 0.645 | precision IMGT 0.489 new 0.776 | site-precision new 0.853
+           C-LAMBDA x VH               recall IMGT 0.482 new 0.466 | precision IMGT 0.381 new 0.546 | site-precision new 0.566
+         C-LIKE:B2M x CH1              recall IMGT 0.733 new 0.877 | precision IMGT 0.654 new 0.979 | site-precision new 0.982
+         C-LIKE:B2M x V-ALPHA          recall IMGT 0.344 new 0.333 | precision IMGT 0.334 new 0.521 | site-precision new 0.525
+         C-LIKE:B2M x V-BETA           recall IMGT 0.291 new 0.280 | precision IMGT 0.275 new 0.414 | site-precision new 0.417
+         C-LIKE:B2M x V-KAPPA          recall IMGT 0.119 new 0.146 | precision IMGT 0.186 new 0.308 | site-precision new 0.306
+         C-LIKE:B2M x VH               recall IMGT 0.302 new 0.292 | precision IMGT 0.254 new 0.412 | site-precision new 0.415
+        C-LIKE:IgSF x C-LIKE:IgSF      recall IMGT 0.650 new 0.843 | precision IMGT 0.540 new 0.784 | site-precision new 0.927
+        C-LIKE:IgSF x C-LIKE:MHC-I-a3  recall IMGT 0.452 new 0.417 | precision IMGT 0.363 new 0.523 | site-precision new 0.595
+        C-LIKE:IgSF x C-LIKE:MHC-II    recall IMGT 0.577 new 0.527 | precision IMGT 0.459 new 0.608 | site-precision new 0.700
+        C-LIKE:IgSF x CH1              recall IMGT 0.316 new 0.310 | precision IMGT 0.259 new 0.385 | site-precision new 0.438
+        C-LIKE:IgSF x V-ALPHA          recall IMGT 0.619 new 0.733 | precision IMGT 0.567 new 0.758 | site-precision new 0.929
+        C-LIKE:IgSF x V-BETA           recall IMGT 0.629 new 0.740 | precision IMGT 0.586 new 0.770 | site-precision new 0.933
+        C-LIKE:IgSF x V-KAPPA          recall IMGT 0.640 new 0.724 | precision IMGT 0.606 new 0.779 | site-precision new 0.944
+        C-LIKE:IgSF x V-LAMBDA         recall IMGT 0.604 new 0.733 | precision IMGT 0.566 new 0.773 | site-precision new 0.915
+        C-LIKE:IgSF x V-LIKE           recall IMGT 0.622 new 0.724 | precision IMGT 0.556 new 0.742 | site-precision new 0.926
+        C-LIKE:IgSF x VH               recall IMGT 0.588 new 0.713 | precision IMGT 0.525 new 0.742 | site-precision new 0.911
+    C-LIKE:MHC-I-a3 x C-LIKE:MHC-II    recall IMGT 0.984 new 0.917 | precision IMGT 0.917 new 0.977 | site-precision new 0.991
+    C-LIKE:MHC-I-a3 x CH1              recall IMGT 0.769 new 0.862 | precision IMGT 0.697 new 0.946 | site-precision new 0.973
+    C-LIKE:MHC-I-a3 x V-ALPHA          recall IMGT 0.112 new 0.124 | precision IMGT 0.118 new 0.179 | site-precision new 0.187
+    C-LIKE:MHC-I-a3 x V-BETA           recall IMGT 0.027 new 0.026 | precision IMGT 0.043 new 0.045 | site-precision new 0.045
+    C-LIKE:MHC-I-a3 x V-KAPPA          recall IMGT 0.115 new 0.124 | precision IMGT 0.128 new 0.179 | site-precision new 0.188
+    C-LIKE:MHC-I-a3 x V-LAMBDA         recall IMGT 0.154 new 0.159 | precision IMGT 0.163 new 0.221 | site-precision new 0.235
+    C-LIKE:MHC-I-a3 x V-LIKE           recall IMGT 0.200 new 0.187 | precision IMGT 0.197 new 0.263 | site-precision new 0.298
+    C-LIKE:MHC-I-a3 x VH               recall IMGT 0.141 new 0.156 | precision IMGT 0.129 new 0.197 | site-precision new 0.209
+      C-LIKE:MHC-II x CH1              recall IMGT 0.766 new 0.835 | precision IMGT 0.711 new 0.969 | site-precision new 0.986
+      C-LIKE:MHC-II x V-ALPHA          recall IMGT 0.195 new 0.203 | precision IMGT 0.216 new 0.275 | site-precision new 0.304
+      C-LIKE:MHC-II x V-BETA           recall IMGT 0.079 new 0.079 | precision IMGT 0.102 new 0.114 | site-precision new 0.125
+      C-LIKE:MHC-II x V-KAPPA          recall IMGT 0.212 new 0.206 | precision IMGT 0.218 new 0.261 | site-precision new 0.283
+      C-LIKE:MHC-II x V-LAMBDA         recall IMGT 0.348 new 0.351 | precision IMGT 0.303 new 0.366 | site-precision new 0.401
+      C-LIKE:MHC-II x V-LIKE           recall IMGT 0.336 new 0.353 | precision IMGT 0.331 new 0.443 | site-precision new 0.536
+      C-LIKE:MHC-II x VH               recall IMGT 0.313 new 0.317 | precision IMGT 0.271 new 0.359 | site-precision new 0.388
+                CH1 x CH1              recall IMGT 0.690 new 0.991 | precision IMGT 0.701 new 0.975 | site-precision new 0.994
+                CH1 x CH2              recall IMGT 0.703 new 0.831 | precision IMGT 0.610 new 0.922 | site-precision new 0.966
+                CH1 x F:FN/TNC         recall IMGT 0.014 new 0.000 | precision IMGT 0.011 new 0.000 | site-precision new 0.000
+                CH1 x F:other          recall IMGT 0.128 new 0.040 | precision IMGT 0.096 new 0.061 | site-precision new 0.062
+                CH1 x V-ALPHA          recall IMGT 0.189 new 0.223 | precision IMGT 0.179 new 0.278 | site-precision new 0.299
+                CH1 x V-BETA           recall IMGT 0.076 new 0.087 | precision IMGT 0.080 new 0.116 | site-precision new 0.124
+                CH1 x V-KAPPA          recall IMGT 0.078 new 0.073 | precision IMGT 0.080 new 0.098 | site-precision new 0.101
+                CH1 x V-LAMBDA         recall IMGT 0.144 new 0.171 | precision IMGT 0.140 new 0.205 | site-precision new 0.220
+                CH1 x V-LIKE           recall IMGT 0.178 new 0.184 | precision IMGT 0.171 new 0.252 | site-precision new 0.280
+                CH1 x VH               recall IMGT 0.161 new 0.175 | precision IMGT 0.149 new 0.221 | site-precision new 0.234
+                CH2 x V-KAPPA          recall IMGT 0.663 new 0.641 | precision IMGT 0.534 new 0.792 | site-precision new 0.829
+                CH2 x VH               recall IMGT 0.421 new 0.428 | precision IMGT 0.338 new 0.528 | site-precision new 0.565
+                CH3 x V-KAPPA          recall IMGT 0.371 new 0.391 | precision IMGT 0.359 new 0.518 | site-precision new 0.526
+                CH3 x VH               recall IMGT 0.534 new 0.554 | precision IMGT 0.421 new 0.646 | site-precision new 0.664
+           F:FN/TNC x V-ALPHA          recall IMGT 0.628 new 0.620 | precision IMGT 0.451 new 0.873 | site-precision new 0.951
+           F:FN/TNC x V-BETA           recall IMGT 0.611 new 0.593 | precision IMGT 0.455 new 0.879 | site-precision new 0.941
+           F:FN/TNC x V-KAPPA          recall IMGT 0.601 new 0.567 | precision IMGT 0.482 new 0.855 | site-precision new 0.949
+           F:FN/TNC x VH               recall IMGT 0.614 new 0.602 | precision IMGT 0.469 new 0.874 | site-precision new 0.978
+            F:other x V-KAPPA          recall IMGT 0.526 new 0.553 | precision IMGT 0.381 new 0.606 | site-precision new 0.861
+            F:other x VH               recall IMGT 0.460 new 0.516 | precision IMGT 0.339 new 0.595 | site-precision new 0.831
+            V-ALPHA x V-ALPHA          recall IMGT 0.966 new 0.967 | precision IMGT 0.901 new 0.926 | site-precision new 0.987
+            V-ALPHA x V-BETA           recall IMGT 0.954 new 0.928 | precision IMGT 0.843 new 0.905 | site-precision new 0.982
+            V-ALPHA x V-DELTA          recall IMGT 0.890 new 0.910 | precision IMGT 0.782 new 0.920 | site-precision new 0.979
+            V-ALPHA x V-KAPPA          recall IMGT 0.965 new 0.937 | precision IMGT 0.847 new 0.870 | site-precision new 0.988
+            V-ALPHA x V-LAMBDA         recall IMGT 0.939 new 0.918 | precision IMGT 0.819 new 0.870 | site-precision new 0.983
+            V-ALPHA x V-LIKE           recall IMGT 0.739 new 0.895 | precision IMGT 0.618 new 0.808 | site-precision new 0.964
+            V-ALPHA x VH               recall IMGT 0.942 new 0.932 | precision IMGT 0.807 new 0.855 | site-precision new 0.973
+             V-BETA x V-BETA           recall IMGT 0.963 new 0.960 | precision IMGT 0.897 new 0.939 | site-precision new 0.987
+             V-BETA x V-KAPPA          recall IMGT 0.948 new 0.930 | precision IMGT 0.844 new 0.875 | site-precision new 0.980
+             V-BETA x V-LAMBDA         recall IMGT 0.912 new 0.923 | precision IMGT 0.787 new 0.870 | site-precision new 0.969
+             V-BETA x V-LIKE           recall IMGT 0.714 new 0.883 | precision IMGT 0.596 new 0.800 | site-precision new 0.947
+             V-BETA x VH               recall IMGT 0.889 new 0.897 | precision IMGT 0.770 new 0.846 | site-precision new 0.950
+            V-DELTA x V-KAPPA          recall IMGT 0.918 new 0.939 | precision IMGT 0.764 new 0.903 | site-precision new 0.986
+            V-DELTA x VH               recall IMGT 0.918 new 0.916 | precision IMGT 0.809 new 0.915 | site-precision new 0.979
+            V-GAMMA x V-KAPPA          recall IMGT 0.969 new 0.923 | precision IMGT 0.841 new 0.944 | site-precision new 0.989
+            V-GAMMA x VH               recall IMGT 0.948 new 0.885 | precision IMGT 0.807 new 0.924 | site-precision new 0.970
+            V-KAPPA x V-KAPPA          recall IMGT 0.988 new 0.989 | precision IMGT 0.980 new 0.986 | site-precision new 0.998
+            V-KAPPA x V-LAMBDA         recall IMGT 0.959 new 0.935 | precision IMGT 0.881 new 0.909 | site-precision new 0.993
+            V-KAPPA x V-LIKE           recall IMGT 0.740 new 0.895 | precision IMGT 0.629 new 0.801 | site-precision new 0.955
+            V-KAPPA x VH               recall IMGT 0.930 new 0.926 | precision IMGT 0.813 new 0.859 | site-precision new 0.969
+           V-LAMBDA x V-LAMBDA         recall IMGT 0.976 new 0.977 | precision IMGT 0.918 new 0.940 | site-precision new 0.995
+           V-LAMBDA x V-LIKE           recall IMGT 0.716 new 0.903 | precision IMGT 0.610 new 0.827 | site-precision new 0.965
+           V-LAMBDA x VH               recall IMGT 0.957 new 0.916 | precision IMGT 0.817 new 0.873 | site-precision new 0.973
+             V-LIKE x VH               recall IMGT 0.702 new 0.870 | precision IMGT 0.583 new 0.795 | site-precision new 0.959
+                 VH x VH               recall IMGT 0.963 new 0.979 | precision IMGT 0.908 new 0.942 | site-precision new 0.994
+== evaluation G: ALL recall IMGT 0.906 new 0.877 | precision IMGT 0.753 new 0.902 | site-precision new 0.932
+            G-ALPHA x G-ALPHA          recall IMGT 0.946 new 0.991 | precision IMGT 0.889 new 0.985 | site-precision new 0.987
+            G-ALPHA x G-ALPHA1         recall IMGT 0.927 new 0.942 | precision IMGT 0.774 new 0.935 | site-precision new 0.946
+            G-ALPHA x G-ALPHA1-LIKE    recall IMGT 0.825 new 0.834 | precision IMGT 0.654 new 0.822 | site-precision new 0.910
+            G-ALPHA x G-ALPHA2         recall IMGT 0.881 new 0.857 | precision IMGT 0.721 new 0.894 | site-precision new 0.904
+            G-ALPHA x G-ALPHA2-LIKE    recall IMGT 0.862 new 0.858 | precision IMGT 0.689 new 0.861 | site-precision new 0.896
+            G-ALPHA x G-BETA           recall IMGT 0.891 new 0.825 | precision IMGT 0.675 new 0.841 | site-precision new 0.862
+           G-ALPHA1 x G-ALPHA1         recall IMGT 0.997 new 0.993 | precision IMGT 0.966 new 0.994 | site-precision new 0.994
+           G-ALPHA1 x G-ALPHA1-LIKE    recall IMGT 0.902 new 0.932 | precision IMGT 0.757 new 0.842 | site-precision new 0.970
+           G-ALPHA1 x G-ALPHA2         recall IMGT 0.923 new 0.876 | precision IMGT 0.720 new 0.933 | site-precision new 0.934
+           G-ALPHA1 x G-ALPHA2-LIKE    recall IMGT 0.857 new 0.832 | precision IMGT 0.658 new 0.870 | site-precision new 0.944
+           G-ALPHA1 x G-BETA           recall IMGT 0.955 new 0.882 | precision IMGT 0.699 new 0.927 | site-precision new 0.928
+      G-ALPHA1-LIKE x G-ALPHA2         recall IMGT 0.772 new 0.735 | precision IMGT 0.572 new 0.723 | site-precision new 0.801
+      G-ALPHA1-LIKE x G-ALPHA2-LIKE    recall IMGT 0.816 new 0.725 | precision IMGT 0.585 new 0.737 | site-precision new 0.882
+      G-ALPHA1-LIKE x G-BETA           recall IMGT 0.812 new 0.797 | precision IMGT 0.573 new 0.782 | site-precision new 0.842
+           G-ALPHA2 x G-ALPHA2         recall IMGT 0.979 new 0.995 | precision IMGT 0.966 new 0.997 | site-precision new 0.997
+           G-ALPHA2 x G-ALPHA2-LIKE    recall IMGT 0.872 new 0.829 | precision IMGT 0.777 new 0.895 | site-precision new 0.964
+           G-ALPHA2 x G-BETA           recall IMGT 0.923 new 0.792 | precision IMGT 0.805 new 0.901 | site-precision new 0.902
+      G-ALPHA2-LIKE x G-ALPHA2-LIKE    recall IMGT 0.823 new 0.930 | precision IMGT 0.731 new 0.890 | site-precision new 0.938
+      G-ALPHA2-LIKE x G-BETA           recall IMGT 0.835 new 0.810 | precision IMGT 0.734 new 0.860 | site-precision new 0.905
+             G-BETA x G-BETA           recall IMGT 0.917 new 0.985 | precision IMGT 0.911 new 0.992 | site-precision new 0.994
+== evaluation S: ALL recall IMGT 0.875 new 0.969 | precision IMGT 0.783 new 0.968 | site-precision new 0.976
+           S-DOMAIN x S-DOMAIN         recall IMGT 0.875 new 0.969 | precision IMGT 0.783 new 0.968 | site-precision new 0.976
+== evaluation A: ALL recall IMGT 0.955 new 0.982 | precision IMGT 0.903 new 0.957 | site-precision new 0.996
+done 337s
