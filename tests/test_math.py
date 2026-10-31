@@ -66,6 +66,10 @@ def test_scientific_assets_are_unchanged():
             "ba3565786a7d9d3e69f6a41796f3b40"
             "e361ec65ed33cb4b435019549f2b5abae"
         ),
+        "unified_reference.npz": (
+            "9f7958f426d0bd26e6094fc10da5f7a8"
+            "fc56ebbbf793cf6469344036753372a1"
+        ),
     }
     for filename, digest in expected.items():
         assert (

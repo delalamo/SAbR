@@ -114,7 +114,10 @@ def _write_structure(structure, path: Path) -> None:
     "--scheme",
     default="imgt",
     show_default=True,
-    type=click.Choice(constants.NUMBERING_SCHEMES, case_sensitive=False),
+    type=click.Choice(
+        constants.NUMBERING_SCHEMES + constants.UNIFIED_SCHEMES,
+        case_sensitive=False,
+    ),
 )
 @click.option(
     "-t",

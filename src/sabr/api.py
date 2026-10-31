@@ -8,6 +8,7 @@ from sabr.alignment import align, load_references
 from sabr.model import encode
 from sabr.numbering import number_alignment
 from sabr.structure import apply_numbering, extract_chain
+from sabr.unified import number_embeddings
 from sabr.unresolved import expand_loop_alignment, missing_between
 
 LOGGER = logging.getLogger(__name__)
@@ -110,7 +111,9 @@ class _RenumberOptions:
 
     def __post_init__(self) -> None:
         self.scheme = _normalize_choice(
-            self.scheme, "scheme", constants.NUMBERING_SCHEMES
+            self.scheme,
+            "scheme",
+            constants.NUMBERING_SCHEMES + constants.UNIFIED_SCHEMES,
         )
         self.noise_level = _normalize_noise_level(self.noise_level)
         self.mode = _normalize_choice(self.mode, "mode", constants.MODES)
@@ -129,6 +132,18 @@ class _RenumberOptions:
             )
         if not isinstance(self.scfv, bool):
             raise ValueError("scfv must be a boolean.")
+        if self.scheme in constants.UNIFIED_SCHEMES:
+            if self.chain_type != "auto" or self.scfv:
+                raise ValueError(
+                    "Unified numbering uses one reference for every "
+                    "immunoglobulin-fold domain; leave chain_type as 'auto' "
+                    "and scfv unset."
+                )
+            if self.mode != "sabr" or self.noise_level != 0.0:
+                raise ValueError(
+                    "Unified numbering requires mode='sabr' and "
+                    "noise_level=0.0."
+                )
         if self.scfv and self.chain_type != "auto":
             raise ValueError("scfv requires chain_type='auto'.")
         if self.scfv:
@@ -161,6 +176,11 @@ def renumber_structure(
     pass ``mmcif_dict=MMCIF2Dict(path)`` alongside a structure parsed with
     author chain/residue IDs (the MMCIFParser defaults). Explicit mmCIF data
     takes precedence over header records and must describe the input IDs.
+
+    ``scheme="unified"`` numbers every immunoglobulin-fold domain in the chain
+    (V, C1, C2/I-set or FN3) against one structure-consistent reference; see
+    ``sabr.unified`` for the label rules. It ignores chain types and uses the
+    SAbR encoder only.
     """
     options = _RenumberOptions(
         scheme=scheme,
@@ -172,6 +192,14 @@ def renumber_structure(
     )
     data = extract_chain(structure, chain, options.residue_range)
     embeddings = encode(data.coords, options.mode)
+    if options.scheme in constants.UNIFIED_SCHEMES:
+        numbered = [
+            (row, number, insertion, data.sequence[row])
+            for row, number, insertion in number_embeddings(
+                embeddings, data.gap_indices
+            )
+        ]
+        return apply_numbering(structure, chain, data, numbered)
     imgt_alignment, selected_type, score = align(
         embeddings,
         data.gap_indices,

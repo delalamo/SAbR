@@ -52,7 +52,7 @@ The complete interface is:
 
 ```text
 sabr -i INPUT -c CHAIN -o OUTPUT
-     [-n imgt|chothia|kabat|martin|aho|wolfguy]
+     [-n imgt|chothia|kabat|martin|aho|wolfguy|unified]
      [-t auto|TYPES]
      [--noise-level 0.0|0.2|0.5|1.0|2.0]
      [-m sabr|softalign]
@@ -83,6 +83,34 @@ IMGT, this gives domain ranges `1–128`, `1001–1128`, `2001–2128`, and so o
 Linker residues continue sequentially from the preceding domain's last number.
 Multi-domain references use the selected parameter mode, so either form can be
 combined with `--mode softalign`.
+
+### Unified immunoglobulin-fold numbering (experimental)
+
+`-n unified` numbers every immunoglobulin-fold domain in the chain (antibody
+and TCR V and C domains, MHC and β2m C-like domains, C2/I-set and FN3
+domains) against one structure-consistent reference instead of the H/K/L
+references, so `--chain-type`, `--scfv`, `--noise-level` and `--mode
+softalign` do not apply. Each reference row is a structural anchor of a single
+Ig frame; a number means the same place in the fold for every domain type.
+
+- Integers are sites shared across domain types (Cys23, Trp41, Cys104, ...).
+- A letter suffix (`8A`) is a site present only in some domain types or
+  classes, for example the C-domain A strand where V domains have none.
+- A decimal (`111.3`, written as insertion code `3`) is a loop insertion
+  attached to the preceding label; `8A.1` is written as residue 8, code `A1`.
+- Loop residues take the integers between their flanking anchors, filled from
+  both ends so gaps fall at the loop centre. N-terminal residues count down
+  from the first anchor (zero and negative numbers are possible).
+- Further domains in a chain are offset by 1000, 2000, and so on.
+
+The reference was trained on 1,727 structures numbered by the structure-based
+consensus described in `imgt_audit/PROPOSAL.md`. On held-out PDB entries it
+assigns the same anchors as that consensus with 96% precision and 90% recall,
+and 89.5% of residue labels agree exactly (antibody and TCR V domains
+90–97%, C1-set domains 85–95%, C2/I-set and FN3 domains about 60–66%).
+Whole-chain detection finds 97% of annotated domains. Chains from non-Ig
+folds are rejected at the domain level (about 1% of chains from folds absent
+from training produced a domain).
 
 Input and output may be PDB (`.pdb`) or mmCIF (`.cif` or `.mmcif`). When a
 requested PDB output needs multi-character insertion codes, SAbR warns and

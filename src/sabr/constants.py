@@ -36,6 +36,9 @@ SCFV_CHAIN_TYPES = ("HK", "HL", "KH", "LH")
 NOISE_LEVELS = (0.0, 0.2, 0.5, 1.0, 2.0)
 MODES = ("sabr", "softalign")
 NUMBERING_SCHEMES = ("imgt", "chothia", "kabat", "martin", "aho", "wolfguy")
+# Schemes produced by the single structure-consistent Ig-fold reference
+# rather than by ANARCI conversion of an H/K/L alignment.
+UNIFIED_SCHEMES = ("unified",)
 
 ##################
 # IMGT constants
