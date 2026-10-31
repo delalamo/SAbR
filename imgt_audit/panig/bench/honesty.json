@@ -1,0 +1,65 @@
+{
+ "M1 TM-align best template": {
+  "within": 0.9858949744004312,
+  "cross": 0.9645611709123815,
+  "n_within": 118752,
+  "n_cross": 95037,
+  "anchors_per_domain": 66.62130177514793
+ },
+ "M2 TM-align top-5 vote": {
+  "within": 0.9837938741513967,
+  "cross": 0.9641868777125351,
+  "n_within": 119461,
+  "n_cross": 97925,
+  "anchors_per_domain": 67.12721893491124
+ },
+ "M3 SAbR embedding (pan-trained)": {
+  "within": 0.989240427707332,
+  "cross": 0.9687936655798789,
+  "n_within": 104651,
+  "n_cross": 64410,
+  "anchors_per_domain": 60.866863905325445
+ },
+ "M4 consensus-frame match (TM init)": {
+  "within": 0.988174546070174,
+  "cross": 0.9682065245206923,
+  "n_within": 118135,
+  "n_cross": 97693,
+  "anchors_per_domain": 66.82544378698225
+ },
+ "M5a embedding seed + frame match": {
+  "within": 0.9882023375282458,
+  "cross": 0.9682869635561199,
+  "n_within": 118159,
+  "n_cross": 97657,
+  "anchors_per_domain": 66.7603550295858
+ },
+ "M5b fused structure+embedding DP": {
+  "within": 0.9885589342011594,
+  "cross": 0.970473273310438,
+  "n_within": 117996,
+  "n_cross": 96963,
+  "anchors_per_domain": 66.62426035502959
+ },
+ "M6 consensus-frame matcher v2 (new)": {
+  "within": 0.986746591800086,
+  "cross": 0.966081906966356,
+  "n_within": 118611,
+  "n_cross": 98502,
+  "anchors_per_domain": 66.99112426035504
+ },
+ "M7 adaptive consensus-frame matcher (new)": {
+  "within": 0.9881063156648113,
+  "cross": 0.9680872798594369,
+  "n_within": 118214,
+  "n_cross": 97892,
+  "anchors_per_domain": 66.84023668639053
+ },
+ "oracle (known class + prior core labels)": {
+  "within": 0.9885245207971903,
+  "cross": 0.9696854635948484,
+  "n_within": 118165,
+  "n_cross": 97445,
+  "anchors_per_domain": 66.6775147928994
+ }
+}

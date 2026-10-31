@@ -86,7 +86,7 @@ class Scheme:
         centre = (F[0] + F[-1]) / 2
         L, R = min(cands, key=lambda ap: abs((ap[0] + (ap[1] or ap[0])) / 2 - centre))
         left = [p for p in F if p <= L]
-        right = [p for p in F if R is not None and p >= R]
+        right = [p for p in F if (p >= R if R is not None else p > L)]
         e = k - len(left) - len(right)
         n_right = (e + 1) // 2 if R is not None else 0
         n_left = e - n_right

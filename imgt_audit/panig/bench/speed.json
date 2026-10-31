@@ -1,0 +1,11 @@
+{
+ "MPNN encode (shared by M3/M5/M6)": 165.98927000086405,
+ "M1 TM-align best template": 1693.1302950006284,
+ "M3 SAbR embedding (pan-trained)": 23.99165200040443,
+ "M4 consensus-frame match (TM init)": 257.32900999992125,
+ "M5a embedding seed + frame match (match only)": 67.02479900013714,
+ "M5b fused DP (match only)": 65.61245400007465,
+ "M7 adaptive consensus-frame matcher": 263.4725050002089,
+ "M2 TM-align top-5 vote": 1766.6911800006346,
+ "single TM-align (reference)": 17.842018000010285
+}
