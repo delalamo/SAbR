@@ -42,11 +42,11 @@ Full-label agreement with the oracle (all residues, after the fill):
 
 | Method | Agreement |
 |---|---|
-| M1 | FULL_M1 |
-| M2 | FULL_M2 |
-| M3 | FULL_M3 |
-| M4 | FULL_M4 |
-| M7 | FULL_M7 |
+| M1 | 0.962 (C2/I 0.788, FN3 0.761) |
+| M2 | 0.967 (C2/I 0.845, FN3 0.746) |
+| M3 | 0.854 (C2/I 0.547, FN3 0.424) |
+| M4 | 0.987 (C2/I 0.914, FN3 0.781) |
+| M7 | 0.988 (C2/I 0.926, FN3 0.781) |
 
 **Caveat: the oracle shares a lineage with M4–M7.** The oracle was made by the same kind of frame matching, except that it knew the domain class and was initialised from prior core labels. So agreement with the oracle favours M4–M7. Two checks guard against this.
 

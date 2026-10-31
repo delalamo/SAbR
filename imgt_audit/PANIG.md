@@ -106,23 +106,23 @@ The dataset is 1,727 domains in 5 types. Precision means the fraction of same-nu
 
 | Measure | Pan-Ig | IMGT |
 |---|---|---|
-| Global pairwise P / R (TM-align, TM ≥ 0.5) | **0.686 / 0.754** | 0.595 / 0.694 |
-| Within-type P / R | **0.869 / 0.934** | 0.817 / 0.918 |
-| Cross-type P / R | **0.466 / 0.517** | 0.336 / 0.397 |
+| Global pairwise P / R (TM-align, TM ≥ 0.5) | **0.683 / 0.755** | 0.595 / 0.694 |
+| Within-type P / R | **0.868 / 0.934** | 0.817 / 0.918 |
+| Cross-type P / R | **0.462 / 0.516** | 0.336 / 0.397 |
 | Local test, anchor claims (within / cross) | **0.989 / 0.970** | n/a |
-| Local test, all residues (within / cross) | **0.880 / 0.739** | 0.835 / 0.512 |
+| Local test, all residues (within / cross) | **0.879 / 0.706** | 0.835 / 0.512 |
 | V labels identical to IMGT | 93.9% | 100% |
-| Insertion rate V / C1 / C2-I / FN3 | 1.9 / 25.6 / 11.3 / 23.4% | 0.7 / 18.1 / 12.2 / 5.1% |
+| Insertion rate V / C1 / C2-I / FN3 | 1.8 / 24.6 / 10.5 / 22.4% | 0.7 / 18.1 / 12.2 / 5.1% |
 
 **Type pairs** (P/R, pan-Ig vs IMGT):
 
 | Type pair | Pan-Ig | IMGT |
 |---|---|---|
-| C1~C1 | 0.798 / 0.849 | 0.681 / 0.778 |
-| C2/I~V | 0.783 / 0.869 | 0.563 / 0.611 |
-| FN3~V | 0.711 / 0.755 | 0.414 / 0.557 |
-| FN3~FN3 | 0.910 | 0.955 |
-| C1~FN3 | ~0.07 | ~0.07 |
+| C1~C1 | 0.797 / 0.849 | 0.681 / 0.778 |
+| C2/I~V | 0.780 / 0.871 | 0.563 / 0.611 |
+| FN3~V | 0.702 / 0.755 | 0.414 / 0.557 |
+| FN3~FN3 | 0.910 / 0.920 | 0.955 / 0.955 |
+| C1~FN3 | 0.071 / 0.066 | 0.073 / 0.090 |
 
 FN3~FN3 is slightly worse than IMGT: IMGT's FN3 ruler is internally consistent within FN3 but inconsistent with everything else. C1~FN3 is equally poor for both because those two folds superpose badly as wholes.
 
@@ -151,6 +151,8 @@ The absent anchors are absent structurally, not by failure. C1 domains have no C
 | γδ V | 12 | 81 (81) | 0.996 | 0.989 / 0.970 |
 
 The anchor set is stable when a class is removed (79–82 of 82 shared across five held-out classes). The local precision of every claim stays at 0.989 / 0.970. The 10–19% label differences come from using the pooled frame instead of a class frame, mostly in loops; the anchors themselves still match.
+
+**Fill-rule correction (applies to every number above).** The first version of the fill had a bug: when overflow landed on a single-number apex, any free numbers after that apex were dropped, for example CH1 `8, 8.1–8.8, 17` instead of `8, 8.1–8.7, 10, 17`. Anchor claims were unaffected; about 1% of positional labels in C1, C2/I and FN3 changed. All numbers in this section come from the corrected rule, except the leave-one-class-out table, which compares two labelings made under the original rule; its anchor comparisons are unaffected. One side effect: the all-residue cross-type local test fell from 0.739 to 0.706, because the old rule happened to keep fewer positional numbers.
 
 ## 5. What remains imperfect
 
