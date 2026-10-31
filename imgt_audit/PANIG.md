@@ -148,8 +148,9 @@ The absent anchors are absent structurally, not by failure. C1 domains have no C
 | FN3 | 25 | 81 (81) | 0.809 | 0.989 / 0.970 |
 | C2/I-set | 103 | 82 (81) | 0.901 | 0.989 / 0.969 |
 | V-like | 53 | 82 (79) | 0.891 | 0.989 / 0.970 |
+| γδ V | 12 | 81 (81) | 0.996 | 0.989 / 0.970 |
 
-The anchor set is stable when a class is removed (79–82 of 82 shared). The local precision of every claim stays at 0.989 / 0.970. The 10–19% label differences come from using the pooled frame instead of a class frame, mostly in loops; the anchors themselves still match.
+The anchor set is stable when a class is removed (79–82 of 82 shared across five held-out classes). The local precision of every claim stays at 0.989 / 0.970. The 10–19% label differences come from using the pooled frame instead of a class frame, mostly in loops; the anchors themselves still match.
 
 ## 5. What remains imperfect
 
