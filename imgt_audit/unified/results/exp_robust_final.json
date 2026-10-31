@@ -1,0 +1,51 @@
+{
+ "noise": {
+  "0.0": {
+   "n": 35818,
+   "gt_anchors": 30014,
+   "pred_anchors": 28072,
+   "anchor_tp": 26941,
+   "label_eq": 32014
+  },
+  "0.1": {
+   "n": 35818,
+   "gt_anchors": 30014,
+   "pred_anchors": 27420,
+   "anchor_tp": 26295,
+   "label_eq": 31635
+  },
+  "0.25": {
+   "n": 35818,
+   "gt_anchors": 30014,
+   "pred_anchors": 22631,
+   "anchor_tp": 21010,
+   "label_eq": 28733
+  },
+  "0.5": {
+   "n": 35818,
+   "gt_anchors": 30014,
+   "pred_anchors": 14222,
+   "anchor_tp": 8180,
+   "label_eq": 13622
+  },
+  "1.0": {
+   "n": 35818,
+   "gt_anchors": 30014,
+   "pred_anchors": 19596,
+   "anchor_tp": 2259,
+   "label_eq": 2918
+  }
+ },
+ "missing": {
+  "termini5": {
+   "gt_anchors": 26941,
+   "pred_anchors": 25440,
+   "anchor_tp": 24412
+  },
+  "loopgap": {
+   "gt_anchors": 30014,
+   "pred_anchors": 28059,
+   "anchor_tp": 26965
+  }
+ }
+}

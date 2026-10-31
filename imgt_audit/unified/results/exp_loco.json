@@ -1,0 +1,86 @@
+{
+ "C2/I-set IgSF": {
+  "held_out": {
+   "domains": 103,
+   "anchor_precision": 0.6738073807380738,
+   "anchor_recall": 0.6234177215189873,
+   "label_exact": 0.5731462925851704
+  },
+  "included": {
+   "domains": 23,
+   "anchor_precision": 0.7048917401764234,
+   "anchor_recall": 0.6574420344053852,
+   "label_exact": 0.604326923076923
+  }
+ },
+ "V-like": {
+  "held_out": {
+   "domains": 53,
+   "anchor_precision": 0.84598580010923,
+   "anchor_recall": 0.8285637871088526,
+   "label_exact": 0.7669920141969832
+  },
+  "included": {
+   "domains": 10,
+   "anchor_precision": 0.9145658263305322,
+   "anchor_recall": 0.8896457765667575,
+   "label_exact": 0.874880611270296
+  }
+ },
+ "FN3": {
+  "held_out": {
+   "domains": 25,
+   "anchor_precision": 0.5174603174603175,
+   "anchor_recall": 0.26794520547945205,
+   "label_exact": 0.2615963226076055
+  },
+  "included": {
+   "domains": 6,
+   "anchor_precision": 0.8817204301075269,
+   "anchor_recall": 0.7208791208791209,
+   "label_exact": 0.6691042047531993
+  }
+ },
+ "TRAC": {
+  "held_out": {
+   "domains": 60,
+   "anchor_precision": 0.34585987261146495,
+   "anchor_recall": 0.11947194719471947,
+   "label_exact": 0.16209628275441804
+  },
+  "included": {
+   "domains": 10,
+   "anchor_precision": 0.9850074962518741,
+   "anchor_recall": 0.8622047244094488,
+   "label_exact": 0.855036855036855
+  }
+ },
+ "gamma-delta V": {
+  "held_out": {
+   "domains": 12,
+   "anchor_precision": 0.9676025917926566,
+   "anchor_recall": 0.8265682656826568,
+   "label_exact": 0.8355654761904762
+  },
+  "included": {
+   "domains": 3,
+   "anchor_precision": 0.9651162790697675,
+   "anchor_recall": 0.9087591240875912,
+   "label_exact": 0.8567164179104477
+  }
+ },
+ "MHC-II a2/b2": {
+  "held_out": {
+   "domains": 39,
+   "anchor_precision": 0.9106776180698152,
+   "anchor_recall": 0.8271681691016475,
+   "label_exact": 0.8071697022260769
+  },
+  "included": {
+   "domains": 7,
+   "anchor_precision": 0.9628942486085343,
+   "anchor_recall": 0.9089316987740805,
+   "label_exact": 0.8979933110367893
+  }
+ }
+}

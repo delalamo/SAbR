@@ -171,18 +171,31 @@ def compare(d, pred_sites, pred_labels):
 
 
 # ------------------------------------------------------------------ discriminative reference
-def training_matrix(doms, cache, names, balance=True):
+def aug_emb(d):
+    p = f"{W}/emb_aug/{d['pdb']}_{d['chain']}.npz"
+    if not os.path.exists(p):
+        return None
+    a, b = d["rows"]
+    return np.load(p)["emb"][a:b]
+
+
+def training_matrix(doms, cache, names, balance=True, augment=False):
     idx = {a: k for k, a in enumerate(names)}
     X, y, w = [], [], []
     ncls = Counter()
     for d in doms:
         ncls[d["cls"]] += len(d["target"])
     for d in doms:
-        E = dom_emb(d, cache)
-        wt = (1.0 / ncls[d["cls"]]) if balance else 1.0
-        for j in range(len(E)):
-            a = d["gt_sites"].get(j)
-            X.append(E[j]); y.append(idx.get(a, len(names)) if a is not None else len(names)); w.append(wt)
+        copies = [dom_emb(d, cache)]
+        if augment:
+            Ea = aug_emb(d)
+            if Ea is not None:
+                copies.append(Ea)
+        wt = ((1.0 / ncls[d["cls"]]) if balance else 1.0) / len(copies)
+        for E in copies:
+            for j in range(len(E)):
+                a = d["gt_sites"].get(j)
+                X.append(E[j]); y.append(idx.get(a, len(names)) if a is not None else len(names)); w.append(wt)
     X = np.array(X, np.float64); y = np.array(y); w = np.array(w)
     return X, y, w / w.mean()
 
@@ -191,7 +204,8 @@ def load_negatives(pattern="/tmp/sabr_unified/neg/*.npz"):
     return [np.load(p)["emb"] for p in sorted(glob.glob(pattern))]
 
 
-def train_profile(doms, cache, anchors, l2=1e-3, min_count=5, balance=True, maxiter=400, negatives=None, neg_weight=4.0):
+def train_profile(doms, cache, anchors, l2=1e-3, min_count=5, balance=True, maxiter=400, negatives=None, neg_weight=4.0,
+                  augment=False):
     """Softmax regression over anchor sites + a loop class; reference = w_site - w_loop (log-odds).
 
     negatives: list of [n, 64] embeddings of non-Ig residues, labelled with the loop/background class;
@@ -200,7 +214,7 @@ def train_profile(doms, cache, anchors, l2=1e-3, min_count=5, balance=True, maxi
     from scipy.special import logsumexp
     cnt = Counter(a for d in doms for a in d["gt_sites"].values())
     names = [a for a in anchors if cnt[a] >= min_count]
-    X, y, w = training_matrix(doms, cache, names, balance)
+    X, y, w = training_matrix(doms, cache, names, balance, augment)
     if negatives:
         N = np.concatenate(negatives).astype(np.float64)
         n_cls = len({d["cls"] for d in doms})
