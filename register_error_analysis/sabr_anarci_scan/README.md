@@ -123,12 +123,12 @@ unpublished 4.6%.
 
 ## SAbR issues found during this scan
 
-Fixes were submitted as separate pull requests:
+Fixes were submitted as separate pull requests ([#247](https://github.com/delalamo/SAbR/pull/247), [#248](https://github.com/delalamo/SAbR/pull/248)):
 1. **Selections too short to number** (1–4 residues; e.g. a V-region range on a chain whose V domain
    is unmodelled, such as 8TGZ M, 8TXQ E, 8U9Y M/N, 5KOV Q). These crashed with an internal
-   `TypeError` or a NumPy reduction `ValueError` instead of a clear error.
+   `TypeError` or a NumPy reduction `ValueError` instead of a clear error (#247).
 2. **Biopython `Structure` objects built in code have no `header` attribute.** `renumber_structure`
-   raised `AttributeError`.
+   raised `AttributeError` (#248).
 
 ## Files
 
