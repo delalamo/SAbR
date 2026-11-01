@@ -66,6 +66,6 @@ NOTES = {
 for c in ("CH1", "C-KAPPA", "C-LAMBDA", "CH2", "CH3", "C-BETA", "C-LIKE:MHC-I-a3", "C-LIKE:MHC-II", "C-LIKE:B2M"):
     NOTES[c] = dict(status="ok", points=C1)
 html = open("/tmp/pan/viz/template.html").read()
-html = html.replace("__DATA__", json.dumps(D, separators=(",", ":"))).replace("__NOTES__", json.dumps(NOTES))
+html = html.replace("__DATA__", json.dumps(D, separators=(",", ":"))).replace("__NOTES__", json.dumps(NOTES)).replace("__STRUCT__", open("/tmp/pan/viz/structures.json").read())
 open("/home/user/SAbR/imgt_audit/panig/imgt_vs_panig.html", "w").write(html)
 print(len(html))

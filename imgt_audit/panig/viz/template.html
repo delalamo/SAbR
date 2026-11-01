@@ -90,6 +90,30 @@ ul.notes { margin: 0; padding-left: 18px; display: grid; gap: 6px; max-width: 75
 code { font-family: var(--mono); font-size: 0.92em; }
 .tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font: 12px/1.4 var(--mono); padding: 6px 8px; border-radius: 6px; max-width: 280px; z-index: 10; display: none; white-space: pre-line; }
 .foot { color: var(--muted); font-size: 13px; }
+
+.viewer-grid { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 16px; }
+@media (max-width: 860px) { .viewer-grid { grid-template-columns: 1fr; } }
+.controls { display: grid; gap: 14px; align-content: start; font-size: 13.5px; }
+.controls fieldset { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px 10px; margin: 0; display: grid; gap: 6px; }
+.controls legend { font: 600 12px var(--display); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 0 4px; }
+.controls label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; }
+.seg button { font: 500 13px var(--body); border: 0; background: var(--panel); color: var(--ink); padding: 5px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg button:focus-visible { outline: 2px solid var(--sheet-front); outline-offset: -2px; }
+.domlist { max-height: 300px; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+.domlist label { justify-content: space-between; padding: 2px 4px; border-radius: 4px; }
+.domlist label:hover { background: var(--fill); }
+.domlist .tm { font: 11.5px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.domlist .grp { font: 600 11px var(--display); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 6px; }
+#viewer { position: relative; width: 100%; height: 560px; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--panel); }
+#viewer-msg { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 14px; pointer-events: none; }
+.vbar { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13px; color: var(--muted); }
+.gradient { width: 220px; height: 10px; border-radius: 3px; display: inline-block; }
+.mark-row { display: flex; gap: 6px; align-items: center; }
+.mark-row input { width: 78px; font: 13px var(--mono); padding: 4px 6px; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); color: var(--ink); }
+.mark-row button, .small-btn { font: 500 12.5px var(--body); border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+#mark-out { font: 12px/1.45 var(--mono); color: var(--muted); white-space: pre-line; }
 @media (prefers-reduced-motion: no-preference) { .chip { transition: background 0.12s, color 0.12s; } }
 </style>
 </head>
@@ -105,6 +129,36 @@ code { font-family: var(--mono); font-size: 0.92em; }
     <div class="legend" id="legend"></div>
   </section>
 
+
+  <section class="panel" aria-label="3D comparison">
+    <div class="panel-head"><h2>Superposed structures, coloured by number</h2><p>Domains only, all superposed onto the VH structure by sequence-independent TM-align. Same colour means the same number: where a scheme is structurally consistent, same-coloured residues overlap.</p></div>
+    <div class="viewer-grid">
+      <div class="controls">
+        <fieldset><legend>Numbering scheme</legend>
+          <div class="seg" id="scheme-seg"><button id="sch-pan" aria-pressed="true">pan-Ig</button><button id="sch-imgt" aria-pressed="false">IMGT</button></div>
+        </fieldset>
+        <fieldset><legend>Colour by</legend>
+          <label><input type="radio" name="cmode" id="cm-num" value="num" checked> Frame number (1 → 128)</label>
+          <label><input type="radio" name="cmode" id="cm-str" value="str"> Strand the number falls in</label>
+          <label><input type="radio" name="cmode" id="cm-kind" value="kind"> Anchor / fill / insertion (pan-Ig)</label>
+          <label><input type="radio" name="cmode" id="cm-diff" value="diff"> Number differs from IMGT</label>
+          <label><input type="checkbox" id="fade-fill"> Fade non-anchor residues</label>
+        </fieldset>
+        <fieldset><legend>Mark one number in every shown domain</legend>
+          <div class="mark-row"><input id="mark-in" type="text" value="23" aria-label="Number to mark"><button id="mark-btn">Mark</button><button id="mark-clear">Clear</button></div>
+          <div id="mark-out"></div>
+        </fieldset>
+        <fieldset><legend>Domains shown <span style="text-transform:none;letter-spacing:0">(TM-score to VH)</span></legend>
+          <div style="display:flex; gap:6px"><button class="small-btn" id="dom-none">Hide all</button><button class="small-btn" id="dom-v">All V</button><button class="small-btn" id="dom-c">All C1</button></div>
+          <div class="domlist" id="domlist"></div>
+        </fieldset>
+      </div>
+      <div style="display:grid; gap:8px; align-content:start; min-width:0">
+        <div id="viewer"><div id="viewer-msg">Loading the 3D viewer…</div></div>
+        <div class="vbar" id="vbar"></div>
+      </div>
+    </div>
+  </section>
   <div class="grid2">
     <section class="panel">
       <div class="panel-head"><h2 id="topo-title">Where the strands sit</h2><p>Observed β-strands (from backbone H-bonds) placed on the two sheets</p></div>
@@ -177,8 +231,10 @@ code { font-family: var(--mono); font-size: 0.92em; }
   <p class="foot">Data: 1,727 Ig-fold domains from the PDB, IMGT labels from IMGT/DomainGapAlign, pan-Ig labels from the 82-anchor scheme (see <code>imgt_audit/PANIG.md</code> on branch <code>imgt-structural-audit</code>). β-strands and sheets come from a Kabsch–Sander H-bond calculation on each representative structure.</p>
 </main>
 <div class="tip" id="tip"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
 <script>
 const DATA = __DATA__;
+const STRUCT = __STRUCT__;
 const NOTES = __NOTES__;
 
 const STRANDS = [
@@ -231,6 +287,7 @@ function select(k) {
   document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.id === "chip-" + k ? "true" : "false"));
   try { history.replaceState(null, "", "#" + DATA.domains[k].cls.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase()); } catch (e) {}
   render();
+  if (typeof V !== "undefined" && !V.shown.has(DATA.domains[k].cls)) { V.shown.add(DATA.domains[k].cls); syncDomList(); styleAll(); zoomShown(); }
 }
 
 // ---------------------------------------------------------------- tooltip
@@ -422,9 +479,129 @@ function render() {
   const d = DATA.domains[cur];
   renderTopo(d); renderStrip(d); renderSummary(d); renderFrame();
 }
+
+// ---------------------------------------------------------------- 3D viewer
+const V = {viewer: null, models: {}, shown: new Set(["VH", "C-LIKE:IgSF"]), scheme: "pan", mode: "num", fade: false, mark: "23"};
+function turbo(t) {
+  t = Math.max(0, Math.min(1, t));
+  const r = 0.13572138 + t * (4.61539260 + t * (-42.66032258 + t * (132.13108234 + t * (-152.94239396 + t * 59.28637943))));
+  const g = 0.09140261 + t * (2.19418839 + t * (4.84296658 + t * (-14.18503333 + t * (4.27729857 + t * 2.82956604))));
+  const b = 0.10667330 + t * (12.64194608 + t * (-60.58204836 + t * (110.36276771 + t * (-89.90310912 + t * 27.34824973))));
+  const c = v => Math.round(255 * Math.max(0, Math.min(1, v)));
+  return (c(r) << 16) | (c(g) << 8) | c(b);
+}
+const hexInt = h => parseInt(h.replace("#", ""), 16);
+const GREY = 0x9aa3a0, LOOPC = 0xb9b0cf;
+function resOf(cls, resi) { const d = DATA.domains.find(x => x.cls === cls); return d ? d.residues[resi - 1] : null; }
+function colorFor(cls, atom) {
+  const r = resOf(cls, atom.resi); if (!r) return GREY;
+  const lab = V.scheme === "pan" ? r.pan : r.imgt, n = num(lab);
+  let col;
+  if (V.mode === "num") col = (n == null || n > 128) ? GREY : turbo((n - 1) / 127);
+  else if (V.mode === "str") { const s = strandOf(lab); col = s ? hexInt(COLORS[s]) : (isCdr(lab) ? LOOPC : GREY); }
+  else if (V.mode === "kind") col = r.kind === "a" ? 0x1f6f9f : r.kind === "i" ? 0xea580c : 0xc9cfcc;
+  else col = r.imgt !== r.pan ? 0xea580c : 0xc9cfcc;
+  if (V.fade && r.kind !== "a") col = mix(col, hexInt(cssVar("--panel") || "#ffffff"), 0.72);
+  return col;
+}
+function mix(a, b, f) {
+  const ch = (x, s) => (x >> s) & 255, m = s => Math.round(ch(a, s) * (1 - f) + ch(b, s) * f);
+  return (m(16) << 16) | (m(8) << 8) | m(0);
+}
+function styleAll() {
+  if (!V.viewer) return;
+  for (const [cls, m] of Object.entries(V.models)) {
+    if (V.shown.has(cls)) m.setStyle({}, {cartoon: {colorfunc: a => colorFor(cls, a), thickness: 0.5, opacity: 1}});
+    else m.setStyle({}, {});
+  }
+  drawMark(); V.viewer.render(); drawVbar();
+}
+function drawMark() {
+  const v = V.viewer; v.removeAllLabels(); v.removeAllShapes();
+  const out = document.getElementById("mark-out");
+  if (!V.mark) { out.textContent = ""; return; }
+  const pts = [], lines = [];
+  for (const cls of V.shown) {
+    const d = DATA.domains.find(x => x.cls === cls), m = V.models[cls]; if (!d || !m) continue;
+    const k = d.residues.findIndex(r => (V.scheme === "pan" ? r.pan : r.imgt) === V.mark);
+    if (k < 0) { lines.push(`${d.name}: no residue numbered ${V.mark}`); continue; }
+    const at = m.selectedAtoms({resi: k + 1, atom: "CA"})[0]; if (!at) continue;
+    const r = d.residues[k];
+    v.addSphere({center: {x: at.x, y: at.y, z: at.z}, radius: 1.1, color: "#111111", opacity: 0.85});
+    v.addLabel(`${d.name}: ${r.aa}`, {position: {x: at.x, y: at.y, z: at.z}, fontSize: 11, backgroundColor: "#111111", backgroundOpacity: 0.75, fontColor: "#ffffff", inFront: true});
+    pts.push([at.x, at.y, at.z, d.name]);
+    lines.push(`${d.name}: ${r.aa} (IMGT ${r.imgt}, pan ${r.pan}${r.kind === "a" ? ", anchor" : ""})`);
+  }
+  let spread = "";
+  if (pts.length > 1) {
+    let mx = 0; for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) mx = Math.max(mx, Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1], pts[i][2] - pts[j][2]));
+    spread = `\nLargest Cα–Cα distance between them: ${mx.toFixed(1)} Å (global superposition; under ~3 Å = same place)`;
+  }
+  out.textContent = `${V.scheme === "pan" ? "pan-Ig" : "IMGT"} ${V.mark}:\n` + lines.join("\n") + spread;
+}
+function drawVbar() {
+  const el = document.getElementById("vbar");
+  let stops = []; for (let i = 0; i <= 10; i++) stops.push("#" + turbo(i / 10).toString(16).padStart(6, "0") + ` ${i * 10}%`);
+  const sch = V.scheme === "pan" ? "pan-Ig" : "IMGT";
+  const parts = {
+    num: `<span>${sch} number</span><span>1</span><i class="gradient" style="background:linear-gradient(90deg,${stops.join(",")})"></i><span>128</span><span>grey = beyond 128 / unnumbered · insertions take their root number's colour</span>`,
+    str: STRANDS.map(s => `<span><i class="sw" style="background:${COLORS[s.n]}"></i>${pretty(s.n)}</span>`).join("") + `<span><i class="sw" style="background:#b9b0cf"></i>CDR-equivalent loop</span><span><i class="sw" style="background:#9aa3a0"></i>other loop</span><span>(strand by ${sch} number)</span>`,
+    kind: `<span><i class="sw" style="background:#1f6f9f"></i>anchor (structural claim)</span><span><i class="sw" style="background:#c9cfcc"></i>positional fill</span><span><i class="sw" style="background:#ea580c"></i>insertion</span>`,
+    diff: `<span><i class="sw" style="background:#ea580c"></i>pan-Ig number differs from IMGT</span><span><i class="sw" style="background:#c9cfcc"></i>same</span>`};
+  el.innerHTML = parts[V.mode] + `<span style="flex-basis:100%">Drag to rotate, scroll to zoom, hover a residue for its numbers.</span>`;
+}
+function buildDomList() {
+  const el = document.getElementById("domlist"); el.innerHTML = "";
+  let last = null;
+  DATA.domains.forEach(d => {
+    if (d.type !== last) { last = d.type; const g = document.createElement("div"); g.className = "grp"; g.textContent = d.type; el.appendChild(g); }
+    const lab = document.createElement("label"), id = "show-" + d.cls.replace(/[^A-Za-z0-9]+/g, "-");
+    lab.innerHTML = `<span style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="${id}"> ${esc(d.name)}</span><span class="tm">${STRUCT[d.cls] ? STRUCT[d.cls].tm.toFixed(2) : "–"}</span>`;
+    const cb = lab.querySelector("input"); cb.checked = V.shown.has(d.cls);
+    cb.onchange = () => { cb.checked ? V.shown.add(d.cls) : V.shown.delete(d.cls); styleAll(); zoomShown(); };
+    el.appendChild(lab);
+  });
+}
+function syncDomList() { DATA.domains.forEach(d => { const cb = document.getElementById("show-" + d.cls.replace(/[^A-Za-z0-9]+/g, "-")); if (cb) cb.checked = V.shown.has(d.cls); }); }
+function zoomShown() { if (V.viewer && !V.zoomed) { V.viewer.zoomTo(); V.viewer.zoom(1.15); V.viewer.render(); V.zoomed = true; } }  // all domains share one superposed frame
+function initViewer() {
+  buildDomList(); drawVbar();
+  const msg = document.getElementById("viewer-msg");
+  if (typeof $3Dmol === "undefined") { msg.textContent = "The 3D viewer library could not load; the rest of the page still works."; return; }
+  msg.remove();
+  const v = V.viewer = $3Dmol.createViewer(document.getElementById("viewer"), {backgroundColor: cssVar("--panel") || "white", antialias: true});
+  for (const d of DATA.domains) {
+    if (!STRUCT[d.cls]) continue;
+    const m = v.addModel(STRUCT[d.cls].pdb, "pdb"); V.models[d.cls] = m;
+  }
+  v.setHoverable({}, true, (atom, viewer) => {
+    if (atom.hoverLabel) return;
+    const cls = Object.keys(V.models).find(c => V.models[c] === atom.model || V.models[c].getID() === atom.model);
+    const d = DATA.domains.find(x => x.cls === cls), r = d && d.residues[atom.resi - 1]; if (!r) return;
+    atom.hoverLabel = viewer.addLabel(`${d.name} · ${r.aa}  IMGT ${r.imgt} · pan ${r.pan}${r.kind === "a" ? " (anchor)" : ""}`, {position: atom, fontSize: 11, backgroundColor: "#1c2321", backgroundOpacity: 0.85, fontColor: "#ffffff", inFront: true});
+  }, (atom, viewer) => { if (atom.hoverLabel) { viewer.removeLabel(atom.hoverLabel); delete atom.hoverLabel; } });
+  styleAll(); zoomShown();
+}
+function bindViewerControls() {
+  const setScheme = s => { V.scheme = s; document.getElementById("sch-pan").setAttribute("aria-pressed", s === "pan"); document.getElementById("sch-imgt").setAttribute("aria-pressed", s === "imgt"); styleAll(); };
+  document.getElementById("sch-pan").onclick = () => setScheme("pan");
+  document.getElementById("sch-imgt").onclick = () => setScheme("imgt");
+  document.querySelectorAll('input[name="cmode"]').forEach(r => r.onchange = () => { V.mode = r.value; styleAll(); });
+  document.getElementById("fade-fill").onchange = e => { V.fade = e.target.checked; styleAll(); };
+  const doMark = () => { V.mark = document.getElementById("mark-in").value.trim(); if (V.viewer) { drawMark(); V.viewer.render(); } };
+  document.getElementById("mark-btn").onclick = doMark;
+  document.getElementById("mark-in").onkeydown = e => { if (e.key === "Enter") doMark(); };
+  document.getElementById("mark-clear").onclick = () => { V.mark = ""; document.getElementById("mark-in").value = ""; if (V.viewer) { drawMark(); V.viewer.render(); } };
+  document.getElementById("dom-none").onclick = () => { V.shown.clear(); syncDomList(); styleAll(); };
+  document.getElementById("dom-v").onclick = () => { V.shown = new Set(DATA.domains.filter(d => d.type === "V").map(d => d.cls)); syncDomList(); styleAll(); zoomShown(); };
+  document.getElementById("dom-c").onclick = () => { V.shown = new Set(DATA.domains.filter(d => d.type === "C1" && d.cls !== "C-ALPHA").map(d => d.cls)); syncDomList(); styleAll(); zoomShown(); };
+}
+
 buildPicker();
 ["topo", "strip", "frame"].forEach(id => bindTips(document.getElementById(id)));
 render();
+bindViewerControls();
+initViewer();
 window.addEventListener("hashchange", () => { const h = location.hash.slice(1); const k = DATA.domains.findIndex(d => d.cls.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase() === h); if (k >= 0 && k !== cur) select(k); });
 </script>
 </body>
