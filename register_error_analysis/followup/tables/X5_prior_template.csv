@@ -1,0 +1,9 @@
+role,prior_hires,domains,flagged,pct
+Antibody alone,0.0,555,2,0.36
+Antibody alone,1.0,135,0,0.0
+Antibody of interest,0.0,3715,73,1.97
+Antibody of interest,1.0,1197,7,0.58
+Auxiliary,0.0,643,14,2.18
+Auxiliary,1.0,497,4,0.8
+Unclear,0.0,270,3,1.11
+Unclear,1.0,69,7,10.14

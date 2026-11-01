@@ -1,0 +1,13 @@
+tier,cls,domains,entries,flag_pct,lo,hi,pct_EM
+CNS,Antibody C,756,182,0.79,0.18,1.78,30.2
+CNS,Antibody V,1563,396,1.73,1.07,2.59,60.3
+CNS,Non-antibody,50461,2580,4.21,3.7,4.79,64.9
+CNS sister journal,Antibody C,1257,301,0.32,0.0,0.75,20.4
+CNS sister journal,Antibody V,2690,646,2.04,1.25,2.77,54.0
+CNS sister journal,Non-antibody,73929,4944,4.03,3.51,4.69,65.3
+Other journal,Antibody C,1796,413,0.84,0.22,1.71,19.2
+Other journal,Antibody V,2611,617,1.0,0.59,1.48,30.6
+Other journal,Non-antibody,99482,8756,3.66,3.33,3.94,37.5
+Unpublished,Antibody C,168,34,0.0,0.0,0.0,0.0
+Unpublished,Antibody V,249,52,0.8,0.0,2.17,18.1
+Unpublished,Non-antibody,7714,873,2.23,1.63,2.85,14.7

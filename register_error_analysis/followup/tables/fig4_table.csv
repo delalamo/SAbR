@@ -1,0 +1,5 @@
+prior,role,domains,flagged,pct,lo,hi
+No prior high-res structure of this antibody,Antibody of interest,3715,73,1.97,1.39,2.67
+No prior high-res structure of this antibody,Auxiliary,643,14,2.18,0.95,3.72
+Identical V region already in PDB at <3 Å,Antibody of interest,1197,7,0.58,0.08,1.36
+Identical V region already in PDB at <3 Å,Auxiliary,497,4,0.8,0.19,1.62

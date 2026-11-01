@@ -1,0 +1,6 @@
+,OR,lo,hi,p
+"C(cls, Treatment('Non-antibody'))[T.Antibody C]",0.625,0.244,1.6,0.327
+"C(cls, Treatment('Non-antibody'))[T.Antibody V]",1.173,0.7,1.966,0.546
+aux,1.481,0.811,2.707,0.202
+"C(cls, Treatment('Non-antibody'))[T.Antibody C]:aux",0.363,0.04,3.281,0.367
+"C(cls, Treatment('Non-antibody'))[T.Antibody V]:aux",0.66,0.288,1.509,0.324

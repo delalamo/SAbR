@@ -1,0 +1,13 @@
+,OR,lo,hi,p
+"C(comp_bin, Treatment('0'))[T.1–2]",1.276,1.102,1.478,0.001
+"C(comp_bin, Treatment('0'))[T.3–9]",1.359,1.115,1.657,0.002
+"C(comp_bin, Treatment('0'))[T.≥10]",0.981,0.598,1.609,0.939
+"C(hold_bin, Treatment('91–180d'))[T.181–365d]",1.266,1.049,1.527,0.014
+"C(hold_bin, Treatment('91–180d'))[T.31–90d]",1.122,0.95,1.327,0.176
+"C(hold_bin, Treatment('91–180d'))[T.>1y]",2.48,2.048,3.004,0.0
+"C(hold_bin, Treatment('91–180d'))[T.≤30d]",1.078,0.673,1.727,0.755
+"C(tier, Treatment('Other journal'))[T.CNS]",1.386,1.176,1.634,0.0
+"C(tier, Treatment('Other journal'))[T.CNS sister journal]",1.252,1.054,1.488,0.01
+"C(tier, Treatment('Other journal'))[T.Unpublished]",0.351,0.247,0.5,0.0
+novel_target,1.232,1.082,1.404,0.002
+log_epp,0.918,0.866,0.974,0.005

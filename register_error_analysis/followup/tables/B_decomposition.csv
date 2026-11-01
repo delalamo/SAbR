@@ -1,0 +1,5 @@
+cls,rate_e1,rate_e3,change,e3_at_e1_method_res_mix,within_strata_change,composition_change,pct_of_change_from_composition,pct_EM_e1,pct_EM_e3
+Antibody C,0.56,0.81,0.25,0.16,-0.4,0.65,261.08,1.52,50.55
+Antibody V,0.36,2.89,2.53,1.72,1.36,1.17,46.18,8.23,72.89
+"Non-antibody, in antibody entries",2.57,2.29,-0.28,2.16,-0.41,0.13,-47.64,12.18,82.07
+"Non-antibody, other entries",4.76,2.78,-1.98,2.76,-2.0,0.02,-0.99,20.85,87.39

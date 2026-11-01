@@ -1,0 +1,5 @@
+cls,level,domains,entries,flag_pct,lo,hi,pct_EM
+Antibody V,False,5940,1437,1.01,0.71,1.36,37.9
+Antibody V,True,1173,274,4.26,2.63,5.95,84.4
+Non-antibody,False,230430,16951,3.86,3.6,4.16,51.4
+Non-antibody,True,1156,202,1.73,0.8,2.62,85.3

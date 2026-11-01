@@ -1,0 +1,264 @@
+===== D1. Journal tier
+              tier          cls  domains  entries  flag_pct   lo   hi  pct_EM
+               CNS   Antibody C      756      182      0.79 0.18 1.78    30.2
+               CNS   Antibody V     1563      396      1.73 1.07 2.59    60.3
+               CNS Non-antibody    50461     2580      4.21 3.70 4.79    64.9
+CNS sister journal   Antibody C     1257      301      0.32 0.00 0.75    20.4
+CNS sister journal   Antibody V     2690      646      2.04 1.25 2.77    54.0
+CNS sister journal Non-antibody    73929     4944      4.03 3.51 4.69    65.3
+     Other journal   Antibody C     1796      413      0.84 0.22 1.71    19.2
+     Other journal   Antibody V     2611      617      1.00 0.59 1.48    30.6
+     Other journal Non-antibody    99482     8756      3.66 3.33 3.94    37.5
+       Unpublished   Antibody C      168       34      0.00 0.00 0.00     0.0
+       Unpublished   Antibody V      249       52      0.80 0.00 2.17    18.1
+       Unpublished Non-antibody     7714      873      2.23 1.63 2.85    14.7
+[all non-antibody domains]
+                                                              OR     lo     hi      p
+C(tier, Treatment('Other journal'))[T.CNS]                 1.280  1.082  1.514  0.004
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  1.288  1.091  1.519  0.003
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.583  0.424  0.803  0.001
+[antibody V domains]
+                                                              OR     lo     hi      p
+C(tier, Treatment('Other journal'))[T.CNS]                 1.244  0.626  2.470  0.533
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  1.486  0.805  2.744  0.205
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.751  0.152  3.712  0.725
+[all domains in antibody entries]
+                                                              OR     lo     hi      p
+C(tier, Treatment('Other journal'))[T.CNS]                 1.395  0.861  2.259  0.176
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  1.006  0.638  1.588  0.979
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.273  0.061  1.212  0.088
+[antibody domains: high-impact x auxiliary]
+           OR     lo     hi      p
+hi      1.251  0.649  2.411  0.504
+aux     0.902  0.292  2.785  0.858
+hi:aux  1.094  0.278  4.304  0.897
+                         domains  flagged  entries  flagged_entries   pct
+hi role                                                                  
+0  Antibody of interest     3027       29      404               17  0.96
+   Auxiliary                 727        6      145                4  0.83
+1  Antibody of interest     4482       69      634               37  1.54
+   Auxiliary                 961       14      316               12  1.46
+
+===== D2. Structures per paper (PDB-wide counts of entries sharing the primary citation)
+                      count  mean    std  min  50%  75%  90%    max
+tier                                                               
+CNS                  2406.0  3.70  10.28  1.0  2.0  4.0  7.0  466.0
+CNS sister journal   9951.0  3.27  10.85  1.0  2.0  4.0  6.0  860.0
+Other journal       31322.0  2.55   4.45  1.0  2.0  3.0  5.0  259.0
+Unpublished             1.0  2.00    NaN  2.0  2.0  2.0  2.0    2.0
+EM-majority papers:
+                     count  mean   std  min  50%  75%  90%   max
+tier                                                            
+CNS                 1444.0  3.69  4.42  1.0  2.0  5.0  7.7  80.0
+CNS sister journal  4372.0  3.25  3.25  1.0  2.0  4.0  6.0  68.0
+Other journal       3558.0  2.46  2.17  1.0  2.0  3.0  5.0  31.0
+Antibody papers (3-5 A set), entries per paper:
+tier                  CNS  CNS sister journal  Other journal  Unpublished
+role                                                                     
+Antibody of interest  3.0                 2.0            2.0          2.0
+Auxiliary             2.0                 2.0            2.0          NaN
+[non-antibody domains] per doubling of entries/paper:
+            OR    lo     hi      p
+log_epp  0.917  0.86  0.978  0.008
+[antibody V] per doubling of entries/paper:
+            OR     lo    hi      p
+log_epp  1.163  0.878  1.54  0.291
+
+===== D3. Competition / time-pressure proxies
+-- comp_bin
+         cls level  domains  entries  flag_pct   lo   hi  pct_EM
+  Antibody V     0     2865      737      1.68 1.10 2.24    35.0
+  Antibody V   1–2     1416      350      0.35 0.07 0.75    49.2
+  Antibody V   3–9      778      176      0.64 0.00 1.52    61.4
+  Antibody V   ≥10     1188      278      4.21 2.52 6.20    83.5
+Non-antibody     0   148264    11331      3.67 3.39 3.98    52.8
+Non-antibody   1–2    54634     4020      4.37 3.89 4.74    51.2
+Non-antibody   3–9    22846     1289      3.92 3.16 4.54    41.6
+Non-antibody   ≥10     1879      274      2.50 1.48 3.67    60.2
+-- novel_target
+         cls  level  domains  entries  flag_pct   lo   hi  pct_EM
+  Antibody V    0.0     4283     1034      1.10 0.64 1.58    50.1
+  Antibody V    1.0     1964      507      3.11 2.20 4.23    52.2
+Non-antibody    0.0   132312     9412      3.50 3.14 3.78    47.7
+Non-antibody    1.0    95311     7502      4.34 3.85 4.80    56.5
+-- hold_bin
+         cls    level  domains  entries  flag_pct   lo   hi  pct_EM
+  Antibody V 181–365d     1862      430      3.06 2.17 4.07    41.5
+  Antibody V   31–90d     2233      544      1.07 0.57 1.71    49.4
+  Antibody V  91–180d     1610      403      1.18 0.52 2.02    50.8
+  Antibody V      >1y      654      151      0.61 0.15 1.16    23.5
+  Antibody V     ≤30d      754      183      0.80 0.26 1.54    51.7
+Non-antibody 181–365d    51480     4294      3.60 3.16 4.04    48.2
+Non-antibody   31–90d    70824     4999      3.65 3.36 4.01    61.6
+Non-antibody  91–180d    61775     4379      2.93 2.57 3.35    61.1
+Non-antibody      >1y    33350     2067      6.54 5.73 7.28    20.1
+Non-antibody     ≤30d    14157     1414      3.50 2.31 5.68    46.6
+-- sars2
+         cls  level  domains  entries  flag_pct   lo   hi  pct_EM
+  Antibody V  False     5940     1437      1.01 0.71 1.36    37.9
+  Antibody V   True     1173      274      4.26 2.63 5.95    84.4
+Non-antibody  False   230430    16951      3.86 3.60 4.16    51.4
+Non-antibody   True     1156      202      1.73 0.80 2.62    85.3
+[non-antibody] multivariable
+                                                              OR     lo     hi      p
+C(comp_bin, Treatment('0'))[T.1–2]                         1.276  1.102  1.478  0.001
+C(comp_bin, Treatment('0'))[T.3–9]                         1.359  1.115  1.657  0.002
+C(comp_bin, Treatment('0'))[T.≥10]                         0.981  0.598  1.609  0.939
+C(hold_bin, Treatment('91–180d'))[T.181–365d]              1.266  1.049  1.527  0.014
+C(hold_bin, Treatment('91–180d'))[T.31–90d]                1.122  0.950  1.327  0.176
+C(hold_bin, Treatment('91–180d'))[T.>1y]                   2.480  2.048  3.004  0.000
+C(hold_bin, Treatment('91–180d'))[T.≤30d]                  1.078  0.673  1.727  0.755
+C(tier, Treatment('Other journal'))[T.CNS]                 1.386  1.176  1.634  0.000
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  1.252  1.054  1.488  0.010
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.351  0.247  0.500  0.000
+novel_target                                               1.232  1.082  1.404  0.002
+log_epp                                                    0.918  0.866  0.974  0.005
+[antibody V] multivariable
+                                                              OR     lo     hi      p
+C(comp_bin, Treatment('0'))[T.1–2]                         0.244  0.086  0.690  0.008
+C(comp_bin, Treatment('0'))[T.3–9]                         0.417  0.100  1.745  0.231
+C(comp_bin, Treatment('0'))[T.≥10]                         1.618  0.834  3.139  0.155
+C(hold_bin, Treatment('91–180d'))[T.181–365d]              3.102  1.560  6.169  0.001
+C(hold_bin, Treatment('91–180d'))[T.31–90d]                0.846  0.368  1.946  0.695
+C(hold_bin, Treatment('91–180d'))[T.>1y]                   0.956  0.255  3.575  0.946
+C(hold_bin, Treatment('91–180d'))[T.≤30d]                  0.350  0.118  1.036  0.058
+C(tier, Treatment('Other journal'))[T.CNS]                 1.069  0.440  2.597  0.883
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  0.917  0.474  1.772  0.796
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.388  0.042  3.554  0.402
+novel_target                                               2.093  1.212  3.614  0.008
+log_epp                                                    1.049  0.822  1.338  0.701
+-- viral antibody-of-interest entries: flag % (domains)
+                                       n  entries   pct  pct_EM
+cls          grp           period                              
+Antibody C   Other viruses 2020      160       45  0.00      31
+                           2021–22    80       16  0.00      75
+                           ≤2019    1020      225  0.20       7
+             SARS-CoV-2    2020      242       52  0.00      61
+                           2021–22   279       71  1.08      72
+Antibody V   Other viruses 2020      433       99  1.39      70
+                           2021–22   324       70  1.54      93
+                           ≤2019    1921      360  0.68      41
+             SARS-CoV-2    2020      484      107  6.40      79
+                           2021–22   662      158  2.87      88
+Non-antibody Other viruses 2020      701       98  2.00      83
+                           2021–22   606       68  0.99      96
+                           ≤2019    2081      347  2.69      48
+             SARS-CoV-2    2020       60       35  0.00      25
+                           2021–22    57       41  3.51      44
+[Ab V, viral Ab-of-interest 2020-22: SARS-CoV-2 x 2020; base]
+             OR     lo     hi      p
+s2        1.851  0.603  5.679  0.282
+y2020     1.150  0.318  4.162  0.831
+s2:y2020  2.131  0.466  9.745  0.329
+[Ab V, viral Ab-of-interest 2020-22: SARS-CoV-2 x 2020; +local quality]
+             OR     lo     hi      p
+s2        1.072  0.270  4.257  0.921
+y2020     1.126  0.321  3.947  0.853
+s2:y2020  1.879  0.445  7.931  0.391
+lq_z      0.585  0.347  0.987  0.045
+SARS-CoV-2 2020 Ab V: flagged domains 31 in 13 entries from 5 labs; of 107 entries / 40 labs
+last_author
+Zhou, Q.                                                         7
+Wang, X.                                                         3
+Center for Structural Genomics of Infectious Diseases (CSGID)    1
+Wang, N.                                                         1
+Shapiro, L.                                                      1
+mean local quality z: SARS2-2020 -0.78  other viruses 2020 0.11
+[antibody V, excluding SARS-CoV-2] multivariable
+                                                              OR     lo      hi      p
+C(comp_bin, Treatment('0'))[T.1–2]                         0.224  0.080   0.623  0.004
+C(comp_bin, Treatment('0'))[T.3–9]                         0.409  0.104   1.601  0.199
+C(comp_bin, Treatment('0'))[T.≥10]                         0.000  0.000   0.000  0.000
+C(hold_bin, Treatment('91–180d'))[T.181–365d]              2.050  0.744   5.651  0.165
+C(hold_bin, Treatment('91–180d'))[T.31–90d]                1.485  0.475   4.637  0.496
+C(hold_bin, Treatment('91–180d'))[T.>1y]                   0.958  0.207   4.440  0.956
+C(hold_bin, Treatment('91–180d'))[T.≤30d]                  1.760  0.486   6.375  0.389
+C(tier, Treatment('Other journal'))[T.CNS]                 2.406  1.031   5.614  0.042
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  0.516  0.206   1.292  0.158
+C(tier, Treatment('Other journal'))[T.Unpublished]         1.165  0.094  14.410  0.906
+novel_target                                               1.808  0.843   3.878  0.129
+log_epp                                                    1.186  0.816   1.724  0.372
+[antibody domains: auxiliary x crowded (≥3 competing groups within 6 months)]
+                OR     lo     hi      p
+aux          1.201  0.589  2.450  0.614
+crowded      1.380  0.732  2.602  0.319
+aux:crowded  0.000  0.000  0.000  0.000
+role     Antibody of interest  Auxiliary
+crowded                                 
+0                        0.85       1.26
+1                        2.22       0.00
+
+===== E. Co-occurrence of errors across chains
+ag_flag   0.0  1.0
+ab_flag           
+0.0      1184   99
+1.0        51    6
+P(antigen flagged | antibody flagged)=10.5%  vs | antibody clean=7.7%
+Mantel-Haenszel OR (method x resolution strata)=1.09 [0.45-2.65], p=0.84
+logit OR antigen-flag ~ antibody-flag:             OR    lo     hi     p
+ab_flag  1.294  0.52  3.219  0.58
+  Antibody of interest: n entries=827, P(ag|ab flagged)=7.7% (n=39), P(ag|ab clean)=4.9%
+  Auxiliary: n entries=436, P(ag|ab flagged)=7.1% (n=14), P(ag|ab clean)=12.3%
+[non-antibody multi-entity entries] entity flagged ~ any other entity flagged:
+              OR     lo     hi    p
+other_any  2.416  2.144  2.721  0.0
+[antibody entities] flagged ~ other antibody entity (e.g. partner H/L) flagged + antigen flagged:
+                  OR     lo     hi      p
+other_ab_flag  3.802  1.597  9.053  0.003
+ag_flag        1.132  0.529  2.421  0.750
+entries with both flagged: observed=6, expected under within-stratum independence=5.6, p(sim>=obs)=0.5075
+
+===== X1. Lab-level clustering (last author)
+labs with ≥5 entries: 873 labs, 11862 entries; dispersion observed=3.02 vs simulated=1.00 (95% 0.90-1.12); p=0.000
+share of flagged entries from the 10% of labs with highest O/E: 18% (expected under model 4%)
+
+===== X2. Were flagged entries later revised (coordinates replaced)?
+flag
+0    10.74
+1    13.19
+Name: atom_model_revised, dtype: float64
+
+===== X3. Auxiliary subtypes (3–5 Å)
+                             domains                            entries                                pct                        
+cls                       Antibody C Antibody V Non-antibody Antibody C Antibody V Non-antibody Antibody C Antibody V Non-antibody
+role2                                                                                                                             
+Antibody of interest          2571.0     4938.0       4495.0      580.0     1038.0        810.0       0.70       1.62         1.96
+Aux: G-protein stabiliser        NaN      177.0        564.0        NaN      122.0        122.0        NaN       0.00         4.26
+Aux: other                     548.0      963.0       1380.0      177.0      339.0        307.0       0.36       1.87         3.26
+
+===== X4. Who contributes the high-impact auxiliary antibody flags?
+                    tier               journal     last_author method    res  year                                                                                                                                title
+pdb                                                                                                                                                                                                                    
+3tt1                 CNS                Nature      Gouaux, E.  X-ray  3.099  2011                                                       Crystal Structure of LeuT in the outward-open conformation in complex with Fab
+6cmo                 CNS                Nature        Xu, H.E.     EM  4.500  2018                                                                                                                 Rhodopsin-Gi complex
+6ot0                 CNS                Nature          Li, X.     EM  3.840  2019                                                                                             Structure of human Smoothened-Gi complex
+7jhg                 CNS               Science     Melcher, K.     EM  3.470  2020                        Cryo-EM structure of ATP-bound fully inactive AMPK in complex with Dorsomorphin (Compound C) and Fab-nanobody
+7jhh                 CNS               Science     Melcher, K.     EM  3.920  2020                                                  Cryo-EM structure of ATP-bound fully inactive AMPK in complex with Fab and nanobody
+7m74                 CNS               Science     Melcher, K.     EM  3.930  2021                                                                                               ATP-bound AMP-activated protein kinase
+7s6c                 CNS               Science    Fromme, J.C.     EM  3.100  2021  CryoEM structure of modular PKS holo-Lsd14 stalled at the condensation step and bound to antibody fragment 1B2, composite structure
+7s6d                 CNS               Science    Fromme, J.C.     EM  3.100  2021                                       CryoEM structure of modular PKS holo-Lsd14 bound to antibody fragment 1B2, composite structure
+5da0  CNS sister journal  Nat.Struct.Mol.Biol.     Shaik, F.R.  X-ray  3.200  2015                                                            Structure of the the SLC26 transporter SLC26Dg in complex with a nanobody
+6ukt  CNS sister journal            Nat Commun    Sprang, S.R.     EM  3.870  2019                                                                     Cryo-EM structure of mammalian Ric-8A:Galpha(i):nanobody complex
+6x06  CNS sister journal            Nat Commun  Schwartz, T.U.  X-ray  4.270  2020                                                                               Nup120 (aa1-757) from S. cerevisiae bound by VHH-SAN11
+7nqk  CNS sister journal               Sci Adv    Newstead, S.     EM  3.500  2021                                                                         Cryo-EM structure of the mammalian peptide transporter PepT2
+7qia       Other journal                 Elife  Manatschal, C.     EM  3.500  2021                                                                      Structure of apo-EleNRMT in complex with two nanobodies at 3.5A
+7qic       Other journal                 Elife  Manatschal, C.     EM  4.100  2021                                                          Structure of magnesium-bound EleNRMT in complex with two nanobodies at 4.1A
+7qji       Other journal                 Elife  Manatschal, C.  X-ray  4.100  2021                                                                X-Ray Structure of apo-EleNRMT in complex with two Nanobodies at 4.1A
+7qjj       Other journal                 Elife  Manatschal, C.  X-ray  4.600  2021                                                     X-Ray Structure of a Mn2+ soak of EleNRMT in complex with two Nanobodies at 4.6A
+Auxiliary-antibody papers: rows high-impact, cols any antibody domain flagged
+ab_flag    0  1
+hi             
+False     89  1
+True     169  9
+Fisher p=0.172
+Antibody-of-interest papers:
+ab_flag    0   1
+hi              
+False    281  15
+True     320  25
+Fisher p=0.326
+auxiliary entries, antigen (non-antibody) domain flag % by tier:
+       domains  flagged   pct
+tier                         
+False      440       13  2.95
+True      1504       56  3.72

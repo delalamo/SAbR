@@ -1,0 +1,21 @@
+keys 127076
+role        Antibody alone  Antibody of interest  Auxiliary  Unclear
+cls                                                                 
+Antibody C           0.207                 0.211      0.496    0.197
+Antibody V           0.196                 0.244      0.436    0.204
+             domains  entries  flagged   pct
+prior_hires                                 
+0.0             5183     1303       92  1.78
+1.0             1898      578       18  0.95
+                                  domains  flagged    pct
+role                 prior_hires                         
+Antibody alone       0.0              555        2   0.36
+                     1.0              135        0   0.00
+Antibody of interest 0.0             3715       73   1.97
+                     1.0             1197        7   0.58
+Auxiliary            0.0              643       14   2.18
+                     1.0              497        4   0.80
+Unclear              0.0              270        3   1.11
+                     1.0               69        7  10.14
+Antibody V: OR for identical V-region sequence previously deposited at <3 Å: 0.52 [0.26-1.01] p=0.0534
+Antibody V, aux adjusted for prior template: OR aux 1.12 [0.57-2.19]; prior 0.32 [0.14-0.76]

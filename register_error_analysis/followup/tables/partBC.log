@@ -1,0 +1,117 @@
+
+===== B. Transition X-ray -> EM
+                              cls     era  domains  pct_EM  flag_pct   lo   hi  em_rate  xray_rate  med_res
+                       Antibody C 2018–19      636   17.14      0.47 0.00 1.14     0.92       0.38     3.42
+                       Antibody C 2020–22     1365   50.55      0.81 0.18 1.87     1.45       0.15     3.40
+                       Antibody C   ≤2017     1976    1.52      0.56 0.20 1.04     0.00       0.57     3.29
+                       Antibody V 2018–19     1587   52.80      0.88 0.38 1.49     1.19       0.53     3.56
+                       Antibody V 2020–22     3010   72.89      2.89 2.10 3.80     3.42       1.47     3.43
+                       Antibody V   ≤2017     2516    8.23      0.36 0.08 0.73     0.48       0.35     3.30
+Non-antibody, in antibody entries 2018–19     1788   65.16      3.13 2.14 4.32     3.69       2.09     3.60
+Non-antibody, in antibody entries 2020–22     2839   82.07      2.29 1.59 3.28     2.45       1.57     3.50
+Non-antibody, in antibody entries   ≤2017     2143   12.18      2.57 1.27 3.94     1.92       2.66     3.40
+      Non-antibody, other entries 2018–19    54448   75.89      3.30 2.89 3.69     3.18       3.66     3.50
+      Non-antibody, other entries 2020–22    58447   87.39      2.78 2.47 3.14     2.81       2.52     3.50
+      Non-antibody, other entries   ≤2017   111921   20.85      4.76 4.37 5.16     5.26       4.62     3.31
+                              cls  rate_e1  rate_e3  change  e3_at_e1_method_res_mix  within_strata_change  composition_change  pct_of_change_from_composition  pct_EM_e1  pct_EM_e3
+                       Antibody C     0.56     0.81    0.25                     0.16                 -0.40                0.65                          261.08       1.52      50.55
+                       Antibody V     0.36     2.89    2.53                     1.72                  1.36                1.17                           46.18       8.23      72.89
+Non-antibody, in antibody entries     2.57     2.29   -0.28                     2.16                 -0.41                0.13                          -47.64      12.18      82.07
+      Non-antibody, other entries     4.76     2.78   -1.98                     2.76                 -2.00                0.02                           -0.99      20.85      87.39
+year      2010   2011    2012   2013    2014    2015   2016    2017    2018    2019     2020     2021    2022
+domains   72.0  133.0  146.00  161.0  303.00  275.00  388.0  550.00  822.00  765.00  1429.00  1465.00  116.00
+pct_EM     0.0    0.0    0.00    0.0    0.00    4.36   13.4   26.00   56.45   48.89    63.89    80.48   87.93
+flag_pct   0.0    0.0    1.37    0.0    0.33    0.73    0.0    0.36    0.36    1.44     3.08     2.94    0.00
+
+===== C. Antibody role (auxiliary vs antibody of interest)
+                role          cls method  domains  entries  flag_pct   lo   hi  mean_lq_z  med_res
+Antibody of interest   Antibody C    All     2571      580      0.70 0.23 1.36      -0.65     3.40
+           Auxiliary   Antibody C    All      548      177      0.36 0.00 1.38      -0.27     3.30
+Antibody of interest   Antibody V    All     4938     1038      1.62 1.15 2.15      -0.02     3.50
+           Auxiliary   Antibody V    All     1140      461      1.58 0.93 2.45       0.36     3.32
+Antibody of interest Non-antibody    All     4495      810      1.96 1.20 2.91       0.15     3.60
+           Auxiliary Non-antibody    All     1944      429      3.55 2.49 4.74       0.37     3.30
+Antibody of interest   Antibody C     EM      651      148      1.54 0.16 3.57      -1.20     3.65
+           Auxiliary   Antibody C     EM      122       45      0.00 0.00 0.00      -0.28     3.70
+Antibody of interest   Antibody V     EM     2543      508      2.52 1.65 3.43      -0.30     3.67
+           Auxiliary   Antibody V     EM      578      267      2.08 0.88 3.52       0.50     3.50
+Antibody of interest Non-antibody     EM     2342      293      1.88 1.10 2.78       0.27     3.90
+           Auxiliary Non-antibody     EM     1321      235      3.56 2.37 4.79       0.53     3.36
+Antibody of interest   Antibody C  X-ray     1920      432      0.42 0.10 0.85      -0.47     3.34
+           Auxiliary   Antibody C  X-ray      426      132      0.47 0.00 1.43      -0.27     3.24
+Antibody of interest   Antibody V  X-ray     2395      530      0.67 0.26 1.13       0.27     3.30
+           Auxiliary   Antibody V  X-ray      562      194      1.07 0.17 2.15       0.22     3.28
+Antibody of interest Non-antibody  X-ray     2153      517      2.04 0.87 3.52       0.03     3.34
+           Auxiliary Non-antibody  X-ray      623      194      3.53 1.42 5.79       0.04     3.29
+entries by role x method:
+method                 EM  X-ray
+role                            
+Antibody of interest  509    530
+Auxiliary             267    194
+
+[base] n=15636
+                                                        OR     lo     hi      p
+C(cls, Treatment('Non-antibody'))[T.Antibody C]      0.625  0.244  1.600  0.327
+C(cls, Treatment('Non-antibody'))[T.Antibody V]      1.173  0.700  1.966  0.546
+aux                                                  1.481  0.811  2.707  0.202
+C(cls, Treatment('Non-antibody'))[T.Antibody C]:aux  0.363  0.040  3.281  0.367
+C(cls, Treatment('Non-antibody'))[T.Antibody V]:aux  0.660  0.288  1.509  0.324
+
+[+local quality] n=15539
+                                                        OR     lo     hi      p
+C(cls, Treatment('Non-antibody'))[T.Antibody C]      0.391  0.143  1.070  0.068
+C(cls, Treatment('Non-antibody'))[T.Antibody V]      0.978  0.590  1.621  0.931
+aux                                                  1.466  0.813  2.644  0.203
+C(cls, Treatment('Non-antibody'))[T.Antibody C]:aux  0.436  0.048  3.980  0.462
+C(cls, Treatment('Non-antibody'))[T.Antibody V]:aux  0.818  0.360  1.857  0.630
+lq_z                                                 0.675  0.582  0.783  0.000
+[AbV only] n=6078
+        OR     lo     hi      p
+aux  0.968  0.491  1.909  0.925
+[AbV only +lq] n=6048
+         OR     lo     hi      p
+aux   1.410  0.738  2.694  0.298
+lq_z  0.621  0.459  0.840  0.002
+[CL] informative entries=155 domains=1595
+            OR     lo     hi      p
+isV      0.832  0.531  1.303  0.421
+isC      0.416  0.213  0.811  0.010
+isV_aux  0.719  0.350  1.477  0.369
+isC_aux  0.393  0.076  2.043  0.267
+logL     1.912  1.331  2.746  0.000
+[CL+lq] informative entries=155 domains=1595
+            OR     lo     hi      p
+isV      0.843  0.538  1.319  0.454
+isC      0.368  0.188  0.722  0.004
+isV_aux  0.764  0.372  1.569  0.464
+isC_aux  0.431  0.083  2.227  0.315
+logL     2.057  1.423  2.974  0.000
+lq_z     0.741  0.579  0.948  0.017
+
+Mean local quality (z) by role x class x method
+cls                          Antibody C  Antibody V  Non-antibody
+method role                                                      
+EM     Antibody of interest       -1.20       -0.30          0.27
+       Auxiliary                  -0.28        0.50          0.53
+X-ray  Antibody of interest       -0.47        0.27          0.03
+       Auxiliary                  -0.27        0.22          0.04
+
+Per-chain validation metrics (means, %):
+                                clash_frac  angle_frac  unobs_frac
+method role                 ab                                    
+EM     Antibody of interest 0        12.79        1.25       18.02
+                            1        14.88        0.92       23.72
+       Auxiliary            0        14.04        0.20       19.99
+                            1        16.09        0.21       18.22
+X-ray  Antibody of interest 0        20.36        1.42       10.43
+                            1        20.27        1.23        5.20
+       Auxiliary            0        21.51        1.09       10.96
+                            1        23.20        1.06        3.55
+entry-FE OLS clash_frac: antibody-chain effect (interest)=1.08 pp [p=5.16e-06], extra in auxiliary=-1.13 pp [p=0.00687]
+entry-FE OLS angle_frac: antibody-chain effect (interest)=-0.14 pp [p=0.00436], extra in auxiliary=0.06 pp [p=0.434]
+
+Fraction of antibody chains with a modelled constant domain:
+role    Antibody of interest  Auxiliary
+method                                 
+EM                      25.8       23.7
+X-ray                   82.6       76.1

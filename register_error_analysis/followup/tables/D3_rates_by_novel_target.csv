@@ -1,0 +1,5 @@
+cls,level,domains,entries,flag_pct,lo,hi,pct_EM
+Antibody V,0.0,4283,1034,1.1,0.64,1.58,50.1
+Antibody V,1.0,1964,507,3.11,2.2,4.23,52.2
+Non-antibody,0.0,132312,9412,3.5,3.14,3.78,47.7
+Non-antibody,1.0,95311,7502,4.34,3.85,4.8,56.5
