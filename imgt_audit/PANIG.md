@@ -156,6 +156,13 @@ The anchor set is stable when a class is removed (79–82 of 82 shared across fi
 
 ## 5. What remains imperfect
 
+* **TRAC (TCR Cα) is mis-registered. This is a known error.**
+  * Pan-Ig places TRAC's intradomain disulfide cysteines (IMGT C23/C104) at 21 and an unclaimed position, shifting the B strand by two residues. IMGT is right here.
+  * The two cysteines are disulfide-bonded (Cβ–Cβ 3.9 Å). Global TM-align to TRAC's closest relatives (Cβ TM 0.57, CH1 0.55) superposes its disulfide onto theirs (Cys23 within 0.6–0.8 Å, disulfide midpoints within about 1.7 Å).
+  * The consensus-frame matcher converges to the shifted register for TRAC against every class frame. TRAC's outer sheet is loosely packed, so the core-based refinement slides along strand B.
+  * **Blind spot in the local test.** A coherent two-residue shift of a whole strand superposes almost perfectly onto itself (about a 6.8 Å repeat), so the local leave-one-out test cannot detect it. Register shifts of two or more residues reported for other classes (for example the FN3 G strand) need the same global check before they are trusted. One-residue shifts and strand-identity changes (C2/FN3 "D" → C') are not affected by this blind spot.
+  * The proposed fix: constrain the B–F disulfide to 23/104 when it is present, and add a global register check against the nearest relatives.
+
 * **Insertion rates in C1 and FN3** are higher than IMGT's. IMGT hides loop-length variation by assigning sequence-aligned integers that make false structural claims. The pan-Ig scheme refuses those claims, so the variation shows up as insertions at the apex. This is the intended trade-off, but it makes C1/FN3 numbers busier.
 * **Cross-type global precision** stays below 0.5. The ceiling is set by whole-domain superposition, not by the numbering: the local test shows 0.97 for anchor claims.
 * **The assignment depends on structure.** Pan-Ig numbering needs coordinates (predicted or experimental). For sequence-only use, the SAbR embedding route (`unified.py`) would need retraining on these labels. Task B looks at better assignment algorithms.
