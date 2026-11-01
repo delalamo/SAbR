@@ -1,0 +1,140 @@
+chains scanned OK: 1498; Table S1 errors on these chains: 162; in V region: 131
+          variant  errors  err_sensitivity_any  err_sensitivity_50pct  shift_size_agrees  flagged_chains  chain_sensitivity  unflagged_chains  unflagged_with_segment
+          minlen3     131                 72.5                   71.8               96.8             107               90.7              1362                     4.8
+          minlen2     131                 72.5                   71.8               96.8             107               90.7              1362                     7.9
+          minlen4     131                 72.5                   71.8               96.8             107               90.7              1362                     4.5
+  minlen3 FR-only     131                 70.2                   60.3               96.7             107               86.9              1362                     4.3
+minlen3 skip CDR3     131                 71.8                   62.6               96.8             107               88.8              1362                     4.4
+
+Per-error detail (minlen3):
+1ken:H X-ray 3.5 flagged 58-62 shift +1 | SAbR/ANARCI segment: 56-62 Δ-1 CDR/FR
+1ken:T X-ray 3.5 flagged 58-62 shift +1 | SAbR/ANARCI segment: 56-62 Δ-1 CDR/FR
+3jbf:7 EM 4.6 flagged 30-41 shift +3 | SAbR/ANARCI segment: 29-40 Δ-3 CDR/FR
+4r96:D X-ray 3.31 flagged 111-118 shift -1 | SAbR/ANARCI segment: none
+5da0:B X-ray 3.2 flagged 59-64 shift -1 | SAbR/ANARCI segment: none
+5zs0:B X-ray 3.29 flagged 102-127 shift -2 | SAbR/ANARCI segment: 102-119 Δ2 CDR3/FR
+6ad0:L EM 3.9 flagged 1-29 shift -1 | SAbR/ANARCI segment: 1-32 Δ1 CDR/FR
+6bpe:C X-ray 3.34 flagged 27-31 shift +1 | SAbR/ANARCI segment: 27-32 Δ-1 FR
+6bpe:F X-ray 3.34 flagged 27-31 shift +1 | SAbR/ANARCI segment: 27-32 Δ-1 FR
+6cmo:L EM 4.5 flagged 5-11 shift +2 | SAbR/ANARCI segment: 5-13 Δ-2 FR
+6lht:L EM 3.67 flagged 27-53 shift -4 | SAbR/ANARCI segment: 31-57 Δ5 CDR/FR
+6orp:E EM 4.4 flagged 21-27 shift -1 | SAbR/ANARCI segment: none
+6orp:E EM 4.4 flagged 75-87 shift +1 | SAbR/ANARCI segment: none
+6orp:K EM 4.4 flagged 21-27 shift -1 | SAbR/ANARCI segment: none
+6orp:K EM 4.4 flagged 75-87 shift +1 | SAbR/ANARCI segment: none
+6orp:L EM 4.4 flagged 21-27 shift -1 | SAbR/ANARCI segment: none
+6orp:L EM 4.4 flagged 75-87 shift +1 | SAbR/ANARCI segment: none
+6ot0:L EM 3.9 flagged 5-13 shift +2 | SAbR/ANARCI segment: 5-10 Δ-2 FR
+6qpg:M X-ray 3.34 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
+6qpg:O X-ray 3.34 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
+6qxe:M EM 4.15 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
+6qxe:O EM 4.15 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
+6ukt:E EM 3.87 flagged 3-13 shift +2 | SAbR/ANARCI segment: 3-11 Δ-2 FR
+6wju:A X-ray 3.1 flagged 27-32 shift -3 | SAbR/ANARCI segment: none
+6x06:K X-ray 4.27 flagged 103-122 shift -1 | SAbR/ANARCI segment: 106-124 Δ1 CDR3/FR
+7c80:H EM 3.7 flagged 28-107 shift -8 | SAbR/ANARCI segment: 29-118 Δ9 CDR/CDR3/FR
+7cws:L EM 3.4 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cws:N EM 3.4 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cws:P EM 3.4 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwt:L EM 3.7 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwt:N EM 3.7 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwt:P EM 3.7 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwu:J EM 3.5 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwu:N EM 3.5 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7cwu:P EM 3.5 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7czr:H EM 3.5 flagged 107-114 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7czr:J EM 3.5 flagged 107-114 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7czs:H EM 3.6 flagged 107-114 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7czs:I EM 3.6 flagged 107-114 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7czs:J EM 3.6 flagged 107-114 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7czu:K EM 3.4 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7czu:K EM 3.4 flagged 28-32 shift +1 | SAbR/ANARCI segment: none
+7czu:N EM 3.4 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7czu:N EM 3.4 flagged 28-32 shift +1 | SAbR/ANARCI segment: none
+7czv:K EM 3.3 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7czv:K EM 3.3 flagged 28-32 shift +1 | SAbR/ANARCI segment: none
+7czv:M EM 3.3 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7czv:M EM 3.3 flagged 28-32 shift +1 | SAbR/ANARCI segment: none
+7czv:N EM 3.3 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7czv:N EM 3.3 flagged 28-32 shift +1 | SAbR/ANARCI segment: none
+7czy:K EM 3.3 flagged 27-31 shift -1 | SAbR/ANARCI segment: none
+7czy:K EM 3.3 flagged 100-113 shift -2 | SAbR/ANARCI segment: 99-113 Δ2 CDR3/FR
+7czy:N EM 3.3 flagged 27-31 shift -1 | SAbR/ANARCI segment: none
+7czy:N EM 3.3 flagged 100-113 shift -2 | SAbR/ANARCI segment: 99-113 Δ2 CDR3/FR
+7czz:K EM 3.2 flagged 27-31 shift -1 | SAbR/ANARCI segment: none
+7czz:K EM 3.2 flagged 100-113 shift -2 | SAbR/ANARCI segment: 99-113 Δ2 CDR3/FR
+7czz:M EM 3.2 flagged 27-31 shift -1 | SAbR/ANARCI segment: none
+7czz:M EM 3.2 flagged 100-113 shift -2 | SAbR/ANARCI segment: 99-113 Δ2 CDR3/FR
+7czz:N EM 3.2 flagged 27-31 shift -1 | SAbR/ANARCI segment: none
+7czz:N EM 3.2 flagged 100-113 shift -2 | SAbR/ANARCI segment: 99-113 Δ2 CDR3/FR
+7d00:H EM 3.0 flagged 107-115 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7d00:J EM 3.0 flagged 107-115 shift -1 | SAbR/ANARCI segment: 107-115 Δ1 FR
+7d00:K EM 3.0 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7d00:N EM 3.0 flagged 2-8 shift +1 | SAbR/ANARCI segment: 1-9 Δ-1 FR
+7d3k:L EM 3.9 flagged 50-58 shift +1 | SAbR/ANARCI segment: none
+7d3m:H EM 3.94 flagged 96-101 shift +1 | SAbR/ANARCI segment: none
+7d3r:H EM 3.49 flagged 95-101 shift +1 | SAbR/ANARCI segment: 94-144 Δ-1 CDR3/FR
+7d4g:N EM 3.9 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e23:B EM 3.3 flagged 61-84 shift -3 | SAbR/ANARCI segment: 64-84 Δ3 FR
+7e23:B EM 3.3 flagged 114-119 shift -1 | SAbR/ANARCI segment: 104-120 Δ1 CDR3/FR
+7e23:C EM 3.3 flagged 64-81 shift +2 | SAbR/ANARCI segment: 62-77 Δ-2 FR
+7e39:B EM 3.7 flagged 101-105 shift -1 | SAbR/ANARCI segment: 100-106 Δ1 FR
+7e39:C EM 3.7 flagged 56-85 shift -1 | SAbR/ANARCI segment: 55-85 Δ1 CDR/FR
+7e3c:B EM 4.2 flagged 4-11 shift +1 | SAbR/ANARCI segment: 4-10 Δ-1 FR
+7e3c:B EM 4.2 flagged 65-72 shift -1 | SAbR/ANARCI segment: 65-72 Δ1 FR
+7e3c:C EM 4.2 flagged 3-8 shift +1 | SAbR/ANARCI segment: 3-8 Δ-1 FR
+7e3c:C EM 4.2 flagged 50-73 shift -2 | SAbR/ANARCI segment: 51-73 Δ1 CDR/FR
+7e5r:P EM 3.6 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e5r:W EM 3.6 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e5r:X EM 3.6 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e5s:P EM 3.6 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e5s:U EM 3.6 flagged 1-5 shift -1 | SAbR/ANARCI segment: 1-5 Δ-1 FR
+7e5y:B X-ray 3.59 flagged 27-31 shift +1 | SAbR/ANARCI segment: none
+7e5y:B X-ray 3.59 flagged 43-68 shift -1 | SAbR/ANARCI segment: 41-68 Δ1 CDR/FR
+7e5y:C X-ray 3.59 flagged 101-116 shift -2 | SAbR/ANARCI segment: 101-116 Δ2 CDR3/FR
+7ey5:B EM 3.4 flagged 62-71 shift -1 | SAbR/ANARCI segment: none
+7ey5:B EM 3.4 flagged 114-119 shift +1 | SAbR/ANARCI segment: 113-120 Δ-1 FR
+7jhg:L EM 3.47 flagged 4-11 shift +2 | SAbR/ANARCI segment: 4-11 Δ-2 FR
+7jhh:L EM 3.92 flagged 4-11 shift +2 | SAbR/ANARCI segment: 4-10 Δ-2 FR
+7jtf:A X-ray 3.35 flagged 50-55 shift +1 | SAbR/ANARCI segment: 50-54 Δ-1 CDR/FR
+7jtf:C X-ray 3.35 flagged 50-55 shift +1 | SAbR/ANARCI segment: 50-54 Δ-1 CDR/FR
+7k66:C X-ray 3.92 flagged 95-106 shift +2 | SAbR/ANARCI segment: 92-104 Δ-2 CDR3/FR
+7k9i:L EM 3.3 flagged 78-82 shift -1 | SAbR/ANARCI segment: none
+7kra:I EM 3.2 flagged 73-86 shift +2 | SAbR/ANARCI segment: 73-86 Δ-2 FR
+7ktx:I EM 4.3 flagged 73-86 shift +2 | SAbR/ANARCI segment: 73-86 Δ-2 FR
+7l5b:H X-ray 3.18 flagged 110-140 shift -3 | SAbR/ANARCI segment: 107-129 Δ3 CDR3/FR
+7laa:H EM 3.42 flagged 56-61 shift -1 | SAbR/ANARCI segment: none
+7ljr:T EM 3.66 flagged 44-51 shift +1 | SAbR/ANARCI segment: none
+7m3l:H2 EM 3.2 flagged 76-88 shift +1 | SAbR/ANARCI segment: 81-86 Δ-1 FR
+7m74:L EM 3.93 flagged 2-8 shift +2 | SAbR/ANARCI segment: 4-11 Δ-2 FR
+7m74:N EM 3.93 flagged 105-109 shift +1 | SAbR/ANARCI segment: none
+7m7e:D EM 3.2 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7f:D EM 3.2 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7f:F EM 3.2 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7g:D EM 4.1 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7g:F EM 4.1 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7i:F EM 3.4 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7m7j:D EM 4.3 flagged 17-24 shift +1 | SAbR/ANARCI segment: 17-25 Δ-1 FR
+7mdt:H EM 3.6 flagged 1-6 shift -1 | SAbR/ANARCI segment: none
+7mhz:O EM 3.2 flagged 97-108 shift +2 | SAbR/ANARCI segment: 98-106 Δ-2 FR
+7mxe:W EM 3.7 flagged 20-25 shift -1 | SAbR/ANARCI segment: none
+7nj5:F EM 4.63 flagged 94-100 shift +1 | SAbR/ANARCI segment: 93-100 Δ-1 CDR3/FR
+7nqk:B EM 3.5 flagged 6-14 shift +1 | SAbR/ANARCI segment: 3-10 Δ-1 FR
+7qia:B EM 3.5 flagged 3-13 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qia:B EM 3.5 flagged 80-87 shift +1 | SAbR/ANARCI segment: none
+7qic:B EM 4.1 flagged 3-13 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qic:B EM 4.1 flagged 79-88 shift +1 | SAbR/ANARCI segment: none
+7qji:B X-ray 4.1 flagged 2-11 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qji:B X-ray 4.1 flagged 78-85 shift +1 | SAbR/ANARCI segment: none
+7qji:G X-ray 4.1 flagged 2-11 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qji:G X-ray 4.1 flagged 78-85 shift +1 | SAbR/ANARCI segment: none
+7qjj:B X-ray 4.6 flagged 2-11 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qjj:B X-ray 4.6 flagged 78-85 shift +1 | SAbR/ANARCI segment: none
+7qjj:G X-ray 4.6 flagged 2-11 shift +1 | SAbR/ANARCI segment: 3-15 Δ-1 FR
+7qjj:G X-ray 4.6 flagged 78-85 shift +1 | SAbR/ANARCI segment: none
+7s6c:F EM 3.1 flagged 17-23 shift +1 | SAbR/ANARCI segment: 17-24 Δ-1 FR
+7s6d:G EM 3.1 flagged 18-24 shift +1 | SAbR/ANARCI segment: 18-24 Δ-1 FR
+7v2a:E EM 3.4 flagged 107-119 shift -1 | SAbR/ANARCI segment: 106-120 Δ1 CDR3/FR
+7v2a:G EM 3.4 flagged 107-119 shift -1 | SAbR/ANARCI segment: 106-120 Δ1 CDR3/FR
+7v2a:I EM 3.4 flagged 107-119 shift -1 | SAbR/ANARCI segment: 106-120 Δ1 CDR3/FR
+7v3g:G EM 3.3 flagged 50-54 shift +1 | SAbR/ANARCI segment: none
