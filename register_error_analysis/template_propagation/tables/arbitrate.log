@@ -2,40 +2,40 @@
                         size                                    median                           
 reg           other register shifted (flagged) register other register shifted (flagged) register
 metric  rb                                                                                       
-Q_SCORE 2.5–3            545                        438           37.5                       39.1
-        3.5–4            369                        919           44.1                       37.2
-        3–3.5            588                        961           42.2                       33.6
-        >4               287                        971           45.2                       44.0
-        ≤2.5             433                        194           32.8                       32.4
-RSCC    2.5–3            284                        438           30.9                       24.8
-        3.5–4             69                        517           35.4                       26.6
-        3–3.5            176                        991           26.6                       20.4
-        >4                33                        136           42.1                       32.1
-        ≤2.5             408                        287           32.6                       29.7
+Q_SCORE 2.5–3            563                        428           37.7                       40.0
+        3.5–4            388                        916           44.0                       37.4
+        3–3.5            607                        959           42.0                       34.2
+        >4               298                        975           45.1                       43.6
+        ≤2.5             436                        183           33.5                       32.6
+RSCC    2.5–3            305                        413           30.4                       23.8
+        3.5–4             75                        507           35.7                       25.8
+        3–3.5            185                       1000           28.5                       20.9
+        >4                36                        130           43.2                       31.1
+        ≤2.5             450                        249           33.0                       27.8
 
-== Contested families (both registers deposited, map values for both): 780
-   shifted register fits worse in 519 (67%), better in 261; median difference -7.6 percentile points; Wilcoxon p=1.9e-29
-   using only ≤3.0 Å entries: 135 families; shifted worse in 73%; median diff -8.9
+== Contested families (both registers deposited, map values for both): 815
+   shifted register fits worse in 549 (67%), better in 266; median difference -7.5 percentile points; Wilcoxon p=4.6e-32
+   using only ≤3.0 Å entries: 145 families; shifted worse in 79%; median diff -9.9
 
 == Family verdicts
 arb
-uncontested: undetermined                                                             950
-uncontested: flagged segment fits poorly (error likely real)                          406
-contested: shifted fits worse                                                         352
-contested: no clear difference                                                        314
-contested: shifted fits better                                                        114
-uncontested: well-fitting ≤2.5 Å structure in flagged register (flag likely false)     86
+uncontested: undetermined                                                             947
+uncontested: flagged segment fits poorly (error likely real)                          393
+contested: shifted fits worse                                                         355
+contested: no clear difference                                                        349
+contested: shifted fits better                                                        111
+uncontested: well-fitting ≤2.5 Å structure in flagged register (flag likely false)     79
 
-== Families where the flagged register is likely a real error: 758
-   shifted register in ≥2 papers: 409 (54%); in ≥2 labs: 322 (42%); still deposited 2023+: 110 (15%)
-   later papers on the same protein: 2482; carrying the error: 1216 (49%)
-   error present in very first structure: 86%
-   contested subset: 352 families; later papers 1719, carrying error 26%
+== Families where the flagged register is likely a real error: 748
+   shifted register in ≥2 papers: 386 (52%); in ≥2 labs: 302 (40%); still deposited 2023+: 95 (13%)
+   later papers on the same protein: 2398; carrying the error: 1131 (47%)
+   error present in very first structure: 84%
+   contested subset: 355 families; later papers 1708, carrying error 26%
    later entries by recorded starting model:
                                entries  pct_carrying_error
 cites                                                     
 cites both                           1                 0.0
-cites other-register template      129                 0.0
-cites shifted template             279                80.6
-cites unrelated/unknown model      613                53.2
-no starting model recorded        1253                36.6
+cites other-register template      141                 0.0
+cites shifted template             289                79.9
+cites unrelated/unknown model      566                51.1
+no starting model recorded        1210                34.7

@@ -1,0 +1,39 @@
+== ALL ERRORS: 12674 rows, 2954 entries
+                                  category  rows  pct_rows  entries  pct_entries  families
+     SARS-CoV-2 entries: any flagged chain    91      0.72       40         1.35        41
+         SARS-CoV-2 entries deposited 2020    56      0.44       22         0.74        20
+                 All antibody-chain errors   165      1.30       87         2.95        81
+    Antibody errors recurring in ≥2 papers    33      0.26       22         0.74         9
+      Antibody errors recurring in ≥2 labs    14      0.11       12         0.41         5
+            ...and map supports real error    11      0.09        9         0.30         3
+   UNION SARS-CoV-2 or propagated antibody   106      0.84       53         1.79        47
+          ANY protein: recurs in ≥2 papers  6102     48.15     1766        59.78      1224
+            ANY protein: recurs in ≥2 labs  5233     41.29     1550        52.47       973
+ANY protein: ≥2 papers & map supports real  1940     15.31      805        27.25       386
+             ANY protein: ≥2 labs & strict   730      5.76      320        10.83       132
+
+== ANTIBODY ERRORS: 165 chains, 87 entries
+                                                         chains  entries  families  %chains  %entries
+grp                                                                                                  
+1 SARS-CoV-2 complex, deposited 2020                         41       13        10     25.0      15.0
+2 SARS-CoV-2 complex, deposited 2021–22                      28       14        20     17.0      16.0
+3 error copied across labs (template)                        14       12         5      8.0      14.0
+4 error repeated across papers, same lab                      1        1         1      1.0       1.0
+5 one-off: antibody re-used elsewhere, error not copied      31       19        17     19.0      22.0
+6 one-off: antibody appears in only one paper                47       29        29     28.0      33.0
+7 could not be mapped                                         3        3         0      2.0       3.0
+
+Antibody error families recurring in ≥2 papers:
+                            name  flagged_chains  labs_with_error  papers_with_error  sars2                                                       verdict example
+family                                                                                                                                                           
+504.0          1B2 (heavy chain)               9              4.0                7.0  False                                 contested: shifted fits worse  7m7i:F
+2712.0                  Nanobody               1              3.0                3.0  False                                     uncontested: undetermined  7m74:N
+2788.0           Fab light chain               2              2.0                2.0  False                                contested: shifted fits better  6ot0:L
+237.0        Fab_C10_light_chain               1              2.0                3.0  False                                     uncontested: undetermined  7v3g:G
+1359.0      3H02 Fab heavy chain               1              2.0                2.0  False  uncontested: flagged segment fits poorly (error likely real)  7mhz:O
+203.0   B1-182.1 Fab light chain               3              1.0                2.0   True                                     uncontested: undetermined  7mlz:L
+372.0                   nanobody               1              1.0                2.0  False  uncontested: flagged segment fits poorly (error likely real)  7nqk:B
+231.0    heavy chain of FC05 Fab              14              1.0                3.0   True                                     uncontested: undetermined  7cwu:P
+232.0    Heavy chain of FC05 Fab               1              1.0                3.0   True                                     uncontested: undetermined  7d4g:N
+
+SARS-CoV-2 antibody errors recurring in ≥2 papers: 18 chains; ≥2 labs: 0

@@ -1,42 +1,42 @@
 == call distribution
 call
-same as flagged    6165
-ambiguous          4102
-other register     3300
-core mismatch      2785
-no core             759
-segment missing     320
+same as flagged    6061
+ambiguous          4048
+other register     3456
+core mismatch      2778
+no core             776
+segment missing     312
 Name: count, dtype: int64
 
 == validation: in-snapshot entries of the same family (excluding reference)
 S        other register  same register as flagged   All
 flagged                                                
-False               898                      1264  2162
-True                  9                       648   657
-All                 907                      1912  2819
+False               947                      1239  2186
+True                  8                       661   669
+All                 955                      1900  2855
 
-== 2222 families where the flagged register was confirmed in >=1 entry, with >=2 papers on this sequence
+== 2234 families where the flagged register was confirmed in >=1 entry, with >=2 papers on this sequence
 class
-Present in first structure; carried into later papers                      1166
-Present in first structure; later papers differ                             824
-Introduced after a correct structure existed; confined to one paper         157
-Introduced after a correct structure existed; carried into later papers      75
+Present in first structure; carried into later papers                      1136
+Present in first structure; later papers differ                             845
+Introduced after a correct structure existed; confined to one paper         171
+Introduced after a correct structure existed; carried into later papers      82
 
-families where shifted register appears in >=2 papers: 1249 (56%); >=2 labs: 1000
-families with shifted register still present in entries deposited 2023+: 442 (20%)
+families where shifted register appears in >=2 papers: 1224 (55%); >=2 labs: 973
+families with shifted register still present in entries deposited 2023+: 419 (19%)
 
-== later papers (after the error first appeared, different paper): 6779; carrying the shifted register: 3923 (58%)
-   no correct structure before error: 1990 families; later papers 5831, carrying shift 65%
-   correct structure existed before error: 232 families; later papers 948, carrying shift 16%
+== later papers (after the error first appeared, different paper): 6785; carrying the shifted register: 3812 (56%)
+   no correct structure before error: 1982 families; later papers 5749, carrying shift 64%
+   correct structure existed before error: 252 families; later papers 1036, carrying shift 15%
 
 == high-resolution (<=2.5 A) structures in family:
- families with hi-res structure: 632 | hi-res only in shifted register: 232 | only other register: 365 | both: 35
+ families with hi-res structure: 628 | hi-res only in shifted register: 205 | only other register: 386 | both: 37
 
 == later entries (after first appearance of the shift): register by recorded starting model
                                entries  pct_shifted
 cites                                              
 cites both                           5          0.0
-cites other-register template      241          0.8
-cites shifted template             725         83.9
-cites unrelated/unknown model     1744         51.5
-no starting model recorded        3501         52.9
+cites other-register template      253          0.0
+cites shifted template             738         82.8
+cites unrelated/unknown model     1713         48.9
+no starting model recorded        3529         51.5

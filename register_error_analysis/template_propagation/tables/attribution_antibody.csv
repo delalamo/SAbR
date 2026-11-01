@@ -1,0 +1,8 @@
+grp,chains,entries,families,%chains,%entries
+"1 SARS-CoV-2 complex, deposited 2020",41,13,10,25.0,15.0
+"2 SARS-CoV-2 complex, deposited 2021–22",28,14,20,17.0,16.0
+3 error copied across labs (template),14,12,5,8.0,14.0
+"4 error repeated across papers, same lab",1,1,1,1.0,1.0
+"5 one-off: antibody re-used elsewhere, error not copied",31,19,17,19.0,22.0
+6 one-off: antibody appears in only one paper,47,29,29,28.0,33.0
+7 could not be mapped,3,3,0,2.0,3.0

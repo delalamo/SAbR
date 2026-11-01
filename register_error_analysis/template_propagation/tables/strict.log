@@ -1,0 +1,35 @@
+== STRICT SET (n=355)
+   error in first structure: 67%
+   ≥2 papers: 161 (45%); ≥2 labs: 132 (37%); ≥3 labs: 59
+   still deposited 2023+: 36 (10%)
+   later papers: 1708; carrying error: 441 (26%)
+   error came first in 239; median 4.2 y to alternative; later papers 723, still carrying 19%
+                               entries  pct_carrying_error
+cites                                                     
+cites both                           1                 0.0
+cites other-register template      141                 0.0
+cites shifted template             154                62.3
+cites unrelated/unknown model      377                26.5
+no starting model recorded         954                17.2
+compare: flagged fits BETTER (n=111): later papers carrying flagged register 20%
+
+== specific families
+ family                                                          arb  papers_S  labs_S  papers_O first_entry_status
+    156                                    uncontested: undetermined         1       1         0                  S
+    200 uncontested: flagged segment fits poorly (error likely real)         1       1         0                  S
+    201 uncontested: flagged segment fits poorly (error likely real)         1       1         0                  S
+    504                                contested: shifted fits worse         7       4         2                  S
+ family  pdb chain  is_ref            call  d_same  d_shift
+    200 7mxl     B    True same as flagged    0.00     6.34
+    200 7mxl     K   False       ambiguous    3.90     3.51
+    200 7mxl     L   False       ambiguous    4.17     3.16
+    200 1fve     A   False       ambiguous    3.85     4.12
+    200 1fve     C   False       ambiguous    3.88     4.00
+    201 7mxl     B    True same as flagged    0.00     6.56
+    201 7mxl     K   False       ambiguous    4.03     2.97
+    201 7mxl     L   False       ambiguous    4.01     2.87
+    201 1fve     A   False       ambiguous    4.39     2.65
+    201 1fve     C   False       ambiguous    4.34     2.69
+    201 4xml     L   False       ambiguous    4.05     3.00
+    201 7yv1     L   False       ambiguous    4.52     2.49
+    201 2ny0     C   False       ambiguous    4.27     2.77

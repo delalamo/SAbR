@@ -1,25 +1,25 @@
-== Contested real errors where the error came first (n=249 families)
-   median years until a structure with the other register was deposited: 4.0
-   papers deposited after the correct structure existed: 753; still carrying the error: 149 (20%)
-Non-antibody: 748 real-error families; ≥2 labs 43%; later papers carrying error 49%; still in 2023+ 14%
-Antibody: 10 real-error families; ≥2 labs 20%; later papers carrying error 23%; still in 2023+ 20%
+== Contested real errors where the error came first (n=239 families)
+   median years until a structure with the other register was deposited: 4.2
+   papers deposited after the correct structure existed: 723; still carrying the error: 138 (19%)
+Non-antibody: 737 real-error families; ≥2 labs 41%; later papers carrying error 48%; still in 2023+ 13%
+Antibody: 11 real-error families; ≥2 labs 18%; later papers carrying error 24%; still in 2023+ 18%
 
 == Most widely propagated likely-real errors
-                                            protein example_ref  labs_S  papers_S  papers_O origin_date  origin_res     last_S                                                          arb
-                                                L7a        7nwg      11        12         0  2015-06-10        3.65 2026-02-26 uncontested: flagged segment fits poorly (error likely real)
-                                    Aurora kinase A        7o2v      10        12         0  2002-09-13        1.90 2025-09-30 uncontested: flagged segment fits poorly (error likely real)
-                 Mitogen-activated protein kinase 1        4qp6      10        11         0  1997-06-26        2.40 2026-01-19 uncontested: flagged segment fits poorly (error likely real)
-                    Proteasome subunit alpha type-1        3wxr       9        10         1  2000-08-23        3.20 2026-02-05                                contested: shifted fits worse
-                     CRISPR-associated protein Csy2        6b45       8        11         0  2017-02-25        3.40 2022-07-14 uncontested: flagged segment fits poorly (error likely real)
-                     CRISPR-associated protein Csy2        6ne0       8        11         0  2017-02-25        3.40 2022-07-14 uncontested: flagged segment fits poorly (error likely real)
-                      Glutamate carboxypeptidase II        1z8l       7        12         0  2005-03-30        3.50 2026-09-14 uncontested: flagged segment fits poorly (error likely real)
-                           30S ribosomal protein S2        4zer       7        12         0  2000-08-08        3.00 2026-03-30 uncontested: flagged segment fits poorly (error likely real)
-           Glutamate [NMDA] receptor subunit zeta-1        3q41       7        11         0  2010-12-22        3.40 2026-01-16 uncontested: flagged segment fits poorly (error likely real)
-                         40S ribosomal protein S7-A        4v88       7        11         0  2011-10-11        3.00 2025-09-22 uncontested: flagged segment fits poorly (error likely real)
-ATP synthase F(0) complex subunit C2, mitochondrial        6zit       7        10         0  2019-12-23        3.50 2025-07-28 uncontested: flagged segment fits poorly (error likely real)
-        Outer membrane protein assembly factor BamB        5ljo       7         9         0  2010-09-30        2.60 2023-05-04 uncontested: flagged segment fits poorly (error likely real)
-                     CRISPR-associated protein Csy2        6b47       7         9         3  2017-02-25        3.40 2022-07-14                                contested: shifted fits worse
-                                                L7a        7nwg       7         7         0  2016-08-23        3.60 2026-06-02 uncontested: flagged segment fits poorly (error likely real)
-                            Importin subunit beta-1        3lww       6        10         0  1999-04-29        2.50 2026-04-24 uncontested: flagged segment fits poorly (error likely real)
+                                    protein example_ref  labs_S  papers_S  papers_O origin_date  origin_res     last_S                                                          arb
+                                        L7a        7nwg      11        12         0  2015-06-10        3.65 2026-02-26 uncontested: flagged segment fits poorly (error likely real)
+         Mitogen-activated protein kinase 1        4qp6      10        11         0  1997-06-26        2.40 2026-01-19 uncontested: flagged segment fits poorly (error likely real)
+            Proteasome subunit alpha type-1        3wxr      10        11         1  2000-08-23        3.20 2026-02-05                                contested: shifted fits worse
+             CRISPR-associated protein Csy2        6b45       8        11         0  2017-02-25        3.40 2022-07-14 uncontested: flagged segment fits poorly (error likely real)
+             CRISPR-associated protein Csy2        6ne0       8        11         0  2017-02-25        3.40 2022-07-14 uncontested: flagged segment fits poorly (error likely real)
+Outer membrane protein assembly factor BamB        5ljo       8        10         0  2010-09-30        2.60 2023-05-04 uncontested: flagged segment fits poorly (error likely real)
+              Glutamate carboxypeptidase II        1z8l       7        12         0  2005-03-30        3.50 2026-09-14 uncontested: flagged segment fits poorly (error likely real)
+                   30S ribosomal protein S2        4zer       7        12         0  2000-08-08        3.00 2026-03-30 uncontested: flagged segment fits poorly (error likely real)
+   Glutamate [NMDA] receptor subunit zeta-1        3q41       7        11         0  2010-12-22        3.40 2026-01-16 uncontested: flagged segment fits poorly (error likely real)
+                 40S ribosomal protein S7-A        4v88       7        11         0  2011-10-11        3.00 2025-09-22 uncontested: flagged segment fits poorly (error likely real)
+             CRISPR-associated protein Csy2        6b47       7         9         3  2017-02-25        3.40 2022-07-14                                contested: shifted fits worse
+                                        L7a        7nwg       7         7         0  2016-08-23        3.60 2026-06-02 uncontested: flagged segment fits poorly (error likely real)
+          NET1-associated nuclear protein 1        6ke6       6        10         1  2017-07-26        3.80 2025-02-05                                contested: shifted fits worse
+                   40S ribosomal protein S5        5i4l       6         9         0  2011-10-11        3.00 2025-09-22 uncontested: flagged segment fits poorly (error likely real)
+                 50S ribosomal protein bL20        3j9w       6         9         2  2015-03-16        3.90 2025-06-16                                contested: shifted fits worse
 
-entries in sample carrying a likely-real error: 1275
+entries in sample carrying a likely-real error: 1182
