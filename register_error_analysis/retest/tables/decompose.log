@@ -1,0 +1,8 @@
+era                                                       new (released after Apr 2022)  snapshot (released ≤ Apr 2022)  All  new (released after Apr 2022) %  snapshot (released ≤ Apr 2022) %
+cat                                                                                                                                                                                            
+1 same error in an earlier high-res (<3 Å) template                                  39                              91  130                             12.0                              29.0
+2 same error in an earlier 3–5 Å structure (other paper)                             10                              11   21                              3.0                               4.0
+3 at the N-terminus or next to an unmodelled gap                                    129                              82  211                             40.0                              26.0
+4 FR3 insertion-convention region (possible artifact)                                18                               8   26                              6.0                               3.0
+5 other (origin not explained)                                                      127                             120  247                             39.0                              38.0
+All                                                                                 323                             312  635                              NaN                               NaN

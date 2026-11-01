@@ -1,0 +1,82 @@
+
+====================================================================================================
+T1. Same fold, different practice: TCR V domains vs antibody V domains (SAbR TCR mode vs ANARCI)
+====================================================================================================
+ok                       693
+V region not modelled     26
+not single-domain TCR      6
+method                EM          X-ray
+kind                                   
+TCR         52.3% (n=86)  84.7% (n=607)
+antibody  5.3% (n=10539)  1.4% (n=5326)
+                        OR     lo     hi    p
+C(kind)[T.antibody]  0.006  0.004  0.009  0.0
+
+====================================================================================================
+T14. Does the error rate depend on whether the prior high-resolution template itself disagrees?
+====================================================================================================
+templates scanned OK: 1038 | template flag rate: 1.6%
+chains with scanned prior template: 3791
+template_flag                               0             1
+era                                                        
+new (released after Apr 2022)   0.8% (n=2005)  81.2% (n=48)
+snapshot (released ≤ Apr 2022)  0.7% (n=1646)  98.9% (n=92)
+                     OR       lo        hi    p
+template_flag  1875.706  402.154  8748.571  0.0
+flagged chains with a scanned template: 158; same error (IMGT start ±2, same shift) present in the template: 130 (82%)
+
+====================================================================================================
+T15. Entries that record a starting model: is the cited model a flagged structure of the same antibody?
+====================================================================================================
+chains whose entry cites an earlier structure of the same V region as starting model: 1198
+cited_flagged
+0    0.3% (n=1140)
+1     84.5% (n=58)
+
+====================================================================================================
+T16. Mechanism: where and next to what do the disagreements occur?
+====================================================================================================
+                               near_gap  at_nterm
+kind                                             
+disagreement run                  0.119     0.299
+random window, clean V domain     0.009     0.028
+near an unmodelled gap (±3 residues): runs 11.9% vs position-matched clean windows 0.9%
+V domains whose N-terminus is unmodelled (first residue beyond IMGT 3): flag rate 18.1% (n=635) vs complete N-terminus 3.4% (n=15230)
+
+-- CDR3 length (heavy) and CDR1 length (light), flag rate by length tertile
+cdr3_bin
+(14.0, 18.0]     5.1% (n=2636)
+(18.0, 63.0]     4.6% (n=2345)
+(4.999, 14.0]    4.2% (n=3748)
+ctype                 K              L
+cdr1_bin                              
+10         0.3% (n=303)            NaN
+11         5.4% (n=445)            NaN
+12         4.9% (n=285)            NaN
+14           0.0% (n=4)            NaN
+16           0.0% (n=1)            NaN
+3           0.0% (n=36)     0.0% (n=1)
+4           0.0% (n=52)    0.0% (n=48)
+5          1.1% (n=268)     0.0% (n=1)
+6         2.7% (n=3018)   6.2% (n=520)
+7          0.0% (n=600)    0.0% (n=23)
+8           0.0% (n=25)  12.3% (n=480)
+9            0.0% (n=4)   1.9% (n=986)
+heavy chains with a CDR3/FR4 run, by CDR3 length tertile:
+cdr3_bin
+(14.0, 18.0]     1.7% (n=2636)
+(18.0, 63.0]     1.8% (n=2345)
+(4.999, 14.0]    1.0% (n=3748)
+
+====================================================================================================
+T18. Was the low pre-2018 conkit rate an AlphaFold2 training-set artifact? conkit sensitivity relative to SAbR by release date
+====================================================================================================
+SAbR framework-shift runs in the snapshot also flagged by conkit, by release relative to the AF2 training cutoff (2018-04-30):
+pre             False        True 
+method                            
+EM      37.8% (n=201)  16.7% (n=6)
+X-ray    61.5% (n=26)  8.3% (n=24)
+pre
+False    40.5% (n=227)
+True      10.0% (n=30)
+SAbR flag rate (single-domain, X-ray) released before vs after cutoff: 1.4% (n=2090) 1.6% (n=1553)

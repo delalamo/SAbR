@@ -1,0 +1,218 @@
+
+====================================================================================================
+T2/T17. Timing of the EM decline (half-years) — does it line up with AlphaFold2 (Jul 2021)?
+====================================================================================================
+half
+2018H1    10.2% (n=157)
+2018H2     9.1% (n=297)
+2019H1    13.1% (n=183)
+2019H2     1.2% (n=164)
+2020H1     3.9% (n=309)
+2020H2    13.2% (n=552)
+2021H1     9.5% (n=803)
+2021H2     3.4% (n=726)
+2022H1    2.6% (n=1095)
+2022H2     3.0% (n=812)
+2023H1     3.3% (n=635)
+2023H2     4.3% (n=739)
+2024H1     7.6% (n=907)
+2024H2     3.2% (n=820)
+2025H1     6.3% (n=942)
+2025H2     2.5% (n=812)
+2026H1     4.0% (n=377)
+2026H2      0.0% (n=32)
+
+====================================================================================================
+T3. How much of each change is composition (method x resolution mix) vs within-stratum change?
+====================================================================================================
+≤2019 -> 2020–21: 3.13% -> 6.05%  (EM share 25% -> 71%); within-stratum +0.00 pp, composition +2.92 pp
+2020–21 -> 2022–26: 6.05% -> 3.62%  (EM share 71% -> 83%); within-stratum -2.91 pp, composition +0.48 pp
+
+====================================================================================================
+T4. EM vs X-ray at matched resolution, with and without local map quality
+====================================================================================================
+new (released after Apr 2022) base
+                                        OR     lo     hi    p
+C(method, Treatment('X-ray'))[T.EM]  3.286  1.785  6.051  0.0
+new (released after Apr 2022) +lq
+                                        OR     lo     hi      p
+C(method, Treatment('X-ray'))[T.EM]  3.265  1.771  6.019  0.000
+lq_z                                 1.036  0.850  1.262  0.725
+snapshot (released ≤ Apr 2022) base
+                                        OR     lo     hi    p
+C(method, Treatment('X-ray'))[T.EM]  5.797  3.536  9.505  0.0
+snapshot (released ≤ Apr 2022) +lq
+                                        OR     lo     hi      p
+C(method, Treatment('X-ray'))[T.EM]  5.939  3.624  9.730  0.000
+lq_z                                 1.097  0.869  1.385  0.437
+
+====================================================================================================
+T5. Auxiliary vs antibody-of-interest (entry-level role), with prior template and local quality
+====================================================================================================
+new (released after Apr 2022)
+role   Antibody of interest      Auxiliary
+method                                    
+EM            3.2% (n=5829)  3.8% (n=1347)
+X-ray         1.6% (n=1168)   1.8% (n=170)
+                OR     lo     hi      p
+aux          0.785  0.360  1.714  0.544
+prior_hires  0.926  0.547  1.570  0.777
+lq_z         0.892  0.736  1.082  0.246
+snapshot (released ≤ Apr 2022)
+role   Antibody of interest     Auxiliary
+method                                   
+EM            8.1% (n=2497)  3.3% (n=448)
+X-ray         2.1% (n=2229)  0.9% (n=549)
+                OR     lo     hi      p
+aux          0.299  0.166  0.537  0.000
+prior_hires  1.490  0.999  2.223  0.051
+lq_z         1.108  0.861  1.425  0.426
+
+-- by SARS-CoV-2 status (antibody of interest only), EM:
+sars2                                   False          True 
+era                                                         
+new (released after Apr 2022)   3.8% (n=4175)  1.7% (n=1654)
+snapshot (released ≤ Apr 2022)  9.0% (n=1540)   6.7% (n=957)
+
+-- Within entries containing both an auxiliary reagent chain (Nb35/scFv16/BAG2/NabFab/sybody/...) and other antibody chains
+ entries 40 | reagent chains 67 flag 0.0% (n=67) | other antibody chains 67 flag 4.5% (n=67)
+ within-entry conditional OR (reagent vs other antibody): 0.00 [0.00-509993180459629163686531172803291668870636958044192954312135025690537397895651191710829604131247728225100689040817975125117763584.00], informative entries 3
+ local map quality z: reagent 0.25 vs other 0.34
+
+====================================================================================================
+T6-T9. Journal tier, structures per paper, target novelty, competition, hold time
+====================================================================================================
+new (released after Apr 2022)
+tier
+CNS                    2.5% (n=954)
+CNS sister journal    2.5% (n=4145)
+Other journal         4.9% (n=2755)
+Unpublished           4.7% (n=1313)
+                                                              OR     lo     hi      p
+C(tier, Treatment('Other journal'))[T.CNS]                 0.529  0.227  1.234  0.141
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  0.567  0.349  0.922  0.022
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.465  0.232  0.932  0.031
+C(comp_bin, Treatment('0'))[T.1–2]                         0.485  0.282  0.834  0.009
+C(comp_bin, Treatment('0'))[T.3–9]                         0.639  0.303  1.348  0.240
+C(comp_bin, Treatment('0'))[T.≥10]                         1.653  0.502  5.448  0.409
+C(hold_bin, Treatment('91–180d'))[T.181–365d]              0.556  0.307  1.007  0.053
+C(hold_bin, Treatment('91–180d'))[T.31–90d]                0.174  0.068  0.443  0.000
+C(hold_bin, Treatment('91–180d'))[T.>1y]                   0.786  0.436  1.420  0.425
+C(hold_bin, Treatment('91–180d'))[T.≤30d]                  0.335  0.077  1.453  0.144
+sars2[T.True]                                              0.253  0.085  0.753  0.014
+log_epp                                                    0.848  0.693  1.037  0.108
+novel_target                                               0.906  0.534  1.538  0.715
+lq_z                                                       0.800  0.655  0.977  0.029
+snapshot (released ≤ Apr 2022)
+tier
+CNS                   5.3% (n=1503)
+CNS sister journal    5.7% (n=2518)
+Other journal         3.6% (n=2436)
+Unpublished            0.4% (n=241)
+                                                              OR     lo     hi      p
+C(tier, Treatment('Other journal'))[T.CNS]                 0.940  0.551  1.601  0.819
+C(tier, Treatment('Other journal'))[T.CNS sister journal]  0.920  0.587  1.442  0.715
+C(tier, Treatment('Other journal'))[T.Unpublished]         0.160  0.019  1.377  0.095
+C(comp_bin, Treatment('0'))[T.1–2]                         1.057  0.611  1.827  0.844
+C(comp_bin, Treatment('0'))[T.3–9]                         1.219  0.679  2.190  0.508
+C(comp_bin, Treatment('0'))[T.≥10]                         1.029  0.307  3.445  0.963
+C(hold_bin, Treatment('91–180d'))[T.181–365d]              1.958  1.209  3.171  0.006
+C(hold_bin, Treatment('91–180d'))[T.31–90d]                1.051  0.621  1.777  0.854
+C(hold_bin, Treatment('91–180d'))[T.>1y]                   0.751  0.286  1.970  0.560
+C(hold_bin, Treatment('91–180d'))[T.≤30d]                  1.264  0.583  2.739  0.553
+sars2[T.True]                                              0.668  0.201  2.219  0.510
+log_epp                                                    1.042  0.858  1.265  0.677
+novel_target                                               1.597  1.034  2.466  0.035
+lq_z                                                       1.022  0.799  1.307  0.863
+
+====================================================================================================
+T10. SARS-CoV-2 vs other viral antigens, antibody of interest, EM, 2020 and 2021 — adjusted for local map quality
+====================================================================================================
+s2                0              1
+year                              
+2020  11.0% (n=218)  11.2% (n=376)
+2021   7.9% (n=228)   3.6% (n=696)
+             OR     lo     hi      p
+s2        0.293  0.111  0.770  0.013
+y2020     1.544  0.559  4.260  0.402
+s2:y2020  1.960  0.571  6.724  0.285
+lq_z      0.758  0.511  1.125  0.170
+
+====================================================================================================
+T11. Co-occurrence: does a flag on one antibody chain predict flags on other chains in the same entry?
+====================================================================================================
+other_distinct_flag
+0    2.9% (n=13532)
+1     10.3% (n=878)
+                        OR     lo     hi     p
+other_distinct_flag  2.695  1.545  4.703  0.00
+lq_z                 0.998  0.859  1.159  0.98
+identical copies in the same entry with ≥1 flagged copy: 170 groups; all copies flagged in 147 (86%)
+
+====================================================================================================
+T12. Lab-level clustering and persistence across eras
+====================================================================================================
+labs ≥5 entries: 213; dispersion observed 3.20 vs simulated 1.00 (95% 0.77-1.25)
+labs with ≥3 entries in both eras: 57
+ new-era entry flag rate by lab's snapshot O/E >1.5:
+old_bad
+0    4.7% (n=642)
+1    6.0% (n=234)
+            OR     lo     hi      p
+old_bad  1.265  0.453  3.536  0.653
+
+====================================================================================================
+T13. Were the conkit-flagged antibody V errors ever corrected? (SAbR on today's coordinates)
+====================================================================================================
+conkit-flagged antibody chains (V/C): 165 | entries with an "Atomic model" revision since release: 8 (9%)
+ of revised entries, flagged segment still disagreeing today: 31.2% (n=16); of unrevised: 62.4% (n=149)
+ SAbR-flagged V domains (all eras): coordinates revised since release in 11.8% (n=339)
+ vs unflagged: 9.4% (n=4530)
+
+====================================================================================================
+T17. Starting model type and EM fitting protocol
+====================================================================================================
+new (released after Apr 2022)
+irm    AlphaFold model experimental (PDB) model  none recorded other in-silico model
+method                                                                              
+EM        3.4% (n=290)            4.4% (n=1156)  4.0% (n=5998)           5.0% (n=40)
+X-ray     1.5% (n=204)            1.1% (n=1350)    0.0% (n=68)           6.6% (n=61)
+snapshot (released ≤ Apr 2022)
+irm    experimental (PDB) model  none recorded other in-silico model
+method                                                              
+EM                 6.3% (n=867)  9.3% (n=2188)                   NaN
+X-ray             1.6% (n=2698)   1.1% (n=943)            0.0% (n=2)
+                                                                   OR     lo     hi      p
+C(irm, Treatment('none recorded'))[T.AlphaFold model]           0.910  0.401  2.066  0.821
+C(irm, Treatment('none recorded'))[T.experimental (PDB) model]  1.259  0.747  2.122  0.388
+C(irm, Treatment('none recorded'))[T.other in-silico model]     2.426  0.631  9.332  0.197
+lq_z                                                            1.028  0.834  1.266  0.798
+fit                                ab initio   flexible fit   not recorded          other rigid body only
+era                                                                                                      
+new (released after Apr 2022)   2.6% (n=272)   7.7% (n=483)            NaN  3.9% (n=5980)    3.5% (n=749)
+snapshot (released ≤ Apr 2022)  6.5% (n=169)  10.9% (n=402)  15.2% (n=105)  8.0% (n=1902)    7.1% (n=477)
+                                                         OR     lo     hi      p
+C(fit, Treatment('not recorded'))[T.ab initio]        0.215  0.080  0.580  0.002
+C(fit, Treatment('not recorded'))[T.flexible fit]     0.624  0.297  1.314  0.214
+C(fit, Treatment('not recorded'))[T.other]            0.298  0.140  0.636  0.002
+C(fit, Treatment('not recorded'))[T.rigid body only]  0.294  0.121  0.710  0.007
+lq_z                                                  1.047  0.880  1.246  0.606
+-- EM resolution paradox (new era): rate and starting model by resolution
+                        rate  AF_model  exp_model  rigid     lq
+rb                                                             
+(2.999, 3.25]  5.5% (n=2495)       3.9       13.4    8.5  0.425
+(3.25, 3.5]    2.9% (n=2178)       2.6       16.3   12.2  0.402
+(3.5, 3.75]    2.8% (n=1088)       5.1       16.8    9.5  0.354
+(3.75, 4.0]     4.8% (n=900)       4.7       12.1    9.1  0.341
+(4.0, 5.0]      3.3% (n=823)       4.7       21.1   10.3  0.276
+-- software (where recorded)
+                                sw_ModelAngelo  sw_ISOLDE  sw_Rosetta  sw_Coot  sw_Phenix  sw_Namdinator  sw_REFMAC  sw_BUSTER
+era                                                                                                                           
+new (released after Apr 2022)              0.0      0.024       0.019    0.093      0.757            0.0      0.025      0.006
+snapshot (released ≤ Apr 2022)             0.0      0.010       0.065    0.135      0.614            0.0      0.102      0.044
+sw_ISOLDE               OR     lo     hi      p
+sw_ISOLDE  0.888  0.331  2.383  0.814
+sw_Rosetta                OR     lo    hi     p
+sw_Rosetta  0.484  0.215  1.09  0.08
+sw_Coot             OR    lo     hi      p
+sw_Coot  0.724  0.48  1.092  0.124
