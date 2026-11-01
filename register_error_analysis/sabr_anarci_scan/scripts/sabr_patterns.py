@@ -8,8 +8,8 @@ from tiers import tier as TIER
 O=f'{SP}/sabr/out'
 import os
 def load(fn): return [json.loads(l) for l in open(fn)] if os.path.exists(fn) else []
-old=[r for f in ['validation.jsonl','snapshot_rest.jsonl'] for r in load(f'{O}/{f}')]
-new=load(f'{O}/new.jsonl')
+old=[r for f in ['validation.jsonl','snapshot_rest.jsonl','validation_multi.jsonl','snapshot_rest_multi.jsonl'] for r in load(f'{O}/{f}')]
+new=load(f'{O}/new.jsonl')+load(f'{O}/new_multi.jsonl')
 # ---------- chain-level table
 an_all=json.load(open('/tmp/supp/meta2/anarci_all.json')); an_new=json.load(open(f'{SP}/new/anarci_new_screen.json'))
 def isab(s): return any(d['chain_type'] in 'HKL' for d in (an_all.get(s) or an_new.get(s) or []))
@@ -91,12 +91,14 @@ def ors(m,filt):
     if m is None: return pd.DataFrame()
     p=m.params[m.params.index.str.contains(filt)]; c=m.conf_int().loc[p.index]
     return pd.DataFrame({'OR':np.exp(p),'lo':np.exp(c[0]),'hi':np.exp(c[1]),'p':m.pvalues[p.index]}).round(3)
-CH['logV']=np.log(CH.nV); D=CH.dropna(subset=['res','year']).copy()
+CH['ctype']=CH.chain_type.where(CH.chain_type.isin(['H','K','L']),'multi-domain (scFv etc.)'); CH['logV']=np.log(CH.nV); D=CH.dropna(subset=['res','year']).copy()
+print('\n== Multi-domain (scFv etc.) vs single-domain chains, by era x method')
+print(D.assign(md=D.ctype.str.startswith('multi')).pivot_table(index=['era','method'],columns='md',values='flag',aggfunc=lambda x: f'{100*x.mean():.1f}% (n={len(x)})').to_string())
 print('\n== Adjusted model, all V domains (period vs 2018–19; method x resolution, chain type, V length)')
-m=fit("flag ~ C(ybin,Treatment('2018–19')) + C(method)*C(rb) + C(chain_type) + logV + prior_hires",D); print(ors(m,'ybin|prior|chain_type').to_string())
+m=fit("flag ~ C(ybin,Treatment('2018–19')) + C(method)*C(rb) + C(ctype) + logV + prior_hires",D); print(ors(m,'ybin|prior|ctype').to_string())
 print('\n== EM vs X-ray at matched resolution, by era')
 for era,s in D.groupby('era'):
-    m=fit("flag ~ C(method,Treatment('X-ray')) + C(rb) + C(chain_type) + logV",s); print(era); print(ors(m,'method').to_string())
+    m=fit("flag ~ C(method,Treatment('X-ray')) + C(rb) + C(ctype) + logV",s); print(era); print(ors(m,'method').to_string())
 print('\n== SARS-CoV-2 complexes vs other antibody entries, by period (EM only)')
 E=D[D.method=='EM']
 print(E.pivot_table(index='ybin',columns='sars2',values='flag',aggfunc=lambda x: f'{100*x.mean():.1f}% (n={len(x)})').to_string())
@@ -105,7 +107,7 @@ R=D[D.role.isin(['Auxiliary','Antibody of interest'])]
 print(R.pivot_table(index=['era','method'],columns='role',values='flag',aggfunc=lambda x: f'{100*x.mean():.1f}% (n={len(x)})').to_string())
 for era,s in R.groupby('era'):
     s=s.copy(); s['aux']=(s.role=='Auxiliary').astype(int)
-    m=fit("flag ~ aux + prior_hires + C(method)*C(rb) + C(chain_type) + logV",s); print(era,'adjusted:'); print(ors(m,'aux|prior').to_string())
+    m=fit("flag ~ aux + prior_hires + C(method)*C(rb) + C(ctype) + logV",s); print(era,'adjusted:'); print(ors(m,'aux|prior').to_string())
 print('\n== Prior high-resolution model of the same V region, by era')
 print(D.pivot_table(index='era',columns='prior_hires',values='flag',aggfunc=lambda x: f'{100*x.mean():.1f}% (n={len(x)})').to_string())
 print('\n== Journal tier (new era)')

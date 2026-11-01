@@ -1,15 +1,17 @@
-chains scanned OK: 1498; Table S1 errors on these chains: 162; in V region: 131
+chains scanned OK: 1539; Table S1 errors on these chains: 165; in V region: 134
           variant  errors  err_sensitivity_any  err_sensitivity_50pct  shift_size_agrees  flagged_chains  chain_sensitivity  unflagged_chains  unflagged_with_segment
-          minlen3     131                 72.5                   71.8               96.8             107               90.7              1362                     4.8
-          minlen2     131                 72.5                   71.8               96.8             107               90.7              1362                     7.9
-          minlen4     131                 72.5                   71.8               96.8             107               90.7              1362                     4.5
-  minlen3 FR-only     131                 70.2                   60.3               96.7             107               86.9              1362                     4.3
-minlen3 skip CDR3     131                 71.8                   62.6               96.8             107               88.8              1362                     4.4
+          minlen3     134                 73.1                   72.4               96.9             110               90.9              1400                     4.7
+          minlen2     134                 73.1                   72.4               96.9             110               90.9              1400                     7.8
+          minlen4     134                 73.1                   72.4               96.9             110               90.9              1400                     4.4
+  minlen3 FR-only     134                 70.9                   60.4               96.8             110               87.3              1400                     4.3
+minlen3 skip CDR3     134                 72.4                   62.7               96.9             110               89.1              1400                     4.4
 
 Per-error detail (minlen3):
 1ken:H X-ray 3.5 flagged 58-62 shift +1 | SAbR/ANARCI segment: 56-62 Δ-1 CDR/FR
 1ken:T X-ray 3.5 flagged 58-62 shift +1 | SAbR/ANARCI segment: 56-62 Δ-1 CDR/FR
 3jbf:7 EM 4.6 flagged 30-41 shift +3 | SAbR/ANARCI segment: 29-40 Δ-3 CDR/FR
+4f9l:C X-ray 3.1404 flagged 132-147 shift +1 | SAbR/ANARCI segment: 132-147 Δ-1 FR
+4f9l:D X-ray 3.1404 flagged 132-147 shift +1 | SAbR/ANARCI segment: 132-146 Δ-1 FR
 4r96:D X-ray 3.31 flagged 111-118 shift -1 | SAbR/ANARCI segment: none
 5da0:B X-ray 3.2 flagged 59-64 shift -1 | SAbR/ANARCI segment: none
 5zs0:B X-ray 3.29 flagged 102-127 shift -2 | SAbR/ANARCI segment: 102-119 Δ2 CDR3/FR
@@ -30,6 +32,7 @@ Per-error detail (minlen3):
 6qxe:M EM 4.15 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
 6qxe:O EM 4.15 flagged 110-120 shift -1 | SAbR/ANARCI segment: 106-119 Δ1 CDR3/FR
 6ukt:E EM 3.87 flagged 3-13 shift +2 | SAbR/ANARCI segment: 3-11 Δ-2 FR
+6uqr:A X-ray 3.65029109708 flagged 103-120 shift -3 | SAbR/ANARCI segment: 104-120 Δ3 CDR3/FR
 6wju:A X-ray 3.1 flagged 27-32 shift -3 | SAbR/ANARCI segment: none
 6x06:K X-ray 4.27 flagged 103-122 shift -1 | SAbR/ANARCI segment: 106-124 Δ1 CDR3/FR
 7c80:H EM 3.7 flagged 28-107 shift -8 | SAbR/ANARCI segment: 29-118 Δ9 CDR/CDR3/FR

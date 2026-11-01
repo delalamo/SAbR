@@ -1,6 +1,6 @@
 variant,errors,err_sensitivity_any,err_sensitivity_50pct,shift_size_agrees,flagged_chains,chain_sensitivity,unflagged_chains,unflagged_with_segment
-minlen3,131,72.5,71.8,96.8,107,90.7,1362,4.8
-minlen2,131,72.5,71.8,96.8,107,90.7,1362,7.9
-minlen4,131,72.5,71.8,96.8,107,90.7,1362,4.5
-minlen3 FR-only,131,70.2,60.3,96.7,107,86.9,1362,4.3
-minlen3 skip CDR3,131,71.8,62.6,96.8,107,88.8,1362,4.4
+minlen3,134,73.1,72.4,96.9,110,90.9,1400,4.7
+minlen2,134,73.1,72.4,96.9,110,90.9,1400,7.8
+minlen4,134,73.1,72.4,96.9,110,90.9,1400,4.4
+minlen3 FR-only,134,70.9,60.4,96.8,110,87.3,1400,4.3
+minlen3 skip CDR3,134,72.4,62.7,96.9,110,89.1,1400,4.4

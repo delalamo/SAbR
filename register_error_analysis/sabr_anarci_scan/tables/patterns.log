@@ -1,114 +1,123 @@
-== V domains analysed: 15829  entries: 4079
+== V domains analysed: 16636  entries: 4630
 era
-new (released after Apr 2022)     3.5% (323/9137)
-snapshot (released ≤ Apr 2022)    4.7% (312/6692)
+new (released after Apr 2022)     3.7% (360/9745)
+snapshot (released ≤ Apr 2022)    4.7% (326/6891)
 
 == By deposition period x method (V domains with ≥1 SAbR/ANARCI disagreement run)
 method              EM          X-ray
 ybin                                 
-2018–19   8.6% (n=801)   0.9% (n=670)
-2020–21  7.8% (n=2390)   1.8% (n=965)
-2022–23  3.2% (n=3268)   1.2% (n=886)
-2024–26  4.9% (n=3875)   1.5% (n=612)
-≤2017     6.8% (n=177)  1.5% (n=2185)
+2018–19   8.4% (n=818)   1.6% (n=708)
+2020–21  7.7% (n=2482)   1.7% (n=989)
+2022–23  3.3% (n=3526)   1.3% (n=908)
+2024–26  4.9% (n=4135)   1.9% (n=629)
+≤2017     6.3% (n=189)  1.9% (n=2252)
 
 == By method x resolution, new vs snapshot
 era                  new (released after Apr 2022) snapshot (released ≤ Apr 2022)
 method rb                                                                        
-EM     (2.999, 3.25]                 5.5% (n=2487)                   7.6% (n=537)
-       (3.25, 3.5]                   3.0% (n=2167)                  11.4% (n=711)
-       (3.5, 3.75]                   2.7% (n=1080)                   7.6% (n=569)
-       (3.75, 4.0]                    4.8% (n=899)                   7.8% (n=580)
-       (4.0, 5.0]                     3.3% (n=823)                   7.3% (n=658)
-X-ray  (2.999, 3.25]                  1.1% (n=745)                  1.2% (n=1801)
-       (3.25, 3.5]                    1.9% (n=427)                   2.0% (n=870)
-       (3.5, 3.75]                    1.3% (n=231)                   1.9% (n=376)
-       (3.75, 4.0]                    1.6% (n=126)                   0.3% (n=330)
-       (4.0, 5.0]                     0.7% (n=152)                   3.1% (n=260)
+EM     (2.999, 3.25]                 5.5% (n=2778)                   7.2% (n=570)
+       (3.25, 3.5]                   3.1% (n=2327)                  11.1% (n=731)
+       (3.5, 3.75]                   3.2% (n=1142)                   7.5% (n=571)
+       (3.75, 4.0]                    4.8% (n=934)                   7.6% (n=589)
+       (4.0, 5.0]                     3.2% (n=831)                   7.1% (n=677)
+X-ray  (2.999, 3.25]                  1.2% (n=771)                  1.3% (n=1844)
+       (3.25, 3.5]                    1.8% (n=438)                   2.8% (n=921)
+       (3.5, 3.75]                    1.3% (n=236)                   2.3% (n=393)
+       (3.75, 4.0]                    1.5% (n=131)                   0.3% (n=330)
+       (4.0, 5.0]                     2.5% (n=157)                   3.0% (n=265)
+
+== Multi-domain (scFv etc.) vs single-domain chains, by era x method
+md                                             False          True 
+era                            method                              
+new (released after Apr 2022)  EM      4.0% (n=7484)   5.9% (n=528)
+                               X-ray   1.3% (n=1683)    8.0% (n=50)
+snapshot (released ≤ Apr 2022) EM      8.4% (n=3055)    0.0% (n=83)
+                               X-ray   1.5% (n=3643)  12.7% (n=110)
 
 == Adjusted model, all V domains (period vs 2018–19; method x resolution, chain type, V length)
-                                             OR     lo     hi      p
-C(ybin, Treatment('2018–19'))[T.2020–21]  0.935  0.605  1.446  0.762
-C(ybin, Treatment('2018–19'))[T.2022–23]  0.365  0.229  0.579  0.000
-C(ybin, Treatment('2018–19'))[T.2024–26]  0.508  0.318  0.812  0.005
-C(ybin, Treatment('2018–19'))[T.≤2017]    0.857  0.458  1.606  0.631
-C(chain_type)[T.K]                        0.194  0.129  0.294  0.000
-C(chain_type)[T.L]                        0.413  0.277  0.617  0.000
-prior_hires                               1.170  0.876  1.562  0.288
+                                               OR      lo        hi      p
+C(ybin, Treatment('2018–19'))[T.2020–21]    0.891   0.583     1.362  0.595
+C(ybin, Treatment('2018–19'))[T.2022–23]    0.374   0.240     0.582  0.000
+C(ybin, Treatment('2018–19'))[T.2024–26]    0.509   0.324     0.799  0.003
+C(ybin, Treatment('2018–19'))[T.≤2017]      0.878   0.480     1.606  0.672
+C(ctype)[T.K]                               0.179   0.120     0.268  0.000
+C(ctype)[T.L]                               0.377   0.252     0.562  0.000
+C(ctype)[T.multi-domain (scFv etc.)]      439.854  75.886  2549.490  0.000
+prior_hires                                 1.025   0.759     1.383  0.874
 
 == EM vs X-ray at matched resolution, by era
 new (released after Apr 2022)
                                         OR     lo     hi    p
-C(method, Treatment('X-ray'))[T.EM]  3.275  1.778  6.032  0.0
+C(method, Treatment('X-ray'))[T.EM]  2.858  1.629  5.015  0.0
 snapshot (released ≤ Apr 2022)
                                         OR     lo     hi    p
-C(method, Treatment('X-ray'))[T.EM]  5.668  3.476  9.241  0.0
+C(method, Treatment('X-ray'))[T.EM]  4.546  2.861  7.225  0.0
 
 == SARS-CoV-2 complexes vs other antibody entries, by period (EM only)
 sars2            False          True 
 ybin                                 
-2018–19   8.6% (n=801)            NaN
-2020–21  9.2% (n=1294)  6.1% (n=1096)
-2022–23  3.9% (n=2240)  1.6% (n=1028)
-2024–26  5.3% (n=3365)   1.8% (n=510)
-≤2017     6.8% (n=177)            NaN
+2018–19   8.4% (n=818)            NaN
+2020–21  8.9% (n=1381)  6.1% (n=1101)
+2022–23  3.9% (n=2457)  1.9% (n=1069)
+2024–26  5.4% (n=3615)   1.7% (n=520)
+≤2017     6.3% (n=189)            NaN
 
 == Antibody role (EM), by era
 role                                  Antibody of interest      Auxiliary
 era                            method                                    
-new (released after Apr 2022)  EM            3.2% (n=5807)  3.8% (n=1341)
-                               X-ray         1.6% (n=1166)   1.8% (n=170)
-snapshot (released ≤ Apr 2022) EM            8.1% (n=2497)   3.3% (n=448)
-                               X-ray         2.1% (n=2223)   0.9% (n=549)
+new (released after Apr 2022)  EM            3.3% (n=5896)  4.0% (n=1805)
+                               X-ray         1.8% (n=1207)   1.8% (n=170)
+snapshot (released ≤ Apr 2022) EM            8.1% (n=2515)   2.9% (n=511)
+                               X-ray         2.5% (n=2304)   0.9% (n=555)
 new (released after Apr 2022) adjusted:
                 OR     lo     hi      p
-aux          0.781  0.360  1.692  0.531
-prior_hires  0.912  0.529  1.572  0.740
+aux          0.629  0.287  1.377  0.246
+prior_hires  0.820  0.472  1.425  0.481
 snapshot (released ≤ Apr 2022) adjusted:
                 OR     lo     hi      p
-aux          0.313  0.174  0.564  0.000
-prior_hires  1.490  0.999  2.222  0.051
+aux          0.246  0.128  0.475  0.000
+prior_hires  1.437  0.961  2.149  0.077
 
 == Prior high-resolution model of the same V region, by era
 prior_hires                                 0              1
 era                                                         
-new (released after Apr 2022)   3.8% (n=7086)  2.7% (n=2051)
-snapshot (released ≤ Apr 2022)  4.2% (n=4952)  5.9% (n=1740)
+new (released after Apr 2022)   3.9% (n=7270)  3.0% (n=2475)
+snapshot (released ≤ Apr 2022)  4.4% (n=5079)  5.6% (n=1812)
 
 == Journal tier (new era)
 tier
-CNS                    2.5% (n=950)
-CNS sister journal    2.5% (n=4141)
-Other journal         4.9% (n=2737)
-Unpublished           4.7% (n=1309)
+CNS                   3.0% (n=1060)
+CNS sister journal    2.9% (n=4427)
+Other journal         4.8% (n=2883)
+Unpublished           4.6% (n=1375)
 
 == Where the disagreement runs start (IMGT region), by era and chain type
 loc                                        CDR1  CDR2  CDR3   FR1   FR2   FR3   FR4
 era                            chain_type                                          
-new (released after Apr 2022)  heavy       0.04  0.11  0.18  0.18  0.02  0.32  0.15
+new (released after Apr 2022)  heavy       0.04  0.12  0.18  0.18  0.02  0.31  0.15
                                light       0.08  0.03  0.09  0.60  0.01  0.10  0.09
 snapshot (released ≤ Apr 2022) heavy       0.02  0.05  0.21  0.15  0.02  0.49  0.06
                                light       0.01  0.03  0.27  0.52  0.01  0.09  0.07
 shift size |Δ|:
-delta                           1.0   2.0   3.0   4.0   5.0   6.0   7.0   9.0   10.0  11.0  12.0  15.0  17.0  19.0  23.0  28.0  45.0  48.0
-era                                                                                                                                       
-new (released after Apr 2022)   0.56  0.22  0.04  0.03  0.01   0.0   0.0  0.01  0.00   0.0  0.01  0.01  0.02  0.02  0.01  0.02  0.01  0.02
-snapshot (released ≤ Apr 2022)  0.75  0.13  0.03  0.00  0.00   0.0   0.0  0.00  0.03   0.0  0.00  0.00  0.00  0.00  0.02  0.00  0.00  0.03
+delta                           1.0   2.0   3.0   4.0   5.0   6.0   7.0   8.0   9.0   10.0  11.0  12.0  15.0  16.0  17.0  18.0  19.0  23.0  28.0  45.0  48.0  49.0
+era                                                                                                                                                               
+new (released after Apr 2022)   0.58  0.19  0.05  0.03  0.01  0.01   0.0  0.01  0.01  0.00   0.0  0.01  0.01  0.01  0.02   0.0  0.01  0.01  0.02  0.01  0.02   0.0
+snapshot (released ≤ Apr 2022)  0.74  0.13  0.04  0.00  0.00  0.00   0.0  0.00  0.00  0.03   0.0  0.00  0.00  0.00  0.00   0.0  0.00  0.02  0.00  0.00  0.03   0.0
 
 == Identical errors (same V sequence, same position, same shift)
- error families: 271 | in ≥2 entries: 45 | ≥2 papers: 15 | ≥2 labs: 10
+ error families: 305 | in ≥2 entries: 50 | ≥2 papers: 17 | ≥2 labs: 12
  families seen in both snapshot and new entries: 6
- new-era disagreement runs: 343; same error already deposited earlier by a different paper: 43 (13%)
+ new-era disagreement runs: 385; same error already deposited earlier by a different paper: 47 (12%)
                                                              name example  entries  papers  labs      first       last                                                         eras  loc  delta
                                           8ANC195 Fab Heavy Chain    7kde       11       8     4 2014-04-04 2023-02-16 new (released after Apr 2022)+snapshot (released ≤ Apr 2022)  FR3    1.0
                                                 1B2 (light chain)    7m7e       12       4     3 2021-03-28 2025-06-27 new (released after Apr 2022)+snapshot (released ≤ Apr 2022)  FR1   -1.0
                                   HEAVY CHAIN OF ANTIBODY 3BNC117    4lsv       11       8     3 2013-07-23 2025-10-10 new (released after Apr 2022)+snapshot (released ≤ Apr 2022)  FR3    NaN
 Anti-Rev Antibody Fab single-chain variable fragment, heavy chain    5dhz        4       3     3 2010-03-01 2018-02-13                               snapshot (released ≤ Apr 2022)  FR3    1.0
                                           heavy chain of FC05 Fab    7cwu        6       3     2 2020-08-31 2021-02-20                               snapshot (released ≤ Apr 2022)  FR1   -1.0
+                                                           scFv16    7xk2        4       2     2 2022-04-19 2023-02-22                                new (released after Apr 2022)  FR1   -1.0
                                        WRAIR-2123 Fab Light chain    8f2x        2       2     2 2022-11-08 2023-04-26                                new (released after Apr 2022)  FR1   -1.0
+                                                           ScFv16    7x1u        2       2     2 2022-02-24 2025-09-04                                new (released after Apr 2022) CDR3    1.0
                                        WRAIR-2123 Fab Heavy chain    8f2x        2       2     2 2022-11-08 2023-04-26                                new (released after Apr 2022) CDR3    1.0
                                          VRC40.01 Fab Heavy chain    7ll1        2       1     2 2021-01-19 2021-02-03                               snapshot (released ≤ Apr 2022)  FR3    NaN
                                                   Fab light chain    6cmo        2       2     2 2018-03-05 2019-05-02                               snapshot (released ≤ Apr 2022)  FR1   -2.0
                           10-1074 Light Chain,10-1074 Light Chain    6okp        2       2     2 2019-04-14 2022-05-25 new (released after Apr 2022)+snapshot (released ≤ Apr 2022)  FR3    2.0
-                                                VRC03 Heavy Chain    6cde       11       3     1 2018-02-08 2019-05-02                               snapshot (released ≤ Apr 2022)  FR3    NaN
-                                              Heavy chain of 6D10    8gsd        4       1     1 2022-09-06 2022-09-06                                new (released after Apr 2022) CDR1    NaN

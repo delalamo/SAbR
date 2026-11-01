@@ -1,31 +1,31 @@
 == Fit of the segment to the map, as percentile within its own V domain (50 = typical; lower = worse)
                                                                  size  median  % below 25th
 era                            method set                                                  
-new (released after Apr 2022)  EM     control (no disagreement)   210    40.6          17.1
-                                      detected                    263    35.2          33.8
-                               X-ray  control (no disagreement)   206    33.5          33.0
-                                      detected                     22    17.3          68.2
-snapshot (released ≤ Apr 2022) EM     control (no disagreement)   207    44.6          13.5
+new (released after Apr 2022)  EM     control (no disagreement)   212    40.8          17.5
+                                      detected                    300    35.6          33.3
+                               X-ray  control (no disagreement)   218    35.4          28.9
+                                      detected                     27    17.3          66.7
+snapshot (released ≤ Apr 2022) EM     control (no disagreement)   212    45.1          15.1
                                       detected                    245    34.9          28.2
-                               X-ray  control (no disagreement)   211    34.3          28.9
-                                      detected                     53    15.0          69.8
+                               X-ray  control (no disagreement)   209    38.2          23.4
+                                      detected                     69    17.0          65.2
 
 == Detected runs by kind
                                                               size  median
 era                            kind                                       
-new (released after Apr 2022)  framework shift                 204    34.8
-                               no framework shift measurable    44    18.8
+new (released after Apr 2022)  framework shift                 244    35.2
+                               no framework shift measurable    46    20.4
                                shift in FR3 80–86 (DE loop)     37    39.5
-snapshot (released ≤ Apr 2022) framework shift                 195    36.5
-                               no framework shift measurable    66    18.6
+snapshot (released ≤ Apr 2022) framework shift                 205    36.4
+                               no framework shift measurable    72    19.0
                                shift in FR3 80–86 (DE loop)     37    29.6
 
 == Snapshot detections: overlapping a conkit flag vs not
                 size  median
 conkit_overlap              
-False            206    30.4
-True              92    36.9
-snapshot (released ≤ Apr 2022) EM: framework-shift detections median 40 vs control 45; Mann-Whitney p=0.046
-snapshot (released ≤ Apr 2022) X-ray: framework-shift detections median 15 vs control 34; Mann-Whitney p=8.1e-07
-new (released after Apr 2022) EM: framework-shift detections median 37 vs control 41; Mann-Whitney p=0.047
-new (released after Apr 2022) X-ray: framework-shift detections median 15 vs control 33; Mann-Whitney p=0.0013
+False            219    30.5
+True              95    36.5
+snapshot (released ≤ Apr 2022) EM: framework-shift detections median 40 vs control 45; Mann-Whitney p=0.025
+snapshot (released ≤ Apr 2022) X-ray: framework-shift detections median 15 vs control 38; Mann-Whitney p=6.1e-09
+new (released after Apr 2022) EM: framework-shift detections median 37 vs control 41; Mann-Whitney p=0.094
+new (released after Apr 2022) X-ray: framework-shift detections median 16 vs control 35; Mann-Whitney p=0.00024

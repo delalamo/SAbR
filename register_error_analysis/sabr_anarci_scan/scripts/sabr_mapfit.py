@@ -4,7 +4,7 @@ sys.path.insert(0,f'{SP}/scripts'); from sabr_eval import region
 O=f'{SP}/sabr/out'
 CH=pd.read_pickle(f'{O}/chains_flags.pkl')
 recs={}
-for f in ['validation.jsonl','snapshot_rest.jsonl','new.jsonl']:
+for f in ['validation.jsonl','snapshot_rest.jsonl','new.jsonl','validation_multi.jsonl','snapshot_rest_multi.jsonl','new_multi.jsonl']:
     for l in open(f'{O}/{f}'):
         r=json.loads(l)
         if r.get('status')=='ok': recs[(r['pdb'],r['chain'])]=r['residues']

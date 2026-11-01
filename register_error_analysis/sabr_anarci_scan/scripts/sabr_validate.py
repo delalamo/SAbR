@@ -2,7 +2,7 @@ import json, sys, numpy as np, pandas as pd
 sys.path.insert(0,'/tmp/claude-0/-home-user-SAbR/6a27914d-ea1e-53f7-8565-6fae32e14167/scratchpad/scripts')
 from sabr_eval import segments, region
 SP='/tmp/claude-0/-home-user-SAbR/6a27914d-ea1e-53f7-8565-6fae32e14167/scratchpad'
-recs=[json.loads(l) for l in open(f'{SP}/sabr/out/validation.jsonl')]
+recs=[json.loads(l) for f in ['validation.jsonl','validation_multi.jsonl'] for l in open(f'{SP}/sabr/out/{f}')]
 ok={(r['pdb'],r['chain']):r for r in recs if r.get('status')=='ok'}
 t=pd.read_excel('/tmp/supp/epmc/m-11-00938-sup2.xlsx'); t[['pdb','chain']]=t.PDB_CHAIN_ID.str.split(':',expand=True); t['pdb']=t.pdb.str.lower()
 rr=t.RESIDUE_RANGE.str.extract(r'(-?\d+)\s*-\s*(-?\d+)').astype(int); t['rs'],t['re']=rr[0],rr[1]
