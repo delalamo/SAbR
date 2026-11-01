@@ -69,10 +69,12 @@ def missing_between(structure, chain, residue_ids, mmcif_dict=None):
     missing = {}
     invalid = set()
     observed = set(residue_ids)
+    # Structures assembled in code have no ``header`` attribute.
+    header = getattr(structure, "header", None) or {}
     records = (
         missing_residues_from_mmcif(mmcif_dict)
         if mmcif_dict is not None
-        else structure.header.get("missing_residues", [])
+        else header.get("missing_residues", [])
     )
     for record in records:
         if record.get("chain") != chain or record.get("model") not in (
