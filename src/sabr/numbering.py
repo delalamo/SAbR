@@ -270,6 +270,12 @@ def _number_domain_alignment(
         states, padded_sequence, scheme, chain_type
     )
     numbered = [entry for entry in numbered if entry[1] != "-"]
+    if start is None or end is None:
+        raise ValueError(
+            f"No residues could be numbered for chain type {chain_type}; "
+            "the selection may be too short or may not contain an antibody "
+            "variable domain."
+        )
     if not 0 <= start <= end < len(padded_sequence):
         raise ValueError(
             f"ANARCI returned invalid sequence bounds {start}:{end}."

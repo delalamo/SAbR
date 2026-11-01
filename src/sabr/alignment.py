@@ -86,6 +86,16 @@ def _affine_value_and_grad(
     """
     similarities = np.asarray(similarities, dtype=np.float32)
     rows, columns = similarities.shape
+    if rows < 2:
+        raise ValueError(
+            "Alignment requires at least two residues with complete "
+            f"backbones; the selection contains {rows}."
+        )
+    if columns < 2:
+        raise ValueError(
+            "Alignment requires at least two reference positions; "
+            f"got {columns}."
+        )
     mask = (np.arange(rows) < lengths[0])[:, None] & (
         np.arange(columns) < lengths[1]
     )[None, :]
