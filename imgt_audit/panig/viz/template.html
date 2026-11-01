@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IMGT vs Pan-Ig Numbering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a lab-notebook explainer. One domain is selected at a time; every panel redraws for it.
+   Front sheet (ABED) strands are cool blues/teals, back sheet (A'GFCC'C'') strands are warm. */
+:root {
+  --bg: #f6f7f5;
+  --panel: #ffffff;
+  --ink: #1c2321;
+  --muted: #5d6965;
+  --rule: #d9dedb;
+  --accent: #c2410c;        /* "differs from IMGT" */
+  --fill: #eef1ef;          /* loop / positional background */
+  --cdr: #ece6f5;           /* CDR-equivalent loops */
+  --sheet-front: #1f6f9f;
+  --sheet-back: #b45309;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa6a1; --rule: #2e3734;
+    --accent: #fb923c; --fill: #232a28; --cdr: #2b2638; --sheet-front: #5fb3e4; --sheet-back: #f0a24b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa6a1; --rule: #2e3734;
+  --accent: #fb923c; --fill: #232a28; --cdr: #2b2638; --sheet-front: #5fb3e4; --sheet-back: #f0a24b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+main { max-width: 1240px; margin: 0 auto; padding: 28px 20px 64px; display: grid; gap: 22px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: 30px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+p { margin: 0; max-width: 72ch; }
+.lede { color: var(--muted); }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; display: grid; gap: 12px; min-width: 0; align-content: start; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.panel-head p { color: var(--muted); font-size: 14px; }
+.picker { display: grid; gap: 8px; }
+.picker-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.picker-row .grp { font: 600 12px var(--display); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); width: 64px; }
+.chip { font: 500 13px var(--body); border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.chip:hover { border-color: var(--muted); }
+.chip:focus-visible { outline: 2px solid var(--sheet-front); outline-offset: 2px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip .pct { font: 12px var(--mono); opacity: 0.75; }
+.chip.flag::after { content: "!"; font: 600 11px var(--mono); color: var(--accent); }
+.chip[aria-pressed="true"].flag::after { color: var(--accent); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.scroll { overflow-x: auto; }
+svg { display: block; max-width: 100%; height: auto; font-family: var(--body); }
+svg.wide { max-width: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 14px; height: 10px; border-radius: 2px; display: inline-block; border: 1px solid transparent; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 10px; }
+.fact { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; }
+.fact b { display: block; font: 600 20px var(--mono); font-variant-numeric: tabular-nums; }
+.fact small { color: var(--muted); font-size: 12px; }
+ul.notes { margin: 0; padding-left: 18px; display: grid; gap: 6px; max-width: 75ch; }
+.status { display: inline-block; font: 600 11px var(--display); text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.status.ok { color: var(--sheet-front); }
+.status.warn { color: var(--accent); }
+.bars { display: grid; grid-template-columns: 112px 1fr 44px; gap: 4px 8px; align-items: center; font-size: 12.5px; }
+.bars .track { height: 8px; background: var(--fill); border-radius: 4px; overflow: hidden; }
+.bars .bar { height: 100%; background: var(--accent); }
+.bars .v { font: 12px var(--mono); color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.ins { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px; }
+.ins div { display: grid; gap: 4px; }
+.ins code { font: 12.5px var(--mono); }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.rules section { display: grid; gap: 6px; align-content: start; }
+.rules ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; font-size: 14px; }
+code { font-family: var(--mono); font-size: 0.92em; }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font: 12px/1.4 var(--mono); padding: 6px 8px; border-radius: 6px; max-width: 280px; z-index: 10; display: none; white-space: pre-line; }
+.foot { color: var(--muted); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) { .chip { transition: background 0.12s, color 0.12s; } }
+</style>
+</head>
+<body>
+<main>
+  <header style="display:grid; gap:8px">
+    <h1>IMGT vs pan-Ig numbering, domain by domain</h1>
+    <p class="lede">Both schemes number on the same 1–128 V-domain frame. Pan-Ig splits the frame into 82 <b>anchors</b>, structural claims checked across domain types, and <b>positional</b> numbers filled between anchors by IMGT's CDR rule. Pick a domain type to see where its strands sit in the fold, which numbers change and where the fill rule takes over. Each type is shown through one representative structure; the statistics cover all domains of that type in the dataset.</p>
+  </header>
+
+  <section class="panel" aria-label="Domain picker">
+    <div class="picker" id="picker"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head"><h2 id="topo-title">Where the strands sit</h2><p>Observed β-strands (from backbone H-bonds) placed on the two sheets</p></div>
+      <figure style="margin:0">
+        <svg id="topo" viewBox="0 0 700 430" role="img" aria-label="Ig fold topology with the selected domain's observed strands"></svg>
+        <figcaption class="foot" id="topo-cap"></figcaption>
+      </figure>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2 id="sum-title">Summary</h2><span id="sum-status"></span></div>
+      <div class="facts" id="facts"></div>
+      <ul class="notes" id="notes"></ul>
+      <h3>Labels that differ from IMGT, by IMGT region (all domains of this type)</h3>
+      <div class="bars" id="bars"></div>
+      <h3>Where insertions go (per domain, average)</h3>
+      <div class="ins" id="ins"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head"><h2 id="strip-title">Residue by residue</h2><p>Hover a residue for details. Orange columns change number between schemes.</p></div>
+    <div class="scroll" id="strip-wrap"><svg id="strip" class="wide" role="img" aria-label="Per-residue IMGT and pan-Ig labels for the representative structure"></svg></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>The frame across all domain types</h2><p>How often each frame number is used: IMGT row above, pan-Ig row below. Circles mark insertion points, sized by insertions per domain. Click a row to select that type.</p></div>
+    <div class="scroll"><svg id="frame" class="wide" role="img" aria-label="Frame occupancy and insertion points for every domain type, IMGT versus pan-Ig"></svg></div>
+  </section>
+
+  <section class="panel">
+    <h2>Rules and details that are easy to miss</h2>
+    <div class="rules">
+      <section>
+        <h3>What stays the same as IMGT</h3>
+        <ul>
+          <li>The 1–128 V-domain frame and strand positions (A 1–15, B 16–26, C 39–46, C′ 47–55, C″ 66–74, D 75–84, E 85–96, F 97–104, G 118–128).</li>
+          <li>CDR fill rule and apex pairs: CDR1 32/33, CDR2 60/61, CDR3 111/112. Left insertions <code>n.1, n.2…</code>, right insertions <code>m.k…m.1</code>; the first extra residue goes right.</li>
+          <li>N-terminal overflow <code>1.1, 1.2…</code> (IMGT C-domain style) and the conserved landmarks Cys23, Trp41, hydrophobic 89, Cys104 and J-motif 118.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>What pan-Ig changes</h3>
+        <ul>
+          <li>An anchor number is given only when the residue sits within 3.5 Å of that site (with matching Cβ direction) after superposition on the class consensus frame.</li>
+          <li>Every run of non-anchor numbers is a positional segment with one fixed apex. Loop insertions go to that apex: <code>8.x</code>, <code>49.x</code>, <code>55.1</code>, <code>71.x</code>, <code>82.x/83.x</code>, <code>95.x</code>, <code>98.x/99.x</code>, instead of IMGT's C-domain points <code>45.x</code>, <code>84.x/85.x</code>, <code>15.x</code>.</li>
+          <li>Strict policy: an anchor number a domain does not structurally occupy is left empty, never reused as filler. Neighbouring loop residues shift around it.</li>
+          <li>Residues past the last free number continue as 129, 130… instead of being forced onto G-strand numbers.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Structural facts behind the differences</h3>
+        <ul>
+          <li><b>A/A′ switch.</b> In V domains strand A crosses from the ABED sheet (A) to the other sheet (A′, positions 9–16, parallel to G). C1 domains have no A′, so their residues there are insertions <code>8.x</code>.</li>
+          <li><b>C2/I-set and FN3 have C′, not D.</b> The strand IMGT numbers 75–84 is H-bonded into the A′GFCC′ sheet, where C′ lives. D always belongs to the ABED sheet.</li>
+          <li><b>C1 C→D crossover.</b> The residues IMGT writes as 45.x form a short strand on the back sheet at the V-domain C′ position (anchors 50–54).</li>
+          <li><b>C″ can switch sheets.</b> In the Vα and Vδ representatives C″ pairs with D on the ABED sheet, so VH's C″ anchors (65–67) go unclaimed.</li>
+        </ul>
+      </section>
+      <section>
+        <h3>Caveats</h3>
+        <ul>
+          <li><b>TRAC (TCR Cα) is mis-registered by pan-Ig.</b> Its disulfide cysteines (IMGT 23/104, Cβ–Cβ 3.9 Å) superpose on Cβ/CH1's own disulfide, so IMGT is right. Pan-Ig slid strand B by two residues. A fix (a disulfide constraint plus a global register check) is proposed, not yet applied.</li>
+          <li>The local honesty test cannot see a whole strand shifted by two residues, because a β-strand repeats every ~6.8 Å. Shifts of two or more residues (FN3 G strand, some V-like registers) are unverified.</li>
+          <li>Strands shown here come from one representative structure per type; strand ends vary between structures.</li>
+          <li>γδ V statistics rest on 6 domains each; FN3 on 14 and 11.</li>
+        </ul>
+      </section>
+    </div>
+  </section>
+  <p class="foot">Data: 1,727 Ig-fold domains from the PDB, IMGT labels from IMGT/DomainGapAlign, pan-Ig labels from the 82-anchor scheme (see <code>imgt_audit/PANIG.md</code> on branch <code>imgt-structural-audit</code>). β-strands and sheets come from a Kabsch–Sander H-bond calculation on each representative structure.</p>
+</main>
+<div class="tip" id="tip"></div>
+<script>
+const DATA = __DATA__;
+const NOTES = __NOTES__;
+
+const STRANDS = [
+  {n: "A", a: 1, b: 8, sheet: "front"}, {n: "A'", a: 9, b: 16, sheet: "back"}, {n: "B", a: 17, b: 26, sheet: "front"},
+  {n: "C", a: 39, b: 46, sheet: "back"}, {n: "C'", a: 47, b: 55, sheet: "back"}, {n: "C''", a: 66, b: 74, sheet: "back"},
+  {n: "D", a: 75, b: 84, sheet: "front"}, {n: "E", a: 85, b: 96, sheet: "front"}, {n: "F", a: 97, b: 104, sheet: "back"},
+  {n: "G", a: 118, b: 128, sheet: "back"}];
+const COLORS = {"A": "#2b7bb9", "B": "#1aa0a8", "E": "#3b5fc4", "D": "#5aa9d6",
+  "A'": "#d97706", "G": "#c2410c", "F": "#dc2626", "C": "#be185d", "C'": "#9333ea", "C''": "#a16207"};
+const LOOPS = [{n: "BC · CDR1", a: 27, b: 38, cdr: true}, {n: "C′C″ · CDR2", a: 56, b: 65, cdr: true}, {n: "FG · CDR3", a: 105, b: 117, cdr: true}];
+const pretty = s => s == null ? "" : s.replace(/''/g, "″").replace(/'/g, "′");
+const num = l => { const m = /^(\d+)/.exec(String(l)); return m ? +m[1] : null; };
+const strandOf = l => { const n = num(l); if (n == null) return null; const s = STRANDS.find(s => n >= s.a && n <= s.b); return s ? s.n : null; };
+const isCdr = l => { const n = num(l); return n != null && LOOPS.some(L => n >= L.a && n <= L.b); };
+const cssVar = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const ANCHORS = new Set(DATA.meta.anchors);
+
+let cur = DATA.domains.findIndex(d => d.cls === "C-LIKE:IgSF");
+try { const h = location.hash.slice(1); const k = DATA.domains.findIndex(d => d.cls.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase() === h); if (k >= 0) cur = k; } catch (e) {}
+
+// ---------------------------------------------------------------- picker + legend
+function buildPicker() {
+  const groups = [["V", "V"], ["V-like", "V-like"], ["C1", "C1"], ["C2/I", "C2/I"], ["FN3", "FN3"]];
+  const el = document.getElementById("picker"); el.innerHTML = "";
+  for (const [g, label] of groups) {
+    const row = document.createElement("div"); row.className = "picker-row";
+    row.innerHTML = `<span class="grp">${label}</span>`;
+    DATA.domains.forEach((d, k) => {
+      if (d.type !== g) return;
+      const b = document.createElement("button");
+      b.className = "chip" + (d.cls === "C-ALPHA" ? " flag" : ""); b.id = "chip-" + k;
+      b.setAttribute("aria-pressed", k === cur ? "true" : "false");
+      b.innerHTML = `${esc(d.name)} <span class="pct">${Math.round(100 * d.mean_identity)}%</span>`;
+      b.title = `${d.n} domains; ${Math.round(100 * d.mean_identity)}% of labels identical to IMGT`;
+      b.onclick = () => select(k);
+      row.appendChild(b);
+    });
+    el.appendChild(row);
+  }
+  const lg = document.getElementById("legend");
+  lg.innerHTML = STRANDS.map(s => `<span><i class="sw" style="background:${COLORS[s.n]}"></i>${pretty(s.n)}</span>`).join("") +
+    `<span><i class="sw" style="background:var(--cdr)"></i>CDR-equivalent loop</span>` +
+    `<span><i class="sw" style="background:var(--fill)"></i>other loop</span>` +
+    `<span style="margin-left:8px">Chip % = labels identical to IMGT</span>`;
+}
+
+function select(k) {
+  cur = k;
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.id === "chip-" + k ? "true" : "false"));
+  try { history.replaceState(null, "", "#" + DATA.domains[k].cls.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase()); } catch (e) {}
+  render();
+}
+
+// ---------------------------------------------------------------- tooltip
+const tip = document.getElementById("tip");
+function bindTips(svg) {
+  svg.addEventListener("mousemove", e => {
+    const t = e.target.closest("[data-tip]");
+    if (!t) { tip.style.display = "none"; return; }
+    tip.textContent = t.getAttribute("data-tip"); tip.style.display = "block";
+    const x = Math.min(e.clientX + 14, window.innerWidth - 290); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px";
+  });
+  svg.addEventListener("mouseleave", () => tip.style.display = "none");
+}
+
+// ---------------------------------------------------------------- topology
+function renderTopo(d) {
+  const svg = document.getElementById("topo");
+  const ink = "currentColor";
+  const front = ["A", "B", "E", "D"], back = ["A'", "G", "F", "C", "C'", "C''"];
+  const dir = {"A": -1, "A'": -1, "B": 1, "C": -1, "C'": 1, "C''": -1, "D": 1, "E": -1, "F": 1, "G": -1}; // +1 = up (toward CDR end)
+  const obs = {};
+  for (const s of d.strands) { if (!COLORS[s.pan]) continue; (obs[s.pan] = obs[s.pan] || []).push(s); }
+  const W = 56, gap = 14, top = 92, h = 210;
+  let out = `<text x="350" y="22" text-anchor="middle" font-size="12" fill="${ink}" opacity="0.7">CDR / ligand end · loops BC (CDR1), C′C″ (CDR2), FG (CDR3), DE</text>`;
+  out += `<text x="350" y="420" text-anchor="middle" font-size="12" fill="${ink}" opacity="0.7">other end · loops A′B, CC′, C″D, EF</text>`;
+  const sheetBox = (x0, names, label, color) => {
+    const w = names.length * (W + gap) - gap + 28;
+    out += `<rect x="${x0}" y="${top - 44}" width="${w}" height="${h + 88}" rx="10" fill="none" stroke="${color}" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+    out += `<text x="${x0 + 12}" y="${top - 26}" font-size="12.5" font-weight="600" fill="${color}">${label}</text>`;
+    names.forEach((n, i) => {
+      const x = x0 + 14 + i * (W + gap), s = STRANDS.find(t => t.n === n), seen = obs[n];
+      const col = COLORS[n], up = dir[n] === 1;
+      const y0 = top, y1 = top + h;
+      const pts = up ? `${x},${y1} ${x},${y0 + 18} ${x - 6},${y0 + 18} ${x + W / 2},${y0} ${x + W + 6},${y0 + 18} ${x + W},${y0 + 18} ${x + W},${y1}`
+                     : `${x},${y0} ${x},${y1 - 18} ${x - 6},${y1 - 18} ${x + W / 2},${y1} ${x + W + 6},${y1 - 18} ${x + W},${y1 - 18} ${x + W},${y0}`;
+      const imgtNames = seen ? [...new Set(seen.map(t => t.imgt))].filter(m => m !== n) : [];
+      const tipTxt = `${pretty(n)} strand · frame ${s.a}–${s.b}\n` + (seen ? seen.map(t => `observed: pan ${t.pan_range} · IMGT ${t.imgt_range} (${pretty(t.imgt) || "loop"})`).join("\n") : "not observed as a strand in this structure");
+      out += `<g data-tip="${esc(tipTxt)}">`;
+      out += `<polygon points="${pts}" fill="${seen ? col : "none"}" fill-opacity="${seen ? 0.9 : 0}" stroke="${col}" stroke-width="${seen ? 1 : 1.4}" stroke-dasharray="${seen ? "" : "5 4"}" opacity="${seen ? 1 : 0.55}"/>`;
+      out += `<text x="${x + W / 2}" y="${top + h / 2 - 6}" text-anchor="middle" font-size="17" font-weight="600" fill="${seen ? "#fff" : col}" font-family="var(--display)">${pretty(n)}</text>`;
+      out += `<text x="${x + W / 2}" y="${top + h / 2 + 12}" text-anchor="middle" font-size="10.5" fill="${seen ? "#fff" : col}" font-family="var(--mono)">${s.a}–${s.b}</text>`;
+      if (seen) out += `<text x="${x + W / 2}" y="${top + h / 2 + 28}" text-anchor="middle" font-size="10" fill="#fff" font-family="var(--mono)" opacity="0.92">${esc(seen[0].pan_range.split("–")[0] + "–" + seen[seen.length - 1].pan_range.split("–").pop())}</text>`;
+      out += `</g>`;
+      if (imgtNames.length) {
+        out += `<rect x="${x - 4}" y="${top + h + 22}" width="${W + 8}" height="20" rx="4" fill="var(--accent)"/>`;
+        out += `<text x="${x + W / 2}" y="${top + h + 36}" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">IMGT: ${esc(imgtNames.map(m => pretty(m) || "loop").join("/"))}</text>`;
+      }
+      if (!seen) out += `<text x="${x + W / 2}" y="${top + h + 36}" text-anchor="middle" font-size="10.5" fill="${ink}" opacity="0.6">absent</text>`;
+    });
+  };
+  sheetBox(14, front, "ABED sheet", cssVar("--sheet-front"));
+  sheetBox(14 + 4 * (W + gap) + 30, back, "A′GFCC′C″ sheet", cssVar("--sheet-back"));
+  svg.innerHTML = out;
+  const missing = STRANDS.filter(s => !obs[s.n]).map(s => pretty(s.n));
+  const renamed = d.strands.filter(s => COLORS[s.pan] && s.imgt !== s.pan).map(s => `${pretty(s.pan)} (IMGT: ${pretty(s.imgt) || "loop"})`);
+  document.getElementById("topo-cap").textContent =
+    `${d.name}, PDB ${d.pdb.toUpperCase()} chain ${d.chain}. Arrows point along the chain; neighbours are antiparallel except A′–G. ` +
+    (missing.length ? `Not observed as strands: ${missing.join(", ")}. ` : "All ten strands observed. ") +
+    (renamed.length ? `Named differently by IMGT: ${[...new Set(renamed)].join(", ")}.` : "IMGT and pan-Ig name every observed strand the same way.");
+  document.getElementById("topo-title").textContent = `Where the strands sit · ${d.name}`;
+}
+
+// ---------------------------------------------------------------- per-residue strip
+function renderStrip(d) {
+  const svg = document.getElementById("strip");
+  const R = d.residues, cw = 19, x0 = 92, n = R.length;
+  const W = x0 + n * cw + 16, H = 236;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("width", W); svg.setAttribute("height", H);
+  const ink = "currentColor", acc = cssVar("--accent");
+  const rows = {iband: 26, inum: 46, aa: 104, pnum: 124, pband: 178, ss: 196};
+  let out = "";
+  const lab = (y, t) => out += `<text x="${x0 - 10}" y="${y}" text-anchor="end" font-size="11.5" fill="${ink}" opacity="0.75">${t}</text>`;
+  lab(rows.iband + 10, "IMGT strand"); lab(rows.inum + 36, "IMGT"); lab(rows.aa + 13, "residue"); lab(rows.pnum + 26, "pan-Ig"); lab(rows.pband + 8, "pan strand"); lab(rows.ss + 12, "observed β");
+  // band backgrounds and region labels
+  const band = (y, key) => {
+    let k = 0;
+    while (k < n) {
+      const name = R[k][key], cdr = name ? false : isCdr(key === "is" ? R[k].imgt : R[k].pan);
+      let j = k; while (j + 1 < n && R[j + 1][key] === name && (name || isCdr(key === "is" ? R[j + 1].imgt : R[j + 1].pan) === cdr)) j++;
+      const fill = name ? COLORS[name] : (cdr ? "var(--cdr)" : "var(--fill)");
+      out += `<rect x="${x0 + k * cw}" y="${y}" width="${(j - k + 1) * cw - 1}" height="12" rx="2" fill="${fill}"/>`;
+      if (name && (j - k + 1) * cw > 14) out += `<text x="${x0 + (k + j + 1) / 2 * cw}" y="${y + 10}" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">${pretty(name)}</text>`;
+      k = j + 1;
+    }
+  };
+  band(rows.iband, "is"); band(rows.pband, "ps");
+  R.forEach((r, i) => {
+    const x = x0 + i * cw, cx = x + cw / 2, diff = r.imgt !== r.pan;
+    const tipTxt = `${r.aa} (author ${r.auth})\nIMGT ${r.imgt}  →  pan-Ig ${r.pan}\n` +
+      (r.kind === "a" ? "anchor: structural claim" : r.kind === "i" ? "insertion at a positional apex" : "positional: filled by the CDR rule") +
+      (r.ss ? `\nobserved β-strand · ${r.ss === "F" ? "ABED" : "A′GFCC′C″"} sheet` : "");
+    out += `<g data-tip="${esc(tipTxt)}">`;
+    out += `<rect x="${x}" y="${rows.inum - 4}" width="${cw - 1}" height="${rows.ss + 18 - rows.inum + 4}" fill="${diff ? acc : "transparent"}" fill-opacity="${diff ? 0.13 : 0}"/>`;
+    out += `<text transform="translate(${cx + 4},${rows.aa - 4}) rotate(-90)" font-size="11" font-family="var(--mono)" fill="${ink}" opacity="${diff ? 1 : 0.6}">${esc(r.imgt)}</text>`;
+    out += `<text x="${cx}" y="${rows.aa + 14}" text-anchor="middle" font-size="13" font-weight="600" font-family="var(--mono)" fill="${diff ? acc : ink}">${esc(r.aa)}</text>`;
+    const style = r.kind === "a" ? `font-weight="600"` : r.kind === "i" ? `fill="${acc}"` : `font-style="italic" opacity="0.7"`;
+    out += `<text transform="translate(${cx + 4},${rows.pnum + 2}) rotate(-90)" text-anchor="end" font-size="11" font-family="var(--mono)" fill="${ink}" ${style}>${esc(r.pan)}</text>`;
+    if (r.kind === "a") out += `<rect x="${x + 3}" y="${rows.pnum + 44}" width="${cw - 7}" height="3" fill="${ink}" opacity="0.8"/>`;
+    else out += `<rect x="${x + 3}" y="${rows.pnum + 44}" width="${cw - 7}" height="3" fill="none" stroke="${ink}" stroke-width="0.8" stroke-dasharray="2 1.5" opacity="0.6"/>`;
+    if (r.ss) out += `<rect x="${x}" y="${rows.ss}" width="${cw}" height="14" fill="${r.ss === "F" ? cssVar("--sheet-front") : cssVar("--sheet-back")}"/>`;
+    out += `</g>`;
+  });
+  // ticks every 10 residues
+  for (let i = 0; i < n; i += 10) out += `<text x="${x0 + i * cw + cw / 2}" y="${H - 8}" text-anchor="middle" font-size="10" fill="${ink}" opacity="0.5">${i + 1}</text>`;
+  out += `<text x="${x0}" y="12" font-size="11.5" fill="${ink}" opacity="0.75">Under the pan-Ig numbers: solid bar = anchor (structural claim), dashed = positional fill; orange numbers are insertions. Bottom bar: blue = ABED sheet, amber = A′GFCC′C″ sheet.</text>`;
+  svg.innerHTML = out;
+  document.getElementById("strip-title").textContent = `Residue by residue · ${d.name} (${d.pdb.toUpperCase()} ${d.chain})`;
+}
+
+// ---------------------------------------------------------------- frame map
+function renderFrame() {
+  const svg = document.getElementById("frame");
+  const cw = 7.4, x0 = 190, rowH = 9, groupH = 30, top = 92;
+  const D = DATA.domains, W = x0 + 128 * cw + 40, H = top + D.length * groupH + 20;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("width", W); svg.setAttribute("height", H);
+  const ink = "currentColor", acc = cssVar("--accent");
+  const X = p => x0 + (p - 1) * cw;
+  let out = "";
+  // strand bands
+  for (const s of STRANDS) {
+    out += `<rect x="${X(s.a)}" y="18" width="${(s.b - s.a + 1) * cw - 1}" height="14" rx="2" fill="${COLORS[s.n]}"/>`;
+    out += `<text x="${X(s.a) + (s.b - s.a + 1) * cw / 2}" y="29" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">${pretty(s.n)}</text>`;
+  }
+  for (const L of LOOPS) {
+    out += `<rect x="${X(L.a)}" y="18" width="${(L.b - L.a + 1) * cw - 1}" height="14" rx="2" fill="var(--cdr)"/>`;
+    out += `<text x="${X(L.a) + (L.b - L.a + 1) * cw / 2}" y="29" text-anchor="middle" font-size="9.5" fill="${ink}" opacity="0.8">${L.n.split(" · ")[1]}</text>`;
+  }
+  out += `<text x="${x0 - 10}" y="29" text-anchor="end" font-size="11" fill="${ink}" opacity="0.75">strands</text>`;
+  // anchors vs positional segments with apex marks
+  out += `<text x="${x0 - 10}" y="50" text-anchor="end" font-size="11" fill="${ink}" opacity="0.75">pan-Ig anchors</text>`;
+  for (let p = 1; p <= 128; p++) {
+    if (ANCHORS.has(p)) out += `<rect x="${X(p)}" y="40" width="${cw - 1.5}" height="14" fill="${ink}" opacity="0.8" data-tip="${p}: anchor"/>`;
+    else out += `<rect x="${X(p)}" y="40" width="${cw - 1.5}" height="14" fill="none" stroke="${ink}" stroke-width="0.7" stroke-dasharray="2 1.5" opacity="0.55" data-tip="${p}: positional"/>`;
+  }
+  for (const s of DATA.meta.segments) {
+    if (!s.apex) continue;
+    const [L, Rr] = s.apex, xm = Rr ? X(Rr) - 0.75 : X(L) + cw / 2;
+    out += `<polygon points="${xm - 3.5},62 ${xm + 3.5},62 ${xm},57" fill="${acc}" data-tip="segment ${s.start}–${s.end}: overflow apex ${L}${Rr ? "/" + Rr : ""}"/>`;
+  }
+  out += `<text x="${x0 - 10}" y="66" text-anchor="end" font-size="11" fill="${ink}" opacity="0.75">fill apex ▲</text>`;
+  for (let p = 10; p <= 128; p += 10) out += `<text x="${X(p) + cw / 2}" y="80" text-anchor="middle" font-size="9.5" fill="${ink}" opacity="0.55">${p}</text>`;
+  // per-domain rows
+  D.forEach((d, k) => {
+    const y = top + k * groupH;
+    out += `<g data-k="${k}" style="cursor:pointer">`;
+    out += `<rect x="0" y="${y - 3}" width="${W}" height="${groupH - 2}" fill="${k === cur ? acc : "transparent"}" fill-opacity="${k === cur ? 0.08 : 0}"/>`;
+    out += `<text x="${x0 - 46}" y="${y + 9}" text-anchor="end" font-size="11.5" font-weight="${k === cur ? 600 : 400}" fill="${ink}">${esc(d.name)}</text>`;
+    out += `<text x="${x0 - 46}" y="${y + 21}" text-anchor="end" font-size="10" fill="${ink}" opacity="0.6">n=${d.n} · ${Math.round(100 * d.mean_identity)}% same</text>`;
+    out += `<text x="${x0 - 6}" y="${y + 7.5}" text-anchor="end" font-size="9" fill="${ink}" opacity="0.6">IMGT</text>`;
+    out += `<text x="${x0 - 6}" y="${y + rowH + 9.5}" text-anchor="end" font-size="9" fill="${ink}" opacity="0.6">pan</text>`;
+    for (const [key, dy, ins] of [["occ_imgt", 0, "ins_imgt"], ["occ_pan", rowH + 2, "ins_pan"]]) {
+      for (let p = 1; p <= 128; p++) {
+        const f = d[key][p] || 0, s = strandOf(String(p));
+        if (f > 0.02) out += `<rect x="${X(p)}" y="${y + dy}" width="${cw - 1}" height="${rowH}" fill="${s ? COLORS[s] : (isCdr(String(p)) ? "#8b7bb0" : "#8a948f")}" fill-opacity="${(0.15 + 0.85 * f).toFixed(2)}" data-tip="${esc(d.name)} · ${key === "occ_imgt" ? "IMGT" : "pan-Ig"} ${p}: used in ${Math.round(100 * f)}% of domains"/>`;
+      }
+      for (const [root, v] of Object.entries(d[ins])) {
+        const p = +root; if (!(p >= 1 && p <= 128) || v < 0.1) continue;
+        const r = Math.min(2 + 1.6 * Math.sqrt(v), 6.5);
+        out += `<circle cx="${X(p) + cw}" cy="${y + dy + rowH / 2}" r="${r}" fill="none" stroke="${acc}" stroke-width="1.4" data-tip="${esc(d.name)} · ${key === "occ_imgt" ? "IMGT" : "pan-Ig"} insertions after/before ${p}: ${v} per domain"/>`;
+      }
+    }
+    out += `</g>`;
+  });
+  svg.innerHTML = out;
+  svg.querySelectorAll("g[data-k]").forEach(g => g.addEventListener("click", () => select(+g.getAttribute("data-k"))));
+}
+
+// ---------------------------------------------------------------- summary
+function renderSummary(d) {
+  const note = NOTES[d.cls] || {status: "ok", points: []};
+  document.getElementById("sum-title").textContent = d.name;
+  document.getElementById("sum-status").innerHTML = note.status === "warn" ? `<span class="status warn">pan-Ig error: IMGT is right here</span>` : `<span class="status ok">structurally supported</span>`;
+  const R = d.residues;
+  const nA = R.filter(r => r.kind === "a").length, nI = R.filter(r => r.kind === "i").length, nD = R.filter(r => r.imgt !== r.pan).length;
+  document.getElementById("facts").innerHTML = [
+    [`${Math.round(100 * d.mean_identity)}%`, `labels identical to IMGT (mean over ${d.n} domains)`],
+    [`${nA}/${R.length}`, `anchor claims in ${d.pdb.toUpperCase()} ${d.chain}`],
+    [`${nD}`, `residues renumbered in ${d.pdb.toUpperCase()}`],
+    [`${nI}`, `pan-Ig insertions in ${d.pdb.toUpperCase()}`]].map(([b, s]) => `<div class="fact"><b>${b}</b><small>${s}</small></div>`).join("");
+  document.getElementById("notes").innerHTML = note.points.map(p => `<li>${p}</li>`).join("");
+  const order = ["A", "A'", "B", "BC (CDR1)", "C", "C'", "C'C'' (CDR2)", "C''", "D", "E", "F", "FG (CDR3)", "G"];
+  document.getElementById("bars").innerHTML = order.filter(k => k in d.regdiff).map(k =>
+    `<span>${pretty(k)}</span><span class="track"><span class="bar" style="display:block;width:${(100 * d.regdiff[k]).toFixed(0)}%"></span></span><span class="v">${Math.round(100 * d.regdiff[k])}%</span>`).join("");
+  const fmt = o => Object.entries(o).filter(([, v]) => v >= 0.1).slice(0, 6).map(([k, v]) => `<code>${k}.x</code> ${v}`).join("<br>") || "none";
+  document.getElementById("ins").innerHTML = `<div><b>IMGT</b><span>${fmt(d.ins_imgt)}</span></div><div><b>pan-Ig</b><span>${fmt(d.ins_pan)}</span></div>`;
+}
+
+function render() {
+  const d = DATA.domains[cur];
+  renderTopo(d); renderStrip(d); renderSummary(d); renderFrame();
+}
+buildPicker();
+["topo", "strip", "frame"].forEach(id => bindTips(document.getElementById(id)));
+render();
+window.addEventListener("hashchange", () => { const h = location.hash.slice(1); const k = DATA.domains.findIndex(d => d.cls.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase() === h); if (k >= 0 && k !== cur) select(k); });
+</script>
+</body>
+</html>
