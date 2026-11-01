@@ -1,0 +1,42 @@
+== call distribution
+call
+same as flagged    6165
+ambiguous          4102
+other register     3300
+core mismatch      2785
+no core             759
+segment missing     320
+Name: count, dtype: int64
+
+== validation: in-snapshot entries of the same family (excluding reference)
+S        other register  same register as flagged   All
+flagged                                                
+False               898                      1264  2162
+True                  9                       648   657
+All                 907                      1912  2819
+
+== 2222 families where the flagged register was confirmed in >=1 entry, with >=2 papers on this sequence
+class
+Present in first structure; carried into later papers                      1166
+Present in first structure; later papers differ                             824
+Introduced after a correct structure existed; confined to one paper         157
+Introduced after a correct structure existed; carried into later papers      75
+
+families where shifted register appears in >=2 papers: 1249 (56%); >=2 labs: 1000
+families with shifted register still present in entries deposited 2023+: 442 (20%)
+
+== later papers (after the error first appeared, different paper): 6779; carrying the shifted register: 3923 (58%)
+   no correct structure before error: 1990 families; later papers 5831, carrying shift 65%
+   correct structure existed before error: 232 families; later papers 948, carrying shift 16%
+
+== high-resolution (<=2.5 A) structures in family:
+ families with hi-res structure: 632 | hi-res only in shifted register: 232 | only other register: 365 | both: 35
+
+== later entries (after first appearance of the shift): register by recorded starting model
+                               entries  pct_shifted
+cites                                              
+cites both                           5          0.0
+cites other-register template      241          0.8
+cites shifted template             725         83.9
+cites unrelated/unknown model     1744         51.5
+no starting model recorded        3501         52.9

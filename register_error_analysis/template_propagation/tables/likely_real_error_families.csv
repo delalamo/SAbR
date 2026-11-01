@@ -1,0 +1,759 @@
+family,protein,example_ref,antibody,labs_S,papers_S,papers_O,origin_date,origin_res,last_S,arb
+7,GPI transamidase component PIG-S,7w72,False,1,1,0,2021-12-02,3.1,2021-12-02,uncontested: flagged segment fits poorly (error likely real)
+10,Glutamate [NMDA] receptor subunit zeta-1,3q41,False,7,11,0,2010-12-22,3.4,2026-01-16,uncontested: flagged segment fits poorly (error likely real)
+20,"ATP synthase subunit delta, mitochondrial",3fks,False,1,1,0,2008-12-17,3.587,2008-12-17,uncontested: flagged segment fits poorly (error likely real)
+27,BG505 SOSIP gp120,4nco,False,3,7,0,2013-10-24,4.7,2025-10-10,uncontested: flagged segment fits poorly (error likely real)
+35,50S ribosomal protein L27,4v50,False,1,4,5,2006-08-16,3.22,2008-06-11,contested: shifted fits worse
+40,50S ribosomal protein L32,4v9j,False,2,2,0,2013-04-23,3.86,2018-12-17,uncontested: flagged segment fits poorly (error likely real)
+43,Sodium/potassium-transporting ATPase subunit alpha-1,3b8e,False,1,1,0,2007-11-01,3.5,2007-11-01,uncontested: flagged segment fits poorly (error likely real)
+47,30S RIBOSOMAL PROTEIN S14,4v5b,False,3,6,5,2005-08-30,3.46,2014-09-11,contested: shifted fits worse
+48,30S ribosomal protein S14,6lkq,False,1,1,0,2019-12-20,3.1,2019-12-20,uncontested: flagged segment fits poorly (error likely real)
+56,TniQ monomer 1,6pif,False,1,1,0,2019-06-26,3.4,2019-06-26,uncontested: flagged segment fits poorly (error likely real)
+64,Gamma-aminobutyric-acid receptor subunit beta-1,5hew,False,3,6,6,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+65,Gamma-aminobutyric-acid receptor subunit beta-1,5heo,False,4,6,6,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+66,Gamma-aminobutyric-acid receptor subunit beta-1,5heu,False,5,7,5,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+67,Gamma-aminobutyric-acid receptor subunit beta-1,6v03,False,4,5,7,2011-04-28,3.089,2020-12-23,contested: shifted fits worse
+69,CYS-LOOP LIGAND-GATED ION CHANNEL,2yks,False,4,7,2,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+70,Cys-loop ligand-gated ion channel,2vl0,False,5,7,2,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+71,DNA polymerase subunit gamma-2,3ikm,False,4,8,3,2006-02-22,3.15,2025-09-03,contested: shifted fits worse
+78,60S ribosomal protein L13,6swa,False,2,2,6,2019-09-20,3.1,2021-12-08,contested: shifted fits worse
+79,60S ribosomal protein L13,6zvk,False,1,1,0,2020-07-24,3.49,2020-07-24,uncontested: flagged segment fits poorly (error likely real)
+80,ribosomal protein eL13,6gz4,False,2,2,7,2018-07-03,3.6,2019-04-16,contested: shifted fits worse
+83,50S ribosomal protein L4,7a18,False,2,3,0,2003-01-05,3.1,2020-08-12,uncontested: flagged segment fits poorly (error likely real)
+85,50S ribosomal protein L4,5dm7,False,3,6,0,2008-03-08,2.91,2016-05-11,uncontested: flagged segment fits poorly (error likely real)
+91,50S ribosomal protein L18,6gzx,False,3,6,0,2018-07-05,4.57,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+92,50S ribosomal protein L18,4v87,False,1,2,0,2011-09-20,3.1,2019-02-11,uncontested: flagged segment fits poorly (error likely real)
+95,50S ribosomal protein L20,4v4q,False,1,5,5,2005-08-30,3.46,2007-07-21,contested: shifted fits worse
+100,Probable G-protein coupled receptor 158,7ewl,False,1,1,0,2021-05-25,3.52,2021-05-25,uncontested: flagged segment fits poorly (error likely real)
+101,Probable G-protein coupled receptor 158,7ewl,False,1,1,0,2021-05-25,3.52,2021-05-25,uncontested: flagged segment fits poorly (error likely real)
+105,"ATP SYNTHASE SUBUNIT GAMMA, MITOCHONDRIAL",2wss,False,2,3,3,2009-09-09,3.2,2015-09-28,contested: shifted fits worse
+114,30S ribosomal protein S2,4v4q,False,3,6,0,2003-05-06,11.5,2007-11-22,uncontested: flagged segment fits poorly (error likely real)
+117,Helicase,7cxn,False,2,2,7,2020-06-14,3.5,2020-09-02,contested: shifted fits worse
+120,50S ribosomal protein L2,4v84,False,4,6,0,2006-07-31,2.8,2014-12-23,uncontested: flagged segment fits poorly (error likely real)
+121,50S ribosomal protein L2,4v87,False,4,4,0,2006-07-31,2.8,2018-12-17,uncontested: flagged segment fits poorly (error likely real)
+122,50S ribosomal protein L2,4v9k,False,3,4,0,2006-07-31,2.8,2017-08-21,uncontested: flagged segment fits poorly (error likely real)
+124,50S RIBOSOMAL PROTEIN L2,3cf5,False,3,7,2,2008-03-02,3.3,2016-05-11,contested: shifted fits worse
+125,50S ribosomal protein L32,4v4q,False,1,2,0,2005-08-30,3.46,2006-08-04,uncontested: flagged segment fits poorly (error likely real)
+142,Snaclec rhodocetin subunit delta,5thp,False,1,1,0,2016-09-30,3.006,2016-09-30,uncontested: flagged segment fits poorly (error likely real)
+150,"ATP synthase F(0) complex subunit C2, mitochondrial",6zit,False,7,10,0,2019-12-23,3.5,2025-07-28,uncontested: flagged segment fits poorly (error likely real)
+160,"IG c168_light_IGKV4-1_IGKJ4,Immunoglobulin kappa constant",7czy,True,1,1,10,2020-09-09,3.3,2020-09-09,contested: shifted fits worse
+165,50S ribosomal protein L15,4v84,False,5,9,0,2006-07-31,2.8,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+176,5-hydroxytryptamine receptor 3A,6be1,False,2,4,1,2014-05-09,3.5,2023-01-09,contested: shifted fits worse
+186,Circadian clock protein kinase KaiC,6x61,False,3,3,0,2013-12-13,2.84,2021-01-20,uncontested: flagged segment fits poorly (error likely real)
+190,Peptidoglycan glycosyltransferase RodA,6pl6,False,1,1,0,2019-06-30,3.3,2019-06-30,uncontested: flagged segment fits poorly (error likely real)
+191,Peptidoglycan glycosyltransferase RodA,6pl5,False,1,1,0,2019-06-30,3.5,2019-06-30,uncontested: flagged segment fits poorly (error likely real)
+202,CA521 Light Chain,7e23,True,1,1,11,2021-02-04,3.3,2021-02-04,contested: shifted fits worse
+206,NADH dehydrogenase [ubiquinone] 1 alpha subcomplex subunit 12,5lc5,False,1,2,10,2016-06-19,4.35,2017-05-23,contested: shifted fits worse
+209,NADH dehydrogenase [ubiquinone] 1 alpha subcomplex subunit 12,5xtb,False,2,2,0,2017-06-18,3.4,2024-07-30,uncontested: flagged segment fits poorly (error likely real)
+212,Multi antimicrobial extrusion protein (Na(+)/drug antiporter) MATE-like MDR efflux pump,3mkt,False,1,1,1,2010-04-15,3.65,2010-04-15,contested: shifted fits worse
+215,Multi antimicrobial extrusion protein (Na(+)/drug antiporter) MATE-like MDR efflux pump,3mkt,False,1,1,2,2010-04-15,3.65,2010-04-15,contested: shifted fits worse
+217,Ribonuclease 3,6lxd,False,1,1,0,2020-02-10,3.9,2020-02-10,uncontested: flagged segment fits poorly (error likely real)
+218,MHC CLASS I HOMOLOG MIC-A,1b3j,False,3,7,0,1998-12-11,3.0,2023-07-27,uncontested: flagged segment fits poorly (error likely real)
+225,50S ribosomal protein L4,5a9z,False,2,2,0,2006-06-27,4.51,2015-07-23,uncontested: flagged segment fits poorly (error likely real)
+234,FAB S9.6 Heavy Chain,7tqb,True,1,1,1,2022-01-26,3.1,2022-01-26,contested: shifted fits worse
+253,Proteasome subunit alpha type-5,6msk,False,1,1,10,2018-10-16,3.2,2018-10-16,contested: shifted fits worse
+255,Interleukin-18 receptor accessory protein,6kn9,False,2,2,0,2013-12-19,3.1,2019-08-05,uncontested: flagged segment fits poorly (error likely real)
+258,Integrin alpha-V,4mmx,False,1,1,0,2013-09-09,3.32,2013-09-09,uncontested: flagged segment fits poorly (error likely real)
+259,Integrin alpha-V,6msl,False,1,4,6,2002-03-06,3.2,2018-12-05,contested: shifted fits worse
+262,COMPASS component SWD3,6bx3,False,1,1,0,2017-12-16,4.3,2017-12-16,uncontested: flagged segment fits poorly (error likely real)
+266,40S ribosomal protein S5,5i4l,False,6,9,0,2011-10-11,3.0,2025-09-22,uncontested: flagged segment fits poorly (error likely real)
+267,Ribosomal protein uS7,5it9,False,4,6,0,2015-06-17,3.46,2024-02-02,uncontested: flagged segment fits poorly (error likely real)
+268,Phosphatidylcholine-sterol acyltransferase,4xx1,False,3,3,0,2015-01-29,3.6,2025-01-21,uncontested: flagged segment fits poorly (error likely real)
+277,Transient receptor potential cation channel subfamily V member 1,7l2n,False,1,1,0,2020-12-17,3.09,2020-12-17,uncontested: flagged segment fits poorly (error likely real)
+284,N utilization substance protein B homolog,5lm7,False,1,1,1,2016-07-29,3.35,2016-07-29,contested: shifted fits worse
+286,Transcription termination/antitermination protein NusA,5lm7,False,1,1,3,2016-07-29,3.35,2016-07-29,contested: shifted fits worse
+297,"Similar to chlorophyll a/b-binding protein, CP24",7blz,False,1,1,0,2021-01-19,3.1,2021-01-19,uncontested: flagged segment fits poorly (error likely real)
+311,VP1,6lhc,False,1,1,3,2019-12-07,3.43,2019-12-07,contested: shifted fits worse
+315,Capsid protein VP3,4n43,False,2,4,2,2013-10-08,3.8011,2022-08-16,contested: shifted fits worse
+317,SdeA,5yij,False,6,6,0,2017-10-04,2.2,2021-09-17,uncontested: flagged segment fits poorly (error likely real)
+319,Cyclic nucleotide-gated cation channel,5h3o,False,1,1,2,2016-10-26,3.5,2016-10-26,contested: shifted fits worse
+321,COP9 SIGNALOSOME COMPLEX SUBUNIT 3,4d18,False,1,2,1,2014-05-01,4.08,2014-10-28,contested: shifted fits worse
+322,COP9 SIGNALOSOME COMPLEX SUBUNIT 2,4d10,False,2,3,1,2014-04-30,3.8,2019-03-27,contested: shifted fits worse
+334,A/WH/CHA/09 VP3,7d3r,False,1,1,3,2020-09-20,3.49,2020-09-20,contested: shifted fits worse
+335,60S ribosomal protein L13,6xu8,False,1,1,0,2020-01-17,3.0,2020-01-17,uncontested: flagged segment fits poorly (error likely real)
+336,Fusion glycoprotein F0,4dag,False,1,1,0,2012-01-12,3.3904,2012-01-12,uncontested: flagged segment fits poorly (error likely real)
+354,"Asparaginyl-tRNA synthetase, putative",3m4q,False,1,2,0,2010-03-11,3.0,2010-03-11,uncontested: flagged segment fits poorly (error likely real)
+355,Tyrosine-protein kinase SYK,7sa7,False,1,1,0,2021-09-22,3.2,2021-09-22,uncontested: flagged segment fits poorly (error likely real)
+357,Helicase,6xez,False,2,2,4,2020-06-14,3.5,2020-09-02,contested: shifted fits worse
+362,Phosphatidylinositol 5-phosphate 4-kinase type-2 beta,7em7,False,2,3,0,2014-10-08,2.6,2025-08-19,uncontested: flagged segment fits poorly (error likely real)
+366,Ubiquitin carboxyl-terminal hydrolase 28,6h4h,False,1,1,0,2018-07-21,3.5,2018-07-21,uncontested: flagged segment fits poorly (error likely real)
+372,nanobody,7nqk,True,1,2,0,2021-03-01,3.5,2024-04-24,uncontested: flagged segment fits poorly (error likely real)
+376,Glr4197 protein,3ei0,False,2,3,8,2008-09-15,3.5,2013-07-10,contested: shifted fits worse
+378,GLR4197 PROTEIN,2xq9,False,2,3,8,2008-09-15,3.5,2017-03-17,contested: shifted fits worse
+379,Glr4197 protein,3ehz,False,1,2,9,2008-09-15,3.1,2010-09-01,contested: shifted fits worse
+382,40S ribosomal protein S17-B,6gqb,False,1,1,1,2018-06-07,3.9,2018-06-07,contested: shifted fits worse
+384,Gamma-aminobutyric-acid receptor subunit beta-1,3uq5,False,5,6,6,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+385,Gamma-aminobutyric-acid receptor subunit beta-1,3uq4,False,4,6,6,2008-01-07,3.3,2020-12-23,contested: shifted fits worse
+386,Gamma-aminobutyric-acid receptor subunit beta-1,3uq7,False,4,5,7,2011-04-28,3.089,2020-12-23,contested: shifted fits worse
+390,Glucosyl-3-phosphoglycerate synthase,4y7f,False,2,5,0,2008-08-05,2.7,2016-05-10,uncontested: flagged segment fits poorly (error likely real)
+395,NAD-DEPENDENT PROTEIN DEACETYLASE SIRTUIN-2,5fyq,False,5,5,0,2016-03-09,3.0,2026-04-30,uncontested: flagged segment fits poorly (error likely real)
+396,42F3 alpha VmCh,4mvb,False,2,2,8,2000-10-03,2.6,2013-09-23,contested: shifted fits worse
+401,MAP kinase-activated protein kinase 2,2onl,False,2,2,10,2002-01-30,2.8,2007-01-24,contested: shifted fits worse
+411,Transportin-1,5yvg,False,5,7,0,2007-07-14,2.6,2023-04-12,uncontested: flagged segment fits poorly (error likely real)
+414,tRNA (guanine-N(1)-)-methyltransferase,6qoe,False,3,6,0,2011-02-24,1.7,2021-07-13,uncontested: flagged segment fits poorly (error likely real)
+420,Proton-gated ion channel,4lml,False,2,2,9,2008-09-15,3.5,2013-07-10,contested: shifted fits worse
+421,Proton-gated ion channel,4lmj,False,2,2,8,2008-09-15,3.5,2013-07-10,contested: shifted fits worse
+423,Proton-gated ion channel,4lmk,False,2,3,8,2008-09-15,3.5,2013-07-10,contested: shifted fits worse
+427,DNA-dependent ATPase XPBII,6p4f,False,1,1,0,2019-05-27,3.55,2019-05-27,uncontested: flagged segment fits poorly (error likely real)
+433,50S ribosomal protein L15,5dm7,False,1,1,0,2015-09-08,3.0,2015-09-08,uncontested: flagged segment fits poorly (error likely real)
+436,COMPASS component SPP1,6bx3,False,1,1,0,2017-12-16,4.3,2017-12-16,uncontested: flagged segment fits poorly (error likely real)
+437,Glutamine--tRNA ligase,4r3z,False,2,2,0,2014-08-18,4.033,2015-02-23,uncontested: flagged segment fits poorly (error likely real)
+440,Arginine--tRNA ligase,5yyn,False,1,2,0,2016-05-24,3.0,2017-12-10,uncontested: flagged segment fits poorly (error likely real)
+441,Arginine--tRNA ligase,5b63,False,1,2,0,2016-05-24,3.0,2017-12-10,uncontested: flagged segment fits poorly (error likely real)
+442,Chondroitin sulfate proteoglycan 4,7ml7,False,1,1,0,2021-04-27,3.17,2021-04-27,uncontested: flagged segment fits poorly (error likely real)
+445,Minichromosome maintenance protein MCM,4fdg,False,1,1,1,2012-05-28,4.1,2012-05-28,contested: shifted fits worse
+448,NDP-forosamyltransferase,4lei,False,1,2,0,2013-06-24,2.5,2013-06-25,uncontested: flagged segment fits poorly (error likely real)
+452,Glutamate carboxypeptidase II,1z8l,False,7,12,0,2005-03-30,3.5,2026-09-14,uncontested: flagged segment fits poorly (error likely real)
+453,SsrA-binding protein,7ac7,False,1,1,0,2020-09-10,3.08,2020-09-10,uncontested: flagged segment fits poorly (error likely real)
+456,Lipoprotein-releasing system ATP-binding protein LolD,7mdx,False,2,2,0,2021-04-06,3.8,2025-11-19,uncontested: flagged segment fits poorly (error likely real)
+459,Envelope protein E,7cbp,False,6,6,4,2016-03-13,3.8,2022-05-21,contested: shifted fits worse
+460,E protein,5ire,False,4,4,7,2016-03-13,3.8,2022-05-21,contested: shifted fits worse
+462,Serine/threonine-protein phosphatase 2A 56 kDa regulatory subunit gamma isoform,2iae,False,1,1,0,2006-09-07,3.5,2006-09-07,uncontested: flagged segment fits poorly (error likely real)
+465,Peptidyl-tRNA hydrolase ArfB,7jt1,False,1,1,1,2020-08-16,3.3,2020-08-16,contested: shifted fits worse
+466,Peptidyl-tRNA hydrolase ArfB,7jss,False,2,2,1,2012-01-27,3.2,2020-08-15,contested: shifted fits worse
+468,50S ribosomal protein L2,5a9z,False,2,2,4,2006-06-27,4.51,2015-07-23,contested: shifted fits worse
+471,"Glyceraldehyde-3-phosphate dehydrogenase GAPC1, cytosolic",6qun,False,1,2,0,2015-03-26,2.3,2019-02-28,uncontested: flagged segment fits poorly (error likely real)
+473,TAP binding protein related,5wer,False,1,1,0,2017-07-10,3.412,2017-07-10,uncontested: flagged segment fits poorly (error likely real)
+474,TAP binding protein related,5wer,False,1,1,0,2017-07-10,3.412,2017-07-10,uncontested: flagged segment fits poorly (error likely real)
+475,TAP binding protein related,5wer,False,1,1,0,2017-07-10,3.412,2017-07-10,uncontested: flagged segment fits poorly (error likely real)
+479,26S proteasome non-ATPase regulatory subunit 3,6msj,False,2,2,7,2018-10-16,3.3,2026-01-16,contested: shifted fits worse
+482,30S ribosomal protein S20,5t7v,False,1,1,0,2016-09-06,3.6,2016-09-06,uncontested: flagged segment fits poorly (error likely real)
+487,L7a,7nwg,False,11,12,0,2015-06-10,3.65,2026-02-26,uncontested: flagged segment fits poorly (error likely real)
+488,L7a,7nwg,False,7,7,0,2016-08-23,3.6,2026-06-02,uncontested: flagged segment fits poorly (error likely real)
+491,NADH-ubiquinone oxidoreductase chain 4,5lc5,False,2,3,0,2016-06-19,4.35,2020-11-12,uncontested: flagged segment fits poorly (error likely real)
+492,NADH-ubiquinone oxidoreductase chain 4,5lc5,False,2,3,0,2016-06-19,4.35,2020-11-12,uncontested: flagged segment fits poorly (error likely real)
+493,NADH-ubiquinone oxidoreductase chain 4,5lc5,False,3,4,3,2015-07-20,6.74,2020-11-12,contested: shifted fits worse
+500,Multidrug efflux protein,4huk,False,1,2,0,2012-11-02,3.59,2015-06-23,uncontested: flagged segment fits poorly (error likely real)
+504,1B2 (light chain),7m7e,True,4,7,2,2018-01-28,2.09,2026-03-11,contested: shifted fits worse
+505,Outer membrane protein assembly factor BamB,5ljo,False,7,9,0,2010-09-30,2.6,2023-05-04,uncontested: flagged segment fits poorly (error likely real)
+508,NADH:ubiquinone oxidoreductase subunit A9,6q9d,False,1,1,0,2018-12-18,3.8,2018-12-18,uncontested: flagged segment fits poorly (error likely real)
+512,30S ribosomal protein S2,6nqb,False,2,2,0,2005-08-30,3.46,2019-01-20,uncontested: flagged segment fits poorly (error likely real)
+513,cas5_8 naturally occurring fusion protein from Vibrio cholerae transposon Tn6677,6pig,False,2,2,0,2019-06-26,3.5,2019-12-28,uncontested: flagged segment fits poorly (error likely real)
+519,Chondroitin sulfate proteoglycan 4,7n8x,False,2,3,0,2021-04-27,3.17,2021-06-18,uncontested: flagged segment fits poorly (error likely real)
+534,Serine/threonine-protein phosphatase 2A 65 kDa regulatory subunit A alpha isoform,7k36,False,1,1,0,2020-09-10,3.3,2020-09-10,uncontested: flagged segment fits poorly (error likely real)
+557,Peptidylprolyl isomerase domain and WD repeat-containing protein 1,7a5p,False,2,2,2,2020-08-21,5.0,2023-01-11,contested: shifted fits worse
+559,Utp15,5oql,False,1,1,2,2017-08-12,3.2,2017-08-12,contested: shifted fits worse
+563,Pre-rRNA-processing protein TSR1 homolog,6g18,False,2,4,0,2018-03-20,3.6,2024-05-01,uncontested: flagged segment fits poorly (error likely real)
+564,"NADH dehydrogenase [ubiquinone] iron-sulfur protein 8, mitochondrial",6x89,False,2,2,2,2020-06-01,3.9,2020-08-15,contested: shifted fits worse
+576,uS10m,3j9m,False,2,3,9,2015-02-08,3.5,2020-08-21,contested: shifted fits worse
+577,"Cytochrome b-c1 complex subunit 1, mitochondrial",5gup,False,5,10,0,2016-08-30,4.0,2024-06-25,uncontested: flagged segment fits poorly (error likely real)
+579,BRISC complex subunit Abraxas 2,6r8f,False,1,1,2,2019-04-01,3.8,2019-04-01,contested: shifted fits worse
+588,Translation initiation factor eIF-2B subunit delta,6ezo,False,1,1,8,2017-11-16,4.1,2017-11-16,contested: shifted fits worse
+589,"NADH dehydrogenase [ubiquinone] iron-sulfur protein 6, mitochondrial",5gup,False,1,1,0,2016-08-30,4.0,2016-08-30,uncontested: flagged segment fits poorly (error likely real)
+590,"NADH dehydrogenase [ubiquinone] iron-sulfur protein 6, mitochondrial",5gup,False,1,1,5,2016-08-30,4.0,2016-08-30,contested: shifted fits worse
+593,Transcription initiation factor TFIID subunit 13,7edx,False,2,4,1,2021-03-17,4.5,2026-04-22,contested: shifted fits worse
+594,20S proteasome alpha-2 subunit,6muv,False,1,2,0,2018-10-23,3.8,2021-03-05,uncontested: flagged segment fits poorly (error likely real)
+609,Calmodulin-1,7b1g,False,1,1,0,2020-11-24,3.6,2020-11-24,uncontested: flagged segment fits poorly (error likely real)
+610,"Calmodulin, Calcineurin subunit B type 1, Serine/threonine-protein phosphatase 2B catalytic subunit alpha isoform",4il1,False,1,1,2,2012-12-28,3.0,2012-12-28,contested: shifted fits worse
+611,"ABC transporter, permease protein SugB",7cae,False,2,2,0,2020-06-08,3.44,2022-12-12,uncontested: flagged segment fits poorly (error likely real)
+615,eS12,6p5n,False,1,1,0,2019-05-30,3.2,2019-05-30,uncontested: flagged segment fits poorly (error likely real)
+618,Protein-glutamine gamma-glutamyltransferase 2,3ly6,False,3,3,5,2010-02-26,3.14,2019-09-23,contested: shifted fits worse
+619,Protein-glutamine gamma-glutamyltransferase 2,6kzb,False,4,4,5,2002-01-24,2.8,2019-09-23,contested: shifted fits worse
+620,NSFL1 cofactor p47,7r7t,False,3,3,1,2004-01-14,2.9,2022-12-16,contested: shifted fits worse
+623,Calcium-transporting ATPase,6zhh,False,2,3,0,2020-06-23,3.0,2024-09-09,uncontested: flagged segment fits poorly (error likely real)
+629,Protein FYV10,7ns3,False,1,1,1,2021-03-05,3.5,2021-03-05,contested: shifted fits worse
+632,RNA 3'-terminal phosphate cyclase-like protein,5oql,False,1,1,2,2017-08-12,3.2,2017-08-12,contested: shifted fits worse
+633,FAP52,6u42,False,2,2,1,2019-08-22,3.4,2023-03-23,contested: shifted fits worse
+634,Glucose-6-phosphate 1-dehydrogenase,6va9,False,2,2,2,2019-12-17,3.95,2021-09-30,contested: shifted fits worse
+635,Glucose-6-phosphate 1-dehydrogenase,6va7,False,2,2,3,2019-12-17,3.07,2021-09-30,contested: shifted fits worse
+636,Glucose-6-phosphate 1-dehydrogenase,6va0,False,2,2,4,2019-12-16,3.1,2021-09-30,contested: shifted fits worse
+637,Glucose-6-phosphate 1-dehydrogenase,6va8,False,2,2,2,2019-12-17,3.95,2021-09-30,contested: shifted fits worse
+638,DNA replication licensing factor MCM2,7pfo,False,1,1,3,2021-08-11,3.2,2021-08-11,contested: shifted fits worse
+646,50S RIBOSOMAL PROTEIN L13,3cf5,False,5,10,1,2003-01-05,3.1,2016-05-11,contested: shifted fits worse
+648,AT4g31460/F3L17_30,6xyw,False,1,1,1,2020-01-31,3.86,2020-01-31,contested: shifted fits worse
+655,Major capsid protein,6ncl,False,2,3,1,2009-11-04,10.6,2022-10-06,contested: shifted fits worse
+656,DNA-directed RNA polymerase II subunit RPB8,5iyd,False,1,1,7,2016-03-24,3.9,2016-03-24,contested: shifted fits worse
+658,Protein SMG8,6l54,False,1,1,3,2019-10-22,3.43,2019-10-22,contested: shifted fits worse
+677,50S ribosomal protein L27,5v7q,False,3,3,0,2017-03-20,3.7,2024-10-21,uncontested: flagged segment fits poorly (error likely real)
+682,Trafficking protein particle complex subunit 23,7e2c,False,2,2,2,2008-04-16,3.7,2021-02-05,contested: shifted fits worse
+684,50S ribosomal protein L2,6ddg,False,1,1,9,2018-05-10,3.1,2018-05-10,contested: shifted fits worse
+686,50S ribosomal protein L2,5nrg,False,1,1,0,2017-04-23,3.442,2017-04-23,uncontested: flagged segment fits poorly (error likely real)
+687,50S ribosomal protein L2,6wru,False,1,1,8,2020-04-30,3.1,2020-04-30,contested: shifted fits worse
+697,50S RIBOSOMAL PROTEIN L32,4v5g,False,3,5,0,2009-09-01,3.6,2012-04-06,uncontested: flagged segment fits poorly (error likely real)
+705,STEROL 14-ALPHA DEMETHYLASE,4by0,False,5,10,0,2009-09-28,2.89,2015-02-26,uncontested: flagged segment fits poorly (error likely real)
+715,50S ribosomal protein L25,5xym,False,1,1,10,2017-07-09,3.08,2017-07-09,contested: shifted fits worse
+724,NADH-quinone oxidoreductase subunit 6,4hea,False,1,1,0,2012-10-03,3.3027,2012-10-03,uncontested: flagged segment fits poorly (error likely real)
+725,Metabotropic glutamate receptor 3,5cnk,False,2,4,1,2014-12-15,2.26,2022-01-03,contested: shifted fits worse
+726,NADH-quinone oxidoreductase subunit 12,4hea,False,1,2,0,2012-10-03,3.3027,2018-10-25,uncontested: flagged segment fits poorly (error likely real)
+736,Transcriptional regulator LasR,6v7w,False,1,1,0,2019-12-09,3.0,2019-12-09,uncontested: flagged segment fits poorly (error likely real)
+741,CRISPR-associated protein Csy2,6b45,False,8,11,0,2017-02-25,3.4,2022-07-14,uncontested: flagged segment fits poorly (error likely real)
+742,CRISPR-associated protein Csy2,6b47,False,7,9,3,2017-02-25,3.4,2022-07-14,contested: shifted fits worse
+744,Glutamate synthase [NADPH] small chain,6s6s,False,1,1,0,2019-07-03,3.9,2019-07-03,uncontested: flagged segment fits poorly (error likely real)
+749,50S ribosomal protein L4,4wce,False,5,9,0,2014-09-04,3.526,2025-12-05,uncontested: flagged segment fits poorly (error likely real)
+750,50S ribosomal protein L4,4wce,False,3,4,0,2014-09-04,3.526,2017-03-07,uncontested: flagged segment fits poorly (error likely real)
+751,50S ribosomal protein L4,6wrs,False,1,1,11,2020-04-30,3.2,2020-04-30,contested: shifted fits worse
+755,Peptidoglycan glycosyltransferase RodA,6bas,False,1,1,0,2017-10-15,3.194,2017-10-15,uncontested: flagged segment fits poorly (error likely real)
+762,Polycomb protein SUZ12,6wkr,False,3,3,2,2017-06-26,2.9,2020-11-23,contested: shifted fits worse
+763,Cytoplasmic dynein 1 light intermediate chain 2,6f1t,False,1,1,5,2017-11-23,3.5,2017-11-23,contested: shifted fits worse
+764,CRISPR-Cas,6xmf,False,1,1,0,2020-06-30,3.1,2020-06-30,uncontested: flagged segment fits poorly (error likely real)
+765,Autophagy-related protein 9A,7jlp,False,1,1,0,2020-07-30,3.4,2020-07-30,uncontested: flagged segment fits poorly (error likely real)
+767,Short transient receptor potential channel 4,5z96,False,2,3,0,2018-02-02,3.28,2023-10-10,uncontested: flagged segment fits poorly (error likely real)
+769,50S RIBOSOMAL PROTEIN L4,3cf5,False,3,6,0,2008-03-02,3.3,2014-09-16,uncontested: flagged segment fits poorly (error likely real)
+771,50S RIBOSOMAL PROTEIN L4,3cf5,False,5,12,0,2001-09-17,3.1,2020-08-10,uncontested: flagged segment fits poorly (error likely real)
+779,Sodium/potassium-transporting ATPase subunit beta-1,4hyt,False,2,4,0,2010-05-17,4.6,2022-02-22,uncontested: flagged segment fits poorly (error likely real)
+781,"Na+,K+-ATPase beta subunit",5aw3,False,1,3,4,2008-12-22,2.4,2015-07-01,contested: shifted fits worse
+782,30S ribosomal protein S13,4v85,False,2,2,0,2011-06-13,3.2,2020-09-19,uncontested: flagged segment fits poorly (error likely real)
+788,50S RIBOSOMAL PROTEIN L18,4v5a,False,2,5,0,2006-07-31,2.8,2009-06-15,uncontested: flagged segment fits poorly (error likely real)
+793,30S ribosomal protein S19,7kwg,False,1,1,8,2020-11-30,3.75,2020-11-30,contested: shifted fits worse
+794,50S RIBOSOMAL PROTEIN L20,4v4h,False,3,5,5,2005-08-30,3.46,2014-08-27,contested: shifted fits worse
+797,"50S ribosomal protein L21, chloroplastic",5mlc,False,1,1,4,2016-12-06,3.6,2016-12-06,contested: shifted fits worse
+798,ATP-DEPENDENT MOLECULAR CHAPERONE HSP82,2cg9,False,1,1,2,2006-03-01,3.1,2006-03-01,contested: shifted fits worse
+801,ATP-DEPENDENT MOLECULAR CHAPERONE HSP82,2cg9,False,1,1,0,2006-03-01,3.1,2006-03-01,uncontested: flagged segment fits poorly (error likely real)
+806,Transitional endoplasmic reticulum ATPase,7mdm,False,1,1,2,2021-04-05,4.86,2021-04-05,contested: shifted fits worse
+807,"B646L,Major capsid protein",6l2t,False,1,1,2,2019-10-06,4.1,2019-10-06,contested: shifted fits worse
+809,"B646L,Major capsid protein",6l2t,False,1,1,1,2019-10-06,4.1,2019-10-06,contested: shifted fits worse
+811,"B646L,Major capsid protein",6l2t,False,1,1,2,2019-10-06,4.1,2019-10-06,contested: shifted fits worse
+814,Cell division protein FtsZ,4u39,False,1,1,0,2014-07-19,3.194,2014-07-19,uncontested: flagged segment fits poorly (error likely real)
+817,50S ribosomal protein L25,4wce,False,2,3,0,2014-09-04,3.526,2016-01-14,uncontested: flagged segment fits poorly (error likely real)
+818,TYKY,7a23,False,2,2,2,2020-06-01,3.9,2020-08-15,contested: shifted fits worse
+823,T-complex protein 1 subunit beta,6qb8,False,1,1,0,2018-12-20,3.97,2018-12-20,uncontested: flagged segment fits poorly (error likely real)
+824,T-complex protein 1 subunit epsilon,7nvo,False,1,1,6,2021-03-15,3.5,2021-03-15,contested: shifted fits worse
+825,T-complex protein 1 subunit epsilon,5uyx,False,1,1,10,2017-02-24,3.5,2017-02-24,contested: shifted fits worse
+826,T-complex protein 1 subunit epsilon,5uyx,False,1,1,7,2017-02-24,3.5,2017-02-24,contested: shifted fits worse
+827,T-complex protein 1 subunit epsilon,5uyz,False,1,1,9,2017-02-24,3.6,2017-02-24,contested: shifted fits worse
+828,T-complex protein 1 subunit epsilon,5uyz,False,1,1,9,2017-02-24,3.6,2017-02-24,contested: shifted fits worse
+832,Innexin-6,6kfh,False,2,2,0,2016-10-11,3.3,2019-07-07,uncontested: flagged segment fits poorly (error likely real)
+838,50S ribosomal protein L33 1,5zeb,False,2,2,8,2018-02-27,3.4,2024-10-18,contested: shifted fits worse
+849,SUBUNIT IV,1vf5,False,1,1,0,2004-04-08,3.0,2004-04-08,uncontested: flagged segment fits poorly (error likely real)
+854,Hexon protein,6yba,False,1,1,0,2020-03-16,4.0,2020-03-16,uncontested: flagged segment fits poorly (error likely real)
+855,ATP-dependent RNA helicase HAS1,6elz,False,2,2,5,2017-09-30,3.3,2021-05-11,contested: shifted fits worse
+858,WD repeat-containing protein 34,6rlb,False,1,1,0,2019-05-01,4.5,2019-05-01,uncontested: flagged segment fits poorly (error likely real)
+860,"N-alpha-acetyltransferase 25, NatB auxiliary subunit",6vp9,False,1,1,2,2020-02-02,3.46,2020-02-02,contested: shifted fits worse
+864,Origin recognition complex subunit 3,7jpo,False,2,2,1,2020-08-09,3.2,2024-02-13,contested: shifted fits worse
+865,Sorting assembly machinery 50 kDa subunit,7e4h,False,1,1,0,2021-02-13,3.01,2021-02-13,uncontested: flagged segment fits poorly (error likely real)
+869,"Pyridinium-3,5-biscarboxylic acid mononucleotide synthase",7mj1,False,1,3,0,2021-04-19,3.402,2023-05-09,uncontested: flagged segment fits poorly (error likely real)
+872,30S ribosomal protein S2,7qg8,False,2,2,0,2006-08-04,3.46,2021-12-07,uncontested: flagged segment fits poorly (error likely real)
+873,30S ribosomal protein S2,3j9y,False,3,5,0,2006-08-04,3.46,2020-04-23,uncontested: flagged segment fits poorly (error likely real)
+874,30S RIBOSOMAL PROTEIN S2,4v4h,False,3,5,0,2006-08-04,3.46,2011-06-13,uncontested: flagged segment fits poorly (error likely real)
+875,30S ribosomal protein S2,7qgh,False,3,3,0,2006-08-04,3.46,2021-12-08,uncontested: flagged segment fits poorly (error likely real)
+877,Ribonuclease P protein subunit p30,6ahr,False,1,1,3,2018-08-20,3.92,2018-08-20,contested: shifted fits worse
+879,Por secretion system protein porM/gldM,7sat,False,3,3,0,2017-11-10,2.4,2021-09-23,uncontested: flagged segment fits poorly (error likely real)
+887,50S ribosomal protein L2,4u67,False,1,2,0,2014-07-28,3.65,2016-05-11,uncontested: flagged segment fits poorly (error likely real)
+889,50S ribosomal protein L32,4wce,False,3,5,3,2014-09-04,3.526,2017-03-07,contested: shifted fits worse
+894,"Pentatricopeptide repeat domain-containing protein 3, mitochondrial",7a5g,False,1,1,6,2020-08-21,4.33,2020-08-21,contested: shifted fits worse
+898,Inner capsid protein VP2,3kz4,False,2,4,7,2009-04-07,3.8,2012-05-13,contested: shifted fits worse
+903,"Ribosomal protein S20, putative",5opt,False,1,1,0,2017-08-10,4.0,2017-08-10,uncontested: flagged segment fits poorly (error likely real)
+904,Nucleolar protein 58,6ke6,False,2,5,0,2019-07-03,3.4,2020-09-29,uncontested: flagged segment fits poorly (error likely real)
+917,3-octaprenyl-4-hydroxybenzoate carboxy-lyase,5m1b,False,1,1,0,2016-10-07,3.15,2016-10-07,uncontested: flagged segment fits poorly (error likely real)
+919,40S ribosomal protein eS7,3j7a,False,3,3,0,2014-06-03,3.2,2024-08-22,uncontested: flagged segment fits poorly (error likely real)
+920,"DNA-directed RNA polymerases I, II, and III subunit RPABC1",7a6h,False,3,4,0,2020-08-25,3.3,2024-10-18,uncontested: flagged segment fits poorly (error likely real)
+930,Sodium-coupled neutral amino acid transporter 9,7kgv,False,1,1,0,2020-10-19,3.4,2020-10-19,uncontested: flagged segment fits poorly (error likely real)
+931,Sodium-coupled neutral amino acid transporter 9,7kgv,False,1,2,0,2017-12-28,3.17,2020-10-19,uncontested: flagged segment fits poorly (error likely real)
+935,DNA-directed RNA polymerase III subunit RPC3,6cnc,False,2,2,4,2015-10-06,3.9,2018-03-08,contested: shifted fits worse
+937,Slr1512 protein,7cye,False,1,1,0,2020-09-03,3.54,2020-09-03,uncontested: flagged segment fits poorly (error likely real)
+952,Utp4,5oql,False,1,1,3,2017-08-12,3.2,2017-08-12,contested: shifted fits worse
+955,50S ribosomal protein L18,4v4q,False,3,4,0,2005-08-30,3.46,2019-03-14,uncontested: flagged segment fits poorly (error likely real)
+960,Mediator of RNA polymerase II transcription subunit 16,6w1s,False,1,1,4,2020-03-04,4.02,2020-03-04,contested: shifted fits worse
+980,U3 small nucleolar RNA-associated protein 13,6ke6,False,2,6,5,2019-07-03,3.4,2020-09-29,contested: shifted fits worse
+981,U3 small nucleolar RNA-associated protein 13,6ke6,False,2,6,1,2019-07-03,3.4,2020-09-29,contested: shifted fits worse
+987,NAD(P)H-quinone oxidoreductase subunit 2,6hum,False,2,2,0,2018-10-09,3.34,2019-11-27,uncontested: flagged segment fits poorly (error likely real)
+990,"Substance-P receptor, GlgA glycogen synthase, Substance-P receptor chimera",6e59,False,1,1,2,2018-07-19,3.4,2018-07-19,contested: shifted fits worse
+993,eRF3a,5lzt,False,2,2,0,2016-10-02,3.65,2021-03-16,uncontested: flagged segment fits poorly (error likely real)
+997,POL32 isoform 1,7kc0,False,1,1,5,2020-10-04,3.2,2020-10-04,contested: shifted fits worse
+1000,Csm3,6iqw,False,2,3,0,2018-10-23,3.1,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+1002,Flagellar radial spoke protein 14,7jtk,False,1,2,0,2020-08-17,3.2,2023-03-23,uncontested: flagged segment fits poorly (error likely real)
+1003,116 kDa U5 small nuclear ribonucleoprotein component,6ff4,False,1,1,1,2018-01-03,3.4,2018-01-03,contested: shifted fits worse
+1012,Gap junction beta-2 protein,5era,False,5,5,1,2008-12-01,3.5,2021-12-03,contested: shifted fits worse
+1024,Trafficking protein particle complex II-specific subunit 65,7e2c,False,1,1,0,2021-02-05,4.18,2021-02-05,uncontested: flagged segment fits poorly (error likely real)
+1027,Trafficking protein particle complex II-specific subunit 65,7e2d,False,1,1,0,2021-02-05,3.71,2021-02-05,uncontested: flagged segment fits poorly (error likely real)
+1029,DI-OR TRIPEPTIDE H+ SYMPORTER,4aps,False,1,1,5,2012-04-05,3.3,2012-04-05,contested: shifted fits worse
+1031,RuvB,1ixr,False,1,1,2,2002-07-04,3.3,2002-07-04,contested: shifted fits worse
+1033,Two pore calcium channel protein 1,5tua,False,2,4,0,2015-09-15,2.872,2018-04-02,uncontested: flagged segment fits poorly (error likely real)
+1035,Two pore calcium channel protein 1,5e1j,False,2,4,0,2015-09-15,2.872,2018-04-02,uncontested: flagged segment fits poorly (error likely real)
+1036,Two pore calcium channel protein 1,5e1j,False,2,4,2,2015-09-15,2.872,2018-04-02,contested: shifted fits worse
+1042,Band 3 anion transport protein,4yzf,False,1,1,9,2015-03-25,3.5,2015-03-25,contested: shifted fits worse
+1044,CSC1-like protein ERD4,5z1f,False,1,1,0,2017-12-26,4.8,2017-12-26,uncontested: flagged segment fits poorly (error likely real)
+1046,Translation initiation factor eIF-2B subunit gamma,6ezo,False,1,1,0,2017-11-16,4.1,2017-11-16,uncontested: flagged segment fits poorly (error likely real)
+1048,Translation initiation factor eIF-2B subunit gamma,6k71,False,4,5,0,2019-03-08,3.21,2025-03-04,uncontested: flagged segment fits poorly (error likely real)
+1054,60S ribosomal export protein NMD3,6n8l,False,2,3,0,2016-09-01,3.3,2025-09-22,uncontested: flagged segment fits poorly (error likely real)
+1060,DNA-directed RNA polymerase subunit A'',3hkz,False,2,5,0,2009-02-11,3.35,2012-06-19,uncontested: flagged segment fits poorly (error likely real)
+1068,RNA-directed RNA polymerase catalytic subunit,5d98,False,1,1,2,2015-08-18,3.9,2015-08-18,contested: shifted fits worse
+1070,Outer membrane protein F,4kr4,False,1,4,0,2010-07-01,2.79,2013-05-16,uncontested: flagged segment fits poorly (error likely real)
+1072,Transient receptor potential cation channel subfamily V member 3,6mhx,False,3,3,4,2018-09-18,4.0,2022-04-14,contested: shifted fits worse
+1074,LEUCYL-TRNA SYNTHETASE,2byt,False,2,2,0,2005-08-04,3.3,2007-05-14,uncontested: flagged segment fits poorly (error likely real)
+1075,Importin subunit beta-1,3lww,False,6,10,0,1999-04-29,2.5,2026-04-24,uncontested: flagged segment fits poorly (error likely real)
+1078,"Mitochondrial complex I, B17.2 subunit",5lnk,False,1,1,9,2016-08-04,3.9,2016-08-04,contested: shifted fits worse
+1079,NADH dehydrogenase [ubiquinone] 1 alpha subcomplex subunit 12,5ldw,False,1,2,9,2016-06-28,4.27,2017-05-23,contested: shifted fits worse
+1081,Nucleoporin NUP84,3iko,False,1,1,0,2009-08-06,3.2,2009-08-06,uncontested: flagged segment fits poorly (error likely real)
+1084,50S ribosomal protein L25,3dll,False,2,4,0,2008-03-02,3.3,2010-11-07,uncontested: flagged segment fits poorly (error likely real)
+1096,DNA-DIRECTED RNA POLYMERASE,4ayb,False,1,4,0,2009-02-11,3.35,2012-06-19,uncontested: flagged segment fits poorly (error likely real)
+1098,DNA-DIRECTED RNA POLYMERASE RPO1C SUBUNIT,2wb1,False,1,2,0,2009-02-11,3.35,2009-02-19,uncontested: flagged segment fits poorly (error likely real)
+1099,DNA-DIRECTED RNA POLYMERASE RPO1C SUBUNIT,2waq,False,1,4,0,2009-02-11,3.35,2012-06-19,uncontested: flagged segment fits poorly (error likely real)
+1100,DNA-directed RNA polymerase 30 kDa polypeptide,7ap9,False,1,12,0,2019-04-15,2.76,2024-06-14,uncontested: flagged segment fits poorly (error likely real)
+1101,BH2163 protein,5c6o,False,2,2,0,2013-07-31,3.2,2015-06-23,uncontested: flagged segment fits poorly (error likely real)
+1102,BH2163 protein,5c6n,False,2,2,0,2013-07-31,3.2,2015-06-23,uncontested: flagged segment fits poorly (error likely real)
+1103,RNA polymerase sigma factor RpoD,4mey,False,1,1,10,2013-08-27,3.948,2013-08-27,contested: shifted fits worse
+1104,Protein McrC,6ut6,False,1,1,2,2019-10-29,3.28,2019-10-29,contested: shifted fits worse
+1110,WD repeat-containing protein 70,6zym,False,2,2,1,2020-08-02,3.4,2023-01-11,contested: shifted fits worse
+1111,NAD(P)H-quinone oxidoreductase subunit 1,6nby,False,1,1,0,2018-12-10,3.1,2018-12-10,uncontested: flagged segment fits poorly (error likely real)
+1116,Cilia and flagella associated protein 52,7rro,False,3,3,0,2021-08-10,3.4,2024-06-21,uncontested: flagged segment fits poorly (error likely real)
+1119,Ribosomal RNA-processing protein 1,6em1,False,3,3,4,2017-10-01,3.6,2021-05-11,contested: shifted fits worse
+1122,DNA mismatch repair protein MutL,5x9y,False,1,1,0,2017-03-10,3.443,2017-03-10,uncontested: flagged segment fits poorly (error likely real)
+1123,DNA mismatch repair protein MutL,5x9y,False,1,1,1,2017-03-10,3.443,2017-03-10,contested: shifted fits worse
+1124,DNA mismatch repair protein MutL,6lzk,False,1,2,0,2017-03-10,3.443,2020-02-19,uncontested: flagged segment fits poorly (error likely real)
+1125,DNA mismatch repair protein MutL,6lzk,False,1,2,0,2017-03-10,3.443,2020-02-19,uncontested: flagged segment fits poorly (error likely real)
+1130,50S ribosomal protein L25,5a9z,False,2,2,10,2006-06-27,5.0,2015-07-23,contested: shifted fits worse
+1133,50S ribosomal protein L25,4v4x,False,2,2,2,2006-06-27,5.0,2016-03-06,contested: shifted fits worse
+1136,50S RIBOSOMAL PROTEIN L21,3cf5,False,3,8,0,2008-03-02,3.3,2020-08-10,uncontested: flagged segment fits poorly (error likely real)
+1161,Proteasome subunit alpha type-5,5m32,False,1,1,11,2016-10-14,3.8,2016-10-14,contested: shifted fits worse
+1162,ND4 SUBUNIT (NU4M),6gcs,False,1,1,0,2018-04-19,4.32,2018-04-19,uncontested: flagged segment fits poorly (error likely real)
+1165,NADH-ubiquinone oxidoreductase chain 1,5ldw,False,1,2,2,2016-06-28,4.27,2017-05-23,contested: shifted fits worse
+1171,Centromere DNA-binding protein complex CBF3 subunit B,7k79,False,2,3,2,2018-07-02,3.0,2023-04-26,contested: shifted fits worse
+1172,Capsid protein,7sfw,False,1,1,0,2021-10-04,3.2,2021-10-04,uncontested: flagged segment fits poorly (error likely real)
+1174,Capsid,6mx4,False,1,1,0,2018-10-30,4.4,2018-10-30,uncontested: flagged segment fits poorly (error likely real)
+1175,Togavirin,6xo4,False,2,2,3,2020-07-06,4.2,2023-12-19,contested: shifted fits worse
+1177,"ATP SYNTHASE SUBUNIT GAMMA, MITOCHONDRIAL",2w6h,False,5,12,0,1996-03-13,2.85,2025-07-28,uncontested: flagged segment fits poorly (error likely real)
+1178,ATP synthase subunit gamma,6tt7,False,5,12,0,1996-03-13,2.85,2025-07-28,uncontested: flagged segment fits poorly (error likely real)
+1188,Surface presentation of antigens protein SpaR,7agx,False,1,1,1,2020-09-23,3.6,2020-09-23,contested: shifted fits worse
+1192,Transient receptor potential cation channel subfamily V member 3,7rau,False,2,2,5,2018-09-18,4.0,2021-07-02,contested: shifted fits worse
+1193,Transient receptor potential cation channel subfamily V member 3,6dvy,False,1,2,0,2018-06-25,4.0,2019-07-21,uncontested: flagged segment fits poorly (error likely real)
+1195,Transient receptor potential cation channel subfamily V member 3,6dvw,False,1,2,0,2018-06-25,4.3,2019-07-21,uncontested: flagged segment fits poorly (error likely real)
+1197,60S ribosomal protein L15-A,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+1198,Guanine nucleotide-binding protein G(s) subunit alpha isoforms short,7v9m,False,1,1,0,2021-08-26,3.29,2021-08-26,uncontested: flagged segment fits poorly (error likely real)
+1203,Guanine nucleotide-binding protein G(s) subunit alpha isoforms short,7bb6,False,1,1,0,2020-12-17,4.2,2020-12-17,uncontested: flagged segment fits poorly (error likely real)
+1208,Beta-arrestin-1,3gd1,False,4,4,7,2000-10-27,1.9,2022-08-18,contested: shifted fits worse
+1214,"Cone cGMP-specific 3',5'-cyclic phosphodiesterase subunit alpha'",6x88,False,1,1,1,2020-06-01,3.19974,2020-06-01,contested: shifted fits worse
+1221,SdeA,5yim,False,5,5,0,2017-10-04,2.2,2021-09-17,uncontested: flagged segment fits poorly (error likely real)
+1223,Two pore calcium channel protein 1,6cx0,False,2,4,0,2015-09-15,2.872,2018-04-02,uncontested: flagged segment fits poorly (error likely real)
+1224,Two pore calcium channel protein 1,6e1k,False,1,2,0,2015-09-15,2.872,2018-07-10,uncontested: flagged segment fits poorly (error likely real)
+1227,60S acidic ribosomal protein P0,5apo,False,4,4,3,2010-07-23,4.0,2025-04-30,contested: shifted fits worse
+1233,Tumor protein p73,3vd2,False,4,8,0,2010-11-03,1.82,2021-06-01,uncontested: flagged segment fits poorly (error likely real)
+1243,Bifunctional protein PaaZ,6jqm,False,3,3,0,2019-03-31,3.3,2023-10-23,uncontested: flagged segment fits poorly (error likely real)
+1246,Monoclonal antibody 6H1 Fab light chain,6bpe,True,1,1,7,2017-11-22,3.34,2017-11-22,contested: shifted fits worse
+1248,RsbS protein,6qcm,False,3,7,0,2018-12-28,4.21,2025-04-10,uncontested: flagged segment fits poorly (error likely real)
+1249,RsbS protein,7b0u,False,1,1,6,2020-11-22,3.86,2020-11-22,contested: shifted fits worse
+1250,RsbS protein,6qcm,False,1,1,6,2018-12-28,4.21,2018-12-28,contested: shifted fits worse
+1253,EFHC2,7rro,False,1,1,2,2021-08-10,3.4,2021-08-10,contested: shifted fits worse
+1255,Invariant Natural Killer T Cell Receptor chain A,3tzv,False,1,1,0,2011-09-27,3.056,2011-09-27,uncontested: flagged segment fits poorly (error likely real)
+1259,TFIIH basal transcription factor complex helicase XPB subunit,6o9m,False,2,2,1,2019-03-14,4.4,2021-04-16,contested: shifted fits worse
+1261,60S ribosomal protein L21-A,4v7r,False,1,1,1,2010-07-23,4.0,2010-07-23,contested: shifted fits worse
+1267,Transient receptor potential cation channel subfamily V member 6,6d7t,False,1,5,5,2018-04-25,4.44,2025-03-12,contested: shifted fits worse
+1275,Pre-mRNA-processing factor 17,5ylz,False,1,1,4,2017-10-20,3.6,2017-10-20,contested: shifted fits worse
+1280,Dynamin-1,6dlu,False,2,2,0,2018-06-02,3.75,2020-11-09,uncontested: flagged segment fits poorly (error likely real)
+1283,NAD(+) hydrolase SARM1,6wpk,False,1,1,0,2020-04-27,3.3,2020-04-27,uncontested: flagged segment fits poorly (error likely real)
+1284,"TCR alpha chain,Human nkt tcr alpha chain",5e6i,False,2,2,1,2011-01-18,2.8,2015-10-09,contested: shifted fits worse
+1285,26S protease regulatory subunit 4,5m32,False,1,1,9,2016-10-14,3.8,2016-10-14,contested: shifted fits worse
+1286,26S protease regulatory subunit 4,5t0c,False,1,1,7,2016-08-15,3.8,2016-08-15,contested: shifted fits worse
+1287,Nitric-oxide reductase,6l1x,False,1,1,1,2019-10-01,3.15,2019-10-01,contested: shifted fits worse
+1291,Sodium channel subunit beta-1,6agf,False,1,1,11,2018-08-11,3.2,2018-08-11,contested: shifted fits worse
+1292,40S ribosomal protein S13,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+1295,"Glutamate receptor ionotropic, NMDA 2A",7eou,False,1,3,2,2018-11-12,4.5,2023-05-29,contested: shifted fits worse
+1297,Ribosomal protein L8,6hcf,False,1,1,3,2018-08-14,3.9,2018-08-14,contested: shifted fits worse
+1300,RNA-directed RNA polymerase,7dte,False,1,1,5,2021-01-04,3.0,2021-01-04,contested: shifted fits worse
+1302,ATP-binding cassette sub-family G member 8,5do7,False,1,1,3,2015-09-10,3.93,2015-09-10,contested: shifted fits worse
+1306,Mitogen-activated protein kinase 1,4qp6,False,10,11,0,1997-06-26,2.4,2026-01-19,uncontested: flagged segment fits poorly (error likely real)
+1307,Protein kinase,2qkw,False,2,2,0,2007-07-11,3.2,2009-05-14,uncontested: flagged segment fits poorly (error likely real)
+1308,Protein kinase,2qkw,False,2,2,0,2007-07-11,3.2,2009-05-14,uncontested: flagged segment fits poorly (error likely real)
+1309,Protein kinase,3hgk,False,2,2,0,2007-07-11,3.2,2009-05-14,uncontested: flagged segment fits poorly (error likely real)
+1310,Protein kinase,3hgk,False,2,2,0,2007-07-11,3.2,2009-05-14,uncontested: flagged segment fits poorly (error likely real)
+1317,Exosome complex exonuclease RRP40,2nn6,False,1,1,0,2006-10-23,3.35,2006-10-23,uncontested: flagged segment fits poorly (error likely real)
+1321,Poly [ADP-ribose] polymerase 2,6x0l,False,2,2,0,2020-05-16,3.9,2026-01-05,uncontested: flagged segment fits poorly (error likely real)
+1328,PHIKZ055,7ogp,False,1,1,0,2021-05-07,3.3,2021-05-07,uncontested: flagged segment fits poorly (error likely real)
+1329,PHIKZ055,7ogp,False,1,3,0,2021-05-07,3.3,2025-06-12,uncontested: flagged segment fits poorly (error likely real)
+1359,3H02 Fab heavy chain,7mhz,True,2,2,0,2021-04-16,3.2,2022-04-21,uncontested: flagged segment fits poorly (error likely real)
+1361,Transient receptor potential cation channel subfamily V member 6,6d7q,False,1,4,1,2017-11-18,4.2,2023-05-02,contested: shifted fits worse
+1362,Transient receptor potential cation channel subfamily V member 6,5woa,False,1,5,0,2016-03-22,3.247,2020-09-16,uncontested: flagged segment fits poorly (error likely real)
+1363,Transient receptor potential cation channel subfamily V member 6,5wo9,False,1,3,2,2017-08-01,3.7,2018-04-25,contested: shifted fits worse
+1364,Transient receptor potential cation channel subfamily V member 6,5wo7,False,1,5,0,2016-03-22,3.247,2020-09-16,uncontested: flagged segment fits poorly (error likely real)
+1365,Transient receptor potential cation channel subfamily V member 6,5wo6,False,1,2,0,2016-03-22,3.247,2017-08-01,uncontested: flagged segment fits poorly (error likely real)
+1366,Transient receptor potential cation channel subfamily V member 6,5iwk,False,1,1,0,2016-03-22,3.247,2016-03-22,uncontested: flagged segment fits poorly (error likely real)
+1376,Alpha-soluble NSF attachment protein,6mdm,False,1,1,0,2018-09-04,4.4,2018-09-04,uncontested: flagged segment fits poorly (error likely real)
+1378,PAN2-PAN3 deadenylation complex catalytic subunit PAN2,6r9i,False,2,3,0,2014-04-27,2.1,2019-04-03,uncontested: flagged segment fits poorly (error likely real)
+1381,Checkpoint protein HUS1,3ggr,False,2,2,0,2009-03-02,3.2,2023-10-20,uncontested: flagged segment fits poorly (error likely real)
+1386,Magnesium transport protein CorA,4ev6,False,2,2,0,2012-04-25,3.2,2014-04-10,uncontested: flagged segment fits poorly (error likely real)
+1413,SAM hydrolase,7ock,False,1,1,1,2021-04-27,3.6,2021-04-27,contested: shifted fits worse
+1416,AP-2 complex subunit mu,7rwc,False,1,1,0,2021-08-19,3.8,2021-08-19,uncontested: flagged segment fits poorly (error likely real)
+1417,50S ribosomal protein L3,4v4q,False,3,4,0,2005-08-30,3.46,2019-03-14,uncontested: flagged segment fits poorly (error likely real)
+1426,ND1 SUBUNIT (NU1M),6gcs,False,1,1,3,2018-04-19,4.32,2018-04-19,contested: shifted fits worse
+1429,Methionine import ATP-binding protein metN,3dhw,False,1,1,0,2008-06-18,3.7,2008-06-18,uncontested: flagged segment fits poorly (error likely real)
+1430,Protein translocase subunit secA,3din,False,1,1,2,2008-06-20,4.5,2008-06-20,contested: shifted fits worse
+1438,Volume-regulated anion channel subunit LRRC8A,6djb,False,1,1,0,2018-05-24,4.4,2018-05-24,uncontested: flagged segment fits poorly (error likely real)
+1442,Cytochrome subunit of photosynthetic reaction center,5yq7,False,1,1,1,2017-11-05,4.1,2017-11-05,contested: shifted fits worse
+1445,Guanine nucleotide exchange protein SMCR8,6lt0,False,1,1,0,2020-01-21,3.2,2020-01-21,uncontested: flagged segment fits poorly (error likely real)
+1450,Guanine nucleotide exchange protein SMCR8,6v4u,False,1,1,2,2019-12-01,3.8,2019-12-01,contested: shifted fits worse
+1453,50S ribosomal protein L18,4wce,False,2,3,0,2014-09-04,3.526,2016-01-14,uncontested: flagged segment fits poorly (error likely real)
+1457,Putative core protein NTPase/VP5,5zvs,False,1,1,1,2018-05-12,3.8,2018-05-12,contested: shifted fits worse
+1461,26S proteasome non-ATPase regulatory subunit 1,5vgz,False,1,1,4,2017-04-12,4.5,2017-04-12,contested: shifted fits worse
+1463,26S proteasome non-ATPase regulatory subunit 1,5m32,False,1,1,5,2016-10-14,3.8,2016-10-14,contested: shifted fits worse
+1467,Probable formate transporter 1,3kcv,False,1,1,0,2009-10-22,3.198,2009-10-22,uncontested: flagged segment fits poorly (error likely real)
+1469,Transient receptor potential cation channel subfamily V member 3,6uw4,False,3,3,4,2019-11-04,3.1,2025-04-08,contested: shifted fits worse
+1478,Smad nuclear-interacting protein 1,6ff7,False,1,1,2,2018-01-03,4.5,2018-01-03,contested: shifted fits worse
+1482,Cell cycle checkpoint control protein RAD9A,3ggr,False,1,1,6,2009-03-02,3.2,2009-03-02,contested: shifted fits worse
+1484,ABC transporter protein,6p6j,False,1,1,0,2019-06-04,3.4,2019-06-04,uncontested: flagged segment fits poorly (error likely real)
+1489,50S ribosomal protein L4,4v9i,False,1,3,0,2006-07-31,2.8,2013-04-04,uncontested: flagged segment fits poorly (error likely real)
+1490,50S ribosomal protein L4,4v87,False,3,7,0,2011-09-20,3.1,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+1491,50S ribosomal protein L4,4v4x,False,1,1,0,2006-06-27,5.0,2006-06-27,uncontested: flagged segment fits poorly (error likely real)
+1500,"Phenylalanyl-tRNA synthetase, beta chain",3pco,False,3,3,0,2010-10-21,3.02,2021-06-16,uncontested: flagged segment fits poorly (error likely real)
+1501,Phenylalanine--tRNA ligase beta subunit,7n8y,False,3,3,0,2010-10-21,3.02,2021-06-16,uncontested: flagged segment fits poorly (error likely real)
+1503,50S ribosomal protein L3,5dm7,False,4,12,0,2003-01-05,3.1,2020-08-12,uncontested: flagged segment fits poorly (error likely real)
+1504,50S ribosomal protein L3,7a0s,False,5,12,0,2003-01-05,3.1,2020-08-10,uncontested: flagged segment fits poorly (error likely real)
+1505,50S RIBOSOMAL PROTEIN L3,3cf5,False,4,12,0,2003-01-05,3.1,2020-08-12,uncontested: flagged segment fits poorly (error likely real)
+1506,50S ribosomal protein L3,4v87,False,4,4,0,2006-07-31,2.8,2017-08-21,uncontested: flagged segment fits poorly (error likely real)
+1509,Actin-related protein 4,3qb0,False,6,8,0,2011-01-12,3.404,2022-10-13,uncontested: flagged segment fits poorly (error likely real)
+1510,Bifunctional protein glmU,3foq,False,3,11,0,2007-07-11,2.75,2018-04-25,uncontested: flagged segment fits poorly (error likely real)
+1519,Probable multidrug resistance ABC transporter ATP-binding/permease protein YheH,7m33,False,1,1,2,2021-03-18,3.55,2021-03-18,contested: shifted fits worse
+1520,Probable multidrug resistance ABC transporter ATP-binding/permease protein YheH,7m33,False,1,1,0,2021-03-18,3.55,2021-03-18,uncontested: flagged segment fits poorly (error likely real)
+1521,Potassium transporter peripheral membrane component,6v4k,False,1,1,0,2019-11-27,3.53004,2019-11-27,uncontested: flagged segment fits poorly (error likely real)
+1526,ADP-ribosyltransferase binding component,6o2n,False,1,1,0,2019-02-24,3.7,2019-02-24,uncontested: flagged segment fits poorly (error likely real)
+1527,ADP-ribosyltransferase binding component,6oks,False,1,1,3,2019-04-15,4.2,2019-04-15,contested: shifted fits worse
+1531,ER membrane protein complex subunit 1,6wb9,False,1,1,2,2020-03-26,3.0,2020-03-26,contested: shifted fits worse
+1533,TssK,6giy,False,1,1,0,2018-05-15,4.3,2018-05-15,uncontested: flagged segment fits poorly (error likely real)
+1536,TssK,6gj3,False,1,1,0,2018-05-15,4.3,2018-05-15,uncontested: flagged segment fits poorly (error likely real)
+1545,Particulate methane monooxygenase subunit B,4pi2,False,1,2,1,2014-05-07,3.33,2021-09-09,contested: shifted fits worse
+1546,Chemotaxis MotA protein,6ysf,False,1,1,1,2020-04-22,3.4,2020-04-22,contested: shifted fits worse
+1549,CRISPR-associated protein Csm5,6xn3,False,1,1,0,2020-07-02,3.0,2020-07-02,uncontested: flagged segment fits poorly (error likely real)
+1551,50S ribosomal protein L15,7a0s,False,1,1,0,2020-08-10,3.22,2020-08-10,uncontested: flagged segment fits poorly (error likely real)
+1552,50S RIBOSOMAL PROTEIN L15,3cf5,False,3,7,0,2008-03-02,3.3,2016-05-11,uncontested: flagged segment fits poorly (error likely real)
+1553,50S ribosomal protein L15,5li0,False,3,4,0,2014-09-04,3.526,2016-07-13,uncontested: flagged segment fits poorly (error likely real)
+1554,50S ribosomal protein L15,5hl7,False,2,3,0,2014-09-04,3.526,2017-03-07,uncontested: flagged segment fits poorly (error likely real)
+1555,50S ribosomal protein L15,4wce,False,2,2,0,2014-09-04,3.526,2016-01-14,uncontested: flagged segment fits poorly (error likely real)
+1564,Outer membrane protein assembly factor BamA,4k3b,False,2,2,0,2013-04-10,3.2,2024-07-15,uncontested: flagged segment fits poorly (error likely real)
+1567,TFIIH basal transcription factor complex helicase XPD subunit,5of4,False,3,3,7,2017-07-10,4.4,2021-04-16,contested: shifted fits worse
+1570,Succinate dehydrogenase flavoprotein subunit,2acz,False,1,2,7,2002-12-11,2.6,2005-07-19,contested: shifted fits worse
+1571,Succinate dehydrogenase flavoprotein subunit,2acz,False,1,2,7,2002-12-11,2.6,2005-07-19,contested: shifted fits worse
+1572,EXODEOXYRIBONUCLEASE V ALPHA CHAIN,1w36,False,1,2,4,2004-07-13,3.1,2009-10-11,contested: shifted fits worse
+1573,EXODEOXYRIBONUCLEASE V ALPHA CHAIN,1w36,False,1,1,6,2004-07-13,3.1,2004-07-13,contested: shifted fits worse
+1587,Type III-A CRISPR-associated RAMP protein Csm5,6ifl,False,1,1,1,2018-09-20,3.16,2018-09-20,contested: shifted fits worse
+1596,Peptide chain release factor 1,5j30,False,1,1,0,2016-03-30,3.2,2016-03-30,uncontested: flagged segment fits poorly (error likely real)
+1597,Peptide chain release factor 1,2b3t,False,1,1,0,2005-09-21,3.1,2005-09-21,uncontested: flagged segment fits poorly (error likely real)
+1600,26S proteasome non-ATPase regulatory subunit 3,6msd,False,2,2,1,2018-10-16,3.2,2020-04-13,contested: shifted fits worse
+1602,Periodic tryptophan protein 2,5wyk,False,1,1,5,2017-01-13,4.5,2017-01-13,contested: shifted fits worse
+1606,Periodic tryptophan protein 2,5wyk,False,1,1,11,2017-01-13,4.5,2017-01-13,contested: shifted fits worse
+1610,50S ribosomal protein L23,5imq,False,2,2,0,2006-06-27,5.5,2016-03-06,uncontested: flagged segment fits poorly (error likely real)
+1611,50S ribosomal protein L23,4v4i,False,2,3,0,2007-02-15,3.71,2010-08-16,uncontested: flagged segment fits poorly (error likely real)
+1612,putative channel transporter,1kpk,False,1,1,11,2001-12-31,3.5,2001-12-31,contested: shifted fits worse
+1621,Metabotropic glutamate receptor 3,7wih,False,2,2,0,2015-07-17,3.15,2022-01-03,uncontested: flagged segment fits poorly (error likely real)
+1622,Metabotropic glutamate receptor 3,7wi8,False,1,1,0,2022-01-03,4.17,2022-01-03,uncontested: flagged segment fits poorly (error likely real)
+1623,Metabotropic glutamate receptor 3,7wi8,False,1,1,1,2022-01-03,4.17,2022-01-03,contested: shifted fits worse
+1625,60S ribosomal protein L9,7cpv,False,3,5,7,2020-08-08,3.03,2025-11-05,contested: shifted fits worse
+1626,Triplex capsid protein 1,6m6h,False,2,2,0,2018-02-08,3.1,2020-03-14,uncontested: flagged segment fits poorly (error likely real)
+1627,Triplex capsid protein 1,6m6h,False,2,2,1,2018-02-08,3.1,2020-03-14,contested: shifted fits worse
+1628,Triplex capsid protein 1,6m6i,False,2,2,0,2018-02-08,3.1,2020-03-14,uncontested: flagged segment fits poorly (error likely real)
+1629,Triplex capsid protein 1,6m6i,False,2,2,1,2018-02-08,3.1,2020-03-14,contested: shifted fits worse
+1630,Triplex capsid protein 1,5zap,False,2,2,0,2018-02-08,3.1,2020-03-14,uncontested: flagged segment fits poorly (error likely real)
+1631,Triplex capsid protein 1,5zap,False,2,2,1,2018-02-08,3.1,2020-03-14,contested: shifted fits worse
+1632,photosystem II CP43 protein,1s5l,False,1,1,2,2004-01-21,3.5,2004-01-21,contested: shifted fits worse
+1635,60S ribosomal protein L24-A,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+1644,Protein VP3,6o3v,False,1,1,0,2019-02-27,3.5,2019-02-27,uncontested: flagged segment fits poorly (error likely real)
+1645,Protein VP3,6o3v,False,2,2,0,2019-02-27,3.5,2019-03-05,uncontested: flagged segment fits poorly (error likely real)
+1646,Protein VP3,6o3v,False,2,2,0,2019-02-27,3.5,2019-03-05,uncontested: flagged segment fits poorly (error likely real)
+1651,Mediator of RNA polymerase II transcription subunit 24,7emf,False,2,3,1,2021-04-13,3.5,2023-08-09,contested: shifted fits worse
+1660,PAB-dependent poly(A)-specific ribonuclease subunit PAN2,4xr7,False,2,2,0,2015-01-20,3.796,2019-04-03,uncontested: flagged segment fits poorly (error likely real)
+1664,Nad4m,7a23,False,1,1,3,2020-08-15,3.7,2020-08-15,contested: shifted fits worse
+1665,Baseplate wedge protein gp53,5hx2,False,1,1,3,2016-01-29,3.8,2016-01-29,contested: shifted fits worse
+1667,Preprotein translocase secA subunit,2ibm,False,1,1,7,2006-09-11,3.2,2006-09-11,contested: shifted fits worse
+1669,ND2 SUBUNIT (NU2M),6gcs,False,1,1,6,2018-04-19,4.32,2018-04-19,contested: shifted fits worse
+1672,30S ribosomal protein S2,4v7s,False,2,4,0,2010-08-05,3.2547,2014-09-11,uncontested: flagged segment fits poorly (error likely real)
+1679,NADH-ubiquinone oxidoreductase chain 4,5ldw,False,2,3,0,2016-06-28,4.27,2020-11-12,uncontested: flagged segment fits poorly (error likely real)
+1681,DNA-directed RNA polymerase III subunit RPC10,7du2,False,1,1,0,2021-01-07,3.35,2021-01-07,uncontested: flagged segment fits poorly (error likely real)
+1683,Lipid asymmetry maintenance ABC transporter permease subunit MlaE,7ch6,False,1,1,1,2020-07-05,3.4,2020-07-05,contested: shifted fits worse
+1688,Ribosomal large subunit pseudouridine synthase F,3dh3,False,1,1,0,2008-06-16,3.0,2008-06-16,uncontested: flagged segment fits poorly (error likely real)
+1690,GH3.15 acyl acid amido synthetase,6avh,False,1,1,0,2017-09-02,3.011,2017-09-02,uncontested: flagged segment fits poorly (error likely real)
+1695,Putative ribosomal protein L14,7aih,False,1,1,0,2020-09-27,3.6,2020-09-27,uncontested: flagged segment fits poorly (error likely real)
+1698,"NADH-ubiquinone oxidoreductase 75 kDa subunit, mitochondrial",5gup,False,2,4,0,2016-08-03,5.4,2024-07-30,uncontested: flagged segment fits poorly (error likely real)
+1708,BJ4_G0001550.mRNA.1.CDS.1,6giq,False,3,3,0,2018-05-15,3.23,2024-05-07,uncontested: flagged segment fits poorly (error likely real)
+1711,WD repeat-containing protein 41,6lt0,False,1,1,1,2020-01-21,3.2,2020-01-21,contested: shifted fits worse
+1712,WD repeat-containing protein 41,6lt0,False,1,1,1,2020-01-21,3.2,2020-01-21,contested: shifted fits worse
+1716,75-KDA PROTEIN (NUAM),6gcs,False,2,3,0,2018-04-19,4.32,2020-02-28,uncontested: flagged segment fits poorly (error likely real)
+1720,Serine/threonine-protein phosphatase 2A 56 kDa regulatory subunit gamma isoform,2npp,False,1,1,0,2006-10-28,3.3,2006-10-28,uncontested: flagged segment fits poorly (error likely real)
+1727,V-type proton ATPase subunit S1,6xbw,False,1,1,1,2020-06-07,3.37,2020-06-07,contested: shifted fits worse
+1742,NADH-ubiquinone oxidoreductase chain 6,6qc5,False,2,3,2,2018-12-26,4.3,2025-04-24,contested: shifted fits worse
+1745,Transient receptor potential cation channel subfamily V member 3,6pvn,False,1,2,0,2018-06-25,4.3,2019-07-21,uncontested: flagged segment fits poorly (error likely real)
+1746,Transient receptor potential cation channel subfamily V member 3,6pvq,False,1,2,3,2018-06-25,4.3,2019-07-21,contested: shifted fits worse
+1747,Transient receptor potential cation channel subfamily V member 3,6pvl,False,1,2,0,2018-06-25,4.3,2019-07-21,uncontested: flagged segment fits poorly (error likely real)
+1750,Atg17,4p1w,False,1,2,0,2014-02-27,3.2,2016-04-21,uncontested: flagged segment fits poorly (error likely real)
+1751,KLTH0D15642p,5jhf,False,1,1,0,2016-04-21,3.21,2016-04-21,uncontested: flagged segment fits poorly (error likely real)
+1755,ARGONAUTE,3f73,False,1,2,2,2008-06-26,2.7,2008-11-07,contested: shifted fits worse
+1762,COMPASS component SWD1,6ven,False,1,1,1,2020-01-02,3.37,2020-01-02,contested: shifted fits worse
+1763,Associated protein,5xbl,False,1,1,2,2017-03-20,3.052,2017-03-20,contested: shifted fits worse
+1764,Ribonuclease MRP protein subunit SNM1,6w6v,False,1,1,0,2020-03-17,3.0,2020-03-17,uncontested: flagged segment fits poorly (error likely real)
+1777,CRISPR system Cascade subunit CasA,4tvx,False,1,1,4,2014-06-28,3.24,2014-06-28,contested: shifted fits worse
+1779,Transcription termination factor rho,1pvo,False,2,3,8,2003-06-27,3.0,2020-03-24,contested: shifted fits worse
+1780,Transcription termination factor rho,1pvo,False,3,5,7,2003-06-27,3.0,2023-09-01,contested: shifted fits worse
+1781,NADH-ubiquinone oxidoreductase chain 5,5ldw,False,1,2,6,2016-06-28,4.27,2017-05-23,contested: shifted fits worse
+1782,NADH-ubiquinone oxidoreductase chain 5,5ldw,False,1,2,6,2016-06-28,4.27,2017-05-23,contested: shifted fits worse
+1789,Low calcium response protein,7alw,False,2,2,0,2020-10-07,3.7,2021-12-15,uncontested: flagged segment fits poorly (error likely real)
+1790,NADH-ubiquinone oxidoreductase chain 2,5ldw,False,2,3,7,2016-06-28,4.27,2020-11-12,contested: shifted fits worse
+1792,DNA helicase IV,6wvk,False,1,1,1,2020-05-06,3.36,2020-05-06,contested: shifted fits worse
+1793,DNA helicase,6zfb,False,1,1,1,2020-06-17,3.9,2020-06-17,contested: shifted fits worse
+1795,Ferrous-iron efflux pump fieF,2qfi,False,1,1,0,2007-06-27,3.8,2007-06-27,uncontested: flagged segment fits poorly (error likely real)
+1799,Proteasome alpha1 chain,6qm8,False,3,4,0,2019-02-01,3.3,2023-03-30,uncontested: flagged segment fits poorly (error likely real)
+1803,50S ribosomal protein L19,4v4i,False,3,5,6,2006-07-31,2.8,2012-04-06,contested: shifted fits worse
+1807,50S ribosomal protein L19,4v9j,False,4,6,4,2006-07-31,2.8,2018-12-17,contested: shifted fits worse
+1810,Chromatin structure-remodeling complex subunit RSC9,6k15,False,1,2,2,2019-05-09,3.4,2019-09-06,contested: shifted fits worse
+1815,integral membrane channel and cytosolic domains,1p7b,False,2,2,1,2003-05-01,3.65,2021-11-19,contested: shifted fits worse
+1829,Pre-mRNA-processing factor 39,6g90,False,1,1,5,2018-04-10,4.0,2018-04-10,contested: shifted fits worse
+1830,Pre-mRNA-processing factor 39,6g90,False,1,1,5,2018-04-10,4.0,2018-04-10,contested: shifted fits worse
+1831,PHIKZ123,7ogp,False,1,1,0,2021-05-07,3.3,2021-05-07,uncontested: flagged segment fits poorly (error likely real)
+1832,PHIKZ123,7ogp,False,1,2,0,2021-05-07,3.3,2025-06-12,uncontested: flagged segment fits poorly (error likely real)
+1834,Origin recognition complex subunit 4,4xgc,False,1,1,1,2014-12-30,3.5,2014-12-30,contested: shifted fits worse
+1836,26S proteasome non-ATPase regulatory subunit 7,5m32,False,1,1,9,2016-10-14,3.8,2016-10-14,contested: shifted fits worse
+1838,Catalase-peroxidase,7a7a,False,1,1,0,2020-08-27,3.08,2020-08-27,uncontested: flagged segment fits poorly (error likely real)
+1839,Catalase-peroxidase,7a7a,False,1,1,7,2020-08-27,3.08,2020-08-27,contested: shifted fits worse
+1843,40S ribosomal protein S19,5aj0,False,1,3,0,2014-04-05,6.9,2015-10-28,uncontested: flagged segment fits poorly (error likely real)
+1844,Origin recognition complex subunit 5,5uj7,False,1,1,5,2017-01-17,3.394,2017-01-17,contested: shifted fits worse
+1846,Integrator complex subunit 6,7cun,False,1,1,2,2020-08-23,3.5,2020-08-23,contested: shifted fits worse
+1849,Csm4,6iqw,False,1,1,2,2018-11-09,3.35,2018-11-09,contested: shifted fits worse
+1851,50S ribosomal protein L1,5el6,False,3,6,0,2000-02-11,11.5,2019-02-11,uncontested: flagged segment fits poorly (error likely real)
+1865,50S ribosomal protein L35,4wfn,False,2,8,0,2003-01-05,3.1,2016-05-11,uncontested: flagged segment fits poorly (error likely real)
+1866,50S ribosomal protein L35,3pio,False,2,8,0,2003-01-05,3.1,2016-05-11,uncontested: flagged segment fits poorly (error likely real)
+1868,DotY,7ovb,False,1,1,0,2021-06-14,3.61,2021-06-14,uncontested: flagged segment fits poorly (error likely real)
+1869,26S proteasome non-ATPase regulatory subunit 6,5l4k,False,1,1,2,2016-05-25,3.9,2016-05-25,contested: shifted fits worse
+1870,26S proteasome non-ATPase regulatory subunit 6,5l4k,False,1,1,7,2016-05-25,3.9,2016-05-25,contested: shifted fits worse
+1874,26S proteasome non-ATPase regulatory subunit 6,5l4k,False,1,1,10,2016-05-25,3.9,2016-05-25,contested: shifted fits worse
+1878,Cell cycle checkpoint protein RAD1,3ggr,False,1,1,2,2009-03-02,3.2,2009-03-02,contested: shifted fits worse
+1879,Cell cycle checkpoint protein RAD1,3ggr,False,1,1,3,2009-03-02,3.2,2009-03-02,contested: shifted fits worse
+1881,Ras-related GTP-binding protein A,6nzd,False,1,3,4,2019-02-13,3.6,2022-06-25,contested: shifted fits worse
+1882,ATM1-type heavy metal exporter,6pam,False,1,1,0,2019-06-11,3.7,2019-06-11,uncontested: flagged segment fits poorly (error likely real)
+1883,Large subunit GTPase 1,6n8n,False,1,2,0,2018-11-29,3.8,2025-09-22,uncontested: flagged segment fits poorly (error likely real)
+1890,PROTEASOME ACTIVATOR PROTEIN PA26,1fnt,False,1,1,0,2000-08-23,3.2,2000-08-23,uncontested: flagged segment fits poorly (error likely real)
+1895,40S ribosomal protein S9-A,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+1905,30S ribosomal protein S7,6vwm,False,1,1,8,2020-02-20,3.4,2020-02-20,contested: shifted fits worse
+1907,50S ribosomal protein bL20,3j9w,False,6,9,2,2015-03-16,3.9,2025-06-16,contested: shifted fits worse
+1922,Protein translocation protein SEC63,6nd1,False,1,1,2,2018-12-13,4.1,2018-12-13,contested: shifted fits worse
+1926,30S RIBOSOMAL PROTEIN S2,4v6g,False,3,7,0,2009-07-10,3.5,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+1943,eS31,3j80,False,3,5,1,2014-08-28,3.75,2019-11-14,contested: shifted fits worse
+1948,Bifunctional dihydrofolate reductase-thymidylate synthase,4eck,False,1,1,0,2012-03-26,3.516,2012-03-26,uncontested: flagged segment fits poorly (error likely real)
+1956,Nucleoporin SEH1,3ewe,False,1,1,0,2008-10-14,3.5,2008-10-14,uncontested: flagged segment fits poorly (error likely real)
+1960,Lipopolysaccharide export system permease protein LptG,6mhu,False,1,1,0,2018-09-18,4.0,2018-09-18,uncontested: flagged segment fits poorly (error likely real)
+1961,Inner membrane protein yjgQ,6s8h,False,1,1,0,2019-07-10,3.7,2019-07-10,uncontested: flagged segment fits poorly (error likely real)
+1963,OB TCR,2wbj,False,1,1,1,2009-03-02,3.0,2009-03-02,contested: shifted fits worse
+1966,Pre-hexon-linking protein IIIa,6z7n,False,1,1,1,2020-05-31,3.77,2020-05-31,contested: shifted fits worse
+1969,DNA-directed RNA polymerase subunit,6kf3,False,1,2,1,2014-06-02,3.5,2019-07-06,contested: shifted fits worse
+1970,50S ribosomal protein L19,7a0r,False,2,5,1,2008-03-08,2.91,2020-08-10,contested: shifted fits worse
+1971,50S RIBOSOMAL PROTEIN L19,2zjp,False,3,7,1,2008-03-07,3.7,2020-08-10,contested: shifted fits worse
+1976,CRISPR-associated protein Cas8,6lnc,False,1,1,0,2019-12-28,3.21,2019-12-28,uncontested: flagged segment fits poorly (error likely real)
+1978,Cas8,6vbw,False,1,1,0,2019-12-19,3.2,2019-12-19,uncontested: flagged segment fits poorly (error likely real)
+1979,Cas8,6vbw,False,1,1,0,2019-12-19,3.2,2019-12-19,uncontested: flagged segment fits poorly (error likely real)
+1997,FAP161,6u42,False,2,2,0,2019-08-22,3.4,2023-03-23,uncontested: flagged segment fits poorly (error likely real)
+1998,Tubulin alpha-1B chain,6b0i,False,1,2,2,2017-09-14,3.78,2020-05-09,uncontested: flagged segment fits poorly (error likely real)
+2002,NADH-quinone oxidoreductase chain 4,2fug,False,1,1,0,2006-01-26,3.3,2006-01-26,uncontested: flagged segment fits poorly (error likely real)
+2004,Tubulin beta chain,6ta3,False,1,1,9,2019-10-29,3.8,2019-10-29,contested: shifted fits worse
+2009,Tubulin beta-2B chain,6e7c,False,1,1,10,2018-07-25,3.65,2018-07-25,contested: shifted fits worse
+2013,"NADH dehydrogenase [ubiquinone] flavoprotein 1, mitochondrial",6x89,False,1,1,0,2020-06-01,3.9,2020-06-01,uncontested: flagged segment fits poorly (error likely real)
+2016,mt-SAF38,7pua,False,1,1,1,2021-09-29,3.6,2021-09-29,contested: shifted fits worse
+2023,MALTOGENIC AMYLASE,1gvi,False,2,2,0,1999-04-21,2.8,2002-02-14,uncontested: flagged segment fits poorly (error likely real)
+2026,NADH-quinone oxidoreductase chain 5,2fug,False,1,1,6,2006-01-26,3.3,2006-01-26,contested: shifted fits worse
+2027,NADH-quinone oxidoreductase chain 5,2fug,False,1,1,5,2006-01-26,3.3,2006-01-26,contested: shifted fits worse
+2032,Putative GTP-binding protein,5lad,False,1,1,0,2016-06-14,3.0,2016-06-14,uncontested: flagged segment fits poorly (error likely real)
+2036,Serine palmitoyltransferase 2,7cqk,False,1,1,2,2020-08-11,3.3,2020-08-11,contested: shifted fits worse
+2038,mS23,6hiw,False,1,1,0,2018-08-31,3.37,2018-08-31,uncontested: flagged segment fits poorly (error likely real)
+2039,50S ribosomal protein L13,4wfb,False,3,3,8,2014-09-14,3.43,2016-07-13,contested: shifted fits worse
+2043,Adenosine monophosphate-protein hydrolase SidD,6rre,False,1,2,0,2012-12-20,1.6,2019-05-17,uncontested: flagged segment fits poorly (error likely real)
+2044,Pol gamma B,5c53,False,2,4,8,2015-05-15,3.299,2026-04-16,contested: shifted fits worse
+2047,"DNA polymerase subunit gamma-2, mitochondrial",5c51,False,3,4,8,2015-05-15,3.299,2026-04-16,contested: shifted fits worse
+2051,Envelope glycoprotein gp120,6olp,False,2,2,0,2019-04-16,4.2,2020-02-04,uncontested: flagged segment fits poorly (error likely real)
+2057,D-amino-acid oxidase,5wwv,False,3,6,0,1996-01-19,2.6,2017-01-06,uncontested: flagged segment fits poorly (error likely real)
+2058,Integrator complex subunit 8,7cun,False,2,3,3,2020-08-23,3.5,2024-03-01,contested: shifted fits worse
+2061,ACIDIC RIBOSOMAL PROTEIN P0 HOMO,2qa4,False,1,1,1,2007-06-14,3.0,2007-06-14,contested: shifted fits worse
+2062,ACIDIC RIBOSOMAL PROTEIN P0 HOMO,2qa4,False,1,1,0,2007-06-14,3.0,2007-06-14,uncontested: flagged segment fits poorly (error likely real)
+2067,60S ribosomal protein L11-A,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+2069,"Succinate dehydrogenase [ubiquinone] cytochrome b subunit, mitochondrial",6lo8,False,1,1,0,2020-01-04,3.83,2020-01-04,uncontested: flagged segment fits poorly (error likely real)
+2073,40S ribosomal protein S7-A,4v88,False,7,11,0,2011-10-11,3.0,2025-09-22,uncontested: flagged segment fits poorly (error likely real)
+2079,40S ribosomal protein S16,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+2084,Pre-mRNA-splicing factor SYF1,5y88,False,1,4,4,2016-07-12,3.5,2020-10-26,contested: shifted fits worse
+2088,Proteasome assembly chaperone 2,7ls6,False,3,4,2,2012-07-16,2.49,2023-09-14,contested: shifted fits worse
+2095,DNA gyrase subunit A,4tma,False,2,3,0,2010-07-06,3.103,2014-05-31,uncontested: flagged segment fits poorly (error likely real)
+2101,40S ribosomal protein S5,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+2103,Protein MxiG,6rwx,False,1,2,0,2019-06-06,3.55,2022-08-31,uncontested: flagged segment fits poorly (error likely real)
+2120,RETINALDEHYDE-BINDING PROTEIN 1,4ciz,False,1,1,0,2013-12-18,3.403,2013-12-18,uncontested: flagged segment fits poorly (error likely real)
+2122,Subunit NUJM of NADH:Ubiquinone Oxidoreductase (Complex I),6rfs,False,1,1,0,2019-04-16,4.04,2019-04-16,uncontested: flagged segment fits poorly (error likely real)
+2123,DNA-DIRECTED RNA POLYMERASE RPO1N SUBUNIT,2waq,False,1,3,0,2009-02-11,3.35,2010-12-07,uncontested: flagged segment fits poorly (error likely real)
+2124,DNA-DIRECTED RNA POLYMERASE RPO1N SUBUNIT,2wb1,False,1,2,0,2009-02-11,3.35,2009-02-19,uncontested: flagged segment fits poorly (error likely real)
+2125,DNA-DIRECTED RNA POLYMERASE RPO1N SUBUNIT,2waq,False,1,3,0,2009-02-11,3.35,2010-12-07,uncontested: flagged segment fits poorly (error likely real)
+2127,GDP-mannose transporter 1,5oge,False,1,2,0,2017-07-12,3.22,2019-02-21,uncontested: flagged segment fits poorly (error likely real)
+2131,D-methionine transport system permease protein metI,3dhw,False,1,1,0,2008-06-18,3.7,2008-06-18,uncontested: flagged segment fits poorly (error likely real)
+2135,Protein SMG9,6l54,False,1,1,0,2019-10-22,3.43,2019-10-22,uncontested: flagged segment fits poorly (error likely real)
+2140,Minichromosome maintenance protein 5,5u8t,False,2,2,5,2016-12-15,4.9,2025-01-23,contested: shifted fits worse
+2141,V-type proton ATPase subunit d 1,6xbw,False,1,2,9,2020-06-07,3.37,2020-10-21,contested: shifted fits worse
+2142,DNA Damage Checkpoint protein DDC1,7sgz,False,1,1,3,2021-10-07,3.17,2021-10-07,contested: shifted fits worse
+2144,DNA damage checkpoint protein DDC1,7sh2,False,1,1,3,2021-10-07,3.23,2021-10-07,contested: shifted fits worse
+2147,Proteasome subunit alpha type-1,3wxr,False,9,10,1,2000-08-23,3.2,2026-02-05,contested: shifted fits worse
+2156,Cytochrome b,1zrt,False,1,2,0,2005-05-22,3.51,2020-06-19,uncontested: flagged segment fits poorly (error likely real)
+2159,RNA polymerase-associated transcription factor HelD,6yxu,False,1,1,2,2020-05-03,3.08,2020-05-03,contested: shifted fits worse
+2170,Proteasome subunit alpha type-4,7ls6,False,1,1,11,2021-02-17,3.17,2021-02-17,contested: shifted fits worse
+2183,ATP synthase subunit b-delta,7nkd,False,1,1,0,2021-02-17,3.12,2021-02-17,uncontested: flagged segment fits poorly (error likely real)
+2204,Septin-2,2qag,False,1,1,1,2007-06-15,4.0,2007-06-15,contested: shifted fits worse
+2211,Polymerase acidic protein,5d98,False,2,2,1,2015-08-18,3.9,2017-12-02,contested: shifted fits worse
+2213,Polymerase acidic protein,5d98,False,2,2,0,2015-08-18,3.9,2017-12-02,uncontested: flagged segment fits poorly (error likely real)
+2217,FORMATE--TETRAHYDROFOLATE LIGASE,1fpm,False,2,3,0,2000-02-14,2.5,2011-02-24,uncontested: flagged segment fits poorly (error likely real)
+2218,FORMATE--TETRAHYDROFOLATE LIGASE,1fpm,False,2,3,0,2000-02-14,2.5,2011-02-24,uncontested: flagged segment fits poorly (error likely real)
+2228,uS2,3j80,False,4,8,0,2014-08-28,3.75,2024-02-02,uncontested: flagged segment fits poorly (error likely real)
+2230,T-complex protein 1 subunit theta,4v94,False,1,1,1,2012-01-11,3.8,2012-01-11,contested: shifted fits worse
+2235,"40S ribosomal protein S18, putative",7ase,False,1,1,0,2020-10-27,3.33,2020-10-27,uncontested: flagged segment fits poorly (error likely real)
+2238,Probable translation initiation factor eIF-2B subunit gamma,6jly,False,1,1,0,2019-03-07,3.5,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+2239,Probable translation initiation factor eIF-2B subunit gamma,6jly,False,2,2,0,2015-10-27,2.994,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+2241,Actin-related protein 4,5nbn,False,1,2,3,2011-01-12,3.404,2017-03-02,contested: shifted fits worse
+2243,lipid scramblase,4wis,False,1,1,0,2014-09-26,3.3,2014-09-26,uncontested: flagged segment fits poorly (error likely real)
+2244,Predicted protein,6qm4,False,1,1,1,2019-02-01,3.8,2019-02-01,contested: shifted fits worse
+2246,DNA gyrase subunit B,6rks,False,1,1,3,2019-04-30,4.0,2019-04-30,contested: shifted fits worse
+2247,"DNA-directed RNA polymerases I, II, and III 14.5 kDa polypeptide",2nvt,False,3,4,3,2006-11-13,3.36,2015-02-11,contested: shifted fits worse
+2254,T-complex protein 1 subunit alpha,4v81,False,1,1,5,2010-10-17,3.8,2010-10-17,contested: shifted fits worse
+2255,Endosomal/lysosomal potassium channel TMEM175,6w8n,False,1,3,0,2020-03-20,3.2,2020-03-21,uncontested: flagged segment fits poorly (error likely real)
+2262,MakA tetramer,7p3r,False,1,1,0,2021-07-08,3.65,2021-07-08,uncontested: flagged segment fits poorly (error likely real)
+2279,50S ribosomal protein L6,5xym,False,1,1,11,2017-07-09,3.08,2017-07-09,contested: shifted fits worse
+2285,60S ribosomal protein L4-A,4v7r,False,2,2,9,2004-01-06,11.7,2010-07-23,contested: shifted fits worse
+2286,60S ribosomal protein L4-A,4v7r,False,1,1,0,2010-07-23,4.0,2010-07-23,uncontested: flagged segment fits poorly (error likely real)
+2293,50S ribosomal protein L6,5hl7,False,2,3,0,2014-09-04,3.526,2016-01-14,uncontested: flagged segment fits poorly (error likely real)
+2294,50S ribosomal protein L6,5hl7,False,2,3,7,2014-09-04,3.526,2016-01-14,contested: shifted fits worse
+2296,Arginine/agmatine antiporter,3lrb,False,1,1,3,2010-02-10,3.61,2010-02-10,contested: shifted fits worse
+2297,Arginine/agmatine antiporter,3lrb,False,1,1,0,2010-02-10,3.61,2010-02-10,uncontested: flagged segment fits poorly (error likely real)
+2310,ATP-dependent RNA helicase HrpB,6heg,False,1,1,1,2018-08-20,3.019,2018-08-20,contested: shifted fits worse
+2315,SBV nucleoprotein,4idu,False,2,2,0,2012-12-13,3.08,2013-03-15,uncontested: flagged segment fits poorly (error likely real)
+2316,inner membrane ABC-transporter,6p6i,False,1,1,1,2019-06-04,3.67,2019-06-04,contested: shifted fits worse
+2317,Origin recognition complex subunit 4,7cte,False,2,2,4,2017-01-17,3.394,2020-08-18,contested: shifted fits worse
+2318,Origin recognition complex subunit 4,5uj7,False,2,2,4,2017-01-17,3.394,2020-08-18,contested: shifted fits worse
+2323,Serine/threonine-protein phosphatase 2A 56 kDa regulatory subunit alpha isoform,6nts,False,1,1,1,2019-01-30,3.63,2019-01-30,contested: shifted fits worse
+2324,Serine/threonine-protein phosphatase 2A 56 kDa regulatory subunit alpha isoform,6nts,False,1,1,1,2019-01-30,3.63,2019-01-30,contested: shifted fits worse
+2328,Cullin-1,7b5l,False,4,6,4,2002-04-08,3.0,2023-09-25,contested: shifted fits worse
+2345,"Glutamate receptor ionotropic, NMDA 1",7te9,False,1,2,7,2022-01-04,3.92,2025-04-23,contested: shifted fits worse
+2346,"Glutamate receptor ionotropic, NMDA 1",7teb,False,1,1,0,2022-01-04,4.23,2022-01-04,uncontested: flagged segment fits poorly (error likely real)
+2356,60S ribosomal protein L16-A,4v7r,False,3,3,8,2004-01-06,11.7,2010-10-12,contested: shifted fits worse
+2363,CRISPR-associated protein Csy2,6ne0,False,8,11,0,2017-02-25,3.4,2022-07-14,uncontested: flagged segment fits poorly (error likely real)
+2365,Nucleoprotein,5uk4,False,2,2,4,2007-08-08,2.8,2017-01-19,contested: shifted fits worse
+2367,NADH-quinone oxidoreductase subunit H,7nyh,False,1,1,0,2021-03-22,3.6,2021-03-22,uncontested: flagged segment fits poorly (error likely real)
+2372,Proteasome subunit alpha type-7,6rey,False,1,1,10,2019-04-12,3.0,2019-04-12,contested: shifted fits worse
+2379,Crooked neck-like protein 1,6ff4,False,2,2,0,2018-01-03,3.4,2020-09-07,uncontested: flagged segment fits poorly (error likely real)
+2393,Multidrug resistance ABC transporter ATP-binding and permease protein,6raf,False,1,3,0,2016-12-05,2.7,2025-07-15,uncontested: flagged segment fits poorly (error likely real)
+2402,Energy-coupling factor transporter ATP-binding protein EcfA 2,4hzu,False,3,3,0,2012-11-03,2.998,2014-09-27,uncontested: flagged segment fits poorly (error likely real)
+2410,30S ribosomal protein S9,5v93,False,2,2,3,2017-03-22,4.0,2024-10-21,contested: shifted fits worse
+2411,40S ribosomal protein S5,5aj0,False,4,4,0,2013-02-27,5.0,2015-03-20,uncontested: flagged segment fits poorly (error likely real)
+2412,uS7,7jqc,False,1,1,0,2020-08-10,3.3,2020-08-10,uncontested: flagged segment fits poorly (error likely real)
+2415,Cytochrome c oxidase subunit 3,6giq,False,1,1,0,2018-05-15,3.23,2018-05-15,uncontested: flagged segment fits poorly (error likely real)
+2420,Nucleoporin NUP85,3ewe,False,1,1,0,2008-10-14,3.5,2008-10-14,uncontested: flagged segment fits poorly (error likely real)
+2421,Nucleoporin NUP85,3ewe,False,1,1,7,2008-10-14,3.5,2008-10-14,contested: shifted fits worse
+2423,Major capsid protein,5lii,False,1,1,3,2016-07-14,3.8,2016-07-14,contested: shifted fits worse
+2432,40S ribosomal protein S4,7ase,False,1,1,1,2020-10-27,3.33,2020-10-27,contested: shifted fits worse
+2433,V-type proton ATPase subunit H,6wm4,False,1,1,0,2020-04-20,3.6,2020-04-20,uncontested: flagged segment fits poorly (error likely real)
+2441,Proton:oligopeptide symporter POT family,4lep,False,1,1,0,2013-06-26,3.2,2013-06-26,uncontested: flagged segment fits poorly (error likely real)
+2444,Sterol regulatory element-binding protein cleavage-activating protein,7etw,False,1,1,0,2021-05-14,4.1,2021-05-14,uncontested: flagged segment fits poorly (error likely real)
+2445,AcrIIA2,6ifo,False,1,1,1,2018-09-20,3.313,2018-09-20,contested: shifted fits worse
+2446,AcrIIA2,6ifo,False,1,1,1,2018-09-20,3.313,2018-09-20,contested: shifted fits worse
+2449,50S ribosomal protein L19,5nrg,False,1,1,11,2017-04-23,3.442,2017-04-23,contested: shifted fits worse
+2456,NET1-associated nuclear protein 1,6ke6,False,6,10,1,2017-07-26,3.8,2025-02-05,contested: shifted fits worse
+2457,Transmembrane protein FAM155A,7cm3,False,1,1,0,2020-07-24,3.1,2020-07-24,uncontested: flagged segment fits poorly (error likely real)
+2460,40S ribosomal protein S22-A,4v7r,False,1,1,8,2010-07-23,4.0,2010-07-23,contested: shifted fits worse
+2461,40S ribosomal protein S22-A,4v7r,False,1,1,1,2010-07-23,4.0,2010-07-23,contested: shifted fits worse
+2462,Ragulator complex protein LAMTOR4,5yk3,False,1,1,5,2017-10-12,3.01,2017-10-12,contested: shifted fits worse
+2464,Transient Receptor Potential Cation Channel Subfamily V Member 2,5hi9,False,1,1,1,2016-01-11,4.4,2016-01-11,contested: shifted fits worse
+2465,Transient Receptor Potential Cation Channel Subfamily V Member 2,5hi9,False,1,1,1,2016-01-11,4.4,2016-01-11,contested: shifted fits worse
+2467,Cleavage and polyadenylation specificity factor subunit 2,6v4x,False,1,2,0,2019-12-02,3.2,2025-02-13,uncontested: flagged segment fits poorly (error likely real)
+2474,B19 parvovirus capsid,1s58,False,1,1,0,2004-01-20,3.5,2004-01-20,uncontested: flagged segment fits poorly (error likely real)
+2475,B19 parvovirus capsid,1s58,False,1,1,0,2004-01-20,3.5,2004-01-20,uncontested: flagged segment fits poorly (error likely real)
+2476,B19 parvovirus capsid,1s58,False,1,1,1,2004-01-20,3.5,2004-01-20,contested: shifted fits worse
+2477,CWC2,5lj3,False,1,1,8,2016-07-17,3.8,2016-07-17,contested: shifted fits worse
+2484,Mediator of RNA polymerase II transcription subunit 17,4gwp,False,1,2,0,2012-09-03,4.2,2016-08-05,uncontested: flagged segment fits poorly (error likely real)
+2487,Ccz1,7qla,False,1,1,1,2021-12-20,3.85,2021-12-20,contested: shifted fits worse
+2490,UDP-glycosyltransferase 89C1,6ija,False,2,2,0,2018-10-09,3.214,2018-10-09,uncontested: flagged segment fits poorly (error likely real)
+2491,UDP-glycosyltransferase 89C1,6ij9,False,1,1,0,2018-10-09,3.0,2018-10-09,uncontested: flagged segment fits poorly (error likely real)
+2496,CRISPR type III-associated RAMP protein Csm4,6nud,False,1,1,1,2019-01-31,3.5,2019-01-31,contested: shifted fits worse
+2497,60S RIBOSOMAL PROTEIN L30,4ug0,False,1,1,0,2015-03-20,3.6,2015-03-20,uncontested: flagged segment fits poorly (error likely real)
+2501,GTP pyrophosphokinase,5iqr,False,1,1,0,2016-03-11,3.0,2016-03-11,uncontested: flagged segment fits poorly (error likely real)
+2510,PTS mannose transporter subunit IID,6k1h,False,1,1,0,2019-05-10,3.52,2019-05-10,uncontested: flagged segment fits poorly (error likely real)
+2511,Ribosomal RNA small subunit methyltransferase NEP1,6ke6,False,2,4,8,2019-07-03,3.4,2020-09-28,contested: shifted fits worse
+2514,ParM hybrid fusion protein,4xhp,False,1,4,0,2014-12-23,2.381,2015-01-06,uncontested: flagged segment fits poorly (error likely real)
+2519,U3 small nucleolar RNA-associated protein 12,6ke6,False,6,9,2,2017-07-26,3.8,2021-11-17,contested: shifted fits worse
+2526,26S proteasome non-ATPase regulatory subunit 4,5vfq,False,3,3,0,2016-08-03,6.8,2025-02-28,uncontested: flagged segment fits poorly (error likely real)
+2530,Membrane protein insertase YidC,5y83,False,1,1,0,2017-08-18,3.842,2017-08-18,uncontested: flagged segment fits poorly (error likely real)
+2531,Membrane protein insertase YidC,5y83,False,1,1,0,2017-08-18,3.842,2017-08-18,uncontested: flagged segment fits poorly (error likely real)
+2533,NAD(+) hydrolase SARM1,7knq,False,1,1,8,2020-11-05,3.4,2020-11-05,contested: shifted fits worse
+2534,NAD(+) hydrolase SARM1,7knq,False,1,1,8,2020-11-05,3.4,2020-11-05,contested: shifted fits worse
+2535,Calcium-gated potassium channel MthK,6oly,False,4,6,0,2002-05-03,3.3,2026-02-10,uncontested: flagged segment fits poorly (error likely real)
+2536,60S ribosomal protein L42,4v7r,False,1,1,8,2010-07-23,4.0,2010-07-23,contested: shifted fits worse
+2537,ERAD-associated E3 ubiquitin-protein ligase HRD1,5v6p,False,1,1,0,2017-03-17,4.1,2017-03-17,uncontested: flagged segment fits poorly (error likely real)
+2538,Reverse transcriptase/ribonuclease H,6dtx,False,2,2,0,2015-06-17,3.5,2018-06-18,uncontested: flagged segment fits poorly (error likely real)
+2541,Mediator of RNA polymerase II transcription subunit 18,4gwp,False,1,2,0,2012-09-03,4.2,2016-08-05,uncontested: flagged segment fits poorly (error likely real)
+2542,Cytochrome c oxidase subunit 1,6giq,False,1,1,5,2018-05-15,3.23,2018-05-15,contested: shifted fits worse
+2544,NADH-quinone oxidoreductase chain 3,2fug,False,1,1,5,2006-01-26,3.3,2006-01-26,contested: shifted fits worse
+2545,NADH-quinone oxidoreductase chain 3,2fug,False,1,1,5,2006-01-26,3.3,2006-01-26,contested: shifted fits worse
+2547,Transient receptor potential cation channel subfamily V member 2,6bo5,False,1,1,0,2017-11-18,3.6,2017-11-18,uncontested: flagged segment fits poorly (error likely real)
+2552,"ATP-binding cassette sub-family B member 6, mitochondrial",7d7r,False,1,1,5,2020-10-05,4.0,2020-10-05,contested: shifted fits worse
+2564,"54S ribosomal protein L4, mitochondrial",3j6b,False,1,1,4,2014-01-22,3.2,2014-01-22,contested: shifted fits worse
+2570,"Gamma-aminobutyric acid receptor subunit beta-1,Gamma-aminobutyric acid receptor subunit beta-1",6dw0,False,2,2,0,2018-06-26,3.8,2024-07-25,uncontested: flagged segment fits poorly (error likely real)
+2573,Brefeldin A-inhibited guanine nucleotide-exchange protein 1,5j5c,False,1,1,0,2016-04-02,3.4,2016-04-02,uncontested: flagged segment fits poorly (error likely real)
+2577,RNA POLYMERASE SUBUNIT 4,2y0s,False,1,1,0,2010-12-07,3.8,2010-12-07,uncontested: flagged segment fits poorly (error likely real)
+2582,Lipoprotein-releasing ABC transporter permease subunit LolC,7arh,False,2,2,6,2020-10-25,3.3,2024-09-25,contested: shifted fits worse
+2583,20S proteasome alpha-6 subunit,7lxt,False,1,2,8,2018-10-23,3.8,2021-03-05,contested: shifted fits worse
+2585,LACTOSE PERMEASE,2v8n,False,3,5,2,2003-06-26,3.5,2016-09-16,contested: shifted fits worse
+2586,Lactose permease,1pv6,False,2,3,2,2003-06-26,3.5,2007-08-09,contested: shifted fits worse
+2588,LACTOSE PERMEASE,2y5y,False,1,1,0,2011-01-19,3.38,2011-01-19,uncontested: flagged segment fits poorly (error likely real)
+2589,Lactose permease,4zyr,False,3,5,2,2003-06-26,3.5,2016-09-16,contested: shifted fits worse
+2590,Lactose permease,5gxb,False,3,6,2,2003-06-26,3.5,2016-09-16,contested: shifted fits worse
+2613,Inhibitor of nuclear factor kappa-B kinase subunit beta,4e3c,False,1,1,2,2012-03-09,3.98,2012-03-09,contested: shifted fits worse
+2616,NADH-ubiquinone oxidoreductase chain 5,5lc5,False,1,2,0,2016-06-19,4.35,2017-05-23,uncontested: flagged segment fits poorly (error likely real)
+2620,NADH-ubiquinone oxidoreductase chain 2,5lc5,False,2,3,6,2016-06-19,4.35,2020-11-12,contested: shifted fits worse
+2624,50S ribosomal protein L4,5li0,False,3,4,0,2014-09-04,3.526,2016-07-13,uncontested: flagged segment fits poorly (error likely real)
+2634,Nucleoporin nup120,4fhm,False,1,1,1,2012-06-06,4.339,2012-06-06,contested: shifted fits worse
+2638,ribosomal protein eS19,6gz3,False,3,3,9,2014-04-05,6.9,2019-04-16,contested: shifted fits worse
+2644,50S ribosomal protein L35,4v9k,False,4,6,4,2006-07-31,2.8,2018-12-17,contested: shifted fits worse
+2655,40S ribosomal protein S7-A,7a1g,False,6,9,0,2011-10-11,3.0,2025-07-19,uncontested: flagged segment fits poorly (error likely real)
+2656,50S ribosomal protein L20,7a0r,False,1,1,1,2020-08-10,3.3,2020-08-10,contested: shifted fits worse
+2662,50S ribosomal protein L20,5njt,False,5,7,4,2015-03-16,3.9,2025-06-16,contested: shifted fits worse
+2663,50S ribosomal protein L20,6ppf,False,5,7,4,2015-03-16,3.9,2025-06-16,contested: shifted fits worse
+2667,30S ribosomal protein S12,4v9j,False,1,1,0,2013-04-23,3.86,2013-04-23,uncontested: flagged segment fits poorly (error likely real)
+2668,"Chlorophyll a-b binding protein, chloroplastic",7d0j,False,5,5,0,2019-03-20,2.9,2022-04-29,uncontested: flagged segment fits poorly (error likely real)
+2671,30S ribosomal protein S2,2e5l,False,4,9,0,2000-08-08,3.0,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+2672,30S ribosomal protein S2,2zm6,False,5,9,0,2000-08-08,3.0,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+2678,2B04 light chain,7k9i,True,1,1,11,2020-09-29,3.3,2020-09-29,contested: shifted fits worse
+2680,Proton-gated ion channel,5heh,False,2,3,8,2008-09-15,3.5,2017-03-17,contested: shifted fits worse
+2682,Proton-gated ion channel,5heg,False,2,2,9,2008-09-15,3.5,2016-01-06,contested: shifted fits worse
+2686,"Mel5 TCR, alpha chain",6eqa,False,1,1,0,2017-10-12,3.16,2017-10-12,uncontested: flagged segment fits poorly (error likely real)
+2691,Fusion glycoprotein F0,6mjz,False,3,3,0,2018-09-24,4.3,2023-08-07,uncontested: flagged segment fits poorly (error likely real)
+2696,BH2163 protein,4lz6,False,2,2,0,2013-07-31,3.2,2015-06-23,uncontested: flagged segment fits poorly (error likely real)
+2697,BH2163 protein,4lz6,False,2,2,0,2013-07-31,3.2,2015-06-23,uncontested: flagged segment fits poorly (error likely real)
+2705,5-hydroxytryptamine receptor 3A,6hiq,False,1,2,0,2014-05-09,3.5,2018-08-30,uncontested: flagged segment fits poorly (error likely real)
+2708,50S ribosomal protein L19,7a18,False,2,5,1,2008-03-02,3.3,2020-08-12,contested: shifted fits worse
+2709,50S ribosomal protein L19,4wfn,False,3,7,1,2008-03-02,3.3,2020-08-12,contested: shifted fits worse
+2713,Nanobody NB8205,6qpg,True,1,1,0,2019-02-13,3.34,2019-02-13,uncontested: flagged segment fits poorly (error likely real)
+2716,"mouse monoclonal 1gG2a Fab fragment, kappa light chain",3tt1,True,1,1,11,2011-09-13,3.099,2011-09-13,contested: shifted fits worse
+2736,"NADH dehydrogenase [ubiquinone] iron-sulfur protein 3, mitochondrial",5lc5,False,5,11,0,2016-06-19,4.35,2025-12-04,uncontested: flagged segment fits poorly (error likely real)
+2749,Exosome complex component RRP43,6h25,False,1,1,1,2018-07-13,3.8,2018-07-13,contested: shifted fits worse
+2752,Sodium/potassium-transporting ATPase subunit beta-1,3n23,False,1,1,0,2010-05-17,4.6,2010-05-17,uncontested: flagged segment fits poorly (error likely real)
+2758,50S ribosomal protein L24,6q95,False,3,3,0,2006-07-31,2.8,2018-12-17,uncontested: flagged segment fits poorly (error likely real)
+2761,50S ribosomal protein L24,4v87,False,1,1,0,2011-09-20,3.1,2011-09-20,uncontested: flagged segment fits poorly (error likely real)
+2768,CYCLIN HOMOLOG,1bu2,False,1,1,0,1998-09-10,3.0,1998-09-10,uncontested: flagged segment fits poorly (error likely real)
+2770,Protein tweety homolog 3,7p5c,False,2,2,0,2021-07-14,3.2,2025-03-25,uncontested: flagged segment fits poorly (error likely real)
+2771,eS7,3jah,False,2,2,0,2015-06-10,3.45,2015-06-16,uncontested: flagged segment fits poorly (error likely real)
+2773,ATP-dependent Clp protease ATP-binding subunit clpX,3hws,False,2,4,0,2009-06-18,3.25,2025-07-10,uncontested: flagged segment fits poorly (error likely real)
+2778,40S ribosomal protein S7-A,4u3n,False,4,9,1,2011-10-11,3.0,2025-09-22,contested: shifted fits worse
+2782,Coagulation factor VIII,2r7e,False,2,2,3,2007-09-07,3.7,2016-05-29,contested: shifted fits worse
+2785,Gastric intrinsic factor,3kq4,False,2,2,0,2007-04-23,2.6,2009-11-17,uncontested: flagged segment fits poorly (error likely real)
+2793,40S ribosomal protein S5,4u3n,False,2,7,2,2011-10-11,3.0,2025-09-22,contested: shifted fits worse
+2795,Retinaldehyde-binding protein 1,3hy5,False,2,2,0,2009-06-22,3.04,2013-12-18,uncontested: flagged segment fits poorly (error likely real)
+2796,Interleukin-1 receptor accessory protein,4yfd,False,1,1,0,2015-02-25,3.253,2015-02-25,uncontested: flagged segment fits poorly (error likely real)
+2798,Receptor tyrosine-protein kinase erbB-3,4p59,False,2,2,0,2013-06-26,2.64,2014-03-15,uncontested: flagged segment fits poorly (error likely real)
+2803,"NADH dehydrogenase [ubiquinone] flavoprotein 1, mitochondrial",5ldw,False,1,2,0,2016-06-28,4.27,2017-05-23,uncontested: flagged segment fits poorly (error likely real)
+2806,ORF1a protein,5c3n,False,1,1,1,2015-06-17,3.0,2015-06-17,contested: shifted fits worse
+2809,Aurora kinase A,7o2v,False,10,12,0,2002-09-13,1.9,2025-09-30,uncontested: flagged segment fits poorly (error likely real)
+2811,Beta-D-glucuronidase,6lem,False,2,4,2,2009-10-05,2.5,2019-11-25,contested: shifted fits worse
+2817,ELECTRON TRANSFERRING FLAVOPROTEIN ALPHA-SUBUNIT,1o96,False,1,1,1,2002-12-11,3.1,2002-12-11,contested: shifted fits worse
+2821,Lipoprotein-releasing system transmembrane protein LolE,7mdx,False,1,1,0,2021-04-06,3.8,2021-04-06,uncontested: flagged segment fits poorly (error likely real)
+2824,40S ribosomal protein S0-A,6q8y,False,3,7,3,2017-03-09,3.3,2025-09-22,contested: shifted fits worse
+2828,Nucleoporin NUP120,6x06,False,1,2,5,2009-06-21,3.0,2020-05-15,contested: shifted fits worse
+2830,Uncharacterized protein Csm2,6muu,False,2,3,0,2018-10-23,3.0,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+2832,Uncharacterized protein Csm3,6mur,False,2,3,0,2018-10-23,3.1,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+2833,Uncharacterized protein Csm3,6muu,False,2,3,0,2018-10-23,3.0,2019-03-07,uncontested: flagged segment fits poorly (error likely real)
+2848,Inner kinetochore subunit MCM21,6nuw,False,1,1,5,2019-02-03,4.25,2019-02-03,contested: shifted fits worse
+2849,Sister chromatid cohesion protein 2,5w94,False,1,2,0,2014-12-19,2.08,2017-06-22,uncontested: flagged segment fits poorly (error likely real)
+2863,T cell receptor alpha chain,1ymm,False,1,1,10,2005-01-21,3.5,2005-01-21,contested: shifted fits worse
+2866,Envelope protein E,6j5c,False,2,2,10,2019-01-10,3.6,2019-07-09,contested: shifted fits worse
+2871,50S ribosomal protein L6,4v50,False,5,9,0,2006-08-16,3.22,2026-05-10,uncontested: flagged segment fits poorly (error likely real)
+2872,50S ribosomal protein L6,6spd,False,2,2,0,2019-09-01,3.28,2022-04-11,uncontested: flagged segment fits poorly (error likely real)
+2873,V-type sodium ATPase catalytic subunit A,7coq,False,3,9,0,2012-04-03,2.8,2023-02-21,uncontested: flagged segment fits poorly (error likely real)
+2875,ORNITHINE DECARBOXYLASE,1ord,False,2,2,0,1995-02-08,3.0,1999-08-26,uncontested: flagged segment fits poorly (error likely real)
+2876,ORNITHINE DECARBOXYLASE,1ord,False,2,2,0,1995-02-08,3.0,1999-08-26,uncontested: flagged segment fits poorly (error likely real)
+2885,Nucleoprotein,3hhz,False,4,6,2,2006-03-28,2.92,2017-11-07,contested: shifted fits worse
+2891,50S ribosomal protein L23,6q95,False,2,2,1,2006-07-31,2.8,2018-12-17,contested: shifted fits worse
+2904,20S proteasome beta-1 subunit,7lxt,False,1,1,8,2021-03-05,3.4,2021-03-05,contested: shifted fits worse
+2906,20S proteasome beta-1 subunit,6muv,False,2,2,9,2015-11-04,3.6,2018-10-23,contested: shifted fits worse
+2907,Elongation factor G,7ssd,False,1,1,0,2021-11-10,3.3,2021-11-10,uncontested: flagged segment fits poorly (error likely real)
+2912,"NADH dehydrogenase [ubiquinone] iron-sulfur protein 8, mitochondrial",5lc5,False,1,2,10,2016-06-19,4.35,2017-05-23,contested: shifted fits worse
+2927,30S ribosomal protein S2,4zer,False,7,12,0,2000-08-08,3.0,2026-03-30,uncontested: flagged segment fits poorly (error likely real)
+2928,30S ribosomal protein S2,4v7p,False,4,4,0,2010-04-29,3.62,2025-03-08,uncontested: flagged segment fits poorly (error likely real)
+2929,30S ribosomal protein S2,4k0k,False,4,5,0,2013-04-04,3.4,2025-03-08,uncontested: flagged segment fits poorly (error likely real)
+2939,Mediator of RNA polymerase II transcription subunit 24,6w1s,False,1,2,0,2020-03-04,4.02,2023-06-02,uncontested: flagged segment fits poorly (error likely real)
+2946,Restriction endonuclease S subunits,5ybb,False,1,1,0,2017-09-04,3.2,2017-09-04,uncontested: flagged segment fits poorly (error likely real)
+2963,"CRISPR-associated protein, CT1133 family",7kha,False,1,1,0,2020-10-20,3.13,2020-10-20,uncontested: flagged segment fits poorly (error likely real)
+2966,Togavirin,6xo4,False,2,2,4,2020-07-06,4.2,2022-08-01,contested: shifted fits worse
+2968,Himalayan mistletoe ribosome-inactivating protein,1pc8,False,1,3,0,2003-05-16,3.8,2004-12-31,uncontested: flagged segment fits poorly (error likely real)
+2974,50S ribosomal protein L25,5ot7,False,1,1,0,2017-08-21,3.8,2017-08-21,uncontested: flagged segment fits poorly (error likely real)

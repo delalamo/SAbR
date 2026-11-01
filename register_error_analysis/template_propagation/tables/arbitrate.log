@@ -1,0 +1,41 @@
+== Segment fit percentile within its own chain (50 = typical residue; lower = worse fit)
+                        size                                    median                           
+reg           other register shifted (flagged) register other register shifted (flagged) register
+metric  rb                                                                                       
+Q_SCORE 2.5–3            545                        438           37.5                       39.1
+        3.5–4            369                        919           44.1                       37.2
+        3–3.5            588                        961           42.2                       33.6
+        >4               287                        971           45.2                       44.0
+        ≤2.5             433                        194           32.8                       32.4
+RSCC    2.5–3            284                        438           30.9                       24.8
+        3.5–4             69                        517           35.4                       26.6
+        3–3.5            176                        991           26.6                       20.4
+        >4                33                        136           42.1                       32.1
+        ≤2.5             408                        287           32.6                       29.7
+
+== Contested families (both registers deposited, map values for both): 780
+   shifted register fits worse in 519 (67%), better in 261; median difference -7.6 percentile points; Wilcoxon p=1.9e-29
+   using only ≤3.0 Å entries: 135 families; shifted worse in 73%; median diff -8.9
+
+== Family verdicts
+arb
+uncontested: undetermined                                                             950
+uncontested: flagged segment fits poorly (error likely real)                          406
+contested: shifted fits worse                                                         352
+contested: no clear difference                                                        314
+contested: shifted fits better                                                        114
+uncontested: well-fitting ≤2.5 Å structure in flagged register (flag likely false)     86
+
+== Families where the flagged register is likely a real error: 758
+   shifted register in ≥2 papers: 409 (54%); in ≥2 labs: 322 (42%); still deposited 2023+: 110 (15%)
+   later papers on the same protein: 2482; carrying the error: 1216 (49%)
+   error present in very first structure: 86%
+   contested subset: 352 families; later papers 1719, carrying error 26%
+   later entries by recorded starting model:
+                               entries  pct_carrying_error
+cites                                                     
+cites both                           1                 0.0
+cites other-register template      129                 0.0
+cites shifted template             279                80.6
+cites unrelated/unknown model      613                53.2
+no starting model recorded        1253                36.6
