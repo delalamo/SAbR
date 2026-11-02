@@ -163,6 +163,71 @@ memorisation, not a modest effect.
 released 2018-06, inside all three training windows). All three put the segment in the canonical
 register (ladder −1/−2, no detector run). Framework RMSD to the deposit was 0.8–1.2 Å.
 
+## Full run: ABodyBuilder2 and IgFold on every disagreement chain and every problematic-template chain
+
+**Inputs.** Two sources, giving 713 (chain, error window) units in 352 entries:
+* all 724 SAbR-vs-ANARCI disagreement runs (686 chains);
+* all 105 chains of the 9 antibody error families whose flagged register recurs in ≥2 papers.
+
+**Excluded units:**
+* 85 light chains with no heavy partner, mostly light-chain amyloid fibrils and λ dimers (e.g. 6Z1O, 7NSL);
+* 4 chains whose V region is over 140 residues;
+* 26 template chains whose error lies in Cκ (family 203);
+* 1 unit whose window could not be located.
+
+**Prediction.** Each Fv was predicted once per unique sequence pair: 248 antibodies (183 Fv pairs, 50 heavy-only nanobodies, 15 scFvs).
+* **Methods:** ABodyBuilder2 for pairs, NanoBodyBuilder2 for nanobodies, and IgFold for all, without refinement.
+* **Coverage:** ImmuneBuilder modelled 236 of 248; it refuses N-terminally truncated chains and one sequence containing X. IgFold modelled 247 of 248.
+* **Wall time:** about 1.5 h on 4 cores. The median per Fv was 9.6 s for ImmuneBuilder and 18 s for IgFold.
+
+**Scoring** (`scripts/h19_readout_full.py`).
+* **Deposit check.** SAbR was re-run on each deposit exactly as in the PDB scan. It reproduces the scan's run in 617 of 635 disagreement units.
+* **Multi-domain chains** (scFvs) are scored on the domain that carries the run.
+* **Two readouts per prediction:**
+  * the ladder: does the prediction put the same residues where the deposit does?
+  * the detector: does SAbR still see the shift in the prediction?
+* **Strict reproduction** requires both. A ladder match with no detector run means the two backbones coincide but the prediction numbers canonically. In that case the deposit's run was most likely a detector false positive, not an error the predictor copied. 19 of the 32 such units per predictor are scFvs scored in SAbR's scFv mode.
+
+**Results** (`tables/full_run/`).
+
+| Deposits carrying… | Scorable units (IgFold / IB) | Ladder match | **Strict reproduction** |
+|---|---|---|---|
+| a framework register shift (171 antibodies) | 280 / 279 | 13% / 14% | **1.8% / 2.2%** (5 / 6 units) |
+| a framework insertion vs germline (detector artifact) | 163 / 150 | 82% / 77% | 76% / 77% |
+| the FR3 80–86 DE-loop pattern (detector artifact) | 25 / 24 | 64% / 71% | 64% / 63% |
+| a run mostly inside a CDR | 82 / 82 | 46% / 44% | 2.4% / 1.2% |
+
+1. **The predictors almost never reproduce a framework register error.**
+   * **Six chains** are strictly reproduced by either predictor: 11IW K, 7M3L H2, 7NK2 F, 7T6X B, 8W3R A and 9PYH L.
+   * **Four of these look like artifacts.** They sit next to a germline deletion or a truncated chain end: IMGT 20 is missing in 11IW, 89 in 7M3L and 66 in 9PYH, and 8W3R's run is at the FR4 end.
+   * **Two remain unexplained:** the 7NK2 nanobody (FR3 67–73) and the 7T6X λ chain (FR1 2–10). Both were released after both predictors' training cutoffs.
+2. **The readout does detect copying when the feature is real.** Deposits with a framework insertion relative to germline, or the DE-loop pattern, are not errors but real structural features. The predictions reproduce them 64–82% of the time.
+
+   A predictor that had learned the errors would have shown the same behaviour on the real framework shifts; it does not.
+3. **No training-set effect** (antibody level, framework shifts):
+
+   | Predictor | Errors in its training set | Errors not in it |
+   |---|---|---|
+   | IgFold | 0/37 strictly reproduced (4/37 by ladder alone) | 5/109 (21/109) |
+   | ImmuneBuilder | 1/17 (that one is 7M3L, the deletion artifact) | 5/128 |
+
+   "In training" means released before the cutoff, plus, for ABodyBuilder2, its stated filters (≤3.5 Å, no internal gaps).
+4. **Problematic templates.** None of the 9 erroneous copies of the most-propagated antibody error is reproduced.
+   * **Fab 1B2 (family 504):** this error came from 6C9U, a 2.09 Å structure released in 2018, so it is in both training sets. It was copied by 15 later entries from 4 labs. Both predictors put all 9 erroneous copies (7 entries) in the canonical register.
+
+     The correctly built entries of the same light-chain window, 6MLK (Fab 3A6) and 7KRA (Fab DH4), are matched by both predictions.
+   * **Other families:**
+     * 3H02 (family 1359): 2 of 2 copies canonical.
+     * Family 2788: 2 of 2 canonical.
+     * Nanobody family 372: the ladder matches, but the detector run is absent, so the copy is not strict.
+     * 7CWU (families 231/232): the framework-insertion artifact.
+     * Families 237 and 2712: the detector does not see the conkit error in the deposits, so no outcome can be scored.
+
+**Interpretation.**
+* **For these two antibody-specific predictors, H19 is not supported.** Register errors in their training data are not reproduced, including the most-copied template error in the PDB.
+* **This says nothing yet about general predictors** (AlphaFold-Multimer, Boltz, AF3). Their training filters let in far more of the erroneous cryo-EM structures.
+* **A side result: the predictions can audit the detector.** Where a confident prediction and the deposit have the same backbone path, but only the deposit is flagged, the flag is suspect. That covers about 32 framework-shift units, mostly scFvs.
+
 ## Compute on this machine
 
 Times were measured here on one Fv: 6BPE, 227 residues (H + L). Each method used its default

@@ -1,0 +1,5 @@
+predictor,in_training,antibodies,ladder_matches,strict,pct_ladder,pct_strict
+igfold,False,109,21,5,19.3,4.6
+igfold,True,37,4,0,10.8,0.0
+immunebuilder,False,128,26,5,20.3,3.9
+immunebuilder,True,17,1,1,5.9,5.9

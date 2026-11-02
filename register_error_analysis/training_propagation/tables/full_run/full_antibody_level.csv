@@ -1,0 +1,595 @@
+predictor,abkey,category,exposed,units,entries,copies,det,strict,scorable,first_release
+igfold,fv0000|H|63.0-69.0,framework register shift,True,2,1,False,False,False,True,2002-04-24
+igfold,fv0001|H|37.0-48.0,framework register shift,True,1,1,False,False,False,True,2016-01-27
+igfold,fv0002|K|113.0-120.0,mostly within a CDR,True,2,1,False,False,False,True,2009-11-17
+igfold,fv0003|H|62.0-100.0,framework register shift,True,2,1,False,False,False,True,2010-08-18
+igfold,fv0004|H|83.0-85.0,framework insertion vs germline (detector artifact),True,3,1,True,True,True,True,2015-04-29
+igfold,fv0005|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,3,2,True,True,True,True,2016-06-22
+igfold,fv0006|L|81.0-85.0,framework insertion vs germline (detector artifact),True,1,1,True,False,False,True,2016-04-27
+igfold,fv0007|H|110.0-128.0,framework register shift,True,1,1,False,False,False,True,2019-05-22
+igfold,fv0008|K|1.0-32.0,framework register shift,True,1,1,False,False,False,True,2018-11-21
+igfold,fv0009|H|7.0-9.0,framework register shift,True,1,1,True,False,False,True,2018-02-14
+igfold,fv0010|K|3.0-8.0,framework register shift,True,2,1,False,False,False,True,2018-06-20
+igfold,fv0011|K|4.0-12.0,framework register shift,True,3,2,False,False,False,True,2018-06-20
+igfold,fv0011|K|4.0-9.0,framework register shift,True,1,1,False,False,False,True,2019-06-12
+igfold,fv0012|H|83.0-85.0,framework insertion vs germline (detector artifact),True,21,7,True,True,True,True,2018-05-16
+igfold,fv0013|K|114.0-120.0,mostly within a CDR,True,1,1,False,False,False,True,2019-06-19
+igfold,fv0014|K|114.0-127.0,framework register shift,True,1,1,False,False,False,False,2020-02-05
+igfold,fv0014|K|31.0-57.0,framework register shift,True,1,1,False,False,False,False,2020-02-05
+igfold,fv0015|H|1.0-7.0,framework register shift,True,3,1,False,False,False,False,2019-06-12
+igfold,fv0015|H|112.0-128.0,framework register shift,True,3,1,False,False,False,True,2019-06-12
+igfold,fv0015|L|70.0-83.0,framework register shift,True,3,1,False,False,False,True,2019-06-12
+igfold,fv0016|H|112.0-122.0,mostly within a CDR,True,7,3,False,False,False,True,2019-09-04
+igfold,fv0017|H|3.0-12.0,framework register shift,True,1,1,False,False,False,True,2020-03-11
+igfold,fv0018|H|112.0-127.0,framework register shift,True,1,1,False,False,False,True,2020-12-09
+igfold,fv0019|H|1.0-4.0,framework insertion vs germline (detector artifact),True,15,3,False,True,False,True,2020-12-16
+igfold,fv0020|H|109.0-119.0,mostly within a CDR,True,1,1,False,False,False,True,2021-04-14
+igfold,fv0020|L|113.0-122.0,framework register shift,True,1,1,False,False,False,False,2021-04-14
+igfold,fv0021|H|1.0-4.0,framework insertion vs germline (detector artifact),True,3,1,True,False,False,True,2021-04-07
+igfold,fv0022|H|112.0-126.0,framework register shift,True,1,1,False,False,False,False,2021-05-05
+igfold,fv0022|H|72.0-93.0,framework register shift,True,1,1,False,False,False,True,2021-05-05
+igfold,fv0022|K|76.0-93.0,framework register shift,True,1,1,False,False,False,True,2021-05-05
+igfold,fv0023|H|62.0-93.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+igfold,fv0023|K|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+igfold,fv0024|H|4.0-11.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+igfold,fv0024|H|74.0-81.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+igfold,fv0024|K|3.0-8.0,framework register shift,False,1,1,False,False,False,False,2021-09-01
+igfold,fv0024|K|57.0-89.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+igfold,fv0025|H|27.0-35.0,no measurable shift,False,2,2,True,True,True,True,2021-07-14
+igfold,fv0026|H|121.0-128.0,framework register shift,False,1,1,False,False,False,True,2021-09-08
+igfold,fv0027|H|108.0-114.0,no measurable shift,False,1,1,False,False,False,True,2021-09-29
+igfold,fv0027|H|109.0-115.0,no measurable shift,False,1,1,False,False,False,True,2021-09-29
+igfold,fv0028|H|1.0-4.0,framework insertion vs germline (detector artifact),False,12,2,True,True,False,True,2021-10-13
+igfold,fv0029|H|112.0-127.0,framework register shift,True,3,2,False,False,False,True,2020-10-21
+igfold,fv0030|H|80.0-82.0,framework insertion vs germline (detector artifact),True,21,7,True,True,True,True,2015-09-23
+igfold,fv0031|H|90.0-95.0,framework register shift,False,1,1,True,True,True,True,2021-07-28
+igfold,fv0032|H|112.0-127.0,framework register shift,True,2,1,False,False,False,True,2021-05-05
+igfold,fv0033|H|120.0-125.0,framework register shift,True,2,2,False,False,False,True,2021-05-12
+igfold,fv0033|H|54.0-59.0,mostly within a CDR,True,2,2,False,False,False,True,2021-05-12
+igfold,fv0034|H|86.0-97.0,template family 1359,True,2,2,False,False,False,True,2021-06-16
+igfold,fv0034|H|87.0-95.0,framework register shift,True,1,1,False,False,False,True,2021-06-16
+igfold,fv0035|H|101.0-108.0,framework register shift,False,1,1,False,False,False,True,2021-12-01
+igfold,fv0036|H|3.0-11.0,framework register shift,False,4,4,False,False,False,True,2021-07-07
+igfold,fv0036|H|6.0-15.0,template family 372,False,2,2,True,False,False,True,2021-07-07
+igfold,fv0037|H|3.0-16.0,framework register shift,False,2,2,False,False,False,True,2021-12-29
+igfold,fv0038|H|3.0-16.0,framework register shift,False,4,2,False,False,False,True,2022-02-02
+igfold,fv0039|H|93.0-95.0,framework register shift,False,5,3,False,False,False,True,2022-03-02
+igfold,fv0040|H|112.0-123.0,framework register shift,False,3,1,False,False,False,True,2021-10-20
+igfold,fv0041|H|30.0-128.0,framework register shift,True,1,1,False,False,False,False,2020-07-29
+igfold,fv0041|K|111.0-117.0,no measurable shift,True,1,1,False,True,False,True,2020-07-29
+igfold,fv0042|K|1.0-9.0,framework register shift,True,7,3,False,False,False,True,2021-03-10
+igfold,fv0043|H|112.0-128.0,framework register shift,True,5,2,False,False,False,True,2021-03-10
+igfold,fv0043|K|1.0-9.0,framework register shift,True,5,2,False,False,False,True,2021-03-10
+igfold,fv0045|K|3.0-10.0,framework register shift,False,1,1,False,False,False,True,2021-07-21
+igfold,fv0045|K|3.0-9.0,framework register shift,False,1,1,False,False,False,True,2021-07-21
+igfold,fv0046|H|110.0-126.0,framework register shift,True,1,1,False,False,False,True,2021-06-23
+igfold,fv0046|L|45.0-80.0,framework insertion vs germline (detector artifact),True,1,1,False,False,False,True,2021-06-23
+igfold,fv0047|K|115.0-127.0,framework register shift,True,1,1,False,False,False,True,2020-10-14
+igfold,fv0048|H|80.0-93.0,FR3 80–86 DE loop (detector artifact),True,2,2,False,False,False,True,2020-12-02
+igfold,fv0049|H|55.0-62.0,mostly within a CDR,True,2,1,False,False,False,True,2021-03-10
+igfold,fv0050|H|111.0-128.0,framework register shift,True,1,1,False,False,False,True,2021-02-10
+igfold,fv0051|K|3.0-10.0,framework register shift,False,1,1,False,False,False,True,2021-12-15
+igfold,fv0052|K|1.0-8.0,framework register shift,True,26,14,False,False,False,True,2018-05-23
+igfold,fv0052|K|1.0-9.0,framework register shift,False,2,1,False,False,False,True,2021-11-17
+igfold,fv0052|K|2.0-8.0,framework register shift,False,2,2,False,False,False,True,2021-11-03
+igfold,fv0053|H|63.0-69.0,framework register shift,False,1,1,True,False,False,True,2021-10-27
+igfold,fv0054|H|3.0-4.0,framework insertion vs germline (detector artifact),True,1,1,True,True,True,True,2005-11-15
+igfold,fv0055|H|7.0-127.0,framework register shift,True,1,1,False,False,False,False,2016-07-20
+igfold,fv0056|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,6,1,True,True,True,True,2010-03-23
+igfold,fv0057|L|110.0-128.0,framework register shift,True,1,1,False,False,False,True,2015-03-25
+igfold,fv0058|H|83.0-85.0,framework insertion vs germline (detector artifact),True,31,11,True,True,True,True,2013-08-21
+igfold,fv0059|H|80.0-82.0,framework insertion vs germline (detector artifact),True,8,4,True,True,True,True,2014-05-21
+igfold,fv0060|H|27.0-34.0,no measurable shift,True,1,1,False,True,False,True,2015-12-16
+igfold,fv0061|H|112.0-121.0,mostly within a CDR,True,3,1,False,False,False,True,2016-09-07
+igfold,fv0062|L|81.0-85.0,framework insertion vs germline (detector artifact),True,1,1,True,False,False,True,2017-03-29
+igfold,fv0063|K|65.0-70.0,framework register shift,True,1,1,False,False,False,True,2018-06-27
+igfold,fv0063|K|65.0-74.0,framework register shift,True,1,1,False,False,False,True,2018-06-27
+igfold,fv0064|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,1,1,True,True,True,True,2018-07-25
+igfold,fv0065|H|83.0-85.0,framework insertion vs germline (detector artifact),True,6,2,True,True,True,True,2018-07-25
+igfold,fv0066|H|83.0-85.0,framework insertion vs germline (detector artifact),True,6,2,True,True,True,True,2018-07-11
+igfold,fv0067|L|81.0-85.0,framework insertion vs germline (detector artifact),True,3,3,True,False,False,True,2019-06-05
+igfold,fv0068|H|60.0-68.0,mostly within a CDR,True,3,1,False,False,False,True,2019-11-20
+igfold,fv0069|H|83.0-85.0,framework insertion vs germline (detector artifact),True,3,1,True,True,True,True,2021-01-13
+igfold,fv0070|H|113.0-120.0,mostly within a CDR,True,1,1,False,False,False,True,2021-01-20
+igfold,fv0071|K|112.0-127.0,framework register shift,True,6,1,False,False,False,True,2020-09-02
+igfold,fv0072|H|112.0-120.0,framework insertion vs germline (detector artifact),True,1,1,True,True,True,True,2021-03-24
+igfold,fv0072|H|114.0-120.0,framework insertion vs germline (detector artifact),True,1,1,True,True,True,True,2021-03-24
+igfold,fv0072|H|81.0-92.0,framework insertion vs germline (detector artifact),True,1,1,False,False,False,True,2021-03-24
+igfold,fv0073|K|109.0-118.0,mostly within a CDR,True,10,2,True,False,False,True,2020-10-07
+igfold,fv0074|H|99.0-112.0,mostly within a CDR,True,1,1,True,False,False,True,2020-11-18
+igfold,fv0075|H|83.0-85.0,framework insertion vs germline (detector artifact),True,1,1,True,True,True,True,2021-02-03
+igfold,fv0076|H|120.0-126.0,framework register shift,True,3,1,False,False,False,True,2021-05-12
+igfold,fv0077|H|80.0-82.0,framework insertion vs germline (detector artifact),True,6,2,True,True,True,True,2021-03-17
+igfold,fv0078|K|78.0-82.0,framework insertion vs germline (detector artifact),True,3,1,False,True,False,True,2021-03-17
+igfold,fv0079|H|112.0-127.0,framework register shift,False,1,1,False,False,False,False,2021-08-11
+igfold,fv0079|H|2.0-34.0,framework register shift,False,1,1,False,False,False,False,2021-08-11
+igfold,fv0080|K|109.0-123.0,mostly within a CDR,False,1,1,False,False,False,True,2021-09-29
+igfold,fv0081|H|67.0-73.0,framework register shift,False,1,1,True,True,True,True,2021-12-01
+igfold,fv0082|H|12.0-14.0,framework register shift,False,1,1,False,False,False,True,2022-03-02
+igfold,fv0083|H|60.0-67.0,mostly within a CDR,False,1,1,True,False,False,True,2022-03-09
+igfold,fv0084|H|111.0-118.0,mostly within a CDR,False,3,1,True,False,False,True,2022-01-12
+igfold,fv0085|H|112.0-127.0,framework register shift,False,1,1,False,False,False,True,2021-11-24
+igfold,fv0086|H|1.0-16.0,framework register shift,True,1,1,False,False,False,True,2012-08-08
+igfold,fv0086|H|1.0-17.0,framework register shift,True,1,1,False,False,False,True,2012-08-08
+igfold,fv0087|H|111.0-122.0,mostly within a CDR,True,1,1,False,False,False,True,2019-12-04
+igfold,fv0087|H|111.0-125.0,framework register shift,True,1,1,False,False,False,True,2019-12-04
+igfold,fv0088|H|39.0-122.0,framework register shift,True,1,1,False,False,False,False,2020-02-12
+igfold,fv0088|H|48.0-50.0,framework register shift,True,1,1,True,False,False,True,2020-02-12
+igfold,fv0088|H|97.0-121.0,mostly within a CDR,True,1,1,True,False,False,True,2020-02-12
+igfold,fv0088|K|7.0-10.0,framework register shift,True,1,1,True,False,False,True,2020-02-12
+igfold,fv0088|K|8.0-10.0,framework register shift,True,1,1,True,False,False,True,2020-02-12
+igfold,fv0089|H|27.0-35.0,no measurable shift,True,6,1,True,True,True,True,2015-09-30
+igfold,fv0090|K|23.0-117.0,framework register shift,True,1,1,False,False,False,False,2016-11-09
+igfold,fv0091|H|16.0-19.0,framework register shift,False,1,1,True,True,True,True,2026-08-19
+igfold,fv0092|K|58.0-71.0,mostly within a CDR,False,1,1,False,False,False,True,2026-09-16
+igfold,fv0092|K|58.0-72.0,mostly within a CDR,False,2,1,False,False,False,True,2026-09-16
+igfold,fv0093|H|111.0-128.0,framework register shift,False,5,3,False,False,False,True,2026-10-28
+igfold,fv0094|H|111.0-128.0,framework register shift,False,1,1,False,False,False,True,2026-10-28
+igfold,fv0095|H|53.0-60.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2026-10-28
+igfold,fv0095|H|9.0-10.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2026-10-28
+igfold,fv0096|H|112.0-126.0,framework register shift,False,1,1,False,False,False,False,2026-08-12
+igfold,fv0096|H|8.0-35.0,framework register shift,False,1,1,False,False,False,True,2026-08-12
+igfold,fv0096|L|113.0-120.0,mostly within a CDR,False,1,1,False,False,False,True,2026-08-12
+igfold,fv0097|H|111.0-121.0,mostly within a CDR,False,1,1,False,False,False,False,2026-07-01
+igfold,fv0097|H|112.0-121.0,mostly within a CDR,False,1,1,False,True,False,False,2026-07-01
+igfold,fv0098|K|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2022-06-22
+igfold,fv0099|H|62.0-67.0,mostly within a CDR,False,2,2,False,False,False,True,2022-04-06
+igfold,fv0100|H|111.0-128.0,framework register shift,False,1,1,False,False,False,False,2023-05-31
+igfold,fv0100|H|2.0-17.0,framework register shift,False,1,1,False,False,False,False,2023-05-31
+igfold,fv0100|K|86.0-93.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2023-05-31
+igfold,fv0101|L|2.0-10.0,framework register shift,False,1,1,True,True,True,True,2022-11-02
+igfold,fv0102|H|120.0-125.0,framework register shift,False,2,1,False,False,False,True,2022-07-13
+igfold,fv0103|L|2.0-31.0,framework register shift,False,3,1,False,False,False,True,2022-07-06
+igfold,fv0104|H|100.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2026-05-27
+igfold,fv0104|H|102.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2026-05-27
+igfold,fv0104|H|19.0-43.0,framework register shift,False,1,1,True,False,False,True,2022-06-29
+igfold,fv0104|H|99.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2022-06-29
+igfold,fv0105|H|53.0-59.0,mostly within a CDR,False,1,1,False,False,False,True,2023-04-19
+igfold,fv0106|H|83.0-85.0,framework insertion vs germline (detector artifact),False,3,1,True,True,True,True,2023-05-03
+igfold,fv0107|L|110.0-126.0,framework register shift,False,2,2,False,False,False,True,2022-05-04
+igfold,fv0108|K|109.0-124.0,mostly within a CDR,False,3,1,False,False,False,True,2022-12-14
+igfold,fv0108|K|120.0-124.0,framework register shift,False,1,1,True,False,False,True,2022-12-14
+igfold,fv0109|H|111.0-117.0,no measurable shift,False,1,1,True,False,False,True,2022-04-27
+igfold,fv0110|K|120.0-127.0,framework register shift,False,1,1,False,False,False,True,2023-03-01
+igfold,fv0111|H|3.0-11.0,framework register shift,False,2,2,False,False,False,True,2023-03-01
+igfold,fv0112|H|95.0-112.0,framework register shift,False,1,1,True,False,False,True,2023-09-06
+igfold,fv0113|H|2.0-9.0,framework register shift,False,1,1,True,False,False,True,2023-07-12
+igfold,fv0114|H|63.0-70.0,framework insertion vs germline (detector artifact),False,1,1,True,True,True,True,2024-01-24
+igfold,fv0115|H|83.0-85.0,framework insertion vs germline (detector artifact),False,2,1,True,True,True,True,2023-07-05
+igfold,fv0116|H|50.0-63.0,mostly within a CDR,False,1,1,False,False,False,False,2023-11-22
+igfold,fv0116|H|81.0-92.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2023-11-22
+igfold,fv0116|K|99.0-110.0,framework register shift,False,1,1,False,False,False,False,2023-11-22
+igfold,fv0117|L|57.0-70.0,mostly within a CDR,False,1,1,False,False,False,True,2023-02-22
+igfold,fv0118|H|4.0-16.0,framework register shift,False,1,1,False,False,False,True,2023-06-21
+igfold,fv0119|H|4.0-16.0,framework register shift,False,1,1,False,False,False,True,2023-06-21
+igfold,fv0120|H|3.0-16.0,framework register shift,False,3,1,False,False,False,True,2023-06-07
+igfold,fv0122|H|111.0-128.0,framework register shift,False,1,1,False,False,False,True,2023-08-30
+igfold,fv0122|K|114.0-127.0,framework register shift,False,1,1,False,False,False,True,2023-08-30
+igfold,fv0123|H|111.0-118.0,mostly within a CDR,False,1,1,False,False,False,True,2023-10-11
+igfold,fv0124|H|80.0-82.0,framework insertion vs germline (detector artifact),False,6,2,True,True,True,True,2023-08-09
+igfold,fv0125|H|27.0-35.0,no measurable shift,False,5,4,True,True,True,True,2022-12-14
+igfold,fv0126|L|75.0-82.0,framework register shift,False,1,1,False,False,False,False,2023-02-01
+igfold,fv0127|H|115.0-120.0,framework register shift,False,2,2,False,False,False,True,2024-12-18
+igfold,fv0127|H|115.0-121.0,framework register shift,False,1,1,False,False,False,True,2024-12-18
+igfold,fv0127|H|57.0-69.0,mostly within a CDR,False,1,1,False,False,False,True,2024-12-18
+igfold,fv0127|H|57.0-70.0,mostly within a CDR,False,1,1,False,False,False,True,2024-12-18
+igfold,fv0127|H|57.0-74.0,framework register shift,False,1,1,False,False,False,True,2024-12-18
+igfold,fv0127|K|109.0-121.0,mostly within a CDR,False,1,1,True,False,False,True,2024-12-18
+igfold,fv0128|H|110.0-120.0,mostly within a CDR,False,1,1,False,True,False,False,2024-06-19
+igfold,fv0128|H|3.0-35.0,framework register shift,False,1,1,False,False,False,False,2024-06-19
+igfold,fv0129|K|109.0-119.0,mostly within a CDR,False,1,1,True,False,False,True,2023-11-01
+igfold,fv0130|H|2.0-35.0,framework register shift,False,1,1,False,False,False,False,2024-09-25
+igfold,fv0131|H|62.0-67.0,framework insertion vs germline (detector artifact),False,2,2,False,True,False,True,2024-05-01
+igfold,fv0132|K|4.0-17.0,framework register shift,False,1,1,False,False,False,True,2024-09-04
+igfold,fv0133|H|120.0-127.0,framework register shift,False,18,2,False,False,False,True,2024-06-19
+igfold,fv0134|H|62.0-67.0,mostly within a CDR,False,1,1,False,False,False,True,2024-05-01
+igfold,fv0135|H|62.0-67.0,mostly within a CDR,False,1,1,True,True,True,True,2024-05-01
+igfold,fv0136|H|4.0-11.0,framework register shift,False,1,1,False,False,False,True,2024-05-22
+igfold,fv0137|K|2.0-9.0,framework register shift,False,3,1,False,False,False,True,2024-05-08
+igfold,fv0138|H|64.0-70.0,framework register shift,False,2,1,False,False,False,True,2024-05-08
+igfold,fv0139|H|112.0-119.0,mostly within a CDR,False,1,1,True,False,False,True,2024-04-24
+igfold,fv0140|H|111.0-118.0,mostly within a CDR,False,1,1,True,False,False,True,2024-04-24
+igfold,fv0141|H|4.0-12.0,framework register shift,False,1,1,False,False,False,True,2024-02-14
+igfold,fv0142|H|80.0-82.0,framework insertion vs germline (detector artifact),False,3,1,False,True,False,True,2025-04-16
+igfold,fv0143|K|116.0-119.0,framework insertion vs germline (detector artifact),False,1,1,True,False,False,True,2025-04-16
+igfold,fv0144|H|71.0-89.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0144|K|109.0-117.0,no measurable shift,False,1,1,True,False,False,True,2025-02-26
+igfold,fv0144|K|4.0-9.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0145|H|1.0-11.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0145|L|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0146|H|112.0-120.0,mostly within a CDR,False,1,1,False,False,False,False,2024-07-24
+igfold,fv0147|K|3.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0148|H|112.0-121.0,mostly within a CDR,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0148|H|2.0-7.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0148|K|4.0-36.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0149|K|120.0-122.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0150|H|111.0-117.0,no measurable shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0150|K|1.0-31.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+igfold,fv0150|K|104.0-114.0,mostly within a CDR,False,1,1,False,False,False,False,2025-02-26
+igfold,fv0151|H|2.0-34.0,framework register shift,False,1,1,False,False,False,True,2024-12-11
+igfold,fv0152|H|110.0-126.0,framework register shift,False,4,2,False,False,False,True,2025-02-12
+igfold,fv0153|L|81.0-85.0,framework insertion vs germline (detector artifact),False,3,1,True,False,False,True,2024-07-31
+igfold,fv0154|H|4.0-14.0,framework register shift,False,1,1,False,False,False,True,2025-04-02
+igfold,fv0155|H|110.0-117.0,no measurable shift,False,1,1,False,True,False,True,2024-10-16
+igfold,fv0155|H|110.0-126.0,framework register shift,False,1,1,False,True,False,True,2024-10-16
+igfold,fv0156|L|3.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-10-08
+igfold,fv0157|H|112.0-122.0,no measurable shift,False,1,1,False,False,False,False,2024-09-25
+igfold,fv0158|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,2,1,True,True,True,True,2025-11-05
+igfold,fv0159|H|83.0-84.0,framework insertion vs germline (detector artifact),False,4,1,False,True,False,True,2025-10-22
+igfold,fv0160|K|3.0-8.0,framework register shift,False,2,1,False,False,False,True,2025-09-17
+igfold,fv0161|K|16.0-29.0,framework register shift,False,1,1,False,False,False,True,2025-05-21
+igfold,fv0162|H|72.0-92.0,framework register shift,False,1,1,False,False,False,True,2025-06-25
+igfold,fv0162|K|120.0-127.0,framework register shift,False,1,1,False,False,False,True,2025-06-25
+igfold,fv0163|H|110.0-119.0,mostly within a CDR,False,3,1,True,False,False,True,2025-07-30
+igfold,fv0163|L|120.0-126.0,framework register shift,False,3,1,True,False,False,True,2025-07-30
+igfold,fv0164|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2025-01-29
+igfold,fv0165|H|1.0-18.0,framework register shift,False,1,1,False,False,False,True,2025-04-09
+igfold,fv0166|H|109.0-120.0,mostly within a CDR,False,1,1,False,False,False,False,2026-01-14
+igfold,fv0166|H|6.0-17.0,framework register shift,False,1,1,False,False,False,True,2026-01-14
+igfold,fv0167|H|124.0-126.0,framework register shift,False,8,2,False,False,False,True,2025-03-19
+igfold,fv0168|H|63.0-69.0,framework register shift,False,4,1,True,False,False,True,2025-09-17
+igfold,fv0169|H|3.0-9.0,framework register shift,False,2,2,False,False,False,True,2026-03-04
+igfold,fv0170|H|120.0-127.0,framework register shift,False,2,1,False,False,False,True,2025-07-16
+igfold,fv0171|H|112.0-128.0,framework register shift,False,1,1,False,False,False,False,2026-03-18
+igfold,fv0171|H|83.0-93.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2026-03-18
+igfold,fv0172|K|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2025-11-26
+igfold,fv0173|H|3.0-9.0,framework register shift,False,1,1,False,False,False,True,2026-04-22
+igfold,fv0174|H|31.0-41.0,mostly within a CDR,False,2,1,False,False,False,True,2025-06-04
+igfold,fv0174|H|85.0-95.0,FR3 80–86 DE loop (detector artifact),False,2,1,False,False,False,True,2025-06-04
+igfold,fv0175|H|115.0-118.0,mostly within a CDR,False,1,1,False,True,False,True,2026-02-18
+igfold,fv0176|H|3.0-12.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2026-02-04
+igfold,fv0177|H|8.0-12.0,framework register shift,False,1,1,False,False,False,True,2026-05-13
+igfold,fv0178|H|8.0-17.0,framework register shift,False,1,1,False,False,False,True,2026-05-13
+igfold,fv0179|H|101.0-119.0,mostly within a CDR,False,2,1,True,False,False,True,2026-08-05
+igfold,fv0179|H|28.0-35.0,no measurable shift,False,2,1,False,False,False,True,2026-08-05
+igfold,fv0180|K|67.0-69.0,framework register shift,False,1,1,False,False,False,True,2026-06-17
+igfold,fv0181|H|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+igfold,fv0181|K|120.0-127.0,framework register shift,False,1,1,False,False,False,False,2025-12-10
+igfold,fv0181|K|69.0-85.0,framework register shift,False,1,1,False,False,False,False,2025-12-10
+igfold,fv0182|H|54.0-94.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+igfold,fv0182|K|32.0-99.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+igfold,fv0183|H|63.0-72.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+igfold,fv0184|L|81.0-85.0,framework insertion vs germline (detector artifact),False,2,1,False,False,False,True,2026-05-27
+igfold,fv0185|H|81.0-84.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2026-03-25
+igfold,fv0186|L|3.0-35.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+igfold,fv0187|K|31.0-127.0,framework register shift,False,1,1,False,False,False,False,2026-02-04
+igfold,fv0188|H|62.0-67.0,mostly within a CDR,False,1,1,False,False,False,True,2025-12-10
+igfold,fv0189|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2026-10-07
+igfold,fv0190|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,True,False,True,2026-09-02
+igfold,fv0191|H|120.0-124.0,framework register shift,False,1,1,False,False,False,True,2026-07-29
+igfold,fv0192|H|56.0-59.0,no measurable shift,False,2,1,True,True,True,True,2022-06-29
+igfold,fv0193|K|120.0-127.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+igfold,fv0194|H|62.0-82.0,framework register shift,False,1,1,False,False,False,True,2022-12-07
+igfold,fv0195|H|3.0-11.0,framework register shift,False,1,1,False,False,False,True,2023-11-01
+igfold,fv0196|H|2.0-125.0,framework register shift,False,1,1,False,False,False,False,2023-11-01
+igfold,fv0197|K|2.0-9.0,framework register shift,False,1,1,False,False,False,True,2022-12-14
+igfold,fv0198|H|64.0-67.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,False,2023-12-13
+igfold,fv0198|H|83.0-100.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,True,2023-12-13
+igfold,fv0199|H|112.0-128.0,framework register shift,False,1,1,False,False,False,True,2023-12-13
+igfold,fv0199|K|2.0-9.0,framework register shift,False,2,2,False,False,False,True,2023-12-13
+igfold,fv0200|H|26.0-35.0,mostly within a CDR,False,1,1,True,True,True,True,2024-02-28
+igfold,fv0201|H|114.0-128.0,framework register shift,False,1,1,False,False,False,True,2024-04-03
+igfold,fv0202|H|1.0-16.0,framework register shift,False,2,1,False,False,False,True,2026-07-15
+igfold,fv0203|H|84.0-96.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2026-07-22
+igfold,fv0204|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2025-12-24
+igfold,fv0205|H|42.0-47.0,framework register shift,False,1,1,True,False,False,True,2022-07-06
+igfold,fv0205|H|5.0-17.0,framework register shift,False,4,4,False,False,False,True,2023-02-22
+igfold,fv0206|H|120.0-125.0,framework register shift,False,3,1,False,False,False,True,2022-04-06
+igfold,fv0207|H|47.0-59.0,framework register shift,False,1,1,True,False,False,True,2022-11-30
+igfold,fv0207|H|48.0-59.0,framework register shift,False,3,3,True,False,False,True,2022-11-30
+igfold,fv0208|H|101.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2023-03-01
+igfold,fv0208|H|112.0-120.0,mostly within a CDR,False,1,1,True,False,False,True,2026-09-09
+igfold,fv0208|H|112.0-125.0,framework register shift,False,1,1,True,False,False,True,2022-08-31
+igfold,fv0208|H|42.0-47.0,framework register shift,False,6,6,True,False,False,True,2025-04-02
+igfold,fv0208|K|106.0-115.0,no measurable shift,False,1,1,False,False,False,True,2022-08-31
+igfold,fv0208|K|47.0-54.0,framework register shift,False,1,1,True,False,False,True,2022-08-31
+igfold,fv0209|H|64.0-71.0,framework register shift,False,2,1,False,False,False,True,2024-05-08
+igfold,fv0210|H|103.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2023-12-27
+igfold,fv0210|H|112.0-120.0,mostly within a CDR,False,1,1,True,False,False,True,2025-03-19
+igfold,fv0210|H|15.0-18.0,framework register shift,False,1,1,True,False,False,True,2025-02-05
+igfold,fv0210|H|27.0-36.0,no measurable shift,False,1,1,True,False,False,True,2025-03-19
+igfold,fv0211|L|1.0-56.0,framework register shift,False,2,1,False,False,False,False,2024-07-03
+igfold,fv0211|L|103.0-118.0,mostly within a CDR,False,2,1,True,False,False,True,2024-07-03
+igfold,fv0212|H|111.0-122.0,mostly within a CDR,False,1,1,True,False,False,True,2025-11-12
+igfold,fv0216|H|124.0-128.0,framework register shift,False,1,1,True,True,True,True,2025-01-15
+igfold,fv0217|K|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2024-05-29
+igfold,fv0218|L|104.0-122.0,mostly within a CDR,False,1,1,True,False,False,True,2025-04-23
+igfold,fv0218|L|3.0-11.0,framework register shift,False,1,1,True,False,False,True,2025-04-23
+igfold,fv0218|L|45.0-122.0,framework register shift,False,1,1,True,False,False,True,2025-04-23
+immunebuilder,fv0000|H|63.0-69.0,framework register shift,True,2,1,False,False,False,True,2002-04-24
+immunebuilder,fv0001|H|37.0-48.0,framework register shift,False,1,1,False,False,False,True,2016-01-27
+immunebuilder,fv0002|K|113.0-120.0,mostly within a CDR,True,2,1,False,False,False,True,2009-11-17
+immunebuilder,fv0003|H|62.0-100.0,framework register shift,True,2,1,False,False,False,True,2010-08-18
+immunebuilder,fv0004|H|83.0-85.0,framework insertion vs germline (detector artifact),False,3,1,True,True,True,True,2015-04-29
+immunebuilder,fv0005|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,3,2,True,True,True,True,2016-06-22
+immunebuilder,fv0006|L|81.0-85.0,framework insertion vs germline (detector artifact),True,1,1,False,False,False,False,2016-04-27
+immunebuilder,fv0007|H|110.0-128.0,framework register shift,True,1,1,False,False,False,True,2019-05-22
+immunebuilder,fv0008|K|1.0-32.0,framework register shift,False,1,1,False,False,False,True,2018-11-21
+immunebuilder,fv0009|H|7.0-9.0,framework register shift,False,1,1,False,False,False,True,2018-02-14
+immunebuilder,fv0010|K|3.0-8.0,framework register shift,False,2,1,False,False,False,True,2018-06-20
+immunebuilder,fv0011|K|4.0-12.0,framework register shift,False,3,2,False,False,False,True,2018-06-20
+immunebuilder,fv0011|K|4.0-9.0,framework register shift,False,1,1,False,False,False,True,2019-06-12
+immunebuilder,fv0012|H|83.0-85.0,framework insertion vs germline (detector artifact),True,21,7,True,True,True,True,2018-05-16
+immunebuilder,fv0013|K|114.0-120.0,mostly within a CDR,False,1,1,False,False,False,True,2019-06-19
+immunebuilder,fv0014|K|114.0-127.0,framework register shift,False,1,1,False,False,False,False,2020-02-05
+immunebuilder,fv0014|K|31.0-57.0,framework register shift,False,1,1,False,False,False,False,2020-02-05
+immunebuilder,fv0015|H|1.0-7.0,framework register shift,False,3,1,False,False,False,False,2019-06-12
+immunebuilder,fv0015|H|112.0-128.0,framework register shift,False,3,1,False,False,False,True,2019-06-12
+immunebuilder,fv0015|L|70.0-83.0,framework register shift,False,3,1,False,False,False,True,2019-06-12
+immunebuilder,fv0016|H|112.0-122.0,mostly within a CDR,True,7,3,False,True,False,True,2019-09-04
+immunebuilder,fv0017|H|3.0-12.0,framework register shift,False,1,1,False,False,False,True,2020-03-11
+immunebuilder,fv0018|H|112.0-127.0,framework register shift,False,1,1,False,False,False,True,2020-12-09
+immunebuilder,fv0019|H|1.0-4.0,framework insertion vs germline (detector artifact),True,15,3,True,True,True,True,2020-12-16
+immunebuilder,fv0020|H|109.0-119.0,mostly within a CDR,False,1,1,False,False,False,True,2021-04-14
+immunebuilder,fv0020|L|113.0-122.0,framework register shift,False,1,1,False,False,False,False,2021-04-14
+immunebuilder,fv0021|H|1.0-4.0,framework insertion vs germline (detector artifact),False,3,1,True,False,False,True,2021-04-07
+immunebuilder,fv0022|H|112.0-126.0,framework register shift,False,1,1,False,False,False,False,2021-05-05
+immunebuilder,fv0022|H|72.0-93.0,framework register shift,False,1,1,False,False,False,True,2021-05-05
+immunebuilder,fv0022|K|76.0-93.0,framework register shift,False,1,1,False,False,False,True,2021-05-05
+immunebuilder,fv0023|H|62.0-93.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+immunebuilder,fv0023|K|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+immunebuilder,fv0024|H|4.0-11.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+immunebuilder,fv0024|H|74.0-81.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+immunebuilder,fv0024|K|3.0-8.0,framework register shift,False,1,1,False,False,False,False,2021-09-01
+immunebuilder,fv0024|K|57.0-89.0,framework register shift,False,1,1,False,False,False,True,2021-09-01
+immunebuilder,fv0025|H|27.0-35.0,no measurable shift,False,2,2,True,True,True,True,2021-07-14
+immunebuilder,fv0026|H|121.0-128.0,framework register shift,False,1,1,False,False,False,True,2021-09-08
+immunebuilder,fv0027|H|108.0-114.0,no measurable shift,False,1,1,False,False,False,True,2021-09-29
+immunebuilder,fv0027|H|109.0-115.0,no measurable shift,False,1,1,False,False,False,True,2021-09-29
+immunebuilder,fv0028|H|1.0-4.0,framework insertion vs germline (detector artifact),False,12,2,False,True,False,True,2021-10-13
+immunebuilder,fv0029|H|112.0-127.0,framework register shift,False,3,2,False,False,False,True,2020-10-21
+immunebuilder,fv0030|H|80.0-82.0,framework insertion vs germline (detector artifact),False,21,7,True,True,True,True,2015-09-23
+immunebuilder,fv0031|H|90.0-95.0,framework register shift,True,1,1,True,True,True,True,2021-07-28
+immunebuilder,fv0032|H|112.0-127.0,framework register shift,False,2,1,False,False,False,True,2021-05-05
+immunebuilder,fv0033|H|120.0-125.0,framework register shift,True,2,2,False,False,False,True,2021-05-12
+immunebuilder,fv0033|H|54.0-59.0,mostly within a CDR,True,2,2,False,False,False,True,2021-05-12
+immunebuilder,fv0034|H|86.0-97.0,template family 1359,False,2,2,False,False,False,True,2021-06-16
+immunebuilder,fv0034|H|87.0-95.0,framework register shift,False,1,1,False,False,False,True,2021-06-16
+immunebuilder,fv0035|H|101.0-108.0,framework register shift,False,1,1,False,False,False,True,2021-12-01
+immunebuilder,fv0036|H|3.0-11.0,framework register shift,True,4,4,False,False,False,True,2021-07-07
+immunebuilder,fv0036|H|6.0-15.0,template family 372,True,2,2,True,False,False,True,2021-07-07
+immunebuilder,fv0037|H|3.0-16.0,framework register shift,False,2,2,False,False,False,True,2021-12-29
+immunebuilder,fv0038|H|3.0-16.0,framework register shift,False,4,2,False,False,False,True,2022-02-02
+immunebuilder,fv0039|H|93.0-95.0,framework register shift,False,5,3,False,False,False,True,2022-03-02
+immunebuilder,fv0040|H|112.0-123.0,framework register shift,False,3,1,False,False,False,True,2021-10-20
+immunebuilder,fv0041|H|30.0-128.0,framework register shift,False,1,1,False,False,False,True,2020-07-29
+immunebuilder,fv0041|K|111.0-117.0,no measurable shift,False,1,1,False,True,False,True,2020-07-29
+immunebuilder,fv0042|K|1.0-9.0,framework register shift,True,7,3,False,False,False,True,2021-03-10
+immunebuilder,fv0043|H|112.0-128.0,framework register shift,True,5,2,False,False,False,True,2021-03-10
+immunebuilder,fv0043|K|1.0-9.0,framework register shift,True,5,2,False,False,False,True,2021-03-10
+immunebuilder,fv0045|K|3.0-10.0,framework register shift,True,1,1,False,False,False,True,2021-07-21
+immunebuilder,fv0045|K|3.0-9.0,framework register shift,False,1,1,False,False,False,True,2021-07-21
+immunebuilder,fv0046|H|110.0-126.0,framework register shift,False,1,1,False,False,False,True,2021-06-23
+immunebuilder,fv0046|L|45.0-80.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,True,2021-06-23
+immunebuilder,fv0047|K|115.0-127.0,framework register shift,False,1,1,False,False,False,True,2020-10-14
+immunebuilder,fv0048|H|80.0-93.0,FR3 80–86 DE loop (detector artifact),False,2,2,False,False,False,True,2020-12-02
+immunebuilder,fv0049|H|55.0-62.0,mostly within a CDR,False,2,1,False,False,False,True,2021-03-10
+immunebuilder,fv0050|H|111.0-128.0,framework register shift,True,1,1,False,False,False,True,2021-02-10
+immunebuilder,fv0051|K|3.0-10.0,framework register shift,False,1,1,False,False,False,True,2021-12-15
+immunebuilder,fv0052|K|1.0-8.0,framework register shift,True,26,14,False,False,False,True,2018-05-23
+immunebuilder,fv0052|K|1.0-9.0,framework register shift,False,2,1,False,False,False,True,2021-11-17
+immunebuilder,fv0052|K|2.0-8.0,framework register shift,False,2,2,False,False,False,True,2021-11-03
+immunebuilder,fv0053|H|63.0-69.0,framework register shift,False,1,1,True,False,False,True,2021-10-27
+immunebuilder,fv0054|H|3.0-4.0,framework insertion vs germline (detector artifact),True,1,1,True,True,True,True,2005-11-15
+immunebuilder,fv0055|H|7.0-127.0,framework register shift,False,1,1,False,False,False,False,2016-07-20
+immunebuilder,fv0056|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,6,1,True,True,True,True,2010-03-23
+immunebuilder,fv0057|L|110.0-128.0,framework register shift,True,1,1,False,False,False,True,2015-03-25
+immunebuilder,fv0058|H|83.0-85.0,framework insertion vs germline (detector artifact),True,31,11,True,True,True,True,2013-08-21
+immunebuilder,fv0059|H|80.0-82.0,framework insertion vs germline (detector artifact),True,8,4,True,True,True,True,2014-05-21
+immunebuilder,fv0060|H|27.0-34.0,no measurable shift,True,1,1,False,True,False,True,2015-12-16
+immunebuilder,fv0061|H|112.0-121.0,mostly within a CDR,False,3,1,False,False,False,True,2016-09-07
+immunebuilder,fv0062|L|81.0-85.0,framework insertion vs germline (detector artifact),True,1,1,False,False,False,False,2017-03-29
+immunebuilder,fv0063|K|65.0-70.0,framework register shift,False,1,1,False,False,False,True,2018-06-27
+immunebuilder,fv0063|K|65.0-74.0,framework register shift,False,1,1,False,False,False,True,2018-06-27
+immunebuilder,fv0064|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),True,1,1,True,True,True,True,2018-07-25
+immunebuilder,fv0065|H|83.0-85.0,framework insertion vs germline (detector artifact),False,6,2,True,True,True,True,2018-07-25
+immunebuilder,fv0066|H|83.0-85.0,framework insertion vs germline (detector artifact),False,6,2,True,True,True,True,2018-07-11
+immunebuilder,fv0067|L|81.0-85.0,framework insertion vs germline (detector artifact),True,3,3,False,False,False,False,2019-06-05
+immunebuilder,fv0068|H|60.0-68.0,mostly within a CDR,False,3,1,False,False,False,True,2019-11-20
+immunebuilder,fv0069|H|83.0-85.0,framework insertion vs germline (detector artifact),True,3,1,True,True,True,True,2021-01-13
+immunebuilder,fv0070|H|113.0-120.0,mostly within a CDR,False,1,1,False,False,False,True,2021-01-20
+immunebuilder,fv0071|K|112.0-127.0,framework register shift,True,6,1,False,False,False,True,2020-09-02
+immunebuilder,fv0072|H|112.0-120.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,True,2021-03-24
+immunebuilder,fv0072|H|114.0-120.0,framework insertion vs germline (detector artifact),False,1,1,True,True,True,True,2021-03-24
+immunebuilder,fv0072|H|81.0-92.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,True,2021-03-24
+immunebuilder,fv0073|K|109.0-118.0,mostly within a CDR,True,10,2,True,False,False,True,2020-10-07
+immunebuilder,fv0074|H|99.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2020-11-18
+immunebuilder,fv0075|H|83.0-85.0,framework insertion vs germline (detector artifact),True,1,1,False,True,False,True,2021-02-03
+immunebuilder,fv0076|H|120.0-126.0,framework register shift,True,3,1,False,False,False,True,2021-05-12
+immunebuilder,fv0077|H|80.0-82.0,framework insertion vs germline (detector artifact),False,6,2,False,True,False,True,2021-03-17
+immunebuilder,fv0078|K|78.0-82.0,framework insertion vs germline (detector artifact),False,3,1,False,False,False,True,2021-03-17
+immunebuilder,fv0079|H|112.0-127.0,framework register shift,False,1,1,False,False,False,False,2021-08-11
+immunebuilder,fv0079|H|2.0-34.0,framework register shift,False,1,1,False,False,False,False,2021-08-11
+immunebuilder,fv0080|K|109.0-123.0,mostly within a CDR,False,1,1,False,False,False,True,2021-09-29
+immunebuilder,fv0081|H|67.0-73.0,framework register shift,False,1,1,True,True,True,True,2021-12-01
+immunebuilder,fv0082|H|12.0-14.0,framework register shift,False,1,1,False,False,False,True,2022-03-02
+immunebuilder,fv0083|H|60.0-67.0,mostly within a CDR,False,1,1,True,False,False,True,2022-03-09
+immunebuilder,fv0084|H|111.0-118.0,mostly within a CDR,False,3,1,True,False,False,True,2022-01-12
+immunebuilder,fv0085|H|112.0-127.0,framework register shift,False,1,1,False,False,False,True,2021-11-24
+immunebuilder,fv0086|H|1.0-16.0,framework register shift,True,1,1,False,False,False,True,2012-08-08
+immunebuilder,fv0086|H|1.0-17.0,framework register shift,True,1,1,False,False,False,True,2012-08-08
+immunebuilder,fv0087|H|111.0-122.0,mostly within a CDR,False,1,1,False,False,False,True,2019-12-04
+immunebuilder,fv0087|H|111.0-125.0,framework register shift,False,1,1,False,False,False,True,2019-12-04
+immunebuilder,fv0088|H|39.0-122.0,framework register shift,False,1,1,False,False,False,False,2020-02-12
+immunebuilder,fv0088|H|48.0-50.0,framework register shift,False,1,1,True,False,False,True,2020-02-12
+immunebuilder,fv0088|H|97.0-121.0,mostly within a CDR,False,1,1,True,False,False,True,2020-02-12
+immunebuilder,fv0088|K|7.0-10.0,framework register shift,False,1,1,True,False,False,True,2020-02-12
+immunebuilder,fv0088|K|8.0-10.0,framework register shift,False,1,1,True,False,False,True,2020-02-12
+immunebuilder,fv0089|H|27.0-35.0,no measurable shift,True,6,1,True,True,True,True,2015-09-30
+immunebuilder,fv0090|K|23.0-117.0,framework register shift,False,1,1,False,False,False,False,2016-11-09
+immunebuilder,fv0091|H|16.0-19.0,framework register shift,False,1,1,True,True,True,True,2026-08-19
+immunebuilder,fv0092|K|58.0-71.0,mostly within a CDR,False,1,1,False,True,False,True,2026-09-16
+immunebuilder,fv0092|K|58.0-72.0,mostly within a CDR,False,2,1,False,True,False,True,2026-09-16
+immunebuilder,fv0093|H|111.0-128.0,framework register shift,False,5,3,False,False,False,True,2026-10-28
+immunebuilder,fv0094|H|111.0-128.0,framework register shift,False,1,1,False,False,False,True,2026-10-28
+immunebuilder,fv0095|H|53.0-60.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2026-10-28
+immunebuilder,fv0095|H|9.0-10.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,False,2026-10-28
+immunebuilder,fv0096|H|112.0-126.0,framework register shift,False,1,1,False,False,False,False,2026-08-12
+immunebuilder,fv0096|H|8.0-35.0,framework register shift,False,1,1,False,False,False,True,2026-08-12
+immunebuilder,fv0096|L|113.0-120.0,mostly within a CDR,False,1,1,False,False,False,True,2026-08-12
+immunebuilder,fv0097|H|111.0-121.0,mostly within a CDR,False,1,1,False,False,False,False,2026-07-01
+immunebuilder,fv0097|H|112.0-121.0,mostly within a CDR,False,1,1,False,False,False,False,2026-07-01
+immunebuilder,fv0098|K|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2022-06-22
+immunebuilder,fv0099|H|62.0-67.0,mostly within a CDR,False,2,2,False,False,False,True,2022-04-06
+immunebuilder,fv0100|H|111.0-128.0,framework register shift,False,1,1,False,False,False,False,2023-05-31
+immunebuilder,fv0100|H|2.0-17.0,framework register shift,False,1,1,False,False,False,False,2023-05-31
+immunebuilder,fv0100|K|86.0-93.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2023-05-31
+immunebuilder,fv0101|L|2.0-10.0,framework register shift,False,1,1,True,True,True,True,2022-11-02
+immunebuilder,fv0102|H|120.0-125.0,framework register shift,False,2,1,False,False,False,True,2022-07-13
+immunebuilder,fv0103|L|2.0-31.0,framework register shift,False,3,1,False,False,False,True,2022-07-06
+immunebuilder,fv0104|H|100.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2026-05-27
+immunebuilder,fv0104|H|102.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2026-05-27
+immunebuilder,fv0104|H|19.0-43.0,framework register shift,False,1,1,True,False,False,True,2022-06-29
+immunebuilder,fv0104|H|99.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2022-06-29
+immunebuilder,fv0105|H|53.0-59.0,mostly within a CDR,False,1,1,False,False,False,True,2023-04-19
+immunebuilder,fv0106|H|83.0-85.0,framework insertion vs germline (detector artifact),False,3,1,True,True,True,True,2023-05-03
+immunebuilder,fv0107|L|110.0-126.0,framework register shift,False,2,2,False,False,False,True,2022-05-04
+immunebuilder,fv0108|K|109.0-124.0,mostly within a CDR,False,3,1,False,False,False,True,2022-12-14
+immunebuilder,fv0108|K|120.0-124.0,framework register shift,False,1,1,True,False,False,True,2022-12-14
+immunebuilder,fv0109|H|111.0-117.0,no measurable shift,False,1,1,True,False,False,True,2022-04-27
+immunebuilder,fv0110|K|120.0-127.0,framework register shift,False,1,1,False,False,False,True,2023-03-01
+immunebuilder,fv0111|H|3.0-11.0,framework register shift,False,2,2,False,False,False,True,2023-03-01
+immunebuilder,fv0112|H|95.0-112.0,framework register shift,False,1,1,True,False,False,True,2023-09-06
+immunebuilder,fv0113|H|2.0-9.0,framework register shift,False,1,1,True,False,False,True,2023-07-12
+immunebuilder,fv0114|H|63.0-70.0,framework insertion vs germline (detector artifact),False,1,1,True,True,True,True,2024-01-24
+immunebuilder,fv0115|H|83.0-85.0,framework insertion vs germline (detector artifact),False,2,1,True,True,True,True,2023-07-05
+immunebuilder,fv0116|H|50.0-63.0,mostly within a CDR,False,1,1,False,False,False,True,2023-11-22
+immunebuilder,fv0116|H|81.0-92.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2023-11-22
+immunebuilder,fv0116|K|99.0-110.0,framework register shift,False,1,1,False,False,False,False,2023-11-22
+immunebuilder,fv0117|L|57.0-70.0,mostly within a CDR,False,1,1,False,False,False,True,2023-02-22
+immunebuilder,fv0118|H|4.0-16.0,framework register shift,False,1,1,False,False,False,True,2023-06-21
+immunebuilder,fv0119|H|4.0-16.0,framework register shift,False,1,1,False,False,False,True,2023-06-21
+immunebuilder,fv0120|H|3.0-16.0,framework register shift,False,3,1,False,False,False,True,2023-06-07
+immunebuilder,fv0122|H|111.0-128.0,framework register shift,False,1,1,False,False,False,True,2023-08-30
+immunebuilder,fv0122|K|114.0-127.0,framework register shift,False,1,1,False,False,False,True,2023-08-30
+immunebuilder,fv0123|H|111.0-118.0,mostly within a CDR,False,1,1,False,False,False,True,2023-10-11
+immunebuilder,fv0124|H|80.0-82.0,framework insertion vs germline (detector artifact),False,6,2,True,True,True,True,2023-08-09
+immunebuilder,fv0125|H|27.0-35.0,no measurable shift,False,5,4,True,True,True,True,2022-12-14
+immunebuilder,fv0126|L|75.0-82.0,framework register shift,False,1,1,False,False,False,False,2023-02-01
+immunebuilder,fv0127|H|115.0-120.0,framework register shift,False,2,2,False,False,False,True,2024-12-18
+immunebuilder,fv0127|H|115.0-121.0,framework register shift,False,1,1,False,False,False,False,2024-12-18
+immunebuilder,fv0127|H|57.0-69.0,mostly within a CDR,False,1,1,False,True,False,True,2024-12-18
+immunebuilder,fv0127|H|57.0-70.0,mostly within a CDR,False,1,1,False,True,False,True,2024-12-18
+immunebuilder,fv0127|H|57.0-74.0,framework register shift,False,1,1,False,True,False,True,2024-12-18
+immunebuilder,fv0127|K|109.0-121.0,mostly within a CDR,False,1,1,True,False,False,True,2024-12-18
+immunebuilder,fv0128|H|110.0-120.0,mostly within a CDR,False,1,1,False,False,False,False,2024-06-19
+immunebuilder,fv0128|H|3.0-35.0,framework register shift,False,1,1,False,False,False,False,2024-06-19
+immunebuilder,fv0129|K|109.0-119.0,mostly within a CDR,False,1,1,True,False,False,True,2023-11-01
+immunebuilder,fv0130|H|2.0-35.0,framework register shift,False,1,1,False,False,False,False,2024-09-25
+immunebuilder,fv0131|H|62.0-67.0,framework insertion vs germline (detector artifact),False,2,2,False,True,False,True,2024-05-01
+immunebuilder,fv0132|K|4.0-17.0,framework register shift,False,1,1,False,False,False,True,2024-09-04
+immunebuilder,fv0133|H|120.0-127.0,framework register shift,False,18,2,False,False,False,True,2024-06-19
+immunebuilder,fv0134|H|62.0-67.0,mostly within a CDR,False,1,1,False,False,False,True,2024-05-01
+immunebuilder,fv0135|H|62.0-67.0,mostly within a CDR,False,1,1,True,True,True,True,2024-05-01
+immunebuilder,fv0136|H|4.0-11.0,framework register shift,False,1,1,False,False,False,True,2024-05-22
+immunebuilder,fv0137|K|2.0-9.0,framework register shift,False,3,1,False,False,False,True,2024-05-08
+immunebuilder,fv0138|H|64.0-70.0,framework register shift,False,2,1,False,False,False,True,2024-05-08
+immunebuilder,fv0139|H|112.0-119.0,mostly within a CDR,False,1,1,False,False,False,True,2024-04-24
+immunebuilder,fv0140|H|111.0-118.0,mostly within a CDR,False,1,1,True,False,False,True,2024-04-24
+immunebuilder,fv0141|H|4.0-12.0,framework register shift,False,1,1,False,False,False,True,2024-02-14
+immunebuilder,fv0142|H|80.0-82.0,framework insertion vs germline (detector artifact),False,3,1,False,False,False,False,2025-04-16
+immunebuilder,fv0143|K|116.0-119.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,True,2025-04-16
+immunebuilder,fv0144|H|71.0-89.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0144|K|109.0-117.0,no measurable shift,False,1,1,True,False,False,True,2025-02-26
+immunebuilder,fv0144|K|4.0-9.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0145|H|1.0-11.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0145|L|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0146|H|112.0-120.0,mostly within a CDR,False,1,1,False,False,False,False,2024-07-24
+immunebuilder,fv0147|K|3.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0148|H|112.0-121.0,mostly within a CDR,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0148|H|2.0-7.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0148|K|4.0-36.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0149|K|120.0-122.0,framework register shift,False,1,1,True,False,False,True,2025-02-26
+immunebuilder,fv0150|H|111.0-117.0,no measurable shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0150|K|1.0-31.0,framework register shift,False,1,1,False,False,False,True,2025-02-26
+immunebuilder,fv0150|K|104.0-114.0,mostly within a CDR,False,1,1,False,False,False,False,2025-02-26
+immunebuilder,fv0151|H|2.0-34.0,framework register shift,False,1,1,False,False,False,True,2024-12-11
+immunebuilder,fv0152|H|110.0-126.0,framework register shift,False,4,2,False,False,False,True,2025-02-12
+immunebuilder,fv0153|L|81.0-85.0,framework insertion vs germline (detector artifact),False,3,1,False,False,False,False,2024-07-31
+immunebuilder,fv0154|H|4.0-14.0,framework register shift,False,1,1,False,False,False,True,2025-04-02
+immunebuilder,fv0155|H|110.0-117.0,no measurable shift,False,1,1,False,True,False,True,2024-10-16
+immunebuilder,fv0155|H|110.0-126.0,framework register shift,False,1,1,False,True,False,True,2024-10-16
+immunebuilder,fv0156|L|3.0-8.0,framework register shift,False,1,1,False,False,False,True,2025-10-08
+immunebuilder,fv0157|H|112.0-122.0,no measurable shift,False,1,1,False,False,False,True,2024-09-25
+immunebuilder,fv0158|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,2,1,True,True,True,True,2025-11-05
+immunebuilder,fv0159|H|83.0-84.0,framework insertion vs germline (detector artifact),False,4,1,False,True,False,True,2025-10-22
+immunebuilder,fv0160|K|3.0-8.0,framework register shift,False,2,1,False,False,False,True,2025-09-17
+immunebuilder,fv0161|K|16.0-29.0,framework register shift,False,1,1,False,False,False,True,2025-05-21
+immunebuilder,fv0162|H|72.0-92.0,framework register shift,False,1,1,False,False,False,True,2025-06-25
+immunebuilder,fv0162|K|120.0-127.0,framework register shift,False,1,1,False,False,False,True,2025-06-25
+immunebuilder,fv0163|H|110.0-119.0,mostly within a CDR,False,3,1,True,False,False,True,2025-07-30
+immunebuilder,fv0163|L|120.0-126.0,framework register shift,False,3,1,True,False,False,True,2025-07-30
+immunebuilder,fv0164|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,False,False,True,2025-01-29
+immunebuilder,fv0165|H|1.0-18.0,framework register shift,False,1,1,False,False,False,True,2025-04-09
+immunebuilder,fv0166|H|109.0-120.0,mostly within a CDR,False,1,1,False,False,False,False,2026-01-14
+immunebuilder,fv0166|H|6.0-17.0,framework register shift,False,1,1,False,False,False,True,2026-01-14
+immunebuilder,fv0167|H|124.0-126.0,framework register shift,False,8,2,False,False,False,True,2025-03-19
+immunebuilder,fv0168|H|63.0-69.0,framework register shift,False,4,1,True,False,False,True,2025-09-17
+immunebuilder,fv0169|H|3.0-9.0,framework register shift,False,2,2,False,False,False,True,2026-03-04
+immunebuilder,fv0170|H|120.0-127.0,framework register shift,False,2,1,True,False,False,True,2025-07-16
+immunebuilder,fv0171|H|112.0-128.0,framework register shift,False,1,1,False,False,False,False,2026-03-18
+immunebuilder,fv0171|H|83.0-93.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,False,2026-03-18
+immunebuilder,fv0172|K|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2025-11-26
+immunebuilder,fv0173|H|3.0-9.0,framework register shift,False,1,1,False,False,False,True,2026-04-22
+immunebuilder,fv0174|H|31.0-41.0,mostly within a CDR,False,2,1,False,False,False,True,2025-06-04
+immunebuilder,fv0174|H|85.0-95.0,FR3 80–86 DE loop (detector artifact),False,2,1,False,False,False,True,2025-06-04
+immunebuilder,fv0175|H|115.0-118.0,mostly within a CDR,False,1,1,False,False,False,False,2026-02-18
+immunebuilder,fv0176|H|3.0-12.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2026-02-04
+immunebuilder,fv0177|H|8.0-12.0,framework register shift,False,1,1,False,False,False,False,2026-05-13
+immunebuilder,fv0178|H|8.0-17.0,framework register shift,False,1,1,False,False,False,True,2026-05-13
+immunebuilder,fv0179|H|101.0-119.0,mostly within a CDR,False,2,1,True,False,False,True,2026-08-05
+immunebuilder,fv0179|H|28.0-35.0,no measurable shift,False,2,1,True,False,False,True,2026-08-05
+immunebuilder,fv0180|K|67.0-69.0,framework register shift,False,1,1,True,True,True,True,2026-06-17
+immunebuilder,fv0181|H|120.0-126.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+immunebuilder,fv0181|K|120.0-127.0,framework register shift,False,1,1,False,False,False,False,2025-12-10
+immunebuilder,fv0181|K|69.0-85.0,framework register shift,False,1,1,False,False,False,False,2025-12-10
+immunebuilder,fv0182|H|54.0-94.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+immunebuilder,fv0182|K|32.0-99.0,framework register shift,False,1,1,False,False,False,True,2025-12-10
+immunebuilder,fv0183|H|63.0-72.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+immunebuilder,fv0184|L|81.0-85.0,framework insertion vs germline (detector artifact),False,2,1,False,False,False,False,2026-05-27
+immunebuilder,fv0185|H|81.0-84.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2026-03-25
+immunebuilder,fv0186|L|3.0-35.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+immunebuilder,fv0187|K|31.0-127.0,framework register shift,False,1,1,False,False,False,True,2026-02-04
+immunebuilder,fv0188|H|62.0-67.0,mostly within a CDR,False,1,1,False,False,False,True,2025-12-10
+immunebuilder,fv0189|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,False,False,True,2026-10-07
+immunebuilder,fv0190|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2026-09-02
+immunebuilder,fv0191|H|120.0-124.0,framework register shift,False,1,1,False,False,False,True,2026-07-29
+immunebuilder,fv0192|H|56.0-59.0,no measurable shift,False,2,1,True,True,True,True,2022-06-29
+immunebuilder,fv0193|K|120.0-127.0,framework register shift,False,3,1,False,False,False,True,2026-05-27
+immunebuilder,fv0194|H|62.0-82.0,framework register shift,False,1,1,False,False,False,True,2022-12-07
+immunebuilder,fv0195|H|3.0-11.0,framework register shift,False,1,1,False,False,False,True,2023-11-01
+immunebuilder,fv0196|H|2.0-125.0,framework register shift,False,1,1,False,False,False,False,2023-11-01
+immunebuilder,fv0197|K|2.0-9.0,framework register shift,False,1,1,False,False,False,True,2022-12-14
+immunebuilder,fv0198|H|64.0-67.0,framework insertion vs germline (detector artifact),False,1,1,False,False,False,False,2023-12-13
+immunebuilder,fv0198|H|83.0-100.0,framework insertion vs germline (detector artifact),False,1,1,False,True,False,True,2023-12-13
+immunebuilder,fv0199|H|112.0-128.0,framework register shift,False,1,1,False,False,False,True,2023-12-13
+immunebuilder,fv0199|K|2.0-9.0,framework register shift,False,2,2,False,False,False,True,2023-12-13
+immunebuilder,fv0200|H|26.0-35.0,mostly within a CDR,False,1,1,False,False,False,True,2024-02-28
+immunebuilder,fv0201|H|114.0-128.0,framework register shift,False,1,1,False,False,False,False,2024-04-03
+immunebuilder,fv0202|H|1.0-16.0,framework register shift,False,2,1,False,False,False,True,2026-07-15
+immunebuilder,fv0203|H|84.0-96.0,FR3 80–86 DE loop (detector artifact),False,1,1,False,False,False,True,2026-07-22
+immunebuilder,fv0204|H|81.0-83.0,FR3 80–86 DE loop (detector artifact),False,1,1,True,True,True,True,2025-12-24
+immunebuilder,fv0205|H|42.0-47.0,framework register shift,False,1,1,True,False,False,True,2022-07-06
+immunebuilder,fv0205|H|5.0-17.0,framework register shift,False,4,4,False,False,False,True,2023-02-22
+immunebuilder,fv0206|H|120.0-125.0,framework register shift,False,3,1,False,False,False,True,2022-04-06
+immunebuilder,fv0207|H|47.0-59.0,framework register shift,False,1,1,True,False,False,True,2022-11-30
+immunebuilder,fv0207|H|48.0-59.0,framework register shift,False,3,3,True,False,False,True,2022-11-30
+immunebuilder,fv0208|H|101.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2023-03-01
+immunebuilder,fv0208|H|112.0-120.0,mostly within a CDR,False,1,1,True,False,False,True,2026-09-09
+immunebuilder,fv0208|H|112.0-125.0,framework register shift,False,1,1,True,False,False,True,2022-08-31
+immunebuilder,fv0208|H|42.0-47.0,framework register shift,False,6,6,True,False,False,True,2025-04-02
+immunebuilder,fv0208|K|106.0-115.0,no measurable shift,False,1,1,False,False,False,True,2022-08-31
+immunebuilder,fv0208|K|47.0-54.0,framework register shift,False,1,1,True,False,False,True,2022-08-31
+immunebuilder,fv0209|H|64.0-71.0,framework register shift,False,2,1,False,False,False,True,2024-05-08
+immunebuilder,fv0210|H|103.0-112.0,mostly within a CDR,False,1,1,True,False,False,True,2023-12-27
+immunebuilder,fv0210|H|112.0-120.0,mostly within a CDR,False,1,1,True,False,False,True,2025-03-19
+immunebuilder,fv0210|H|15.0-18.0,framework register shift,False,1,1,True,False,False,True,2025-02-05
+immunebuilder,fv0210|H|27.0-36.0,no measurable shift,False,1,1,True,False,False,True,2025-03-19
+immunebuilder,fv0211|L|1.0-56.0,framework register shift,False,2,1,False,False,False,False,2024-07-03
+immunebuilder,fv0211|L|103.0-118.0,mostly within a CDR,False,2,1,True,False,False,True,2024-07-03
+immunebuilder,fv0212|H|111.0-122.0,mostly within a CDR,False,1,1,True,False,False,True,2025-11-12
+immunebuilder,fv0216|H|124.0-128.0,framework register shift,False,1,1,True,True,True,True,2025-01-15
+immunebuilder,fv0217|K|2.0-8.0,framework register shift,False,1,1,False,False,False,True,2024-05-29
+immunebuilder,fv0218|L|104.0-122.0,mostly within a CDR,False,1,1,True,False,False,True,2025-04-23
+immunebuilder,fv0218|L|3.0-11.0,framework register shift,False,1,1,True,False,False,True,2025-04-23
+immunebuilder,fv0218|L|45.0-122.0,framework register shift,False,1,1,True,False,False,True,2025-04-23

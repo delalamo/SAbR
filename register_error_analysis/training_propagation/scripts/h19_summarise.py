@@ -31,6 +31,10 @@ def same_sign(r):
     return any(np.sign(float(x)) == np.sign(r.delta) for x in str(r.pred_run_shift).split(';') if x)
 t['pred_run'] = t.pred_run.fillna(False).astype(bool)
 t['det'] = t.apply(same_sign, axis=1)
+# strict: the prediction sits where the deposit does AND SAbR still sees the shift in the prediction. A ladder match without a
+# detector run in the prediction means the two backbones coincide but the prediction numbers canonically, i.e. the deposit's
+# run was probably a detector false positive (gaps, scFv mode), not an error the predictor copied.
+t['strict'] = t.copies & t.det
 def category(r):
     if r.source == 'template_family':
         return f'template family {int(r.family)}' + (' (framework insertion)' if str(r.fr_insertion) == 'True' else '')
@@ -47,9 +51,10 @@ t['abkey'] = t.fv_id + '|' + t.domain.astype(str) + '|' + t.imgt_lo.astype(str) 
 def tab(d, by):
     c = d[d.carrier]; g = c.groupby(by); n = d[~d.carrier].groupby(by)
     out = pd.DataFrame(dict(units=d.groupby(by).size(), carrier_units=g.size(), carrier_antibodies=g.abkey.nunique(), ladder_scorable=g.ladder_ok.sum(),
-                            reproduces=g.copies.sum(), det_in_prediction=g.det.sum(), both=g.apply(lambda x: (x.copies & x.det).sum()),
+                            ladder_match=g.copies.sum(), det_in_prediction=g.det.sum(), strict=g.strict.sum(),
                             noncarrier_scorable=n.ladder_ok.sum(), noncarrier_matches_deposit=n.same_as_deposit.sum())).fillna(0).astype(int)
-    out['pct_reproduces'] = (100 * out.reproduces / out.ladder_scorable.replace(0, np.nan)).round(1)
+    out['pct_ladder'] = (100 * out.ladder_match / out.ladder_scorable.replace(0, np.nan)).round(1)
+    out['pct_strict'] = (100 * out.strict / out.ladder_scorable.replace(0, np.nan)).round(1)
     return out
 pd.set_option('display.width', 250); pd.set_option('display.max_colwidth', 60)
 log = open(f'{O}/full_run_summary.log', 'w')
@@ -60,31 +65,32 @@ P('Ladder calls:'); P(t.groupby(['predictor', 'ladder_call']).size().unstack(0).
 T1 = tab(t, ['predictor', 'category']); P('\nBy category (unit level):'); P(T1.to_string()); T1.to_csv(f'{O}/full_by_category.csv')
 # antibody level
 A = t[t.carrier].groupby(['predictor', 'abkey']).agg(category=('category', 'first'), exposed=('exposed', 'any'), units=('pdb', 'size'),
-                                          entries=('pdb', 'nunique'), copies=('copies', 'mean'), det=('det', 'mean'),
+                                          entries=('pdb', 'nunique'), copies=('copies', 'mean'), det=('det', 'mean'), strict=('strict', 'mean'),
                                           scorable=('ladder_ok', 'any'), first_release=('rel', 'min')).reset_index()
-A['copies'] = A.copies >= 0.5; A['det'] = A.det >= 0.5
+A['copies'] = A.copies >= 0.5; A['det'] = A.det >= 0.5; A['strict'] = A.strict >= 0.5
 real = A[A.category == 'framework register shift']
 P('\nAntibody level, deposits carrying a framework register shift (detector artifacts and CDR-only runs excluded):')
 rows = []
 for p, g in real.groupby('predictor'):
     s = g[g.scorable]
     for ex, h in s.groupby('exposed'):
-        rows.append(dict(predictor=p, in_training=ex, antibodies=len(h), copies=int(h.copies.sum()), det=int(h.det.sum()),
-                         pct_copies=round(100 * h.copies.mean(), 1)))
+        rows.append(dict(predictor=p, in_training=ex, antibodies=len(h), ladder_matches=int(h.copies.sum()), strict=int(h.strict.sum()),
+                         pct_ladder=round(100 * h.copies.mean(), 1), pct_strict=round(100 * h.strict.mean(), 1)))
     e, u = s[s.exposed], s[~s.exposed]
     if len(e) and len(u):
         orr, pv = fisher_exact([[e.copies.sum(), len(e) - e.copies.sum()], [u.copies.sum(), len(u) - u.copies.sum()]])
-        P(f'  {p}: copies {e.copies.sum()}/{len(e)} in training vs {u.copies.sum()}/{len(u)} not; Fisher p={pv:.3g}')
+        P(f'  {p}: ladder match {e.copies.sum()}/{len(e)} in training vs {u.copies.sum()}/{len(u)} not (Fisher p={pv:.3g}); '
+          f'strict {e.strict.sum()}/{len(e)} vs {u.strict.sum()}/{len(u)}')
 T2 = pd.DataFrame(rows); P(T2.to_string(index=False)); T2.to_csv(f'{O}/full_exposure.csv', index=False)
 # template families
 tf = t[t.source == 'template_family']
 if len(tf):
     T3 = tf.groupby(['family', 'carrier', 'template_call', 'predictor']).agg(units=('pdb', 'size'), entries=('pdb', 'nunique'),
-                                                                   same_as_deposit=('same_as_deposit', 'sum'), det=('det', 'sum'),
+                                                                   same_as_deposit=('same_as_deposit', 'sum'), det=('det', 'sum'), strict=('strict', 'sum'),
                                                                    calls=('ladder_call', lambda x: dict(x.value_counts()))).reset_index()
     P('\nProblematic-template families:'); P(T3.to_string(index=False)); T3.to_csv(f'{O}/full_template_families.csv', index=False)
 # every copy, for inspection
-C = t[t.carrier & (t.copies | t.det)][['predictor', 'category', 'pdb', 'chain', 'chain_type', 'mode', 'fv_id', 'release', 'res', 'exposed', 'loc', 'imgt_lo', 'imgt_hi',
+C = t[t.carrier & (t.copies | t.det)][['predictor', 'category', 'strict', 'pdb', 'chain', 'chain_type', 'mode', 'fv_id', 'release', 'res', 'exposed', 'loc', 'imgt_lo', 'imgt_hi',
                          'delta', 'dep_run_shift', 'pred_run_shift', 'ladder', 'fw_rmsd', 'ladder_call']]
 P(f'\nCarrier units where a prediction reproduces the error (ladder) or carries a run in the window: {len(C)}')
 P(C.sort_values(['category', 'pdb']).to_string(index=False)); C.to_csv(f'{O}/full_copies.csv', index=False)

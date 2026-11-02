@@ -1,0 +1,27 @@
+predictor,category,units,carrier_units,carrier_antibodies,ladder_scorable,ladder_match,det_in_prediction,strict,noncarrier_scorable,noncarrier_matches_deposit,pct_ladder,pct_strict
+igfold,FR3 80–86 DE loop (detector artifact),26,25,15,25,16,17,16,0,0,64.0,64.0
+igfold,framework insertion vs germline (detector artifact),167,167,37,163,133,151,124,0,0,81.6,76.1
+igfold,framework register shift,325,308,171,280,37,6,5,17,3,13.2,1.8
+igfold,mostly within a CDR,89,89,56,82,38,5,2,0,0,46.3,2.4
+igfold,no measurable shift,28,28,16,27,18,18,15,0,0,66.7,55.6
+igfold,template family 1359,2,2,1,2,0,0,0,0,0,0.0,0.0
+igfold,template family 231 (framework insertion),7,7,3,7,4,0,0,0,0,57.1,0.0
+igfold,template family 232 (framework insertion),7,7,3,7,4,0,0,0,0,57.1,0.0
+igfold,template family 237,14,0,0,0,0,0,0,14,13,,
+igfold,template family 2712,13,0,0,0,0,0,0,13,13,,
+igfold,template family 2788,16,2,1,2,0,0,0,14,14,0.0,0.0
+igfold,template family 372,2,2,1,2,2,0,0,0,0,100.0,0.0
+igfold,template family 504,12,9,1,9,0,0,0,3,2,0.0,0.0
+immunebuilder,FR3 80–86 DE loop (detector artifact),26,25,15,24,17,15,15,0,0,70.8,62.5
+immunebuilder,framework insertion vs germline (detector artifact),167,167,37,150,115,146,115,0,0,76.7,76.7
+immunebuilder,framework register shift,325,308,171,279,39,8,6,17,3,14.0,2.2
+immunebuilder,mostly within a CDR,89,89,56,82,36,13,1,0,0,43.9,1.2
+immunebuilder,no measurable shift,28,28,16,28,20,18,15,0,0,71.4,53.6
+immunebuilder,template family 1359,2,2,1,2,0,0,0,0,0,0.0,0.0
+immunebuilder,template family 231 (framework insertion),7,7,3,7,4,0,0,0,0,57.1,0.0
+immunebuilder,template family 232 (framework insertion),7,7,3,7,4,0,0,0,0,57.1,0.0
+immunebuilder,template family 237,14,0,0,0,0,0,0,14,14,,
+immunebuilder,template family 2712,13,0,0,0,0,0,0,13,13,,
+immunebuilder,template family 2788,16,2,1,2,0,0,0,14,14,0.0,0.0
+immunebuilder,template family 372,2,2,1,2,1,0,0,0,0,50.0,0.0
+immunebuilder,template family 504,12,9,1,9,0,0,0,3,2,0.0,0.0

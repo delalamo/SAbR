@@ -1,0 +1,29 @@
+family,carrier,template_call,predictor,units,entries,same_as_deposit,det,strict,calls
+231.0,True,same as flagged,igfold,7,3,4,0,0,"{'copies error': np.int64(4), 'canonical': np.int64(3)}"
+231.0,True,same as flagged,immunebuilder,7,3,4,0,0,"{'copies error': np.int64(4), 'canonical': np.int64(3)}"
+232.0,True,same as flagged,igfold,7,3,4,0,0,"{'copies error': np.int64(4), 'canonical': np.int64(3)}"
+232.0,True,same as flagged,immunebuilder,7,3,4,0,0,"{'copies error': np.int64(4), 'canonical': np.int64(3)}"
+237.0,False,ambiguous,igfold,12,5,12,0,0,{'copies error': np.int64(12)}
+237.0,False,ambiguous,immunebuilder,12,5,12,0,0,{'copies error': np.int64(12)}
+237.0,False,same as flagged,igfold,2,1,1,0,0,"{'canonical': np.int64(1), 'copies error': np.int64(1)}"
+237.0,False,same as flagged,immunebuilder,2,1,2,0,0,{'copies error': np.int64(2)}
+372.0,True,same as flagged,igfold,2,2,2,0,0,{'copies error': np.int64(2)}
+372.0,True,same as flagged,immunebuilder,2,2,1,0,0,"{'canonical': np.int64(1), 'copies error': np.int64(1)}"
+504.0,False,no core,igfold,1,1,0,0,0,{'unclear': np.int64(1)}
+504.0,False,no core,immunebuilder,1,1,0,0,0,{'unclear': np.int64(1)}
+504.0,False,other register,igfold,2,2,2,0,0,{'copies error': np.int64(2)}
+504.0,False,other register,immunebuilder,2,2,2,0,0,{'copies error': np.int64(2)}
+504.0,True,same as flagged,igfold,9,7,0,0,0,{'canonical': np.int64(9)}
+504.0,True,same as flagged,immunebuilder,9,7,0,0,0,{'canonical': np.int64(9)}
+1359.0,True,same as flagged,igfold,2,2,0,0,0,{'canonical': np.int64(2)}
+1359.0,True,same as flagged,immunebuilder,2,2,0,0,0,{'canonical': np.int64(2)}
+2712.0,False,ambiguous,igfold,8,8,8,0,0,{'copies error': np.int64(8)}
+2712.0,False,ambiguous,immunebuilder,8,8,8,0,0,{'copies error': np.int64(8)}
+2712.0,False,same as flagged,igfold,5,3,5,0,0,{'copies error': np.int64(5)}
+2712.0,False,same as flagged,immunebuilder,5,3,5,0,0,{'copies error': np.int64(5)}
+2788.0,False,ambiguous,igfold,12,10,12,0,0,{'copies error': np.int64(12)}
+2788.0,False,ambiguous,immunebuilder,12,10,12,0,0,{'copies error': np.int64(12)}
+2788.0,False,other register,igfold,2,2,2,0,0,{'copies error': np.int64(2)}
+2788.0,False,other register,immunebuilder,2,2,2,0,0,{'copies error': np.int64(2)}
+2788.0,True,same as flagged,igfold,2,2,0,0,0,{'canonical': np.int64(2)}
+2788.0,True,same as flagged,immunebuilder,2,2,0,0,0,{'canonical': np.int64(2)}
