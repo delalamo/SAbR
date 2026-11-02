@@ -1,0 +1,13 @@
+method,cat,seen,domains,pct_flagged,per10k,medL
+EM,Antibody V,False,1731.0,3.12,3.036,112.0
+EM,Antibody V,True,463.0,4.536,5.822,113.0
+EM,Non-Ig,False,14900.0,3.383,2.455,148.0
+EM,Non-Ig,True,37464.0,2.477,2.034,116.0
+EM,Other Ig-like (non-antibody),False,312.0,8.974,9.764,130.0
+EM,Other Ig-like (non-antibody),True,729.0,4.664,3.242,128.0
+X-ray,Antibody V,False,702.0,1.709,2.109,113.0
+X-ray,Antibody V,True,114.0,0.0,0.0,110.5
+X-ray,Non-Ig,False,3086.0,2.398,1.676,143.0
+X-ray,Non-Ig,True,4293.0,2.609,1.922,126.0
+X-ray,Other Ig-like (non-antibody),False,252.0,1.984,1.744,111.5
+X-ray,Other Ig-like (non-antibody),True,363.0,2.204,1.761,107.0

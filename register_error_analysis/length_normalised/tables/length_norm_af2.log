@@ -1,0 +1,30 @@
+Structures deposited 2020-22 (after the AlphaFold2 training cutoff), conkit flags.
+"seen" = protein (UniProt or exact sequence; for antibodies, exact V region) in the PDB before 2018-04-30
+
+                                           domains  pct_flagged  per10k   medL
+method cat                          seen                                      
+EM     Antibody V                   False   1731.0         3.12    3.04  112.0
+                                    True     463.0         4.54    5.82  113.0
+       Non-Ig                       False  14900.0         3.38    2.46  148.0
+                                    True   37464.0         2.48    2.03  116.0
+       Other Ig-like (non-antibody) False    312.0         8.97    9.76  130.0
+                                    True     729.0         4.66    3.24  128.0
+X-ray  Antibody V                   False    702.0         1.71    2.11  113.0
+                                    True     114.0         0.00    0.00  110.5
+       Non-Ig                       False   3086.0         2.40    1.68  143.0
+                                    True    4293.0         2.61    1.92  126.0
+       Other Ig-like (non-antibody) False    252.0         1.98    1.74  111.5
+                                    True     363.0         2.20    1.76  107.0
+
+Per-residue flag hazard ratio, antibody V vs non-Ig (cloglog, offset log length, entry-clustered):
+                              model  n_abV  n_nonIg  HR_abV_vs_nonIg    lo    hi     p
+          2020–22 all: all proteins   3010    59743            1.394 1.005 1.935 0.047
+     2020–22 all: adjusted for seen   3010    59743            1.301 0.922 1.835 0.134
+  2020–22 all: unseen proteins only   2433    17986            1.190 0.802 1.766 0.388
+    2020–22 all: seen proteins only    577    41757            1.924 1.029 3.594 0.040
+2020–22 all: unseen, length 100–130   2341     2661            1.393 0.555 3.501 0.480
+           2020–22 EM: all proteins   2194    52364            1.588 1.121 2.250 0.009
+      2020–22 EM: adjusted for seen   2194    52364            1.457 1.007 2.108 0.046
+   2020–22 EM: unseen proteins only   1731    14900            1.207 0.778 1.870 0.401
+     2020–22 EM: seen proteins only    463    37464            2.386 1.281 4.444 0.006
+ 2020–22 EM: unseen, length 100–130   1660     2054            1.176 0.457 3.024 0.737

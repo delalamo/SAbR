@@ -1,0 +1,160 @@
+====================================================================================================
+1. The same data in different units (conkit flags, released ≤ 2022-04-05)
+====================================================================================================
+entries: 16.2% have ≥1 flagged chain (n=18,194; median 1266 residues per entry)
+entries containing antibodies: 10.9% have ≥1 flagged chain anywhere (n=1,713); 4.1% have ≥1 flagged antibody V domain (n=1,711)
+chains: all 5.4% (median 198 res); antibody chains 2.0% (median 217); other chains 5.6% (median 194)
+                               domains  entries  median_len  pct_flagged  errors_per_10k_res  pct_res_in_errors  per10k_lo  per10k_hi
+cat2                                                                                                                                 
+Antibody C                      3977.0    930.0       103.0         0.63                0.63               0.06       0.33       1.02
+Antibody V                      7113.0   1711.0       112.0         1.55                1.66               0.16       1.20       2.06
+Non-Ig                        212006.0  16051.0       122.0         3.75                2.93               0.50       2.73       3.11
+Non-Ig β-sandwich              11747.0   1727.0       181.0         4.47                3.48               0.58       1.13       8.32
+Other Ig-like (non-antibody)    8563.0   1660.0       112.0         5.26                4.42               0.59       3.40       5.38
+
+====================================================================================================
+2. Flag rate vs domain length
+====================================================================================================
+cat          Antibody C %  Antibody V %  Non-Ig %  Other Ig-like (non-antibody) %  Antibody C n  Antibody V n  Non-Ig n  Other Ig-like (non-antibody) n
+lbin                                                                                                                                                   
+(0, 60]              0.00           NaN      1.91                            0.00           4.0           NaN   18952.0                            60.0
+(60, 80]             0.00          0.00      1.71                            3.17           5.0           1.0   28198.0                           315.0
+(80, 100]            0.57          3.54      2.55                            1.43         875.0         113.0   32897.0                          2315.0
+(100, 115]           0.65          1.22      4.18                            1.42        3064.0        4494.0   19317.0                          1971.0
+(115, 130]           0.00          2.16      3.44                            2.10          29.0        2365.0   19461.0                          1050.0
+(130, 160]            NaN          0.00      2.83                            9.92           NaN         128.0   26185.0                           897.0
+(160, 200]            NaN          0.00      3.43                           19.29           NaN          12.0   24938.0                          1187.0
+(200, 250]            NaN           NaN      7.07                            5.77           NaN           NaN   24376.0                           641.0
+(250, 300]            NaN           NaN      5.35                            0.00           NaN           NaN   11689.0                            52.0
+(300, 400]            NaN           NaN      8.40                            0.00           NaN           NaN   10804.0                            61.0
+(400, 7000]           NaN           NaN      6.85                           14.29           NaN           NaN    6936.0                            14.0
+non-Ig domains: d log(hazard)/d log(length) = 0.75 (0.66–0.83); 1 = flag risk proportional to length
+
+====================================================================================================
+3. Length-matched (100–130 residues) and directly standardised to the antibody V length distribution
+====================================================================================================
+                              domains  entries  median_len  pct_flagged  errors_per_10k_res  pct_res_in_errors  pct_lo  pct_hi
+cat2                                                                                                                          
+Antibody C                     3579.0    921.0       103.0         0.59                0.59               0.06    0.23    0.99
+Antibody V                     6913.0   1699.0       112.0         1.55                1.67               0.16    1.17    1.95
+Non-Ig                        39797.0   6106.0       115.0         3.86                4.17               0.68    3.50    4.29
+Non-Ig β-sandwich               940.0    292.0       115.0         1.70                2.23               0.20    0.47    3.06
+Other Ig-like (non-antibody)   3294.0    787.0       110.0         1.58                1.80               0.49    1.05    2.22
+era                           2018–19  2020–22   all  ≤2017
+cls                                                        
+Antibody C                       0.30     0.14  0.77   1.19
+Antibody V                       0.94     2.91  1.55   0.35
+Non-Ig                           2.15     1.87  3.24   4.35
+Non-Ig β-sandwich                1.87     0.12  3.73   4.91
+Other Ig-like (non-antibody)     1.25     2.32  1.55   1.21
+cryo-EM only:
+era                           2018–19  2020–22   all  ≤2017
+cls                                                        
+Antibody C                       2.09     0.37  0.51   0.00
+Antibody V                       1.16     3.45  2.67   1.36
+Non-Ig                           1.90     1.86  2.13   2.99
+Non-Ig β-sandwich                2.44     0.88  1.12   0.04
+Other Ig-like (non-antibody)     0.11     2.19  1.05   0.07
+X-ray only:
+era                           2018–19  2020–22   all  ≤2017
+cls                                                        
+Antibody C                       0.06     0.01  0.81   1.19
+Antibody V                       0.63     1.43  0.61   0.33
+Non-Ig                           2.89     2.04  4.28   4.66
+Non-Ig β-sandwich                0.04     0.01  4.56   5.03
+Other Ig-like (non-antibody)     2.30     1.74  1.40   1.27
+
+====================================================================================================
+4. Per-residue hazard ratio vs antibody V domains (cloglog, offset log length) and error-rate ratio (Poisson)
+====================================================================================================
+                                   model                 measure                   comparator  ratio_vs_abV    lo     hi     p
+                   all domains, adjusted flag hazard per residue                   Antibody C         0.428 0.217  0.845 0.015
+                   all domains, adjusted flag hazard per residue                       Non-Ig         1.729 1.320  2.266 0.000
+                   all domains, adjusted flag hazard per residue Other Ig-like (non-antibody)         2.793 1.988  3.924 0.000
+all domains, adjusted (β-sandwich split) flag hazard per residue                   Antibody C         0.428 0.217  0.846 0.015
+all domains, adjusted (β-sandwich split) flag hazard per residue                       Non-Ig         1.742 1.330  2.283 0.000
+all domains, adjusted (β-sandwich split) flag hazard per residue            Non-Ig β-sandwich         1.533 0.804  2.922 0.194
+all domains, adjusted (β-sandwich split) flag hazard per residue Other Ig-like (non-antibody)         2.793 1.988  3.924 0.000
+           length 100–130 only, adjusted flag hazard per residue                   Antibody C         0.354 0.165  0.759 0.008
+           length 100–130 only, adjusted flag hazard per residue                       Non-Ig         2.349 1.764  3.129 0.000
+           length 100–130 only, adjusted flag hazard per residue Other Ig-like (non-antibody)         0.848 0.537  1.340 0.480
+                     era ≤2017, adjusted flag hazard per residue                   Antibody C         1.764 0.600  5.188 0.302
+                     era ≤2017, adjusted flag hazard per residue                       Non-Ig         9.827 4.200 22.993 0.000
+                     era ≤2017, adjusted flag hazard per residue Other Ig-like (non-antibody)        16.847 6.946 40.861 0.000
+                   era 2018–19, adjusted flag hazard per residue                   Antibody C         0.594 0.118  2.992 0.528
+                   era 2018–19, adjusted flag hazard per residue                       Non-Ig         2.835 1.400  5.739 0.004
+                   era 2018–19, adjusted flag hazard per residue Other Ig-like (non-antibody)         2.450 0.955  6.287 0.062
+                   era 2020–22, adjusted flag hazard per residue                   Antibody C         0.310 0.095  1.011 0.052
+                   era 2020–22, adjusted flag hazard per residue                       Non-Ig         0.710 0.512  0.984 0.040
+                   era 2020–22, adjusted flag hazard per residue Other Ig-like (non-antibody)         1.415 0.868  2.305 0.164
+               cryo-EM 2018–19, adjusted flag hazard per residue                   Antibody C         0.822 0.100  6.732 0.855
+               cryo-EM 2018–19, adjusted flag hazard per residue                       Non-Ig         2.095 0.891  4.927 0.090
+               cryo-EM 2018–19, adjusted flag hazard per residue Other Ig-like (non-antibody)         2.307 0.663  8.018 0.189
+               cryo-EM 2020–22, adjusted flag hazard per residue                   Antibody C         0.439 0.123  1.566 0.204
+               cryo-EM 2020–22, adjusted flag hazard per residue                       Non-Ig         0.629 0.444  0.891 0.009
+               cryo-EM 2020–22, adjusted flag hazard per residue Other Ig-like (non-antibody)         1.499 0.867  2.589 0.147
+
+Poisson (error events per residue):
+                                   model                  measure                   comparator  ratio_vs_abV    lo     hi     p
+                   all domains, adjusted error events per residue                   Antibody C         0.372 0.188  0.733 0.004
+                   all domains, adjusted error events per residue                       Non-Ig         1.660 1.241  2.220 0.001
+                   all domains, adjusted error events per residue Other Ig-like (non-antibody)         2.417 1.702  3.432 0.000
+all domains, adjusted (β-sandwich split) error events per residue                   Antibody C         0.371 0.188  0.732 0.004
+all domains, adjusted (β-sandwich split) error events per residue                       Non-Ig         1.634 1.218  2.193 0.001
+all domains, adjusted (β-sandwich split) error events per residue            Non-Ig β-sandwich         2.056 0.802  5.272 0.133
+all domains, adjusted (β-sandwich split) error events per residue Other Ig-like (non-antibody)         2.417 1.702  3.432 0.000
+           length 100–130 only, adjusted error events per residue                   Antibody C         0.300 0.141  0.638 0.002
+           length 100–130 only, adjusted error events per residue                       Non-Ig         2.350 1.723  3.204 0.000
+           length 100–130 only, adjusted error events per residue Other Ig-like (non-antibody)         0.872 0.531  1.433 0.589
+                     era ≤2017, adjusted error events per residue                   Antibody C         1.807 0.614  5.322 0.283
+                     era ≤2017, adjusted error events per residue                       Non-Ig        11.687 4.981 27.421 0.000
+                     era ≤2017, adjusted error events per residue Other Ig-like (non-antibody)        17.597 7.281 42.529 0.000
+                   era 2018–19, adjusted error events per residue                   Antibody C         0.502 0.094  2.672 0.419
+                   era 2018–19, adjusted error events per residue                       Non-Ig         2.618 1.137  6.029 0.024
+                   era 2018–19, adjusted error events per residue Other Ig-like (non-antibody)         2.019 0.716  5.693 0.184
+                   era 2020–22, adjusted error events per residue                   Antibody C         0.275 0.089  0.846 0.024
+                   era 2020–22, adjusted error events per residue                       Non-Ig         0.675 0.480  0.949 0.024
+                   era 2020–22, adjusted error events per residue Other Ig-like (non-antibody)         1.328 0.816  2.162 0.253
+               cryo-EM 2018–19, adjusted error events per residue                   Antibody C         0.629 0.072  5.472 0.674
+               cryo-EM 2018–19, adjusted error events per residue                       Non-Ig         1.875 0.676  5.199 0.227
+               cryo-EM 2018–19, adjusted error events per residue Other Ig-like (non-antibody)         1.768 0.456  6.859 0.410
+               cryo-EM 2020–22, adjusted error events per residue                   Antibody C         0.397 0.120  1.317 0.131
+               cryo-EM 2020–22, adjusted error events per residue                       Non-Ig         0.617 0.429  0.887 0.009
+               cryo-EM 2020–22, adjusted error events per residue Other Ig-like (non-antibody)         1.474 0.860  2.526 0.159
+
+====================================================================================================
+5. Within entries that contain antibody V domains: per-residue rates, same map and resolution
+====================================================================================================
+EM, all:
+            domains  per10k   pct   medL
+cat                                     
+Antibody V   3239.0    2.86  2.66  112.0
+Non-Ig       3386.0    1.68  3.10  174.0
+   Mantel-Haenszel rate ratio (non-Ig / antibody V, stratified by entry) = 0.82
+EM, 2020–22:
+            domains  per10k   pct   medL
+cat                                     
+Antibody V   2194.0    3.63  3.42  113.0
+Non-Ig       2096.0    1.44  2.72  175.0
+   Mantel-Haenszel rate ratio (non-Ig / antibody V, stratified by entry) = 0.62
+X-ray, all:
+            domains  per10k   pct   medL
+cat                                     
+Antibody V   3874.0    0.66  0.62  112.0
+Non-Ig       2518.0    1.38  2.66  176.0
+   Mantel-Haenszel rate ratio (non-Ig / antibody V, stratified by entry) = 1.44
+X-ray, 2020–22:
+            domains  per10k   pct   medL
+cat                                     
+Antibody V    816.0    1.82  1.47  113.0
+Non-Ig        395.0    1.04  2.03  195.0
+   Mantel-Haenszel rate ratio (non-Ig / antibody V, stratified by entry) = 0.28
+
+====================================================================================================
+6. Whole chains: antibody chains vs other chains of similar length (200–240 residues)
+====================================================================================================
+              n   pct  per10k
+ab                           
+TCR         194  6.70    3.62
+antibody   4744  1.48    0.84
+other     16130  6.33    4.23
