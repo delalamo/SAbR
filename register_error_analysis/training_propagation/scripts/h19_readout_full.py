@@ -18,6 +18,7 @@ import numpy as np, pandas as pd
 warnings.filterwarnings('ignore'); logging.disable(logging.WARNING)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from h19_readout import anarci_labels, kabsch, pred_map, detector_runs, SP
+from sabr import renumber_structure
 from Bio.PDB import PDBParser, MMCIFParser
 from Bio.PDB.Structure import Structure
 from Bio.PDB.Model import Model
@@ -33,22 +34,49 @@ def entry(pdb):
         fn = f'{CIF}/{pdb}.cif'
         _cache[pdb] = (MMCIF2Dict(fn), MMCIFParser(QUIET=True).get_structure(pdb, fn)[0])
     return _cache[pdb]
-def dep_domain(pdb, chain, vseq):
-    """-> (Bio model with chain 'X' = deposited V-domain residues, {V index: CA})"""
+def chain_map(pdb, chain, vseq):
+    """author residue key -> V index, using the entity canonical sequence (as h19_jobs.py does)."""
     md, st = entry(pdb)
-    strand = md['_pdbx_poly_seq_scheme.pdb_strand_id']; mon = md['_pdbx_poly_seq_scheme.mon_id']
+    strand = md['_pdbx_poly_seq_scheme.pdb_strand_id']; ent = md['_pdbx_poly_seq_scheme.entity_id']
     num = md['_pdbx_poly_seq_scheme.pdb_seq_num']; ins = md['_pdbx_poly_seq_scheme.pdb_ins_code']; seqid = md['_pdbx_poly_seq_scheme.seq_id']
-    rows = [(int(i) - 1, (int(n), '' if c in '.?' else c), m) for s, i, n, c, m in zip(strand, seqid, num, ins, mon) if s == chain]
-    full = ''.join(seq1(m) for _, _, m in rows); off = full.find(vseq)
+    ids = md['_entity_poly.entity_id']; seqs = md['_entity_poly.pdbx_seq_one_letter_code_can']
+    if isinstance(ids, str): ids, seqs = [ids], [seqs]
+    e2s = {i: x.replace('\n', '').replace(';', '').strip() for i, x in zip(ids, seqs)}
+    rows = [(int(i) - 1, (int(n), '' if c in '.?' else c), e) for s_, e, i, n, c in zip(strand, ent, seqid, num, ins) if s_ == chain]
+    full = e2s[rows[0][2]]; off = full.find(vseq)
     if off < 0: raise ValueError('V sequence not found in deposited chain')
-    k2v = {k: i - off for i, k, _ in rows if off <= i < off + len(vseq)}
-    S = Structure('d'); M = Model(0); S.add(M); X = Chain('X'); M.add(X); ca = {}
+    return {k: i - off for i, k, _ in rows if off <= i < off + len(vseq)}
+def dep_domain(pdb, chain, vseq):
+    """-> {V index: CA} for the deposited V domain"""
+    md, st = entry(pdb); k2v = chain_map(pdb, chain, vseq); ca = {}
     for r in st[chain]:
         v = k2v.get((r.id[1], r.id[2].strip()))
-        if v is None or r.id[0] != ' ': continue
-        r2 = r.copy(); r2.detach_parent(); X.add(r2)
-        if 'CA' in r: ca[v] = r['CA'].coord
-    return M, ca
+        if v is not None and r.id[0] == ' ' and 'CA' in r: ca[v] = r['CA'].coord
+    return ca
+def dep_detector(pdb, chain, ct, vseq, lab, scfv):
+    """SAbR on the full deposited chain with mmCIF metadata, as in the PDB scan; runs of >=3 V residues whose
+    SAbR label differs from ANARCI's. -> list of (imgt_start, imgt_end, shift)"""
+    md, st = entry(pdb); k2v = chain_map(pdb, chain, vseq)
+    kw = dict(scfv=True) if scfv else dict(chain_type=ct)
+    new = renumber_structure(st.get_parent(), chain=chain, mmcif_dict=md, **kw)
+    old = [r for r in st[chain]]; nw = [r for r in new[0][chain]]
+    pairs = []
+    for o, n_ in zip(old, nw):
+        if o.id[0] != ' ': continue
+        v = k2v.get((o.id[1], o.id[2].strip()))
+        if v is None or v >= len(lab): continue
+        pairs.append((v, lab[v], (n_.id[1] % 1000, n_.id[2].strip())))
+    pairs.sort(); runs = []; i = 0
+    while i < len(pairs):
+        if pairs[i][1] != pairs[i][2]:
+            j = i
+            while j + 1 < len(pairs) and pairs[j + 1][1] != pairs[j + 1][2]: j += 1
+            if j - i + 1 >= 3:
+                d = [pairs[q][2][0] - pairs[q][1][0] for q in range(i, j + 1)]
+                runs.append((pairs[i][1][0], pairs[j][1][0], int(np.median(d))))
+            i = j + 1
+        else: i += 1
+    return runs
 def runs_in(runs, lo, hi):
     return [r for r in (runs or []) if r[0] <= hi and r[1] >= lo]
 def ladder(dep, pred, lab, lo, hi):
@@ -77,13 +105,14 @@ def call(sh, rms, delta):
     return 'unclear'
 if __name__ == '__main__':
     units = json.load(open(sys.argv[1])); pdir = sys.argv[2]; outf = sys.argv[3]
+    FV = {f['fv_id']: f for f in json.load(open(os.path.join(os.path.dirname(os.path.abspath(sys.argv[1])), 'fvs.json')))}
     k, n = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (0, 1)
     units = [u for u in units if u.get('status') == 'ok']
     pdbs = sorted(set(u['pdb'] for u in units)); mine = set(p for i, p in enumerate(pdbs) if i % n == k)
     rows = []
     for u in sorted([u for u in units if u['pdb'] in mine], key=lambda u: u['pdb']):
         base = {kk: u.get(kk) for kk in ('source', 'family', 'call', 'pdb', 'chain', 'chain_type', 'mode', 'fv_id', 'release', 'method', 'res',
-                                          'era', 'loc', 'kind', 'run_len', 'delta', 'mapfit_pct', 'fr_insertion', 'family_flagged')}
+                                          'era', 'loc', 'kind', 'run_len', 'delta', 'mapfit_pct', 'fr_insertion', 'family_flagged', 'partner_chain', 'imgt_start', 'imgt_end')}
         if base['call'] is not None: base['template_call'] = base.pop('call')
         try:
             vseq = u['vseq']; ct = u['chain_type']; lab, _ = anarci_labels(vseq)
@@ -93,8 +122,14 @@ if __name__ == '__main__':
             else:
                 lo, hi = u['imgt_start'], u['imgt_end']
             base.update(imgt_lo=lo, imgt_hi=hi)
-            dm, dca = dep_domain(u['pdb'], u['chain'], vseq)
-            dr = runs_in(detector_runs(dm, 'X', ct, vseq), lo, hi)
+            dca = dep_domain(u['pdb'], u['chain'], vseq)
+            gap = lambda ca: (max(ca) - min(ca) + 1 - len(ca)) if ca else None
+            base['v_internal_missing'] = gap(dca)
+            if u.get('partner_chain'):
+                f = FV[u['fv_id']]; pseq = f['Lseq'] if ct == 'H' else f['Hseq']
+                try: base['partner_internal_missing'] = gap(dep_domain(u['pdb'], u['partner_chain'], pseq))
+                except Exception: base['partner_internal_missing'] = None
+            dr = runs_in(dep_detector(u['pdb'], u['chain'], ct, vseq, lab, u.get('mode') == 'scfv'), lo, hi)
             base.update(dep_run=bool(dr), dep_run_shift=';'.join(f'{x[2]:+d}' for x in dr))
         except Exception as e:
             base.update(error=f'deposit: {e}'[:200]); rows.append(base); continue
