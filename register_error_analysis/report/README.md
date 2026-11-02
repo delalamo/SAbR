@@ -9,7 +9,7 @@ diagnosis and recommendations. It has 30 figures in `img/`. Open it in a browser
 
 * **Charts and register ladders** (`img/f_*.png`) are drawn by `scripts/figs.py` from the tables in
   `../`, `../followup/tables/`, `../sabr_anarci_scan/tables/`, `../retest/tables/` and
-  `../retest/unexplained/tables/`.
+  `../retest/unexplained/tables/`. Figure 9 (`f_era_conkit`) reads `../followup/tables/B_by_year.csv`, written by `../followup/scripts/by_year.py`.
   * Run `python figs.py` to draw all of them, or `python figs.py f_folds f_w118` to draw selected ones.
   * The register ladders (`scripts/ladder.py`) superpose a 3–5 Å chain on a high-resolution
     reference using framework Cα outside the window. For each reference position they report the

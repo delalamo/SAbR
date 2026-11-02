@@ -411,16 +411,17 @@ footer{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:64px
 <figcaption><b>Figure 8. Flag rate by fold class</b> (2024 conkit-validate flags, 3–5 Å, released by April 2022). Antibody V domains (1.5%, n = 7,113) are flagged about as often as other Ig-superfamily domains such as MHC, β2-microglobulin and receptor domains (1.3%). They are flagged about 2–7 times less often than most other folds. Antibody constant domains are among the cleanest of all (0.6%). Error bars are 95% bootstrap intervals over entries. After adjusting for method × resolution, year and domain length, the odds of a flag relative to antibody V domains are: other Ig-like X-group 5.2 (3.4–8.0); α superhelices 3.4; β-barrels 2.7; other Ig/E-set 2.6; other Ig-superfamily 0.85 (0.38–1.89); antibody C 0.42 (0.21–0.82).</figcaption></figure>
 
 <div class="prose">
-<p>That looked like the end of the story. But splitting by deposition era showed something odd (Figure 9):</p>
+<p>That looked like the end of the story. But splitting by deposition year showed something odd (Figure 9):</p>
 <ul>
-<li><strong>Every other fold class</strong> got better over time, from 4.8% flagged before 2018 to 2.8% in 2020–22.</li>
-<li><strong>Antibody V domains</strong> went from 0.36% to 0.88% to 2.89%.</li>
+<li><strong>Other domains</strong> drifted down, from 4–8% flagged a year in 2010–14 to 2.3–3.1% in 2019–21.</li>
+<li><strong>Antibody V domains</strong> were flagged in fewer than 1% of cases in every year from 2013 to 2018, with at most three flagged domains a year. The rate rose to 1.4% in 2019 and then to 3.1% in 2020 and 2.9% in 2021. Over the same years their cryo-EM share went from 26% (2017) to 64–80%.</li>
+<li><strong>The same comparison adjusted.</strong> Against other domains of the same year, method, resolution and length, antibodies had 0.1–0.3 times the expected number of flags in 2014–18 and 0.58 in 2019. In 2020 they had 1.27 times (0.92–1.70), and in 2021 1.58 times (1.14–2.12).</li>
 </ul>
-<p>Relative to everything else, antibodies went from twelve-fold <em>less</em> likely to be flagged (adjusted OR 0.08) to significantly <em>more</em> likely (OR 1.45, 1.01–2.07). That reversal drove most of what followed.</p>
+<p>Grouped into eras, antibodies went from twelve-fold <em>less</em> likely to be flagged than everything else (≤2017, adjusted OR 0.08) to significantly <em>more</em> likely (2020–22, OR 1.45, 1.01–2.07). That reversal drove most of what followed.</p>
 </div>
 
-<figure><div class="card"><img src="img/f_era_conkit.png" alt="Line chart showing antibody V flag rate rising from 0.36 to 2.89 percent while other domains fall from 4.76 to 2.78 percent; forest plot of odds ratios 0.08, 0.35, 1.45."></div>
-<figcaption><b>Figure 9. The apparent reversal in the 2024 data.</b> <b>A</b>: Flag rates by deposition era, with 95% intervals. <b>B</b>: Adjusted odds ratio of a flag for antibody V domains vs all other domains. Section 5 shows that part of this pattern is real (the shift to cryo-EM) and part is an artifact of how the flags were generated.</figcaption></figure>
+<figure><div class="card"><img src="img/f_era_conkit.png" alt="Three stacked panels by deposition year 2010 to 2022. Top: antibody V flag rate stays below 1.5 percent until 2019 and reaches 3.1 percent in 2020 and 2.9 percent in 2021, while other domains fall from about 8 to about 3 percent. Middle: antibody flags observed versus expected, around 0.1 to 0.3 until 2018, 0.58 in 2019, 1.27 in 2020 and 1.58 in 2021. Bottom: cryo-EM share of antibody V domains rising from 0 before 2015 to 80 to 88 percent in 2021 to 2022."></div>
+<figcaption><b>Figure 9. The apparent reversal in the 2024 data, year by year.</b> <b>A</b>: Share of domains flagged, by deposition year, with 95% bootstrap intervals over entries. In years with no flagged antibody domain, the upper bar is the exact binomial bound. <b>B</b>: Antibody V flags observed vs expected. The expected count is what other domains of the same deposition year, method, resolution bin and length would show (a logistic model fitted to all other domains). Bars are 95% exact Poisson intervals; open triangles mark years with no flags; numbers give observed/expected flags; lower whiskers are clipped at 0.02. Pooled into eras, this ratio gives 0.10, 0.32 and 1.33, close to the adjusted odds ratios of 0.08, 0.35 and 1.45. <b>C</b>: Share of antibody V domains from cryo-EM, with the number of domains each year. 2022 covers only entries deposited January–April and released by 5 April, the study's snapshot. Before 2010 there were 488 antibody V domains, 2 of them flagged. The dotted line marks AlphaFold2's training cut-off. Section 5 shows that part of the rise is real (the shift to cryo-EM) and part is the detector becoming able to see errors in structures released after that cut-off (H3).</figcaption></figure>
 
 <div class="prose">
 <h2 id="hypotheses"><span class="num">5</span>The hypotheses, one by one</h2>
@@ -486,7 +487,7 @@ footer{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:64px
 
 <div class="prose">
 <div class="hyp-head"><span class="hyp-id">H2</span><h3>Antibody errors surged in 2020–22</h3><span class="chip rev">↻ Revised</span></div>
-<p><strong>The idea.</strong> Figure 9 shows antibody flags rising eight-fold between ≤2017 and 2020–22 while other folds improved. Is that a real deterioration, and is it simply the switch from X-ray to cryo-EM?</p>
+<p><strong>The idea.</strong> Figure 9 shows antibody flags rising from under 1% a year through 2018 to about 3% in 2020–21 (eight-fold between the ≤2017 and 2020–22 eras), while other folds improved. Is that a real deterioration, and is it simply the switch from X-ray to cryo-EM?</p>
 <p><strong>Test 1 (2024 data).</strong> Split the change into two parts. The <em>compositional</em> part comes from the shift in method and resolution mix. The <em>within-stratum</em> part is change at fixed method and resolution.</p>
 <p><strong>Result 1.</strong> Of the +2.53 percentage-point rise, 46% was compositional and 54% within-stratum: EM went from 0.48% to 3.42% and X-ray from 0.35% to 1.47%. That looked like a genuine deterioration within both methods.</p>
 <p><strong>Test 2 (new detector).</strong> Repeat with the AlphaFold-free detector, which covers 2018 to 2026 at half-year resolution.</p>

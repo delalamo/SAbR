@@ -1,4 +1,4 @@
-import sys, json, numpy as np, pandas as pd, matplotlib
+import sys, json, numpy as np, pandas as pd, matplotlib, matplotlib.ticker
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Circle, Rectangle
 SP='/tmp/claude-0/-home-user-SAbR/6a27914d-ea1e-53f7-8565-6fae32e14167/scratchpad'
@@ -97,23 +97,45 @@ def f_folds():
 
 # ---------------------------------------------------------------- F: conkit era trend
 def f_era_conkit():
-    b=pd.read_csv(f'{R}/followup/tables/B_rates_by_era_method.csv')
-    order=['≤2017','2018–19','2020–22']
-    fig,axs=plt.subplots(1,2,figsize=(10,3.6),gridspec_kw={'wspace':0.3})
+    """Per deposition year (2010-2022); data from followup/scripts/by_year.py"""
+    from scipy.stats import beta
+    t=pd.read_csv(f'{R}/followup/tables/B_by_year.csv')
+    ab=t[t.cls=='Antibody V'].set_index('year'); oth=t[t.cls=='Non-antibody, other entries'].set_index('year')
+    yrs=ab.index.values
+    fig,axs=plt.subplots(3,1,figsize=(10,8.2),sharex=True,gridspec_kw={'height_ratios':[3,2.4,1.05],'hspace':0.28})
+    for ax in axs:
+        ax.axvspan(2021.5,2022.5,color='#f3f2ee',lw=0,zorder=0)
+        ax.axvline(2018.33,color=MUTED,lw=1,ls=':',zorder=1)
     ax=axs[0]
-    for cls,col,lab in [('Antibody V',BLUE,'Antibody V domains'),('Non-antibody, other entries',NEUTRAL,'All other domains (entries without antibodies)')]:
-        s=b[b.cls==cls].set_index('era').loc[order]
-        ax.plot(range(3),s.flag_pct,color=col if col!=NEUTRAL else '#7d7c76',lw=2.2,marker='o',ms=7,label=lab)
-        ax.fill_between(range(3),s.lo,s.hi,color=col,alpha=0.15,lw=0)
-        for i,(p,e) in enumerate(zip(s.flag_pct,s.pct_EM)): ax.text(i+0.07,p+((-0.42 if cls=='Antibody V' else 0.2) if i<2 else (0.22 if cls=='Antibody V' else -0.42)),f'{p:.2f}%',fontsize=8.5,color=INK2)
-    ax.set_xticks(range(3)); ax.set_xticklabels(['≤2017','2018–19','2020–22']); ygrid(ax); ax.set_ylabel('% flagged'); ax.set_title('A. Flag rate by deposition era (conkit)'); ax.legend(fontsize=8.5,loc='upper center',bbox_to_anchor=(0.5,-0.12),ncol=1)
+    ax.fill_between(oth.index,oth.lo,oth.hi,color=NEUTRAL,alpha=0.35,lw=0)
+    ax.plot(oth.index,oth.flag_pct,color='#7d7c76',lw=2.2,marker='o',ms=6,label='All other domains (entries without antibodies)')
+    lo=ab.lo.copy(); hi=ab.hi.copy()
+    z=ab.flagged==0
+    hi[z]=100*(1-0.025**(1/ab.domains[z]))   # Clopper-Pearson upper bound when nothing was flagged
+    ax.errorbar(yrs,ab.flag_pct,yerr=[ab.flag_pct-lo,hi-ab.flag_pct],color=BLUE,lw=2.2,marker='o',ms=6,elinewidth=1.2,capsize=2.5,label='Antibody V domains')
+    for y in [2019,2020,2021]: ax.text(y+0.1,ab.flag_pct[y]+(0.75 if y==2019 else 0.35),f"{ab.flag_pct[y]:.1f}%",fontsize=8.5,color=BLUE)
+    ax.set_ylabel('% of domains flagged (95% CI)'); ax.set_ylim(0,11); ygrid(ax); ax.legend(loc='upper center',bbox_to_anchor=(0.47,1.0),fontsize=8.6)
+    ax.set_title('A. Flag rate by deposition year (2024 conkit flags)')
+    ax.text(2022,10.4,'2022:\nJan–Apr\nonly',fontsize=7.8,color=MUTED,va='top',ha='center')
     ax=axs[1]
-    ors=[(0.08,0.04,0.20),(0.35,0.17,0.72),(1.45,1.01,2.07)]
-    for i,(o,l,h) in enumerate(ors):
-        ax.plot([l,h],[i,i],color=BLUE,lw=2); ax.plot(o,i,'o',color=BLUE,ms=8,mec='white',mew=1.5); ax.text(h*1.12,i,f'OR {o:.2f} ({l:.2f}–{h:.2f})',va='center',fontsize=8.5,color=INK2)
-    ax.axvline(1,color=MUTED,lw=1,ls='--'); ax.set_xscale('log'); ax.set_xlim(0.02,8); ax.set_ylim(-0.6,2.6); ax.set_yticks(range(3)); ax.set_yticklabels(['≤2017','2018–19','2020–22']); ax.invert_yaxis()
-    ax.set_xticks([0.03,0.1,0.3,1,3]); ax.set_xticklabels(['0.03','0.1','0.3','1','3'])
-    ax.set_title('B. Antibody V vs all other domains, adjusted odds ratio'); ax.set_xlabel('← antibodies better      antibodies worse →'); xgrid(ax)
+    ok=ab.observed>0
+    lo_c=np.maximum(ab.OE_lo[ok],0.02); ax.errorbar(yrs[ok],ab.OE[ok],yerr=[ab.OE[ok]-lo_c,ab.OE_hi[ok]-ab.OE[ok]],fmt='o',color=BLUE,ms=7,mec='white',mew=1.2,elinewidth=1.5,capsize=2.5)
+    floor=0.025
+    for y in yrs[~ok]:
+        ax.plot([y,y],[floor,ab.OE_hi[y]],color=BLUE,lw=1.5); ax.plot(y,floor,marker='v',color=BLUE,ms=7,mfc='white',mew=1.3)
+    for y in yrs: ax.text(y,0.0115,f"{int(ab.observed[y])}/{ab.expected[y]:.0f}",ha='center',fontsize=7.4,color=INK2)
+    ax.axhline(1,color=MUTED,lw=1,ls='--'); ax.set_yscale('log'); ax.set_ylim(0.009,4)
+    ax.set_yticks([0.03,0.1,0.3,1,3]); ax.set_yticklabels(['0.03','0.1','0.3','1','3']); ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+    ax.set_ylabel('observed / expected\n(95% CI, log scale)'); ygrid(ax)
+    ax.set_title('B. Antibody V flags vs same-year, same-method/resolution, same-length other domains')
+    ax.text(2009.6,1.12,'antibodies worse ↑',fontsize=7.8,color=MUTED); ax.text(2009.6,0.78,'antibodies better ↓',fontsize=7.8,color=MUTED,va='top')
+    ax=axs[2]
+    ax.bar(yrs,ab.pct_EM,color=BLUE,alpha=0.55,width=0.7,edgecolor='white')
+    for y in yrs: ax.text(y,ab.pct_EM[y]+4,f"{int(ab.domains[y]):,}",ha='center',fontsize=7.2,color=INK2)
+    ax.set_ylim(0,125); ax.set_yticks([0,50,100]); ax.set_ylabel('% cryo-EM'); ygrid(ax)
+    ax.text(2018.25,108,'AlphaFold2 training cut-off (Apr 2018)',fontsize=7.6,color=MUTED,ha='right',va='center')
+    ax.set_title('C. Antibody V domains: share from cryo-EM (number of domains above each bar)',fontsize=10.5)
+    ax.set_xticks(yrs); ax.set_xticklabels([str(y) for y in yrs]); ax.set_xlim(2009.4,2022.6)
     save(fig,'f_era_conkit')
 
 # ---------------------------------------------------------------- ladders
