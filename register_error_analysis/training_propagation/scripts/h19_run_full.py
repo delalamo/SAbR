@@ -14,7 +14,9 @@ if meth == 'immunebuilder':
 else:
     from igfold import IgFoldRunner
     IG = IgFoldRunner()
-for i, f in enumerate(fvs):
+order = list(enumerate(fvs))
+if os.environ.get('REVERSE'): order = order[::-1]  # a second worker can start from the end
+for i, f in order:
     if i % n != k: continue
     fn = f"{out}/{meth}/{f['fv_id']}.pdb"
     if os.path.exists(fn): continue
