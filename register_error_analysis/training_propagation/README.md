@@ -159,7 +159,52 @@ includes 6 released before both models' cutoffs. Only 1 of those 6 (7CZV) passed
 training filters, and IgFold's are not documented. With n = 12 this rules out only near-universal
 memorisation, not a modest effect.
 
-BOLTZ_AND_CF_PLACEHOLDER
+**Slower predictors.** Boltz-2 and ColabFold AF-Multimer v2.3 were run on one case (6BPE, released
+2018-06, in both training windows). Both put the segment in the canonical register (ladder −1/−2;
+no detector run).
+
+## Compute on this machine
+
+Times were measured here on one Fv: 6BPE, 227 residues (H + L). Each method used its default
+settings, except where noted.
+
+| Method | Time per Fv (4 cores) | Peak RAM | Disk for weights | Notes |
+|---|---|---|---|---|
+| ABodyBuilder2 | 7–10 s | <2 GB | <0.5 GB | unrefined; refinement needs OpenMM (installed) |
+| IgFold | 13–40 s | <3 GB | <1 GB | no refinement; transformers had to be pinned to 4.44 |
+| Boltz-2 | 6 min 11 s, plus ~2 min MSA (server) | 9.5 GB | 4.2 GB (+2 GB optional affinity weights) | 1 diffusion sample, 200 steps, 3 recycles |
+| ColabFold AF-Multimer v2.3 | 12.5 min per model, plus 2.3 min MSA (server) | 4.2 GB | 3.8 GB | 1 model; stopped early after 1 recycle. Defaults (5 models, up to 20 recycles) are 5–10× longer |
+| ESMFold | ESMFOLD_TIME | ESMFOLD_RAM | 8.4 GB | single sequence; H + 25 G linker + L |
+| Boltz-1, AF-Multimer v2 | presumably as Boltz-2 / AF-M v2.3 | | +3–4 GB each | not run; same code paths |
+| Chai-1, AlphaFold3, Protenix | | | | not possible: CUDA GPU required (Chai-1), weights on request (AF3) |
+
+**What the full study would cost here.**
+* **Arm A:** about 200 errors (after exclusions) plus 200 matched clean chains, i.e. 400 Fvs.
+* **Arm B:** about 100 errors × 2 template dates.
+* **Arm C:** about 1,000 queries for the fast methods and 200 for the slow ones.
+
+| Method | Fvs | CPU time here |
+|---|---|---|
+| ABodyBuilder2 + IgFold | 1,400 each | about 10 h together. **Feasible.** |
+| Boltz-2 (+ Boltz-1) | 600 each | about 70 h each |
+| ColabFold v2 + v2.3, 1 model | 600 each + 200 template runs | about 300 h |
+| ESMFold | 600 | ESMFOLD_TOTAL |
+
+**Conclusion.**
+* **Fast antibody predictors (ABodyBuilder2, IgFold):** the whole test runs comfortably on this
+  machine, including the large generalisation arm.
+* **General predictors (Boltz, AF-Multimer, ESMFold):** the study is CPU-bound at roughly 2–3 weeks of
+  continuous computing. That is impractical in an ephemeral container with 11 GB of free disk.
+* **Options for the general predictors:**
+  1. a GPU, where these models are commonly reported at tens of seconds per Fv (not measured here),
+     so the whole study fits in about a day;
+  2. or a reduced CPU design: arm A only, Boltz-2 and AF-M v2.3 only, 1 model each, about 230
+     errors and no controls (about 3–4 days);
+  3. or the within-architecture contrast only (about 4 days). Run AF-M v2 vs v2.3 on the ~225
+     errors released after 2018-04-30. About 60 of them fall between the two cutoffs; the rest are
+     the unexposed comparison. This answers the causal question most directly.
+* **MSA server:** the ColabFold public server is shared, so a few hundred queries should be paced.
+  Boltz and ColabFold can reuse the same `.a3m` files.
 
 ## Files
 
