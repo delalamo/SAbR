@@ -92,8 +92,8 @@ Of the five antibodies whose error recurs across labs:
 | Year | Entry | Resolution | Lab | Register | Stated starting model |
 |---|---|---|---|---|---|
 | 2018 | 6C9U | 2.09 Å X-ray | Khosla | **flagged** | 2QO3, 1SBS |
-| 2018 | 6MLK | 2.45 Å X-ray | Khosla | other | 1MN6, 4LRI |
-| 2020 | 7KRA, 7KTX | 3.2, 4.3 Å EM | Frost | other | – |
+| 2018 | 6MLK (Fab 3A6) | 2.45 Å X-ray | Khosla | other | 1MN6, 4LRI |
+| 2020 | 7KRA, 7KTX (Fab DH4) | 3.2, 4.3 Å EM | Frost | other | – |
 | 2021 | 7M7E–J (6 entries) | 3.2–4.3 Å EM | Khosla | **flagged** | – |
 | 2021 | 7S6C, 7S6D | 3.1 Å EM | Fromme | **flagged** | 7S6B, **6C9U** |
 | 2022 | 8EE0 | 2.65 Å X-ray | Khosla | **flagged** | **6C9U** |
@@ -101,8 +101,12 @@ Of the five antibodies whose error recurs across labs:
 | 2025 | 9PAT, 9PAV, 9PC6 | 3.2–4.0 Å EM | Chen | **flagged** | – |
 | 2026 | 11SZ | 2.94 Å EM | Cogan | **flagged** | – |
 
-That is 15 entries after 6C9U, from 4 labs, carrying 6C9U's register. The independent builds (6MLK
-and the Frost lab's entries) agree with AlphaFold2.
+That is 15 Fab 1B2 entries after 6C9U, from 4 labs, carrying 6C9U's register.
+
+> **Correction.** Family 504 is defined by a shared light-chain FR1 sequence window, not by antibody.
+> 6MLK is Fab 3A6, and 7KRA/7KTX are Fab DH4. These are different antibodies whose light chains share
+> 1B2's first 14 residues. All the entries carrying the flagged register are Fab 1B2. The other two
+> antibodies, built independently on the same sequence, agree with AlphaFold2.
 
 The map evidence is modest. The segment fits about equally well in 6C9U and 6MLK (31st vs 29th
 percentile of their chains), and poorly in 8EE0 (4th percentile).

@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Antibody Register Errors</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#fbfaf7; --surface:#ffffff; --surface-2:#f3f2ee; --ink:#1a1a18; --ink-2:#4a4945; --muted:#77766f; --rule:#e3e1da;
+  --accent:#1f5fb0; --accent-soft:#e6eef9;
+  --sup:#0b7a0b; --sup-bg:#e3f4e3; --rev:#8a5a00; --rev-bg:#fbf0d6; --rej:#b42f2f; --rej-bg:#fbe3e3; --unt:#55544e; --unt-bg:#ecebe6;
+  --callout:#f4f1e8; --fig-border:#e3e1da;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --serif:"Source Serif 4",Georgia,serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#141413; --surface:#1d1d1b; --surface-2:#262624; --ink:#f0efec; --ink-2:#cfcdc4; --muted:#9d9b92; --rule:#36352f;
+    --accent:#7fb0ef; --accent-soft:#1d2a3b;
+    --sup:#6fd36f; --sup-bg:#18311a; --rev:#f0c25a; --rev-bg:#382c10; --rej:#ff8a80; --rej-bg:#3d1c1c; --unt:#cfcdc4; --unt-bg:#2c2b28;
+    --callout:#211f1b; --fig-border:#3a3934;
+  }
+}
+:root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#141413; --surface:#1d1d1b; --surface-2:#262624; --ink:#f0efec; --ink-2:#cfcdc4; --muted:#9d9b92; --rule:#36352f;
+    --accent:#7fb0ef; --accent-soft:#1d2a3b;
+    --sup:#6fd36f; --sup-bg:#18311a; --rev:#f0c25a; --rev-bg:#382c10; --rej:#ff8a80; --rej-bg:#3d1c1c; --unt:#cfcdc4; --unt-bg:#2c2b28;
+    --callout:#211f1b; --fig-border:#3a3934;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.62;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-underline-offset:2px}
+.layout{max-width:1320px;margin:0 auto;padding:0 16px}
+@media (min-width:1200px){.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:48px;padding:0 32px}}
+nav.toc{display:none}
+@media (min-width:1200px){
+  nav.toc{display:block;position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:40px 0 40px;font-family:var(--sans);font-size:13px;line-height:1.45}
+  details.toc-mobile{display:none}
+}
+nav.toc .toc-title,details.toc-mobile summary{font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;color:var(--muted);margin-bottom:10px}
+nav.toc ol,details.toc-mobile ol{list-style:none;margin:0;padding:0}
+nav.toc li,details.toc-mobile li{margin:0 0 6px}
+nav.toc li.sub,details.toc-mobile li.sub{padding-left:12px;font-size:12.5px}
+nav.toc a,details.toc-mobile a{color:var(--ink-2);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+details.toc-mobile{font-family:var(--sans);font-size:14px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 16px;margin:24px 0}
+details.toc-mobile ol{margin-top:10px}
+main{min-width:0;padding:40px 0 96px}
+.prose{max-width:760px;margin:0 auto}
+header.hero{max-width:900px;margin:0 auto 8px}
+.eyebrow{font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.1;letter-spacing:-.02em;margin:10px 0 14px}
+.dek{font-size:21px;line-height:1.5;color:var(--ink-2);margin:0 0 18px}
+.byline{font-family:var(--sans);font-size:13.5px;color:var(--muted)}
+h2{font-family:var(--sans);font-weight:700;font-size:28px;letter-spacing:-.01em;line-height:1.2;margin:72px 0 14px;padding-top:20px;border-top:1px solid var(--rule)}
+h2 .num{color:var(--muted);font-weight:600;margin-right:8px}
+h3{font-family:var(--sans);font-weight:650;font-size:20.5px;line-height:1.3;margin:40px 0 8px}
+h4{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:24px 0 4px}
+p{margin:0 0 16px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin:0 0 6px}
+strong{font-weight:600}
+code,.mono{font-family:var(--mono);font-size:.84em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.small{font-size:15px;color:var(--ink-2)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:28px auto 8px;max-width:1040px}
+.tile{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 14px}
+.tile .v{font-family:var(--sans);font-weight:700;font-size:30px;letter-spacing:-.02em;line-height:1.1}
+.tile .l{font-family:var(--sans);font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:6px}
+.callout{background:var(--callout);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:18px 20px 6px;margin:24px 0}
+.callout h4{margin-top:0;color:var(--accent)}
+.keybox{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px 24px 8px;margin:28px 0}
+.keybox h3{margin-top:0}
+figure{margin:32px auto;max-width:1040px}
+figure.narrow{max-width:820px}
+figure .card{background:#ffffff;border:1px solid var(--fig-border);border-radius:12px;padding:12px;overflow:hidden}
+figure img{display:block;width:100%;height:auto}
+figure .pair{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:760px){figure .pair{grid-template-columns:1fr 1fr}}
+figure .pair .card{display:flex;flex-direction:column;justify-content:center}
+figure .pair .tag{font-family:var(--sans);font-size:12px;font-weight:600;color:#4a4945;margin:0 0 6px}
+figcaption{font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--ink-2);margin:10px 4px 0;max-width:820px}
+figcaption b{color:var(--ink)}
+.table-wrap{overflow-x:auto;margin:20px 0 24px;-webkit-overflow-scrolling:touch}
+.table-wrap.wide{max-width:1040px;margin-left:auto;margin-right:auto}
+table{border-collapse:collapse;font-family:var(--sans);font-size:14px;line-height:1.45;width:100%;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--rule)}
+th{font-weight:600;color:var(--ink-2);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--rule)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hl td{background:var(--accent-soft)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.02em;padding:2px 9px;border-radius:999px;white-space:nowrap;vertical-align:middle}
+.chip.sup{color:var(--sup);background:var(--sup-bg)}
+.chip.rev{color:var(--rev);background:var(--rev-bg)}
+.chip.rej{color:var(--rej);background:var(--rej-bg)}
+.chip.unt{color:var(--unt);background:var(--unt-bg)}
+.hyp-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin:56px 0 10px}
+.hyp-head h3{margin:0}
+.hyp-id{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--muted)}
+.verdict{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 18px 2px;margin:18px 0 8px;font-size:16.5px}
+.verdict .vh{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;gap:10px;align-items:center}
+.flow{display:grid;grid-template-columns:1fr;gap:14px;margin:28px auto;max-width:1040px;font-family:var(--sans)}
+@media (min-width:860px){.flow{grid-template-columns:1fr 1fr 1fr}}
+.stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:18px 18px 10px;position:relative}
+.stage .st{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.stage h5{font-size:18px;margin:0 0 10px;font-weight:700}
+.stage ul{font-size:14px;line-height:1.5;padding-left:18px;color:var(--ink-2)}
+.stage.s1{border-top:4px solid #2a78d6}.stage.s1 .st{color:#2a78d6}
+.stage.s2{border-top:4px solid #eb6834}.stage.s2 .st{color:#eb6834}
+.stage.s3{border-top:4px solid #6250d6}.stage.s3 .st{color:#8b7ff0}
+.stage .num{font-weight:700;color:var(--ink)}
+dl.gloss{display:grid;grid-template-columns:1fr;gap:4px 18px;font-size:16px}
+@media (min-width:700px){dl.gloss{grid-template-columns:190px 1fr}}
+dl.gloss dt{font-family:var(--sans);font-weight:600;font-size:14.5px;padding-top:2px}
+dl.gloss dd{margin:0 0 10px;color:var(--ink-2)}
+.refs li{font-size:15.5px}
+footer{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:64px;border-top:1px solid var(--rule);padding-top:16px}
+</style>
+
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#verdicts">Every hypothesis at a glance</a></li>
+    <li><a href="#background">1. Background</a></li>
+    <li class="sub"><a href="#what-is">What a register error is</a></li>
+    <li class="sub"><a href="#antibodies">Antibodies and why they matter</a></li>
+    <li class="sub"><a href="#scale">How many structures</a></li>
+    <li><a href="#study">2. The 2024 study</a></li>
+    <li><a href="#methods">3. Data and methods</a></li>
+    <li class="sub"><a href="#detector">The SAbR vs ANARCI detector</a></li>
+    <li><a href="#firstlook">4. First look: are antibodies worse?</a></li>
+    <li><a href="#hypotheses">5. The hypotheses, one by one</a></li>
+    <li class="sub"><a href="#h-time">A. When and how fast?</a></li>
+    <li class="sub"><a href="#h-care">B. Carelessness and pressure</a></li>
+    <li class="sub"><a href="#h-spread">C. Spreading and persisting</a></li>
+    <li class="sub"><a href="#h-where">D. Where errors are made</a></li>
+    <li><a href="#diagnosis">6. Diagnosis</a></li>
+    <li><a href="#recs">7. What would help</a></li>
+    <li><a href="#limits">8. Limitations</a></li>
+    <li><a href="#appendix">9. Appendix</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Structural biology · data-quality report</div>
+  <h1>Register errors in deposited antibody structures</h1>
+  <p class="dek">How often antibody models in the Protein Data Bank have residues threaded one position out of place, which explanations survive testing, and why the mistakes keep being copied.</p>
+  <div class="byline">November 2026 · Based on the 2024 conkit-validate flags and a new scan of 16,636 antibody variable domains with SAbR and ANARCI</div>
+</header>
+
+<details class="toc-mobile"><summary>Contents</summary>
+  <ol>
+    <li><a href="#summary">Summary</a></li><li><a href="#verdicts">Every hypothesis at a glance</a></li><li><a href="#background">1. Background</a></li><li><a href="#study">2. The 2024 study</a></li>
+    <li><a href="#methods">3. Data and methods</a></li><li><a href="#firstlook">4. First look</a></li><li><a href="#hypotheses">5. The hypotheses</a></li><li><a href="#diagnosis">6. Diagnosis</a></li>
+    <li><a href="#recs">7. What would help</a></li><li><a href="#limits">8. Limitations</a></li><li><a href="#appendix">9. Appendix</a></li>
+  </ol>
+</details>
+
+<div class="tiles" role="list">
+  <div class="tile" role="listitem"><div class="v">1 in 6</div><div class="l">PDB entries at 3–5 Å with at least one putative register error (2024 study, all proteins)</div></div>
+  <div class="tile" role="listitem"><div class="v">7.7–8.4%</div><div class="l">of cryo-EM antibody V domains deposited 2018–21 with a detectable register error</div></div>
+  <div class="tile" role="listitem"><div class="v">3.3–4.9%</div><div class="l">of cryo-EM antibody V domains deposited since 2022: lower, but not solved</div></div>
+  <div class="tile" role="listitem"><div class="v">84.5%</div><div class="l">of models built from a flawed earlier structure carry the error (0.3% from a clean one)</div></div>
+  <div class="tile" role="listitem"><div class="v">9%</div><div class="l">of flagged antibody entries have ever had their coordinates revised</div></div>
+</div>
+
+<div class="prose">
+
+<h2 id="summary">Summary</h2>
+
+<p>Protein structures in the Protein Data Bank (PDB) are interpretations of experimental data. When the data are blurry, as they are at 3–5 Å resolution, a modeller can trace the protein's backbone correctly but attach the amino-acid sequence to it one or more positions out of step. This is a <strong>register error</strong>: every residue in a stretch sits where its neighbour should be. The backbone still looks right, so standard validation statistics barely notice.</p>
+
+<p>A 2024 study used AlphaFold2 predictions to screen the PDB and flagged putative register errors in roughly one in six entries at 3–5 Å. This report asks what that means for <strong>antibodies</strong>, which are now among the most frequently deposited proteins in cryo-electron microscopy (cryo-EM), both as the object of study and as tools that help other proteins be seen.</p>
+
+<p>I re-analysed the 2024 flags, then built an independent, AlphaFold-free detector. It compares two ways of numbering each antibody residue: SAbR, which numbers residues from the 3D backbone, and ANARCI, which numbers them from the sequence. I ran it on every antibody variable (V) domain at 3–5 Å in the PDB through 2026. I then tested eighteen explanations for why errors occur and why they persist.</p>
+
+<div class="keybox">
+<h3>Key findings</h3>
+<ol>
+<li><strong>Antibodies are not intrinsically error-prone.</strong> In the 2024 data, antibody V domains are among the <em>least</em> flagged fold classes (1.5%, against 2.7–11% for most other folds). They are about as often flagged as their closest structural relatives.</li>
+<li><strong>Cryo-EM antibody models carry 3–6 times the error rate of X-ray models at the same resolution.</strong> The gap does not come from the usual measures of local map quality, and it has narrowed since 2022.</li>
+<li><strong>The apparent 2020–22 "surge" was partly a measurement artifact.</strong> The 2024 method compares models with AlphaFold2, which had been trained on pre-2018 structures, so it could not see errors in them: it caught 10% of independently detected errors in pre-2018 structures, against 40% later. With a detector that does not depend on AlphaFold, the antibody error rate rose only because the method mix shifted to cryo-EM. It then <strong>fell sharply from the second half of 2021</strong>.</li>
+<li><strong>Time pressure and carelessness are not supported.</strong> Antibodies used only as tools, papers in high-impact journals, contested targets, fast releases and SARS-CoV-2 structures were all as good as or better than the comparison groups.</li>
+<li><strong>Errors are made where the modeller cannot confidently place residues.</strong> These places are chain ends, residues next to stretches that could not be built, and the edges of the hypervariable loops. At the edges the commonest form is a loop built one residue short or long, so that the adjacent framework strand slides by one position. In about 40% of these junction errors the strand's conserved anchor, Trp/Phe118, is pulled out of the protein core.</li>
+<li><strong>Errors spread by copying.</strong> A model built from a clean earlier structure is almost never wrong (0.3–0.8%). One built from a flawed earlier structure usually is (61–93%). One flawed 2018 template (Fab 1B2, PDB 6C9U) has been reproduced in 15 later entries by 4 labs.</li>
+<li><strong>Errors persist.</strong> They are copied across symmetry copies and across a paper's entries (34% of error runs), almost never revised (9%), and invisible to AlphaFold2-based audits in exactly the older structures most likely to be reused as templates.</li>
+</ol>
+</div>
+
+<p>The diagnosis, in one sentence: <strong>antibody register errors are a model-building problem at the uncertain edges of a structure, amplified by template reuse, and they persist because nothing in the deposition and validation pipeline forces anyone to look.</strong> The fixes are cheap. A sequence-versus-structure numbering check takes about 0.3 seconds per chain, and a burial check of one conserved tryptophan catches a large share of the commonest error type.</p>
+
+</div><!-- /prose -->
+
+<h2 id="verdicts" class="prose">Every hypothesis at a glance</h2>
+<div class="prose"><p>The hypotheses are listed in roughly the order they were raised. Each is tested in <a href="#hypotheses">Section 5</a>. "conkit" refers to the 2024 AlphaFold2-based flags (PDB snapshot of April 2022). "SAbR" refers to the new AlphaFold-free scan (all structures through 2026).</p></div>
+<div class="table-wrap wide">
+<table>
+<thead><tr><th>#</th><th>Hypothesis</th><th>Key evidence</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>H1</td><td>Antibodies are more error-prone than comparable folds</td><td>Antibody V 1.5% flagged vs other Ig-superfamily 1.3% and most other folds 2.7–11%. The TCR comparison could not be made with SAbR</td><td><span class="chip rej">✗ Rejected</span></td></tr>
+<tr><td>H2</td><td>Antibody errors surged in 2020–22</td><td>conkit: 0.36% → 2.89%. SAbR: high since 2018, rise entirely due to method mix, then a sharp fall from 2021H2</td><td><span class="chip rev">↻ Revised</span></td></tr>
+<tr><td>H3</td><td>The 2024 detector's low early rate is real</td><td>conkit caught 10% of SAbR-detected errors before AlphaFold2's training cutoff, against 40.5% after. SAbR's X-ray rate is flat across the cutoff</td><td><span class="chip rej">✗ Rejected</span> (it is an artifact)</td></tr>
+<tr><td>H4</td><td>Cryo-EM is worse than X-ray at matched resolution</td><td>OR 5.8 (≤2022) and 3.3 (newer). Unchanged after adjusting for local map quality</td><td><span class="chip sup">✓ Supported</span></td></tr>
+<tr><td>H5</td><td>Poor maps explain errors</td><td>Local map quality has OR ≈1.0 for flags overall. It is predictive only for CDR3–FR4 junction errors (OR 0.70 per SD)</td><td><span class="chip rej">✗ Mostly rejected</span></td></tr>
+<tr><td>H6</td><td>Authors are careless with antibodies used only as tools</td><td>conkit OR 0.97. SAbR OR 0.30 (≤2022), 0.79 (newer). Reused reagents 0/67 flagged vs 3/67 for other antibodies in the same entries</td><td><span class="chip rej">✗ Rejected</span></td></tr>
+<tr><td>H7</td><td>Scooping pressure: high-impact journals, many structures, competition, novelty, fast release</td><td>No consistent effect for antibodies. Several point the opposite way. Modest effects (OR ~1.3) only for non-antibody domains in the conkit data</td><td><span class="chip rej">✗ Not supported</span></td></tr>
+<tr><td>H8</td><td>The SARS-CoV-2 rush produced errors</td><td>conkit 2020: 6.4% vs 1.4%, but concentrated in 5 labs. SAbR: 11.2% vs 11.0% (2020), 3.6% vs 7.9% (2021)</td><td><span class="chip rej">✗ Rejected</span></td></tr>
+<tr><td>H9</td><td>Antibody errors co-occur with errors in other chains (sloppy entries)</td><td>Not with the antigen (OR 1.09). Yes with other antibody chains (OR 2.7). Identical copies all flagged in 86%</td><td><span class="chip rev">↻ Revised</span></td></tr>
+<tr><td>H10</td><td>Errors cluster by laboratory</td><td>Dispersion 3.0–3.2× expected. Weak persistence across eras (OR 1.27, n.s.)</td><td><span class="chip sup">✓ Supported</span> (weakly persistent)</td></tr>
+<tr><td>H11</td><td>An earlier high-resolution structure protects</td><td>conkit OR 0.32. SAbR: 4.1% with vs 4.1% without, because it depends on the template: clean 0.8%, flawed 93%</td><td><span class="chip rev">↻ Revised</span></td></tr>
+<tr><td>H12</td><td>Bad templates are reused and their errors copied</td><td>Starting model flawed: 84.5% flagged vs 0.3%. 82% carry the identical error. Fab 1B2: 15 copies in 4 labs</td><td><span class="chip sup">✓ Supported strongly</span></td></tr>
+<tr><td>H13</td><td>The 7MXL / REGN5713 flag is a false alarm</td><td>Initially concluded, but from a pipeline bug. Corrected: the flag is right, and the error sits beside an unbuilt loop</td><td><span class="chip rej">✗ Rejected</span> (flag is real)</td></tr>
+<tr><td>H14</td><td>SARS-CoV-2 haste plus bad templates explain most antibody flags</td><td>Together about half of the conkit antibody flags, but SARS-CoV-2 is a label, not a mechanism (H8)</td><td><span class="chip rev">↻ Revised</span></td></tr>
+<tr><td>H15</td><td>Errors are rarely corrected</td><td>9% of flagged antibody entries ever revised. 62% of unrevised flagged segments still wrong today</td><td><span class="chip sup">✓ Supported</span></td></tr>
+<tr><td>H16</td><td>AlphaFold2 starting models reduced errors after 2021</td><td>Timing fits (drop in 2021H2), but entries recording an AlphaFold model are no better (OR 0.91, 0.40–2.07). Usage is under-recorded</td><td><span class="chip unt">? Unresolved</span></td></tr>
+<tr><td>H17</td><td>Errors arise at chain ends and next to unbuilt loops</td><td>11.9% of runs vs 0.9% of matched windows next to a gap. 18.1% vs 3.4% flagged when the N-terminus is missing</td><td><span class="chip sup">✓ Supported strongly</span></td></tr>
+<tr><td>H18</td><td>The "unexplained" remainder is random</td><td>It concentrates at the CDR3–FR4 junction, an FR4 bulge, and the CDR1/CDR2 boundaries. Trp/Phe118 is pulled out of the core. Unexplained share falls from ~40% to 5–11%</td><td><span class="chip rej">✗ Rejected</span> (it is patterned)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="prose">
+
+<h2 id="background"><span class="num">1</span>Background</h2>
+
+<h3>How a protein structure is made</h3>
+<p>The PDB holds about a quarter of a million experimentally determined 3D structures of proteins and other macromolecules. Most come from two methods.</p>
+<ul>
+<li><strong>X-ray crystallography</strong> measures how a crystal of the protein diffracts X-rays.</li>
+<li><strong>Cryo-EM</strong> averages tens of thousands to millions of images of frozen single molecules.</li>
+</ul>
+<p>Neither method produces atomic coordinates directly. Each produces a three-dimensional <em>map</em> of electron density (X-ray) or electrostatic potential (cryo-EM). A scientist, increasingly helped by software, then builds an atomic <em>model</em> into that map. The model is what gets deposited and what almost everyone downstream uses.</p>
+<p>How easy that interpretation is depends on <strong>resolution</strong>:</p>
+<ul>
+<li><strong>At 2 Å or better</strong>, individual atoms are nearly resolved and each amino acid's side chain has an unmistakable shape.</li>
+<li><strong>At 3–5 Å</strong>, the regime this report covers, the backbone is usually traceable as a tube. Bulky side chains (Trp, Phe, Tyr, Arg) appear as bumps, and small ones (Gly, Ala, Ser) are invisible.</li>
+</ul>
+<p>Cryo-EM has made 3–5 Å maps of large complexes routine. Resolution also varies <em>within</em> a cryo-EM map, often worst at the periphery, which is exactly where an antibody bound to a large target tends to sit.</p>
+
+<h3 id="what-is">What a register error is</h3>
+<p>Picture the backbone as a string of beads and the sequence as a list of labels. A register error happens when the modeller hangs the labels on the beads one (or more) positions out of step. In the shifted stretch, every residue's side chain points into the density meant for its neighbour. Figure 1 illustrates this.</p>
+
+</div>
+
+<figure class="narrow"><div class="card"><img src="img/f_concept.png" alt="Schematic: nine backbone positions with density blobs sized for the true residues. Top: correct sequence. Bottom: the same sequence shifted by one, so each letter sits in the wrong-sized blob."></div>
+<figcaption><b>Figure 1. What a register error looks like.</b> Blue blobs show experimental density, sized for the true side chain at each position. In <b>A</b> the modelled residues match their density. In <b>B</b> the same backbone carries the sequence shifted by one: a tryptophan (W) sits in glycine-sized density, a glycine in tryptophan-sized density, and so on. Because the backbone is unchanged, bond geometry, Ramachandran statistics and overall map fit can look almost normal. Only side-chain fit and side-chain contacts betray the shift. At 3–5 Å those signals are weak.</figcaption></figure>
+
+<div class="prose">
+<p>Register errors matter for several reasons:</p>
+<ul>
+<li><strong>Interfaces.</strong> Every inter-residue contact in the shifted region is wrong. For an antibody, that can mean the wrong residues listed at the binding interface (the <em>paratope</em>) or contacting the antigen (the <em>epitope</em>).</li>
+<li><strong>Downstream data sets.</strong> Antibody structures from the PDB feed epitope mapping, therapeutic engineering, computational antibody design, and the training sets of structure-prediction and design models. AlphaFold was trained on the PDB.</li>
+<li><strong>Templates.</strong> Deposited models are reused as starting points for new structures, so one error can propagate.</li>
+</ul>
+
+<h3 id="antibodies">Antibodies, and how their residues are numbered</h3>
+<p>An antibody's antigen-binding fragment (Fab) consists of a heavy chain and a light chain (κ or λ). Each chain has a <strong>variable (V) domain</strong>, which binds antigen, and one or more <strong>constant (C) domains</strong>. Smaller formats are also common:</p>
+<ul>
+<li><strong>Single-chain variable fragments (scFvs)</strong> join the two V domains with a linker.</li>
+<li><strong>Nanobodies (VHH)</strong> are single V domains from camelids.</li>
+</ul>
+<p>Every V domain has the same immunoglobulin fold: two β-sheets packed against each other. Within it:</p>
+<ul>
+<li><strong>Frameworks (FR1–FR4)</strong> are conserved stretches that make up the β-sandwich.</li>
+<li><strong>Complementarity-determining regions (CDR1–3)</strong> are three hypervariable loops that form the binding site.</li>
+</ul>
+<p>Because the fold is so conserved, antibody residues are given standard position numbers. This report uses the IMGT scheme, which numbers V-domain positions 1–128. Two conserved cysteines at IMGT 23 and 104 form a disulfide bond across the sandwich. A conserved Trp (heavy) or Phe (light) at IMGT 118 begins FR4 and packs into the domain core. Figure 2 shows these landmarks.</p>
+</div>
+
+<figure class="narrow"><div class="card"><img src="img/s_anatomy.png" alt="3D cartoon of an antibody heavy and light variable domain pair, frameworks grey, CDR1 yellow, CDR2 green, CDR3 red, with Cys23, Cys104 and Trp/Phe118 shown as sticks."></div>
+<figcaption><b>Figure 2. Anatomy of an antibody Fv.</b> PDB 7YV1, 1.45 Å X-ray: heavy and light V domains. Frameworks are grey. CDR1 is yellow, CDR2 green and CDR3 red. Sticks show the conserved Cys23–Cys104 disulfides and the FR4 anchors Trp118 (heavy) and Phe118 (light), which sit in the domain core just after CDR3. Most of the errors in this report sit at the ends of chains, next to unbuilt residues, or at the boundaries between CDRs and frameworks, especially where CDR3 hands over to FR4 at position 118.</figcaption></figure>
+
+<div class="prose">
+<p>Antibodies appear in structures in two quite different roles (Figure 3):</p>
+<ul>
+<li><strong>As the subject.</strong> The paper is about the antibody: for example, a neutralising antibody against a viral spike, or a therapeutic antibody and its epitope.</li>
+<li><strong>As a tool.</strong> The paper is about something else, usually a small or flexible membrane protein, and the antibody is added to make it bigger, more rigid or easier to align in cryo-EM. Examples include the G-protein stabilisers Nb35 and scFv16, anti-BRIL Fabs and synthetic "sybodies". These are often called <em>fiducials</em> or <em>chaperones</em>.</li>
+</ul>
+</div>
+
+<figure><div class="pair">
+<div class="card"><div class="tag">A · Antibody as the subject: 7CWU</div><img src="img/s_ctx_spike.png" alt="SARS-CoV-2 spike trimer in grey with antibody Fabs bound in blue and orange."></div>
+<div class="card"><div class="tag">B · Antibody as a tool: 8ITF</div><img src="img/s_ctx_gpcr.png" alt="A G-protein-coupled receptor complex with scFv16 and Nb35 bound as stabilisers."></div>
+</div>
+<figcaption><b>Figure 3. Two roles for antibodies in cryo-EM.</b> <b>A</b>: The SARS-CoV-2 spike trimer (grey) with the neutralising Fabs FC05 (blue) and P17 (orange). The antibodies are the point of the study. <b>B</b>: The trace-amine receptor mTAAR9 (green) bound to its G protein (Gαs violet; Gβ/Gγ grey), stabilised by scFv16 (red) and nanobody Nb35 (yellow). These two antibody fragments are reused, unchanged, in hundreds of receptor structures. A natural hypothesis, tested below, is that authors model antibodies less carefully when the antibody is not what they care about.</figcaption></figure>
+
+<div class="prose">
+<h3 id="scale">How many antibody structures are we talking about?</h3>
+<p>Antibody V domains at 3–5 Å were a trickle until about 2016, nearly all from X-ray crystallography. Since 2018, cryo-EM has delivered about 1,500–2,500 per year (Figure 4A). Antibodies used as tools rose from about 1% of all cryo-EM entries in 2017 to 6–8% in 2021–25. Among membrane-protein entries the figure is 16–21% (Figure 5). About half of the tool uses are the same two G-protein stabilisers, Nb35 and scFv16. Engineered fiducials (BRIL-Fab, NabFab, megabodies, legobodies, sybodies) grew from 7 entries in 2020 to 85 in 2024, and 2,273 tool-antibody entries came from 447 different senior authors.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_scale.png" alt="Two stacked bar charts by year 2010 to 2026: antibody V domains at 3–5 Å split into X-ray and cryo-EM, and the number flagged."></div>
+<figcaption><b>Figure 4. The scale of the problem.</b> <b>A</b>: Antibody V domains (or scFv chains) in PDB entries at 3.0–5.0 Å, by deposition year and method. <b>B</b>: How many carry at least one register error detectable by the SAbR vs ANARCI detector described in Section 3. Since 2018 that is roughly 40–110 chains a year, almost all from cryo-EM. 2026 is incomplete because many entries are still on hold.</figcaption></figure>
+
+<figure><div class="card"><img src="img/f_fiducial.png" alt="Bar chart of released cryo-EM entries per year, and line chart of the percentage that contain an antibody as subject or as tool."></div>
+<figcaption><b>Figure 5. Antibodies became a standard cryo-EM tool.</b> <b>A</b>: Released cryo-EM entries per year, any resolution. <b>B</b>: Share containing an antibody as the subject (blue) or as a tool (orange). The dashed line restricts to membrane-protein and receptor entries. The role was assigned from titles, chain descriptions and a list of known reagents; a hand check found 59 of 60 calls correct.</figcaption></figure>
+
+<div class="prose">
+<h2 id="study"><span class="num">2</span>The 2024 study that started this</h2>
+<p>Sánchez Rodríguez, Simpkin, Chojnowski, Keegan and Rigden (<em>IUCrJ</em> 11, 938, 2024) asked how many register errors sit in the PDB. Their tool, <strong>conkit-validate</strong>, works in four steps:</p>
+<ol>
+<li>Predict the residue–residue contact map of each chain with AlphaFold2.</li>
+<li>Compute the contacts actually present in the deposited model.</li>
+<li>Use a classifier to find stretches where the model's contacts match the prediction better after shifting the sequence by <em>k</em> positions.</li>
+<li>Report those stretches as putative register errors.</li>
+</ol>
+<p>They screened X-ray and cryo-EM entries at 3–5 Å deposited up to 5 April 2022: 19,310 entries retrieved and 16,662 analysed. They reported <strong>12,674 putative register errors</strong> in their Supplementary Table S1, roughly one flagged entry in six. They estimated about 87% of flags are confirmed where a later high-resolution structure is available. Known false positives include fold-switching proteins and genuinely ambiguous registers.</p>
+<p>The paper did not break errors down by protein family. That is where this analysis started.</p>
+
+<h2 id="methods"><span class="num">3</span>Data and methods</h2>
+<p>This section is written for readers who want to judge the evidence. Full scripts and tables are in the <span class="mono">register_error_analysis/</span> folder of the SAbR repository (Appendix).</p>
+
+<h3>3.1 Rebuilding the denominator</h3>
+<p>Table S1 lists only the flagged chains, not every chain that was analysed. To compute rates, I rebuilt the set of eligible entries from the RCSB PDB search API: X-ray or EM, 3.0–5.0 Å, deposited by 5 April 2022. I kept protein chains of 20–1,000 residues.</p>
+<p>A first version also counted 2,114 entries that had been <em>deposited</em> before the cut-off but <em>released</em> after it. The authors never saw these: every flagged entry was released by 30 March 2022. Counting them as "not flagged" understated rates by about 10%. After restricting to entries released by 5 April 2022, the denominator is <strong>19,558 entries and 181,914 chains</strong>. 99.7% of the Table S1 errors map onto it. Rates here are therefore slightly lower than the authors' own: chains they could not analyse (no confident AlphaFold2 model, failures) count as unflagged. That bias works <em>against</em> finding antibodies clean, because AlphaFold2 predicts antibody domains confidently.</p>
+
+<h3>3.2 Fold classes and antibody identification</h3>
+<ul>
+<li><strong>Fold classes.</strong> Domains were assigned with ECOD (v295.2), which covers 20,414 of the entries. Each error was placed in the domain it overlaps most, which places 86% of them. CATH was tried first and abandoned: it covers only 12–55% of these chains and almost none of the large cryo-EM complexes.</li>
+<li><strong>Antibodies.</strong> ANARCI (an HMM-based numbering tool) was run on all 29,000 unique sequences. A domain counts as an antibody V domain if ECOD calls it a V-set Ig domain on a chain with an ANARCI heavy, κ or λ hit.</li>
+<li><strong>Role.</strong> The subject-vs-tool classifier uses rules on titles and chain names, plus a list of known reagents.</li>
+</ul>
+
+<h3>3.3 Covariates</h3>
+<p>For every entry I collected the following.</p>
+<ul>
+<li><strong>Basics.</strong> Method, resolution, deposition and release dates, and the primary citation (journal, DOI, authors).</li>
+<li><strong>Map fit.</strong> Per-residue fit: Q-score for EM, real-space correlation coefficient (RSCC) for X-ray, from wwPDB validation via the RCSB API.</li>
+<li><strong>Modelling metadata.</strong> The recorded starting model (<span class="mono">pdbx_initial_refinement_model</span>), the EM fitting protocol, modelling software, and revision history.</li>
+<li><strong>Proxies for pressure:</strong>
+  <ul>
+  <li><em>Journal tier:</em> Nature/Science/Cell; their sister journals; other journals.</li>
+  <li><em>Entries per paper.</em></li>
+  <li><em>Competition:</em> distinct other labs depositing the same target within ±6 months.</li>
+  <li><em>Novelty:</em> the target's first year in the PDB.</li>
+  <li><em>Hold time:</em> deposition to release.</li>
+  </ul></li>
+</ul>
+<p>"Lab" means the last author of the primary citation.</p>
+
+<h3>3.4 Tracing errors through templates</h3>
+<p>To ask whether errors are copied, I worked in four steps:</p>
+<ol>
+<li>Grouped the 12,674 errors into 2,978 <em>families</em> sharing a sequence window.</li>
+<li>Found every PDB chain, at any resolution and through 2026, containing that window: 319,735 chains in 182,141 entries.</li>
+<li>For the 2,308 families seen in at least two papers, sampled up to 12 entries per family, preferring different papers, and up to 4 chains per entry.</li>
+<li>Superposed each chain on the flagged reference using Cα atoms outside the segment, and called the segment "same register" or "shifted by <em>k</em>".</li>
+</ol>
+<p>On the flagged entries themselves, the call reproduces the flag in 98.8% of cases (661/669).</p>
+
+<h3 id="detector">3.5 An AlphaFold-free detector: SAbR vs ANARCI</h3>
+<p>The 2024 flags have two limitations. They stop in April 2022, and they depend on AlphaFold2, which learned from many of the structures being audited. I therefore built a second detector that uses no structure predictor, just two numbering tools that should agree on a correct model:</p>
+<ul>
+<li><strong>ANARCI</strong> numbers each residue from the <em>sequence</em>, by aligning it to an IMGT profile.</li>
+<li><strong>SAbR</strong> numbers each residue from the <em>structure</em>. It encodes the backbone geometry of each residue and aligns these embeddings against reference embeddings of the IMGT positions. It does not use the residue identities.</li>
+</ul>
+<p>If a stretch is threaded out of register, its backbone sits at IMGT position <em>p</em> while the residue placed there belongs at <em>p ± k</em>. The two numberings then disagree by <em>k</em> across the stretch. A V domain is <strong>flagged</strong> if it has a run of at least three consecutive residues where the two numbers differ. Figure 6 shows one such run.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_ladder_7m7f.png" alt="Ladder diagram: for 14 residues of 7M7F chain D, ANARCI numbers 1 to 14 and SAbR numbers 0 to 7 then 9 to 14; the first eight disagree."></div>
+<figcaption><b>Figure 6. The detector applied to one chain.</b> The Fab 1B2 light chain in PDB 7M7F, a 3.5 Å cryo-EM structure. Reading the sequence, ANARCI numbers the first residues 1, 2, 3 and so on. Reading the backbone, SAbR finds that each of these residues sits one IMGT position <em>earlier</em> than its sequence position. Position 8 is skipped, and the two tools agree again from Leu9. This is the signature of a +1 register error in the N-terminal strand of FR1. The same error is present in a 2018 X-ray structure that 7M7F's authors used (Section 5C).</figcaption></figure>
+
+<div class="prose">
+<p><strong>Implementation details:</strong></p>
+<ul>
+<li><strong>Input.</strong> Per-chain coordinates came from the PDBe model server, and unmodelled residues from RCSB. SAbR ran on the V region only, with chain type from ANARCI, at about 0.3 s per chain on one CPU core.</li>
+<li><strong>Multi-domain chains.</strong> scFvs were run in SAbR's scFv mode. Tandem nanobodies and other multi-domain chains were run with an explicit domain order, giving 807 of 820 multi-domain chains processed.</li>
+<li><strong>Coverage.</strong> The scan covers <strong>16,636 antibody V domains</strong> (or scFv chains) at 3–5 Å: 6,891 released by April 2022 and 9,745 released after. It also covers 1,038 earlier high-resolution (&lt;3 Å) structures of the same V regions and 693 T-cell-receptor V domains.</li>
+<li><strong>SAbR bugs fixed along the way.</strong> Two crashes in SAbR were found and fixed in separate pull requests (Appendix).</li>
+</ul>
+
+<h4>Validation against the 2024 flags</h4>
+<p>On a validation set (all 87 entries with a flagged antibody chain plus 300 random clean antibody entries), the detector performs as follows (Figure 7A):</p>
+<ul>
+<li>It overlaps 73% of the 134 conkit-flagged V-region errors: 84% of framework errors and 92% of errors longer than ten residues.</li>
+<li>It catches at least one run in 91% of flagged chains.</li>
+<li>It agrees with conkit on the size of the shift in 97% of cases.</li>
+</ul>
+<p>It is blind inside CDRs. IMGT numbers CDR positions by loop length, so a shift within a loop leaves the numbers unchanged by design. It also fires on 4.7% of chains conkit did not flag. Some of those are errors conkit missed, as later sections show, and some are false positives. The clearest false-positive class is antibodies with framework insertions relative to germline, mainly HIV broadly neutralising antibodies such as 3BNC117, VRC03 and 8ANC195. For these, SAbR and ANARCI legitimately place the insertion differently, mostly in FR3 around IMGT 80–86. They are tracked separately throughout.</p>
+<p>As an independent check that uses neither tool, I ranked how well each flagged stretch fits the experimental map among all residues of its own V domain, and compared it with the same positions in clean V domains (Figure 7B). In X-ray structures, flagged stretches sit at the 17th percentile of their domain, against the 35th–38th for controls (p ≤ 0.0003). In cryo-EM the difference is smaller, the 35th–36th against the 41st–45th percentile. At 3–4 Å, Q-scores struggle to tell a shifted side chain from a correct but poorly resolved one.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_validation.png" alt="Horizontal bars of detector sensitivity by error type and length, and grouped bars of median map-fit percentile for flagged segments versus controls."></div>
+<figcaption><b>Figure 7. Does the detector find real errors?</b> <b>A</b>: Share of the 2024 conkit-flagged antibody V-region errors overlapped by a SAbR–ANARCI disagreement run, by error type and length. The grey bar is the designed blind spot. <b>B</b>: Map fit of the flagged stretch, as a percentile within its own V domain (50 = a typical residue; lower is worse). Orange: disagreement runs. Grey: the same IMGT positions in V domains with no disagreement. In X-ray maps the flagged stretches fit markedly worse. The signal is weaker in cryo-EM.</figcaption></figure>
+
+<div class="prose">
+<h3>3.6 Statistics</h3>
+<ul>
+<li><strong>Unit.</strong> One antibody V domain (or one scFv chain).</li>
+<li><strong>Outcome.</strong> Whether it is flagged.</li>
+<li><strong>Models.</strong> Logistic regressions adjusted for method × resolution bin, deposition period, chain type and domain length. Standard errors are clustered by PDB entry, because copies within an entry are not independent.</li>
+<li><strong>Within-entry comparisons.</strong> Conditional logistic regression or Mantel–Haenszel.</li>
+<li><strong>Lab clustering.</strong> A parametric bootstrap of between-lab dispersion.</li>
+</ul>
+<p>Odds ratios (OR) above 1 mean more errors. 95% confidence intervals are in parentheses, and "n.s." means not significant. "Snapshot" means released by April 2022, the 2024 study's cut-off, and "newer" means released after.</p>
+
+<h2 id="firstlook"><span class="num">4</span>First look: are antibodies unusually error-prone?</h2>
+<p>The first question was simple: in the 2024 data, do antibodies carry more register errors than other kinds of protein domain? Figure 8 shows they carry fewer.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_folds.png" alt="Horizontal bar chart of percent of domains flagged by fold class; antibody V 1.5 percent and antibody C 0.6 percent are near the bottom."></div>
+<figcaption><b>Figure 8. Flag rate by fold class</b> (2024 conkit-validate flags, 3–5 Å, released by April 2022). Antibody V domains (1.5%, n = 7,113) are flagged about as often as other Ig-superfamily domains such as MHC, β2-microglobulin and receptor domains (1.3%). They are flagged about 2–7 times less often than most other folds. Antibody constant domains are among the cleanest of all (0.6%). Error bars are 95% bootstrap intervals over entries. After adjusting for method × resolution, year and domain length, the odds of a flag relative to antibody V domains are: other Ig-like X-group 5.2 (3.4–8.0); α superhelices 3.4; β-barrels 2.7; other Ig/E-set 2.6; other Ig-superfamily 0.85 (0.38–1.89); antibody C 0.42 (0.21–0.82).</figcaption></figure>
+
+<div class="prose">
+<p>That looked like the end of the story. But splitting by deposition era showed something odd (Figure 9):</p>
+<ul>
+<li><strong>Every other fold class</strong> got better over time, from 4.8% flagged before 2018 to 2.8% in 2020–22.</li>
+<li><strong>Antibody V domains</strong> went from 0.36% to 0.88% to 2.89%.</li>
+</ul>
+<p>Relative to everything else, antibodies went from twelve-fold <em>less</em> likely to be flagged (adjusted OR 0.08) to significantly <em>more</em> likely (OR 1.45, 1.01–2.07). That reversal drove most of what followed.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_era_conkit.png" alt="Line chart showing antibody V flag rate rising from 0.36 to 2.89 percent while other domains fall from 4.76 to 2.78 percent; forest plot of odds ratios 0.08, 0.35, 1.45."></div>
+<figcaption><b>Figure 9. The apparent reversal in the 2024 data.</b> <b>A</b>: Flag rates by deposition era, with 95% intervals. <b>B</b>: Adjusted odds ratio of a flag for antibody V domains vs all other domains. Section 5 shows that part of this pattern is real (the shift to cryo-EM) and part is an artifact of how the flags were generated.</figcaption></figure>
+
+<div class="prose">
+<h2 id="hypotheses"><span class="num">5</span>The hypotheses, one by one</h2>
+<p>The hypotheses fall into four groups:</p>
+<ul>
+<li><strong>A.</strong> When errors happened, and why rates changed.</li>
+<li><strong>B.</strong> Whether they reflect carelessness or competitive pressure.</li>
+<li><strong>C.</strong> How they spread and persist.</li>
+<li><strong>D.</strong> Exactly where in the molecule they are made.</li>
+</ul>
+<p>Several hypotheses were first tested on the 2024 flags and then retested with the new detector. Where the two disagree, I say so and explain why.</p>
+
+<h3 id="h-time" style="margin-top:48px">A. When did errors happen, and why did rates change?</h3>
+
+<div class="hyp-head"><span class="hyp-id">H1</span><h3>Antibodies are intrinsically more error-prone than comparable folds</h3><span class="chip rej">✗ Rejected</span></div>
+<p><strong>The idea.</strong> Antibody V domains are β-sandwiches made of long, regular strands. Shifting a strand by two residues keeps its alternating inside/outside pattern, so register errors might be easy to make there and hard to spot.</p>
+<p><strong>Test.</strong> Compare flag rates across ECOD fold classes in the 2024 data, adjusting for method, resolution, year and length (Figure 8). Then, with the new detector, compare antibody V domains with T-cell-receptor V domains, which share the fold but come from different labs and practices.</p>
+<p><strong>Result.</strong> In the 2024 data, antibody V domains are among the cleanest folds and indistinguishable from other Ig-superfamily members. The TCR comparison failed for a technical reason:</p>
+<ul>
+<li>SAbR's TCR mode is documented as experimental.</li>
+<li>It disagrees with ANARCI <em>systematically</em> in the CDR2/FR3 region (IMGT 57–74): α chains by +4 and β chains by −1, in 75% of runs.</li>
+<li>So 52–85% of TCR domains "disagree", against 1.4–5.3% of antibodies (OR 0.006). That says nothing about TCR model quality.</li>
+</ul>
+</div>
+<div class="prose"><div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span></div><p>Antibodies are not intrinsically error-prone. The comparison with their closest relatives (TCRs) cannot be made with this detector, so whether antibodies are <em>more</em> careful or merely <em>as</em> careful as other Ig domains stays open.</p></div></div>
+
+<div class="prose">
+<div class="hyp-head"><span class="hyp-id">H2</span><h3>Antibody errors surged in 2020–22</h3><span class="chip rev">↻ Revised</span></div>
+<p><strong>The idea.</strong> Figure 9 shows antibody flags rising eight-fold between ≤2017 and 2020–22 while other folds improved. Is that a real deterioration, and is it simply the switch from X-ray to cryo-EM?</p>
+<p><strong>Test 1 (2024 data).</strong> Split the change into two parts. The <em>compositional</em> part comes from the shift in method and resolution mix. The <em>within-stratum</em> part is change at fixed method and resolution.</p>
+<p><strong>Result 1.</strong> Of the +2.53 percentage-point rise, 46% was compositional and 54% within-stratum: EM went from 0.48% to 3.42% and X-ray from 0.35% to 1.47%. That looked like a genuine deterioration within both methods.</p>
+<p><strong>Test 2 (new detector).</strong> Repeat with the AlphaFold-free detector, which covers 2018 to 2026 at half-year resolution.</p>
+<p><strong>Result 2.</strong> The picture changes (Figures 10 and 11):</p>
+<ul>
+<li><strong>Before 2020.</strong> The cryo-EM antibody error rate was already high: 6.3% before 2018 and 8.4% in 2018–19. There was no rise within cryo-EM in 2020–21.</li>
+<li><strong>The apparent rise from ≤2019 to 2020–21</strong> (3.1% → 6.1% overall) is <strong>entirely compositional</strong>: the cryo-EM share went from 25% to 71%, and the within-stratum contribution is zero.</li>
+<li><strong>From 2021H2 onward</strong> the cryo-EM rate <strong>fell abruptly</strong>, from 13.2% (2020H2) and 9.5% (2021H1) to 3.4% (2021H2), and has stayed at 2.5–7.6% since. That fall is <strong>entirely within-stratum</strong> (−2.9 points), a real improvement in practice.</li>
+<li><strong>X-ray</strong> stayed flat at 1.3–1.9% throughout.</li>
+</ul>
+<p>Relative to 2018–19, the adjusted odds of an error were 0.89 in 2020–21, 0.37 (0.24–0.58) in 2022–23 and 0.51 (0.32–0.80) in 2024–26.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_trend_sabr.png" alt="Line chart of cryo-EM half-year flag rate with confidence band, peaking near 13 percent in 2019H1 and 2020H2 and dropping to about 3 percent from 2021H2; X-ray flat near 1.5 percent."></div>
+<figcaption><b>Figure 10. Error rate over time, AlphaFold-free detector.</b> Share of antibody V domains at 3–5 Å with at least one SAbR–ANARCI disagreement run. Cryo-EM is shown by half-year with 95% Wilson intervals; X-ray in two-year bins. The dashed line marks the public release of AlphaFold2 code and models (July 2021). The sharp drop begins in the second half of 2021. The 2024H1 and 2025H1 bumps come partly from a few papers with many symmetric copies (H9).</figcaption></figure>
+
+<figure class="narrow"><div class="card"><img src="img/f_decomp.png" alt="Bar chart decomposing the rise (composition +2.92 points, within 0.00) and the fall (within −2.91, composition +0.48)."></div>
+<figcaption><b>Figure 11. Why rates rose and why they fell.</b> The rise to 2020–21 is fully explained by the shift to cryo-EM, holding within-method rates fixed. The fall after 2021 happened within method and resolution: the same kind of structure became less error-prone.</figcaption></figure>
+
+<div class="prose">
+<p>Why do the two detectors disagree about the pre-2018 period? That is the next hypothesis.</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip rev">↻ Revised</span></div><p>There was no deterioration in modelling practice in 2020–22. Cryo-EM antibody models were error-prone from the start (about 8%), and the antibody field moved to cryo-EM in 2020–21. From late 2021, cryo-EM antibody models became markedly better.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H3</span><h3>The 2024 detector's low early rate reflects reality</h3><span class="chip rej">✗ Rejected: it is an artifact</span></div>
+<p><strong>The idea.</strong> conkit-validate checks each model against an AlphaFold2 prediction. AlphaFold2 was trained on PDB structures released before 30 April 2018. For a pre-2018 structure, AlphaFold2 may simply reproduce the deposited model, errors included, so the model and the prediction agree and nothing is flagged. Antibodies are a worst case: thousands of near-identical V domains were in the training set.</p>
+<p><strong>Test.</strong> Take framework register errors found by SAbR in the snapshot, and ask what fraction conkit also flagged, split by whether the structure was released before or after the cut-off. As a control, check whether SAbR's own rate changes across the cut-off.</p>
+<p><strong>Result</strong> (Figure 12):</p>
+<ul>
+<li>conkit caught <strong>10%</strong> of SAbR-detected errors in structures released before the cut-off, against <strong>40.5%</strong> after.</li>
+<li>For X-ray alone the contrast is 8% vs 62%.</li>
+<li>SAbR's own X-ray flag rate is flat across the cut-off (1.4% vs 1.6%). So the error rate did not change; conkit's ability to see errors did.</li>
+</ul>
+</div>
+
+<figure><div class="card"><img src="img/f_af2.png" alt="Grouped bars: conkit sensitivity 10 percent before the AlphaFold2 training cutoff vs 40 percent after; SAbR X-ray flag rate 1.4 vs 1.6 percent."></div>
+<figcaption><b>Figure 12. The AlphaFold2 training-set blind spot.</b> <b>A</b>: Of the framework register errors found by SAbR vs ANARCI in the April 2022 snapshot, the share also flagged by conkit-validate, split by release before or after AlphaFold2's training cut-off (30 April 2018). <b>B</b>: SAbR's own flag rate for X-ray antibody V domains on either side of the same date is unchanged.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span> (the artifact hypothesis is supported)</div><p>Much of conkit's "rise" in antibody errors reflects the detector gaining sight of errors after AlphaFold2's training cut-off, not models getting worse. This matters beyond antibodies: an AlphaFold2-based audit is weakest on the older, heavily reused structures where errors do the most downstream damage (H12).</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H4</span><h3>Cryo-EM models are worse than X-ray models at the same resolution</h3><span class="chip sup">✓ Supported</span></div>
+<p><strong>The idea.</strong> A 3.5 Å cryo-EM map and a 3.5 Å X-ray map are not equivalent. Cryo-EM resolution is a global average, and antibodies bound at the edge of a large complex often sit in worse-than-average density. X-ray models of antibodies are also more often built from a close high-resolution template.</p>
+<p><strong>Test.</strong> Regress flags on method within matched resolution bins, with and without the V domain's own local map-quality score (Q-score or RSCC, z-scored within method).</p>
+<p><strong>Result.</strong> Cryo-EM carries <strong>5.8 times</strong> the odds of X-ray in the snapshot (3.5–9.5) and <strong>3.3 times</strong> in newer structures (1.8–6.1). Adding local map quality changes nothing (5.9 and 3.3), and local map quality itself is not predictive: OR 1.10 and 1.04 per standard deviation (Figure 13). Within cryo-EM, the recorded fitting protocol matters. Models built <em>ab initio</em> (de novo into the map) were flagged less often than those whose protocol was not recorded (OR 0.22, 0.08–0.58). In newer structures, flexible-fitting protocols had the highest raw rate (7.7%).</p>
+</div>
+
+<figure><div class="card"><img src="img/f_forest_mech.png" alt="Forest plot of odds ratios: cryo-EM vs X-ray 5.8 and 3.3; local map quality near 1; other antibody chain flagged 2.7; atypical CDR2 9.2; AlphaFold starting model 0.91; ab initio 0.22; lab history 1.27."></div>
+<figcaption><b>Figure 13. What does, and does not, predict a register error.</b> Adjusted odds ratios with 95% intervals. Blue: snapshot or pooled data; orange: structures released after April 2022. An asterisk marks intervals that exclude 1. Method (cryo-EM), errors in other chains of the same entry, and atypical CDR2 length predict errors. Local map quality and AlphaFold starting models do not.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip sup">✓ Supported</span></div><p>At the same nominal resolution, cryo-EM antibody models are 3–6 times as error-prone as X-ray models, and the gap is narrowing. It is <em>not</em> explained by how well the V domain fits the map overall. The problem is local and specific, as H17 and H18 show.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H5</span><h3>Poor local maps explain the errors</h3><span class="chip rej">✗ Mostly rejected</span></div>
+<p><strong>The idea.</strong> The most obvious explanation: errors happen where the map is bad.</p>
+<p><strong>Test.</strong> Include the V domain's average local fit (z-scored Q-score or RSCC) in every model. This is partly circular, because a misregistered stretch itself fits worse. Even so, if bad maps drove errors, the coefficient should be strongly protective.</p>
+<p><strong>Result.</strong> It is not. The odds ratio for flags overall is 1.0–1.1 per standard deviation in both eras, and the gap between cryo-EM and X-ray is unchanged by it (Figure 13). The one exception is the CDR3–FR4 junction error (H18), which does track local map quality (OR 0.70 per SD better).</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Mostly rejected</span></div><p>Domain-average map quality does not predict whether a V domain carries a register error. What matters is where in the domain the modeller faced a decision they could not resolve from the map: chain ends, gaps and loop boundaries. A domain-wide average does not capture that.</p></div>
+
+<h3 id="h-care" style="margin-top:56px">B. Is it carelessness or competitive pressure?</h3>
+<p>The working hypothesis behind much of this investigation was that time pressure, the fear of being scooped, leads authors to model quickly, and that the shortcuts land on the parts they care least about. That predicts more errors in antibodies used as tools, in high-impact and contested work, in fast releases, and in the SARS-CoV-2 rush. Each prediction was tested and each failed.</p>
+
+<div class="hyp-head"><span class="hyp-id">H6</span><h3>Authors are careless with antibodies that are only tools</h3><span class="chip rej">✗ Rejected</span></div>
+<p><strong>Test.</strong> Compare antibody V domains in "tool" entries with those in "subject" entries, adjusting for method, resolution, era, length and local map quality. Then make the cleanest comparison available: within the same 40 entries that contain both a reused tool reagent and another antibody chain.</p>
+<p><strong>Result</strong> (Figure 14):</p>
+<ul>
+<li><strong>2024 data.</strong> Tool 1.58% vs subject 1.62% (OR 0.97, 0.49–1.91).</li>
+<li><strong>New detector, snapshot.</strong> Tools are flagged <em>less</em> often: EM 3.3% vs 8.1%, adjusted OR 0.30 (0.17–0.54).</li>
+<li><strong>New detector, newer structures.</strong> No difference (OR 0.79, n.s.).</li>
+<li><strong>Within the same entries.</strong> The reused reagents (Nb35, scFv16, BAG2, NabFab, sybodies and others) were flagged in 0 of 67 chains, against 3 of 67 for the other antibodies.</li>
+</ul>
+<p>In the 2024 data, tool antibodies were also <em>better</em> resolved locally (EM Q-score z of +0.50 vs −0.30). When an antibody is a tool, the error in the entry tends to be in its <em>target</em> instead (3.55% vs 1.96%). Those targets are mostly α-helical membrane proteins, one of the most error-prone fold classes.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_role.png" alt="Grouped bars of flag rate for antibody of interest vs auxiliary by method and era; and within-entry comparison 0 of 67 vs 3 of 67."></div>
+<figcaption><b>Figure 14. Antibodies used as tools are not modelled worse.</b> <b>A</b>: Flag rates for antibody V domains by the antibody's role, method and era (SAbR vs ANARCI). <b>B</b>: Within 40 entries containing both a reused reagent and another antibody chain. The reused reagents were never flagged.</figcaption></figure>
+
+<div class="prose">
+<p>Why would tools be <em>better</em>? Because the same tool is used again and again. Nb35 and scFv16 are always docked from an existing, validated model, and tool antibodies are selected for rigid, well-ordered binding. Once template availability is accounted for (H11), the role effect disappears in both data sets.</p>
+<p>One caveat: scFv16, run in scFv mode as a two-domain chain, does carry two recurring identical disagreements since 2022. One is in FR1 (4 entries, 2 labs) and one in CDR3 (2 entries, 2 labs). Even a standard reagent can carry a copied error.</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span></div><p>There is no evidence that authors model antibodies less carefully when the antibody is not what they care about. If anything, the opposite holds, because tool antibodies come with good templates.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H7</span><h3>Scooping pressure: high-impact papers, many structures, competition, novelty, speed</h3><span class="chip rej">✗ Not supported</span></div>
+<p><strong>The idea.</strong> Groups racing to publish in top journals deposit many structures quickly. If a target is new or contested, the pressure is higher still.</p>
+<p><strong>Test.</strong> One multivariable model per era includes all of the following, plus the standard covariates:</p>
+<ul>
+<li>journal tier;</li>
+<li>log entries per paper;</li>
+<li>number of other labs depositing the same target within ±6 months;</li>
+<li>target novelty;</li>
+<li>hold time;</li>
+<li>SARS-CoV-2 status;</li>
+<li>local map quality.</li>
+</ul>
+<p><strong>Result</strong> (Figure 15). No proxy for pressure is consistently associated with more errors, and several point the other way:</p>
+<ul>
+<li><strong>Journal.</strong> Nature/Science/Cell papers: OR 0.94 (snapshot) and 0.53 (newer). Their sister journals: 0.92 and 0.57 (0.35–0.92).</li>
+<li><strong>Structures per paper.</strong> High-impact papers do deposit more (3.7 entries per paper vs 2.6), but more entries per paper does not mean more errors per structure: OR 1.04 and 0.85 per doubling.</li>
+<li><strong>Competition.</strong> One or two competing labs: no effect in the snapshot (1.06), fewer errors in newer structures (0.49).</li>
+<li><strong>Novelty.</strong> A first-year target carried more errors before 2022 (OR 1.60, 1.03–2.47), but not after (0.91).</li>
+<li><strong>Speed.</strong> Fast releases are not worse: 31–90 days on hold gives OR 0.17 in newer structures.</li>
+</ul>
+</div>
+
+<figure><div class="card"><img src="img/f_forest_pressure.png" alt="Forest plot of ten proxies for publication pressure; nearly all intervals include 1 or lie below 1."></div>
+<figcaption><b>Figure 15. Proxies for publication pressure do not predict antibody register errors.</b> Adjusted odds ratios (SAbR vs ANARCI), snapshot (blue) and newer structures (orange). Reference categories: subject antibodies; other journals; no competing lab; established target; 91–180 days on hold; non-SARS-CoV-2. Only "novel target" in the snapshot is above 1 with an interval excluding 1, and it does not replicate in newer structures.</figcaption></figure>
+
+<div class="prose">
+<div class="callout"><h4>A cautionary episode</h4><p>An early version of this analysis found a striking interaction: auxiliary antibodies in high-impact papers had 38 times the odds of an error (p = 0.001). It disappeared once journal names were normalised. Abbreviations such as "Nat.Struct.Mol.Biol." had been left in the "other" tier, and PNAS, eLife and EMBO J had been put in the high tier. The whole effect came from four entries of a single eLife paper. Small, impressive interaction effects in this kind of data deserve suspicion.</p></div>
+<p>In the 2024 data, <em>non-antibody</em> domains did show the predicted pattern, modestly:</p>
+<ul>
+<li>Nature/Science/Cell: OR 1.28. Sister journals: 1.29.</li>
+<li>Novel targets: 1.23. Moderately contested targets: 1.28–1.36.</li>
+<li>The largest effect was entries held for more than a year (2.48), which mostly reflects slow, older X-ray projects.</li>
+</ul>
+<p>These effects are consistent with time pressure, but equally with harder, newer projects being published in prominent journals.</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Not supported for antibodies</span></div><p>Within the limits of the proxies, nothing suggests that antibody register errors come from rushing. For other proteins in the 2024 data there is a weak signal that could reflect pressure or difficulty.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H8</span><h3>The SARS-CoV-2 rush produced errors</h3><span class="chip rej">✗ Rejected</span></div>
+<p><strong>The idea.</strong> In 2020, dozens of labs raced to solve antibody–spike complexes. If anything was rushed, these were.</p>
+<p><strong>Result in the 2024 data.</strong> At first it looked confirmed: <strong>6.4%</strong> of SARS-CoV-2 antibody V domains in 2020 were flagged, against 1.4% for other viral antigens. Looking closer changed that:</p>
+<ul>
+<li>The 31 flagged domains sat in 13 entries from just 5 of the 40 labs, and 7 of those entries came from one group.</li>
+<li>Those maps were locally worse: Q-score z −0.78 vs +0.11.</li>
+<li>After adjustment, the SARS-CoV-2 × 2020 interaction was not significant (OR 2.13, 0.47–9.7).</li>
+</ul>
+<p><strong>Result with the new detector</strong> (Figure 16):</p>
+<ul>
+<li><strong>2020.</strong> Cryo-EM antibody-of-interest structures: SARS-CoV-2 11.2% vs other viral antigens 11.0%. Both high, no difference.</li>
+<li><strong>2021.</strong> SARS-CoV-2 <strong>3.6%</strong> vs other viral 7.9% (adjusted OR 0.29, 0.11–0.77).</li>
+<li><strong>Newer structures.</strong> SARS-CoV-2 1.7% vs 3.8% for all other subject antibodies.</li>
+</ul>
+<p>The 2020 spike in the 2024 data is a mix of a few labs, worse maps, and the AlphaFold2 sensitivity artifact from H3. Other viral antibodies deposited in the same years had many more pre-2018 relatives in AlphaFold2's training data, so their errors were less visible to conkit.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_sars.png" alt="Grouped bars: conkit flags show SARS-CoV-2 6.4 vs 1.4 percent in 2020; SAbR shows 11.2 vs 11.0 percent in 2020, 3.6 vs 7.9 in 2021, 1.7 vs 3.8 after 2022."></div>
+<figcaption><b>Figure 16. The SARS-CoV-2 "rush" disappears with an independent detector.</b> <b>A</b>: 2024 conkit flags, antibody-of-interest V domains, X-ray and cryo-EM. <b>B</b>: SAbR vs ANARCI, cryo-EM antibody-of-interest V domains. In 2020 every cryo-EM antibody structure had a high error rate, viral or not. From 2021, SARS-CoV-2 antibody structures were <em>better</em> than the rest, plausibly because the field rapidly accumulated high-quality templates and expertise for this one antigen.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span></div><p>SARS-CoV-2 structures were not unusually error-prone. 2020 was a bad year for all cryo-EM antibody models, and SARS-CoV-2 structures improved faster than the rest afterwards.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H9</span><h3>Antibody errors come with errors elsewhere in the entry (a sloppy entry)</h3><span class="chip rev">↻ Revised</span></div>
+<p><strong>The idea.</strong> If rushing or a careless modeller were behind errors, the antigen in the same entry should be affected too.</p>
+<p><strong>Result in the 2024 data.</strong> Antibody errors do <em>not</em> co-occur with antigen errors:</p>
+<ul>
+<li>6 entries had both flagged, against 5.6 expected by chance (Mantel–Haenszel OR 1.09, 0.45–2.65).</li>
+<li>They do co-occur between an antibody's own heavy and light chains (OR 3.8, 1.6–9.1).</li>
+</ul>
+<p><strong>Result with the new detector:</strong></p>
+<ul>
+<li>A V domain is 2.7 times as likely to be flagged when a <em>different</em> antibody chain in the same entry is flagged: 10.3% vs 2.9% (OR 2.7, 1.5–4.7).</li>
+<li>Where an entry contains several identical copies of the same antibody and at least one is flagged, <strong>all copies are flagged in 86%</strong> of cases (147 of 170 groups).</li>
+<li>34% of all disagreement runs are the same error repeated in another entry of the same paper.</li>
+</ul>
+<div class="verdict"><div class="vh">Verdict <span class="chip rev">↻ Revised</span></div><p>Errors are local to how the <em>antibody</em> was built, not to the entry as a whole. A model built once is copied to every symmetry copy and reused across a paper's entries, so a single error becomes several deposited errors. Counted as independent events (one per paper × antibody × position × shift), 666 disagreement runs reduce to 303 events.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H10</span><h3>Errors cluster by laboratory</h3><span class="chip sup">✓ Supported, weakly persistent</span></div>
+<p><strong>Test.</strong> Fit an entry-level model of "any flagged chain" on method × resolution, era and size. Compare the observed between-lab dispersion with simulations under that model.</p>
+<p><strong>Result:</strong></p>
+<ul>
+<li><strong>2024 data.</strong> Dispersion is 3.0 times the expected value across 873 labs (95% simulation range 0.90–1.12). The 10% of labs with the highest observed-to-expected ratio hold 18% of flagged entries, against 4% expected.</li>
+<li><strong>New detector.</strong> Dispersion is 3.2 times expected across 213 labs with at least five antibody entries.</li>
+<li><strong>Persistence.</strong> A lab's excess in the snapshot only weakly predicts its rate in newer structures: 6.0% vs 4.7%, OR 1.27 (0.45–3.54).</li>
+</ul>
+<div class="verdict"><div class="vh">Verdict <span class="chip sup">✓ Supported</span></div><p>Lab practice is a stronger signal than journal, role or speed. Its weak persistence across eras fits a field that changed its tools around 2021 (H16).</p></div>
+
+<h3 id="h-spread" style="margin-top:56px">C. How do errors spread and persist?</h3>
+
+<div class="hyp-head"><span class="hyp-id">H11</span><h3>A prior high-resolution structure of the same antibody protects against errors</h3><span class="chip rev">↻ Revised</span></div>
+<p><strong>The idea.</strong> If the same V region was solved earlier at better than 3 Å, a modeller can dock that structure instead of building from scratch.</p>
+<p><strong>Result in the 2024 data.</strong> A prior template is the strongest antibody-specific predictor found: OR 0.32 (0.14–0.76). It explains why tool antibodies looked clean (44% have one, against 24% of subject antibodies).</p>
+<p><strong>Result with the new detector.</strong> The template is <em>not</em> protective on average: 4.1% flagged with one, 4.1% without. The difference comes from the templates themselves:</p>
+<ul>
+<li>Among 1,038 high-resolution templates scanned, 1.6% carry a SAbR-detectable error.</li>
+<li>Built from a <strong>clean</strong> template, 0.8% of later 3–5 Å models are flagged (n = 3,651).</li>
+<li>Built from a <strong>flawed</strong> template, <strong>93%</strong> are flagged (n = 140). Excluding the HIV framework-insertion antibodies, where the "error" may be a numbering convention, the figure is 74% (n = 39, 9 families).</li>
+<li>Of flagged chains with a scanned template, 82% carry the <em>identical</em> error: same start position within ±2 and same shift.</li>
+</ul>
+<p>Why did conkit see protection? Because of H3. Flawed templates are mostly pre-2018, AlphaFold2 learned them, and conkit therefore could not see the copied errors in their descendants.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_template.png" alt="Bars: no earlier template 4.1 percent flagged, clean template 0.8, flagged template 93, flagged excluding HIV 74; recorded starting model clean 0.3 vs flagged 84.5 percent."></div>
+<figcaption><b>Figure 17. Templates transmit their register, right or wrong.</b> <b>A</b>: Flag rate of 3–5 Å antibody V domains by whether an identical V region had been deposited earlier at &lt;3 Å, and whether that template itself carries a disagreement. <b>B</b>: Entries whose <span class="mono">pdbx_initial_refinement_model</span> names an earlier structure of the same V region: flag rate by the state of that named starting model.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip rev">↻ Revised</span></div><p>A template does not protect in itself. It transmits its register, correct or not, and most templates are correct, which is why templated models are usually clean.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H12</span><h3>Bad templates are reused and their errors copied</h3><span class="chip sup">✓ Supported strongly</span></div>
+<p><strong>Test 1: recorded starting models.</strong> 1,198 chains come from entries that name an earlier structure of the same V region as their starting model. When that named model is clean, 0.3% are flagged (n = 1,140). When it carries a disagreement, <strong>84.5%</strong> are (n = 58), or 61% excluding the HIV antibodies (Figure 17B).</p>
+<p><strong>Test 2: structural tracing across the whole PDB</strong>, all proteins, 2024 flags:</p>
+<ul>
+<li>In 55% of families seen in at least two papers, the flagged register recurs in two or more papers; in 44%, in two or more labs.</li>
+<li>Of later entries naming a flagged-register template as their starting model, 83% carry the flagged register. Of those naming a template in the other register, 0% do.</li>
+<li>Where both registers have been deposited (815 families), the flagged register fits the experimental map worse in 67% (p = 5 × 10<sup>−32</sup>), or 79% using only structures at ≤3 Å.</li>
+<li>When the error came first, a structure with the correct register took a median of 4.2 years to appear. Even afterwards, 19% of new papers still used the erroneous register.</li>
+<li>Reuse shows no quality filter. In the 111 contested families where the flagged register fits <em>better</em> (so the flag is probably wrong), later papers copy it at a similar rate: 20% vs 26%.</li>
+</ul>
+<p>Among high-resolution antibody templates, the flagged ones fit their own maps poorly in the flagged stretch: median 13th percentile of their chain, with 83% below the 25th. So these are real errors in good structures, not detector noise.</p>
+
+<h4>Case study: Fab 1B2, one template copied for eight years</h4>
+<p>Fab 1B2 binds modules of bacterial polyketide synthases (DEBS, Lsd14, rifamycin synthetase) and is used by several labs to help solve these large enzymes. Its light chain begins with an FR1 sequence (DVVMTQSPLSLPVT…) that it shares with other κ antibodies. Two of those are relevant here:</p>
+<ul>
+<li><strong>Fab 3A6</strong>, solved by the same lab in 2018 (6MLK, 2.45 Å X-ray);</li>
+<li><strong>Fab DH4</strong>, solved by the Frost lab in 2020 (7KRA, 7KTX, cryo-EM).</li>
+</ul>
+<p>Over the identical first seven residues, the first 1B2 structure (6C9U, 2.09 Å X-ray, 2018) differs from the others. Superposed on the framework, the backbone positions that hold Asp1, Val2, Val3 … in 6MLK hold Val2, Val3, Met4 … in 6C9U (Figure 18). 6C9U is threaded one residue ahead, with the register restored at Pro8. The other antibodies with the same sequence, and AlphaFold2, use the other register. SAbR, which ignores sequence and reads only the backbone, places Asp1 of the 1B2 chains <em>before</em> IMGT position 1 (Figure 6). Every later 1B2 structure carries 6C9U's register.</p>
+</div>
+<figure><div class="card"><img src="img/f_ladder_1b2.png" alt="Register ladder: at backbone positions 1 to 7, 6MLK has D V V M T Q S while 6C9U and 7M7F have V V M T Q S P, one residue ahead; from position 8 they agree."></div>
+<figcaption><b>Figure 18. The Fab 1B2 error in coordinates.</b> Each column is one backbone position of the Fab 3A6 light chain (6MLK), whose first 14 residues are identical in sequence to Fab 1B2's. Each row shows which residue occupies that position after superposing the 1B2 light chains of 6C9U (2018, X-ray) and 7M7F (2021, cryo-EM) on the framework: the nearest Cα within 3 Å. Small grey text gives each residue's own sequence position. In 6C9U and 7M7F every residue at positions 1–7 is the <em>next</em> residue in the sequence. The two 1B2 structures, three years and one method apart, are indistinguishable in this region, the fingerprint of a copied model.</figcaption></figure>
+
+<figure><div class="card"><img src="img/f_timeline_1b2.png" alt="Timeline of Fab 1B2 entries by lab from 2018 to 2026; orange dots carry the 6C9U register and blue dots the other register; circles mark entries naming 6C9U as starting model."></div>
+<figcaption><b>Figure 19. Eight years of Fab 1B2.</b> Each dot is one entry or group of entries, by lab and date. Orange: Fab 1B2 light chains, all in 6C9U's register. Blue: two different Fabs with the same FR1 sequence (3A6 and DH4), in the other register. Black rings mark entries that explicitly name 6C9U as their starting model. Fifteen later 1B2 entries from four labs carry 6C9U's register, the latest from 2026. The map evidence for this case is modest. The stretch fits about equally well in 6C9U and 6MLK (31st vs 29th percentile of their chains), which is typical of chain-terminal residues. But it fits poorly in the 2.65 Å structure 8EE0 (4th percentile).</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip sup">✓ Supported strongly</span></div><p>Copying from templates is the main way errors spread. A handful of flawed high-resolution templates (18 of 1,038 scanned) seed a disproportionate share of the copies. Inherited errors fell from 29% of flags in the snapshot to 12% in newer structures, consistent with fewer old experimental templates being reused.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H13</span><h3>The 7MXL / REGN5713 flag is a false alarm that spread across ten labs</h3><span class="chip rej">✗ Rejected: the flag is right</span></div>
+<p>This hypothesis came from a bug, and correcting it is instructive.</p>
+<p>The first version of the template tracer compared each entry with the <em>first</em> chain carrying the error's sequence, not with the chain actually flagged. For the REGN5713 light chain in 7MXL, a 3.2 Å cryo-EM structure of the birch-pollen allergen Bet v 1 with three Fabs, that meant comparing against chain K, a correct copy of the same κ constant domain. The tracer concluded that the "flagged" register was everywhere and the flag was probably wrong. Re-run with the flagged chain as reference (chain B), and checking up to four copies per entry, the story reverses (Figures 20 and 21):</p>
+<ul>
+<li>In chain B, residues <strong>149–158 are not modelled</strong>: the rest of strand C, the C–C′ loop and strand C′.</li>
+<li>The stretches on either side are shifted. Residues 140–148 sit one or two positions downstream, and 159–171 sit two positions upstream. The register is restored at Thr172.</li>
+<li>The numbering does not fit the gap: about six positions are physically missing, but ten residues are declared missing.</li>
+<li>The domain's core tryptophan (Trp148 in chain-B numbering) has been pulled out. Its ring is 14 Å from the domain centre, against 3.9 Å for the equivalent residue in chain K, which is buried.</li>
+<li>Chain K, the REGN5715 light chain in the same map with an identical Cκ sequence and no gap, matches a 1.45 Å Cκ structure (7YV1) to 0.74 Å.</li>
+<li>The shifted stretches fit the map worse in chain B than in chain K (Q-score 0.34 vs 0.43, and 0.36 vs 0.48), although the two Cκ domains fit equally well overall.</li>
+</ul>
+</div>
+
+<figure class="narrow"><div class="card"><img src="img/s_7mxl.png" alt="3D overlay of two copies of the same antibody constant domain from 7MXL: chain K in light blue with its tryptophan buried, chain B in grey with orange shifted segments and its tryptophan pushed out."></div>
+<figcaption><b>Figure 20. A register error beside an unbuilt loop (7MXL).</b> Two copies of the identical κ constant domain in the same 3.2 Å cryo-EM map, superposed (0.83 Å over 65 Cα). Light blue: chain K, correct, with its core Trp buried (blue sticks). Grey: chain B, where residues 149–158 were not built. The flanking stretches (orange) were threaded out of register to close the gap, dragging the core Trp out of the domain (orange sticks).</figcaption></figure>
+
+<figure><div class="card"><img src="img/f_ladder_7mxl.png" alt="Register ladder for 7MXL chain B vs chain K across residues 138 to 175: positions 141 to 150 hold residues one or two earlier, 149 to 158 unbuilt, 157 to 170 hold residues two later, back in register at 171."></div>
+<figcaption><b>Figure 21. The 7MXL error, residue by residue.</b> For each position of the correct chain K, the chain-B residue whose Cα lies within 3.2 Å after superposition, with its own residue number. Orange: off by one. Red: off by two. Dashed: no chain-B residue there. The shifted stretches bracket the unbuilt stretch on both sides. The modeller closed a gap by sliding the neighbouring strands. This is a constant domain, so the V-domain detector does not see it; conkit-validate did.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span></div><p>The flag is correct, and the error is a one-off: it was not propagated. It is also a clean example of the most common way errors are made (H17). The episode shows how easily a pipeline choice, here which chain counts as the reference, can invert a conclusion.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H14</span><h3>Hasty SARS-CoV-2 structures plus bad templates explain most antibody flags</h3><span class="chip rev">↻ Revised</span></div>
+<p><strong>Test.</strong> Classify each of the 165 conkit-flagged antibody chains (87 entries).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Group</th><th class="n">Chains</th><th class="n">Entries</th></tr></thead>
+<tbody>
+<tr><td>SARS-CoV-2 complex, deposited 2020</td><td class="n">41 (25%)</td><td class="n">13</td></tr>
+<tr><td>SARS-CoV-2 complex, deposited 2021–22</td><td class="n">28 (17%)</td><td class="n">14</td></tr>
+<tr><td>Error copied across labs</td><td class="n">14 (8%)</td><td class="n">12</td></tr>
+<tr><td>Error repeated in the same lab's papers</td><td class="n">1</td><td class="n">1</td></tr>
+<tr><td>One-off: antibody reused elsewhere, error not copied</td><td class="n">31 (19%)</td><td class="n">19</td></tr>
+<tr><td>One-off: antibody appears in one paper only</td><td class="n">47 (28%)</td><td class="n">29</td></tr>
+<tr><td>Could not be mapped</td><td class="n">3</td><td class="n">3</td></tr>
+</tbody></table></div>
+<p><strong>Result.</strong> SARS-CoV-2 complexes and cross-lab copying together account for about half of the antibody flags in the 2024 data. However, H8 shows that "SARS-CoV-2" is a label for "cryo-EM antibody structure from 2020–21", not a mechanism in its own right. The SAbR scan also shows that copying is under-counted in the 2024 data, because copies of pre-2018 templates are invisible to conkit (H3, H11).</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip rev">↻ Revised</span></div><p>Copying is a major mechanism. SARS-CoV-2 haste is not. The remaining one-off errors needed their own explanation (Section D).</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H15</span><h3>Errors are rarely corrected</h3><span class="chip sup">✓ Supported</span></div>
+<p><strong>Test.</strong> Check revision histories for "Atomic model" changes since release, and re-run SAbR on today's coordinates.</p>
+<p><strong>Result</strong> (Figure 22):</p>
+<ul>
+<li>Only <strong>9%</strong> of conkit-flagged antibody entries have ever had their coordinates revised.</li>
+<li>Across all proteins in the 2024 data, flagged entries were revised barely more often than unflagged ones: 13.2% vs 10.7%.</li>
+<li>Today, the flagged stretch still disagrees in 62% of unrevised entries and in 31% even of revised ones. The remaining 38% of unrevised ones are mostly CDR-internal errors this detector cannot see.</li>
+</ul>
+</div>
+
+<figure><div class="card"><img src="img/f_persist.png" alt="Three bar charts: 9 percent of flagged entries revised; 31 vs 62 percent still wrong today; 86 percent of identical copy groups fully flagged."></div>
+<figcaption><b>Figure 22. Errors persist.</b> <b>A</b>: Of 87 antibody entries flagged in the 2024 data, the share with any later coordinate revision. <b>B</b>: Whether SAbR still finds the flagged stretch out of register in today's coordinates. <b>C</b>: In entries with several identical copies of an antibody and at least one flagged copy, how often all copies are flagged.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip sup">✓ Supported</span></div><p>Once deposited, register errors are almost never fixed, and they keep being used: as templates (H12), as training data, and in every downstream analysis.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H16</span><h3>AlphaFold2 starting models explain the post-2021 improvement</h3><span class="chip unt">? Unresolved</span></div>
+<p><strong>The idea.</strong> The cryo-EM error rate fell abruptly in the second half of 2021, right after AlphaFold2 code and models became public (Figure 10). Antibody Fvs built from a prediction would not inherit an old template's error, and they model the framework strands accurately.</p>
+<p><strong>Test.</strong> Compare entries whose recorded starting model is an AlphaFold model with those recording none.</p>
+<p><strong>Result.</strong> No measurable benefit:</p>
+<ul>
+<li>Any error: OR 0.91 (0.40–2.07), in only 494 records (290 cryo-EM).</li>
+<li>CDR3–FR4 junction errors: 0.34% vs 0.9–1.1%, but not significant after adjustment (OR 0.58, 0.08–4.3).</li>
+</ul>
+<p>The test is weak. Most entries do not record a starting model at all, and newer model-building tools that use structure prediction internally (such as ModelAngelo) are essentially never named in PDB metadata. Inherited errors did fall, from 29% to 12% of flags, which is the expected footprint of fewer old templates being reused.</p>
+<div class="verdict"><div class="vh">Verdict <span class="chip unt">? Unresolved</span></div><p>The timing fits and the mechanism is plausible, but the direct test is null, and the PDB's metadata cannot settle it.</p></div>
+
+<h3 id="h-where" style="margin-top:56px">D. Where in the molecule are errors made?</h3>
+<p>If errors are copied, where do the originals come from? Figure 23 shows where in the V domain every disagreement run starts. They are not spread evenly:</p>
+<ul>
+<li>Light chains cluster at the very N-terminus.</li>
+<li>Heavy chains cluster at the N-terminus, in FR3 around IMGT 80–83, and at the CDR3/FR4 boundary (IMGT 105–120).</li>
+<li>Both chain types show a sharp peak at IMGT 120, just inside FR4.</li>
+</ul>
+</div>
+
+<figure><div class="card"><img src="img/f_runloc.png" alt="Two histograms of where disagreement runs start along IMGT positions 1 to 128, for heavy and light chains, with peaks at the N-terminus, heavy FR3 near 80, CDR3 near 110 to 115, and position 120."></div>
+<figcaption><b>Figure 23. Where register errors start.</b> IMGT position at which each SAbR–ANARCI disagreement run begins, for heavy chains (top) and light chains (bottom). Framework regions are grey bands; CDRs are yellow. Much of the heavy-chain FR3 peak (IMGT 80–83) is likely the HIV framework-insertion convention difference noted in Section 3.5, not necessarily an error. The other peaks are investigated below.</figcaption></figure>
+
+<div class="prose">
+<div class="hyp-head"><span class="hyp-id">H17</span><h3>Errors arise at chain ends and next to unbuilt residues</h3><span class="chip sup">✓ Supported strongly</span></div>
+<p><strong>The idea.</strong> When the first residues of a chain, or a loop in the middle, are too poorly resolved to build, the modeller must decide where the visible density begins. An off-by-one choice shifts every residue up to the next unambiguous landmark. 7MXL (H13) and Fab 1B2 (H12) are both examples.</p>
+<p><strong>Test.</strong> Compare disagreement runs with position-matched windows in clean V domains, and compare V domains with and without a modelled N-terminus.</p>
+<p><strong>Result</strong> (Figure 24):</p>
+<ul>
+<li><strong>11.9%</strong> of runs lie within three residues of an unmodelled gap, against 0.9% of matched windows.</li>
+<li><strong>30%</strong> start at the N-terminus, against 2.8% of random windows.</li>
+<li>V domains whose first residues were not built are flagged <strong>18.1%</strong> of the time, against 3.4% for domains with a complete N-terminus.</li>
+<li>N-terminal runs fit the map worse than the N-terminal windows of clean domains (X-ray: 9th vs 26th percentile), so these are not artifacts of ragged termini.</li>
+</ul>
+<p>This is the largest identifiable source of errors, and growing: 29% of independent error events in the snapshot and 39% in newer structures.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_gaps.png" alt="Three bar charts: runs near unbuilt gaps 11.9 vs 0.9 percent; runs at N-terminus 29.9 vs 2.8 percent; domains with unbuilt N-terminus flagged 18.1 vs 3.4 percent."></div>
+<figcaption><b>Figure 24. Chain ends and unbuilt stretches.</b> <b>A</b>: Share of disagreement runs within three residues of an unmodelled gap, against position-matched windows in clean V domains. <b>B</b>: Share starting at the chain's first modelled residue. <b>C</b>: Flag rate of V domains whose N-terminus is missing (first modelled residue beyond IMGT 3), against those with a complete N-terminus.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip sup">✓ Supported strongly</span></div><p>Where the chain runs out, or the map gives out mid-chain, modellers frequently misplace the residues on the edge of what they can see.</p></div>
+
+<div class="hyp-head"><span class="hyp-id">H18</span><h3>The remaining "unexplained" errors are random</h3><span class="chip rej">✗ Rejected: they are patterned</span></div>
+<p><strong>The problem.</strong> After assigning each flagged chain to "copied from a template", "copied from another 3–5 Å structure", "at a chain end or gap" or "HIV insertion convention", <strong>38–39%</strong> remained unexplained. I looked at all 271 such runs.</p>
+<p><strong>They are not random.</strong> Explained runs start mostly in heavy FR3 or FR1 and in light FR1. Unexplained runs start in <strong>CDR3 (31–52%) or FR4 (19–25%)</strong> in every chain type, and 69% are shifts of +1. The same signatures recur across <em>different</em> antibodies:</p>
+<ul>
+<li>heavy IMGT 120, +1: 35 runs, 9 antibodies;</li>
+<li>heavy IMGT 112, +1: 28 runs, 11 antibodies;</li>
+<li>κ IMGT 120, +1: 17 runs, 9 antibodies.</li>
+</ul>
+<p>Three patterns account for most of them (Figure 25).</p>
+
+<h4>Pattern 1: the CDR3–FR4 junction (121 runs)</h4>
+<p>CDR3 is the longest and most variable loop. In heavy chains it ranges from about 5 to over 30 residues. At 3–5 Å its tip is often poorly resolved. If the modeller builds the loop one residue short (or long), the residues after it slide one position along the FR4 β-strand. The strand's first residue is the conserved Trp118 (heavy) or Phe118 (light), which normally packs into the domain core. In a shifted model, a different residue occupies the Trp slot, and the Trp is pushed to the next slot, where its side chain points out of the core (Figures 25B and 26). In 7V2A, a 3.4 Å cryo-EM structure with a 24-residue heavy CDR3, Val117 occupies the Trp118 position. After superposition on the framework (1.39 Å over 80 Cα), the Trp118 side chain sits 11 Å from where it belongs.</p>
+<h4>Pattern 2: an FR4 bulge after the Trp/Phe–Gly motif (55 runs)</h4>
+<p>Here the two tools agree through Trp/Phe118 and Gly119, and SAbR then numbers the next residue 121. The strand jumps a position right after the glycine, and residue 120 is stretched across two slots (Figure 25C). This is not a SAbR convention: it occurs in 1 of 1,039 high-resolution templates, against 99 of 15,897 chains at 3–5 Å. Many of the newer cases come from one 2024 paper's symmetry copies (18 of 55 runs from two entries).</p>
+<h4>Pattern 3: CDR1/CDR2 boundaries (54 runs)</h4>
+<p>These are strongly associated with an <strong>unusual CDR2 length</strong> for the chain type. A run touching CDR2 is nine times more likely when CDR2 has a rare length (adjusted OR 9.2, 3.7–22.9; heavy chains 2.6% vs 0.4%; Figure 28). Light chains show the same pattern with CDR1. λ chains with an eight-residue CDR1 are flagged 12.3% of the time, against 1.9% for the common nine. κ chains with an 11–12-residue CDR1 are flagged about 5% of the time, against 2.7% for the common six.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_ladder_mech.png" alt="Three register ladders: 6BPE N-terminus shifted by one or two; 7V2A CDR3-FR4 junction where Val117 occupies the Trp118 slot; 7MKL FR4 bulge where the strand jumps a slot after Gly119."></div>
+<figcaption><b>Figure 25. Three ways the edges go wrong.</b> Each panel superposes a 3–5 Å cryo-EM chain on a 1.45 Å reference (7YV1) using framework Cα outside the window. For each reference position, it shows which residue of the cryo-EM model sits there and that residue's own sequence number. The antibodies differ, so the letters differ. What matters is whether the sequence number matches the column (blue) or is off by one (orange) or two (red). <b>A</b>: Chain end: 6BPE chain C's N-terminal strand is threaded one or two positions ahead. <b>B</b>: CDR3–FR4 junction: in 7V2A, Val117 sits in the Trp118 slot and the strand is shifted from CDR3 through FR4. <b>C</b>: FR4 bulge: 7MKL chain H is in register through Trp118–Gly119, then jumps a slot.</figcaption></figure>
+
+<figure class="narrow"><div class="card"><img src="img/s_cdr3fr4.png" alt="3D view of a heavy-chain V domain with the CDR3 and FR4 of 7YV1 in blue and of 7V2A in orange; the blue Trp118 packs into the core, the orange Trp118 points out of the domain."></div>
+<figcaption><b>Figure 26. The displaced anchor.</b> The heavy V domain of 7YV1 (1.45 Å X-ray; framework pale blue; CDR3–FR4 dark blue) with the CDR3–FR4 of 7V2A chain G (3.4 Å cryo-EM; orange) superposed on framework Cα. In 7YV1, Trp118 (blue sticks) packs into the core. In 7V2A, the residue its sequence calls Trp118 (orange sticks) points out of the domain, 11 Å away, because the strand it belongs to was threaded one position late.</figcaption></figure>
+
+<div class="prose">
+<h4>Are these real errors, or numbering artifacts?</h4>
+<p>Three independent checks say real:</p>
+<ol>
+<li><strong>A structure-only test.</strong> Count Cα atoms within 10 Å of the side chain that ANARCI calls Trp/Phe118. This uses no map and no numbering tool beyond the sequence. A buried Trp has 15–20 such neighbours. As Figure 27 shows, the anchor is exposed (fewer than 14 neighbours) in:
+  <ul>
+  <li>0% of high-resolution templates;</li>
+  <li>2% of clean X-ray domains and 7% of clean cryo-EM domains;</li>
+  <li><strong>38%</strong> of CDR3–FR4 junction runs, in both X-ray and cryo-EM;</li>
+  <li>17% of FR4-bulge runs.</li>
+  </ul></li>
+<li><strong>X-ray maps disagree with the deposited register.</strong> Ranked within their own V domain, the stretches fit worse than the same windows in clean domains: FR4 bulge 6th vs 37th percentile; CDR3–FR4 junction 18th vs 46th; CDR2 boundary 12th vs 35th. At 3–4 Å, cryo-EM Q-scores cannot discriminate (48th vs 52nd), so the structural test carries the cryo-EM evidence.</li>
+<li><strong>Rarity at high resolution.</strong> The FR4 bulge, for example, occurs in 0.1% of high-resolution templates, against 0.6% at 3–5 Å.</li>
+</ol>
+</div>
+
+<figure><div class="card"><img src="img/f_w118.png" alt="Strip plot of the number of C-alpha neighbours of Trp/Phe118 for templates, clean domains, FR4 bulge runs, and CDR3-FR4 junction runs; 38 percent of junction runs fall in the exposed zone."></div>
+<figcaption><b>Figure 27. A geometric check any validation pipeline could run.</b> Number of Cα atoms within 10 Å of the side chain of the residue that the sequence says is the FR4 anchor (Trp/Phe118). Each dot is one V domain and the black bar is the median. The shaded zone (fewer than 14 neighbours) means the anchor is not packed into the core. That essentially never happens in correct structures, and it happens in 38% of CDR3–FR4 junction errors.</figcaption></figure>
+
+<figure><div class="card"><img src="img/f_cdrlen.png" alt="Bar charts: light-chain flag rate by CDR1 length (lambda length 8 12.3 percent) and heavy chains with a CDR2 run 2.6 percent at rare CDR2 lengths vs 0.4 percent at common lengths."></div>
+<figcaption><b>Figure 28. Unusual loop lengths invite boundary errors.</b> <b>A</b>: Flag rate of light-chain V domains by CDR1 length. κ (blue): n = 268, 3,018, 600, 303, 445, 285 for lengths 5–12. λ (violet): n = 48, 520, 480, 986 for lengths 4–9. <b>B</b>: Share of heavy chains with a disagreement run touching CDR2, for CDR2 lengths that are rare vs common for the chain type. When a loop's length is unusual, the modeller (or the template) is more likely to put the loop–strand boundary in the wrong place.</figcaption></figure>
+
+<div class="prose">
+<h4>What predicts a CDR3–FR4 junction error</h4>
+<ul>
+<li><strong>Method.</strong> Cryo-EM; the adjusted OR for X-ray is 0.10.</li>
+<li><strong>Era.</strong> 2.3% of cryo-EM V domains in 2020–21, falling to 0.5–0.6% from 2022.</li>
+<li><strong>Map quality.</strong> Poor local map quality (OR 0.70 per SD better). Unlike flags overall, this pattern does track the map.</li>
+<li><strong>Antibody features:</strong>
+  <ul>
+  <li>κ chains with an unusually long CDR3 (11–13 residues: 7.5%, against ≤1% otherwise);</li>
+  <li>nanobodies (1.3% vs 0.8%);</li>
+  <li>mouse antibodies (1.0% vs 0.7% for human);</li>
+  <li>V regions far from germline (≤80% identity: 1.2–1.4% vs 0.5–0.6%).</li>
+  </ul></li>
+<li><strong>Not heavy CDR3 length.</strong> There is no trend with it.</li>
+</ul>
+
+<h4>Re-assigning every error to its origin</h4>
+<p>Counting each independent event once (paper × antibody × position × shift; 303 events from 666 runs), with each assigned to the first matching category, Figure 29 shows where the errors come from. The genuinely unexplained share drops from about 40% to <strong>5% (snapshot) and 11% (newer)</strong>.</p>
+</div>
+
+<figure><div class="card"><img src="img/f_origins.png" alt="Two 100-percent stacked bars of error origins for snapshot and newer structures: chain end 29 and 39 percent, CDR3-FR4 junction 28 and 19 percent, FR4 bulge, CDR1/CDR2 boundary, copied, HIV ambiguous, and still unexplained 5 and 11 percent."></div>
+<figcaption><b>Figure 29. Where each independent register error comes from.</b> Snapshot (123 events) and newer structures (180 events). Chain ends and unbuilt loops became the largest source after 2022. CDR3–FR4 junction errors fell, consistent with the 2021H2 improvement. "Copied" counts only unambiguous copies from an earlier structure. Most copying is <em>within</em> a paper (symmetry copies and repeated entries), which this event count deliberately collapses.</figcaption></figure>
+
+<div class="prose">
+<div class="verdict"><div class="vh">Verdict <span class="chip rej">✗ Rejected</span></div><p>The "unexplained" errors sit at the boundaries of the hypervariable loops. An off-by-one residue count in a loop is absorbed by sliding the adjacent framework strand, often dragging a conserved core residue out of place. Only 5–11% of independent error events remain without an identified mechanism.</p></div>
+
+<h2 id="diagnosis"><span class="num">6</span>Diagnosis</h2>
+<p>Putting the evidence together, register errors in antibody structures follow a three-stage life cycle.</p>
+</div>
+
+<div class="flow" role="list">
+  <div class="stage s1" role="listitem"><div class="st">Stage 1</div><h5>An error is made</h5>
+    <ul>
+      <li>At <span class="num">chain ends</span> and <span class="num">next to unbuilt stretches</span>, where the modeller must decide where visible density starts (29–39% of independent events).</li>
+      <li>At <span class="num">loop–strand boundaries</span>: a CDR3 built one residue short or long shifts FR4 (19–28%); FR4 bulges (4–8%); unusual CDR1/CDR2 lengths (8–11%).</li>
+      <li>Much more often in <span class="num">cryo-EM</span> (3–6× X-ray at the same resolution), and not tracked by domain-average map quality.</li>
+      <li><em>Not</em> from rushing, author disinterest, high-impact ambition or SARS-CoV-2 haste.</li>
+    </ul></div>
+  <div class="stage s2" role="listitem"><div class="st">Stage 2</div><h5>It spreads</h5>
+    <ul>
+      <li><span class="num">Symmetry copies:</span> all identical copies flagged in 86% of affected entries.</li>
+      <li><span class="num">Within a paper:</span> 34% of runs repeat an error from another entry of the same paper.</li>
+      <li><span class="num">Through templates:</span> 84.5% of models started from a flawed structure inherit it, against 0.3% from a clean one; 82% inherit the identical error.</li>
+      <li>A few flawed high-resolution templates (18 of 1,038) seed long lineages: Fab 1B2's 6C9U has 15 later copies in 4 labs over 8 years.</li>
+    </ul></div>
+  <div class="stage s3" role="listitem"><div class="st">Stage 3</div><h5>It persists</h5>
+    <ul>
+      <li><span class="num">Almost never revised:</span> 9% of flagged antibody entries; 62% of unrevised flagged stretches are still wrong.</li>
+      <li><span class="num">Hard to see:</span> backbone geometry is fine, cryo-EM Q-scores at 3–4 Å barely discriminate, and the domain-level map fit looks normal.</li>
+      <li><span class="num">Invisible to AlphaFold2-based audits</span> in pre-2018 structures, the ones most often reused (10% vs 40% sensitivity).</li>
+      <li>No quality filter on reuse: even probably-wrong registers are copied at normal rates.</li>
+    </ul></div>
+</div>
+
+<div class="prose">
+<p><strong>Why rates rose and fell.</strong> The 2020–21 peak is the antibody field's move to cryo-EM, which in 2018–21 produced V domains with about 8% detectable register errors. The 2024 study's view that antibodies were nearly error-free before 2018 is a blind spot of its AlphaFold2-based method. From the second half of 2021, cryo-EM antibody models improved abruptly, by about half, within method and resolution. The CDR3–FR4 junction errors and template-inherited errors fell most. That timing coincides with AlphaFold2 and with prediction-based model-building tools becoming routine. The data are consistent with those tools giving modellers correct starting Fvs, but entries rarely say which tools they used, and the direct test is null.</p>
+<p><strong>What remains.</strong> In newer cryo-EM structures, the remaining errors increasingly sit at chain ends and next to unbuilt loops, where no starting model can say where the visible density begins. About 3–5% of cryo-EM antibody V domains still carry an error this detector can see. The true figure is higher, because the detector is blind inside the CDRs, including CDR-H3, which matters most for binding.</p>
+<p><strong>What it is not.</strong> The intuitive story, that competitive pressure makes authors cut corners on the parts they care less about, finds no support in any test. Antibodies used as tools, papers in Nature, Science and Cell, contested targets, fast releases and the SARS-CoV-2 race were all as good or better. The variation that exists is concentrated by lab (3× the expected dispersion), and it depends on whether a good template was available.</p>
+
+<h2 id="recs"><span class="num">7</span>What would help</h2>
+<h3>At deposition and validation (wwPDB)</h3>
+<ul>
+<li><strong>Run a sequence-versus-structure numbering check on every antibody and nanobody V domain.</strong> It takes about 0.3 s per chain with no structure prediction. It caught 91% of the 2024 study's flagged antibody chains, and it sees errors in pre-2018 structures that AlphaFold2-based checks miss.</li>
+<li><strong>Check conserved anchors geometrically.</strong> The Trp/Phe118 side chain should be buried, and the Cys23–Cys104 disulfide should be intact. A Trp118 with fewer than 14 Cα neighbours essentially never occurs in correct structures.</li>
+<li><strong>Flag the residues flanking every unmodelled gap and the first residues of every chain for register review.</strong> These are the single largest source of new errors.</li>
+<li><strong>Do not rely solely on AlphaFold2-derived checks for structures in its training set.</strong> Pair them with predictor-independent checks, or with predictors whose training cut-off post-dates the structure.</li>
+</ul>
+<h3>For model builders</h3>
+<ul>
+<li><strong>Do not dock an old template without checking its register.</strong> Most templates are correct, but the few that are not are copied with near-certainty.</li>
+<li><strong>Take extra care at CDR loop boundaries:</strong>
+  <ul>
+  <li>count the CDR3 residues against the sequence;</li>
+  <li>confirm that Trp/Phe118 packs into the core;</li>
+  <li>be wary of unusual CDR1/CDR2 lengths.</li>
+  </ul></li>
+<li><strong>When residues cannot be built, leave the gap rather than closing it by sliding neighbours.</strong> Check that the number of missing residues matches the physical gap.</li>
+<li><strong>Record the starting model and the model-building software in the deposition.</strong> Without this, nobody can learn which practices work.</li>
+</ul>
+<h3>For users of structural data</h3>
+<ul>
+<li><strong>Treat residue-level contacts in 3–5 Å cryo-EM antibody models with caution.</strong> This applies especially at chain termini, next to gaps and at CDR boundaries, and to any model built from an older template.</li>
+<li><strong>Machine-learning data sets built from the PDB should screen V domains</strong> with a numbering-consistency check before training. A few percent of cryo-EM antibody chains carry framework register errors, and copies inflate their weight.</li>
+</ul>
+<h3>For the archive</h3>
+<ul>
+<li><strong>Make corrections easy and visible.</strong> When an error is confirmed in a widely reused template, notifying the entries that named it as a starting model would stop new copies.</li>
+</ul>
+
+<h2 id="limits"><span class="num">8</span>Limitations</h2>
+<ul>
+<li><strong>Both detectors are predictions, not ground truth.</strong> conkit-validate depends on AlphaFold2 and is blind on its training set. SAbR vs ANARCI is blind inside CDRs, and fires on framework-insertion antibodies where the two numbering conventions legitimately differ; these are tracked separately. Map-fit and burial checks support the flags, but at 3–4 Å in cryo-EM the map evidence is weak.</li>
+<li><strong>Absolute rates differ between detectors.</strong> Compare rates within a detector, across groups or eras, not across detectors.</li>
+<li><strong>The 2024 denominator is reconstructed.</strong> Chains the authors could not analyse count as clean here, which slightly lowers rates.</li>
+<li><strong>Proxies are crude.</strong> "Author interest", "pressure", "competition" and "lab" are inferred from titles, journals, deposition dates and last authors. A modest real effect (OR below 2) could be missed in the smaller comparisons.</li>
+<li><strong>Metadata are sparse.</strong> Most entries record neither the starting model nor the model-building tool, so the tests of AlphaFold-assisted modelling (H16) are weak.</li>
+<li><strong>The data are observational.</strong> Labs, targets and journals differ in many unmeasured ways.</li>
+<li><strong>Recent years are incomplete.</strong> Many 2025–26 entries are still on hold.</li>
+<li><strong>Two analysis errors were caught and corrected</strong> during the work: the released-by-snapshot denominator, and the template tracer's reference chain (H13). The journal-tier coding error that produced a spurious OR of 38 is described in H7. All numbers here are the corrected ones.</li>
+</ul>
+
+<h2 id="appendix"><span class="num">9</span>Appendix</h2>
+<h3>Glossary</h3>
+<dl class="gloss">
+<dt>PDB</dt><dd>Protein Data Bank, the global archive of experimentally determined macromolecular structures.</dd>
+<dt>Resolution</dt><dd>The level of detail in an experimental map, in ångströms (Å); smaller is better. At 3–5 Å the backbone is traceable but many side chains are not resolved.</dd>
+<dt>Cryo-EM</dt><dd>Cryo-electron microscopy: 3D maps reconstructed from images of frozen single molecules.</dd>
+<dt>Map, model</dt><dd>The map is the experimental density. The model is the atomic interpretation built into it and deposited.</dd>
+<dt>Register error</dt><dd>A stretch of residues placed on the correct backbone but shifted by <em>k</em> positions along the sequence.</dd>
+<dt>Q-score, RSCC</dt><dd>Per-residue measures of model-to-map fit for cryo-EM and X-ray, respectively.</dd>
+<dt>V domain, C domain</dt><dd>Variable (antigen-binding) and constant domains of an antibody chain.</dd>
+<dt>FR, CDR</dt><dd>Framework regions (conserved β-strands) and complementarity-determining regions (hypervariable loops) of a V domain.</dd>
+<dt>IMGT numbering</dt><dd>A standard 1–128 position scheme for V domains. Conserved landmarks: Cys23, Cys104, Trp/Phe118.</dd>
+<dt>Fab, scFv, nanobody</dt><dd>Antibody fragments: the heavy + light antigen-binding arm; a single-chain fusion of the two V domains; a single camelid heavy-chain V domain (VHH).</dd>
+<dt>Fiducial / tool antibody</dt><dd>An antibody added to a cryo-EM sample to add mass, rigidity or alignment features to the protein of interest.</dd>
+<dt>ANARCI</dt><dd>Sequence-based antibody numbering tool (hidden Markov models).</dd>
+<dt>SAbR</dt><dd>Structure-based antibody numbering tool: assigns IMGT positions from backbone geometry.</dd>
+<dt>conkit-validate</dt><dd>The 2024 study's register-error detector, comparing model contacts with AlphaFold2-predicted contacts.</dd>
+<dt>ECOD</dt><dd>Evolutionary Classification of protein Domains, used here for fold classes.</dd>
+<dt>Odds ratio (OR)</dt><dd>Ratio of the odds of an error in one group vs a reference group; above 1 means more errors. 95% confidence intervals are in parentheses.</dd>
+<dt>Snapshot / newer</dt><dd>Released by 5 April 2022 (the 2024 study's cut-off) / released after it.</dd>
+</dl>
+
+<h3>Data sources</h3>
+<ul class="refs">
+<li>Sánchez Rodríguez F., Simpkin A.J., Chojnowski G., Keegan R.M., Rigden D.J. (2024). Using deep-learning predictions reveals a large number of register errors in PDB depositions. <em>IUCrJ</em> 11, 938. Supplementary Table S1 via the Europe PMC supplementary-files service.</li>
+<li>RCSB PDB Search and Data (GraphQL) APIs, including wwPDB validation per-residue Q-score and RSCC, citations, revision history and <span class="mono">pdbx_initial_refinement_model</span>; PDBe ModelServer for per-chain coordinates. Queried November 2026.</li>
+<li>ECOD v295.2 domain classification; wwPDB <span class="mono">entries.idx</span> and <span class="mono">pdb_seqres.txt</span>; SIFTS chain-to-UniProt mappings.</li>
+<li>ANARCI (IMGT scheme, with germline assignment) and SAbR (this repository) for numbering.</li>
+<li>Structure images rendered with 3Dmol.js from the deposited coordinates. Charts drawn from the analysis tables.</li>
+</ul>
+
+<h3>Code and tables</h3>
+<p>Everything is in the <span class="mono">register_error_analysis/</span> folder of the <span class="mono">delalamo/SAbR</span> repository, branch <span class="mono">analysis/register-errors-by-fold</span>:</p>
+<ul>
+<li><span class="mono">REPORT.md</span>: fold-class analysis.</li>
+<li><span class="mono">followup/</span>: fiducial use, era transition, role, journal/competition and co-occurrence analyses.</li>
+<li><span class="mono">template_propagation/</span>: family tracing and the 1B2 and 7MXL cases.</li>
+<li><span class="mono">sabr_anarci_scan/</span>: the detector, validation and newer-structure scan.</li>
+<li><span class="mono">retest/</span>: all eighteen hypotheses retested.</li>
+<li><span class="mono">retest/unexplained/</span>: loop-boundary patterns and anchor burial.</li>
+<li><span class="mono">report/</span>: this document and its figures.</li>
+</ul>
+
+<h3>SAbR issues found during the scan</h3>
+<p>Two bugs surfaced while running SAbR on about 17,000 chains. Both were fixed in separate pull requests, with regression tests:</p>
+<ul>
+<li><strong>Selections too short to number crashed with an internal error</strong> instead of a clear message: <a href="https://github.com/delalamo/SAbR/pull/247">PR #247</a>. These were 1–4 residues, for example a V-region range on a chain whose V domain is unmodelled (8TGZ M, 8TXQ E, 5KOV Q).</li>
+<li><strong>Biopython structures built in code, which lack a <span class="mono">header</span> attribute, raised <span class="mono">AttributeError</span>:</strong> <a href="https://github.com/delalamo/SAbR/pull/248">PR #248</a>.</li>
+</ul>
+<p>SAbR's experimental TCR mode disagrees with ANARCI systematically in CDR2/FR3. This is documented as a limitation rather than filed as a bug.</p>
+
+<footer>Prepared from the analysis in <span class="mono">register_error_analysis/</span>. All rates and odds ratios are reproducible from the tables and scripts listed above. Structure images show deposited coordinates without modification beyond superposition.</footer>
+</div>
+</main>
+</div>
