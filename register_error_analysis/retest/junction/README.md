@@ -81,3 +81,54 @@ building from scratch) show the lowest rates.
 * The template-length result rests on 3 independent cases.
 * The flank asymmetry could partly be structural: FR4 is the edge strand at the V–C elbow, and Cys104 anchors the
   N-terminal side of CDR3.
+
+## Is this a known tool problem? Methods sections and bug reports
+
+**Methods sections** (`scripts/methods_mining.py`, `tables/methods_keywords.csv`, `tables/methods_snippets_cases.txt`).
+* **Sample:** open-access full texts from Europe PMC for 38 of the 59 papers behind CDR3/FR4-error entries. Controls
+  are 199 papers of error-free EM antibody entries from the same years.
+* **No building tool is over-represented in the error papers:**
+
+  | Tool | Error papers | Controls |
+  |---|---|---|
+  | Coot | 68% | 74% |
+  | Phenix | 74% | 76% |
+  | ISOLDE | 8% | 7% |
+  | Rosetta | 16% | 17% |
+  | SWISS-MODEL | 13% | 14% |
+  | A template of another Fab | 42% | 33% |
+
+* **The only difference is AlphaFold/ColabFold:** 8% vs 30% (p = 0.004).
+  * This is mostly timing: before mid-2021, 0% vs 3%.
+  * After mid-2021 the error papers still mention it less: 14% vs 36%.
+* **The error papers describe the same workflow again and again.** A *different* antibody, or a homology model of
+  one, is docked rigid-body and mutated to the target sequence, and the CDRs are rebuilt by hand. Examples:
+  * 7V2A: the heavy chain of 6Z3P and the light chain of 6PZE, fitted in Chimera;
+  * 7MKL: Fabs found by BLAST, 1KIQ for VH and 5XJM for VL;
+  * 7STF: 7KGU "in silico mutated" in Coot;
+  * 7K22/23: an unrelated Fab, 3GK8, "mutated to match", with the CDRs "manually rebuilt";
+  * 7D3K–R: crystal structure 6E9U rigid-body fitted;
+  * homology models from SWISS-MODEL, BioLuminate, Discovery Studio or abYsis.
+
+  Controls use the same workflows at similar rates.
+
+**Literature and bug reports.**
+* **No antibody-specific report.** Nothing describes FR4/CDR3-junction register errors, and there is no tool bug,
+  changelog fix or GitHub issue that would produce this pattern. Phenix CHANGES, sculptor/Chainsaw documentation,
+  ModelAngelo/ISOLDE/Coot issues and the Sánchez Rodríguez 2024 paper were checked; that paper does not discuss
+  antibodies or loops.
+* **The general mechanism is documented:**
+  * **Phenix `assign_sequence` documentation:** "loops are often built short by one or a few residues."
+  * **Chojnowski 2023 (PMC10306063):** "A solvent-exposed, poorly resolved loop … was traced too short in the
+    original model and resulted in a two-residue sequence-register shift in a C-terminal part of the chain."
+  * **Croll 2018 (ISOLDE):** a CHAINSAW homology-model register error "presumably arising from a misalignment
+    between the sequence and the homology template", with the residues after it out of register.
+  * **Sculptor and Chainsaw:** both only rename or delete template residues according to the alignment. Neither
+    builds insertions.
+* **Not found anywhere:** a measured N- vs C-side bias, or a link to template CDR3-length mismatch. CCP4BB and the
+  Coot mailing list could not be searched.
+
+**Conclusion.** This is not a bug in one program. It is the documented general failure, a poorly resolved loop built
+too short, with the error showing up downstream. It is concentrated in antibodies by the common workflow of starting
+from a different antibody whose CDR3 length differs. FR4 takes the slip because it is the strand after the loop
+that is rebuilt, and it is glycine-rich with few side-chain landmarks.
