@@ -1,0 +1,13 @@
+pdb,chain,ctype,year,res,last_author,paper,win_seq,irm,fit,first_imgt,unmod_near,win_fit_pct,fv_only,mode
+7t6x,D,K,2021,3.83,"Lander, G.C.",10.1126/science.abn9884,TLSCRASQSIGTNLAWYQK,none recorded,other,1.0,0.0,0.47268170426065154,False,F
+9els,E,L,2024,3.02,"Saelices, L.",9els,TISCTRSSGSIASSYVQWYQQR,none recorded,other,1.0,5.0,0.5555830039525692,False,F
+8gse,H,H,2022,3.7,"Fu, W.",10.3390/v14112322,KISCQAFYTFSNYGMQWVKQS,none recorded,other,1.0,0.0,0.49572649572649574,True,F
+9pur,I,H,2025,3.2,"McLellan, J.S.",9pur,RLDCAASGTTVSINGMGWYRQA,none recorded,other,1.0,11.0,0.5719101123595506,False,F
+7eaj,F,H,2021,4.1,"Feng, R.",10.1038/s41421-021-00264-3,KISCQAFYTFNSYGMQWVKQR,none recorded,other,4.0,0.0,0.6041666666666667,True,F
+7c80,H,H,2020,3.7,"Wang, X.",10.1038/s41467-020-18250-w,KLSCAASGFTFSSYWMHWVQT,none recorded,other,1.0,0.0,0.6436642453591606,False,F
+3jbf,7,H,2015,4.8,"Hogle, J.M.",10.1128/JVI.03017-15,TLSCAASGITYCMGWYRQV,experimental (PDB) model,flexible fit,1.0,0.0,0.3864147548358075,True,F
+6lht,L,K,2019,3.67,"Li, S.W.",10.1016/j.chom.2020.01.003,TMSCKSSQSLLYSNNQKNYLAWYQQK,none recorded,other,1.0,0.0,0.5888359428182437,True,F
+9liv,AA,L,2025,3.1,"Li, D.",10.1073/pnas.2515454123,TISCSGSYSNIGTNTVNWYRQL,none recorded,other,8.0,0.0,0.5461229946524063,True,F
+9ml5,H,H,2024,3.4,"Bjorkman, P.J.",10.1073/pnas.2501637122,TLTCTASGFSFSSSYWICWVRQA,experimental (PDB) model,rigid body only,1.0,0.0,0.5899042004421519,False,F
+9pv3,L,K,2025,3.95,"Ward, A.B.",9pv3,TMSCKSSQSLLNSSNQKNYLAWYQQK,none recorded,other,1.0,0.0,0.55071477195371,True,F
+9yc6,L,K,2025,4.8,"Ploug, M.",10.1002/pro.70473,SISCRSSQSVVSNNGKTYLEWYLQK,experimental (PDB) model,flexible fit,1.0,0.0,0.4605357142857142,False,F

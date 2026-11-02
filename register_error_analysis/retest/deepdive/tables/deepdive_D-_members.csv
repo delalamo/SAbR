@@ -1,0 +1,21 @@
+pdb,chain,ctype,year,res,last_author,paper,win_seq,irm,fit,first_imgt,unmod_near,win_fit_pct,fv_only,mode
+8w5d,L,K,2023,4.3,"Zhu, P.",10.1016/j.celrep.2025.115334,CQQSKEVPYTFGGGTKL,none recorded,other,1.0,11.0,0.5316558441558442,False,D-
+6orp,D,H,2019,4.4,"Bjorkman, P.J.",10.1038/s41586-019-1250-z,CARDSSGWPWDNRFDVWGAGVLV,experimental (PDB) model,rigid body only,1.0,0.0,0.3823297914207005,False,D-
+8w4f,E,H,2023,4.2,"Huang, Q.",10.1016/j.ijbiomac.2023.128191,CAADPASPAPGDYWGQGTQV,none recorded,other,1.0,0.0,0.5848739495798319,False,D-
+6xja,H,H,2020,4.0,"Zheng, H.",10.1038/s41467-020-19887-3,CAAAGAAAAAAWGQGTLV,none recorded,other,1.0,0.0,0.43674136321195145,False,D-
+8jag,H,H,2023,3.55,"Li, Y.J.",10.1038/s41467-024-54746-5,CARGHVLEWFQGTLV,none recorded,other,1.0,0.0,0.5993650793650793,True,D-
+9s7s,D,H,2025,3.3,"Naismith, J.H.",9s7s,CAADPRPLSYSSSYYYRSGSYDYWGQGTQV,experimental (PDB) model,rigid body only,21.0,7.0,0.6690307328605201,False,D-
+9lfa,C,H,2025,3.5,"Zhang, H.",9lfa,CNAEYRTGIWEELLDGWGQGTQV,none recorded,other,1.0,6.0,0.5706260032102728,False,D-
+6jmr,F,K,2019,4.1,"Nureki, O.",10.1038/s41594-019-0237-7,CQQYTSYPTFGGGTKL,none recorded,other,1.0,0.0,0.5234375,True,D-
+9nnz,A,H,2025,3.94,"Gonen, S.",10.1073/pnas.2532336123,CSKYNSVVTTPPGQGTQV,experimental (PDB) model,flexible fit,18.0,7.0,0.5532900834105654,False,D-
+7d3k,L,L,2020,3.9,"Lou, Z.",10.1371/journal.ppat.1009507,CLSWQSGNTALFGSGTTL,none recorded,rigid body only,21.0,6.0,0.60625,False,D-
+8ulu,L,K,2023,3.8,"Bjorkman, P.J.",10.1038/s41590-025-02286-5,CQVFDSFAPGGTRV,experimental (PDB) model,rigid body only,2.0,0.0,0.6187782805429863,False,D-
+7d3r,H,H,2020,3.49,"Lou, Z.",10.1371/journal.ppat.1009507,CATVHQHTSEKRTCPRAYRPDCAARWDCPGGADCGYCNFGAGSYGRCTPFTLTYTFENYVHTWGQGLLV,none recorded,rigid body only,1.0,23.0,0.325782092772384,False,D-
+8gnh,L,K,2022,3.74,"Su, X.D.",10.1016/j.ijbiomac.2022.12.120,CQQRSNWITFGQGTRL,none recorded,other,2.0,0.0,0.32559523809523805,False,D-
+7mej,B,H,2021,3.55,"Taylor, D.J.",10.1038/s41467-021-24963-3,CAAETYSIYEKDDSWGYWGQGTQV,none recorded,other,2.0,0.0,0.43273809523809526,True,D-
+7nj5,F,H,2021,4.63,"Grimes, J.M.",10.1038/s41467-021-27950-w,CAAAGIYYAGSYSPLLYDYWGQGTQV,experimental (PDB) model,rigid body only,1.0,13.0,0.43535714285714283,False,D-
+9pur,H,H,2025,3.2,"McLellan, J.S.",9pur,CNAVASPSWGLYDDYWGQGTQV,none recorded,other,1.0,11.0,0.6323735955056179,False,D-
+6lht,L,K,2019,3.67,"Li, S.W.",10.1016/j.chom.2020.01.003,CQQYYNYPWTFGGGTKL,none recorded,other,1.0,0.0,0.3982300884955752,True,D-
+9ma0,B,H,2025,3.33,"Sun, C.",9ma0,CAKDPRYSSSWRHNWFDPWGQGTLV,none recorded,ab initio,1.0,0.0,0.3801587301587302,False,D-
+26pf,B,L,2026,3.1,"Zeng, M.S.",10.1007/S1142702531027,CSSYTSSSSLVFGGGTKL,none recorded,other,1.0,1.0,0.34696502057613166,True,D-
+7vne,W,H,2021,3.5,"Ying, T.",10.1038/s41392-021-00810-1,CVSNWASGSTGDYWGQGTLV,none recorded,other,2.0,1.0,0.37909482758620694,True,D-

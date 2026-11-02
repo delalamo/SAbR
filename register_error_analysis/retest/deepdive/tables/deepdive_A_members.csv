@@ -1,0 +1,60 @@
+pdb,chain,ctype,year,res,last_author,paper,win_seq,irm,fit,first_imgt,unmod_near,win_fit_pct,fv_only,mode
+9liw,AB,L,2025,3.2,"Li, D.",10.1073/pnas.2515454123,EPALTQPPSASGT,none recorded,other,8.0,7.0,0.2589869281045752,True,A
+7y58,C,H,2022,3.8,"Majumder, P.",10.15252/embj.2023113418,QVQLQESGGGSVQ,none recorded,ab initio,2.0,7.0,0.3113839285714286,True,A
+8w5q,L,K,2023,4.1,"Zhu, P.",10.1016/j.celrep.2025.115334,DIQMTQSPASLSAS,none recorded,other,4.0,3.0,0.6692949907235621,True,A
+8w5q,H,H,2023,4.1,"Zhu, P.",10.1016/j.celrep.2025.115334,EVQLVESGGGLVK,none recorded,other,2.0,1.0,0.48697916666666674,True,A
+8fsj,C,H,2023,3.65,"Ofek, G.",10.1038/s41467-023-39659-z,EVQLLEQSGPEVKK,none recorded,other,3.0,2.0,0.33825757575757576,False,A
+7tz5,N,L,2022,3.41,"Mousa, J.J.",10.1128/jvi.00896-22,SVLTQPPSVSGA,none recorded,other,2.0,0.0,0.34259259259259256,True,A
+8w5t,L,K,2023,3.6,"Zhu, P.",10.1016/j.celrep.2025.115334,QIVLTQSPAIMSES,none recorded,other,3.0,2.0,0.5125404530744336,True,A
+7czr,K,K,2020,3.5,"Zhou, Q.",10.1038/s41422-021-00487-9,DIQLTQSPSFLSAS,none recorded,other,1.0,0.0,0.44526034712950596,False,A
+6cmo,L,K,2018,4.5,"Xu, H.E.",10.1038/s41586-018-0215-y,DIQMTQSPSSLSAS,none recorded,not recorded,4.0,3.0,0.3741258741258741,True,A
+7czu,K,K,2020,3.4,"Zhou, Q.",10.1038/s41422-021-00487-9,DIQMTQSPSSLSAS,none recorded,other,1.0,0.0,0.3835113484646195,False,A
+8qj2,D,H,2023,3.4,"Masiulis, S.",10.1038/s41467-024-50827-7,QVQLVESGGGLVQ,none recorded,other,2.0,12.0,0.711764705882353,False,A
+8w5d,L,K,2023,4.3,"Zhu, P.",10.1016/j.celrep.2025.115334,DIVLTQSPASLAVS,none recorded,other,1.0,8.0,0.6780303030303031,False,A
+9nyx,A,H,2025,3.1,"Palczewski, K.",10.1073/pnas.2532336123,VQLVESGGGLVX,none recorded,other,3.0,13.0,0.3547400611620795,True,A
+7cwt,L,H,2020,3.7,"Wang, X.",10.1038/s41422-020-00446-w,EVQLLEQSGAEVKK,none recorded,other,1.0,0.0,0.45045632333767927,True,A
+9lja,A,L,2025,3.1,"Li, D.",9lja,QSALTQPASVSGS,none recorded,other,6.0,5.0,0.4016089108910891,False,A
+7qic,B,H,2021,4.1,"Manatschal, C.",10.7554/eLife.74589,QLQLVESGGGLVL,none recorded,other,3.0,2.0,0.6418495297805642,True,A
+8rvn,L,K,2024,3.5,"Bowden, T.A.",10.1128/jvi.00638-24,DQVLTQTPASVEAA,experimental (PDB) model,ab initio,4.0,3.0,0.3601398601398601,False,A
+7wp8,D,H,2022,3.88,"Xia, N.",10.1016/j.chom.2022.10.011,QLAQSGAELAR,none recorded,other,3.0,0.0,0.46610169491525427,True,A
+7mej,B,H,2021,3.55,"Taylor, D.J.",10.1038/s41467-021-24963-3,VQLVESGGGLVQ,none recorded,other,2.0,0.0,0.47187500000000004,True,A
+9mnb,E,H,2024,3.0,"Rohou, A.L.",10.1038/s41467-026-70491-3,SVEESRGGLIK,AlphaFold model,other,3.0,0.0,0.2617554858934169,False,A
+9o7h,D,H,2025,4.8,"Southworth, D.",9o7h,GPGLMK,none recorded,other,8.0,0.0,0.49852507374631266,False,A
+9b7u,H,H,2024,3.73,"McKenna, R.",10.1038/s41467-025-59088-4,AVESGGGLVK,none recorded,other,4.0,0.0,0.3918103448275862,True,A
+9ib3,H,H,2025,3.3,"Ohlin, M.",9ib3,EVQLLESGGGLVQ,other in-silico model,other,3.0,2.0,0.46081504702194354,False,A
+8e8l,H,H,2022,3.13,"Charnesky, A.J.",10.1038/s41467-023-41052-9,LVQSGAELKK,none recorded,other,4.0,0.0,0.23376068376068376,True,A
+8ejh,H,H,2022,3.71,"Ward, A.B.",10.1016/j.celrep.2023.112524,QVQLQESGAGLLK,experimental (PDB) model,other,3.0,2.0,0.26684952978056425,True,A
+9ib1,H,H,2025,3.2,"Ohlin, M.",9ib1,EVQLLESGGGLVQ,other in-silico model,other,3.0,2.0,0.22061128526645765,False,A
+6ukt,E,H,2019,3.87,"Sprang, S.R.",10.1038/s41467-020-14943-4,QVQLQESGGGLVQ,experimental (PDB) model,rigid body only,3.0,2.0,0.4168181818181818,False,A
+7nqk,B,H,2021,3.5,"Newstead, S.",10.1126/sciadv.abh3355,QVQLVESGGGLVQ,none recorded,other,3.0,2.0,0.667319749216301,True,A
+3jcx,H,H,2016,4.1,"Hafenstein, S.",10.1128/JVI.01112-16,SGPGLVQ,none recorded,not recorded,7.0,0.0,0.6409438775510204,True,A
+7jhh,L,K,2020,3.92,"Melcher, K.",10.1126/science.abe7565,DIQMTQSPSSLSAS,experimental (PDB) model,other,3.0,2.0,0.4067460317460318,False,A
+8khr,H,H,2023,3.25,"Liu, Z.",10.1016/j.xcrm.2024.101573,QLVQSGAEVKK,none recorded,other,3.0,0.0,0.47892561983471077,True,A
+7e3c,C,K,2021,4.2,"Liu, C.",10.1038/s41421-021-00292-z,DIQLTQSPSFLSAS,none recorded,other,3.0,2.0,0.6531862745098039,False,A
+7e3c,B,H,2021,4.2,"Liu, C.",10.1038/s41421-021-00292-z,EVLLVESGGGLVQ,none recorded,other,4.0,3.0,0.5605504587155964,False,A
+8t4d,R,K,2023,3.1,"Ward, A.B.",10.1126/science.adj8321,DIVMIQTPLSLPVT,none recorded,other,2.0,1.0,0.2773465067043049,True,A
+7stf,H,H,2021,3.14,"Miller, M.",10.1038/s41467-023-40821-w,EVQLVESGGGLVQ,none recorded,rigid body only,2.0,1.0,0.5406162464985994,False,A
+7t6x,B,L,2021,3.83,"Lander, G.C.",10.1126/science.abn9884,QSVLTQPPSAASGT,none recorded,other,2.0,1.0,0.6488138030194105,False,A
+7m74,L,K,2021,3.93,"Melcher, K.",10.1126/science.abe7565,QMTQSPSSLSAS,none recorded,other,3.0,0.0,0.3948412698412698,False,A
+8w5e,L,K,2023,3.8,"Zhu, P.",10.1016/j.celrep.2025.115334,ETTVTQSPASLSVA,none recorded,other,4.0,4.0,0.5252688172043011,False,A
+7nsl,G,L,2021,3.1,"Fandrich, M.",10.1038/s41467-021-26553-9,QSVLTQPPSVSAA,none recorded,other,9.0,8.0,0.6952941176470588,False,A
+6bsp,A,H,2017,4.7,"Hafenstein, S.",10.3390/v9120374,SGGGLVK,none recorded,not recorded,7.0,0.0,0.644878706199461,True,A
+9ccg,C,K,2024,3.87,"Noinaj, N.",10.1016/j.str.2025.08.008,QMTQSPSSLSAS,none recorded,other,3.0,0.0,0.45,False,A
+8th4,B,H,2023,3.3,"Kruse, A.C.",10.1038/s41589-024-01620-6,EVQLVESGGGLVQ,none recorded,other,4.0,3.0,0.42946428571428574,False,A
+6ad0,L,K,2018,3.9,"Cheng, T.",10.1126/sciadv.aat7459,DVLMTQTPLSLPVS,none recorded,not recorded,1.0,0.0,0.451093951093951,True,A
+8w5m,L,L,2023,3.1,"Zhu, P.",10.1016/j.celrep.2025.115334,QAVVTQESALTTS,none recorded,other,2.0,1.0,0.3333333333333333,True,A
+8w5m,H,H,2023,3.1,"Zhu, P.",10.1016/j.celrep.2025.115334,EVQLVESGGGLVK,none recorded,other,1.0,0.0,0.31942633637548895,True,A
+9ljb,A,L,2025,3.2,"Li, D.",9ljb,QSALTQPASVSGS,none recorded,other,7.0,6.0,0.35714285714285715,False,A
+9fjf,D,H,2024,3.7,"Arnold, P.",10.1038/s41467-025-58340-1,QVQLVESGGGLVQ,experimental (PDB) model,flexible fit,1.0,0.0,0.35145888594164454,True,A
+9yie,L,L,2025,4.3,"Bjorkman, P.J.",10.1126/science.aec6396,VLTQPPSVSAA,none recorded,other,3.0,0.0,0.46998284734133783,True,A
+7f3q,B,K,2021,3.3,"Wang, K.",10.1093/abt/tbad002,AQMTQSPSSVSAS,none recorded,other,2.0,0.0,0.38021978021978026,False,A
+9fte,B,H,2024,3.82,"Wolff, N.",9fte,EVQLVESGGGLVQ,none recorded,other,6.0,5.0,0.6686320754716981,False,A
+6orp,J,H,2019,4.4,"Bjorkman, P.J.",10.1038/s41586-019-1250-z,EVQLLESGPGLVK,experimental (PDB) model,rigid body only,1.0,0.0,0.4834710743801653,False,A
+9fac,B,L,2024,3.9,"Ricagno, S.",10.1038/s41467-024-50686-2,SFELTQPSSVSVS,none recorded,other,1.0,0.0,0.5449317038102085,False,A
+8xef,B,H,2023,4.41,"Feng, L.L.",8xef,VQLQESGPGLLK,none recorded,other,2.0,0.0,0.540625,True,A
+9c7s,L,L,2024,4.0,"Crowe, J.E.",10.1038/s41564-026-02282-x,VLTQAPSASGT,none recorded,ab initio,3.0,0.0,0.31011045029736617,True,A
+9fab,E,L,2024,3.9,"Ricagno, S.",9fab,SFELTQPSSVSVS,none recorded,other,1.0,0.0,0.4561466570812366,False,A
+8uf7,B,H,2023,3.2,"Pozzi, N.",10.1182/blood.2023022942,EVHLVESGGGLVK,none recorded,other,4.0,3.0,0.47327586206896555,False,A
+26pf,A,H,2026,3.1,"Zeng, M.S.",10.1007/S1142702531027,VQLVQSGAEVKK,none recorded,other,2.0,0.0,0.5833333333333334,True,A
+9o7i,D,H,2025,3.4,"Southworth, D.",9o7i,QVQLQQSGPGLMK,none recorded,other,8.0,7.0,0.504424778761062,False,A
+22ge,G,H,2026,3.1,"Xu, Y.",10.1371/journal.pone.0338127,QQLEQSGGGAEGGLVK,none recorded,other,2.0,0.0,0.6764144945963129,False,A

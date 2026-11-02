@@ -1,0 +1,19 @@
+pdb,chain,ctype,year,res,last_author,paper,win_seq,irm,fit,first_imgt,unmod_near,win_fit_pct,fv_only,mode
+7wp6,I,K,2022,3.81,"Xia, N.",10.1016/j.chom.2022.10.011,PLTFGAGTKLELK,none recorded,other,1.0,0.0,0.5742001361470388,True,E
+7ey5,B,H,2021,3.4,"Zhang, Z.Y.",10.1038/s41422-021-00555-0,FHPWGQGTLVTVSS,none recorded,other,1.0,0.0,0.536607142857143,False,E
+8rmm,N,H,2024,3.26,"Dutzler, R.",10.7554/eLife.96138,NEYWGQGTQVTVSA,none recorded,other,1.0,1.0,0.5058177117000646,True,E
+9pv5,L,K,2025,3.9,"Ward, A.B.",9pv5,PLTFGAGTKLELK,none recorded,other,1.0,0.0,0.6977535738597687,True,E
+7czr,J,H,2020,3.5,"Zhou, Q.",10.1038/s41422-021-00487-9,FDYWGQGTLVTVSS,none recorded,other,1.0,0.0,0.4322981366459627,False,E
+9pv5,H,H,2025,3.9,"Ward, A.B.",9pv5,MDVWGKGTTVTVSS,none recorded,other,1.0,2.0,0.5377824858757062,True,E
+9lue,D,K,2025,3.03,"Zhao, H.",10.1038/s41541-025-01319-2,PFTFGSGTKLEIK,none recorded,other,1.0,1.0,0.2619047619047619,True,E
+9dm7,L,K,2024,3.02,"Liu, Y.",10.1038/s41467-025-57843-1,LITFGQGTKVEIK,none recorded,other,1.0,0.0,0.43278217109992806,True,E
+7e39,B,K,2021,3.7,"Liu, C.",10.1038/s41421-021-00292-z,PYTFGQGTKLEIK,none recorded,other,1.0,1.0,0.6379716981132076,False,E
+9zxd,A,H,2026,3.2,"Kruse, A.C.",10.1073/pnas.2602538123,LVYWGQGTQVTVSS,none recorded,other,16.0,4.0,,False,E
+7kc1,E,H,2020,3.41,"Kwong, P.D.",10.3389/fimmu.2021.662909,LDYWGQGSLVTVSS,experimental (PDB) model,flexible fit,1.0,2.0,0.4948347107438016,False,E
+7o85,T,K,2021,3.3,"Frank, G.A.",10.1107/S2059798321007816,PWTFGGGTKL,none recorded,other,9.0,0.0,0.5682291666666666,True,E
+7mkm,H,H,2021,3.16,Center for Structural Genomics of Infectious Diseases (CSGID),10.1016/j.immuni.2021.08.016,DDYWGQGTTLT,none recorded,other,1.0,0.0,0.6681415929203539,True,E
+7wtg,L,K,2022,3.8,"Fu, W.",10.1038/s41422-022-00677-z,PRTFGQGTKV,none recorded,other,1.0,0.0,0.3759615384615384,True,E
+7t0w,H2,H,2021,3.0,"Pruss, H.",10.1016/j.cell.2022.06.025,FDPWGQGTLVTVSS,none recorded,other,2.0,3.0,0.43142633228840127,False,E
+9dn2,L,L,2024,3.24,"Mousa, J.",10.1128/jvi.00453-25,AYVFGTGTKVTVL,none recorded,other,4.0,1.0,0.42289719626168215,True,E
+8w5p,L,K,2023,3.3,"Zhu, P.",10.1016/j.celrep.2025.115334,YPAFGGGTKLEIK,none recorded,other,2.0,5.0,0.7818396226415094,True,E
+9yc6,H,H,2025,4.8,"Ploug, M.",10.1002/pro.70473,FADWGQGTLVTVSA,experimental (PDB) model,flexible fit,1.0,0.0,0.47388955582232883,False,E
