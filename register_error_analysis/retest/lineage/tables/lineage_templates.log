@@ -1,0 +1,3 @@
+units 6518 {'junction': 66, 'junction_w118out': 18, 'bulge': 19, 'cdr12': 30, 'gap': 98}
+case runs 491 with starting model 103 | controls 400
+template entries to open 315

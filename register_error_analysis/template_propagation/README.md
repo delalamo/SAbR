@@ -85,6 +85,44 @@ Of the five antibodies whose error recurs across labs:
 * **A Fab light chain from 6OT0:** the flagged register fits *better*, so the flag is probably false.
 * **Two undetermined:** a nanobody in 7M74 and the C10 Fab light chain.
 
+### How many of the study's antibody errors were inherited from the first structure of the same antibody?
+
+**Method** (`scripts/first_instance.py`, `scripts/first_instance_summary.py`):
+* Each of the 165 antibody-chain errors in Table S1 (139 chains, 87 entries) was traced to every PDB
+  entry carrying the identical V-region sequence. That gave 69 distinct antibodies across 296 entries.
+* The flagged segment was superposed in the earliest entries (up to 7 before the flagged entry and 6
+  after) to see whether they carry the same register.
+* "Same paper" means the same citation DOI. "Same lab" means the same last author.
+
+| Origin of the error | Errors (n=165) | Independent events (n=112) | Entries (n=87) |
+|---|---|---|---|
+| **Inherited from an earlier structure of the same antibody** | **32 (19%)** | **22 (20%)** | **19 (22%)** |
+| …same paper (one model deposited in several entries) | 13 (8%) | 8 | 6 |
+| …same lab, reused in a later paper | 15 (9%) | 10 | 10 |
+| …another lab | **4 (2.4%)** | 4 | 3 |
+| **Arose in the flagged structure, the antibody's first deposition** | **125 (76%)** | 82 (73%) | 63 (72%) |
+| …later recycled into other entries | 18 (11%) | 11 | 11 |
+| …not recycled | 107 (65%) | 71 | 52 |
+| New error although earlier structures of the antibody are correct | 2 (1%) | 2 | 1 |
+| Undetermined or unmapped | 6 (4%) | 6 | 4 |
+
+* **Where the inherited errors come from.** 30 of the 32 come from the antibody's very first
+  deposition.
+* **Cross-lab recycling is rare.**
+  * 7S6C/7S6D (Fromme lab) took Fab 1B2's error from 6C9U (Khosla lab), their stated starting model.
+  * The 7M74 nanobody took its error from 6WW2.
+  * 6OT0 took its error from 6CMO. The map fits the flagged register better there, so that flag is
+    probably false.
+* **Caveats.**
+  * The study's flags catch only about 10% of errors in structures released before the AlphaFold2
+    training cutoff, so inheritance from pre-2018 templates is under-represented.
+  * Copying from a *different* antibody that shares a framework is not counted here (see
+    `../retest/lineage`).
+  * 14 flagged chains belong to one antibody (7CWS/7CWT/7CWU, 7E5R/7E5S) whose "error" may be a real
+    framework insertion.
+
+Tables: `tables/first_instance_errors.csv`, `first_instance_calls.csv`, `first_instance_summary.csv`.
+
 ## Cases
 
 ### Fab 1B2 (family 504): an erroneous high-resolution template copied for 8 years

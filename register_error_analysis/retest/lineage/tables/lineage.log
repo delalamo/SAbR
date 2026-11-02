@@ -1,0 +1,80 @@
+runs by class: {'gap': 217, 'junction': 124, 'bulge': 55, 'cdr12': 54}
+units (paper x antibody): 6518  erroneous units: {'junction': 66, 'bulge': 19, 'cdr12': 30, 'gap': 98}
+
+== 1. Are these errors concentrated in particular germline genes? (unit level)
+
+junction (J gene): 66 erroneous units of 6494 (1.02%); heterogeneity p=0.12
+               units  err    em  rate
+J                                    
+human|H|IGHJ4   1315   18  0.72  1.37
+human|H|IGHJ5    571    8  0.73  1.40
+human|H|IGHJ6    500    7  0.64  1.40
+mouse|H|IGHJ2    213    5  0.59  2.35
+mouse|K|IGKJ1    249    4  0.59  1.61
+
+bulge (J gene): 19 erroneous units of 6494 (0.29%); heterogeneity p=0.48
+               units  err    em  rate
+J                                    
+human|H|IGHJ4   1315    5  0.72  0.38
+human|K|IGKJ1    604    2  0.70  0.33
+mouse|K|IGKJ5    152    2  0.61  1.32
+mouse|K|IGKJ1    249    2  0.59  0.80
+mouse|K|IGKJ4     80    1  0.50  1.25
+
+cdr12 (V gene): 19 erroneous units of 5113 (0.37%); heterogeneity p=0.095
+                  units  err    em  rate
+V                                       
+human|H|IGHV3-53    100    4  0.69  4.00
+human|H|IGHV3-23    481    3  0.70  0.62
+human|H|IGHV3-64     65    2  0.69  3.08
+human|H|IGHV3-66    277    2  0.69  0.72
+human|H|IGHV1-18    100    1  0.60  1.00
+
+gap (V gene): 77 erroneous units of 5113 (1.51%); heterogeneity p=5.3e-05
+                  units  err    em  rate
+V                                       
+human|H|IGHV3-23    481   12  0.70  2.49
+human|H|IGHV3-66    277    6  0.69  2.17
+human|K|IGKV1-39    350    4  0.67  1.14
+human|L|IGLV1-44     54    4  0.61  7.41
+human|H|IGHV4-34     47    3  0.72  6.38
+computed predecessors for junction
+computed predecessors for bulge
+computed predecessors for cdr12
+computed predecessors for gap
+
+== 2. Erroneous units vs clean units: share with an erroneous predecessor of the same class (previous 3 years)
+   MH OR stratified by germline gene x EM x period; tiers are cumulative within lab type (close, or same V+J, or same germline gene)
+     cls   lab                    tier  err_units  err_with_pred  pct_err  pct_clean  MH_OR   lo      hi        p
+junction other  close relative (>=90%)         66              0      0.0        0.2   0.00  NaN     NaN 0.738626
+junction other           same V+J gene         66             13     19.7       10.9   1.74 0.81    3.74 0.153890
+junction other      same germline gene         66             37     56.1       49.2   0.21 0.09    0.52 0.000177
+junction other placebo: other germline         66             60     90.9       80.9    inf  NaN     NaN 0.074406
+junction  same  close relative (>=90%)         66              0      0.0        0.0    NaN  NaN     NaN      NaN
+junction  same           same V+J gene         66              0      0.0        0.1   0.00  NaN     NaN 0.783307
+junction  same      same germline gene         66              1      1.5        0.7   1.34 0.17   10.76 0.785135
+junction  same placebo: other germline         66              4      6.1        3.0   1.41 0.48    4.10 0.514926
+   bulge other  close relative (>=90%)         19              1      5.3        0.0  73.14 4.07 1314.91 0.000010
+   bulge other           same V+J gene         19              1      5.3        2.1   1.48 0.19   11.18 0.691989
+   bulge other      same germline gene         19              6     31.6       26.6   0.27 0.06    1.13 0.088522
+   bulge other placebo: other germline         19             14     73.7       57.4   1.06 0.19    5.90 0.954258
+   bulge  same  close relative (>=90%)         19              0      0.0        0.0    NaN  NaN     NaN      NaN
+   bulge  same           same V+J gene         19              0      0.0        0.0   0.00  NaN     NaN 0.909073
+   bulge  same      same germline gene         19              0      0.0        0.2   0.00  NaN     NaN 0.689808
+   bulge  same placebo: other germline         19              0      0.0        0.9   0.00  NaN     NaN 0.805107
+   cdr12 other  close relative (>=90%)         30              0      0.0        0.0    NaN  NaN     NaN      NaN
+   cdr12 other           same V+J gene         30              0      0.0        4.9   0.00  NaN     NaN 0.010356
+   cdr12 other      same germline gene         30              5     16.7        8.7   0.16 0.03    0.77 0.023138
+   cdr12 other placebo: other germline         30             21     70.0       65.0   0.00  NaN     NaN 0.040140
+   cdr12  same  close relative (>=90%)         30              0      0.0        0.0   0.00  NaN     NaN 0.914294
+   cdr12  same           same V+J gene         30              0      0.0        0.1   0.00  NaN     NaN 0.878796
+   cdr12  same      same germline gene         30              0      0.0        0.1   0.00  NaN     NaN 0.529351
+   cdr12  same placebo: other germline         30              2      6.7        2.1   5.02 0.77   32.88 0.039703
+     gap other  close relative (>=90%)         98              3      3.1        2.1   1.76 0.34    9.21 0.510893
+     gap other           same V+J gene         98             24     24.5       13.6   1.18 0.60    2.31 0.650079
+     gap other      same germline gene         98             31     31.6       27.1   0.19 0.09    0.40 0.000004
+     gap other placebo: other germline         98             94     95.9       86.8   0.78 0.10    6.01 0.709016
+     gap  same  close relative (>=90%)         98              1      1.0        0.0   8.59 0.77   95.81 0.022419
+     gap  same           same V+J gene         98              1      1.0        0.2   2.58 0.30   21.88 0.351038
+     gap  same      same germline gene         98              1      1.0        0.3   1.60 0.20   12.61 0.643340
+     gap  same placebo: other germline         98              3      3.1        4.0   0.45 0.11    1.84 0.243371
