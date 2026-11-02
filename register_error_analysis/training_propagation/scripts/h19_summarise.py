@@ -21,7 +21,10 @@ gaps0 = (t.v_internal_missing.fillna(0) == 0) & (t.partner_internal_missing.fill
 t['exposed'] = np.where(t.predictor == 'immunebuilder', (t.rel <= '2021-07-31') & (t.res <= 3.5) & gaps0, t.rel < '2021-07-01')
 scorable = ['copies error', 'canonical', 'shifted, not copied', 'unclear']
 t['ladder_ok'] = t.ladder_call.isin(scorable)
-t['copies'] = t.ladder_call == 'copies error'
+# the deposited chain itself carries a register run in the window (recomputed by the readout, as in the PDB scan)
+t['carrier'] = t.dep_run.fillna(False).astype(bool)
+t['same_as_deposit'] = t.ladder_call == 'copies error'
+t['copies'] = t.same_as_deposit & t.carrier   # the prediction reproduces an error the deposit carries
 def same_sign(r):
     if not r.pred_run: return False
     if pd.isna(r.delta) or pd.isna(r.pred_run_shift): return True
@@ -29,7 +32,8 @@ def same_sign(r):
 t['pred_run'] = t.pred_run.fillna(False).astype(bool)
 t['det'] = t.apply(same_sign, axis=1)
 def category(r):
-    if r.source == 'template_family': return f'template family {int(r.family)}'
+    if r.source == 'template_family':
+        return f'template family {int(r.family)}' + (' (framework insertion)' if str(r.fr_insertion) == 'True' else '')
     if r.fr_insertion is True or str(r.fr_insertion) == 'True': return 'framework insertion vs germline (detector artifact)'
     if r['kind'] == 'shift in FR3 80–86 (DE loop)': return 'FR3 80–86 DE loop (detector artifact)'
     if pd.isna(r.delta) or r['kind'] == 'no framework shift measurable': return 'no measurable shift'
@@ -37,13 +41,15 @@ def category(r):
     fr = sum(not (27 <= q <= 38 or 56 <= q <= 65 or 105 <= q <= 117) for q in pos)
     return 'framework register shift' if fr >= 0.5 * len(pos) else 'mostly within a CDR'
 t['category'] = t.apply(category, axis=1)
-t['abkey'] = t.fv_id + '|' + t.chain_type.astype(str) + '|' + t.imgt_lo.astype(str) + '-' + t.imgt_hi.astype(str)
+t['domain'] = t['domain'].fillna(t.chain_type) if 'domain' in t else t.chain_type
+t['abkey'] = t.fv_id + '|' + t.domain.astype(str) + '|' + t.imgt_lo.astype(str) + '-' + t.imgt_hi.astype(str)
 
 def tab(d, by):
-    g = d.groupby(by)
-    out = pd.DataFrame(dict(units=g.size(), antibodies=g.abkey.nunique(), ladder_scorable=g.ladder_ok.sum(),
-                            copies=g.copies.sum(), det_in_prediction=g.det.sum(), both=g.apply(lambda x: (x.copies & x.det).sum())))
-    out['pct_copies_of_scorable'] = (100 * out.copies / out.ladder_scorable.replace(0, np.nan)).round(1)
+    c = d[d.carrier]; g = c.groupby(by); n = d[~d.carrier].groupby(by)
+    out = pd.DataFrame(dict(units=d.groupby(by).size(), carrier_units=g.size(), carrier_antibodies=g.abkey.nunique(), ladder_scorable=g.ladder_ok.sum(),
+                            reproduces=g.copies.sum(), det_in_prediction=g.det.sum(), both=g.apply(lambda x: (x.copies & x.det).sum()),
+                            noncarrier_scorable=n.ladder_ok.sum(), noncarrier_matches_deposit=n.same_as_deposit.sum())).fillna(0).astype(int)
+    out['pct_reproduces'] = (100 * out.reproduces / out.ladder_scorable.replace(0, np.nan)).round(1)
     return out
 pd.set_option('display.width', 250); pd.set_option('display.max_colwidth', 60)
 log = open(f'{O}/full_run_summary.log', 'w')
@@ -53,12 +59,12 @@ P('Units (chain x error window) scored:', t.groupby('predictor').size().to_dict(
 P('Ladder calls:'); P(t.groupby(['predictor', 'ladder_call']).size().unstack(0).to_string())
 T1 = tab(t, ['predictor', 'category']); P('\nBy category (unit level):'); P(T1.to_string()); T1.to_csv(f'{O}/full_by_category.csv')
 # antibody level
-A = t.groupby(['predictor', 'abkey']).agg(category=('category', 'first'), exposed=('exposed', 'any'), units=('pdb', 'size'),
+A = t[t.carrier].groupby(['predictor', 'abkey']).agg(category=('category', 'first'), exposed=('exposed', 'any'), units=('pdb', 'size'),
                                           entries=('pdb', 'nunique'), copies=('copies', 'mean'), det=('det', 'mean'),
                                           scorable=('ladder_ok', 'any'), first_release=('rel', 'min')).reset_index()
 A['copies'] = A.copies >= 0.5; A['det'] = A.det >= 0.5
 real = A[A.category == 'framework register shift']
-P('\nAntibody level, framework register shifts only (detector artifacts and CDR-only runs excluded):')
+P('\nAntibody level, deposits carrying a framework register shift (detector artifacts and CDR-only runs excluded):')
 rows = []
 for p, g in real.groupby('predictor'):
     s = g[g.scorable]
@@ -73,13 +79,13 @@ T2 = pd.DataFrame(rows); P(T2.to_string(index=False)); T2.to_csv(f'{O}/full_expo
 # template families
 tf = t[t.source == 'template_family']
 if len(tf):
-    T3 = tf.groupby(['family', 'template_call', 'predictor']).agg(units=('pdb', 'size'), entries=('pdb', 'nunique'), dep_run=('dep_run', 'sum'),
-                                                                   copies=('copies', 'sum'), det=('det', 'sum'),
+    T3 = tf.groupby(['family', 'carrier', 'template_call', 'predictor']).agg(units=('pdb', 'size'), entries=('pdb', 'nunique'),
+                                                                   same_as_deposit=('same_as_deposit', 'sum'), det=('det', 'sum'),
                                                                    calls=('ladder_call', lambda x: dict(x.value_counts()))).reset_index()
     P('\nProblematic-template families:'); P(T3.to_string(index=False)); T3.to_csv(f'{O}/full_template_families.csv', index=False)
 # every copy, for inspection
-C = t[t.copies | t.det][['predictor', 'category', 'pdb', 'chain', 'chain_type', 'mode', 'fv_id', 'release', 'res', 'exposed', 'loc', 'imgt_lo', 'imgt_hi',
+C = t[t.carrier & (t.copies | t.det)][['predictor', 'category', 'pdb', 'chain', 'chain_type', 'mode', 'fv_id', 'release', 'res', 'exposed', 'loc', 'imgt_lo', 'imgt_hi',
                          'delta', 'dep_run_shift', 'pred_run_shift', 'ladder', 'fw_rmsd', 'ladder_call']]
-P(f'\nUnits where a prediction copies the error (ladder) or carries a run in the window: {len(C)}')
+P(f'\nCarrier units where a prediction reproduces the error (ladder) or carries a run in the window: {len(C)}')
 P(C.sort_values(['category', 'pdb']).to_string(index=False)); C.to_csv(f'{O}/full_copies.csv', index=False)
 A.to_csv(f'{O}/full_antibody_level.csv', index=False)

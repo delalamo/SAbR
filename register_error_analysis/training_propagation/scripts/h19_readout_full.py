@@ -58,7 +58,17 @@ def dep_detector(pdb, chain, ct, vseq, lab, scfv):
     SAbR label differs from ANARCI's. -> list of (imgt_start, imgt_end, shift)"""
     md, st = entry(pdb); k2v = chain_map(pdb, chain, vseq)
     kw = dict(scfv=True) if scfv else dict(chain_type=ct)
-    new = renumber_structure(st.get_parent(), chain=chain, mmcif_dict=md, **kw)
+    try:
+        new = renumber_structure(st.get_parent(), chain=chain, mmcif_dict=md, **kw)
+    except Exception:
+        # fallback: the V domain alone, residues with a complete backbone only
+        S = Structure('d'); S.header = {'missing_residues': [], 'has_missing_residues': False}
+        M = Model(0); S.add(M); X = Chain('X'); M.add(X)
+        for r in st[chain]:
+            v = k2v.get((r.id[1], r.id[2].strip()))
+            if v is not None and r.id[0] == ' ' and all(a in r for a in ('N', 'CA', 'C')):
+                r2 = r.copy(); r2.detach_parent(); X.add(r2)
+        return detector_runs(M, 'X', ct, vseq)
     old = [r for r in st[chain]]; nw = [r for r in new[0][chain]]
     pairs = []
     for o, n_ in zip(old, nw):
@@ -108,6 +118,9 @@ if __name__ == '__main__':
     FV = {f['fv_id']: f for f in json.load(open(os.path.join(os.path.dirname(os.path.abspath(sys.argv[1])), 'fvs.json')))}
     k, n = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (0, 1)
     units = [u for u in units if u.get('status') == 'ok']
+    only = os.environ.get('ONLY')  # optional: 'multi' = only multi-domain chains, or a comma list of pdb ids
+    if only == 'multi': units = [u for u in units if len(u.get('chain_type') or '') == 2]
+    elif only: units = [u for u in units if u['pdb'] in only.split(',')]
     pdbs = sorted(set(u['pdb'] for u in units)); mine = set(p for i, p in enumerate(pdbs) if i % n == k)
     rows = []
     for u in sorted([u for u in units if u['pdb'] in mine], key=lambda u: u['pdb']):
@@ -115,22 +128,30 @@ if __name__ == '__main__':
                                           'era', 'loc', 'kind', 'run_len', 'delta', 'mapfit_pct', 'fr_insertion', 'family_flagged', 'partner_chain', 'imgt_start', 'imgt_end')}
         if base['call'] is not None: base['template_call'] = base.pop('call')
         try:
-            vseq = u['vseq']; ct = u['chain_type']; lab, _ = anarci_labels(vseq)
-            lab = lab + [(999, '')] * (len(vseq) - len(lab))
-            if u['source'] == 'template_family':
-                a, b = u['seq_window']; lo, hi = lab[a][0], lab[min(b, len(lab) - 1)][0]
-            else:
-                lo, hi = u['imgt_start'], u['imgt_end']
-            base.update(imgt_lo=lo, imgt_hi=hi)
+            ct0 = u['chain_type']; f = FV[u['fv_id']]
+            cands = [(ct0, u['vseq'])] if len(ct0) == 1 else [(d, f['Hseq'] if d == 'H' else f['Lseq']) for d in ct0]
+            best = None
+            for d, vseq in cands:
+                try: chain_map(u['pdb'], u['chain'], vseq)
+                except Exception: continue
+                lab, _ = anarci_labels(vseq); lab = lab + [(999, '')] * (len(vseq) - len(lab))
+                if u['source'] == 'template_family':
+                    a, b = u['seq_window']; lo, hi = lab[a][0], lab[min(b, len(lab) - 1)][0]
+                else:
+                    lo, hi = u['imgt_start'], u['imgt_end']
+                dr = runs_in(dep_detector(u['pdb'], u['chain'], d, vseq, lab, len(ct0) == 2 or u.get('mode') == 'scfv'), lo, hi)
+                if best is None or (dr and not best[5]): best = (d, vseq, lab, lo, hi, dr)
+            if best is None: raise ValueError('no V domain of this chain matches the Fv')
+            ct, vseq, lab, lo, hi, dr = best
+            base.update(imgt_lo=lo, imgt_hi=hi, domain=ct, dep_run=bool(dr), dep_run_shift=';'.join(f'{x[2]:+d}' for x in dr))
             dca = dep_domain(u['pdb'], u['chain'], vseq)
             gap = lambda ca: (max(ca) - min(ca) + 1 - len(ca)) if ca else None
             base['v_internal_missing'] = gap(dca)
-            if u.get('partner_chain'):
-                f = FV[u['fv_id']]; pseq = f['Lseq'] if ct == 'H' else f['Hseq']
-                try: base['partner_internal_missing'] = gap(dep_domain(u['pdb'], u['partner_chain'], pseq))
+            pseq = f['Lseq'] if ct == 'H' else f['Hseq']
+            pch = u.get('partner_chain') or (u['chain'] if len(ct0) == 2 else None)
+            if pch and pseq:
+                try: base['partner_internal_missing'] = gap(dep_domain(u['pdb'], pch, pseq))
                 except Exception: base['partner_internal_missing'] = None
-            dr = runs_in(dep_detector(u['pdb'], u['chain'], ct, vseq, lab, u.get('mode') == 'scfv'), lo, hi)
-            base.update(dep_run=bool(dr), dep_run_shift=';'.join(f'{x[2]:+d}' for x in dr))
         except Exception as e:
             base.update(error=f'deposit: {e}'[:200]); rows.append(base); continue
         for meth in ('immunebuilder', 'igfold'):
