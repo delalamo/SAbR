@@ -30,7 +30,7 @@ for line in open(f'{SP}/retest/modelling.jsonl'):
     ids = sorted({(x.get('accession_code') or '').lower() for x in irm if (x.get('source_name') or '').upper() == 'PDB' and x.get('accession_code')})
     if ids: SM[e['rcsb_id'].lower()] = ids
 M['sm'] = M.pdb.map(SM)
-cases = R.merge(M[['pdb', 'chain', 'seq', 'V', 'J', 'ctype', 'sm', 'EM', 'year', 'lab']], on=['pdb', 'chain'])
+cases = R[['pdb', 'chain', 'cls', 'imgt0', 'imgt1', 'delta']].merge(M[['pdb', 'chain', 'seq', 'V', 'J', 'ctype', 'sm', 'EM', 'year', 'lab']], on=['pdb', 'chain'])
 flagged = set(zip(R.pdb, R.chain)) | set()
 allruns = pd.read_csv(f'{SP}/unexpl/runs_origin_v2.csv'); anyflag = set(zip(allruns.pdb, allruns.chain))
 ctrl_pool = M[M.sm.notna() & M.EM & (M.year >= 2018) & ~pd.Series(list(zip(M.pdb, M.chain)), index=M.index).isin(anyflag) & (M.flag == 0)]
