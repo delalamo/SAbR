@@ -1,8 +1,8 @@
 # Standalone report: register errors in deposited antibody structures
 
 `index.html` is a self-contained report for readers new to the topic. It covers the background,
-the methods, all eighteen hypotheses tested (with verdicts), the mechanisms behind the errors, a
-diagnosis and recommendations. It has 29 figures in `img/`. Open it in a browser; images load from
+the methods, nineteen hypotheses tested (with verdicts), the mechanisms behind the errors, a
+diagnosis and recommendations. It has 30 figures in `img/`. Open it in a browser; images load from
 `img/` by relative path.
 
 ## Figures
@@ -22,6 +22,19 @@ diagnosis and recommendations. It has 29 figures in `img/`. Open it in a browser
     helpers.
 * **Paths.** The scripts point at a session scratch directory set at the top of `render.py` and
   `figs.py`. Edit `SP` and `R` to rerun them elsewhere.
+
+## Revision: length-controlled comparison (H1b)
+
+The first version set the 2024 study's per-entry figure ("1 in 6 entries") beside a per-domain
+antibody figure from a different detector, which invited the wrong comparison.
+
+**Headline numbers.** These now compare like units with the same detector. A new section, H1b,
+asks whether antibodies only look clean because V domains are short. It draws on
+`../length_normalised/`, and its chart, `img/f_length.png`, is drawn by
+`../length_normalised/scripts/length_fig.py`.
+
+**Other sections updated to match:** the summary, the verdict table, the 2024-study and statistics
+sections, the diagnosis, the limitations and the glossary. Figures after Figure 9 are renumbered.
 
 ## Correction made while preparing the report
 
