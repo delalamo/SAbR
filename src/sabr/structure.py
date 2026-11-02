@@ -407,10 +407,12 @@ def apply_numbering(
     result = copy.deepcopy(structure)
     # These records use the input author IDs, which are no longer valid for
     # the renumbered chain. Do not let a second call reuse stale gap metadata.
-    if "missing_residues" in result.header:
-        result.header["missing_residues"] = [
+    # Structures assembled in code have no ``header`` attribute.
+    header = getattr(result, "header", None)
+    if header and "missing_residues" in header:
+        header["missing_residues"] = [
             record
-            for record in result.header["missing_residues"]
+            for record in header["missing_residues"]
             if record.get("chain") != chain
         ]
     target = _find_chain(result, chain)
