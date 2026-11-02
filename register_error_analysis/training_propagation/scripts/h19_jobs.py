@@ -128,7 +128,8 @@ if __name__ == '__main__':
             s = e['chains'].get(u['chain'], ''); w = s.find(u['win'])
             cands = [d for d in e['doms'] if d['chain'] == u['chain']]
             if w < 0 or not cands: u['status'] = 'window or V domain not found'; units.append(u); continue
-            a, b = w + u['s0'], w + u['s1']
+            # win = reference sequence[max(0, s0-12) : s1+13] (tmpl2_candidates.py), so the segment starts min(s0, 12) into it
+            a = w + min(u['s0'], 12); b = a + (u['s1'] - u['s0'])
             d = [d for d in cands if d['start'] <= a and b <= d['end']]
             if not d: u['status'] = 'error window outside the V region'; units.append(u); continue
             u['chain_type'] = d[0]['type']; u['seq_window'] = [a - d[0]['start'], b - d[0]['start']]
