@@ -1,0 +1,29 @@
+keyword,case_pct,control_pct,case_n,control_n,p
+AlphaFold/ColabFold,7.9,30.2,3,60,0.0043
+Phenix real-space refine,50.0,63.3,19,126,0.1467
+PIGS,2.6,0.0,1,0,0.1603
+RosettaAntibody,5.3,1.5,2,3,0.1827
+Sculptor/Chainsaw,5.3,2.0,2,4,0.247
+template PDB of another Fab,42.1,32.7,16,65,0.2683
+map_to_model/trace_and_build,2.6,0.5,1,1,0.2955
+rigid body,15.8,25.1,6,50,0.2972
+Namdinator,0.0,4.5,0,9,0.3615
+MODELLER,0.0,5.0,0,10,0.3718
+mutated (to sequence),13.2,9.0,5,18,0.3848
+ModelAngelo,2.6,1.5,1,3,0.5054
+I-TASSER,2.6,1.5,1,3,0.5054
+Coot,68.4,73.9,26,147,0.5502
+ABodyBuilder/SAbPred,5.3,3.5,2,7,0.6394
+homology model,15.8,20.1,6,40,0.6575
+CDR loops (re)built,5.3,4.0,2,8,0.6644
+Phenix (any),73.7,76.4,28,152,0.6844
+only Fv / variable domains modelled,26.3,23.6,10,47,0.6844
+ISOLDE,7.9,7.0,3,14,0.7407
+DeepTracer,0.0,0.0,0,0,1.0
+MDFF,0.0,2.0,0,4,1.0
+Rosetta,15.8,16.6,6,33,1.0
+dock_and_rebuild,0.0,0.0,0,0,1.0
+Phyre2,0.0,2.5,0,5,1.0
+SWISS-MODEL,13.2,13.6,5,27,1.0
+Buccaneer,0.0,0.5,0,1,1.0
+Chimera fit in map,0.0,2.5,0,5,1.0
