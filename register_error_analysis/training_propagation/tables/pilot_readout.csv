@@ -49,3 +49,4 @@ igfold,26pf_AB,s5 >=2023-06,FR1,8-35,-2,False,,. . -2 -2 -2 . -2 -2 -2 -1 -1 . -
 igfold,22ge_GH,s5 >=2023-06,FR2,53-60,-1,False,9-11:+2;62-69:-1,0 . -1 0 -1 . -1 -1,3.7,poor superposition
 boltz2,6bpe_BC,s1 <2018-05,FR1,3-8,-1,False,,-2 -2 -2 -1 -1 -1,1.24,canonical
 colabfold_v3,6bpe_BC,s1 <2018-05,FR1,3-8,-1,False,,-1 -2 -1 -1 -1 -1,0.81,canonical
+esmfold,6bpe_BC,s1 <2018-05,FR1,3-8,-1,False,,-1 -2 -1 -1 -1 -1,0.88,canonical

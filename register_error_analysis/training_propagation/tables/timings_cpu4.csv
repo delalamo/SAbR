@@ -1,0 +1,6 @@
+method,sec_per_fv,peak_ram_gb,weights_gb
+ABodyBuilder2,7-10,<2,<0.5
+IgFold,13-40,<3,<1
+Boltz-2,371 (+~120 MSA),9.5,4.2
+"ColabFold AF-M v2.3, 1 model",750 (+137 MSA),4.2,3.8
+ESMFold,255 (+82 load),13.8,8.4

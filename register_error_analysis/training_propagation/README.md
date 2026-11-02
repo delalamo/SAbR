@@ -159,9 +159,9 @@ includes 6 released before both models' cutoffs. Only 1 of those 6 (7CZV) passed
 training filters, and IgFold's are not documented. With n = 12 this rules out only near-universal
 memorisation, not a modest effect.
 
-**Slower predictors.** Boltz-2 and ColabFold AF-Multimer v2.3 were run on one case (6BPE, released
-2018-06, in both training windows). Both put the segment in the canonical register (ladder −1/−2;
-no detector run).
+**Slower predictors.** Boltz-2, ColabFold AF-Multimer v2.3 and ESMFold were run on one case (6BPE,
+released 2018-06, inside all three training windows). All three put the segment in the canonical
+register (ladder −1/−2, no detector run). Framework RMSD to the deposit was 0.8–1.2 Å.
 
 ## Compute on this machine
 
@@ -174,7 +174,7 @@ settings, except where noted.
 | IgFold | 13–40 s | <3 GB | <1 GB | no refinement; transformers had to be pinned to 4.44 |
 | Boltz-2 | 6 min 11 s, plus ~2 min MSA (server) | 9.5 GB | 4.2 GB (+2 GB optional affinity weights) | 1 diffusion sample, 200 steps, 3 recycles |
 | ColabFold AF-Multimer v2.3 | 12.5 min per model, plus 2.3 min MSA (server) | 4.2 GB | 3.8 GB | 1 model; stopped early after 1 recycle. Defaults (5 models, up to 20 recycles) are 5–10× longer |
-| ESMFold | ESMFOLD_TIME | ESMFOLD_RAM | 8.4 GB | single sequence; H + 25 G linker + L |
+| ESMFold | 4 min 15 s (+80 s model load, once) | 13.8 GB of 15 | 8.4 GB | single sequence; H + 25 G linker + L. Works, but with almost no RAM to spare |
 | Boltz-1, AF-Multimer v2 | presumably as Boltz-2 / AF-M v2.3 | | +3–4 GB each | not run; same code paths |
 | Chai-1, AlphaFold3, Protenix | | | | not possible: CUDA GPU required (Chai-1), weights on request (AF3) |
 
@@ -188,13 +188,16 @@ settings, except where noted.
 | ABodyBuilder2 + IgFold | 1,400 each | about 10 h together. **Feasible.** |
 | Boltz-2 (+ Boltz-1) | 600 each | about 70 h each |
 | ColabFold v2 + v2.3, 1 model | 600 each + 200 template runs | about 300 h |
-| ESMFold | 600 | ESMFOLD_TOTAL |
+| ESMFold | 600 | about 42 h |
 
 **Conclusion.**
 * **Fast antibody predictors (ABodyBuilder2, IgFold):** the whole test runs comfortably on this
   machine, including the large generalisation arm.
 * **General predictors (Boltz, AF-Multimer, ESMFold):** the study is CPU-bound at roughly 2–3 weeks of
-  continuous computing. That is impractical in an ephemeral container with 11 GB of free disk.
+  continuous computing. That is impractical in an ephemeral container.
+* **Disk:** about 35 GB in total for environments and weights, against 26 GB free at the start.
+  Weights have to be downloaded, used and deleted method by method. Downloads ran at about
+  30 MB/s.
 * **Options for the general predictors:**
   1. a GPU, where these models are commonly reported at tens of seconds per Fv (not measured here),
      so the whole study fits in about a day;
