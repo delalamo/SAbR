@@ -3,7 +3,21 @@
 # (last author), deposition/release, EM flag, period, and y_<class> flags; R: classified runs.
 import json, numpy as np, pandas as pd
 M = pd.read_pickle(f'{SP}/unexpl/master4.pkl'); G = json.load(open(f'{SP}/unexpl/germline.json'))
-M['j_gene'] = M.seq.map(lambda s: (G.get(s) or {}).get('j_gene'))
+# master4.seq is the full chain SEQRES (V + constant). Antibody identity and similarity must use the V region only.
+import os
+VF = f'{SP}/unexpl/vregion.json'
+if os.path.exists(VF): VR = json.load(open(VF))
+else:
+    from anarci import run_anarci
+    VR = {}; useq = sorted(set(M.seq))
+    for k in range(0, len(useq), 1000):
+        chunk = [(str(i), q) for i, q in enumerate(useq[k:k + 1000])]
+        _, _, det, _ = run_anarci(chunk, scheme='imgt', ncpu=4)
+        for (n, q), d in zip(chunk, det):
+            if d: VR[q] = q[d[0]['query_start']:d[0]['query_end'] + 1]
+    json.dump(VR, open(VF, 'w'))
+M['vseq_full'] = M.seq; M['seq'] = M.seq.map(VR).fillna(M.seq)
+M['j_gene'] = M.vseq_full.map(lambda s: (G.get(s) or {}).get('j_gene'))
 gene = lambda g: g.split('*')[0] if isinstance(g, str) else None
 M['V'] = M.species.fillna('?') + '|' + M.ctype + '|' + M.v_gene.map(gene).fillna('?')
 M['J'] = M.species.fillna('?') + '|' + M.ctype + '|' + M.j_gene.map(gene).fillna('?')

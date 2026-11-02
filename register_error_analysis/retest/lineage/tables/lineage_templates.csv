@@ -1,0 +1,892 @@
+kind,pdb,chain,cls,ctype,V,J,EM,year,imgt0,imgt1,delta,has_sm,tier,template,tchain,identity,tV,tJ,tres,template_runs,template_same_error,template_any_run,templates
+case,1ken,H,cdr12,H,mouse|H|IGHV3-6,mouse|H|IGHJ2,False,2001,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,1ken,T,cdr12,H,mouse|H|IGHV3-6,mouse|H|IGHJ2,False,2001,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,3jbf,7,cdr12,H,human|H|IGHV3-30,human|H|IGHJ1,True,2015,37.0,48.0,-3.0,True,other antibody,1i3u,A,0.543,human|H|IGHV3-64,human|H|IGHJ4,,,False,False,
+case,3idy,C,junction,K,human|K|IGKV1-33,human|K|IGKJ4,False,2009,113.0,120.0,1.0,True,same V+J gene,3idx,L,0.258,human|K|IGKV1-33,human|K|IGKJ4,,113-120:+1,True,True,
+case,3idy,L,junction,K,human|K|IGKV1-33,human|K|IGKJ4,False,2009,113.0,120.0,1.0,True,same V+J gene,3idx,L,0.258,human|K|IGKV1-33,human|K|IGKJ4,,113-120:+1,True,True,
+case,3ncy,P,cdr12,H,mouse|H|IGHV1-47-36,mouse|H|IGHJ2,False,2010,62.0,100.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,3ncy,Q,cdr12,H,mouse|H|IGHV1-47-36,mouse|H|IGHJ2,False,2010,62.0,100.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,4xnz,B,gap,H,human|H|IGHV1-2,human|H|IGHJ1,False,2015,83.0,85.0,,True,same V+J gene,4jb9,H,0.19,human|H|IGHV1-2,human|H|IGHJ1,,83-85:-2,True,True,
+case,4xnz,E,gap,H,human|H|IGHV1-2,human|H|IGHJ1,False,2015,83.0,85.0,,True,same V+J gene,4jb9,H,0.19,human|H|IGHV1-2,human|H|IGHJ1,,83-85:-2,True,True,
+case,4xnz,H,gap,H,human|H|IGHV1-2,human|H|IGHJ1,False,2015,83.0,85.0,,True,same V+J gene,4jb9,H,0.19,human|H|IGHV1-2,human|H|IGHJ1,,83-85:-2,True,True,
+case,5zs0,B,junction,H,mouse|H|IGHV5-9-3,mouse|H|IGHJ2,False,2018,110.0,128.0,2.0,True,starting model has no antibody of this type,,,,,,,,,,5ys2
+case,6ad0,L,gap,K,mouse|K|IGKV1-117,mouse|K|IGKJ2,True,2018,1.0,32.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6bsp,A,gap,H,mouse|H|IGHV5-6-5,mouse|H|IGHJ2,True,2017,7.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6bpe,C,gap,K,mouse|K|IGKV6-15,mouse|K|IGKJ2,False,2017,3.0,8.0,-1.0,True,other antibody,5en2,B,0.101,mouse|K|IGKV6-13,mouse|K|IGKJ5,,,False,False,
+case,6bpe,F,gap,K,mouse|K|IGKV6-15,mouse|K|IGKJ2,False,2017,3.0,8.0,-1.0,True,other antibody,5en2,B,0.101,mouse|K|IGKV6-13,mouse|K|IGKJ5,,,False,False,
+case,6cmo,L,gap,K,human|K|IGKV1-39,human|K|IGKJ1,True,2018,4.0,12.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6jmr,F,junction,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2019,114.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6lht,L,cdr12,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2019,31.0,57.0,5.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6lht,L,junction,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2019,114.0,127.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6orp,D,gap,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,1.0,7.0,-1.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,D,junction,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,H,gap,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,1.0,7.0,-1.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,H,junction,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,J,gap,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,1.0,7.0,-1.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,J,junction,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6qxe,M,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2019,112.0,122.0,1.0,True,same V+J gene,6qpg,M,0.896,human|H|IGHV3-23,human|H|IGHJ4,,112-122:+1,True,True,
+case,6qxe,O,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2019,112.0,122.0,1.0,True,same V+J gene,6qpg,M,0.896,human|H|IGHV3-23,human|H|IGHJ4,,112-122:+1,True,True,
+case,6qpg,M,junction,H,human|H|IGHV3-23,human|H|IGHJ4,False,2019,112.0,122.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5d98
+case,6qpg,N,junction,H,human|H|IGHV3-23,human|H|IGHJ4,False,2019,112.0,122.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5d98
+case,6qpg,O,junction,H,human|H|IGHV3-23,human|H|IGHJ4,False,2019,112.0,122.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5d98
+case,6qpg,P,junction,H,human|H|IGHV3-23,human|H|IGHJ4,False,2019,112.0,122.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5d98
+case,6ukt,E,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2019,3.0,12.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,6nmg
+case,6x06,K,junction,H,human|H|IGHV3-23,human|H|IGHJ4,False,2020,112.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,3hxr
+case,7cwu,J,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cwu,N,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cwu,P,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cwt,L,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cwt,N,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cwt,P,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cws,L,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cws,N,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cws,P,gap,H,human|H|IGHV1-24,human|H|IGHJ5,True,2020,1.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d3k,L,junction,L,human|L|IGLV2-11,human|L|IGLJ7,True,2020,113.0,122.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d3k,H,junction,H,mouse|H|IGHV2-9-1,mouse|H|IGHJ2,True,2020,109.0,119.0,11.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d3l,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ3,True,2020,106.0,112.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7d3m,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ3,True,2020,111.0,112.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7d3r,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ3,True,2020,103.0,112.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e23,B,gap,H,human|H|IGHV4-34,human|H|IGHJ4,True,2021,72.0,93.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e23,B,junction,H,human|H|IGHV4-34,human|H|IGHJ4,True,2021,112.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e39,C,gap,H,human|H|IGHV3-33,human|H|IGHJ6,True,2021,62.0,93.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e39,B,bulge,K,human|K|IGKV1D-17,human|K|IGKJ2,True,2021,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e3c,B,gap,H,human|H|IGHV3-53,human|H|IGHJ6,True,2021,4.0,11.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e3c,B,gap,H,human|H|IGHV3-53,human|H|IGHJ6,True,2021,74.0,81.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e3c,C,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2021,3.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7e3c,C,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2021,57.0,89.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7eaj,F,cdr12,H,mouse|H|IGHV1-12,mouse|H|IGHJ3,True,2021,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7ey5,B,junction,H,human|H|IGHV5-51,human|H|IGHJ5,True,2021,121.0,128.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7fej,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ4,True,2021,108.0,114.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7k8x,D,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2020,112.0,127.0,1.0,True,same J gene,6w41,H,0.058,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7k8x,E,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2020,112.0,127.0,1.0,True,same J gene,6w41,H,0.058,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7m6h,D,junction,H,human|H|IGHV1-8,human|H|IGHJ6,True,2021,112.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+case,7m6h,E,junction,H,human|H|IGHV1-8,human|H|IGHJ6,True,2021,112.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+case,7mkl,H,cdr12,H,mouse|H|IGHV2-9,mouse|H|IGHJ2,True,2021,54.0,59.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mkl,H,bulge,H,mouse|H|IGHV2-9,mouse|H|IGHJ2,True,2021,120.0,125.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mhz,O,gap,H,mouse|H|IGHV9-1,mouse|H|IGHJ2,True,2021,87.0,95.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nj5,F,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,101.0,108.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,7hna
+case,7nqk,B,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2021,3.0,11.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,B,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,E,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,H,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,K,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,N,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,Q,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7o85,T,bulge,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2021,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7qia,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,3.0,16.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7qic,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,3.0,16.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7qji,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,False,2021,3.0,16.0,-1.0,True,close (>=90%),7qia,B,0.944,human|H|IGHV3-23,human|H|IGHJ4,,3-16:-1,True,True,
+case,7qji,G,gap,H,human|H|IGHV3-23,human|H|IGHJ4,False,2021,3.0,16.0,-1.0,True,close (>=90%),7qia,B,0.944,human|H|IGHV3-23,human|H|IGHJ4,,3-16:-1,True,True,
+case,7qjj,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,False,2021,3.0,16.0,-1.0,True,close (>=90%),7qia,B,0.944,human|H|IGHV3-23,human|H|IGHJ4,,3-16:-1,True,True,
+case,7qjj,G,gap,H,human|H|IGHV3-23,human|H|IGHJ4,False,2021,3.0,16.0,-1.0,True,close (>=90%),7qia,B,0.944,human|H|IGHV3-23,human|H|IGHJ4,,3-16:-1,True,True,
+case,7v2a,E,junction,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7v2a,G,junction,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7v2a,I,junction,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7c80,H,junction,H,mouse|H|IGHV5-6-4,mouse|H|IGHJ2,True,2020,30.0,128.0,9.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7c80,L,junction,K,mouse|K|IGKV5-43,mouse|K|IGKJ5,True,2020,111.0,117.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7czr,K,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czr,N,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czr,H,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czr,J,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,H,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,J,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,K,gap,K,human|K|IGKV1-33,human|K|IGKJ2,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,N,gap,K,human|K|IGKV1-33,human|K|IGKJ2,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,K,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,M,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,N,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,H,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,I,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czs,J,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czy,K,junction,K,human|K|IGKV4-1,human|K|IGKJ4,True,2020,109.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czy,N,junction,K,human|K|IGKV4-1,human|K|IGKJ4,True,2020,109.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d00,H,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d00,J,bulge,H,human|H|IGHV3-53,human|H|IGHJ4,True,2020,120.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d00,K,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7d00,N,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,K,gap,K,human|K|IGKV1-33,human|K|IGKJ2,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,M,gap,K,human|K|IGKV1-33,human|K|IGKJ2,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,N,gap,K,human|K|IGKV1-33,human|K|IGKJ2,True,2020,1.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,H,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,I,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,J,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czz,K,junction,K,human|K|IGKV4-1,human|K|IGKJ4,True,2020,109.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czz,M,junction,K,human|K|IGKV4-1,human|K|IGKJ4,True,2020,109.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czz,N,junction,K,human|K|IGKV4-1,human|K|IGKJ4,True,2020,109.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7jhh,L,gap,K,human|K|IGKV1-39,human|K|IGKJ1,True,2020,3.0,9.0,-2.0,True,same V+J gene,6cmo,L,0.24,human|K|IGKV1-39,human|K|IGKJ1,,4-12:-2,True,True,
+case,7e5y,C,junction,H,human|H|IGHV3-66,human|H|IGHJ6,False,2021,110.0,126.0,2.0,True,same V gene,7c01,H,0.233,human|H|IGHV3-66,human|H|IGHJ4,,,False,False,
+case,7jhg,L,gap,K,human|K|IGKV1-39,human|K|IGKJ1,True,2020,3.0,10.0,-2.0,True,same V+J gene,6cmo,L,0.24,human|K|IGKV1-39,human|K|IGKJ1,,4-12:-2,True,True,
+case,7k66,C,junction,K,mouse|K|IGKV4-50,mouse|K|IGKJ4,False,2020,115.0,127.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,6mf0
+case,7kra,I,gap,H,human|H|IGHV4-34,human|H|IGHJ5,True,2020,80.0,93.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7jtf,A,gap,H,human|H|IGHV1-69,human|H|IGHJ5,False,2020,55.0,62.0,-1.0,True,same V+J gene,6bkb,H,0.103,human|H|IGHV1-69,human|H|IGHJ5,,,False,False,
+case,7jtf,C,gap,H,human|H|IGHV1-69,human|H|IGHJ5,False,2020,55.0,62.0,-1.0,True,same V+J gene,6bkb,H,0.103,human|H|IGHV1-69,human|H|IGHJ5,,,False,False,
+case,7ktx,I,gap,H,human|H|IGHV4-34,human|H|IGHJ5,True,2020,80.0,93.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7l5b,H,junction,H,human|H|IGHV1-2,human|H|IGHJ3,False,2020,111.0,128.0,3.0,True,other antibody,7bz5,H,0.022,human|H|IGHV3-53,human|H|IGHJ6,,,False,False,
+case,7m74,L,gap,K,human|K|IGKV1-39,human|K|IGKJ1,True,2021,3.0,10.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7oh0,C,cdr12,H,human|H|IGHV4-39,human|H|IGHJ5,True,2021,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,3jcx,H,gap,H,mouse|H|IGHV2-4,mouse|H|IGHJ3,True,2016,7.0,127.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,3wsq,L,junction,L,human|L|IGLV1-44,human|L|IGLJ6,False,2014,110.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,5dum,H,cdr12,H,human|H|IGHV5-10-1,human|H|IGHJ5,False,2015,27.0,34.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,5ken,C,junction,H,mouse|H|IGHV1-42,mouse|H|IGHJ3,True,2016,112.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,5ken,G,junction,H,mouse|H|IGHV1-42,mouse|H|IGHJ3,True,2016,112.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,5ken,N,junction,H,mouse|H|IGHV1-42,mouse|H|IGHJ3,True,2016,112.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,5xbm,A,cdr12,K,mouse|K|IGKV5-39,mouse|K|IGKJ4,False,2017,65.0,70.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,4tw2
+case,5xbm,D,cdr12,K,mouse|K|IGKV5-39,mouse|K|IGKJ4,False,2017,65.0,74.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,4tw2
+case,6ic3,A,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,B,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,C,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,D,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,E,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,F,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,G,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6ic3,H,gap,L,human|L|IGLV1-44,human|L|IGLJ3,True,2018,16.0,122.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6p65,C,cdr12,H,human|H|IGHV3-53,human|H|IGHJ2,True,2019,60.0,68.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6p65,F,cdr12,H,human|H|IGHV3-53,human|H|IGHJ2,True,2019,60.0,68.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6p65,H,cdr12,H,human|H|IGHV3-53,human|H|IGHJ2,True,2019,60.0,68.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6qx3,O,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2019,112.0,122.0,1.0,True,same V+J gene,6qpg,M,0.896,human|H|IGHV3-23,human|H|IGHJ4,,112-122:+1,True,True,
+case,6xja,H,junction,H,human|H|IGHV3-73,human|H|IGHJ5,True,2020,113.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,A,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,B,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,C,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,D,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,E,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6z1o,F,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2020,11.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,L,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,g,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,i,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,j,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,k,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7cn2,m,junction,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,112.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7eak,F,cdr12,H,mouse|H|IGHV1-12,mouse|H|IGHJ3,True,2021,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7fei,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ4,True,2021,109.0,115.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7k0x,A,gap,H,mouse|H|IGHV5-9,mouse|H|IGHJ2,False,2020,114.0,120.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k0x,C,gap,H,mouse|H|IGHV5-9,mouse|H|IGHJ2,False,2020,112.0,120.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k8y,G,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2020,112.0,127.0,1.0,True,same J gene,6w41,H,0.058,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7k22,L1,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L2,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L3,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L4,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L5,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7kbt,E,gap,H,mouse|H|IGHV1-9,mouse|H|IGHJ1,False,2020,99.0,112.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,6mf0
+case,7k23,L2,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L3,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L4,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L5,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L6,junction,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7kc1,E,bulge,H,human|H|IGHV6-1,human|H|IGHJ4,True,2020,120.0,126.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,4o5n
+case,7kc1,H,bulge,H,human|H|IGHV6-1,human|H|IGHJ4,True,2020,120.0,126.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,4o5n
+case,7kc1,J,bulge,H,human|H|IGHV6-1,human|H|IGHJ4,True,2020,120.0,126.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,4o5n
+case,7mej,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,2.0,34.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mej,B,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,112.0,127.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mkm,H,cdr12,H,mouse|H|IGHV2-9,mouse|H|IGHJ2,True,2021,54.0,59.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mkm,H,bulge,H,mouse|H|IGHV2-9,mouse|H|IGHJ2,True,2021,120.0,125.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7mlv,K,junction,K,mouse|K|IGKV6-25,mouse|K|IGKJ1,True,2021,109.0,123.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nk2,F,gap,H,human|H|IGHV3-30,human|H|IGHJ4,True,2021,67.0,73.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,7hna
+case,7nvn,N,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,12.0,14.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,A,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,B,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,C,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,D,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,E,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,F,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7nsl,G,gap,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,9.0,125.0,-10.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7ty0,J,gap,H,mouse|H|IGHV6-6,mouse|H|IGHJ3,True,2022,60.0,67.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t3d,H,junction,H,human|H|IGHV3-48,human|H|IGHJ4,True,2021,111.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t3d,O,junction,H,human|H|IGHV3-48,human|H|IGHJ4,True,2021,111.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t3d,P,junction,H,human|H|IGHV3-48,human|H|IGHJ4,True,2021,111.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7vne,W,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,112.0,127.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12iu,I,cdr12,K,human|K|IGKV1-33,human|K|IGKJ4,True,2026,58.0,71.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12iu,Y,cdr12,K,human|K|IGKV1-33,human|K|IGKJ4,True,2026,58.0,72.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12iu,Z,cdr12,K,human|K|IGKV1-33,human|K|IGKJ4,True,2026,58.0,72.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ua,C,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ud,C,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ub,C,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ub,D,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ty,C,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,12ty,D,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2026,111.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,22ge,G,cdr12,H,human|H|IGHV3-66,human|H|IGHJ2,True,2026,53.0,60.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,26pf,A,cdr12,H,human|H|IGHV1-46,human|H|IGHJ4,True,2026,8.0,35.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,26pf,A,junction,H,human|H|IGHV1-46,human|H|IGHJ4,True,2026,112.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,26pf,B,junction,L,human|L|IGLV1-44,human|L|IGLJ2,True,2026,113.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,30us,D,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2026,111.0,121.0,2.0,True,starting model has no antibody of this type,,,,,,,,,,8g1n
+case,7f3q,B,gap,K,human|K|IGKV1-12,human|K|IGKJ5,True,2021,2.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7sp7,C,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,62.0,67.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7sp6,C,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2021,62.0,67.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7stf,H,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,2.0,17.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7stf,H,junction,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,111.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t6x,B,gap,L,human|L|IGLV1-47,human|L|IGLJ3,True,2021,2.0,10.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t0w,H,bulge,H,human|H|IGHV1-8,human|H|IGHJ5,True,2021,120.0,125.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7t0w,H2,bulge,H,human|H|IGHV1-8,human|H|IGHJ5,True,2021,120.0,125.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7tz5,L,gap,L,human|L|IGLV1-40,human|L|IGLJ2,True,2022,2.0,31.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7tz5,M,gap,L,human|L|IGLV1-40,human|L|IGLJ2,True,2022,2.0,31.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7tz5,N,gap,L,human|L|IGLV1-40,human|L|IGLJ2,True,2022,2.0,31.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7ul5,D,gap,H,mouse|H|IGHV5-6-3,mouse|H|IGHJ4,True,2022,19.0,43.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7ul5,D,gap,H,mouse|H|IGHV5-6-3,mouse|H|IGHJ4,True,2022,99.0,112.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7uow,H,cdr12,H,human|H|IGHV3-53,human|H|IGHJ6,True,2022,53.0,59.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7we8,L,junction,L,human|L|IGLV2-14,human|L|IGLJ2,True,2021,110.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wee,L,junction,L,human|L|IGLV2-14,human|L|IGLJ2,True,2021,110.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtg,L,bulge,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,J,junction,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,K,junction,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,L,junction,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wuj,N,gap,H,human|H|IGHV3-48,human|H|IGHJ4,True,2022,111.0,117.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,7wp6,I,bulge,K,mouse|K|IGKV8-30,mouse|K|IGKJ5,True,2022,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wp6,D,gap,H,mouse|H|IGHV1-87,mouse|H|IGHJ3,True,2022,3.0,11.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wp8,D,gap,H,mouse|H|IGHV1-87,mouse|H|IGHJ3,True,2022,3.0,11.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7y0o,H,junction,H,human|H|IGHV1-69,human|H|IGHJ4,True,2022,95.0,112.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7y58,C,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2022,2.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8bw0,H,cdr12,H,mouse|H|IGHV5-12-1,mouse|H|IGHJ3,True,2022,63.0,70.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8c8t,S,gap,H,human|H|IGHV1-2,human|H|IGHJ3,True,2023,83.0,85.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8cr9,B,junction,K,human|K|IGKV1-5,human|K|IGKJ3,True,2023,99.0,110.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8cr9,A,cdr12,H,human|H|IGHV3-23,human|H|IGHJ5,True,2023,50.0,63.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8dg8,L,gap,L,human|L|IGLV3-19,human|L|IGLJ2,True,2022,57.0,70.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8e8l,H,gap,H,human|H|IGHV1-46,human|H|IGHJ6,True,2022,4.0,16.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8ejh,H,gap,H,human|H|IGHV4-34,human|H|IGHJ6,True,2022,3.0,16.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,7sgd
+case,8ejh,J,gap,H,human|H|IGHV4-34,human|H|IGHJ6,True,2022,3.0,16.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,7sgd
+case,8ejh,h,gap,H,human|H|IGHV4-34,human|H|IGHJ6,True,2022,3.0,16.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,7sgd
+case,8fsj,C,gap,H,human|H|IGHV5-51,human|H|IGHJ5,True,2023,3.0,4.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8gnh,L,junction,K,human|K|IGKV3-11,human|K|IGKJ5,True,2022,114.0,127.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8gnh,H,junction,H,human|H|IGHV4-34,human|H|IGHJ5,True,2022,111.0,128.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8grr,H,junction,H,mouse|H|IGHV2-6-4,mouse|H|IGHJ4,True,2022,111.0,118.0,15.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8gsd,H,cdr12,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ2,True,2022,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8gsc,H,cdr12,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ2,True,2022,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8gsf,E,cdr12,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ2,True,2022,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8gsf,H,cdr12,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ2,True,2022,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8gse,H,cdr12,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ2,True,2022,27.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8jag,H,cdr12,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,57.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jag,H,junction,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,115.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jam,H,cdr12,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,57.0,70.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jam,H,junction,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,115.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jap,L,gap,K,human|K|IGKV2-29,human|K|IGKJ1,True,2023,109.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jap,H,cdr12,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,57.0,74.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8jap,H,gap,H,human|H|IGHV7-4-1,human|H|IGHJ5,True,2023,115.0,121.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8khr,H,gap,H,human|H|IGHV1-69,human|H|IGHJ4,True,2023,3.0,35.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8khr,H,junction,H,human|H|IGHV1-69,human|H|IGHJ4,True,2023,110.0,120.0,5.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8pq2,L,junction,K,human|K|IGKV1-33,human|K|IGKJ5,True,2023,109.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8qj2,D,gap,H,human|H|IGHV3-74,human|H|IGHJ4,True,2023,2.0,35.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8r4d,B,cdr12,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,62.0,67.0,-3.0,True,starting model has no antibody of this type,,,,,,,,,,6hlu
+case,8r4b,B,cdr12,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,62.0,67.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rvn,L,gap,K,human|K|IGKV1-9,human|K|IGKJ4,True,2024,4.0,17.0,-1.0,True,same J gene,6t3f,L,0.165,human|K|IGKV1-8,human|K|IGKJ4,,,False,False,
+case,8rmm,N,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,O,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,P,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,Q,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,R,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,S,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmm,T,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,L,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,M,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,N,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,O,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,P,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,Q,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,R,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,S,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,T,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,U,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8rmk,V,bulge,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8snd,C,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,62.0,67.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8snc,C,cdr12,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,62.0,67.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8th4,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,4.0,11.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8t4d,L,gap,K,human|K|IGKV2-40,human|K|IGKJ3,True,2023,2.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8t4d,Q,gap,K,human|K|IGKV2-40,human|K|IGKJ3,True,2023,2.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8t4d,R,gap,K,human|K|IGKV2-40,human|K|IGKJ3,True,2023,2.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8tng,H,cdr12,H,human|H|IGHV3-64,human|H|IGHJ3,True,2023,64.0,70.0,-3.0,True,other antibody,7lpn,H,0.525,human|H|IGHV3-7,human|H|IGHJ2,,,False,False,
+case,8tng,I,cdr12,H,human|H|IGHV3-64,human|H|IGHJ3,True,2023,64.0,70.0,-3.0,True,other antibody,7lpn,H,0.525,human|H|IGHV3-7,human|H|IGHJ2,,,False,False,
+case,8tqi,I,junction,H,human|H|IGHV4-31,human|H|IGHJ6,True,2023,112.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8tqi,C,junction,H,human|H|IGHV3-23,human|H|IGHJ5,True,2023,111.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8uf7,B,gap,H,mouse|H|IGHV5-4,mouse|H|IGHJ4,True,2023,4.0,12.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8ulu,L,junction,K,human|K|IGKV1-33,human|K|IGKJ3,True,2023,116.0,119.0,-1.0,True,same V+J gene,8uki,L,0.237,human|K|IGKV1-33,human|K|IGKJ3,,,False,False,
+case,8w5e,L,gap,K,mouse|K|IGKV17-127,mouse|K|IGKJ5,True,2023,4.0,9.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5e,L,junction,K,mouse|K|IGKV17-127,mouse|K|IGKJ5,True,2023,109.0,117.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5e,H,gap,H,mouse|H|IGHV5-15,mouse|H|IGHJ2,True,2023,71.0,89.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5m,H,gap,H,mouse|H|IGHV5-17,mouse|H|IGHJ2,True,2023,1.0,11.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5m,L,gap,L,mouse|L|IGLV1,mouse|L|IGLJ1,True,2023,2.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w4f,E,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,112.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5t,L,gap,K,mouse|K|IGKV4-55,mouse|K|IGKJ5,True,2023,3.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5q,H,gap,H,mouse|H|IGHV5-17,mouse|H|IGHJ2,True,2023,2.0,7.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5q,H,junction,H,mouse|H|IGHV5-17,mouse|H|IGHJ2,True,2023,112.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5q,L,gap,K,mouse|K|IGKV12-41,mouse|K|IGKJ1,True,2023,4.0,36.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5p,L,bulge,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2023,120.0,122.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5d,L,gap,K,mouse|K|IGKV3-2,mouse|K|IGKJ2,True,2023,1.0,31.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5d,L,gap,K,mouse|K|IGKV3-2,mouse|K|IGKJ2,True,2023,104.0,114.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5d,H,junction,H,mouse|H|IGHV2-2,mouse|H|IGHJ2,True,2023,111.0,117.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,8xef,B,gap,H,human|H|IGHV4-31,human|H|IGHJ5,True,2023,2.0,34.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8xsd,G,junction,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8xsd,H,junction,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8xsd,I,junction,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8z86,H,junction,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9b7u,H,gap,H,human|H|IGHV3-11,human|H|IGHJ2,True,2024,4.0,14.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9bia,E,junction,H,human|H|IGHV3-23,human|H|IGHJ5,True,2024,110.0,117.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,9bia,F,junction,H,human|H|IGHV3-23,human|H|IGHJ5,True,2024,110.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9c7s,L,gap,L,human|L|IGLV1-47,human|L|IGLJ7,True,2024,3.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9cj7,H,gap,H,human|H|IGHV4-38-2,human|H|IGHJ6,True,2024,112.0,122.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,9ccg,C,gap,K,human|K|IGKV1-13,human|K|IGKJ1,True,2024,3.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ccg,E,gap,K,human|K|IGKV1-13,human|K|IGKJ1,True,2024,3.0,8.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9cv7,L,cdr12,K,human|K|IGKV1-39,human|K|IGKJ1,True,2024,16.0,29.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dm7,L,bulge,K,human|K|IGKV1-39,human|K|IGKJ1,True,2024,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dm7,H,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,72.0,92.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,L,bulge,L,human|L|IGLV1-40,human|L|IGLJ1,True,2024,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,M,bulge,L,human|L|IGLV1-40,human|L|IGLJ1,True,2024,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,N,bulge,L,human|L|IGLV1-40,human|L|IGLJ1,True,2024,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,H,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2024,110.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,I,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2024,110.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9dn2,J,junction,H,human|H|IGHV1-2,human|H|IGHJ6,True,2024,110.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9els,A,gap,L,human|L|IGLV6-57,human|L|IGLJ2,True,2024,35.0,127.0,-19.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9els,B,gap,L,human|L|IGLV6-57,human|L|IGLJ2,True,2024,35.0,127.0,-19.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9els,C,gap,L,human|L|IGLV6-57,human|L|IGLJ2,True,2024,35.0,127.0,-19.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9els,D,gap,L,human|L|IGLV6-57,human|L|IGLJ2,True,2024,35.0,127.0,-19.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9els,E,gap,L,human|L|IGLV6-57,human|L|IGLJ2,True,2024,35.0,127.0,-19.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fac,A,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fac,B,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fac,C,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fac,D,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fac,E,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9faa,A,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9faa,B,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9faa,C,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9faa,D,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9faa,E,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fab,A,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fab,B,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fab,C,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fab,D,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fab,E,gap,L,human|L|IGLV3-1,human|L|IGLJ2,True,2024,1.0,128.0,-4.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fjf,D,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,1.0,18.0,-5.0,True,same J gene,9ena,B,0.618,human|H|IGHV3-23,human|H|IGHJ4,,,False,False,
+case,9fte,B,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,6.0,17.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fte,B,junction,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,109.0,120.0,6.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9fr4,A,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr4,C,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,C,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,E,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,F,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,I,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,K,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9fr3,L,gap,H,human|H|IGHV3-11,human|H|IGHJ5,True,2024,124.0,126.0,-2.0,True,same J gene,7r40,H,0.476,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,9heo,B,cdr12,H,human|H|IGHV3-53,human|H|IGHJ4,True,2024,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9heo,D,cdr12,H,human|H|IGHV3-53,human|H|IGHJ4,True,2024,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9heo,H,cdr12,H,human|H|IGHV3-53,human|H|IGHJ4,True,2024,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9heo,K,cdr12,H,human|H|IGHV3-53,human|H|IGHJ4,True,2024,63.0,69.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ib3,H,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,3.0,9.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,7sxt
+case,9ib1,H,gap,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,3.0,9.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,7sxt
+case,9lfa,C,gap,H,mouse|H|IGHV5-6-3,mouse|H|IGHJ4,True,2025,102.0,112.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lfc,C,gap,H,mouse|H|IGHV5-6-3,mouse|H|IGHJ4,True,2025,100.0,112.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liw,AA,gap,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,8.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liw,AB,gap,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,8.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liw,AC,gap,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,8.0,126.0,-23.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AA,junction,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AB,junction,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AC,junction,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lj0,A,gap,L,human|L|IGLV1-47,human|L|IGLJ1,True,2025,18.0,126.0,-45.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lj0,B,gap,L,human|L|IGLV1-47,human|L|IGLJ1,True,2025,18.0,126.0,-45.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lj0,C,gap,L,human|L|IGLV1-47,human|L|IGLJ1,True,2025,18.0,126.0,-45.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lja,A,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,6.0,123.0,-15.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lja,B,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,6.0,123.0,-15.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lja,C,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,6.0,123.0,-15.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,A,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,B,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,C,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,D,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,E,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liy,F,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-28.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,A,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,B,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,C,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,D,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,E,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lix,F,gap,L,human|L|IGLV1-44,human|L|IGLJ2,True,2025,17.0,127.0,-17.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,A,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,7.0,123.0,-9.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,B,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,7.0,123.0,-9.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,C,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,7.0,123.0,-9.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,D,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,9.0,123.0,-12.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,E,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,9.0,123.0,-12.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ljb,F,gap,L,human|L|IGLV2-14,human|L|IGLJ3,True,2025,9.0,123.0,-12.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9ma0,B,junction,H,human|H|IGHV1-2,human|H|IGHJ5,True,2025,112.0,128.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lue,D,bulge,K,mouse|K|IGKV4-57,mouse|K|IGKJ4,True,2025,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9mnb,E,gap,H,human|H|IGHV4-59,human|H|IGHJ2,True,2024,3.0,9.0,-1.0,True,same J gene,6vvu,E,0.09,human|H|IGHV4-38-2,human|H|IGHJ2,,,False,False,
+case,9ml5,H,cdr12,H,human|H|IGHV3-53,human|H|IGHJ2,True,2024,31.0,41.0,1.0,True,other antibody,7uz4,H,0.016,mouse|H|IGHV1-69,mouse|H|IGHJ2,,,False,False,
+case,9ml5,M,cdr12,H,human|H|IGHV3-53,human|H|IGHJ2,True,2024,31.0,41.0,1.0,True,other antibody,7uz4,H,0.016,mouse|H|IGHV1-69,mouse|H|IGHJ2,,,False,False,
+case,9nnz,A,gap,H,human|H|IGHV3-21,human|H|IGHJ5,True,2025,115.0,118.0,-1.0,True,other antibody,8fd0,C,-0.215,human|H|IGHV3-48,human|H|IGHJ6,,,False,False,
+case,9nyx,A,gap,H,human|H|IGHV3-21,human|H|IGHJ5,True,2025,3.0,12.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9o7h,D,gap,H,human|H|IGHV6-1,human|H|IGHJ4,True,2025,8.0,12.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9o7i,D,gap,H,human|H|IGHV6-1,human|H|IGHJ4,True,2025,8.0,17.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9pur,H,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2025,28.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,9pur,H,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2025,101.0,119.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9pur,I,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2025,28.0,35.0,,False,no experimental starting model recorded,,,,,,,,,,
+case,9pur,I,gap,H,human|H|IGHV3-66,human|H|IGHJ4,True,2025,101.0,119.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9pv5,L,bulge,K,mouse|K|IGKV8-30,mouse|K|IGKJ5,True,2025,120.0,127.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9pv5,H,bulge,H,mouse|H|IGHV3-6,mouse|H|IGHJ1,True,2025,120.0,126.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9pv3,L,cdr12,K,mouse|K|IGKV8-24,mouse|K|IGKJ5,True,2025,32.0,99.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9om5,c,cdr12,H,human|H|IGHV4-34,human|H|IGHJ2,True,2025,63.0,72.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9om5,g,cdr12,H,human|H|IGHV4-34,human|H|IGHJ2,True,2025,63.0,72.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9om5,k,cdr12,H,human|H|IGHV4-34,human|H|IGHJ2,True,2025,63.0,72.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9s7s,D,junction,H,human|H|IGHV3-30,human|H|IGHJ4,True,2025,112.0,121.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,8g1n
+case,9v91,A,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9v91,B,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9v91,C,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9v91,D,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9v91,E,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9v91,F,gap,L,human|L|IGLV1-44,human|L|IGLJ1,True,2025,17.0,110.0,-48.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9yie,K,gap,L,human|L|IGLV1-51,human|L|IGLJ1,True,2025,3.0,35.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9yie,L,gap,L,human|L|IGLV1-51,human|L|IGLJ1,True,2025,3.0,35.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9yie,N,gap,L,human|L|IGLV1-51,human|L|IGLJ1,True,2025,3.0,35.0,-2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9yc6,H,bulge,H,mouse|H|IGHV1-47-34,mouse|H|IGHJ3,True,2025,120.0,128.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,3u74
+case,9yc6,L,junction,K,mouse|K|IGKV1-117,mouse|K|IGKJ1,True,2025,31.0,127.0,5.0,True,starting model has no antibody of this type,,,,,,,,,,3u74
+case,9zxd,A,bulge,H,human|H|IGHV3-23,human|H|IGHJ4,True,2026,120.0,124.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7f5h,C,cdr12,H,human|H|IGHV3-64,human|H|IGHJ4,False,2021,56.0,59.0,,True,same J gene,5m13,B,0.451,human|H|IGHV3-66,human|H|IGHJ4,,,False,False,
+case,7f5h,D,cdr12,H,human|H|IGHV3-64,human|H|IGHJ4,False,2021,56.0,59.0,,True,same J gene,5m13,B,0.451,human|H|IGHV3-66,human|H|IGHJ4,,,False,False,
+case,11hb,C,bulge,K,mouse|K|IGKV6-23,mouse|K|IGKJ2,False,2026,120.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5kon
+case,11hb,K,bulge,K,mouse|K|IGKV6-23,mouse|K|IGKJ2,False,2026,120.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5kon
+case,11hb,L,bulge,K,mouse|K|IGKV6-23,mouse|K|IGKJ2,False,2026,120.0,127.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5kon
+case,7wvl,H,cdr12,H,mouse|H|IGHV1-47-14,mouse|H|IGHJ3,False,2022,62.0,82.0,1.0,True,other antibody,7b3o,H,0.04,human|H|IGHV3-66,human|H|IGHJ3,,,False,False,
+case,8be5,N,gap,H,human|H|IGHV3-66,human|H|IGHJ4,False,2022,3.0,11.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,1bkd
+case,8be5,C,gap,H,mouse|H|IGHV5-6-3,mouse|H|IGHJ4,False,2022,2.0,125.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,1bkd
+case,8ddk,B,gap,K,human|K|IGKV1-39,human|K|IGKJ1,False,2022,2.0,9.0,-1.0,True,starting model has no antibody of this type,,,,,,,,,,8dc5
+case,8d50,D,cdr12,H,human|H|IGHV1-18,human|H|IGHJ2,False,2022,64.0,67.0,-2.0,True,same V gene,5cez,D,0.691,human|H|IGHV1-18,human|H|IGHJ4,,,False,False,
+case,8f2x,L,gap,K,human|K|IGKV1-33,human|K|IGKJ4,False,2022,2.0,9.0,-1.0,True,same V gene,7czu,N,0.231,human|K|IGKV1-33,human|K|IGKJ2,,1-8:-1,True,True,
+case,8f2x,H,junction,H,human|H|IGHV3-30,human|H|IGHJ4,False,2022,112.0,128.0,1.0,True,same V+J gene,7czu,J,0.278,human|H|IGHV3-30,human|H|IGHJ4,,112-999:+1,True,True,
+case,8idm,B,cdr12,H,human|H|IGHV3-66,human|H|IGHJ4,False,2023,26.0,35.0,-2.0,True,other antibody,1xfp,A,0.607,human|H|IGHV3-23,human|H|IGHJ5,,,False,False,
+case,8oi2,B,junction,H,human|H|IGHV3-23,human|H|IGHJ5,False,2023,114.0,128.0,1.0,True,same V gene,6xvi,A,-0.267,human|H|IGHV3-23,human|H|IGHJ4,,17-999:-5,False,True,
+case,9lfp,E,gap,H,human|H|IGHV3-53,human|H|IGHJ4,False,2025,1.0,16.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9lfp,F,gap,H,human|H|IGHV3-53,human|H|IGHJ4,False,2025,1.0,16.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,5zs0,B,junction_w118out,H,mouse|H|IGHV5-9-3,mouse|H|IGHJ2,False,2018,110.0,128.0,2.0,True,starting model has no antibody of this type,,,,,,,,,,5ys2
+case,6jmr,F,junction_w118out,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2019,114.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6lht,L,junction_w118out,K,mouse|K|IGKV8-30,mouse|K|IGKJ1,True,2019,114.0,127.0,-3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6orp,D,junction_w118out,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,H,junction_w118out,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6orp,J,junction_w118out,H,human|H|IGHV4-4,human|H|IGHJ2,True,2019,112.0,128.0,-2.0,True,other antibody,4fqq,H,0.144,human|H|IGHV4-59,human|H|IGHJ6,,,False,False,
+case,6qpg,N,junction_w118out,H,human|H|IGHV3-23,human|H|IGHJ4,False,2019,112.0,122.0,1.0,True,starting model has no antibody of this type,,,,,,,,,,5d98
+case,7v2a,E,junction_w118out,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7v2a,G,junction_w118out,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7v2a,I,junction_w118out,H,human|H|IGHV5-51,human|H|IGHJ6,True,2021,112.0,123.0,1.0,True,same V+J gene,6z3p,H,0.203,human|H|IGHV5-51,human|H|IGHJ6,,,False,False,
+case,7c80,H,junction_w118out,H,mouse|H|IGHV5-6-4,mouse|H|IGHJ2,True,2020,30.0,128.0,9.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,H,junction_w118out,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czu,J,junction_w118out,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,H,junction_w118out,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,I,junction_w118out,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7czv,J,junction_w118out,H,human|H|IGHV3-30,human|H|IGHJ4,True,2020,112.0,128.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k66,C,junction_w118out,K,mouse|K|IGKV4-50,mouse|K|IGKJ4,False,2020,115.0,127.0,-2.0,True,starting model has no antibody of this type,,,,,,,,,,6mf0
+case,7l5b,H,junction_w118out,H,human|H|IGHV1-2,human|H|IGHJ3,False,2020,111.0,128.0,3.0,True,other antibody,7bz5,H,0.022,human|H|IGHV3-53,human|H|IGHJ6,,,False,False,
+case,3wsq,L,junction_w118out,L,human|L|IGLV1-44,human|L|IGLJ6,False,2014,110.0,128.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,6qx3,O,junction_w118out,H,human|H|IGHV3-23,human|H|IGHJ4,True,2019,112.0,122.0,1.0,True,same V+J gene,6qpg,M,0.896,human|H|IGHV3-23,human|H|IGHJ4,,112-122:+1,True,True,
+case,6xja,H,junction_w118out,H,human|H|IGHV3-73,human|H|IGHJ5,True,2020,113.0,120.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L1,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L2,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L3,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L4,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k22,L5,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L2,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L3,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L4,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L5,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7k23,L6,junction_w118out,K,mouse|K|IGKV6-13,mouse|K|IGKJ4,True,2020,109.0,118.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,J,junction_w118out,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,3.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,K,junction_w118out,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,7wtf,L,junction_w118out,K,human|K|IGKV1-17,human|K|IGKJ1,True,2022,109.0,124.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8pq2,L,junction_w118out,K,human|K|IGKV1-33,human|K|IGKJ5,True,2023,109.0,119.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8w5q,H,junction_w118out,H,mouse|H|IGHV5-17,mouse|H|IGHJ2,True,2023,112.0,121.0,1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8xsd,H,junction_w118out,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,8z86,H,junction_w118out,H,human|H|IGHV3-53,human|H|IGHJ6,True,2024,110.0,126.0,2.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AA,junction_w118out,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AB,junction_w118out,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+case,9liv,AC,junction_w118out,L,human|L|IGLV1-44,human|L|IGLJ7,True,2025,35.0,126.0,-1.0,False,no experimental starting model recorded,,,,,,,,,,
+control,9lbs,A,,H,human|H|IGHV1-18,human|H|IGHJ5,True,2025,,,,True,close (>=90%),7x1m,A,0.969,human|H|IGHV1-18,human|H|IGHJ5,,,,False,
+control,9hbp,G,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,7zny
+control,7x90,E,,H,human|H|IGHV3-30,human|H|IGHJ4,True,2022,,,,True,other antibody,5cck,H,-0.017,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,9bt8,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6ni2,H,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7uz4,L,,K,mouse|K|IGKV6-25,mouse|K|IGKJ2,True,2022,,,,True,other antibody,7sc1,L,0.096,human|K|IGKV1-9,human|K|IGKJ2,,,,False,
+control,7nki,F,,H,human|H|IGHV3-66,human|H|IGHJ2,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7hna
+control,9bt8,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2024,,,,True,same V+J gene,6ni2,L,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,9lbs,D,,H,human|H|IGHV3-66,human|H|IGHJ5,True,2025,,,,True,other antibody,7x1m,C,0.839,human|H|IGHV3-53,human|H|IGHJ6,,,,False,
+control,9cjz,H,,H,human|H|IGHV3-23,human|H|IGHJ2,True,2024,,,,True,same V gene,8d21,H,0.748,human|H|IGHV3-23,human|H|IGHJ5,,,,False,
+control,8rla,K,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,close (>=90%),7zmv,K,0.961,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8tni,X,,H,human|H|IGHV3-30,human|H|IGHJ3,True,2023,,,,True,other antibody,7lpn,H,0.034,human|H|IGHV3-7,human|H|IGHJ2,,,,False,
+control,9me4,L,,K,mouse|K|IGKV6-15,mouse|K|IGKJ4,True,2024,,,,True,other antibody,15c8,L,0.052,mouse|K|IGKV4-74,mouse|K|IGKJ2,,,,False,
+control,7rai,L,,K,human|K|IGKV1-5,human|K|IGKJ1,True,2021,,,,True,same V+J gene,4oaw,A,0.074,human|K|IGKV1-5,human|K|IGKJ1,,,,False,
+control,7yh7,Q,,L,human|L|IGLV1-40,human|L|IGLJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6yyb
+control,6u02,D,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2019,,,,True,starting model has no antibody of this type,,,,,,,,,,5l14
+control,7tca,E,,L,human|L|IGLV8-61,human|L|IGLJ2,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7mm0
+control,6okp,M,,H,human|H|IGHV4-4,human|H|IGHJ5,True,2019,,,,True,other antibody,6ch9,Q,0.056,human|H|IGHV4-59,human|H|IGHJ6,,,,False,
+control,6xcm,L,,L,human|L|IGLV2-8,human|L|IGLJ2,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vyb
+control,7x92,H,,H,human|H|IGHV3-33,human|H|IGHJ4,True,2022,,,,True,other antibody,5cck,H,-0.03,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,9f02,H,,H,human|H|IGHV1-69,human|H|IGHJ6,True,2024,,,,True,other antibody,8fr6,D,-0.047,mouse|H|IGHV1-15,mouse|H|IGHJ1,,,,False,
+control,6osy,H,,H,human|H|IGHV4-30-4,human|H|IGHJ2,True,2019,,,,True,other antibody,6cdi,m,0.081,human|H|IGHV4-59,human|H|IGHJ6,,,,False,
+control,9mr2,B,,L,human|L|IGLV1-40,human|L|IGLJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6xr8
+control,9mr1,A,,H,human|H|IGHV4-59,human|H|IGHJ5,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6xr8
+control,8g9x,L,,K,mouse|K|IGKV5-43,mouse|K|IGKJ5,True,2023,,,,True,same V+J gene,6x7w,L,0.255,mouse|K|IGKV5-43,mouse|K|IGKJ5,,,,False,
+control,9j83,H,,H,mouse|H|IGHV7-3,mouse|H|IGHJ2,True,2024,,,,True,same V+J gene,8zay,H,0.268,mouse|H|IGHV7-3,mouse|H|IGHJ2,,,,False,
+control,7ocy,C,,H,human|H|IGHV3-64,human|H|IGHJ5,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,4q4h
+control,9me7,M,,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2024,,,,True,other antibody,15c8,L,0.127,mouse|K|IGKV4-74,mouse|K|IGKJ2,,,,False,
+control,6zhd,D,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2020,,,,True,same V+J gene,6z43,X,0.884,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,8s2t,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2024,,,,True,close (>=90%),6e3y,N,0.94,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,9n5h,D,,H,human|H|IGHV1-69,human|H|IGHJ5,True,2025,,,,True,same V+J gene,7jum,H,0.303,human|H|IGHV1-69,human|H|IGHJ5,,,,False,
+control,9bt8,A,,H,human|H|IGHV3-64,human|H|IGHJ5,True,2024,,,,True,same V+J gene,6ni2,A,0.887,human|H|IGHV3-64,human|H|IGHJ5,,,,False,
+control,7zr7,E,,L,human|L|IGLV2-8,human|L|IGLJ2,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7q9g
+control,9j4c,L,,K,mouse|K|IGKV4-70,mouse|K|IGKJ2,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5l59
+control,7qti,F,,H,human|H|IGHV1-58,human|H|IGHJ3,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7qo7
+control,7u9o,L,,K,human|K|IGKV3-11,human|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6xlu
+control,9bsv,D,,H,human|H|IGHV3-64,human|H|IGHJ5,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,8vkl
+control,9bue,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2024,,,,True,same V+J gene,7tyi,N,0.899,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,11wr,B,,L,human|L|IGLV3-19,human|L|IGLJ2,True,2026,,,,True,same V+J gene,5iq9,B,0.276,human|L|IGLV3-19,human|L|IGLJ2,,,,False,
+control,9fgx,C,,H,mouse|H|IGHV5-6-2,mouse|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6bj2
+control,9rpb,P,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,same V+J gene,9hns,P,-0.194,human|H|IGHV3-23,human|H|IGHJ4,,18-127:-1,,True,
+control,9bhh,M,,K,human|K|IGKV3-11,human|K|IGKJ1,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,8fcg
+control,9rhe,B,,H,mouse|H|IGHV1-15,mouse|H|IGHJ2,True,2025,,,,True,close (>=90%),9rh1,B,0.902,mouse|H|IGHV1-15,mouse|H|IGHJ2,,,,False,
+control,9qpy,D,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,close (>=90%),7b2q,D,0.983,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,8gsb,K,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7t9l
+control,9pee,K,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,same V+J gene,9d3e,K,0.784,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,7ndb,L,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6z97
+control,8cml,A,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,3cu7
+control,7ru4,H,,H,human|H|IGHV1-69,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,8q6j,D,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,,,,True,same V+J gene,1s78,D,0.309,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,9j4c,H,,H,mouse|H|IGHV1-26,mouse|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5l59
+control,7lpn,D,,H,human|H|IGHV3-7,human|H|IGHJ2,True,2021,,,,True,other antibody,6nnf,H,0.308,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,8rh1,D,,H,human|H|IGHV2-70,human|H|IGHJ4,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,8u1p,C,,K,human|K|IGKV1-39,human|K|IGKJ5,True,2023,,,,True,other antibody,7zxg,C,0.059,mouse|K|IGKV8-30,mouse|K|IGKJ1,,,,False,
+control,7ndd,E,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6z97
+control,9fg1,F,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,0.722,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,7k8x,F,,L,human|L|IGLV2-23,human|L|IGLJ2,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx;6w41
+control,9yax,2,,K,human|K|IGKV2-40,human|K|IGKJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6mx4
+control,7tcn,D,,K,human|K|IGKV3-15,human|K|IGKJ1,True,2021,,,,True,same V+J gene,5f96,L,0.251,human|K|IGKV3-15,human|K|IGKJ1,,,,False,
+control,9mj4,Q,,H,human|H|IGHV3-64,human|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6m0r
+control,7pnm,G,,H,human|H|IGHV3-33,human|H|IGHJ6,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6nzk
+control,7nwl,D,,H,mouse|H|IGHV5-6-4,mouse|H|IGHJ4,True,2021,,,,True,same V+J gene,5xcx,A,0.549,mouse|H|IGHV5-6-4,mouse|H|IGHJ4,,,,False,
+control,9ib3,L,,K,human|K|IGKV1-39,human|K|IGKJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,7sxt
+control,9bti,E,,K,human|K|IGKV1-39,human|K|IGKJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6vtt
+control,8g85,C,,K,mouse|K|IGKV6-23,mouse|K|IGKJ5,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,7lpn
+control,9cf5,H,,H,human|H|IGHV1-69,human|H|IGHJ1,True,2024,,,,True,same V+J gene,7lok,K,0.339,human|H|IGHV1-69,human|H|IGHJ1,,,,False,
+control,9d73,H,,H,mouse|H|IGHV1-5,mouse|H|IGHJ2,True,2024,,,,True,same V+J gene,8tq6,F,-0.122,mouse|H|IGHV1-5,mouse|H|IGHJ2,,,,False,
+control,7p7a,A,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,,,,True,identical,7klw,C,1.0,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9p92,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2025,,,,True,same V+J gene,8e3x,N,0.899,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,7k7i,H,,H,mouse|H|IGHV5-9,mouse|H|IGHJ4,True,2020,,,,True,other antibody,4m48,H,0.717,mouse|H|IGHV5-9-4,mouse|H|IGHJ2,,,,False,
+control,7qti,B,,H,human|H|IGHV3-9,human|H|IGHJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7qo7
+control,9urm,C,,L,human|L|IGLV3-1,human|L|IGLJ2,True,2025,,,,True,close (>=90%),6kyz,C,0.967,human|L|IGLV3-1,human|L|IGLJ2,,,,False,
+control,7r4r,D,,H,human|H|IGHV3-30,human|H|IGHJ5,True,2022,,,,True,other antibody,1zv5,A,0.698,human|H|IGHV3-74,human|H|IGHJ4,,,,False,
+control,7kde,I,,L,human|L|IGLV1-40,human|L|IGLJ1,True,2020,,,,True,other antibody,6udj,B,-0.056,human|L|IGLV3-21,human|L|IGLJ3,,12-81:-1;83-999:-1,,True,
+control,7mlz,L,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7kls
+control,8qpr,D,,L,human|L|IGLV2-8,human|L|IGLJ3,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,7k8v
+control,8d48,L,,K,human|K|IGKV4-1,human|K|IGKJ2,True,2022,,,,True,same V+J gene,7d0d,L,0.252,human|K|IGKV4-1,human|K|IGKJ2,,,,False,
+control,7sgf,H,,H,human|H|IGHV3-53,human|H|IGHJ2,True,2021,,,,True,other antibody,5vk2,D,0.282,human|H|IGHV3-21,human|H|IGHJ6,,,,False,
+control,7ks9,L,,K,human|K|IGKV1-33,human|K|IGKJ4,True,2020,,,,True,same V+J gene,5sx4,I,0.222,human|K|IGKV1-33,human|K|IGKJ4,,,,False,
+control,7y6k,J,,H,human|H|IGHV3-23,human|H|IGHJ6,True,2022,,,,True,same V gene,7d85,B,-0.139,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,9fgh,G,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,0.722,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,8g6u,M,,H,human|H|IGHV4-4,human|H|IGHJ6,True,2023,,,,True,same V+J gene,8dok,M,0.336,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,7ckx,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2020,,,,True,same V+J gene,3sn6,N,0.734,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,9rhc,B,,H,mouse|H|IGHV1-15,mouse|H|IGHJ2,True,2025,,,,True,close (>=90%),9rh1,B,0.902,mouse|H|IGHV1-15,mouse|H|IGHJ2,,,,False,
+control,6x96,F,,K,human|K|IGKV1-39,human|K|IGKJ4,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,5cez
+control,9dsl,L,,L,human|L|IGLV1-40,human|L|IGLJ6,True,2024,,,,True,other antibody,6e9h,B,0.134,human|L|IGLV2-11,human|L|IGLJ7,,,,False,
+control,8f6e,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2022,,,,True,same V+J gene,7kzz,F,0.296,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9cbn,A,,H,mouse|H|IGHV1-69-5,mouse|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5ewo
+control,7k90,L,,L,human|L|IGLV2-14,human|L|IGLJ1,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+control,9cp4,H,,H,mouse|H|IGHV5-9-4,mouse|H|IGHJ2,True,2024,,,,True,same V+J gene,4xp5,H,0.242,mouse|H|IGHV5-9-4,mouse|H|IGHJ2,,,,False,
+control,8fis,H,,H,human|H|IGHV3-30,human|H|IGHJ3,True,2022,,,,True,other antibody,6nnf,H,0.008,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,6m1h,C,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,5b16
+control,7uoj,d,,H,human|H|IGHV4-4,human|H|IGHJ6,True,2022,,,,True,same J gene,6cdi,m,0.213,human|H|IGHV4-59,human|H|IGHJ6,,,,False,
+control,7x8w,H,,H,human|H|IGHV1-2,human|H|IGHJ4,True,2022,,,,True,same V gene,5cck,H,0.059,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,8rh0,E,,L,human|L|IGLV3-21,human|L|IGLJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,6ukt,F,,H,human|H|IGHV3-20,human|H|IGHJ5,True,2019,,,,True,starting model has no antibody of this type,,,,,,,,,,6nmg
+control,6mid,H,,H,human|H|IGHV3-30-3,human|H|IGHJ6,True,2018,,,,True,starting model has no antibody of this type,,,,,,,,,,6co8
+control,9ml4,L,,K,human|K|IGKV1-12,human|K|IGKJ4,True,2024,,,,True,other antibody,7sc1,L,0.041,human|K|IGKV1-9,human|K|IGKJ2,,,,False,
+control,8j8z,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,same V+J gene,8go8,H,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8gjn,A,,H,mouse|H|IGHV1-18,mouse|H|IGHJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,7krr
+control,9j82,L,,K,mouse|K|IGKV6-23,mouse|K|IGKJ5,True,2024,,,,True,same V+J gene,8zay,L,0.248,mouse|K|IGKV6-23,mouse|K|IGKJ5,,,,False,
+control,8tnj,E,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,8tmu
+control,7x8z,L,,K,human|K|IGKV4-1,human|K|IGKJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5cck
+control,7mep,G,,K,human|K|IGKV3-11,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vfl
+control,9ebo,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2024,,,,True,identical,6x18,N,1.0,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,7z6v,X,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2022,,,,True,same V+J gene,6zhd,D,0.892,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,9ci8,B,,H,mouse|H|IGHV1-42-1,mouse|H|IGHJ2,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,7phr
+control,8j97,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,close (>=90%),8go8,H,0.942,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8f6h,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2022,,,,True,same V+J gene,7kzz,F,0.296,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7x93,F,,L,human|L|IGLV2-11,human|L|IGLJ1,True,2022,,,,True,other antibody,5cck,L,0.085,human|L|IGLV2-23,human|L|IGLJ2,,,,False,
+control,7zbu,L,,K,human|K|IGKV3-20,human|K|IGKJ5,True,2022,,,,True,same V gene,5wi9,L,0.211,human|K|IGKV3-20,human|K|IGKJ4,,,,False,
+control,9ot6,C,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,9bax
+control,8qq0,E,,H,human|H|IGHV1-2,human|H|IGHJ5,True,2023,,,,True,other antibody,7k8v,H,0.098,human|H|IGHV5-51,human|H|IGHJ3,,,,False,
+control,7x95,H,,H,human|H|IGHV3-30,human|H|IGHJ6,True,2022,,,,True,other antibody,5cck,H,-0.03,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,8r9x,H,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,6bfu
+control,9sf5,L,,L,human|L|IGLV3-1,human|L|IGLJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8cim
+control,9n5i,L,,K,human|K|IGKV3-15,human|K|IGKJ1,True,2025,,,,True,same V+J gene,9n7k,B,0.258,human|K|IGKV3-15,human|K|IGKJ1,,,,False,
+control,8fls,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2022,,,,True,identical,6x18,N,1.0,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,10ne,H,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2026,,,,True,same V+J gene,7pij,H,0.305,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,8zrr,h,,H,human|H|IGHV3-33,human|H|IGHJ5,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,3j2v
+control,7wur,F,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5gs6
+control,7tco,D,,K,human|K|IGKV3-15,human|K|IGKJ1,True,2021,,,,True,same V+J gene,5f96,L,0.251,human|K|IGKV3-15,human|K|IGKJ1,,,,False,
+control,9ffy,F,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,0.722,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,8dpz,G,,K,human|K|IGKV3-11,human|K|IGKJ1,True,2022,,,,True,same J gene,7ld1,N,0.667,human|K|IGKV4-1,human|K|IGKJ1,,,,False,
+control,8rgz,E,,K,mouse|K|IGKV1-117,mouse|K|IGKJ1,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,7v2a,D,,L,human|L|IGLV1-51,human|L|IGLJ2,True,2021,,,,True,same V gene,6pze,L,0.22,human|L|IGLV1-51,human|L|IGLJ1,,,,False,
+control,9o2u,H,,H,human|H|IGHV4-34,human|H|IGHJ6,True,2025,,,,True,same V gene,5bzd,B,-0.187,human|H|IGHV4-34,human|H|IGHJ5,,,,False,
+control,7kmk,H,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2020,,,,True,same V+J gene,7klh,H,0.304,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,8eay,H,,H,human|H|IGHV4-59,human|H|IGHJ3,True,2022,,,,True,same J gene,4dag,H,0.541,human|H|IGHV3-66,human|H|IGHJ3,,,,False,
+control,8rlc,D,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2024,,,,True,close (>=90%),3k1k,C,0.922,human|H|IGHV3-11,human|H|IGHJ4,,,,False,
+control,8hgm,D,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6m0j
+control,8i10,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,same V+J gene,8goc,D,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,6orn,B,,L,human|L|IGLV3-21,human|L|IGLJ3,True,2019,,,,True,same V+J gene,5t3z,L,0.224,human|L|IGLV3-21,human|L|IGLJ3,,12-81:-1;83-999:-1,,True,
+control,7zr7,D,,H,human|H|IGHV3-9,human|H|IGHJ6,True,2022,,,,True,other antibody,7q9g,H,0.648,human|H|IGHV3-53,human|H|IGHJ5,,,,False,
+control,6osy,7,,K,human|K|IGKV3-20,human|K|IGKJ5,True,2019,,,,True,same V+J gene,6cdi,r,0.23,human|K|IGKV3-20,human|K|IGKJ5,,,,False,
+control,9jkr,D,,K,human|K|IGKV4-1,human|K|IGKJ4,True,2024,,,,True,same J gene,6bfq,L,0.041,human|K|IGKV1-12,human|K|IGKJ4,,,,False,
+control,7a5r,H,,H,human|H|IGHV5-51,human|H|IGHJ6,True,2020,,,,True,same V+J gene,6w41,H,0.195,human|H|IGHV5-51,human|H|IGHJ6,,,,False,
+control,6y92,D,,K,human|K|IGKV3-11,human|K|IGKJ5,True,2020,,,,True,same V+J gene,3giz,L,0.265,human|K|IGKV3-11,human|K|IGKJ5,,,,False,
+control,6vx4,K,,K,mouse|K|IGKV13-85,mouse|K|IGKJ2,True,2020,,,,True,same V gene,6gff,K,0.829,mouse|K|IGKV13-85,mouse|K|IGKJ1,,,,False,
+control,7ru8,L,,K,human|K|IGKV1-39,human|K|IGKJ3,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,9o2s,H,,H,human|H|IGHV4-34,human|H|IGHJ6,True,2025,,,,True,same V gene,5bzd,B,0.079,human|H|IGHV4-34,human|H|IGHJ5,,,,False,
+control,7tdn,H,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2022,,,,True,same J gene,7tdm,H,0.236,human|H|IGHV3-21,human|H|IGHJ4,,,,False,
+control,9ew2,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2024,,,,True,same V+J gene,7evw,N,0.765,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,8oyu,D,,H,human|H|IGHV3-64,human|H|IGHJ5,True,2023,,,,True,close (>=90%),8owv,FFF,0.984,human|H|IGHV3-64,human|H|IGHJ5,,,,False,
+control,8ghk,L,,K,mouse|K|IGKV10-96,mouse|K|IGKJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,8dis
+control,8qq0,D,,L,human|L|IGLV2-8,human|L|IGLJ3,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,7k8v
+control,9dng,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6ww2,H,0.331,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7o7f,F,,K,mouse|K|IGKV2-137,mouse|K|IGKJ5,True,2021,,,,True,same V+J gene,6qnk,A,0.279,mouse|K|IGKV2-137,mouse|K|IGKJ5,,,,False,
+control,9rha,B,,H,mouse|H|IGHV1-15,mouse|H|IGHJ2,True,2025,,,,True,close (>=90%),9rh1,B,0.902,mouse|H|IGHV1-15,mouse|H|IGHJ2,,,,False,
+control,9fgy,C,,H,mouse|H|IGHV5-6-2,mouse|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6bj2
+control,9l6c,F,,K,human|K|IGKV3-20,human|K|IGKJ2,True,2024,,,,True,close (>=90%),7cdi,L,0.981,human|K|IGKV3-20,human|K|IGKJ2,,,,False,
+control,7l09,H,,H,human|H|IGHV3-21,human|H|IGHJ2,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,9s6y,A,,K,human|K|IGKV2-24,human|K|IGKJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8tc0
+control,8go8,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2022,,,,True,same V+J gene,4jqi,L,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,6nf5,I,,L,human|L|IGLV2-11,human|L|IGLJ7,True,2018,,,,True,other antibody,5cez,E,0.367,human|L|IGLV2-14,human|L|IGLJ1,,,,False,
+control,6xsk,G,,H,human|H|IGHV4-38-2,human|H|IGHJ5,True,2020,,,,True,other antibody,6fyt,I,-0.231,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,9ml7,L,,K,human|K|IGKV1-27,human|K|IGKJ4,True,2024,,,,True,other antibody,7uz4,L,0.011,mouse|K|IGKV6-25,mouse|K|IGKJ2,,,,False,
+control,8ulr,H,,H,human|H|IGHV1-2,human|H|IGHJ5,True,2023,,,,True,same J gene,8uki,H,0.056,human|H|IGHV1-3,human|H|IGHJ5,,,,False,
+control,8dy6,D,,L,human|L|IGLV2-23,human|L|IGLJ2,True,2022,,,,True,close (>=90%),8dto,H,0.932,human|L|IGLV2-23,human|L|IGLJ2,,,,False,
+control,7tcc,G,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,close (>=90%),7mm0,L,0.982,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,6pzz,E,,K,human|K|IGKV1-39,human|K|IGKJ3,True,2019,,,,True,starting model has no antibody of this type,,,,,,,,,,5l14
+control,8oyt,E,,H,human|H|IGHV3-64,human|H|IGHJ5,True,2023,,,,True,close (>=90%),8owv,FFF,0.929,human|H|IGHV3-64,human|H|IGHJ5,,,,False,
+control,8dpz,F,,H,human|H|IGHV4-4,human|H|IGHJ5,True,2022,,,,True,same V+J gene,3q6g,H,0.785,human|H|IGHV4-4,human|H|IGHJ5,,,,False,
+control,9oeg,H,,H,mouse|H|IGHV5-17,mouse|H|IGHJ4,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8ufo
+control,8go8,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2022,,,,True,same V+J gene,4jqi,H,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7s6d,D,,H,human|H|IGHV3-49,human|H|IGHJ4,True,2021,,,,True,same V+J gene,6c9u,H,0.213,human|H|IGHV3-49,human|H|IGHJ4,,,,False,
+control,6ukj,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2019,,,,True,same V+J gene,4xmm,H,0.23,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7dzx,L,,K,human|K|IGKV1-17,human|K|IGKJ4,True,2021,,,,True,other antibody,5x8m,C,0.085,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,7tbf,L,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,same V+J gene,7mm0,L,0.258,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,7yh6,L,,L,human|L|IGLV1-40,human|L|IGLJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6m0j
+control,7ndc,D,,H,human|H|IGHV3-30,human|H|IGHJ6,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6z97
+control,9op1,A,,H,human|H|IGHV3-74,human|H|IGHJ1,True,2025,,,,True,same V+J gene,5iq9,A,0.351,human|H|IGHV3-74,human|H|IGHJ1,,,,False,
+control,7kmk,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2020,,,,True,same V+J gene,7klh,L,0.255,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,8jaf,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,close (>=90%),8go8,L,0.968,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,8g85,A,,H,mouse|H|IGHV3-6,mouse|H|IGHJ2,True,2023,,,,True,other antibody,7lpn,H,0.336,human|H|IGHV3-7,human|H|IGHJ2,,,,False,
+control,7ndb,H,,H,human|H|IGHV1-58,human|H|IGHJ3,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6z97
+control,8p12,H,,H,mouse|H|IGHV2-9,mouse|H|IGHJ3,True,2023,,,,True,other antibody,6cmo,H,-0.008,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8czz,M,,H,human|H|IGHV4-4,human|H|IGHJ6,True,2022,,,,True,same V+J gene,4fq2,H,0.336,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,7y72,P,,K,human|K|IGKV2-28,human|K|IGKJ5,True,2022,,,,True,same V gene,6n16,B,0.189,human|K|IGKV2-28,human|K|IGKJ4,,,,False,
+control,9yok,E,,L,human|L|IGLV2-14,human|L|IGLJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,7bnm
+control,9z3q,C,,K,human|K|IGKV1-12,human|K|IGKJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,7czf
+control,7ld1,L,,K,human|K|IGKV4-1,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,9zz6,L,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2026,,,,True,starting model has no antibody of this type,,,,,,,,,,8s9s
+control,9lbs,L,,K,human|K|IGKV1-39,human|K|IGKJ3,True,2025,,,,True,close (>=90%),7x1m,L,0.982,human|K|IGKV1-39,human|K|IGKJ3,,,,False,
+control,8f6i,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2022,,,,True,same V+J gene,7kzz,F,0.296,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8rle,D,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2024,,,,True,close (>=90%),3k1k,C,0.935,human|H|IGHV3-11,human|H|IGHJ4,,,,False,
+control,9lfl,E,,K,mouse|K|IGKV4-74,mouse|K|IGKJ5,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,3alq
+control,7b2q,D,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,5jtw
+control,8ekd,F,,K,human|K|IGKV4-1,human|K|IGKJ4,True,2022,,,,True,close (>=90%),7l7e,D,0.973,human|K|IGKV4-1,human|K|IGKJ4,,,,False,
+control,9cia,B,,H,mouse|H|IGHV1-42-1,mouse|H|IGHJ2,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,7phr
+control,6opo,H,,H,human|H|IGHV1-69,human|H|IGHJ1,True,2019,,,,True,same V+J gene,5vn3,H,0.343,human|H|IGHV1-69,human|H|IGHJ1,,,,False,
+control,8f6j,C,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2022,,,,True,same V+J gene,7kzz,E,0.252,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,6qno,L,,K,mouse|K|IGKV2-137,mouse|K|IGKJ5,True,2019,,,,True,same V+J gene,6qnk,A,0.205,mouse|K|IGKV2-137,mouse|K|IGKJ5,,,,False,
+control,6mar,L,,K,human|K|IGKV2D-29,human|K|IGKJ4,True,2018,,,,True,same V+J gene,5fuu,L,0.272,human|K|IGKV2D-29,human|K|IGKJ4,,,,False,
+control,7ucg,K,,L,human|L|IGLV3-21,human|L|IGLJ3,True,2022,,,,True,same V+J gene,5cez,L,0.213,human|L|IGLV3-21,human|L|IGLJ3,,12-81:-1;83-999:-1,,True,
+control,9exa,C,,K,mouse|K|IGKV3-4,mouse|K|IGKJ2,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,8ctk
+control,7wuh,F,,K,mouse|K|IGKV8-30,mouse|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7cn9
+control,7m6i,L,,K,human|K|IGKV3-20,human|K|IGKJ5,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+control,8g9x,H,,H,mouse|H|IGHV5-9,mouse|H|IGHJ2,True,2023,,,,True,same V+J gene,6x7w,A,0.289,mouse|H|IGHV5-9,mouse|H|IGHJ2,,,,False,
+control,9mqr,D,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,same J gene,6az2,A,0.173,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9me5,H,,H,mouse|H|IGHV1-18-41,mouse|H|IGHJ2,True,2024,,,,True,same J gene,15c8,H,0.134,mouse|H|IGHV14-3,mouse|H|IGHJ2,,,,False,
+control,8j26,B,,H,human|H|IGHV3-30,human|H|IGHJ4,True,2023,,,,True,same V+J gene,6xdg,C,0.23,human|H|IGHV3-30,human|H|IGHJ4,,,,False,
+control,8d21,F,,K,human|K|IGKV3-15,human|K|IGKJ5,True,2022,,,,True,other antibody,7mfg,L,0.704,human|K|IGKV3-20,human|K|IGKJ2,,,,False,
+control,7ntc,H,,H,human|H|IGHV3-21,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6zge
+control,7y6l,L,,K,human|K|IGKV1-5,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5cck
+control,8qot,H,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2023,,,,True,same V+J gene,7phq,H,0.235,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,8thz,E,,H,human|H|IGHV1-69,human|H|IGHJ4,True,2023,,,,True,same V+J gene,6x9x,A,0.16,human|H|IGHV1-69,human|H|IGHJ4,,,,False,
+control,7uds,D,,H,human|H|IGHV3-21,human|H|IGHJ2,True,2022,,,,True,same V gene,5vk2,D,0.144,human|H|IGHV3-21,human|H|IGHJ6,,,,False,
+control,8flw,L,,K,human|K|IGKV2-28,human|K|IGKJ1,True,2022,,,,True,same J gene,6nnf,V,-0.005,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,9ygo,L,,L,human|L|IGLV1-47,human|L|IGLJ3,True,2025,,,,True,same V+J gene,4fqk,F,0.238,human|L|IGLV1-47,human|L|IGLJ3,,,,False,
+control,8pwh,C,,K,human|K|IGKV1-33,human|K|IGKJ1,True,2023,,,,True,same V+J gene,1s78,C,0.255,human|K|IGKV1-33,human|K|IGKJ1,,,,False,
+control,9me6,M,,K,mouse|K|IGKV10-96,mouse|K|IGKJ1,True,2024,,,,True,other antibody,15c8,L,0.127,mouse|K|IGKV4-74,mouse|K|IGKJ2,,,,False,
+control,7vq0,D,,H,human|H|IGHV3-64,human|H|IGHJ6,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7krr
+control,9at8,K,,K,mouse|K|IGKV16-104,mouse|K|IGKJ5,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5yxw
+control,9mr1,B,,K,human|K|IGKV4-1,human|K|IGKJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6xr8
+control,9iyi,N,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6jo8;8fcg
+control,9oed,B,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6orn
+control,9ixv,H,,H,human|H|IGHV3-53,human|H|IGHJ2,True,2024,,,,True,other antibody,5zxv,H,0.144,human|H|IGHV3-30,human|H|IGHJ4,,,,False,
+control,7mdu,E,,H,human|H|IGHV3-23,human|H|IGHJ5,True,2021,,,,True,identical,6x9r,H,1.0,human|H|IGHV3-23,human|H|IGHJ5,,,,False,
+control,9ygp,H,,H,human|H|IGHV4-59,human|H|IGHJ2,True,2025,,,,True,same V gene,4qhk,M,0.212,human|H|IGHV4-59,human|H|IGHJ4,,,,False,
+control,7x92,L,,K,human|K|IGKV1-33,human|K|IGKJ2,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5cck
+control,9ygp,L,,L,human|L|IGLV1-47,human|L|IGLJ3,True,2025,,,,True,same V+J gene,4fqk,F,0.238,human|L|IGLV1-47,human|L|IGLJ3,,,,False,
+control,8gp3,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2022,,,,True,same V+J gene,8go8,L,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,7sjo,E,,H,human|H|IGHV1-46,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,3tjn
+control,8ult,L,,K,human|K|IGKV1-33,human|K|IGKJ3,True,2023,,,,True,other antibody,6udj,E,-0.028,human|K|IGKV3-20,human|K|IGKJ5,,,,False,
+control,8vww,H,,H,human|H|IGHV4-39,human|H|IGHJ3,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6vkf
+control,9rha,C,,K,mouse|K|IGKV9-124,mouse|K|IGKJ4,True,2025,,,,True,same V+J gene,9rh1,C,0.857,mouse|K|IGKV9-124,mouse|K|IGKJ4,,,,False,
+control,9mkg,A,,H,human|H|IGHV1-69,human|H|IGHJ3,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5ihb
+control,7wur,E,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5gs6
+control,8ebp,L,,L,human|L|IGLV1-40,human|L|IGLJ3,True,2022,,,,True,other antibody,4dag,L,0.039,human|L|IGLV3-1,human|L|IGLJ7,,,,False,
+control,7cfn,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2020,,,,True,close (>=90%),3sn6,N,0.984,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,9o2u,K,,K,human|K|IGKV1-9,human|K|IGKJ1,True,2025,,,,True,same J gene,7ps3,L,0.11,human|K|IGKV1-12,human|K|IGKJ1,,,,False,
+control,7jhh,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2020,,,,True,same V+J gene,6cmo,H,0.234,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,12pb,B,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2026,,,,True,same J gene,8hbv,B,0.642,human|H|IGHV3-30,human|H|IGHJ4,,,,False,
+control,9zz6,K,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2026,,,,True,starting model has no antibody of this type,,,,,,,,,,8s9s
+control,8pwh,A,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,same V+J gene,1n8z,A,0.255,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,8yrp,n,,H,human|H|IGHV4-4,human|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,7v7v
+control,9ffx,F,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,0.722,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,8pvb,O,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2023,,,,True,same V+J gene,7a5v,O,-0.183,human|H|IGHV3-23,human|H|IGHJ4,,18-127:-1,,True,
+control,6vpx,H,,H,human|H|IGHV3-15,human|H|IGHJ2,True,2020,,,,True,close (>=90%),5t80,H,0.962,human|H|IGHV3-15,human|H|IGHJ2,,,,False,
+control,9vg1,D,,K,mouse|K|IGKV9-120,mouse|K|IGKJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,5xs4
+control,8rh2,D,,H,human|H|IGHV1-8,human|H|IGHJ6,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,8thz,L,,K,human|K|IGKV1-39,human|K|IGKJ4,True,2023,,,,True,same V gene,6mei,L,0.1,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,8pwh,B,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,same V+J gene,1n8z,B,0.323,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8jn5,L,,K,human|K|IGKV2-29,human|K|IGKJ5,True,2023,,,,True,same J gene,5chn,L,0.823,human|K|IGKV2D-29,human|K|IGKJ5,,,,False,
+control,9l6c,A,,H,human|H|IGHV3-33,human|H|IGHJ4,True,2024,,,,True,other antibody,7cdi,H,0.74,human|H|IGHV3-66,human|H|IGHJ6,,,,False,
+control,9oeg,K,,K,mouse|K|IGKV12-46,mouse|K|IGKJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8ufo
+control,7m6g,H,,H,human|H|IGHV1-18,human|H|IGHJ5,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+control,8tnj,F,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,8tmu
+control,7mdu,L,,K,human|K|IGKV1D-7-1,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vfl;6x9r
+control,6xsk,J,,K,human|K|IGKV1-39,human|K|IGKJ3,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6fyt
+control,11yb,L,,K,mouse|K|IGKV5-37,mouse|K|IGKJ5,True,2026,,,,True,other antibody,7la4,L,0.012,mouse|K|IGKV10-96,mouse|K|IGKJ1,,,,False,
+control,8ekd,E,,H,human|H|IGHV3-15,human|H|IGHJ4,True,2022,,,,True,close (>=90%),7l7e,C,0.977,human|H|IGHV3-15,human|H|IGHJ4,,,,False,
+control,7tn9,B,,K,human|K|IGKV4-1,human|K|IGKJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5jq3
+control,8r9y,B,,H,human|H|IGHV1-69,human|H|IGHJ3,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,6bfu
+control,9ffp,F,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,,,,True,same J gene,6huk,G,-0.26,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,7a5s,L,,K,human|K|IGKV4-1,human|K|IGKJ1,True,2020,,,,True,same V+J gene,6w41,L,0.208,human|K|IGKV4-1,human|K|IGKJ1,,,,False,
+control,7k8u,H,,H,human|H|IGHV4-34,human|H|IGHJ3,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vyb
+control,7qtk,C,,K,human|K|IGKV1-9,human|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7qo7
+control,9sld,G,,H,human|H|IGHV3-23,human|H|IGHJ5,True,2025,,,,True,same V gene,7qn7,F,0.613,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,8qtd,L,,L,human|L|IGLV2-14,human|L|IGLJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,8cim
+control,8ejh,K,,K,human|K|IGKV3-11,human|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7sgd
+control,9mkg,B,,K,human|K|IGKV2-28,human|K|IGKJ1,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5ihb
+control,7nj3,F,,H,human|H|IGHV3-64,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7hna
+control,7k8v,H,,H,human|H|IGHV5-51,human|H|IGHJ3,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vyb
+control,7q0a,Y,,H,human|H|IGHV3-53,human|H|IGHJ3,True,2021,,,,True,same V gene,7nd5,H,0.843,human|H|IGHV3-53,human|H|IGHJ6,,,,False,
+control,7q0a,Z,,K,human|K|IGKV1-33,human|K|IGKJ3,True,2021,,,,True,same J gene,7nd5,L,0.795,human|K|IGKV1-9,human|K|IGKJ3,,,,False,
+control,7tcc,D,,H,human|H|IGHV3-30,human|H|IGHJ6,True,2021,,,,True,other antibody,7mm0,H,0.476,human|H|IGHV1-58,human|H|IGHJ3,,,,False,
+control,7lcn,B,,H,human|H|IGHV1-24,human|H|IGHJ2,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,7q9p,F,,K,human|K|IGKV3-11,human|K|IGKJ5,True,2021,,,,True,same V+J gene,7pry,L,0.258,human|K|IGKV3-11,human|K|IGKJ5,,,,False,
+control,8r9y,C,,K,human|K|IGKV3-15,human|K|IGKJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,6bfu
+control,8r9y,H,,H,human|H|IGHV3-33,human|H|IGHJ4,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,6bfu
+control,7m6f,D,,L,human|L|IGLV1-40,human|L|IGLJ3,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+control,6opq,H,,H,human|H|IGHV1-69,human|H|IGHJ1,True,2019,,,,True,same V+J gene,5vn3,H,0.343,human|H|IGHV1-69,human|H|IGHJ1,,,,False,
+control,9bbn,N,,K,human|K|IGKV3-20,human|K|IGKJ3,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,8fcg
+control,9ffq,F,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,,,,True,same J gene,6huk,G,-0.26,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,8jtd,N,,K,human|K|IGKV2-28,human|K|IGKJ1,True,2023,,,,True,same V+J gene,5v8l,N,0.272,human|K|IGKV2-28,human|K|IGKJ1,,,,False,
+control,9fgd,F,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,-0.199,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,8r8k,H,,H,human|H|IGHV3-15,human|H|IGHJ4,True,2023,,,,True,other antibody,8cim,D,0.054,human|H|IGHV1-69,human|H|IGHJ5,,,,False,
+control,7the,B,,H,human|H|IGHV1-69,human|H|IGHJ6,True,2022,,,,True,identical,7tht,H,1.0,human|H|IGHV1-69,human|H|IGHJ6,,,,False,
+control,7u9p,H,,H,human|H|IGHV3-33,human|H|IGHJ3,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6xlu
+control,9s67,B,,H,human|H|IGHV4-34,human|H|IGHJ6,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8tc0
+control,8eay,L,,L,human|L|IGLV3-1,human|L|IGLJ2,True,2022,,,,True,same V gene,4dag,L,0.822,human|L|IGLV3-1,human|L|IGLJ7,,,,False,
+control,9s6q,B,,H,human|H|IGHV4-59,human|H|IGHJ1,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8tc0
+control,8gp3,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2022,,,,True,same V+J gene,8go8,H,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8eji,H,,H,human|H|IGHV3-74,human|H|IGHJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7sgd
+control,8dua,D,,H,human|H|IGHV4-59,human|H|IGHJ2,True,2022,,,,True,other antibody,6tyb,H,0.029,human|H|IGHV5-51,human|H|IGHJ4,,,,False,
+control,7q9m,F,,K,human|K|IGKV3-15,human|K|IGKJ1,True,2021,,,,True,same V+J gene,7ps2,L,0.258,human|K|IGKV3-15,human|K|IGKJ1,,,,False,
+control,7mn8,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,,,,True,same V+J gene,1n8z,B,0.264,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8qpr,E,,H,human|H|IGHV1-2,human|H|IGHJ5,True,2023,,,,True,other antibody,7k8v,H,0.105,human|H|IGHV5-51,human|H|IGHJ3,,,,False,
+control,7mn8,C,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2021,,,,True,same V+J gene,1n8z,A,0.218,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,8i0z,E,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,same V+J gene,8goo,E,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,9t9m,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2025,,,,True,same V+J gene,7pij,L,0.154,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,7ks9,H,,H,human|H|IGHV3-53,human|H|IGHJ5,True,2020,,,,True,same V gene,7bz5,H,0.242,human|H|IGHV3-53,human|H|IGHJ6,,,,False,
+control,8t60,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,same V+J gene,7php,L,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,6y90,C,,H,mouse|H|IGHV1-47-27,mouse|H|IGHJ1,True,2020,,,,True,same V+J gene,2osl,H,0.315,mouse|H|IGHV1-47-27,mouse|H|IGHJ1,,,,False,
+control,7po5,H,,H,human|H|IGHV4-34,human|H|IGHJ6,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6nzk
+control,6usf,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2019,,,,True,same V+J gene,6cbv,L,0.256,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,9rh9,B,,H,mouse|H|IGHV1-15,mouse|H|IGHJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,4au5
+control,7lrs,E,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7kms
+control,8de6,B,,H,mouse|H|IGHV2-6-7,mouse|H|IGHJ3,True,2022,,,,True,other antibody,3bae,H,0.421,mouse|H|IGHV8-12,mouse|H|IGHJ2,,,,False,
+control,8rh0,D,,H,human|H|IGHV1-8,human|H|IGHJ6,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,7tn9,N,,K,human|K|IGKV1-39,human|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5jq3
+control,6vcb,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2019,,,,True,same V+J gene,5vai,N,0.703,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,9d74,H,,H,mouse|H|IGHV1-5,mouse|H|IGHJ2,True,2024,,,,True,same V+J gene,8tq6,F,0.283,mouse|H|IGHV1-5,mouse|H|IGHJ2,,,,False,
+control,7uz9,H,,H,mouse|H|IGHV1-55,mouse|H|IGHJ4,True,2022,,,,True,other antibody,7sc1,H,-0.013,human|H|IGHV3-53,human|H|IGHJ6,,,,False,
+control,7lcn,D,,L,human|L|IGLV2-8,human|L|IGLJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,8thz,H,,H,human|H|IGHV1-69,human|H|IGHJ4,True,2023,,,,True,same V gene,6mei,H,0.11,human|H|IGHV1-69,human|H|IGHJ5,,,,False,
+control,7k8y,I,,L,human|L|IGLV2-23,human|L|IGLJ2,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx;6w41
+control,7pnq,D,,H,human|H|IGHV4-34,human|H|IGHJ6,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6nzk
+control,9co9,D,,H,human|H|IGHV3-64,human|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,8ios
+control,7t9t,C,,H,human|H|IGHV1-18,human|H|IGHJ2,True,2021,,,,True,same V+J gene,5f96,H,0.318,human|H|IGHV1-18,human|H|IGHJ2,,,,False,
+control,7x8y,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5cck
+control,7p79,B,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,,,,True,same J gene,3k1k,C,0.763,human|H|IGHV3-11,human|H|IGHJ4,,,,False,
+control,9fam,G,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huo,G,-0.199,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,6udk,B,,L,human|L|IGLV3-21,human|L|IGLJ3,True,2019,,,,True,same V+J gene,5t3z,L,0.224,human|L|IGLV3-21,human|L|IGLJ3,,12-81:-1;83-999:-1,,True,
+control,7ll2,H,,H,human|H|IGHV4-34,human|H|IGHJ3,True,2021,,,,True,same V+J gene,7l77,H,0.318,human|H|IGHV4-34,human|H|IGHJ3,,,,False,
+control,7x90,F,,K,human|K|IGKV1-39,human|K|IGKJ5,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5cck
+control,9at8,L,,H,mouse|H|IGHV3-2,mouse|H|IGHJ1,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5yxw
+control,8k5h,L,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2023,,,,True,same V+J gene,7x7o,F,0.191,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,6vrk,B,,H,mouse|H|IGHV1-26,mouse|H|IGHJ2,True,2020,,,,True,same V+J gene,6awn,B,0.312,mouse|H|IGHV1-26,mouse|H|IGHJ2,,,,False,
+control,7p78,W,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2021,,,,True,identical,7klw,C,1.0,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9zt7,A,,H,human|H|IGHV3-30,human|H|IGHJ4,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,6xr8
+control,9z3q,D,,H,human|H|IGHV1-69,human|H|IGHJ5,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,7czf
+control,9btw,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2024,,,,True,same V+J gene,7tzf,N,0.899,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,7y72,O,,H,human|H|IGHV4-59,human|H|IGHJ4,True,2022,,,,True,other antibody,6n16,A,0.152,human|H|IGHV4-4,human|H|IGHJ2,,,,False,
+control,6mhg,L,,L,human|L|IGLV1-40,human|L|IGLJ3,True,2018,,,,True,same V+J gene,6axk,B,0.271,human|L|IGLV1-40,human|L|IGLJ3,,,,False,
+control,6orq,D,,H,mouse|H|IGHV5-6,mouse|H|IGHJ4,True,2019,,,,True,other antibody,4fqq,H,0.429,human|H|IGHV4-59,human|H|IGHJ6,,,,False,
+control,8rh2,E,,L,human|L|IGLV3-21,human|L|IGLJ2,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,2gum
+control,7lwd,L,,K,mouse|K|IGKV3-2,mouse|K|IGKJ1,True,2021,,,,True,same J gene,6awn,C,0.491,mouse|K|IGKV6-17,mouse|K|IGKJ1,,,,False,
+control,6u02,C,,K,human|K|IGKV1-39,human|K|IGKJ2,True,2019,,,,True,starting model has no antibody of this type,,,,,,,,,,5l14
+control,6vx4,H,,H,mouse|H|IGHV1-20,mouse|H|IGHJ4,True,2020,,,,True,other antibody,1f11,B,0.329,mouse|H|IGHV1-18-36,mouse|H|IGHJ3,,,,False,
+control,7lok,J,,K,human|K|IGKV3-15,human|K|IGKJ5,True,2021,,,,True,same V+J gene,2nxy,C,0.269,human|K|IGKV3-15,human|K|IGKJ5,,,,False,
+control,7uzb,H,,H,mouse|H|IGHV1-82,mouse|H|IGHJ2,True,2022,,,,True,other antibody,7sc1,H,-0.013,human|H|IGHV3-53,human|H|IGHJ6,,,,False,
+control,8t60,B,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2023,,,,True,same J gene,7php,N,0.623,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9op1,B,,L,human|L|IGLV3-19,human|L|IGLJ2,True,2025,,,,True,same V+J gene,5iq9,B,0.276,human|L|IGLV3-19,human|L|IGLJ2,,,,False,
+control,8hlb,E,,K,mouse|K|IGKV6-25,mouse|K|IGKJ2,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,3alq
+control,8rl5,K,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,close (>=90%),7zmv,K,0.961,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,7kml,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2020,,,,True,same V+J gene,7klh,L,0.255,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,6nfc,C,,H,human|H|IGHV3-23,human|H|IGHJ5,True,2018,,,,True,other antibody,5cez,H,0.425,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,9ay1,1,,H,human|H|IGHV3-30,human|H|IGHJ4,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6mx4
+control,9fgc,F,,H,human|H|IGHV3-7,human|H|IGHJ4,True,2024,,,,True,same V+J gene,6huk,G,-0.199,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,7xtq,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2022,,,,True,identical,7cfm,N,1.0,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,8dw2,C,,K,human|K|IGKV3-20,human|K|IGKJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7bno
+control,8goc,E,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5tv1
+control,8dwo,H,,H,human|H|IGHV5-51,human|H|IGHJ2,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,6xo4
+control,7mxe,R,,H,human|H|IGHV4-4,human|H|IGHJ2,True,2021,,,,True,other antibody,5cjx,A,-0.07,human|H|IGHV1-69,human|H|IGHJ5,,80-82:+1,,True,
+control,8q6j,C,,K,human|K|IGKV1-33,human|K|IGKJ1,True,2023,,,,True,same V+J gene,1s78,C,0.255,human|K|IGKV1-33,human|K|IGKJ1,,,,False,
+control,7dzy,L,,K,human|K|IGKV1-5,human|K|IGKJ4,True,2021,,,,True,other antibody,7kew,J,-0.021,human|K|IGKV3-15,human|K|IGKJ1,,,,False,
+control,7tbf,E,,K,human|K|IGKV1-12,human|K|IGKJ5,True,2021,,,,True,other antibody,7mm0,L,0.615,human|K|IGKV3-20,human|K|IGKJ1,,,,False,
+control,7nj7,F,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7hna
+control,6z43,X,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,7x8w,L,,L,human|L|IGLV2-8,human|L|IGLJ1,True,2022,,,,True,other antibody,5cck,L,0.068,human|L|IGLV2-23,human|L|IGLJ2,,,,False,
+control,6x98,F,,H,human|H|IGHV3-53,human|H|IGHJ2,True,2020,,,,True,other antibody,5cez,H,0.029,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
+control,8g9y,L,,K,mouse|K|IGKV5-43,mouse|K|IGKJ5,True,2023,,,,True,same V+J gene,6x7w,L,0.255,mouse|K|IGKV5-43,mouse|K|IGKJ5,,,,False,
+control,8rlc,C,,H,human|H|IGHV3-11,human|H|IGHJ4,True,2024,,,,True,same J gene,8qv6,B,0.578,human|H|IGHV3-64,human|H|IGHJ4,,,,False,
+control,6pci,N,,H,human|H|IGHV4-4,human|H|IGHJ6,True,2019,,,,True,starting model has no antibody of this type,,,,,,,,,,5jq3
+control,8zrh,L,,K,human|K|IGKV2-28,human|K|IGKJ1,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,3j2v
+control,9lfl,B,,H,mouse|H|IGHV1-47-30,mouse|H|IGHJ2,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,3alq
+control,9ryf,C,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,same V+J gene,6rai,C,0.871,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,8vpf,D,,H,human|H|IGHV1-69,human|H|IGHJ6,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,6crx
+control,8dw3,C,,K,human|K|IGKV3-20,human|K|IGKJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,7bno
+control,9bew,K,,L,human|L|IGLV3-21,human|L|IGLJ3,True,2024,,,,True,starting model has no antibody of this type,,,,,,,,,,5v8m
+control,7q9m,E,,H,human|H|IGHV5-10-1,human|H|IGHJ4,True,2021,,,,True,same V+J gene,7ps2,H,0.308,human|H|IGHV5-10-1,human|H|IGHJ4,,,,False,
+control,7tcn,C,,H,human|H|IGHV1-18,human|H|IGHJ2,True,2021,,,,True,same V+J gene,5f96,H,0.318,human|H|IGHV1-18,human|H|IGHJ2,,,,False,
+control,7lrt,E,,K,human|K|IGKV3-20,human|K|IGKJ1,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,7kms
+control,6opo,E,,K,human|K|IGKV3-15,human|K|IGKJ5,True,2019,,,,True,same V+J gene,5vn3,L,0.269,human|K|IGKV3-15,human|K|IGKJ5,,,,False,
+control,7m6g,L,,K,human|K|IGKV3-20,human|K|IGKJ2,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6xkl
+control,9sf5,H,,H,human|H|IGHV3-49,human|H|IGHJ3,True,2025,,,,True,other antibody,8cim,D,0.469,human|H|IGHV1-69,human|H|IGHJ5,,,,False,
+control,7lwd,H,,H,mouse|H|IGHV1-82,mouse|H|IGHJ4,True,2021,,,,True,other antibody,6awn,B,0.65,mouse|H|IGHV1-26,mouse|H|IGHJ2,,,,False,
+control,9sld,F,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2025,,,,True,same V+J gene,7qn7,F,0.554,human|H|IGHV3-23,human|H|IGHJ4,,,,False,
+control,9cx9,H,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2024,,,,True,same V+J gene,4jqi,H,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,8r4c,C,,H,human|H|IGHV3-66,human|H|IGHJ5,True,2023,,,,True,starting model has no antibody of this type,,,,,,,,,,6hlu
+control,7mdu,F,,L,human|L|IGLV2-11,human|L|IGLJ7,True,2021,,,,True,close (>=90%),6x9r,L,0.959,human|L|IGLV2-11,human|L|IGLJ7,,,,False,
+control,6ukj,L,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2019,,,,True,same V+J gene,4xmm,L,0.235,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,7ru5,D,,H,human|H|IGHV1-69,human|H|IGHJ5,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,7b2p,D,,H,human|H|IGHV3-23,human|H|IGHJ5,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,5jtw
+control,7ru3,E,,H,human|H|IGHV1-69,human|H|IGHJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6vxx
+control,8fk5,L,,L,human|L|IGLV2-14,human|L|IGLJ1,True,2022,,,,True,same V+J gene,6nnf,E,0.051,human|L|IGLV2-14,human|L|IGLJ1,,,,False,
+control,8j8v,C,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,same V+J gene,8go9,C,0.249,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,7x93,E,,H,human|H|IGHV3-30,human|H|IGHJ4,True,2022,,,,True,other antibody,5cck,H,-0.021,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,9s67,A,,K,human|K|IGKV1-5,human|K|IGKJ3,True,2025,,,,True,starting model has no antibody of this type,,,,,,,,,,8tc0
+control,7tn9,G,,H,human|H|IGHV3-33,human|H|IGHJ4,True,2022,,,,True,starting model has no antibody of this type,,,,,,,,,,5jq3
+control,7tcc,F,,H,human|H|IGHV1-58,human|H|IGHJ3,True,2021,,,,True,close (>=90%),7mm0,H,0.984,human|H|IGHV1-58,human|H|IGHJ3,,,,False,
+control,7kzx,C,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2020,,,,True,starting model has no antibody of this type,,,,,,,,,,5vrf
+control,7q9g,F,,K,human|K|IGKV3-20,human|K|IGKJ3,True,2021,,,,True,close (>=90%),7nxa,B,0.981,human|K|IGKV3-20,human|K|IGKJ3,,,,False,
+control,6vpx,Q,,K,human|K|IGKV2D-29,human|K|IGKJ4,True,2020,,,,True,close (>=90%),6olp,I,0.938,human|K|IGKV2D-29,human|K|IGKJ4,,,,False,
+control,8j9k,B,,K,human|K|IGKV1-39,human|K|IGKJ1,True,2023,,,,True,same V+J gene,8goc,E,0.898,human|K|IGKV1-39,human|K|IGKJ1,,,,False,
+control,9n5h,B,,H,mouse|H|IGHV1-42,mouse|H|IGHJ4,True,2025,,,,True,same V+J gene,9n89,H,0.312,mouse|H|IGHV1-42,mouse|H|IGHJ4,,,,False,
+control,7ra3,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2021,,,,True,same V+J gene,6vcb,N,0.703,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,8u1p,H,,H,human|H|IGHV1-2,human|H|IGHJ6,True,2023,,,,True,other antibody,7zxg,B,0.033,mouse|H|IGHV5-9-1,mouse|H|IGHJ4,,,,False,
+control,9fft,F,,H,human|H|IGHV3-23,human|H|IGHJ4,True,2024,,,,True,same J gene,6huk,G,-0.26,human|H|IGHV3-7,human|H|IGHJ4,,18-999:-1,,True,
+control,7ntc,L,,K,human|K|IGKV1-33,human|K|IGKJ4,True,2021,,,,True,starting model has no antibody of this type,,,,,,,,,,6zge
+control,7n65,D,,L,human|L|IGLV1-40,human|L|IGLJ1,True,2021,,,,True,other antibody,5aco,J,0.514,human|L|IGLV2-8,human|L|IGLJ2,,,,False,
+control,7k7h,H,,H,mouse|H|IGHV1-18-28,mouse|H|IGHJ3,True,2020,,,,True,same J gene,4h20,H,0.708,mouse|H|IGHV1-19,mouse|H|IGHJ3,,,,False,
+control,6xox,N,,H,human|H|IGHV3-48,human|H|IGHJ4,True,2020,,,,True,same V+J gene,5vai,N,0.703,human|H|IGHV3-48,human|H|IGHJ4,,,,False,
+control,9rhf,B,,H,mouse|H|IGHV1-15,mouse|H|IGHJ2,True,2025,,,,True,close (>=90%),9rh1,B,0.902,mouse|H|IGHV1-15,mouse|H|IGHJ2,,,,False,
+control,9lbs,B,,K,human|K|IGKV3-20,human|K|IGKJ4,True,2025,,,,True,close (>=90%),7x1m,B,0.981,human|K|IGKV3-20,human|K|IGKJ4,,,,False,
+control,7y6l,H,,H,human|H|IGHV5-51,human|H|IGHJ4,True,2022,,,,True,other antibody,5cck,H,-0.019,human|H|IGHV1-2,human|H|IGHJ2,,,,False,
+control,8i0z,D,,H,human|H|IGHV3-66,human|H|IGHJ4,True,2023,,,,True,same V+J gene,8goo,D,0.262,human|H|IGHV3-66,human|H|IGHJ4,,,,False,
+control,9oed,A,,H,human|H|IGHV4-4,human|H|IGHJ2,True,2025,,,,True,same V gene,6orn,A,0.617,human|H|IGHV4-4,human|H|IGHJ6,,,,False,
