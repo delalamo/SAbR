@@ -1,0 +1,16 @@
+era                                                                               new (released after Apr 2022)  snapshot (released ≤ Apr 2022)  new (released after Apr 2022) %  snapshot (released ≤ Apr 2022) %
+origin                                                                                                                                                                                                            
+1a copied from an earlier high-res template (HIV FR3-insertion bnAbs; ambiguous)                             27                              74                              8.0                              24.0
+1b copied from an earlier high-res template                                                                  12                              17                              4.0                               5.0
+2 copied from an earlier 3–5 Å structure (other paper)                                                       10                              11                              3.0                               4.0
+3 chain end or next to an unbuilt loop                                                                      129                              82                             40.0                              26.0
+4 FR3 insertion-convention region (possible artifact)                                                        18                               8                              6.0                               3.0
+5 CDR3–FR4 junction: CDR3 built one residue short/long, FR4 anchor displaced                                 44                              70                             14.0                              22.0
+6 FR4 bulge after the W/F-G motif (IMGT 120)                                                                 35                              20                             11.0                               6.0
+7 CDR2 boundary, atypical CDR2 length                                                                         6                               5                              2.0                               2.0
+8 CDR1/CDR2 boundary, typical length                                                                         26                               9                              8.0                               3.0
+9 FR3 / other (still unexplained)                                                                            16                              16                              5.0                               5.0
+
+repeated in another entry of the same paper (any category): 34% of runs
+cryo-EM 2022–26, CDR3–FR4 junction: AlphaFold starting model OR 0.58 [0.08-4.32] p=0.6; experimental template OR 0.53 [0.17-1.59] (vs none recorded; n AF=290)
+cryo-EM 2022–26, any disagreement: AlphaFold starting model OR 0.92 [0.37-2.29] p=0.86; experimental template OR 1.33 [0.80-2.22] (vs none recorded; n AF=290)

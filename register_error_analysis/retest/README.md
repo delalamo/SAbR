@@ -84,6 +84,10 @@ being reused. That's consistent with AlphaFold2 models replacing old experimenta
 starting points, but entries rarely record this, and the direct test is null. In newer cryo-EM the
 remaining errors increasingly sit at chain ends and gaps.
 
+> **Update:** the "Not explained" category was investigated further in `unexplained/`. Most of it is
+> CDR3–FR4 junction errors, an FR4 bulge after the W/F-G motif, and CDR1/CDR2 boundary errors. The
+> genuinely unexplained share falls to 5–11% of independent error events.
+
 ## Caveats
 
 * **Blind spots.** The detector misses errors inside CDRs, and can't adjudicate framework-insertion
