@@ -1,0 +1,61 @@
+cls,era,method,n,crude,standardised,weight_covered
+Antibody V,all,all,7113,1.546,1.547,1.0
+Antibody V,all,EM,3239,2.655,2.674,0.998
+Antibody V,all,X-ray,3874,0.62,0.606,0.998
+Antibody V,≤2017,all,2516,0.358,0.35,0.996
+Antibody V,≤2017,EM,207,0.483,1.363,0.979
+Antibody V,≤2017,X-ray,2309,0.346,0.326,0.996
+Antibody V,2018–19,all,1587,0.882,0.94,0.997
+Antibody V,2018–19,EM,838,1.193,1.157,0.994
+Antibody V,2018–19,X-ray,749,0.534,0.629,0.996
+Antibody V,2020–22,all,3010,2.89,2.912,0.997
+Antibody V,2020–22,EM,2194,3.418,3.446,0.997
+Antibody V,2020–22,X-ray,816,1.471,1.426,0.994
+Antibody C,all,all,3977,0.629,0.766,0.911
+Antibody C,all,EM,829,1.327,0.511,0.648
+Antibody C,all,X-ray,3148,0.445,0.81,0.911
+Antibody C,≤2017,all,1976,0.557,1.19,0.911
+Antibody C,≤2017,EM,30,0.0,0.0,0.425
+Antibody C,≤2017,X-ray,1946,0.565,1.191,0.911
+Antibody C,2018–19,all,636,0.472,0.296,0.804
+Antibody C,2018–19,EM,109,0.917,2.087,0.425
+Antibody C,2018–19,X-ray,527,0.38,0.062,0.804
+Antibody C,2020–22,all,1365,0.806,0.14,0.804
+Antibody C,2020–22,EM,690,1.449,0.368,0.648
+Antibody C,2020–22,X-ray,675,0.148,0.014,0.804
+Other Ig-like (non-antibody),all,all,8563,5.255,1.555,1.0
+Other Ig-like (non-antibody),all,EM,2022,5.589,1.054,1.0
+Other Ig-like (non-antibody),all,X-ray,6541,5.152,1.399,1.0
+Other Ig-like (non-antibody),≤2017,all,5319,6.317,1.214,1.0
+Other Ig-like (non-antibody),≤2017,EM,251,10.359,0.074,0.554
+Other Ig-like (non-antibody),≤2017,X-ray,5068,6.117,1.272,1.0
+Other Ig-like (non-antibody),2018–19,all,1588,2.456,1.248,1.0
+Other Ig-like (non-antibody),2018–19,EM,730,3.425,0.114,0.999
+Other Ig-like (non-antibody),2018–19,X-ray,858,1.632,2.297,1.0
+Other Ig-like (non-antibody),2020–22,all,1656,4.529,2.321,1.0
+Other Ig-like (non-antibody),2020–22,EM,1041,5.956,2.186,0.999
+Other Ig-like (non-antibody),2020–22,X-ray,615,2.114,1.744,1.0
+Non-Ig,all,all,223826,3.791,3.241,1.0
+Non-Ig,all,EM,117466,3.381,2.126,1.0
+Non-Ig,all,X-ray,106360,4.243,4.284,1.0
+Non-Ig,≤2017,all,109303,4.623,4.354,1.0
+Non-Ig,≤2017,EM,23342,5.167,2.993,1.0
+Non-Ig,≤2017,X-ray,85961,4.475,4.663,1.0
+Non-Ig,2018–19,all,54770,3.312,2.154,1.0
+Non-Ig,2018–19,EM,41760,3.194,1.896,1.0
+Non-Ig,2018–19,X-ray,13010,3.689,2.894,1.0
+Non-Ig,2020–22,all,59753,2.708,1.875,1.0
+Non-Ig,2020–22,EM,52364,2.735,1.864,1.0
+Non-Ig,2020–22,X-ray,7389,2.517,2.04,1.0
+Non-Ig β-sandwich,all,all,11747,4.469,3.725,1.0
+Non-Ig β-sandwich,all,EM,6807,6.67,1.118,1.0
+Non-Ig β-sandwich,all,X-ray,4940,1.437,4.562,1.0
+Non-Ig β-sandwich,≤2017,all,5116,4.32,4.911,1.0
+Non-Ig β-sandwich,≤2017,EM,1173,13.64,0.044,1.0
+Non-Ig β-sandwich,≤2017,X-ray,3943,1.547,5.032,1.0
+Non-Ig β-sandwich,2018–19,all,3327,5.38,1.874,1.0
+Non-Ig β-sandwich,2018–19,EM,2879,5.974,2.444,1.0
+Non-Ig β-sandwich,2018–19,X-ray,448,1.562,0.042,0.663
+Non-Ig β-sandwich,2020–22,all,3304,3.783,0.124,1.0
+Non-Ig β-sandwich,2020–22,EM,2755,4.428,0.881,1.0
+Non-Ig β-sandwich,2020–22,X-ray,549,0.546,0.011,1.0

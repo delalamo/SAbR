@@ -22,6 +22,7 @@ OUT = '/home/user/SAbR/register_error_analysis/length_normalised/tables'
 pd.set_option('display.width', 250); pd.set_option('display.max_columns', 30)
 
 d = pd.read_pickle('/tmp/analysis/ecod_grouped.pkl')
+d = d[d.dlen > 0].copy()  # a few ECOD ranges with negative author numbering give dlen <= 0
 ch = pd.read_pickle('/tmp/analysis/chains.pkl')
 IGL = {'Antibody V', 'Antibody C', 'TCR V', 'TCR C/other', 'Other IgSF (V/C1/C2/I-set; MHC, β2m, receptors)',
        'Fibronectin type III', 'Other Ig/E-set/PapD T-group', 'Other Ig-like X-group'}
@@ -119,7 +120,7 @@ t3b.round(3).to_csv(f'{OUT}/standardised_to_abV_lengths.csv', index=False)
 # ---------------------------------------------------------------- 4. per-residue hazard ratios
 P('\n' + '=' * 100); P('4. Per-residue hazard ratio vs antibody V domains (cloglog, offset log length) and error-rate ratio (Poisson)'); P('=' * 100)
 def hr(sub, formula_rhs, label, ref='Antibody V', col='cat'):
-    sub = sub.copy(); sub['g'] = pd.factorize(sub.pdb)[0]
+    sub = sub.dropna(subset=['method', 'rb', 'era', 'dlen', 'flag', 'n_err', col]).copy(); sub = sub[sub.dlen > 0]; sub['g'] = pd.factorize(sub.pdb)[0]
     f = f"flag ~ C({col}, Treatment('{ref}')) + {formula_rhs}"
     mc = smf.glm(f, data=sub, offset=np.log(sub.dlen), family=sm.families.Binomial(link=sm.families.links.CLogLog())).fit(
         cov_type='cluster', cov_kwds={'groups': sub.g})
