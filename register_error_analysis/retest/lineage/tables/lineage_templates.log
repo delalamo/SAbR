@@ -1,3 +1,56 @@
 units 6422 {'junction': 66, 'junction_w118out': 18, 'bulge': 18, 'cdr12': 30, 'gap': 98}
 case runs 491 with starting model 103 | controls 400
 template entries to open 315
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+Limiting hmmer search to species ['human', 'mouse'] was requested but hits did not achieve a high enough bitscore. Reverting to using any species
+
+== cases (runs) by class: closest antibody in the stated starting model
+tier              close (>=90%)  identical  no experimental starting model recorded  other antibody  same J gene  same V gene  same V+J gene  starting model has no antibody of this type  All
+cls                                                                                                                                                                                           
+bulge                         0          0                                       48               0            0            0              0                                            7   55
+cdr12                         0          0                                       41               7            2            1              0                                            3   54
+gap                           7          0                                      176               6           11            0              5                                           12  217
+junction                      1          6                                       93               4            3            2              3                                           12  124
+junction_w118out              0          1                                       30               4            0            0              3                                            3   41
+All                           8          7                                      388              21           16            3             11                                           37  491
+
+== cases whose related (non-identical) template carries the same error:
+                                 size    sum
+cls              tier                       
+cdr12            other antibody     7      0
+                 same J gene        2      0
+                 same V gene        1  False
+gap              close (>=90%)      7      7
+                 other antibody     6      0
+                 same J gene       11      0
+                 same V+J gene      5      3
+junction         close (>=90%)      1   True
+                 other antibody     4      0
+                 same J gene        3      0
+                 same V gene        2      0
+                 same V+J gene      3      0
+junction_w118out other antibody     4      0
+                 same V+J gene      3      0
+
+== template has any run: cases vs controls, by tier
+                        size sum      mean
+kind    tier                              
+case    close (>=90%)      8   8       1.0
+        identical          7   6  0.857143
+        other antibody    21   0       0.0
+        same J gene       16   0       0.0
+        same V gene        3   1  0.333333
+        same V+J gene     11   3  0.272727
+control close (>=90%)     38   1  0.026316
+        identical        105   7  0.066667
+        other antibody    58   1  0.017241
+        same J gene       21   3  0.142857
+        same V gene       15   0       0.0
+        same V+J gene     12   4  0.333333
