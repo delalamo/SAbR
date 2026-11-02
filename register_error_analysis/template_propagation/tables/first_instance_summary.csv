@@ -1,0 +1,8 @@
+bucket,errors (Table S1 rows),errors (Table S1 rows) %,chains,chains %,independent error events,independent error events %,entries,entries %
+inherited (same paper),13,7.9,9,6.5,8,7.1,6,6.9
+"inherited (same lab, later paper)",15,9.1,15,10.8,10,8.9,10,11.5
+inherited (other lab),4,2.4,4,2.9,4,3.6,3,3.4
+"first instance, later recycled",18,10.9,18,12.9,11,9.8,11,12.6
+"first instance, not recycled",107,64.8,85,61.2,71,63.4,52,59.8
+new error (earlier structures correct),2,1.2,2,1.4,2,1.8,1,1.1
+undetermined / unmapped,6,3.6,6,4.3,6,5.4,4,4.6
