@@ -1,0 +1,8 @@
+model,cutoff,exposed_entries,exposed_chains,unexposed_entries
+AlphaFold2 monomer; AF-Multimer v1/v2,2018-04-30,8,13,226
+ESMFold,2020-05-01,23,44,211
+"IgFold (SAbDab, before Jul 2021)",2021-07-01,56,134,178
+"ABodyBuilder2 (≤3.5 Å, no internal gaps*)",2021-07-31,32,86,174
+"AF-Multimer v2.3, Boltz-1, AlphaFold3",2021-09-30,65,144,169
+Boltz-2,2023-06-01,117,225,117
+ABodyBuilder3 (≤3.5 Å),2024-01-31,68,136,100

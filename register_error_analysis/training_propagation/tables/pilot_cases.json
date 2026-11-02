@@ -1,0 +1,434 @@
+[
+ {
+  "id": "6bpe_BC",
+  "pdb": "6bpe",
+  "flagged_chain": "C",
+  "chain_type": "K",
+  "stratum": "s1 <2018-05",
+  "run": {
+   "imgt_start": 3,
+   "imgt_end": 8,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2017-11-22",
+  "method": "X-ray",
+  "res": 3.34,
+  "mapfit_pct": 0.0,
+  "H": "B",
+  "L": "C",
+  "Hseq": "EVKLVESEGGLVQPGSSMNLSCTASGFTFSDYYMAWVRQVPDKGLEWVASVSYDGSITYYLDSLKSRFIISRDNVKNILNLQMSSLKSEDTATYYCTRVTVVDSFDYWGQGTTLTVSSA",
+  "Lseq": "DIVMTQSQKFMSTSIGVRVSVTCKASQNVGTNVAWYQQKPGQSPKALIYSASYRNSGVPDRFTGSGSGTEFTLTISNVQSEDLAEYFCQQYDSYPYPFGGGTKLEIKR",
+  "pair_dist": 23.8,
+  "release": "2018-06-20",
+  "internal_missing": {
+   "B": 0,
+   "C": 4
+  }
+ },
+ {
+  "id": "6cmo_HL",
+  "pdb": "6cmo",
+  "flagged_chain": "L",
+  "chain_type": "K",
+  "stratum": "s1 <2018-05",
+  "run": {
+   "imgt_start": 4,
+   "imgt_end": 12,
+   "delta": -2,
+   "loc": "FR1"
+  },
+  "deposit": "2018-03-05",
+  "method": "EM",
+  "res": 4.5,
+  "mapfit_pct": 25.3,
+  "H": "H",
+  "L": "L",
+  "Hseq": "EVQLVESGGGLVQPGGSLRLSCAASGFNFYYSSIHWVRQAPGKGLEWVASIYSYSGSTSYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCARYPWYWWMEKPYLSLYGMDYWGQGTLVTVSSA",
+  "Lseq": "DIQMTQSPSSLSASVGDRVTITCRASQSVSSAVAWYQQKPGKAPKLLIYSASSLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQSSSSLITFGQGTKVEIKR",
+  "pair_dist": 24.7,
+  "release": "2018-06-20",
+  "internal_missing": {
+   "H": 0,
+   "L": 0
+  }
+ },
+ {
+  "id": "6ot0_HL",
+  "pdb": "6ot0",
+  "flagged_chain": "L",
+  "chain_type": "K",
+  "stratum": "s2 2018-05..2020-04",
+  "run": {
+   "imgt_start": 4,
+   "imgt_end": 9,
+   "delta": -2,
+   "loc": "FR1"
+  },
+  "deposit": "2019-05-02",
+  "method": "EM",
+  "res": 3.84,
+  "mapfit_pct": 60.2,
+  "H": "H",
+  "L": "L",
+  "Hseq": "EVQLVESGGGLVQPGGSLRLSCAASGFNFYYSSIHWVRQAPGKGLEWVASIYSYSGSTSYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCARYPWYWWMEKPYLSLYGMDYWGQGTLVTVSSA",
+  "Lseq": "DIQMTQSPSSLSASVGDRVTITCRASQSVSSAVAWYQQKPGKAPKLLIYSASSLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQSSSSLITFGQGTKVEIKR",
+  "pair_dist": 22.8,
+  "release": "2019-06-12",
+  "internal_missing": {
+   "H": 0,
+   "L": 0
+  }
+ },
+ {
+  "id": "6orp_JK",
+  "pdb": "6orp",
+  "flagged_chain": "J",
+  "chain_type": "H",
+  "stratum": "s2 2018-05..2020-04",
+  "run": {
+   "imgt_start": 1,
+   "imgt_end": 7,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2019-04-30",
+  "method": "EM",
+  "res": 4.4,
+  "mapfit_pct": 27.6,
+  "H": "J",
+  "L": "K",
+  "Hseq": "EVQLLESGPGLVKPSETLSLTCAVSGGSISSSNWWSWIRQPPGKGLEWIGNIGGSSGNTYYNPSLKSRVTISKDTSKNQFSLKLNSVTAADTAVYYCARDSSGWPWDNRFDVWGAGVLVTVSSA",
+  "Lseq": "QSALTQPPSVSGAPGQRVTLSCTGSTSNIGGFYVQWYQQLPGTAPKLLIYENNKRPSGLSDRFSGSQSGTSASLTITGLQSEDEADYYCQSYDNSLSAQVFGGGTRLTVLG",
+  "pair_dist": 23.8,
+  "release": "2019-06-12",
+  "internal_missing": {
+   "J": 0,
+   "K": 0
+  }
+ },
+ {
+  "id": "7jtf_CD",
+  "pdb": "7jtf",
+  "flagged_chain": "C",
+  "chain_type": "H",
+  "stratum": "s3 2020-05..2021-07",
+  "run": {
+   "imgt_start": 55,
+   "imgt_end": 62,
+   "delta": -1,
+   "loc": "FR2"
+  },
+  "deposit": "2020-08-17",
+  "method": "X-ray",
+  "res": 3.35,
+  "mapfit_pct": 11.4,
+  "H": "C",
+  "L": "D",
+  "Hseq": "QVQLVQSGAEVKKPGASVKLSCKASGFTFRIYAISWVRQAPGQGLEWMGEIVPLGGITNYAQNFQGRAAITADTSINTAYMELSSLRSDDTAVYYCARVRTALVGPREGIFDFWGQGVLVTVSSA",
+  "Lseq": "DIQMTQSPSSLSASVGDRVSITCRASQTISTYLAWYQQKPGKVPKLLIYTASTLETGVPSRFSGSGSGTEFTLTISSLQPEDFATYYCQQHDSHPYSFGQGTKVEIKR",
+  "pair_dist": 22.9,
+  "release": "2021-03-10",
+  "internal_missing": {
+   "C": 1,
+   "D": 0
+  }
+ },
+ {
+  "id": "7cwu_NG",
+  "pdb": "7cwu",
+  "flagged_chain": "N",
+  "chain_type": "H",
+  "stratum": "s3 2020-05..2021-07",
+  "run": {
+   "imgt_start": 1,
+   "imgt_end": 4,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2020-08-31",
+  "method": "EM",
+  "res": 3.5,
+  "mapfit_pct": 44.3,
+  "H": "N",
+  "L": "G",
+  "Hseq": "EVQLLEQSGAEVKKPGASVRVSCKVSGYTLPEVAMHWVRQAPGKGLEWMGGFDPEDGETMYAQKFQGRVTMTEDTSTDTAYMELSSLRSEDTAVYYCATTTPFSSSYWFDPWGQGTLVTV",
+  "Lseq": "SVLTQAPSVSAAPGQKVTISCSGSSSNIGNNYVSWYQQLPGTAPKLLIYDNNKRPSGIPDRFSGSKSGTSATLGITGLQTGDEADYYCGTWDSSLSAVVFGGGTKLTVL",
+  "pair_dist": 22.2,
+  "release": "2020-12-16",
+  "internal_missing": {
+   "N": 0,
+   "G": 0
+  }
+ },
+ {
+  "id": "7e23_BC",
+  "pdb": "7e23",
+  "flagged_chain": "C",
+  "chain_type": "K",
+  "stratum": "s3 2020-05..2021-07",
+  "run": {
+   "imgt_start": 76,
+   "imgt_end": 93,
+   "delta": -2,
+   "loc": "FR3"
+  },
+  "deposit": "2021-02-04",
+  "method": "EM",
+  "res": 3.3,
+  "mapfit_pct": 14.0,
+  "H": "B",
+  "L": "C",
+  "Hseq": "EVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGKGLEWIGEVNHSGSTNYNPSLKSRVTISVDTSKNQLSLKLNSVTAADTAVYYCARGNTMVRGVIIPFEYWDKGTLVTVSSA",
+  "Lseq": "EIVLTQSPATLSLSPGERATLSCRASQSVSSYLAWYQQKPGQAPRLLIYDASNRATGIPARFSGSGSGTDFTLTISSLEPEDFAVYYCQQRSNWPLTFGGGTKVEIKR",
+  "pair_dist": 21.7,
+  "release": "2021-05-05",
+  "internal_missing": {
+   "B": 4,
+   "C": 2
+  }
+ },
+ {
+  "id": "7czv_IM",
+  "pdb": "7czv",
+  "flagged_chain": "M",
+  "chain_type": "K",
+  "stratum": "s3 2020-05..2021-07",
+  "run": {
+   "imgt_start": 1,
+   "imgt_end": 9,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2020-09-09",
+  "method": "EM",
+  "res": 3.3,
+  "mapfit_pct": 33.7,
+  "H": "I",
+  "L": "M",
+  "Hseq": "QVQLVESGGGVVQPGRSLRLSCAASGFTFSSYAMHWVRQAPGKGLEWVAVISYDGSNKYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCARDGQAITMVQGVIGPPFDYWGQGTLVTVSSA",
+  "Lseq": "DIQMTQSPSSLSASVGDRVTITCQASQDISNYLNWYQQKPGKAPKLLIYDASNLETGVPSRFSGSGSGTDFTFTISSLQPEDIATYYCQQYDNLPYTFGQGTKLEIKR",
+  "pair_dist": 23.6,
+  "release": "2021-03-10",
+  "internal_missing": {
+   "I": 0,
+   "M": 0
+  }
+ },
+ {
+  "id": "8ddk_AB",
+  "pdb": "8ddk",
+  "flagged_chain": "B",
+  "chain_type": "K",
+  "stratum": "s4 2021-08..2023-05",
+  "run": {
+   "imgt_start": 2,
+   "imgt_end": 9,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2022-06-18",
+  "method": "X-ray",
+  "res": 3.86,
+  "mapfit_pct": 7.9,
+  "H": "A",
+  "L": "B",
+  "Hseq": "EVQLVQSGAEVKKPGESLRISCKGSGYSFTSYWIGWVRQMPGKGLEWMGIIYPGDSDTRYSPSFQGQVTISADKSISTAYLQWTSLKASDTAMYYCARQLGGSSFGNYYDSGSYYTAAYWGQGTLVTVSSA",
+  "Lseq": "DIQMTQSPSSLSASVGDRVTITCRASQSINNYLNWYQQKPGKAPKLLIYAASTLQSGVPSRFSGSGSGTDFTLTISSLQPEDFASYYCQQSYRGTFGQGTKVEFKR",
+  "pair_dist": 23.7,
+  "release": "2022-12-14",
+  "internal_missing": {
+   "A": 12,
+   "B": 20
+  }
+ },
+ {
+  "id": "8e8l_HL",
+  "pdb": "8e8l",
+  "flagged_chain": "H",
+  "chain_type": "H",
+  "stratum": "s4 2021-08..2023-05",
+  "run": {
+   "imgt_start": 4,
+   "imgt_end": 16,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2022-08-25",
+  "method": "EM",
+  "res": 3.13,
+  "mapfit_pct": 8.8,
+  "H": "H",
+  "L": "L",
+  "Hseq": "LVQSGAELKKPGASVKFSCQASGFTFTTYDIHWVRQAPGQGLEWMGMISPSRDSTIYAQKFQGRVTMTSDTSTSTVYMELTSLRSEDTALYYCATASRPSAWVFRSLYTYYYMDVWGTGTTVTVSS",
+  "Lseq": "QSALTQPASVSGSPGQSITISCTGTITDIGYYNYVSWYQQHPGKAPKLIIFDVTNRPSGVSDRFSGSKSGNTASLTISGLQAEDEGDYYCFSHRSNNIRVFGGGTKLTVL",
+  "pair_dist": 22.6,
+  "release": "2023-06-21",
+  "internal_missing": {
+   "H": 0,
+   "L": 0
+  }
+ },
+ {
+  "id": "8cr9_AB",
+  "pdb": "8cr9",
+  "flagged_chain": "A",
+  "chain_type": "H",
+  "stratum": "s4 2021-08..2023-05",
+  "run": {
+   "imgt_start": 50,
+   "imgt_end": 63,
+   "delta": -3,
+   "loc": "FR2"
+  },
+  "deposit": "2023-03-08",
+  "method": "EM",
+  "res": 4.2,
+  "mapfit_pct": 41.8,
+  "H": "A",
+  "L": "B",
+  "Hseq": "EGQLLESGGGLAQPGGSLRLSCTASGFTFSKNAMNWVRQAPGKRLEWVAGIIGNGSDTYYADSVKGRFTISRDNSKNTVSLQMNSLRAEDSAIYYCAKDRHPWRWLQLFDSWGQGTLVTVSSA",
+  "Lseq": "DIQLTQSPSTVSASLGDRVTITCRASQDIGSWLAWYQQKPGKAPKLLIYKASNVESGVPSRFSGSESGTEFTLTISSLQPDDVATYFCQYYNSYSHATVTFGPGTKVDIKR",
+  "pair_dist": 23.2,
+  "release": "2023-11-22",
+  "internal_missing": {
+   "A": 0,
+   "B": 0
+  }
+ },
+ {
+  "id": "8hhx_HI",
+  "pdb": "8hhx",
+  "flagged_chain": "I",
+  "chain_type": "L",
+  "stratum": "s4 2021-08..2023-05",
+  "run": {
+   "imgt_start": 75,
+   "imgt_end": 82,
+   "delta": -2,
+   "loc": "FR3"
+  },
+  "deposit": "2022-11-17",
+  "method": "EM",
+  "res": 3.62,
+  "mapfit_pct": 48.0,
+  "H": "H",
+  "L": "I",
+  "Hseq": "EVQLVESGGGVVQPGRSLRLSCAASGFTFSSYGMHWVRQAPGKGLEWVAVISYDGSNKYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCANGFGEYYYYAMDVWGQGTTVTVSSA",
+  "Lseq": "NFMLTQPHSVSESPGKTVTISCTGSSGSIASNYVQWYQRRPGSAPTTVIYEDNQRPSGVPDRFSASIDSSSNSASLTISGLKTEDEADYYCQSYDSSNWVFGGGTKLTVLG",
+  "pair_dist": 29.4,
+  "release": "2023-02-01",
+  "internal_missing": {
+   "H": 0,
+   "I": 0
+  }
+ },
+ {
+  "id": "9yc6_HL",
+  "pdb": "9yc6",
+  "flagged_chain": "H",
+  "chain_type": "H",
+  "stratum": "s5 >=2023-06",
+  "run": {
+   "imgt_start": 120,
+   "imgt_end": 128,
+   "delta": 1,
+   "loc": "FR4"
+  },
+  "deposit": "2025-09-18",
+  "method": "EM",
+  "res": 4.8,
+  "mapfit_pct": 37.3,
+  "H": "H",
+  "L": "L",
+  "Hseq": "EVQLQQSGSVLVRPGTSVNLSCKASGYTFTSYWMSWVKQRPGQGLEWIGEIFPKSGRINSNENFRGKATLTVDTSSSTAYINLSSLTSEDSAVYYCSPIYSGDYGFADWGQGTLVTVSAA",
+  "Lseq": "DIVMTQTPLSLPVSLGDQASISCRSSQSVVSNNGKTYLEWYLQKPGQSPKLLIYKVSNRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYYCFQGSHVPWTFGGGTKLEVKR",
+  "pair_dist": 22.8,
+  "release": "2026-02-04",
+  "internal_missing": {
+   "H": 0,
+   "L": 0
+  }
+ },
+ {
+  "id": "8tpx_HL",
+  "pdb": "8tpx",
+  "flagged_chain": "L",
+  "chain_type": "K",
+  "stratum": "s5 >=2023-06",
+  "run": {
+   "imgt_start": 1,
+   "imgt_end": 8,
+   "delta": -1,
+   "loc": "FR1"
+  },
+  "deposit": "2023-08-05",
+  "method": "EM",
+  "res": 3.4,
+  "mapfit_pct": 23.8,
+  "H": "H",
+  "L": "L",
+  "Hseq": "EVQLVQSGGGLVQPGRSLRLSCTASGFTFGDYAMSWVRQAPGKGLEWVGFIRSKAYGGTTEYAASVKGRFTISRDDSKSIAYLQMNSLKTEDTAVYYCTRGGTLFDYWGQGTLVTVSSA",
+  "Lseq": "DVVMTQSPLSLPVTPGEPASISCRSSQSLLHSNGYNYLDWYLQKPGQSPQLLIYLGSNRASGVPDRFSGSGSGTDFTLKISRVEAEDVGVYYCMQSLQTPRLTFGPGTKVDIKR",
+  "pair_dist": 24.6,
+  "release": "2024-08-07",
+  "internal_missing": {
+   "H": 0,
+   "L": 0
+  }
+ },
+ {
+  "id": "26pf_AB",
+  "pdb": "26pf",
+  "flagged_chain": "A",
+  "chain_type": "H",
+  "stratum": "s5 >=2023-06",
+  "run": {
+   "imgt_start": 8,
+   "imgt_end": 35,
+   "delta": -2,
+   "loc": "FR1"
+  },
+  "deposit": "2026-05-09",
+  "method": "EM",
+  "res": 3.1,
+  "mapfit_pct": 48.4,
+  "H": "A",
+  "L": "B",
+  "Hseq": "VQLVQSGAEVKKPGASVKVSCKASGYTFTTYYLHWMRQAPGEGLEWVGLINPSVGSASSAQKFKGRVTMTSDTSTSIAYLEVNSLTSEDTAVYYCARVGPSRYSTSSPYWGQGTLVTVSS",
+  "Lseq": "QPVLTQSPSASGTPGQRVTISCSGSSSNIGSNTVNWYQQLPGTAPKLLIYGNNQRPSGVPDRFSGSKSGTSASLAISGLQSDDEADYYCSSYTSSSSLVFGGGTKLTVL",
+  "pair_dist": 22.2,
+  "release": "2026-08-12",
+  "internal_missing": {
+   "A": 0,
+   "B": 0
+  }
+ },
+ {
+  "id": "22ge_GH",
+  "pdb": "22ge",
+  "flagged_chain": "G",
+  "chain_type": "H",
+  "stratum": "s5 >=2023-06",
+  "run": {
+   "imgt_start": 53,
+   "imgt_end": 60,
+   "delta": -1,
+   "loc": "FR2"
+  },
+  "deposit": "2026-01-09",
+  "method": "EM",
+  "res": 3.1,
+  "mapfit_pct": 42.0,
+  "H": "G",
+  "L": "H",
+  "Hseq": "QQLEQSGGGAEGGLVKPGGSLELCCSASGFAFNSYWICWVRQAPGKGLEWIGCVYSGSSGATYYASWRVNGRFTLSRDVDQSTGCLQLNSLTAADTAMYYCARDLYPNSLNYGFNLWGQGTLVTVSSG",
+  "Lseq": "AAVLTQTPSPVSAAVGGTVTISCQSSQSVYSNNFLSWYQQKPGQPPKVLIYGASTLASGVPSRFSGSGSGTQFTLTISDVQCDDAATYYCAGGYIATSDRLAFGGGTEVVVKR",
+  "pair_dist": 20.9,
+  "release": "2026-10-28",
+  "internal_missing": {
+   "G": 0,
+   "H": 0
+  }
+ }
+]
