@@ -1,0 +1,7 @@
+CDR,side,runs,events,plus,minus
+CDR1,N-flank (before loop),4,4,2,2
+CDR1,C-flank (after loop),12,9,7,5
+CDR2,N-flank (before loop),16,13,8,8
+CDR2,C-flank (after loop),45,25,16,29
+CDR3,N-flank (before loop),12,9,6,6
+CDR3,C-flank (after loop),171,80,149,22

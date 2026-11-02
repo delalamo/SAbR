@@ -1,0 +1,60 @@
+== 1. Which side of each CDR do the register runs sit on? (runs; excl. HIV/FR3-convention artifacts and chain-end/gap runs)
+ CDR                  side  runs  events  plus  minus
+CDR1 N-flank (before loop)     4       4     2      2
+CDR1  C-flank (after loop)    12       9     7      5
+CDR2 N-flank (before loop)    16      13     8      8
+CDR2  C-flank (after loop)    45      25    16     29
+CDR3 N-flank (before loop)    12       9     6      6
+CDR3  C-flank (after loop)   171      80   149     22
+
+same, all runs incl. chain-end/gap ones:
+  CDR1: N-flank 90 runs / C-flank 89 runs
+  CDR2: N-flank 94 runs / C-flank 133 runs
+  CDR3: N-flank 96 runs / C-flank 257 runs
+
+== 3. CDR3-FR4 junction error rate by recorded starting model and software (EM V chains)
+                          chains  junction  bulge  pct_cdr3fr4
+irm                                                           
+AlphaFold model              290         1      0         0.34
+experimental (PDB) model    2023        18      4         1.09
+none recorded               8186        91     48         1.70
+other in-silico model         40         0      0         0.00
+adjusted OR (cluster by entry):
+  AlphaFold model: OR 0.34 (0.05-2.58) p=0.299
+  experimental (PDB) model: OR 0.56 (0.28-1.09) p=0.0891
+  other in-silico model: OR 0.00 (0.00-0.00) p=0
+   software  chains_recording  pct_cdr3fr4_with  pct_cdr3fr4_without
+ModelAngelo                 0               NaN                 1.54
+     ISOLDE               293              0.68                 1.56
+    Rosetta               610              0.49                 1.60
+       Coot              1361              0.59                 1.68
+     Phenix              7111              1.31                 2.01
+ Namdinator                 0               NaN                 1.54
+     REFMAC                69              0.00                 1.55
+     BUSTER                 0               NaN                 1.54
+
+by EM fitting protocol:
+                 chains   pct
+fit                          
+ab initio           441  0.23
+flexible fit        885  1.13
+not recorded        105  0.00
+other              7882  1.64
+rigid body only    1226  1.79
+
+== 4. Starting-model (PDB template) CDR3 length vs target CDR3 length
+template entries 1299 with sequences 1273 unique chains 2565
+EM chains whose starting model contains an antibody domain of the same type:
+                            chains  junction  bulge  pct_junction
+rel                                                              
+CDR3 length differs by 1       128         0      0          0.00
+differs by >=2                 361         9      0          2.49
+identical antibody             507         4      0          0.79
+other                            4         0      0          0.00
+other Ab, same CDR3 length     410         0      0          0.00
+
+junction runs with a non-identical template: sign of shift vs (target - template) CDR3 length
+sign(target L3 - template L3)  -1.0   0.0   1.0
+shift sign                                     
+-1.0                              3     0     0
+ 1.0                              2     1     7
