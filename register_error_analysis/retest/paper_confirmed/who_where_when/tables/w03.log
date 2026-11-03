@@ -1,0 +1,122 @@
+studies by method x flag:
+        case  case_i  ctrl  rest_w  rest  clean
+method                                         
+EM        18      25   298      24    92   1174
+X-ray     11      12   619      11    23    886
+experience: new                                  study  EM    new                    | case[18/298] 56v33% OR 2.64 (0.92-7.60) p=0.071 | case_i[20/298] 50v33% OR 2.08 (0.79-5.46) p=0.14 | rest_w[24/298] 42v33% OR 1.73 (0.82-3.65) p=0.15 | rest[92/1174] 45v33% OR 1.80 (1.15-2.82) p=0.01 | zhet(case v rest)=0.51
+experience: nt_strict                            study  EM    nt_strict              | case[15/275] 13v19% OR 0.68 (0.15-2.99) p=0.61 | case_i[17/275] 12v19% OR 0.57 (0.14-2.35) p=0.44 | rest_w[19/275] 11v19% OR 0.54 (0.13-2.32) p=0.41 | rest[85/1134] 24v12% OR 2.49 (1.39-4.45) p=0.002 | zhet(case v rest)=0.11
+experience: nt_conf                              study  EM    nt_conf                | case[15/275] 33v27% OR 1.47 (0.46-4.64) p=0.52 | case_i[17/275] 29v27% OR 1.18 (0.40-3.44) p=0.76 | rest_w[19/275] 26v27% OR 1.16 (0.41-3.27) p=0.78 | rest[85/1134] 36v23% OR 2.10 (1.27-3.48) p=0.004 | zhet(case v rest)=0.57
+experience: first_em_team_na                     study  EM    first_em_team_na       | case[18/298] 39v16% OR 3.46 (1.25-9.60) p=0.017 | case_i[20/298] 35v16% OR 2.88 (1.04-8.01) p=0.042 | rest_w[24/298] 17v16% OR 1.24 (0.37-4.16) p=0.72 | rest[92/1174] 25v22% OR 1.35 (0.80-2.29) p=0.26 | zhet(case v rest)=0.11
+experience: l_team_abem_na                       study  EM    l_team_abem_na         | case[18/298] 0v1.6 OR 0.61 (0.45-0.81) p=0.00066 | case_i[20/298] 0.5v1.6 OR 0.67 (0.52-0.86) p=0.0019 | rest_w[24/298] 2.2v1.6 OR 0.94 (0.79-1.12) p=0.51 | rest[92/1174] 1.8v2.3 OR 0.93 (0.83-1.04) p=0.2 | zhet(case v rest)=0.0064
+experience: l_team_abem_all                      study  EM    l_team_abem_all        | case[18/298] 1.6v2.8 OR 0.78 (0.62-0.98) p=0.035 | case_i[20/298] 1.6v2.8 OR 0.81 (0.64-1.01) p=0.056 | rest_w[24/298] 3.2v2.8 OR 0.97 (0.81-1.16) p=0.74 | rest[92/1174] 3.6v3.7 OR 0.89 (0.79-1.01) p=0.063 | zhet(case v rest)=0.31
+experience: l_lab_prior_ab                       study  EM    l_lab_prior_ab         | case[18/298] 1.3v2 OR 0.76 (0.63-0.94) p=0.0089 | case_i[20/298] 1.3v2 OR 0.76 (0.62-0.93) p=0.0083 | rest_w[24/298] 3v2 OR 1.06 (0.92-1.23) p=0.4 | rest[92/1174] 2.3v2.8 OR 0.93 (0.84-1.03) p=0.15 | zhet(case v rest)=0.092
+experience: has_hub                              study  EM    has_hub                | case[18/298] 28v27% OR 1.16 (0.38-3.53) p=0.79 | case_i[20/298] 35v27% OR 1.69 (0.56-5.15) p=0.35 | rest_w[24/298] 25v27% OR 1.36 (0.43-4.27) p=0.6 | rest[92/1174] 11v21% OR 0.52 (0.26-1.04) p=0.065 | zhet(case v rest)=0.23
+experience: new (no nanobody studies)            study  EM    new                    | case[13/215] 62v31% OR 3.73 (1.05-13.28) p=0.042 | case_i[13/215] 62v31% OR 3.73 (1.05-13.28) p=0.042 | rest_w[21/215] 38v31% OR 1.50 (0.69-3.26) p=0.31 | rest[66/825] 50v32% OR 2.42 (1.38-4.23) p=0.0019 | zhet(case v rest)=0.54
+experience: new (nanobody studies)               study  EM    new                    | case[5/83] 40v39% OR 0.86 (0.11-6.61) p=0.88 | case_i[7/83] 29v39% OR 0.78 (0.11-5.44) p=0.8 | rest_w[3/83] 67v39% OR 7.02 (0.17-291.07) p=0.31 | rest[26/349] 31v35% OR 0.85 (0.35-2.09) p=0.72 | zhet(case v rest)=0.99
+experience: new, deposited <=2021 only           study  EM    new                    | case[18/289] 56v33% OR 2.64 (0.94-7.42) p=0.067 | case_i[20/289] 50v33% OR 2.10 (0.82-5.39) p=0.12 | rest_w[22/289] 41v33% OR 1.68 (0.77-3.69) p=0.19 | rest[28/350] 46v32% OR 2.14 (1.04-4.40) p=0.038 | zhet(case v rest)=0.75
+experience: nt_strict (+China, +SARS2)           study  EM    nt_strict              | case[15/275] 13v19% OR 0.97 (0.20-4.72) p=0.97 | case_i[17/275] 12v19% OR 0.74 (0.17-3.16) p=0.68 | rest_w[19/275] 11v19% OR 0.51 (0.12-2.11) p=0.35 | rest[85/1134] 24v12% OR 2.45 (1.38-4.38) p=0.0024 | zhet(case v rest)=0.28
+experience: nt_strict (non-China-led studies)    study  EM    nt_strict              | case[6/223] 33v20% OR 1.86 (0.31-11.03) p=0.49 | case_i[8/223] 25v20% OR 1.16 (0.27-5.06) p=0.84 | rest_w[16/223] 12v20% OR 0.60 (0.14-2.61) p=0.49 | rest[69/866] 25v13% OR 2.50 (1.32-4.75) p=0.005 | zhet(case v rest)=0.76
+experience: l_team_abem_na (+China, +SARS2)      study  EM    l_team_abem_na         | case[18/298] 0v1.6 OR 0.66 (0.51-0.86) p=0.0019 | case_i[20/298] 0.5v1.6 OR 0.72 (0.57-0.90) p=0.0045 | rest_w[24/298] 2.2v1.6 OR 0.93 (0.78-1.11) p=0.44 | rest[92/1174] 1.8v2.3 OR 0.91 (0.82-1.02) p=0.11 | zhet(case v rest)=0.027
+experience: l_team_abem_na (non-China-led studie study  EM    l_team_abem_na         | case[9/243] 1.6v2.3 OR 0.74 (0.54-1.01) p=0.059 | case_i[11/243] 1.6v2.3 OR 0.83 (0.64-1.07) p=0.15 | rest_w[20/243] 3.1v2.3 OR 0.99 (0.82-1.19) p=0.9 | rest[75/901] 2.8v2.6 OR 0.95 (0.85-1.06) p=0.39 | zhet(case v rest)=0.13
+experience: l_team_abem_all (+China, +SARS2)     study  EM    l_team_abem_all        | case[18/298] 1.6v2.8 OR 0.74 (0.59-0.94) p=0.013 | case_i[20/298] 1.6v2.8 OR 0.77 (0.62-0.97) p=0.025 | rest_w[24/298] 3.2v2.8 OR 0.96 (0.80-1.15) p=0.68 | rest[92/1174] 3.6v3.7 OR 0.90 (0.80-1.01) p=0.066 | zhet(case v rest)=0.17
+experience: l_team_abem_all (non-China-led studi study  EM    l_team_abem_all        | case[9/243] 1.6v2.6 OR 0.81 (0.58-1.13) p=0.21 | case_i[11/243] 1.6v2.6 OR 0.86 (0.65-1.15) p=0.32 | rest_w[20/243] 3.1v2.6 OR 0.97 (0.81-1.17) p=0.78 | rest[75/901] 3.6v3.5 OR 0.91 (0.80-1.03) p=0.14 | zhet(case v rest)=0.52
+experience: l_lab_prior_ab (+China, +SARS2)      study  EM    l_lab_prior_ab         | case[18/298] 1.3v2 OR 0.80 (0.63-1.02) p=0.075 | case_i[20/298] 1.3v2 OR 0.79 (0.63-0.99) p=0.044 | rest_w[24/298] 3v2 OR 1.07 (0.90-1.27) p=0.42 | rest[92/1174] 2.3v2.8 OR 0.92 (0.84-1.02) p=0.11 | zhet(case v rest)=0.3
+experience: l_lab_prior_ab (non-China-led studie study  EM    l_lab_prior_ab         | case[9/243] 1v2 OR 0.71 (0.52-0.97) p=0.032 | case_i[11/243] 1v2 OR 0.71 (0.52-0.97) p=0.031 | rest_w[20/243] 3.3v2 OR 1.06 (0.90-1.25) p=0.49 | rest[75/901] 2.6v3 OR 0.94 (0.85-1.04) p=0.22 | zhet(case v rest)=0.099
+experience: first_em_team_na (+China, +SARS2)    study  EM    first_em_team_na       | case[18/298] 39v16% OR 1.81 (0.63-5.22) p=0.27 | case_i[20/298] 35v16% OR 1.64 (0.58-4.60) p=0.35 | rest_w[24/298] 17v16% OR 1.27 (0.35-4.68) p=0.72 | rest[92/1174] 25v22% OR 1.60 (0.91-2.81) p=0.11 | zhet(case v rest)=0.84
+experience: first_em_team_na (non-China-led stud study  EM    first_em_team_na       | case[9/243] 11v10% OR 0.94 (0.10-8.84) p=0.96 | case_i[11/243] 9v10% OR 0.67 (0.06-7.30) p=0.74 | rest_w[20/243] 10v10% OR 1.06 (0.22-5.00) p=0.94 | rest[75/901] 15v12% OR 1.31 (0.63-2.70) p=0.47 | zhet(case v rest)=0.79
+experience: new (+China, +SARS2)                 study  EM    new                    | case[18/298] 56v33% OR 1.81 (0.68-4.85) p=0.24 | case_i[20/298] 50v33% OR 1.52 (0.63-3.64) p=0.35 | rest_w[24/298] 42v33% OR 1.79 (0.81-3.94) p=0.15 | rest[92/1174] 45v33% OR 2.04 (1.30-3.21) p=0.002 | zhet(case v rest)=0.83
+one study per lab (500 draws), case vs window controls, MH by year: median OR 1.81, median p 0.55, share p<0.05 0.00; cases per draw ~11
+case vs window controls, new team by year:
+        sum    size    
+new      0  1    0   1
+yc3                   
+2020     4  1   62  37
+2021+    2  5   78  37
+<=2019   2  4   68  34
+lab persistence: same lab had an earlier error s study  EM    exp_own                | case[11/170] 36v36% OR 7.43 (0.98-56.17) p=0.052 | case_i[12/170] 42v36% OR 9.38 (1.20-73.57) p=0.033 | rest_w[17/170] 53v36% OR 2.46 (0.36-16.95) p=0.36 | rest[56/764] 45v34% OR 1.59 (0.77-3.29) p=0.21 | zhet(case v rest)=0.16
+carrier: co-author on an earlier error study of  study  EM    exp_x                  | case[12/198] 33v27% OR 1.27 (0.20-8.14) p=0.8 | case_i[14/198] 36v27% OR 1.37 (0.26-7.27) p=0.71 | rest_w[12/198] 0v27% OR 0.00 (0.00-1.00) p=0.081 | rest[49/753] 29v34% OR 0.87 (0.37-2.06) p=0.75 | zhet(case v rest)=0.72
+
+paper-case EM studies: 18 | labs: 17 | labs with >1 paper-case study: 1
+
+== entity scans: paper-case studies vs window control studies (exact stratified by year, >=3 studies, >=1 case)
+EM: case studies 18, case labs 17, window control studies 298
+  [EM strict] person (any position)                    tested   28 | entities in >=2 case studies   7 | min q 0.15 (top P3985: 2/4 studies, exp 0.23, case labs 2)
+  [EM strict] person (non-last author)                 tested   23 | entities in >=2 case studies   4 | min q 0.19 (top P3985: 2/4 studies, exp 0.23, case labs 2)
+  [EM strict] lab (last author)                        tested    4 | entities in >=2 case studies   0 | min q 0.30 (top P2525: 1/3 studies, exp 0.16, case labs 1)
+  [EM strict] co-author group (>=3 shared studies)     tested    5 | entities in >=2 case studies   2 | min q 0.20 (top G0001: 8/75 studies, exp 4.29, case labs 7)
+  [EM strict] institution (published)                  tested   25 | entities in >=2 case studies   9 | min q 0.32 (top I006: 2/5 studies, exp 0.27, case labs 2)
+  [EM strict] country, last author (published)         tested    4 | entities in >=2 case studies   3 | min q 0.01 (top China: 9/64 studies, exp 3.62, case labs 8)
+  [EM strict] country, any author (published)          tested    7 | entities in >=2 case studies   4 | min q 0.01 (top China: 10/73 studies, exp 4.12, case labs 9)
+  [EM strict] any facility mention (aggregate)         tested    1 | entities in >=2 case studies   1 | min q 0.38 (top any_facility: 2/23 studies, exp 1.31, case labs 2)
+  [EM strict] any multi-lab hub person (aggregate)     tested    1 | entities in >=2 case studies   1 | min q 0.54 (top has_hub: 5/84 studies, exp 4.73, case labs 5)
+  [EM incl copies] person (any position)                    tested   29 | entities in >=2 case studies  13 | min q 0.14 (top P3021: 2/4 studies, exp 0.24, case labs 2)
+  [EM incl copies] person (non-last author)                 tested   25 | entities in >=2 case studies   8 | min q 0.17 (top P3021: 2/4 studies, exp 0.24, case labs 2)
+  [EM incl copies] lab (last author)                        tested    4 | entities in >=2 case studies   0 | min q 0.34 (top P2525: 1/3 studies, exp 0.18, case labs 1)
+  [EM incl copies] co-author group (>=3 shared studies)     tested    5 | entities in >=2 case studies   3 | min q 0.13 (top G0001: 9/76 studies, exp 4.75, case labs 8)
+  [EM incl copies] institution (published)                  tested   27 | entities in >=2 case studies  11 | min q 0.31 (top I026: 2/3 studies, exp 0.20, case labs 1)
+  [EM incl copies] country, last author (published)         tested    4 | entities in >=2 case studies   3 | min q 0.03 (top China: 9/64 studies, exp 4.06, case labs 8)
+  [EM incl copies] country, any author (published)          tested    7 | entities in >=2 case studies   4 | min q 0.01 (top China: 11/74 studies, exp 4.66, case labs 10)
+  [EM incl copies] any facility mention (aggregate)         tested    1 | entities in >=2 case studies   1 | min q 0.44 (top any_facility: 2/23 studies, exp 1.46, case labs 2)
+  [EM incl copies] any multi-lab hub person (aggregate)     tested    1 | entities in >=2 case studies   1 | min q 0.26 (top has_hub: 7/86 studies, exp 5.31, case labs 6)
+all: case studies 25, case labs 24, window control studies 892
+  [all strict] person (any position)                    tested   47 | entities in >=2 case studies   8 | min q 0.04 (top P3021: 2/4 studies, exp 0.06, case labs 2)
+  [all strict] person (non-last author)                 tested   34 | entities in >=2 case studies   5 | min q 0.04 (top P3021: 2/4 studies, exp 0.06, case labs 2)
+  [all strict] lab (last author)                        tested    9 | entities in >=2 case studies   0 | min q 0.18 (top P0899: 1/3 studies, exp 0.05, case labs 1)
+  [all strict] co-author group (>=3 shared studies)     tested    9 | entities in >=2 case studies   3 | min q 0.22 (top G0001: 8/137 studies, exp 4.17, case labs 7)
+  [all strict] institution (published)                  tested   33 | entities in >=2 case studies   9 | min q 0.26 (top I014: 2/6 studies, exp 0.15, case labs 2)
+  [all strict] country, last author (published)         tested    4 | entities in >=2 case studies   3 | min q 0.00 (top China: 10/86 studies, exp 3.50, case labs 9)
+  [all strict] country, any author (published)          tested    7 | entities in >=2 case studies   4 | min q 0.00 (top China: 11/102 studies, exp 4.01, case labs 10)
+  [all strict] any facility mention (aggregate)         tested    1 | entities in >=2 case studies   1 | min q 0.35 (top any_facility: 2/31 studies, exp 1.22, case labs 2)
+  [all strict] any multi-lab hub person (aggregate)     tested    1 | entities in >=2 case studies   1 | min q 0.16 (top has_hub: 5/84 studies, exp 2.96, case labs 5)
+  [all incl copies] person (any position)                    tested   48 | entities in >=2 case studies  15 | min q 0.04 (top P3021: 2/4 studies, exp 0.06, case labs 2)
+  [all incl copies] person (non-last author)                 tested   37 | entities in >=2 case studies   9 | min q 0.04 (top P3021: 2/4 studies, exp 0.06, case labs 2)
+  [all incl copies] lab (last author)                        tested    9 | entities in >=2 case studies   0 | min q 0.20 (top P0899: 1/3 studies, exp 0.05, case labs 1)
+  [all incl copies] co-author group (>=3 shared studies)     tested    9 | entities in >=2 case studies   4 | min q 0.20 (top G0001: 9/138 studies, exp 4.57, case labs 8)
+  [all incl copies] institution (published)                  tested   35 | entities in >=2 case studies  11 | min q 0.17 (top I014: 2/6 studies, exp 0.16, case labs 2)
+  [all incl copies] country, last author (published)         tested    4 | entities in >=2 case studies   3 | min q 0.01 (top China: 10/86 studies, exp 3.87, case labs 9)
+  [all incl copies] country, any author (published)          tested    7 | entities in >=2 case studies   4 | min q 0.00 (top China: 12/103 studies, exp 4.48, case labs 11)
+  [all incl copies] any facility mention (aggregate)         tested    1 | entities in >=2 case studies   1 | min q 0.40 (top any_facility: 2/31 studies, exp 1.35, case labs 2)
+  [all incl copies] any multi-lab hub person (aggregate)     tested    1 | entities in >=2 case studies   1 | min q 0.04 (top has_hub: 7/86 studies, exp 3.36, case labs 6)
+           scan                                  cls  n_tested  n_in_ge2_case_studies  min_p  min_q
+ EM incl copies     any facility mention (aggregate)         1                      1  0.440  0.440
+ EM incl copies any multi-lab hub person (aggregate)         1                      1  0.258  0.258
+ EM incl copies co-author group (>=3 shared studies)         5                      3  0.026  0.129
+ EM incl copies      country, any author (published)         7                      4  0.001  0.010
+ EM incl copies     country, last author (published)         4                      3  0.008  0.034
+ EM incl copies              institution (published)        27                     11  0.012  0.306
+ EM incl copies                    lab (last author)         4                      0  0.169  0.338
+ EM incl copies                person (any position)        29                     13  0.017  0.138
+ EM incl copies             person (non-last author)        25                      8  0.017  0.171
+      EM strict     any facility mention (aggregate)         1                      1  0.382  0.382
+      EM strict any multi-lab hub person (aggregate)         1                      1  0.536  0.536
+      EM strict co-author group (>=3 shared studies)         5                      2  0.039  0.196
+      EM strict      country, any author (published)         7                      4  0.002  0.014
+      EM strict     country, last author (published)         4                      3  0.003  0.013
+      EM strict              institution (published)        25                      9  0.025  0.325
+      EM strict                    lab (last author)         4                      0  0.152  0.304
+      EM strict                person (any position)        28                      7  0.017  0.150
+      EM strict             person (non-last author)        23                      4  0.017  0.190
+all incl copies     any facility mention (aggregate)         1                      1  0.397  0.397
+all incl copies any multi-lab hub person (aggregate)         1                      1  0.038  0.038
+all incl copies co-author group (>=3 shared studies)         9                      4  0.026  0.199
+all incl copies      country, any author (published)         7                      4  0.000  0.002
+all incl copies     country, last author (published)         4                      3  0.002  0.007
+all incl copies              institution (published)        35                     11  0.009  0.166
+all incl copies                    lab (last author)         9                      0  0.045  0.199
+all incl copies                person (any position)        48                     15  0.001  0.039
+all incl copies             person (non-last author)        37                      9  0.001  0.045
+     all strict     any facility mention (aggregate)         1                      1  0.349  0.349
+     all strict any multi-lab hub person (aggregate)         1                      1  0.161  0.161
+     all strict co-author group (>=3 shared studies)         9                      3  0.041  0.221
+     all strict      country, any author (published)         7                      4  0.000  0.003
+     all strict     country, last author (published)         4                      3  0.001  0.003
+     all strict              institution (published)        33                      9  0.008  0.259
+     all strict                    lab (last author)         9                      0  0.045  0.181
+     all strict                person (any position)        47                      8  0.001  0.044
+     all strict             person (non-last author)        34                      5  0.001  0.041
+
+== shared-author links between paper-case studies of different labs vs half-year matched samples of window control studies
+                                               link  observed  null_mean  ratio  p_more  p_less  n_case_studies
+            any shared audit author, different labs         4      2.102  1.903   0.187   0.890              18
+             shared non-last author, different labs         3      1.107  2.710   0.117   0.944              18
+any shared author, collision-prone surnames dropped         1      1.782  0.561   0.754   0.543              18

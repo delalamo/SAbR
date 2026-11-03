@@ -1,0 +1,22 @@
+ pdb chain ctype  imgt0  imgt1  delta  first_imgt  first_built_v
+6ad0     L     K    1.0   32.0    1.0         1.0            1.0
+6cmo     L     K    4.0   12.0   -2.0         4.0            5.0
+6ukt     E     H    3.0   12.0   -2.0         3.0            1.0
+7cwt     L     H    1.0    4.0   -1.0         1.0            1.0
+7czu     K     K    1.0    9.0   -1.0         1.0            1.0
+7d00     K     K    1.0    9.0   -1.0         1.0            1.0
+7e3c     B     H    4.0   11.0   -1.0         4.0            2.0
+7nqk     B     H    3.0   11.0   -1.0         3.0            4.0
+7qia     B     H    3.0   16.0   -1.0         3.0            1.0
+paper_strict first_imgt     n=9 median 3.0 vs 1.0 MW p=0.0127 | >3: 2/9 (22%) vs 2.8% Fisher p=0.0278 | >1: 56% vs 28.6%
+paper_strict first_built_v  n=9 median 1.0 vs 1.0 MW p=0.855 | >3: 2/9 (22%) vs 9.1% Fisher p=0.199 | >1: 33% vs 33.5%
+   paper_strict: SAbR label minus ANARCI position of first built residue: {0.0: 4, 2.0: 3, -1.0: 2}
+paper_incl   first_imgt     n=17 median 3.0 vs 1.0 MW p=0.00191 | >3: 3/17 (18%) vs 2.8% Fisher p=0.0136 | >1: 53% vs 28.6%
+paper_incl   first_built_v  n=17 median 2.0 vs 1.0 MW p=0.0183 | >3: 7/17 (41%) vs 9.1% Fisher p=0.000562 | >1: 53% vs 33.5%
+   paper_incl: SAbR label minus ANARCI position of first built residue: {0.0: 7, -1.0: 5, 2.0: 3, -3.0: 2}
+rest         first_imgt     n=40 median 3.0 vs 1.0 MW p=1.35e-21 | >3: 12/40 (30%) vs 3.6% Fisher p=1.48e-08 | >1: 90% vs 28.7%
+rest         first_built_v  n=40 median 3.0 vs 1.0 MW p=2.24e-12 | >3: 13/40 (32%) vs 8.2% Fisher p=1.28e-05 | >1: 85% vs 35.1%
+   rest: SAbR label minus ANARCI position of first built residue: {0.0: 20, -1.0: 13, 2.0: 4, 1.0: 2, -2.0: 1}
+
+exact delta distribution of C-flank (118-128) runs, all first-occurrence non-1a/4/3 runs, deduplicated events:
+{-3.0: 2, -2.0: 3, -1.0: 12, 1.0: 42, 2.0: 10, 3.0: 3, 5.0: 2, 6.0: 1, 9.0: 1, 11.0: 1, 15.0: 1}

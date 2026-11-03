@@ -1,0 +1,82 @@
+== (A) canonical pull
+                                         set subset  n  obs  exp  excess   var      p  units  papers  het_p_vs_rest
+                                paper_strict    all 13    6  4.0     2.0  1.00 0.1226     13      12         0.8911
+                                paper_strict     EM  7    3  2.0     1.0  0.50 0.5047      7       6         0.9815
+                                paper_strict  X-ray  6    3  2.0     1.0  0.50 0.5004      6       6            NaN
+                                  paper_incl    all 13    6  4.0     2.0  1.00 0.1211     13      12            NaN
+                                  paper_incl     EM  7    3  2.0     1.0  0.50 0.4979      7       6            NaN
+                                  paper_incl  X-ray  6    3  2.0     1.0  0.50 0.5024      6       6            NaN
+full (minus strict artifacts; synthesis s02)    all 84   39 27.0    12.0 10.00 0.0003     82      74            NaN
+full (minus strict artifacts; synthesis s02)     EM 66   31 21.5     9.5  8.25 0.0012     64      56            NaN
+full (minus strict artifacts; synthesis s02)  X-ray 18    8  5.5     2.5  1.75 0.1241     18      18            NaN
+                                        rest    all 67   31 21.5     9.5  8.25 0.0014     65      59            NaN
+                                        rest     EM 55   26 18.0     8.0  7.00 0.0031     53      47            NaN
+                                        rest  X-ray 12    5  3.5     1.5  1.25 0.3758     12      12            NaN
+paper_strict items:
+ pdb chain ctype cdr  true_len  app_len  f_true  f_app  more_common  p_exp
+1ken     H     H   2         7        8   0.226  0.701            1    0.5
+7v2a     E     H   3        18       17   0.050  0.067            1    0.5
+7e3c     C     K   2         3        2   1.000  0.000            0    0.0
+7e39     C     H   2         8        7   0.701  0.226            0    0.0
+7e5y     C     H   3        12       10   0.130  0.060            0    0.0
+7czy     K     K   3         9        7   0.787  0.002            0    0.0
+6x06     K     H   3        18       17   0.050  0.067            1    0.5
+6qxe     M     H   3        18       17   0.050  0.067            1    0.5
+7e23     B     H   3        16       15   0.058  0.077            1    1.0
+6ad0     L     K   1        11       12   0.188  0.081            0    0.0
+7k66     C     K   3         7        9   0.002  0.787            1    1.0
+5zs0     B     H   3        12       10   0.130  0.060            0    0.0
+7jtf     A     H   2         8        7   0.701  0.226            0    0.0
+one item per paper (paper_strict): {'n': 12, 'obs': 6, 'exp': np.float64(4.0), 'excess': np.float64(2.0), 'var': np.float64(1.0), 'p': np.float64(0.12512)}
+
+== (B) specific CDR lengths
+                          test method                               set err_exposed err_ref  case_papers  fisher_OR  lo_haldane  hi_haldane  fisher_p  min_det_OR80       adj_OR       adj_lo       adj_hi  adj_p        opp_exposed  opp_OR  opp_p  het_p_vs_rest
+  heavy CDR2 IMGT7 [H2-9] vs 8     EM                      paper_strict       4/103   9/399         12.0     1.7508      0.5928      5.8303    0.3155        4.7173 1.753300e+00 5.631000e-01 5.458900e+00 0.3326 4/12 cases exposed  1.9697 0.2795         0.4976
+  heavy CDR2 IMGT7 [H2-9] vs 8     EM                        paper_incl       4/103  12/402         15.0     1.3131      0.4704      4.2434    0.7515        4.1429 1.247200e+00 4.052000e-01 3.838700e+00 0.7002 4/15 cases exposed  1.4325 0.5209            NaN
+  heavy CDR2 IMGT7 [H2-9] vs 8     EM full (s03 minus strict artifacts)      37/545 49/1685          NaN        NaN         NaN         NaN       NaN           NaN 2.452200e+00 1.577200e+00 3.812700e+00 0.0001                NaN     NaN    NaN            NaN
+  heavy CDR2 IMGT7 [H2-9] vs 8     EM                              rest      32/537 37/1654          NaN        NaN         NaN         NaN       NaN           NaN 2.688300e+00 1.654800e+00 4.367100e+00 0.0001                NaN     NaN    NaN            NaN
+  heavy CDR2 IMGT7 [H2-9] vs 8    all                      paper_strict       7/292  15/954         20.0     1.5375      0.6593      3.8458    0.3209        3.3337 1.521200e+00 6.233000e-01 3.712300e+00 0.3568 7/20 cases exposed  1.7741 0.2837            NaN
+  heavy CDR2 IMGT7 [H2-9] vs 8    all                        paper_incl       7/292  18/957         23.0     1.2813      0.5653      3.1486    0.6327        3.1200 1.259900e+00 5.239000e-01 3.029500e+00 0.6059 7/23 cases exposed  1.4414 0.4557            NaN
+kappa CDR1 IMGT12 [L1-17] vs 6     EM                      paper_strict        2/17   6/176          5.0     3.7778      0.8993     19.9039    0.1493        8.8400 3.621600e+00 9.671000e-01 1.356160e+01 0.0561  1/5 cases exposed  2.8333 0.3590         0.9910
+kappa CDR1 IMGT12 [L1-17] vs 6     EM                        paper_incl        2/17   9/179          7.0     2.5185      0.6543     12.8064    0.2447        7.1513 2.417600e+00 6.348000e-01 9.207900e+00 0.1957  1/7 cases exposed  1.8889 0.4617            NaN
+kappa CDR1 IMGT12 [L1-17] vs 6     EM full (s03 minus strict artifacts)        8/78  25/817          NaN        NaN         NaN         NaN       NaN           NaN 3.582300e+00 1.535300e+00 8.358100e+00 0.0032                NaN     NaN    NaN            NaN
+kappa CDR1 IMGT12 [L1-17] vs 6     EM                              rest        6/76  18/803          NaN        NaN         NaN         NaN       NaN           NaN 3.655700e+00 1.399500e+00 9.549000e+00 0.0081                NaN     NaN    NaN            NaN
+kappa CDR1 IMGT12 [L1-17] vs 6    all                      paper_strict        2/65   7/465          6.0     2.0771      0.5616     10.3142    0.3044        6.7463 2.217000e+00 6.241000e-01 7.875000e+00 0.2183  1/6 cases exposed  1.4540 0.5420            NaN
+kappa CDR1 IMGT12 [L1-17] vs 6    all                        paper_incl        2/65  10/468          8.0     1.4540      0.4222      6.9997    0.6478        5.5597 1.587200e+00 4.369000e-01 5.765800e+00 0.4827  1/8 cases exposed  1.0385 1.0000            NaN
+lambda CDR1 IMGT8 [L1-13] vs 9     EM                      paper_strict        0/22    0/43          0.0        NaN      0.0371    100.6931    1.0000           NaN 9.576000e-01 4.953000e-01 1.851700e+00 0.8976  0/0 cases exposed     NaN 1.0000         0.1321
+lambda CDR1 IMGT8 [L1-13] vs 9     EM                        paper_incl        0/22    0/43          0.0        NaN      0.0371    100.6931    1.0000           NaN 9.576000e-01 4.953000e-01 1.851700e+00 0.8976  0/0 cases exposed     NaN 1.0000            NaN
+lambda CDR1 IMGT8 [L1-13] vs 9     EM full (s03 minus strict artifacts)       6/107   5/233          NaN        NaN         NaN         NaN       NaN           NaN 2.564200e+00 7.566000e-01 8.690400e+00 0.1305                NaN     NaN    NaN            NaN
+lambda CDR1 IMGT8 [L1-13] vs 9     EM                              rest       5/100   4/229          NaN        NaN         NaN         NaN       NaN           NaN 3.022400e+00 7.893000e-01 1.157380e+01 0.1064                NaN     NaN    NaN            NaN
+lambda CDR1 IMGT8 [L1-13] vs 9    all                      paper_strict        1/67   0/108          1.0        inf      0.1965    121.9109    0.3829           NaN 7.336228e+08 1.207459e+07 4.457315e+10 0.0000  1/1 cases exposed     inf 0.3829            NaN
+lambda CDR1 IMGT8 [L1-13] vs 9    all                        paper_incl        1/67   0/108          1.0        inf      0.1965    121.9109    0.3829           NaN 7.336228e+08 1.207459e+07 4.457315e+10 0.0000  1/1 cases exposed     inf 0.3829            NaN
+
+== (C) SEQRES truncation (units; controls = clean paper-control units of the same chain types)
+full set: mode A 19/59 (32.2%) vs 7.8% of 4,036 clean EM units, OR 5.32; adjusted for model start OR 1.17 (0.60-2.28) to 3.8 (verify SN1). D 4/59, E 2/18 vs 35/4036; adjusted for model end OR 0.67 / 2.7 (verify SN2).
+                                    test          set method cases_trunc ctrl_trunc  pct_case  pct_ctrl    OR    lo      hi     p  MH_OR_given_model_end  MH_lo  MH_hi  MH_p model_end_case model_end_ctrl  model_end_p
+      mode A: SEQRES starts after IMGT 1 paper_strict     EM         0/9     47/849     0.000     5.536 0.000 0.051  15.509 1.000                  0.000    NaN    NaN 0.130            5/9        205/849        0.044
+      mode A: SEQRES starts after IMGT 1 paper_strict    all        1/11    84/2115     9.091     3.972 2.418 0.612  19.268 0.362                  0.288  0.033  2.535 0.444           7/11       391/2115        0.001
+      mode A: SEQRES starts after IMGT 1   paper_incl     EM        1/17     47/849     5.882     5.536 1.066 0.281   8.381 1.000                  0.174  0.022  1.371 0.136           9/17        205/849        0.018
+      mode A: SEQRES starts after IMGT 1   paper_incl    all        2/19    84/2115    10.526     3.972 2.845 0.897  13.155 0.177                  0.380  0.076  1.904 0.386          11/19       391/2115        0.000
+modes D/E: SEQRES ends inside FR4 (<125) paper_strict     EM         0/7      5/849     0.000     0.589 0.000 0.518 202.131 1.000                    NaN    NaN    NaN   NaN            0/7         22/849        1.000
+modes D/E: SEQRES ends inside FR4 (<125) paper_strict    all        0/12     6/2115     0.000     0.284 0.000 0.693 243.037 1.000                    NaN    NaN    NaN   NaN           0/12        27/2115        1.000
+modes D/E: SEQRES ends inside FR4 (<125)   paper_incl     EM         0/8      5/849     0.000     0.589 0.000 0.462 176.556 1.000                    NaN    NaN    NaN   NaN            0/8         22/849        1.000
+modes D/E: SEQRES ends inside FR4 (<125)   paper_incl    all        0/13     6/2115     0.000     0.284 0.000 0.645 224.161 1.000                    NaN    NaN    NaN   NaN           0/13        27/2115        1.000
+
+== (D) Fv-only model (mode-stratified MH; deepdive full set: D+ 55% vs 40%, E 61% vs 40%)
+                     scope method          set  n_case  pct_case  pct_ctrl_std    OR    lo    hi     p  gee_OR  gee_lo  gee_hi  gee_p  min_det_OR80  het_p_vs_rest
+CDR3/FR4 modes (D+, D-, E)     EM paper_strict       7    14.286        33.581 0.321 0.037 2.742 0.496   0.327   0.039   2.761  0.305         8.518          0.134
+CDR3/FR4 modes (D+, D-, E)     EM   paper_incl       8    12.500        33.899 0.271 0.033 2.259 0.365   0.277   0.034   2.265  0.231         7.324            NaN
+CDR3/FR4 modes (D+, D-, E)     EM         full      62    50.000        40.637 1.448 0.884 2.372 0.171     NaN     NaN     NaN    NaN           NaN            NaN
+CDR3/FR4 modes (D+, D-, E)     EM         rest      53    54.717        40.611 1.742 1.020 2.976 0.051     NaN     NaN     NaN    NaN           NaN            NaN
+CDR3/FR4 modes (D+, D-, E)    all paper_strict      12    25.000        26.922 0.900 0.239 3.393 0.862   0.902   0.242   3.360  0.878         4.780          0.264
+CDR3/FR4 modes (D+, D-, E)    all   paper_incl      13    23.077        27.072 0.802 0.217 2.966 0.988   0.805   0.221   2.942  0.743         4.510            NaN
+CDR3/FR4 modes (D+, D-, E)    all         full      73    46.575        33.527 1.706 1.082 2.691 0.025     NaN     NaN     NaN    NaN           NaN            NaN
+CDR3/FR4 modes (D+, D-, E)    all         rest      59    50.847        33.386 2.021 1.221 3.345 0.007     NaN     NaN     NaN    NaN           NaN            NaN
+                 all modes     EM paper_strict      26    30.769        33.044 0.899 0.391 2.071 0.968   0.898   0.312   2.587  0.843         2.959          0.411
+                 all modes     EM   paper_incl      35    28.571        32.311 0.834 0.397 1.753 0.768   0.835   0.338   2.060  0.695         2.558            NaN
+                 all modes     EM         full     156    44.872        40.790 1.178 0.860 1.614 0.343     NaN     NaN     NaN    NaN           NaN            NaN
+                 all modes     EM         rest     128    47.656        40.827 1.314 0.930 1.856 0.140     NaN     NaN     NaN    NaN           NaN            NaN
+                 all modes    all paper_strict      35    31.429        26.200 1.292 0.630 2.650 0.612   1.292   0.523   3.192  0.579         2.592          0.655
+                 all modes    all   paper_incl      44    29.545        25.686 1.217 0.631 2.346 0.683   1.214   0.543   2.714  0.637         2.362            NaN
+                 all modes    all         full     186    41.935        33.765 1.411 1.055 1.887 0.023     NaN     NaN     NaN    NaN           NaN            NaN
+                 all modes    all         rest     149    44.295        33.814 1.547 1.121 2.134 0.009     NaN     NaN     NaN    NaN           NaN            NaN

@@ -1,0 +1,40 @@
+(a) no funding record, EM entries, by China-led
+  case: {(0.0, 0.0): {'sum': 49, 'count': 441}, (0.0, 1.0): {'sum': 0, 'count': 9}, (1.0, 0.0): {'sum': 54, 'count': 138}, (1.0, 1.0): {'sum': 10, 'count': 17}}
+    C(yc) + res                  OR 2.67 (1.12-6.39) p=0.0269  n=26/579
+    C(yc) + res + last_China     OR 1.39 (0.54-3.60) p=0.493  n=26/579
+    non-China only: 0/9 vs 49/441  Fisher OR 0.00 p=0.606
+  rest_w: {(0.0, 0.0): {'sum': 49, 'count': 441}, (0.0, 1.0): {'sum': 2, 'count': 22}, (1.0, 0.0): {'sum': 54, 'count': 138}, (1.0, 1.0): {'sum': 6, 'count': 7}}
+    C(yc) + res                  OR 1.77 (0.55-5.68) p=0.335  n=29/579
+    C(yc) + res + last_China     OR 1.90 (0.71-5.09) p=0.204  n=29/579
+    non-China only: 2/22 vs 49/441  Fisher OR 0.80 p=1
+  control China share of no-funding entries: 0.52
+
+(b) lab experience (antigen_competition lab_prior_ab), EM entries, by China-led
+  non-China    case    9/429: OR 0.54 (0.37-0.79) p=0.00128
+  non-China    rest_w  20/429: OR 1.13 (0.92-1.39) p=0.235
+  China        case    17/138: OR 1.06 (0.73-1.54) p=0.761
+  China        rest_w  7/138: OR 1.46 (0.94-2.26) p=0.0897
+  all, +China  case    26/567: OR 0.76 (0.59-0.98) p=0.0362
+  all, +China  rest_w  27/567: OR 1.15 (0.95-1.39) p=0.153
+  median lab_prior_ab: case 1 | rest_w 7 | ctl 5
+
+(c) enzyme, EM entries: case / case_i / ctl
+  case: 2/27 [['6qxe', '10.1038/s41586-019-1530-7'], ['7mhz', '10.1126/science.abg4998']]
+  case_i: 12/41 [['6qxe', '10.1038/s41586-019-1530-7'], ['7jhg', '10.1126/science.abe7565'], ['7jhh', '10.1126/science.abe7565'], ['7m74', '10.1126/science.abe7565'], ['7m7e', '10.1126/science.abi8358'], ['7m7f', '10.1126/science.abi8358'], ['7m7g', '10.1126/science.abi8358'], ['7m7i', '10.1126/science.abi8358'], ['7m7j', '10.1126/science.abi8358'], ['7mhz', '10.1126/science.abg4998'], ['7s6c', '10.1126/science.abi8532'], ['7s6d', '10.1126/science.abi8532']]
+  ctl: 15/616 
+                        trend  level method   group  n_case  n_ctrl         OR        lo         hi         p
+42   competition/antigen: enz  entry     EM    case      27     616   4.410407  0.665743  29.218014  0.123984
+43   competition/antigen: enz  entry     EM  case_i      41     616  20.585475  4.605636  92.009391  0.000075
+144  competition/antigen: enz  entry  X-ray    case      11     706   3.806458  0.406933  35.605710  0.241275
+145  competition/antigen: enz  entry  X-ray  case_i      11     706   3.806458  0.406933  35.605710  0.241275
+240  competition/antigen: enz  paper     EM    case      17     298   5.730522  0.919398  35.717814  0.061486
+241  competition/antigen: enz  paper     EM  case_i      23     298  11.766631  3.056266  45.301558  0.000338
+
+(d) early SARS-CoV-2 race: investigator rank bins
+     ranks   first_dep    last_dep    n  paper_case_entries  paper_case_papers  paper_incl_copies  rest_errors  rest_errors_in_window  any_gen
+0     1-25  2020-04-15  2020-08-20   25                   0                  0                  0            0                      0        0
+1    26-50  2020-08-21  2020-09-14   25                   9                  2                  9            0                      0        9
+2   51-100  2020-09-15  2021-02-08   50                   2                  2                  2            2                      2        4
+3  101-200  2021-02-08  2021-08-30  100                   3                  3                  3            5                      4        8
+4  201-400  2021-08-30  2022-07-08  200                   0                  0                  0            7                      1        7
+5  401-end  2022-07-08  2026-05-28  264                   0                  0                  0           11                      0       11

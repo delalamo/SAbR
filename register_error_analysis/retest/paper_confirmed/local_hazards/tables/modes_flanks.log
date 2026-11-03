@@ -1,0 +1,50 @@
+== (1) mode distribution (units = antibody x paper x mode)
+         set  units  papers  n_A  n_F  n_B  n_C  n_D+  n_D-  n_D0  n_E  n_other  CDR3FR4_units  CDR3FR4_pct  CDR3FR4_papers_pct  EM_units
+paper_strict     36      25   11    4    4    5     8     1     0    3        0             12         33.3                44.0        26
+  paper_incl     45      32   19    4    4    5     8     2     0    3        0             13         28.9                37.5        35
+  full_first    201     141   56   11   26   21    34    21     9   18        5             82         40.8                47.5       170
+        rest    162     117   45    7   22   16    26    18     8   15        5             67         41.4                47.0       141
+    rest_win     39      34    4    1    7    3    10     7     3    3        1             23         59.0                64.7        31
+   rest_post    123      83   41    6   15   13    16    11     5   12        4             44         35.8                39.8       110
+CDR3/FR4 share paper_strict 12/36 vs rest 67/162: OR 0.71 (0.34-1.53) p=0.453
+CDR3/FR4 share paper_strict 12/36 vs rest_win 23/39: OR 0.35 (0.14-0.91) p=0.0372
+CDR3/FR4 share paper_incl 13/45 vs rest 67/162: OR 0.58 (0.29-1.19) p=0.166
+CDR3/FR4 share paper_strict 12/36 vs rest_post 44/123: OR 0.90 (0.42-1.98) p=0.845
+papers with any CDR3/FR4 unit, paper_strict: 11/25 (44%)
+papers with any CDR3/FR4 unit, rest: 55/117 (47%)
+mode distribution paper_strict vs rest (7 modes, permutation chi-square): p=0.503
+
+== (2) Table S1 V-region errors on scanned chains, by IMGT region of the S1 range and confirmation
+grp                       confirmed (any status)  not confirmed  All
+region                                                              
+CDR1-FR3 (27-104)                             16             27   43
+FR1/CDR1 start (<=26)                         49              6   55
+touches CDR3/FR4 (>=105)                      30              3   33
+All                                           95             36  131
+Fisher CDR3/FR4 vs rest, confirmed vs not confirmed: p=0.00632
+
+== (3) CDR3 flank asymmetry
+         set                           rule              side  runs  events  plus_runs  minus_runs  plus_events  minus_events  pct_plus_runs  pct_plus_events
+paper_strict excl. 1a/4/3 (junction README)  N-flank (96-104)     1       1          1           0            1             0          100.0            100.0
+paper_strict excl. 1a/4/3 (junction README) C-flank (118-128)    28      13         26           2           11             2           92.9             84.6
+paper_strict                excl. 1a/4 only  N-flank (96-104)     1       1          1           0            1             0          100.0            100.0
+paper_strict                excl. 1a/4 only C-flank (118-128)    28      13         26           2           11             2           92.9             84.6
+  paper_incl excl. 1a/4/3 (junction README)  N-flank (96-104)     1       1          1           0            1             0          100.0            100.0
+  paper_incl excl. 1a/4/3 (junction README) C-flank (118-128)    28      13         26           2           11             2           92.9             84.6
+  paper_incl                excl. 1a/4 only  N-flank (96-104)     2       2          1           1            1             1           50.0             50.0
+  paper_incl                excl. 1a/4 only C-flank (118-128)    28      13         26           2           11             2           92.9             84.6
+  full_first excl. 1a/4/3 (junction README)  N-flank (96-104)     7       6          6           1            5             1           85.7             83.3
+  full_first excl. 1a/4/3 (junction README) C-flank (118-128)   155      70        136          19           54            16           87.7             77.1
+  full_first                excl. 1a/4 only  N-flank (96-104)    16      15          8           8            7             8           50.0             46.7
+  full_first                excl. 1a/4 only C-flank (118-128)   172      79        139          32           57            21           81.3             73.1
+        rest excl. 1a/4/3 (junction README)  N-flank (96-104)     6       5          5           1            4             1           83.3             80.0
+        rest excl. 1a/4/3 (junction README) C-flank (118-128)   123      56        107          16           43            13           87.0             76.8
+        rest                excl. 1a/4 only  N-flank (96-104)    14      13          7           7            6             7           50.0             46.2
+        rest                excl. 1a/4 only C-flank (118-128)   140      65        110          29           46            18           79.1             71.9
+    rest_win excl. 1a/4/3 (junction README)  N-flank (96-104)     2       1          2           0            1             0          100.0            100.0
+    rest_win excl. 1a/4/3 (junction README) C-flank (118-128)    54      19         46           8           13             6           85.2             68.4
+    rest_win                excl. 1a/4 only  N-flank (96-104)     4       3          3           1            2             1           75.0             66.7
+    rest_win                excl. 1a/4 only C-flank (118-128)    57      22         47          10           14             8           82.5             63.6
+junction README (all origins excl. 1a/4/3, all years): CDR3 N-flank 12 runs / 9 events; C-flank 171 runs / 80 events, +149/-22 runs (87% +1)
+excl. 1a/4/3 (junction README): C-flank +1 share (events) paper_strict 11/13 vs rest 43/56: Fisher p=0.718
+excl. 1a/4 only: C-flank +1 share (events) paper_strict 11/13 vs rest 46/64: Fisher p=0.495

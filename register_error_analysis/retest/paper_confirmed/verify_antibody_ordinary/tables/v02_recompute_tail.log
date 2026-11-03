@@ -1,0 +1,48 @@
+per-paper case mean has_hq 0.07 papers with any 3 of 25
+cases with has_hq: ['10.1038/s41422-021-00487-9|DIQMTQSPSSLSASVGDRVTITCQASQDISNYL', '10.1038/s41586-018-0215-y|DIQMTQSPSSLSASVGDRVTITCRASQSVSSAVA', '10.1038/s42003-021-02029-w|EIVLTQSPATLSLSPGERATLSCRASQSVSSYL']
+
+rare_any per-paper mean among cases 0.2 n papers 25
+rare-length case units: ['10.1006/viro.2001.1320|DVHLQESGPGLVKPSQSLSLTCYVTGYSITSGYYWTWIRQFPGNKLE', '10.1016/j.celrep.2021.108950|QVQLVQSGAEVKKPGASVRVSCKASGYTFTGYYMHWVRQAP', '10.1126/sciadv.abh3355|QVQLVESGGGLVQPGGSLRLLCVASGRPFNDYDMGWFRQAPGKEREF', '10.1128/JVI.03017-15|QVQLQESGGGSVQAGGSLTLSCAASGITYCMGWYRQVRGKEREGVAFIK', '10.1182/blood.2020008940|ENVLTQSPAIMSASLGEKVTMSCRATSSVNYMYWYQQKSDASPKL']
+alpaca case units: ['10.1038/s41467-020-14943-4', '10.1038/s41467-020-19884-6', '10.1038/s41586-019-1530-7', '10.1126/sciadv.abh3355', '10.1128/JVI.03017-15', '10.7554/eLife.74589', '10.7554/eLife.74589'] vhh_u [1, 1, 1, 1, 1, 1, 1]
+nonhm case species {'alpaca': 7}
+
+--- ABangle outliers ---
+roles {'control': 300, 'case': 66}
+EM strict case Fvs 37 papers 12 outliers 10
+EM control Fvs 150 outliers 23
+10/37 (27.0%) vs 23/150 (15.3%): OR 2.05 (0.87-4.79) Fisher p=0.15
+case outliers by paper {'10.1016/j.chom.2020.01.003': 1, '10.1038/s41422-021-00487-9': 7, '10.1038/s41467-020-18250-w': 1, '10.1038/s41586-018-0215-y': 1}
+distinct (Hseq,Lseq) among outliers 4
+     pdb  H  L                       paper  maha_dep  core_rms
+7   6cmo  H  L   10.1038/s41586-018-0215-y  4.838316  0.879084
+8   6lht  H  L  10.1016/j.chom.2020.01.003  4.924548  1.561220
+44  7c80  H  L  10.1038/s41467-020-18250-w  5.543462  1.227737
+45  7czr  H  K  10.1038/s41422-021-00487-9  4.135723  0.738154
+46  7czr  J  N  10.1038/s41422-021-00487-9  4.136527  0.738184
+49  7czs  H  K  10.1038/s41422-021-00487-9  4.135910  0.738177
+50  7czs  I  M  10.1038/s41422-021-00487-9  4.136464  0.738160
+51  7czs  J  N  10.1038/s41422-021-00487-9  4.136726  0.738245
+54  7d00  H  K  10.1038/s41422-021-00487-9  4.135563  0.738146
+55  7d00  J  N  10.1038/s41422-021-00487-9  4.135591  0.738160
+dominant paper: Fvs 17 distinct Fv seqs 3 entries 7
+   n  out            pdbs
+0  7  7.0  7czr,7czs,7d00
+1  5  0.0       7czu,7czv
+2  5  0.0       7czy,7czz
+one per distinct Fv sequence per paper: case outlier mean 0.267 n 15 (any outlier >0.5: 4 )
+one vote per paper: case outlier mean 0.284 n papers 12 ctrl 0.153
+papers with >=1 outlier 4 expected 3.61
+Mahalanobis case-ctrl 0.213
+core_rms EM case-ctrl 0.169 ; without dominant paper 0.227 ; one per distinct Fv per paper 0.246
+X-ray strict Fvs 10 papers 7 outliers 0 | ctrl 150 5
+HC2_sabr EM: diff -1.90; one per distinct Fv per paper -1.27 (n 15) Welch p=0.18
+HC2_sabr X-ray: diff +0.00; one per distinct Fv per paper -0.23 (n 7) Welch p=0.855
+LC1_sabr EM: diff -0.76; one per distinct Fv per paper -0.23 (n 15) Welch p=0.597
+LC1_sabr X-ray: diff -1.31; one per distinct Fv per paper -1.34 (n 7) Welch p=0.0926
+
+--- ImmuneBuilder site uncertainty ---
+EM: sites 49 papers 17 mean diff +0.160 cluster-boot (+0.062,+0.340); unique sites 24 mean +0.130; per-paper mean +0.168 t p=0.0132; Wilcoxon per paper p=0.00134; papers >0: 14/17
+   EM without dominant paper per-paper mean 0.175 p 0.0152
+   EM per-paper diffs {'10.1038/s41422-021-00555-0': -0.08, '10.1038/s41421-021-00292-z': -0.0, '10.1126/science.abg4998': -0.0, '10.1126/sciadv.abh3355': 0.03, '10.7554/eLife.62611': 0.03, '10.7554/eLife.74589': 0.05, '10.1038/s41422-021-00487-9': 0.06, '10.1038/s42003-021-02029-w': 0.07, '10.1038/s41586-018-0215-y': 0.08, '10.1038/s41467-020-14943-4': 0.08, '10.1016/j.chom.2020.01.003': 0.1, '10.1126/sciadv.aat7459': 0.15, '10.1038/s41467-020-18250-w': 0.19, '10.1007/s13238-021-00871-6': 0.19, '10.1038/s41422-020-00446-w': 0.49, '10.1128/JVI.03017-15': 0.53, '10.1038/s41586-019-1530-7': 0.9}
+X-ray: sites 18 papers 10 mean diff +0.248 cluster-boot (+0.015,+0.616); unique sites 11 mean +0.318; per-paper mean +0.343 t p=0.139; Wilcoxon per paper p=0.322; papers >0: 6/10
+all: sites 67 papers 25 mean diff +0.184 cluster-boot (+0.066,+0.359); unique sites 34 mean +0.168; per-paper mean +0.214 t p=0.0236; Wilcoxon per paper p=0.00613; papers >0: 18/25

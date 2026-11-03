@@ -1,0 +1,13 @@
+set,subset,n,obs,exp,excess,var,p,units,papers,het_p_vs_rest
+paper_strict,all,13,6,4.0,2.0,1.0,0.1226,13,12,0.8911155198850371
+paper_strict,EM,7,3,2.0,1.0,0.5,0.50468,7,6,0.9814787380588851
+paper_strict,X-ray,6,3,2.0,1.0,0.5,0.5004,6,6,
+paper_incl,all,13,6,4.0,2.0,1.0,0.12112,13,12,
+paper_incl,EM,7,3,2.0,1.0,0.5,0.49788,7,6,
+paper_incl,X-ray,6,3,2.0,1.0,0.5,0.50236,6,6,
+full (minus strict artifacts; synthesis s02),all,84,39,27.0,12.0,10.0,0.00028,82,74,
+full (minus strict artifacts; synthesis s02),EM,66,31,21.5,9.5,8.25,0.0012,64,56,
+full (minus strict artifacts; synthesis s02),X-ray,18,8,5.5,2.5,1.75,0.12412,18,18,
+rest,all,67,31,21.5,9.5,8.25,0.00144,65,59,
+rest,EM,55,26,18.0,8.0,7.0,0.00312,53,47,
+rest,X-ray,12,5,3.5,1.5,1.25,0.37584,12,12,

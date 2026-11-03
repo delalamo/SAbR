@@ -1,0 +1,97 @@
+=== D+ CDR3 length (L3) by chain type, paper_strict units vs paper-control units
+ pdb chain ctype method   L3  cdr3_len   j_gene  sars2
+5zs0     B     H  X-ray 12.0      12.0 IGHJ2*02  False
+6qpg     M     H  X-ray 18.0      18.0 IGHJ4*01  False
+6x06     K     H  X-ray 18.0      18.0 IGHJ4*01  False
+7czy     K     K     EM  9.0       9.0 IGKJ4*01   True
+7e23     B     H     EM 16.0      16.0 IGHJ4*01   True
+7e5y     C     H  X-ray 12.0      12.0 IGHJ6*01   True
+7l5b     H     H  X-ray 22.0      22.0 IGHJ3*02   True
+7v2a     E     H     EM 18.0      18.0 IGHJ6*03   True
+  all heavy: cases n=7 median 18.0 vs controls n=1286 median 15.0; MW p=0.44
+  all light: cases n=1 median 9.0 vs controls n=1108 median 9.0; MW p=0.699
+  all: within-type percentile of case CDR3 length: [0.23, 0.71, 0.71, 0.4, 0.59, 0.23, 0.9, 0.71]; mean 0.56; sign test >0.5: 5/8 p=0.727
+  all: control heavy share 0.54 vs case heavy share 0.88; pooled-type control median 11.0
+  EM heavy: cases n=2 median 17.0 vs controls n=514 median 16.0; MW p=0.651
+  EM light: cases n=1 median 9.0 vs controls n=415 median 9.0; MW p=0.677
+  EM: within-type percentile of case CDR3 length: [0.39, 0.54, 0.65]; mean 0.53; sign test >0.5: 2/3 p=1
+  EM: control heavy share 0.55 vs case heavy share 0.67; pooled-type control median 12.0
+IGHJ6 within heavy (all methods): 2/7 vs 15.2% of heavy controls; Fisher p=0.291
+D+ SARS-CoV-2 (all methods): 5/8 vs 2020-21 controls 40.3%; Fisher p=0.28; case years [2018, 2019, 2020, 2020, 2020, 2021, 2021, 2021]
+
+=== mode A first built residue (alignment-based, ANARCI IMGT of first built SEQRES residue), EM
+ pdb chain ctype  imgt0  imgt1  first_built_v                    paper
+6ad0     L     K      1     32            1.0   10.1126/sciadv.aat7459
+6cmo     L     K      4     12            5.0 0.1038/s41586-018-0215-y
+6ukt     E     H      3     12            1.0 .1038/s41467-020-14943-4
+7cwt     L     H      1      4            1.0 .1038/s41422-020-00446-w
+7czu     K     K      1      9            1.0 .1038/s41422-021-00487-9
+7d00     K     K      1      9            1.0 .1038/s41422-021-00487-9
+7e3c     B     H      4     11            2.0 .1038/s41421-021-00292-z
+7nqk     B     H      3     11            4.0   10.1126/sciadv.abh3355
+7qia     B     H      3     16            1.0      10.7554/eLife.74589
+  median 1.0 vs 1.0; MW p=0.599; >3: 2/9 vs 5.4% Fisher p=0.0862; >1: 3/9 vs 28.6%
+  one per paper n=8: >3 2/8 Fisher p=0.0696; MW p=0.437
+
+=== mode C heavy: residue at IMGT 81 (own ANARCI lookup on SEQRES)
+ pdb chain ctype method species      v_gene  imgt0  imgt1
+7e23     B     H     EM   human IGHV4-34*01     72     93
+7e23     C     K     EM   human IGKV3-11*01     76     93
+7e3c     B     H     EM   human IGHV3-53*04     74     81
+7kra     I     H     EM   human IGHV4-34*01     80     93
+7mhz     O     H     EM   mouse  IGHV9-1*02     87     95
+ pdb chain method a81      v_gene
+7e23     B     EM   D IGHV4-34*01
+7e3c     B     EM   H IGHV3-53*04
+7kra     I     EM   D IGHV4-34*01
+7mhz     O     EM   E  IGHV9-1*02
+  EM heavy: not D81 2/4 vs 21/508 (4.1%); Fisher p=0.011
+
+=== C-flank (118-128) strict runs excl. cls 1a/4/3: events by paper
+ pdb chain  m  imgt0  imgt1  delta cls                    paper
+5zs0     B D+    110    128    2.0   5                     5zs0
+6qxe     M D+    112    122    1.0   5 0.1038/s41586-019-1530-7
+6x06     K D+    112    127    1.0   5 .1038/s41467-020-19884-6
+7e23     B D+    112    126    1.0   5 .1038/s42003-021-02029-w
+7e39     B  E    120    126    1.0   6 .1038/s41421-021-00292-z
+7ey5     B  E    121    128   -1.0   5 .1038/s41422-021-00555-0
+7v2a     E D+    112    123    1.0   5 .1007/s13238-021-00871-6
+7c80     H  F     30    128    9.0   5 .1038/s41467-020-18250-w
+7czr     H  E    120    128    1.0   6 .1038/s41422-021-00487-9
+7czy     K D+    109    127    2.0   5 .1038/s41422-021-00487-9
+7e5y     C D+    110    126    2.0   5 .1038/s41421-021-00295-w
+7k66     C D-    115    127   -2.0   5 10.1182/blood.2020008940
+7l5b     H D+    111    128    3.0   5 016/j.celrep.2021.108950
+  events 13, +1 11; papers 12; papers majority +1: 10/12; binomial p (papers) = 0.0386; binomial p (events) = 0.0225
+  cls of strict C-flank events: {'5': 11, '6': 2}; strict C-flank runs of cls 3 dropped: 0
+
+=== CDR3/FR4 share: 12/36 = 0.33, 95% CI 0.19-0.51; one-sided binomial vs 0.20 p=0.0424
+  paper-weighted share (mean over papers of per-paper share): 0.34
+
+=== Table S1 entries present in the scan: 170; latest release 2022-03-30; releases after 2022-02-02: 8
+  rest_win (conkit-missed) units 39; released after the last Table S1 entry (2022-03-30): 0; after 2022-02-02: 3
+  rest_win units released after 2022-01-01:
+ pdb chain     m    release species        v_gene
+7te9     H     C 2022-03-02   mouse IGHV5-12-2*01
+7nvn     N other 2022-03-02   human   IGHV3-66*01
+7ty0     J     B 2022-03-09   mouse    IGHV6-6*02
+7t3d     O    D+ 2022-01-12   human   IGHV3-48*01
+  CDR3/FR4 share among late rest_win: 0/0; among the others 23/39
+  paper_strict 12/36 vs rest_win restricted to <= last S1 release: Fisher p=0.0372
+
+=== starting model: none recorded vs PDB template, window, cases (strict) + paper controls, any mode
+  irm values: {'experimental (PDB) model': 3440, 'none recorded': 2864, 'other in-silico model': 2}
+  chain: none 44/2864 vs pdb 23/3440: OR 2.32 p=0.00117
+  unit: none 21/1033 vs pdb 13/1394: OR 2.20 p=0.0345
+  paper: none 14/419 vs pdb 11/570: OR 1.76 p=0.218
+
+=== P(observing this few | case rate equal to the full-set case rate)
+  C mouse IGHV5: 0/5 vs full-set case rate 0.22: P(X<=0)=0.289
+  E mouse IGKV8: 0/3 vs full-set case rate 0.17: P(X<=0)=0.572
+  E mouse: 0/3 vs full-set case rate 0.44: P(X<=0)=0.176
+  B atypical CDR2: 0/4 vs full-set case rate 0.31: P(X<=0)=0.227
+  B nanobody: 0/4 vs full-set case rate 0.28: P(X<=0)=0.269
+  Fv-only CDR3/FR4 EM: 1/7 vs full-set case rate 0.50: P(X<=1)=0.062
+  Fv-only CDR3/FR4 all: 3/12 vs full-set case rate 0.50: P(X<=3)=0.073
+  A SEQRES N-trunc EM: 0/9 vs full-set case rate 0.32: P(X<=0)=0.031
+  D/E SEQRES FR4 trunc all: 0/12 vs full-set case rate 0.08: P(X<=0)=0.378

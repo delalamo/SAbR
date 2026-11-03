@@ -1,0 +1,5 @@
+has_hq GEE EM: OR 0.34 (0.11-1.03) p=0.0556
+has_hq GEE EM excl <=3.0 X-ray chain: OR 0.35 (0.12-1.05) p=0.0602
+has_hq GEE all excl <=3.0: OR 0.18 (0.06-0.59) p=0.00444
+method-standardised control has_hq rate 0.379 (crude 0.462); cases 0.088
+prior same antibody crude 5 34 728 2378 SignificanceResult(statistic=np.float64(0.3907730200833649), pvalue=np.float64(0.05842538149314602))

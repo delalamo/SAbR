@@ -1,0 +1,42 @@
+T1 EM: strict 0/18 (6 papers; Zhou 12) vs ctrl 615/895 (0.69); Haldane OR 0.0123 (0.00074-0.21) p=1.2e-09
+T1 X-ray: strict 1/1 (1 papers; Zhou 0) vs ctrl 998/1160 (0.86); Haldane OR 0.488 (0.02-12) p=1
+  EM case years [np.int64(2018), np.int64(2019), np.int64(2020), np.int64(2021)] ctrl in same years cis 514/780 (0.66)
+  EM control cis by year {2015: {'mean': 1.0, 'size': 1}, 2016: {'mean': 0.89, 'size': 19}, 2017: {'mean': 0.8, 'size': 55}, 2018: {'mean': 0.64, 'size': 133}, 2019: {'mean': 0.65, 'size': 110}, 2020: {'mean': 0.76, 'size': 239}, 2021: {'mean': 0.59, 'size': 298}, 2022: {'mean': 0.98, 'size': 40}}
+  EM control papers: 209; all-trans share 0.244 (papers with >=2 chains: 0.218); P(6 case papers all-trans | random control papers) = 0.00021
+  case papers cis means {'10.1016/j.chom.2020.01.003': 0.0, '10.1038/s41421-021-00292-z': 0.0, '10.1038/s41422-021-00487-9': 0.0, '10.1038/s41586-018-0215-y': 0.0, '10.1038/s42003-021-02029-w': 0.0, '10.1126/sciadv.aat7459': 0.0}
+  non-FR1 EM strict: 0/8, papers 4, without Zhou 3 chains in 3 papers
+  rest EM all years 5/49; rest EM in window 0/17
+  incl-copies EM 0/31 papers 10; copies-only chains 13
+T9 pooled all: strict 12/32 vs ctrl 3523/3767 (0.94) OR 0.0423 (0.021-0.087) p=3.7e-16; by ctype {'H': {'sum': 8.0, 'size': 15}, 'K': {'sum': 4.0, 'size': 16}, 'L': {'sum': 0.0, 'size': 1}}
+T9 pooled noZhou: strict 12/13 vs ctrl 3523/3757 (0.94) OR 0.555 (0.1-3) p=0.57; by ctype {'H': {'sum': 8.0, 'size': 8}, 'K': {'sum': 4.0, 'size': 4}, 'L': {'sum': 0.0, 'size': 1}}
+T3 EM: chains 48 (16 papers) mean 14.67 vs ctrl 6.56 (n 2632): crude diff +8.11; Welch p=1.7e-08
+   paper means: case 12.63 vs ctrl papers 6.56 diff +6.07 MW p=0.013; Zhou paper mean 20.50; without Zhou chains diff +4.29
+   rest: chain diff +2.15; paper-level diff +2.20 (116 papers)
+   paper-level heterogeneity (excess over own control pool): paper +6.07 vs rest +2.20, Welch p=0.11, MW p=0.15; without Zhou Welch p=0.18
+   rest in window (conkit-missed + non-S1 entries): chain diff vs window ctrl +1.75 n=87; paper diff +1.47 (30 papers); paper vs rest-in-window MW p=0.16
+T3 X-ray: chains 18 (10 papers) mean 10.62 vs ctrl 6.74 (n 3516): crude diff +3.88; Welch p=0.014
+   paper means: case 11.05 vs ctrl papers 7.02 diff +4.03 MW p=0.011; Zhou paper mean nan; without Zhou chains diff +3.88
+   rest: chain diff +1.89; paper-level diff +2.15 (24 papers)
+   paper-level heterogeneity (excess over own control pool): paper +4.03 vs rest +2.15, Welch p=0.41, MW p=0.26; without Zhou Welch p=0.41
+T5 EM: strict 49 chains/17 papers mean 1.204 vs ctrl 1.045 (n 530) crude +0.160; MW p=0.0047
+   Zhou chains n=19 mean 0.976; non-Zhou mean 1.349 diff +0.304
+   paper level: case 1.343 vs ctrl papers 1.021: +0.322, MW p=0.0025; rest chain +0.351 (n 268), rest paper +0.467 (116 papers)
+   paper-level het: paper +0.322 vs rest +0.467 Welch p=0.26
+   rest in window chain diff vs window ctrl +0.494 n=87, paper +0.572 (30 papers)
+   ctrl years {'min': 2015.0, '50%': 2020.0, 'max': 2022.0} case years {'min': 2015.0, '50%': 2020.0, 'max': 2021.0}; ctrl 2020-21 mean 1.050 n=384
+T5 X-ray: strict 18 chains/10 papers mean 1.124 vs ctrl 0.888 (n 298) crude +0.236; MW p=0.0025
+   Zhou chains n=0 mean nan; non-Zhou mean 1.124 diff +0.236
+   paper level: case 1.066 vs ctrl papers 0.888: +0.178, MW p=0.055; rest chain +0.120 (n 41), rest paper +0.171 (24 papers)
+   paper-level het: paper +0.178 vs rest +0.171 Welch p=0.95
+T6 EM window entries: VH strict -> VL err_first 7/14 vs 17/554: OR 30.7 (10-94) p=2.7e-07
+   exposed entries by paper: {'10.1007/s13238-021-00871-6': {'sum': 0, 'size': 1}, '10.1038/s41421-021-00292-z': {'sum': 2, 'size': 2}, '10.1038/s41422-020-00446-w': {'sum': 0, 'size': 2}, '10.1038/s41422-021-00487-9': {'sum': 3, 'size': 3}, '10.1038/s41422-021-00555-0': {'sum': 0, 'size': 1}, '10.1038/s41467-020-18250-w': {'sum': 1, 'size': 1}, '10.1038/s42003-021-02029-w': {'sum': 1, 'size': 1}, '10.1126/science.abg4998': {'sum': 0, 'size': 1}, '10.7554/eLife.62611': {'sum': 0, 'size': 2}}
+   ref = VH-clean entries: 13/499, OR 36 (11-1.1e+02)
+   unexposed entries whose VH has a conkit-missed first-occurrence error: VL err 4/29
+   papers (any entry): exposed 4/9 vs unexposed papers 10/273: OR 20.5 (5.1-82) p=0.00042
+   without Zhou: 4/11 OR 18.4 (5.2-65) p=0.0004
+T6 X-ray window entries: VH strict -> VL err_first 1/5 vs 5/751: OR 45.2 (5.9-3.4e+02) p=0.039
+   exposed entries by paper: {'10.1006/viro.2001.1320': {'sum': 0, 'size': 1}, '10.1016/j.celrep.2021.108950': {'sum': 0, 'size': 1}, '10.1038/s41421-021-00295-w': {'sum': 1, 'size': 1}, '5zs0': {'sum': 0, 'size': 1}, '7jtf': {'sum': 0, 'size': 1}}
+   ref = VH-clean entries: 5/738, OR 44.5 (5.8-3.4e+02)
+   unexposed entries whose VH has a conkit-missed first-occurrence error: VL err 0/5
+   papers (any entry): exposed 1/5 vs unexposed papers 5/576: OR 34.6 (4.6-2.6e+02) p=0.051
+   without Zhou: 1/5 OR 45.2 (5.9-3.4e+02) p=0.039

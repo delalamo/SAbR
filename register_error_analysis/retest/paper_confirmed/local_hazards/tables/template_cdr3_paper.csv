@@ -1,0 +1,5 @@
+rel,chains,entries,controls,case_any_strict,case_DE_strict,case_DE_incl
+"other Ab, same CDR3 length",174,48,171,1,0,0
+CDR3 length differs by 1,46,20,46,0,0,0
+differs by >=2,125,40,122,3,3,3
+identical antibody,180,58,176,2,2,2

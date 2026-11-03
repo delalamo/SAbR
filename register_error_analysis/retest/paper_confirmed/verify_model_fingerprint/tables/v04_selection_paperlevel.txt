@@ -1,0 +1,5 @@
+EM fw RMSD: paper-confirmed papers mean 1.34 (n=17) vs conkit-missed papers 1.59 (n=30): Welch p=0.17, MW p=0.36; without Zhou paper mean 1.37, Welch p=0.21
+   chain level: paper 1.2 (Zhou chains 0.976, n=19) vs missed 1.54
+EM rama beyond site: paper-confirmed papers mean 12.6 (n=16) vs conkit-missed papers 8.02 (n=30): Welch p=0.078, MW p=0.16; without Zhou paper mean 12.1, Welch p=0.13
+   chain level: paper 14.7 (Zhou chains 20.5, n=19) vs missed 8.31
+canonical_tests columns: ['test', 'n_case', 'case_papers', 'n_ctrl', 'case_mean', 'ctrl_mean', 'mw_p', 'est', 'lo', 'hi', 'p', 'se']

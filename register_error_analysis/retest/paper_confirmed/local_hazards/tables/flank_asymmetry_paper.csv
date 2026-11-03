@@ -1,0 +1,21 @@
+set,rule,side,runs,events,plus_runs,minus_runs,plus_events,minus_events,pct_plus_runs,pct_plus_events
+paper_strict,excl. 1a/4/3 (junction README),N-flank (96-104),1,1,1,0,1,0,100.0,100.0
+paper_strict,excl. 1a/4/3 (junction README),C-flank (118-128),28,13,26,2,11,2,92.85714285714286,84.61538461538461
+paper_strict,excl. 1a/4 only,N-flank (96-104),1,1,1,0,1,0,100.0,100.0
+paper_strict,excl. 1a/4 only,C-flank (118-128),28,13,26,2,11,2,92.85714285714286,84.61538461538461
+paper_incl,excl. 1a/4/3 (junction README),N-flank (96-104),1,1,1,0,1,0,100.0,100.0
+paper_incl,excl. 1a/4/3 (junction README),C-flank (118-128),28,13,26,2,11,2,92.85714285714286,84.61538461538461
+paper_incl,excl. 1a/4 only,N-flank (96-104),2,2,1,1,1,1,50.0,50.0
+paper_incl,excl. 1a/4 only,C-flank (118-128),28,13,26,2,11,2,92.85714285714286,84.61538461538461
+full_first,excl. 1a/4/3 (junction README),N-flank (96-104),7,6,6,1,5,1,85.71428571428571,83.33333333333333
+full_first,excl. 1a/4/3 (junction README),C-flank (118-128),155,70,136,19,54,16,87.74193548387096,77.14285714285714
+full_first,excl. 1a/4 only,N-flank (96-104),16,15,8,8,7,8,50.0,46.666666666666664
+full_first,excl. 1a/4 only,C-flank (118-128),172,79,139,32,57,21,81.28654970760233,73.07692307692308
+rest,excl. 1a/4/3 (junction README),N-flank (96-104),6,5,5,1,4,1,83.33333333333333,80.0
+rest,excl. 1a/4/3 (junction README),C-flank (118-128),123,56,107,16,43,13,86.99186991869918,76.78571428571429
+rest,excl. 1a/4 only,N-flank (96-104),14,13,7,7,6,7,50.0,46.15384615384615
+rest,excl. 1a/4 only,C-flank (118-128),140,65,110,29,46,18,79.13669064748201,71.875
+rest_win,excl. 1a/4/3 (junction README),N-flank (96-104),2,1,2,0,1,0,100.0,100.0
+rest_win,excl. 1a/4/3 (junction README),C-flank (118-128),54,19,46,8,13,6,85.18518518518519,68.42105263157895
+rest_win,excl. 1a/4 only,N-flank (96-104),4,3,3,1,2,1,75.0,66.66666666666667
+rest_win,excl. 1a/4 only,C-flank (118-128),57,22,47,10,14,8,82.45614035087719,63.63636363636363

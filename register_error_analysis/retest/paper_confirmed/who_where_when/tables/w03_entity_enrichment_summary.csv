@@ -1,0 +1,37 @@
+scan,cls,n_tested,n_in_ge2_case_studies,min_p,min_q
+EM incl copies,any facility mention (aggregate),1,1,0.4402963242689575,0.4402963242689575
+EM incl copies,any multi-lab hub person (aggregate),1,1,0.2580761628313225,0.2580761628313225
+EM incl copies,co-author group (>=3 shared studies),5,3,0.025840167161559516,0.12920083580779756
+EM incl copies,"country, any author (published)",7,4,0.0014819068472625052,0.010373347930837537
+EM incl copies,"country, last author (published)",4,3,0.008491940840601488,0.03396776336240595
+EM incl copies,institution (published),27,11,0.011817620601463973,0.30612181478833866
+EM incl copies,lab (last author),4,0,0.1689126559714795,0.337825311942959
+EM incl copies,person (any position),29,13,0.016551066871393027,0.1384994264132296
+EM incl copies,person (non-last author),25,8,0.016551066871393027,0.1711150831107452
+EM strict,any facility mention (aggregate),1,1,0.3820638215320283,0.3820638215320283
+EM strict,any multi-lab hub person (aggregate),1,1,0.5362672082575989,0.5362672082575989
+EM strict,co-author group (>=3 shared studies),5,2,0.03926835704588063,0.19634178522940313
+EM strict,"country, any author (published)",7,4,0.00194940388531922,0.01364582719723454
+EM strict,"country, last author (published)",4,3,0.0032238841839895655,0.012895536735958262
+EM strict,institution (published),25,9,0.025311122520978176,0.32482329865639636
+EM strict,lab (last author),4,0,0.15195168976681586,0.3039033795336317
+EM strict,person (any position),28,7,0.016551066871393023,0.14974180484002056
+EM strict,person (non-last author),23,4,0.016551066871393023,0.19033726902101983
+all incl copies,any facility mention (aggregate),1,1,0.3969758460099068,0.3969758460099068
+all incl copies,any multi-lab hub person (aggregate),1,1,0.03762919648420891,0.03762919648420891
+all incl copies,co-author group (>=3 shared studies),9,4,0.02575397503273292,0.19934543444928038
+all incl copies,"country, any author (published)",7,4,0.00029572180522128725,0.0020700526365490107
+all incl copies,"country, last author (published)",4,3,0.0017060201006796989,0.0068240804027187955
+all incl copies,institution (published),35,11,0.00887725075071186,0.16591255575166752
+all incl copies,lab (last author),9,0,0.04476940247201134,0.198681420719584
+all incl copies,person (any position),48,15,0.0012031421117821275,0.039126170830791965
+all incl copies,person (non-last author),37,9,0.0012031421117821275,0.044516258135938715
+all strict,any facility mention (aggregate),1,1,0.3487569444293091,0.3487569444293091
+all strict,any multi-lab hub person (aggregate),1,1,0.16067837322325754,0.16067837322325754
+all strict,co-author group (>=3 shared studies),9,3,0.041189279566544224,0.2208509987238328
+all strict,"country, any author (published)",7,4,0.0004386487530905364,0.003070541271633755
+all strict,"country, last author (published)",4,3,0.0006378076062225881,0.0025512304248903523
+all strict,institution (published),33,9,0.007855111692646445,0.25921868585733265
+all strict,lab (last author),9,0,0.04476940247201134,0.1808889920609128
+all strict,person (any position),47,8,0.0012031421117821275,0.04430434871849742
+all strict,person (non-last author),34,5,0.0012031421117821275,0.04090683180059234

@@ -1,0 +1,9 @@
+test,x,case,ctrl,OR,p
+"paper level, EM, window controls",cap,4/17,18/298,4.786324786324786,0.023312429814131203
+"paper level, EM, human-only antibodies",cap,1/12,7/226,2.844155844155844,0.3431306907371594
+"paper level, EM, shared co-author cluster dropped",cap,2/15,18/298,2.393162393162393,0.24725230803326337
+"paper level, EM, cluster counted once",cap,3/16,18/298,3.58974358974359,0.08205075852734621
+"paper level, EM, window controls",enz,2/17,6/298,6.488888888888889,0.06342684496516218
+"paper level, EM, human-only antibodies",enz,1/12,3/226,6.757575757575758,0.1880324552869804
+"paper level, EM, shared co-author cluster dropped",enz,2/15,6/298,7.487179487179487,0.05084737709734955
+"paper level, EM, cluster counted once",enz,2/16,6/298,6.9523809523809526,0.0570253196891191

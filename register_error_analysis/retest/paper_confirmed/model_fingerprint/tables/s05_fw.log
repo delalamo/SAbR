@@ -1,0 +1,4 @@
+chains to compute 1003 {'window_control_EM': 300, 'window_control_Xray': 300, 'paper_entry_neighbour': 210, 'clean_Xray_post_window': 120, 'paper': 87, 'rest_case_Xray': 42, 'overlap_check': 37}
+{'ok': 1003}
+{'ok': 1001, 'no sabr': 2}
+reproduction vs verifier fw_recomputed.csv: n 116 max |diff| rep 2.1091286598995396e-05 strict 2.1091286598995396e-05

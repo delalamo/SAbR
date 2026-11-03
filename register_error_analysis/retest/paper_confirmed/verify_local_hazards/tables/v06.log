@@ -1,0 +1,17 @@
+EM rest: pooled types 13.5 vs 12.0 p=0.194; heavy share 0.73 vs 0.56
+    heavy: n=16 15.0 vs 16.0 MW p=0.621
+    light: n=6 9.0 vs 9.0 MW p=0.587
+EM paper_strict: pooled types 17.0 vs 12.0 p=0.332; heavy share 0.75 vs 0.55
+    heavy: n=3 18.0 vs 16.0 MW p=0.492
+all rest: pooled types 12.5 vs 11.0 p=0.183; heavy share 0.69 vs 0.55
+    heavy: n=18 15.0 vs 15.0 MW p=0.832
+    light: n=8 9.5 vs 9.0 MW p=0.173
+all paper_strict: pooled types 17.0 vs 11.0 p=0.0465; heavy share 0.88 vs 0.54
+    heavy: n=7 18.0 vs 15.0 MW p=0.44
+
+EM, window, strict cases + paper controls: starting model none vs PDB
+  chain: none 42/1932 vs pdb 7/796: OR 2.50 p=0.0251
+  unit: none 20/685 vs pdb 4/291: OR 2.16 p=0.181
+  paper: none 13/263 vs pdb 4/102: OR 1.27 p=0.788
+
+X-ray strict chains by year: {2001: 2, 2017: 2, 2018: 1, 2019: 2, 2020: 5, 2021: 6} | papers 10

@@ -1,0 +1,15 @@
+T8a sheet EM: paper-level excess paper -0.0999 (boot -0.164 to -0.0373; 16 papers) vs rest -0.0681 (116 papers); het Welch p=0.38; without Zhou paper -0.0991, het p=0.42; chain-level paper -0.102 (Zhou chains 19/48) vs rest -0.0569
+T8a sheet X-ray: paper-level excess paper -0.0654 (boot -0.115 to -0.0238; 10 papers) vs rest -0.0417 (24 papers); het Welch p=0.44; without Zhou paper -0.0654, het p=0.44; chain-level paper -0.0941 (Zhou chains 0/18) vs rest -0.0337
+T3 rama EM: paper-level excess paper +6.07 (boot +1.88 to +10.3; 16 papers) vs rest +2.2 (116 papers); het Welch p=0.11; without Zhou paper +5.55, het p=0.18; chain-level paper +8.11 (Zhou chains 19/48) vs rest +2.15
+T3 rama X-ray: paper-level excess paper +4.03 (boot +0.501 to +7.56; 10 papers) vs rest +2.15 (24 papers); het Welch p=0.41; without Zhou paper +4.03, het p=0.41; chain-level paper +3.88 (Zhou chains 0/18) vs rest +1.89
+T4 gap EM: paper-level excess paper +6.4 (boot +2.91 to +10.2; 17 papers) vs rest +1.61 (115 papers); het Welch p=0.024; without Zhou paper +6.21, het p=0.039; chain-level paper +6.56 (Zhou chains 7/27) vs rest +1.61
+T4 gap X-ray: paper-level excess paper +2.06 (boot +nan to +nan; 10 papers) vs rest +2.23 (23 papers); het Welch p=0.9; without Zhou paper +2.06, het p=0.9; chain-level paper +2.35 (Zhou chains 0/11) vs rest +2.09
+T4 EM strict entries 27, controls 616
+T5 fw EM: paper-level excess paper +0.322 (boot +0.119 to +0.527; 17 papers) vs rest +0.467 (116 papers); het Welch p=0.26; without Zhou paper +0.344, het p=0.36; chain-level paper +0.16 (Zhou chains 19/49) vs rest +0.351
+T5 fw X-ray: paper-level excess paper +0.178 (boot -0.0121 to +0.37; 10 papers) vs rest +0.171 (24 papers); het Welch p=0.95; without Zhou paper +0.178, het p=0.95; chain-level paper +0.236 (Zhou chains 0/18) vs rest +0.12
+T5 EM D/E all: 20 chains/6 papers mean 1.083 vs ctrl 1.045: +0.038; paper-level +0.169
+T5 EM D/E no Zhou: 8 chains/5 papers mean 1.238 vs ctrl 1.045: +0.193; paper-level +0.211
+T5 EM non-D/E: 29 chains/14 papers mean 1.288 vs ctrl 1.045: +0.243; paper-level +0.334
+T7b EM: entries 15 mean diff +0.225 (Zhou entries 2, without Zhou +0.297 n=13); per paper +0.194 n=11, t p=0.34, Wilcoxon p=0.41
+T7b all: entries 24 mean diff +0.190 (Zhou entries 2, without Zhou +0.230 n=22); per paper +0.117 n=18, t p=0.37, Wilcoxon p=0.35
+T7a all: entries 24 mean diff +0.03; per paper -0.38 n=18 Wilcoxon p=0.58

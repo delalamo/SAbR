@@ -1,0 +1,86 @@
+entries: case 38 EM 27 | rest_w 40 | ctl 1462
+
+== T1 China-led last author, EM published papers
+China-led, case vs window ctrl                          case    9/16 (56%) vs 59/270 (22%) crude 4.60 (1.44-15.09) p=0.00408 | year-MH 4.88 (1.70-13.97) p=0.00397
+China-led, rest_w vs window ctrl                        rest_w  4/22 (18%) vs 59/270 (22%) crude 0.79 (0.19-2.54) p=0.794 | year-MH 0.84 (0.29-2.47) p=0.962
+China-led, win_all vs window ctrl                       win_all 13/37 (35%) vs 59/270 (22%) crude 1.94 (0.85-4.24) p=0.0962 | year-MH 1.91 (0.91-4.00) p=0.13
+China-led, case vs rest_w                               9/16 vs 4/21 Fisher OR 5.46 p=0.0357 | year-MH 6.05 p=0.0455
+case papers by year x China:
+ dep_year  2018  2019  2020  2021
+sum        1.0   1.0   3.0   4.0
+count      2.0   3.0   4.0   7.0
+rest_w papers by year x China:
+ dep_year  2019  2020  2021  2022
+sum        0.0   2.0   2.0   0.0
+count      3.0   6.0  10.0   2.0
+controls China share by year: {2018: 0.14, 2019: 0.18, 2020: 0.25, 2021: 0.22, 2022: 0.44}
+China-led case papers: 9 | distinct last authors 8 | journals {'Cell research': 3, 'Protein & cell': 1, 'Cell host & microbe': 1, 'Cell discovery': 1, 'Nature communications': 1, 'Communications biology': 1, 'Science advances': 1} | sars2 6
+China case vs ctrl, leave-one-paper-out max Fisher p: 0.0099
+X-ray China-led, case vs window ctrl                    case    1/6 (17%) vs 26/226 (12%) crude 1.54 (0.03-14.51) p=0.528 | year-MH 2.26 (0.44-11.65) p=0.632
+
+== T5 citations per year (log1p), EM published papers; logit with year cat + l2_units + res_median, lab-clustered
+  cites base            case    16/271: OR 0.49 (0.29-0.83) p=0.00805
+  cites base            rest_w  22/271: OR 0.72 (0.39-1.33) p=0.298
+  cites +China case failed The weights and list don't have the same length.
+  cites +China rest_w failed The weights and list don't have the same length.
+  cites non-China only  case    7/211: OR 0.89 (0.36-2.21) p=0.804
+  cites non-China only  rest_w  18/211: OR 0.84 (0.42-1.68) p=0.619
+  cites China only      case    9/59: OR 0.20 (0.05-0.86) p=0.0305
+  cites China only      rest_w  4/59: OR 0.16 (0.03-0.98) p=0.0469
+  citations leave-one-case-paper-out: max p 0.0222 (OR 0.52, dropped 10.1038/s41467-020-18250-w)
+  cite_pct median case 0.35 vs ctrl 0.62
+
+== T2 Krios, EM entries
+Krios entry, case vs window ctrl                        case    24/27 (89%) vs 550/628 (88%) crude 1.13 (0.33-6.02) p=1 | year-MH 0.98 (0.31-3.10) p=0.798
+Krios entry, rest_w vs window ctrl                      rest_w  18/32 (56%) vs 550/628 (88%) crude 0.18 (0.08-0.41) p=2.29e-05 | year-MH 0.17 (0.08-0.37) p=1.55e-06
+Krios entry, win_all vs window ctrl                     win_all 42/59 (71%) vs 550/628 (88%) crude 0.35 (0.18-0.69) p=0.00134 | year-MH 0.34 (0.18-0.63) p=0.00076
+Krios entry, case vs rest_w                             24/27 vs 18/32 Fisher OR 6.22 p=0.00874 | year-MH 7.09 p=0.0139
+Krios by year (ctrl): {2015: 0.6, 2016: 0.62, 2017: 0.92, 2018: 0.82, 2019: 0.88, 2020: 0.88, 2021: 0.9, 2022: 0.75}
+Krios by year (case): {2015: {'sum': 0, 'count': 1}, 2018: {'sum': 1, 'count': 2}, 2019: {'sum': 3, 'count': 3}, 2020: {'sum': 11, 'count': 12}, 2021: {'sum': 9, 'count': 9}}
+Krios by year (rest_w): {2016: {'sum': 1, 'count': 2}, 2017: {'sum': 0, 'count': 1}, 2019: {'sum': 1, 'count': 4}, 2020: {'sum': 6, 'count': 10}, 2021: {'sum': 7, 'count': 12}, 2022: {'sum': 3, 'count': 3}}
+rest_w non-Krios entries by paper/microscope: {('10.1016/j.cell.2021.04.032', 'FEI TECNAI ARCTICA'): 1, ('10.1016/j.immuni.2019.10.008', 'FEI TALOS ARCTICA'): 1, ('10.1038/s41541-020-00236-w', 'FEI TECNAI F30'): 1, ('10.1038/s41586-019-1250-z', 'FEI TALOS ARCTICA'): 1, ('10.1038/s41586-021-04356-8', 'FEI TALOS ARCTICA'): 1, ('10.1038/s41594-019-0237-7', 'FEI TECNAI ARCTICA'): 1, ('10.1107/s2059798321007816', 'FEI POLARA 300'): 1, ('10.1128/jvi.01112-16', 'FEI POLARA 300'): 1, ('10.1128/jvi.01308-21', 'FEI TALOS ARCTICA'): 1, ('10.1128/jvi.01308-21', 'FEI TECNAI ARCTICA'): 1, ('10.1371/journal.ppat.1009507', 'FEI TECNAI ARCTICA'): 3, ('10.3390/v9120374', 'FEI POLARA 300'): 1}
+Krios paper, case vs window ctrl                        case    14/17 (82%) vs 266/304 (88%) crude 0.67 (0.17-3.79) p=0.465 | year-MH 0.54 (0.17-1.73) p=0.493
+Krios paper, rest_w vs window ctrl                      rest_w  15/25 (60%) vs 266/304 (88%) crude 0.21 (0.08-0.58) p=0.00105 | year-MH 0.21 (0.09-0.50) p=0.000553
+Krios paper, win_all vs window ctrl                     win_all 28/41 (68%) vs 266/304 (88%) crude 0.31 (0.14-0.71) p=0.00352 | year-MH 0.30 (0.14-0.63) p=0.00236
+
+== T4 no funding record, EM entries vs papers
+no funding entry, case                                  case    11/27 (41%) vs 114/628 (18%) crude 3.10 (1.26-7.32) p=0.0094 | year-MH 2.87 (1.27-6.47) p=0.0167
+no funding entry, case_i                                case_i  11/31 (35%) vs 114/628 (18%) crude 2.48 (1.04-5.60) p=0.0308 | year-MH 2.24 (1.03-4.88) p=0.0641
+no funding entry, rest_w                                rest_w  9/32 (28%) vs 114/628 (18%) crude 1.76 (0.70-4.08) p=0.164 | year-MH 1.76 (0.78-3.97) p=0.252
+no funding entry, win_all                               win_all 20/59 (34%) vs 114/628 (18%) crude 2.31 (1.23-4.23) p=0.00568 | year-MH 2.23 (1.24-4.02) p=0.0109
+no funding paper, case                                  case    6/17 (35%) vs 67/304 (22%) crude 1.93 (0.56-5.93) p=0.234 | year-MH 2.08 (0.73-5.93) p=0.279
+no funding paper, rest_w                                rest_w  6/25 (24%) vs 67/304 (22%) crude 1.12 (0.35-3.06) p=0.804 | year-MH 1.17 (0.45-3.09) p=0.948
+no funding paper, win_all                               win_all 12/41 (29%) vs 67/304 (22%) crude 1.46 (0.64-3.15) p=0.323 | year-MH 1.54 (0.74-3.21) p=0.344
+case entries with no funding record by paper: {'10.1038/s41421-021-00292-z': 2, '10.1038/s41422-020-00446-w': 2, '10.1038/s41422-021-00487-9': 4, '10.1038/s41422-021-00555-0': 1, '10.1038/s42003-021-02029-w': 1, '10.1128/jvi.03017-15': 1}
+no funding entry, case, drop 10.1038/s41422-021-00487-9 case    7/20 (35%) vs 109/623 (17%) crude 2.54 (0.84-7.03) p=0.0689 | year-MH 2.68 (1.03-6.95) p=0.0721
+  no funding entry logit yc+res paper-clustered: OR 2.88 (1.25-6.62) p=0.0127
+
+== T3 capsid, EM entries
+capsid entry, case                                      case    4/27 (15%) vs 36/616 (6%) crude 2.80 (0.67-8.82) p=0.0795 | year-MH 3.57 (1.15-11.03) p=0.0587
+capsid entry, case_i                                    case_i  4/41 (10%) vs 36/616 (6%) crude 1.74 (0.43-5.25) p=0.304 | year-MH 2.47 (0.83-7.33) p=0.195
+capsid entry, rest_w                                    rest_w  10/30 (33%) vs 36/616 (6%) crude 8.06 (3.11-19.55) p=1.3e-05 | year-MH 9.91 (4.09-24.03) p=5.31e-09
+capsid entry, win_all                                   win_all 14/57 (25%) vs 36/616 (6%) crude 5.25 (2.41-10.86) p=1.83e-05 | year-MH 6.26 (3.00-13.05) p=2.4e-07
+capsid paper, case                                      case    4/17 (24%) vs 18/298 (6%) crude 4.79 (1.02-17.57) p=0.0233 | year-MH 5.76 (1.68-19.68) p=0.0103
+enzyme paper, case                                      case    2/17 (12%) vs 6/298 (2%) crude 6.49 (0.59-40.03) p=0.0634 | year-MH 5.92 (1.06-33.10) p=0.124
+capsid paper, rest_w                                    rest_w  6/23 (26%) vs 18/298 (6%) crude 5.49 (1.56-16.87) p=0.00395 | year-MH 6.80 (2.27-20.36) p=0.000484
+enzyme paper, rest_w                                    rest_w  2/23 (9%) vs 6/298 (2%) crude 4.63 (0.43-27.83) p=0.106 | year-MH 3.55 (0.68-18.61) p=0.321
+capsid paper, win_all                                   win_all 10/39 (26%) vs 18/298 (6%) crude 5.36 (2.00-13.57) p=0.000393 | year-MH 6.72 (2.70-16.70) p=2.04e-05
+enzyme paper, win_all                                   win_all 3/39 (8%) vs 6/298 (2%) crude 4.06 (0.63-19.86) p=0.0736 | year-MH 3.31 (0.78-13.99) p=0.217
+case capsid papers: [['10.1016/j.chom.2020.01.003', 2019, 'Li, S.W.'], ['10.1038/s41467-020-18250-w', 2020, 'Wang, X.'], ['10.1126/sciadv.aat7459', 2018, 'Cheng, T.'], ['10.1128/jvi.03017-15', 2015, 'Hogle, J.M.']]
+case enzyme papers: [['10.1038/s41586-019-1530-7', 2019, 'Grimes, J.M.'], ['10.1126/science.abg4998', 2021, 'Jiang, Y.']]
+capsid case papers per lab: {'Li, S.W.': 1, 'Wang, X.': 1, 'Cheng, T.': 1, 'Hogle, J.M.': 1}
+
+== T6 lab antibody experience (antigen_competition lab_prior_ab; log2(1+n)), EM entries, logit yc+res, paper-clustered
+  lab exp entry case    27/616: OR 0.71 (0.59-0.86) p=0.000376
+  lab exp entry case_i  30/616: OR 0.69 (0.58-0.84) p=0.000107
+  lab exp entry rest_w  30/616: OR 1.13 (0.96-1.33) p=0.14
+  lab exp entry win_all 57/616: OR 0.94 (0.82-1.08) p=0.366
+  lab exp paper case    17/298: OR 0.76 (0.61-0.94) p=0.0123
+  lab exp paper rest_w  23/298: OR 1.19 (1.03-1.38) p=0.0215
+  lab exp paper win_all 39/298: OR 1.02 (0.90-1.14) p=0.785
+
+== SARS-CoV-2, EM entries deposited 2020+
+SARS-CoV-2 entry 2020+, case                            case    14/21 (67%) vs 199/450 (44%) crude 2.52 (0.93-7.52) p=0.0704 | year-MH 2.65 (1.06-6.62) p=0.0471
+SARS-CoV-2 entry 2020+, rest_w                          rest_w  7/24 (29%) vs 199/450 (44%) crude 0.52 (0.18-1.35) p=0.204 | year-MH 0.50 (0.20-1.25) p=0.195
+SARS-CoV-2 entry 2020+, case vs rest_w                  14/21 vs 7/24 Fisher OR 4.86 p=0.0174 | year-MH 4.54 p=0.0375
+SARS-CoV-2 paper 2020+, case vs rest_w                  6/11 vs 5/17 Fisher OR 2.88 p=0.248 | year-MH 3.01 p=0.349

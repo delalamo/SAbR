@@ -1,0 +1,30 @@
+case capsid/enzyme entries:
+ pdb                      paper         cls2 species  dyear
+3jbf       10.1128/jvi.03017-15 viral capsid   human   2015
+6ad0     10.1126/sciadv.aat7459 viral capsid   mouse   2018
+6lht 10.1016/j.chom.2020.01.003 viral capsid   mouse   2019
+6qxe  10.1038/s41586-019-1530-7       enzyme   human   2019
+7c80 10.1038/s41467-020-18250-w viral capsid   mouse   2020
+7mhz    10.1126/science.abg4998       enzyme   mouse   2021
+rest_w capsid/enzyme entries:
+ pdb                        paper         cls2     species  dyear
+3jcx         10.1128/jvi.01112-16 viral capsid       mouse   2016
+6bsp             10.3390/v9120374 viral capsid       mouse   2017
+6qx3    10.1038/s41586-019-1530-7       enzyme       human   2019
+7cn2   10.1038/s41541-020-00236-w viral capsid       human   2020
+7d3k 10.1371/journal.ppat.1009507 viral capsid human|mouse   2020
+7d3l 10.1371/journal.ppat.1009507 viral capsid human|mouse   2020
+7d3m 10.1371/journal.ppat.1009507 viral capsid human|mouse   2020
+7fei         10.1128/jvi.01308-21 viral capsid human|mouse   2021
+7fej         10.1128/jvi.01308-21 viral capsid human|mouse   2021
+7k22          10.7554/elife.61056 viral capsid human|mouse   2020
+7k23          10.7554/elife.61056 viral capsid human|mouse   2020
+7nvn   10.1038/s41594-022-00755-1       enzyme       human   2021
+paper level, EM, window controls                             cap: case 4/17 vs ctrl 18/298  OR 4.79 p=0.0233
+paper level, EM, human-only antibodies                       cap: case 1/12 vs ctrl 7/226  OR 2.84 p=0.343
+paper level, EM, shared co-author cluster dropped            cap: case 2/15 vs ctrl 18/298  OR 2.39 p=0.247
+paper level, EM, cluster counted once                        cap: case 3/16 vs ctrl 18/298  OR 3.59 p=0.0821
+paper level, EM, window controls                             enz: case 2/17 vs ctrl 6/298  OR 6.49 p=0.0634
+paper level, EM, human-only antibodies                       enz: case 1/12 vs ctrl 3/226  OR 6.76 p=0.188
+paper level, EM, shared co-author cluster dropped            enz: case 2/15 vs ctrl 6/298  OR 7.49 p=0.0508
+paper level, EM, cluster counted once                        enz: case 2/16 vs ctrl 6/298  OR 6.95 p=0.057

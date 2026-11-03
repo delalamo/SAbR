@@ -1,0 +1,4 @@
+link,observed,null_mean,ratio,p_more,p_less,n_case_studies
+"any shared audit author, different labs",4,2.102,1.9029495718363465,0.187,0.89,18
+"shared non-last author, different labs",3,1.107,2.710027100271003,0.117,0.944,18
+"any shared author, collision-prone surnames dropped",1,1.782,0.5611672278338945,0.754,0.543,18

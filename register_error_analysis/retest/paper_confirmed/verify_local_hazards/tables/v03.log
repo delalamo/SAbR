@@ -1,0 +1,176 @@
+paper_control chains in entries that ARE in Table S1 (error elsewhere, e.g. antigen or <50% V): 363 of 6239
+in-window chains excluded from paper controls because of a non-case run (err_any, not a Table S1 entry): 190
+
+=== agreement of gap definitions on case runs (strict):
+gap_v   False  True 
+gap_lh              
+False      43      1
+True        0     25
+rest:
+gap_v   False  True 
+gap_lh              
+False     138      8
+True        0    112
+paper controls (chain x mode):
+gap_v   False  True 
+gap_lh              
+False   36279   2366
+True        1   5027
+
+######## gap_lh
+  [EM] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(4.17), np.float64(1.7), '0.00095'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(11.39), np.float64(3.94), '1.2e-08'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(4.56), np.float64(1.9), '0.00024')]
+EM    strict   vs paper     n=26 (17 papers) 50.0% vs 16.9% (ctrl units 5712) MH OR 5.36 (2.32-12.40) p=9.6e-06 | opp n=17 OR 6.89 (2.44-19.48) p=2.1e-05 | paper-boot CI 1.60-37.52 | het vs rest p=0.60 | LOPO min OR 4.17, max p 0.00095
+EM    incl     vs paper     n=35 (24 papers) 48.6% vs 19.0% (ctrl units 6238) MH OR 4.26 (2.11-8.61) p=1.2e-05 
+EM    rest     vs full      n=128 (90 papers) 46.9% vs 19.2% (ctrl units 28441) MH OR 4.18 (2.85-6.12) p=6.4e-16 
+EM    rest_win vs paper     n=27 (23 papers) 40.7% vs 21.9% (ctrl units 4860) MH OR 2.62 (1.16-5.93) p=0.028 
+EM    strict   vs win_local n=26 (17 papers) 50.0% vs 16.5% (ctrl units 5425) MH OR 5.50 (2.38-12.70) p=6.3e-06 
+EM    strict   vs full      n=26 (17 papers) 50.0% vs 16.6% (ctrl units 24378) MH OR 5.49 (2.38-12.62) p=5.7e-06 
+  [X-ray] top papers by units: [('0.1038/s41421-021-00295-w', np.int64(2), np.float64(5.24), np.float64(1.23), '0.051'), ('10.1006/viro.2001.1320', np.int64(1), np.float64(7.07), np.float64(1.86), '0.0043'), ('5zs0', np.int64(1), np.float64(8.23), np.float64(2.06), '0.0022')]
+X-ray strict   vs paper     n=11 (10 papers) 36.4% vs 8.6% (ctrl units 4440) MH OR 6.78 (1.81-25.33) p=0.0052 | opp n=10 OR 5.07 (1.20-21.32) p=0.056 | paper-boot CI 1.49-32.50 | het vs rest p=0.71 | LOPO min OR 4.93, max p 0.081
+X-ray incl     vs paper     n=11 (10 papers) 36.4% vs 8.6% (ctrl units 4440) MH OR 6.78 (1.81-25.33) p=0.0052 
+X-ray rest     vs full      n=21 (19 papers) 33.3% vs 7.4% (ctrl units 11044) MH OR 9.39 (3.14-28.07) p=2.1e-05 
+X-ray rest_win vs paper     n=8 (8 papers) 37.5% vs 3.4% (ctrl units 4522) MH OR 21.35 (4.57-99.79) p=1.3e-05 
+X-ray strict   vs win_local n=11 (10 papers) 36.4% vs 8.3% (ctrl units 4236) MH OR 7.02 (1.88-26.21) p=0.0043 
+X-ray strict   vs full      n=11 (10 papers) 36.4% vs 8.9% (ctrl units 6531) MH OR 6.52 (1.75-24.24) p=0.0064 
+  [all] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(4.79), np.float64(2.28), '7e-06'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(8.51), np.float64(3.95), '4.7e-11'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(5.13), np.float64(2.48), '1.2e-06')]
+all   strict   vs paper     n=36 (25 papers) 44.4% vs 12.6% (ctrl units 15484) MH OR 5.85 (2.91-11.75) p=1.6e-08 | opp n=25 OR 6.69 (2.93-15.30) p=2.3e-07 | paper-boot CI 2.24-16.65 | het vs rest p=0.78 | LOPO min OR 4.79, max p 7e-06
+all   incl     vs paper     n=45 (32 papers) 44.4% vs 14.3% (ctrl units 16772) MH OR 4.97 (2.69-9.19) p=1.3e-08 
+all   rest     vs full      n=149 (109 papers) 45.0% vs 15.3% (ctrl units 43274) MH OR 5.24 (3.66-7.49) p=2e-24 
+all   rest_win vs paper     n=35 (31 papers) 40.0% vs 11.7% (ctrl units 13448) MH OR 5.46 (2.65-11.24) p=4.9e-07 
+all   strict   vs win_local n=36 (25 papers) 44.4% vs 12.3% (ctrl units 14748) MH OR 6.00 (2.99-12.03) p=8.6e-09 
+all   strict   vs full      n=36 (25 papers) 44.4% vs 14.7% (ctrl units 39850) MH OR 4.85 (2.43-9.70) p=5.8e-07 
+
+######## gap_v
+  [EM] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(3.15), np.float64(1.24), '0.013'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(11.32), np.float64(3.28), '1.9e-06'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(3.44), np.float64(1.38), '0.0057')]
+EM    strict   vs paper     n=26 (17 papers) 53.8% vs 25.6% (ctrl units 5712) MH OR 4.02 (1.68-9.65) p=0.0007 | opp n=17 OR 5.89 (1.88-18.40) p=0.00047 | paper-boot CI 1.13-80.21 | het vs rest p=0.40 | LOPO min OR 3.15, max p 0.013
+EM    incl     vs paper     n=35 (24 papers) 57.1% vs 28.5% (ctrl units 6238) MH OR 3.85 (1.83-8.11) p=0.00013 
+EM    rest     vs full      n=128 (90 papers) 50.0% vs 29.9% (ctrl units 28441) MH OR 2.66 (1.81-3.92) p=1.5e-07 
+EM    rest_win vs paper     n=27 (23 papers) 44.4% vs 34.3% (ctrl units 4860) MH OR 1.60 (0.71-3.61) p=0.33 
+EM    strict   vs win_local n=26 (17 papers) 53.8% vs 25.4% (ctrl units 5425) MH OR 4.05 (1.69-9.71) p=0.00063 
+EM    strict   vs full      n=26 (17 papers) 53.8% vs 25.3% (ctrl units 24378) MH OR 4.08 (1.71-9.75) p=0.00056 
+  [X-ray] top papers by units: [('0.1038/s41421-021-00295-w', np.int64(2), np.float64(3.36), np.float64(0.8), '0.19'), ('10.1006/viro.2001.1320', np.int64(1), np.float64(4.52), np.float64(1.2), '0.039'), ('5zs0', np.int64(1), np.float64(5.35), np.float64(1.35), '0.022')]
+X-ray strict   vs paper     n=11 (10 papers) 36.4% vs 12.3% (ctrl units 4440) MH OR 4.39 (1.18-16.29) p=0.043 | opp n=10 OR 3.29 (0.79-13.69) p=0.2 | paper-boot CI 0.95-23.31 | het vs rest p=0.49 | LOPO min OR 3.13, max p 0.27
+X-ray incl     vs paper     n=11 (10 papers) 36.4% vs 12.3% (ctrl units 4440) MH OR 4.39 (1.18-16.29) p=0.043 
+X-ray rest     vs full      n=21 (19 papers) 38.1% vs 10.3% (ctrl units 11044) MH OR 8.00 (2.69-23.84) p=4.7e-05 
+X-ray rest_win vs paper     n=8 (8 papers) 37.5% vs 4.3% (ctrl units 4522) MH OR 17.04 (3.56-81.68) p=0.00017 
+X-ray strict   vs win_local n=11 (10 papers) 36.4% vs 12.2% (ctrl units 4236) MH OR 4.45 (1.20-16.53) p=0.041 
+X-ray strict   vs full      n=11 (10 papers) 36.4% vs 12.6% (ctrl units 6531) MH OR 4.27 (1.16-15.80) p=0.047 
+  [all] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(3.51), np.float64(1.66), '0.00051'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(6.39), np.float64(2.88), '8.6e-08'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(3.74), np.float64(1.8), '0.00016')]
+all   strict   vs paper     n=36 (25 papers) 47.2% vs 18.6% (ctrl units 15484) MH OR 4.26 (2.10-8.62) p=9.1e-06 | opp n=25 OR 5.10 (2.19-11.85) p=2.2e-05 | paper-boot CI 1.64-12.86 | het vs rest p=0.69 | LOPO min OR 3.51, max p 0.00051
+all   incl     vs paper     n=45 (32 papers) 51.1% vs 20.9% (ctrl units 16772) MH OR 4.34 (2.31-8.14) p=5e-07 
+all   rest     vs full      n=149 (109 papers) 48.3% vs 23.3% (ctrl units 43274) MH OR 3.61 (2.51-5.20) p=5.1e-14 
+all   rest_win vs paper     n=35 (31 papers) 42.9% vs 17.8% (ctrl units 13448) MH OR 3.89 (1.87-8.09) p=0.00013 
+all   strict   vs win_local n=36 (25 papers) 47.2% vs 18.4% (ctrl units 14748) MH OR 4.29 (2.12-8.69) p=7.7e-06 
+all   strict   vs full      n=36 (25 papers) 47.2% vs 22.0% (ctrl units 39850) MH OR 3.41 (1.70-6.88) p=0.00021 
+
+######## poor
+  [EM] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(1.46), np.float64(0.58), '0.58'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(0.83), np.float64(0.31), '0.9'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(1.02), np.float64(0.4), '0.84')]
+EM    strict   vs paper     n=26 (17 papers) 26.9% vs 25.8% (ctrl units 5684) MH OR 1.06 (0.44-2.54) p=0.93 | opp n=17 OR 1.18 (0.41-3.37) p=0.98 | paper-boot CI 0.31-2.54 | het vs rest p=0.25 | LOPO min OR 0.83, max p 0.99
+EM    incl     vs paper     n=35 (24 papers) 37.1% vs 24.6% (ctrl units 6208) MH OR 1.81 (0.91-3.62) p=0.13 
+EM    rest     vs full      n=127 (89 papers) 37.8% vs 24.6% (ctrl units 28133) MH OR 1.85 (1.29-2.64) p=0.00088 
+EM    rest_win vs paper     n=27 (23 papers) 48.1% vs 28.5% (ctrl units 4836) MH OR 2.40 (1.11-5.19) p=0.041 
+EM    strict   vs win_local n=26 (17 papers) 26.9% vs 25.6% (ctrl units 5246) MH OR 1.07 (0.45-2.57) p=0.94 
+EM    strict   vs full      n=26 (17 papers) 26.9% vs 25.2% (ctrl units 24108) MH OR 1.09 (0.46-2.57) p=0.98 
+  [X-ray] top papers by units: [('0.1038/s41421-021-00295-w', np.int64(2), np.float64(16.9), np.float64(2.39), '0.00016'), ('5zs0', np.int64(1), np.float64(8.95), np.float64(2.01), '0.00092'), ('10.1038/s41586-018-0249-1', np.int64(1), np.float64(8.89), np.float64(1.99), '0.0011')]
+X-ray strict   vs paper     n=10 (9 papers) 80.0% vs 24.5% (ctrl units 4278) MH OR 10.20 (2.34-44.41) p=0.00022 | opp n=9 OR 8.95 (2.01-39.78) p=0.00092 | paper-boot CI 2.99-30.46 | het vs rest p=0.59 | LOPO min OR 8.88, max p 0.0011
+X-ray incl     vs paper     n=10 (9 papers) 80.0% vs 24.5% (ctrl units 4278) MH OR 10.20 (2.34-44.41) p=0.00022 
+X-ray rest     vs full      n=21 (19 papers) 66.7% vs 24.2% (ctrl units 10754) MH OR 6.31 (2.53-15.70) p=1.9e-05 
+X-ray rest_win vs paper     n=8 (8 papers) 75.0% vs 23.5% (ctrl units 4360) MH OR 8.51 (1.83-39.61) p=0.0026 
+X-ray strict   vs win_local n=10 (9 papers) 80.0% vs 24.2% (ctrl units 4038) MH OR 10.11 (2.34-43.58) p=0.00019 
+X-ray strict   vs full      n=10 (9 papers) 80.0% vs 25.3% (ctrl units 6357) MH OR 10.51 (2.35-47.11) p=0.00032 
+  [all] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(2.48), np.float64(1.22), '0.016'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(1.76), np.float64(0.86), '0.16'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(1.96), np.float64(0.97), '0.083')]
+all   strict   vs paper     n=35 (24 papers) 40.0% vs 25.7% (ctrl units 15103) MH OR 1.91 (0.97-3.74) p=0.082 | opp n=24 OR 2.37 (1.07-5.24) p=0.046 | paper-boot CI 0.91-4.25 | het vs rest p=0.73 | LOPO min OR 1.76, max p 0.16
+all   incl     vs paper     n=44 (31 papers) 45.5% vs 25.1% (ctrl units 16362) MH OR 2.46 (1.36-4.45) p=0.0034 
+all   rest     vs full      n=148 (108 papers) 41.9% vs 24.8% (ctrl units 42560) MH OR 2.17 (1.57-3.01) p=2.4e-06 
+all   rest_win vs paper     n=35 (31 papers) 54.3% vs 25.9% (ctrl units 13125) MH OR 3.36 (1.73-6.51) p=0.00029 
+all   strict   vs win_local n=35 (24 papers) 40.0% vs 25.6% (ctrl units 14150) MH OR 1.91 (0.98-3.74) p=0.079 
+all   strict   vs full      n=35 (24 papers) 40.0% vs 25.0% (ctrl units 39188) MH OR 1.97 (1.01-3.85) p=0.064 
+
+######## either_lh
+  [EM] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(3.15), np.float64(1.26), '0.017'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(3.73), np.float64(1.5), '0.0048'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(2.56), np.float64(1.08), '0.047')]
+EM    strict   vs paper     n=26 (17 papers) 65.4% vs 38.2% (ctrl units 5712) MH OR 3.17 (1.39-7.23) p=0.0073 | opp n=17 OR 3.78 (1.32-10.83) p=0.015 | paper-boot CI 1.42-8.53 | het vs rest p=0.85 | LOPO min OR 2.56, max p 0.047
+EM    incl     vs paper     n=35 (24 papers) 71.4% vs 38.8% (ctrl units 6238) MH OR 4.14 (1.95-8.79) p=0.00014 
+EM    rest     vs full      n=128 (90 papers) 68.0% vs 39.2% (ctrl units 28441) MH OR 3.47 (2.37-5.09) p=3.3e-11 
+EM    rest_win vs paper     n=27 (23 papers) 74.1% vs 44.1% (ctrl units 4860) MH OR 3.91 (1.60-9.54) p=0.0028 
+EM    strict   vs win_local n=26 (17 papers) 65.4% vs 36.9% (ctrl units 5425) MH OR 3.37 (1.48-7.70) p=0.0044 
+EM    strict   vs full      n=26 (17 papers) 65.4% vs 37.6% (ctrl units 24378) MH OR 3.23 (1.42-7.35) p=0.0059 
+  [X-ray] top papers by units: [('0.1038/s41421-021-00295-w', np.int64(2), np.float64(7.6), np.float64(1.62), '0.0049'), ('10.1006/viro.2001.1320', np.int64(1), np.float64(8.12), np.float64(1.82), '0.0019'), ('5zs0', np.int64(1), np.float64(5.33), np.float64(1.39), '0.013')]
+X-ray strict   vs paper     n=11 (10 papers) 72.7% vs 29.4% (ctrl units 4440) MH OR 6.08 (1.63-22.72) p=0.0048 | opp n=10 OR 5.33 (1.39-20.41) p=0.013 | paper-boot CI 1.92-26.12 | het vs rest p=0.45 | LOPO min OR 5.25, max p 0.016
+X-ray incl     vs paper     n=11 (10 papers) 72.7% vs 29.4% (ctrl units 4440) MH OR 6.08 (1.63-22.72) p=0.0048 
+X-ray rest     vs full      n=21 (19 papers) 81.0% vs 28.7% (ctrl units 11044) MH OR 11.83 (3.83-36.59) p=3.7e-07 
+X-ray rest_win vs paper     n=8 (8 papers) 100.0% vs 25.0% (ctrl units 4522) MH OR nan (nan-nan) p=nan 
+X-ray strict   vs win_local n=11 (10 papers) 72.7% vs 28.7% (ctrl units 4236) MH OR 6.22 (1.67-23.13) p=0.0038 
+X-ray strict   vs full      n=11 (10 papers) 72.7% vs 30.4% (ctrl units 6531) MH OR 6.02 (1.59-22.78) p=0.0063 
+  [all] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(4.0), np.float64(1.87), '0.00022'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(4.51), np.float64(2.1), '5.8e-05'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(3.47), np.float64(1.68), '0.00073')]
+all   strict   vs paper     n=36 (25 papers) 66.7% vs 34.0% (ctrl units 15484) MH OR 4.00 (1.97-8.09) p=6.9e-05 | opp n=25 OR 5.18 (2.12-12.63) p=0.00015 | paper-boot CI 2.18-8.96 | het vs rest p=0.83 | LOPO min OR 3.47, max p 0.00073
+all   incl     vs paper     n=45 (32 papers) 71.1% vs 34.8% (ctrl units 16772) MH OR 4.81 (2.49-9.30) p=6.7e-07 
+all   rest     vs full      n=149 (109 papers) 69.8% vs 35.9% (ctrl units 43274) MH OR 4.35 (3.04-6.23) p=7.8e-18 
+all   rest_win vs paper     n=35 (31 papers) 80.0% vs 33.5% (ctrl units 13448) MH OR 7.88 (3.43-18.08) p=1.4e-08 
+all   strict   vs win_local n=36 (25 papers) 66.7% vs 33.2% (ctrl units 14748) MH OR 4.15 (2.05-8.41) p=4e-05 
+all   strict   vs full      n=36 (25 papers) 66.7% vs 35.5% (ctrl units 39850) MH OR 3.79 (1.86-7.70) p=0.00017 
+
+######## either_v
+  [EM] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(3.07), np.float64(1.16), '0.031'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(3.96), np.float64(1.47), '0.0074'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(2.45), np.float64(0.99), '0.084')]
+EM    strict   vs paper     n=26 (17 papers) 69.2% vs 44.8% (ctrl units 5712) MH OR 3.04 (1.27-7.26) p=0.017 | opp n=17 OR 4.16 (1.29-13.37) p=0.021 | paper-boot CI 1.36-9.65 | het vs rest p=0.82 | LOPO min OR 2.45, max p 0.084
+EM    incl     vs paper     n=35 (24 papers) 74.3% vs 46.2% (ctrl units 6238) MH OR 3.76 (1.70-8.35) p=0.0011 
+EM    rest     vs full      n=128 (90 papers) 69.5% vs 47.5% (ctrl units 28441) MH OR 2.71 (1.83-4.03) p=4.4e-07 
+EM    rest_win vs paper     n=27 (23 papers) 77.8% vs 53.1% (ctrl units 4860) MH OR 3.38 (1.31-8.74) p=0.013 
+EM    strict   vs win_local n=26 (17 papers) 69.2% vs 43.8% (ctrl units 5425) MH OR 3.19 (1.33-7.64) p=0.012 
+EM    strict   vs full      n=26 (17 papers) 69.2% vs 44.3% (ctrl units 24378) MH OR 3.08 (1.29-7.37) p=0.015 
+  [X-ray] top papers by units: [('0.1038/s41421-021-00295-w', np.int64(2), np.float64(6.59), np.float64(1.39), '0.011'), ('10.1006/viro.2001.1320', np.int64(1), np.float64(7.08), np.float64(1.56), '0.0049'), ('5zs0', np.int64(1), np.float64(4.76), np.float64(1.22), '0.026')]
+X-ray strict   vs paper     n=11 (10 papers) 72.7% vs 32.4% (ctrl units 4440) MH OR 5.41 (1.42-20.58) p=0.011 | opp n=10 OR 4.76 (1.22-18.50) p=0.026 | paper-boot CI 1.69-24.95 | het vs rest p=0.43 | LOPO min OR 4.65, max p 0.033
+X-ray incl     vs paper     n=11 (10 papers) 72.7% vs 32.4% (ctrl units 4440) MH OR 5.41 (1.42-20.58) p=0.011 
+X-ray rest     vs full      n=21 (19 papers) 81.0% vs 30.9% (ctrl units 11044) MH OR 11.04 (3.53-34.52) p=1.5e-06 
+X-ray rest_win vs paper     n=8 (8 papers) 100.0% vs 25.8% (ctrl units 4522) MH OR nan (nan-nan) p=nan 
+X-ray strict   vs win_local n=11 (10 papers) 72.7% vs 31.7% (ctrl units 4236) MH OR 5.51 (1.46-20.85) p=0.009 
+X-ray strict   vs full      n=11 (10 papers) 72.7% vs 33.1% (ctrl units 6531) MH OR 5.35 (1.40-20.45) p=0.013 
+  [all] top papers by units: [('0.1038/s41421-021-00292-z', np.int64(5), np.float64(3.89), np.float64(1.76), '0.00054'), ('0.1038/s41422-021-00487-9', np.int64(4), np.float64(4.57), np.float64(2.04), '0.00013'), ('0.1038/s42003-021-02029-w', np.int64(3), np.float64(3.35), np.float64(1.58), '0.0017')]
+all   strict   vs paper     n=36 (25 papers) 69.4% vs 38.5% (ctrl units 15484) MH OR 3.87 (1.86-8.06) p=0.00021 | opp n=25 OR 5.62 (2.14-14.74) p=0.00023 | paper-boot CI 2.09-9.37 | het vs rest p=0.89 | LOPO min OR 3.35, max p 0.0017
+all   incl     vs paper     n=45 (32 papers) 73.3% vs 39.8% (ctrl units 16772) MH OR 4.51 (2.27-8.96) p=6.4e-06 
+all   rest     vs full      n=149 (109 papers) 71.1% vs 42.1% (ctrl units 43274) MH OR 3.66 (2.53-5.30) p=4.2e-13 
+all   rest_win vs paper     n=35 (31 papers) 82.9% vs 38.0% (ctrl units 13448) MH OR 8.19 (3.35-20.03) p=7.5e-08 
+all   strict   vs win_local n=36 (25 papers) 69.4% vs 37.9% (ctrl units 14748) MH OR 3.98 (1.91-8.29) p=0.00014 
+all   strict   vs full      n=36 (25 papers) 69.4% vs 41.2% (ctrl units 39850) MH OR 3.55 (1.69-7.46) p=0.00078 
+
+strict EM case units:
+ pdb chain  m  imgt0  imgt1                  paper  gap_lh  gap_v  unb_A  first_built_v  poor
+3jbf     7  F     37     48   10.1128/JVI.03017-15   False  False    0.0            1.0  True
+6ad0     L  A      1     32 10.1126/sciadv.aat7459   False  False    0.0            1.0 False
+6cmo     L  A      4     12 1038/s41586-018-0215-y    True   True    4.0            5.0  True
+6lht     L  F     31     57 016/j.chom.2020.01.003   False  False    0.0            1.0 False
+6qxe     M D+    112    122 1038/s41586-019-1530-7    True   True    0.0            1.0  True
+6ukt     E  A      3     12 038/s41467-020-14943-4    True   True    2.0            1.0 False
+7c80     H  F     30    128 038/s41467-020-18250-w   False  False    0.0            1.0 False
+7cwt     L  A      1      4 038/s41422-020-00446-w   False  False    0.0            1.0 False
+7czr     H  E    120    128 038/s41422-021-00487-9   False  False    0.0            1.0  True
+7czu     K  A      1      9 038/s41422-021-00487-9   False  False    0.0            1.0 False
+7czy     K D+    109    127 038/s41422-021-00487-9   False  False    0.0            1.0  True
+7d00     K  A      1      9 038/s41422-021-00487-9   False  False    0.0            1.0 False
+7e23     B  C     72     93 038/s42003-021-02029-w    True   True   10.0            4.0 False
+7e23     B D+    112    126 038/s42003-021-02029-w    True   True   10.0            4.0 False
+7e23     C  C     76     93 038/s42003-021-02029-w   False  False    2.0            3.0  True
+7e39     B  E    120    126 038/s41421-021-00292-z    True   True    0.0            1.0 False
+7e39     C  B     62     93 038/s41421-021-00292-z   False  False    0.0            1.0 False
+7e3c     B  A      4     11 038/s41421-021-00292-z    True   True    4.0            2.0 False
+7e3c     B  C     74     81 038/s41421-021-00292-z    True   True    4.0            2.0 False
+7e3c     C  B     57     89 038/s41421-021-00292-z   False  False    3.0            4.0 False
+7ey5     B  E    121    128 038/s41422-021-00555-0   False   True    0.0            1.0 False
+7kra     I  C     80     93    10.7554/eLife.62611    True   True    0.0            1.0 False
+7mhz     O  C     87     95 0.1126/science.abg4998    True   True    2.0            1.0 False
+7nqk     B  A      3     11 10.1126/sciadv.abh3355    True   True    3.0            4.0 False
+7qia     B  A      3     16    10.7554/eLife.74589    True   True    2.0            1.0 False
+7v2a     E D+    112    123 007/s13238-021-00871-6    True   True    0.0            1.0  True
+
+strict X-ray case units:
+ pdb chain  m  imgt0  imgt1                  paper  year  gap_lh  gap_v  poor  win_fit_pct
+1ken     H  B     63     69 10.1006/viro.2001.1320  2001   False  False False          NaN
+5zs0     B D+    110    128                   5zs0  2018   False  False  True     0.309244
+6bpe     C  A      3      8 1038/s41586-018-0249-1  2017    True   True  True     0.226073
+6qpg     M D+    112    122 1038/s41586-019-1530-7  2019    True   True  True     0.205388
+6x06     K D+    112    127 038/s41467-020-19884-6  2020   False  False  True     0.487274
+7e5y     B  F     45     80 038/s41421-021-00295-w  2021   False  False False     0.556405
+7e5y     C D+    110    126 038/s41421-021-00295-w  2021    True   True  True     0.398913
+7jtf     A  B     55     62                   7jtf  2020    True   True  True     0.409287
+7k66     C D-    115    127 .1182/blood.2020008940  2020   False  False  True     0.476603
+7l5b     H D+    111    128 6/j.celrep.2021.108950  2020   False  False  True     0.398159
+7qji     B  A      3     16    10.7554/eLife.74589  2021   False  False False     0.558777

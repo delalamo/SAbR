@@ -1,0 +1,106 @@
+units strict 34 papers 25 EM 24
+controls (implemented def) 2378 | controls (entry nowhere in Table S1) 2202
+units that are controls only because their Table S1 entry has no >=50%-V error on a scanned chain: 176 EM 90
+ctrl_inv has_hq all 3/34 (8.8%) vs 1098/2378 (46.2%): OR 0.11 (0.03-0.37) Fisher p=5.2e-06
+ctrl_inv has_hq EM 3/24 (12.5%) vs 282/938 (30.1%): OR 0.33 (0.10-1.12) Fisher p=0.071
+ctrl_inv has_hq X-ray 0/10 (0.0%) vs 816/1440 (56.7%): OR 0.04 (0.00-0.62) Fisher p=0.00025
+ctrl_inv rare_any all 5/34 (14.7%) vs 621/2378 (26.1%): OR 0.49 (0.19-1.27) Fisher p=0.17
+ctrl_inv rare_any EM 2/24 (8.3%) vs 275/938 (29.3%): OR 0.22 (0.05-0.94) Fisher p=0.022
+ctrl_inv rare_any X-ray 3/10 (30.0%) vs 346/1440 (24.0%): OR 1.36 (0.35-5.27) Fisher p=0.71
+ctrl_inv alpaca all 7/34 (20.6%) vs 150/2378 (6.3%): OR 3.85 (1.65-8.99) Fisher p=0.0052
+ctrl_inv alpaca EM 5/24 (20.8%) vs 70/938 (7.5%): OR 3.26 (1.18-9.00) Fisher p=0.033
+ctrl_inv alpaca X-ray 2/10 (20.0%) vs 80/1440 (5.6%): OR 4.25 (0.89-20.34) Fisher p=0.11
+ctrl_inv nonhm all 7/34 (20.6%) vs 218/2378 (9.2%): OR 2.57 (1.11-5.97) Fisher p=0.034
+ctrl_inv nonhm EM 5/24 (20.8%) vs 106/938 (11.3%): OR 2.07 (0.76-5.65) Fisher p=0.18
+ctrl_inv nonhm X-ray 2/10 (20.0%) vs 112/1440 (7.8%): OR 2.96 (0.62-14.13) Fisher p=0.18
+ctrl_any has_hq all 3/34 (8.8%) vs 1026/2202 (46.6%): OR 0.11 (0.03-0.36) Fisher p=5e-06
+ctrl_any has_hq EM 3/24 (12.5%) vs 248/848 (29.2%): OR 0.35 (0.10-1.17) Fisher p=0.11
+ctrl_any has_hq X-ray 0/10 (0.0%) vs 778/1354 (57.5%): OR 0.04 (0.00-0.60) Fisher p=0.0002
+ctrl_any rare_any all 5/34 (14.7%) vs 572/2202 (26.0%): OR 0.49 (0.19-1.28) Fisher p=0.17
+ctrl_any rare_any EM 2/24 (8.3%) vs 249/848 (29.4%): OR 0.22 (0.05-0.94) Fisher p=0.022
+ctrl_any rare_any X-ray 3/10 (30.0%) vs 323/1354 (23.9%): OR 1.37 (0.35-5.32) Fisher p=0.71
+ctrl_any alpaca all 7/34 (20.6%) vs 137/2202 (6.2%): OR 3.91 (1.67-9.13) Fisher p=0.0049
+ctrl_any alpaca EM 5/24 (20.8%) vs 64/848 (7.5%): OR 3.22 (1.17-8.92) Fisher p=0.035
+ctrl_any alpaca X-ray 2/10 (20.0%) vs 73/1354 (5.4%): OR 4.39 (0.92-21.03) Fisher p=0.1
+ctrl_any nonhm all 7/34 (20.6%) vs 196/2202 (8.9%): OR 2.65 (1.14-6.17) Fisher p=0.03
+ctrl_any nonhm EM 5/24 (20.8%) vs 96/848 (11.3%): OR 2.06 (0.75-5.65) Fisher p=0.18
+ctrl_any nonhm X-ray 2/10 (20.0%) vs 100/1354 (7.4%): OR 3.13 (0.66-14.96) Fisher p=0.17
+
+--- has_hq and own-structure leakage ---
+controls with an X-ray chain at <=3.0 A: 218 of 2378 ; has_hq among them 1.0 vs others 0.407
+cases with an X-ray chain at <=3.0 A: 0
+excluding units with X-ray chain <=3.0 A, all 3/34 (8.8%) vs 880/2160 (40.7%): OR 0.14 (0.04-0.46) Fisher p=6.4e-05
+excluding units with X-ray chain <=3.0 A, EM 3/24 (12.5%) vs 278/934 (29.8%): OR 0.34 (0.10-1.14) Fisher p=0.072
+excluding units with X-ray chain <=3.0 A, X-ray 0/10 (0.0%) vs 602/1226 (49.1%): OR 0.05 (0.00-0.84) Fisher p=0.0019
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/patsy/compat.py", line 40, in call_and_wrap_exc
+    return f(*args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/patsy/eval.py", line 179, in eval
+    return eval(code, {}, VarLookupDict([inner_namespace] + self._namespaces))
+  File "<string>", line 1, in <module>
+TypeError: 'DataFrame' object is not callable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/SAbR/register_error_analysis/retest/paper_confirmed/verify_antibody_ordinary/scripts/v02_recompute.py", line 73, in <module>
+    m = smf.gee('y ~ hq + C(yb) + em', groups=pd.factorize(d.paper)[0], data=d, family=sm.families.Binomial()).fit()
+        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/statsmodels/genmod/generalized_estimating_equations.py", line 802, in from_formula
+    model = super().from_formula(
+        formula,
+    ...<8 lines>...
+        **kwargs,
+    )
+  File "/usr/local/lib/python3.13/site-packages/statsmodels/base/model.py", line 210, in from_formula
+    tmp = handle_formula_data(data, None, formula, depth=eval_env, missing=missing)
+  File "/usr/local/lib/python3.13/site-packages/statsmodels/formula/formulatools.py", line 70, in handle_formula_data
+    result = mgr.get_matrices(
+        formula,
+    ...<3 lines>...
+        na_action=na_action,
+    )
+  File "/usr/local/lib/python3.13/site-packages/statsmodels/formula/_manager.py", line 533, in get_matrices
+    output = patsy.dmatrices(
+        formula, data, eval_env=_eval_env, return_type=return_type, **kwargs
+    )
+  File "/usr/local/lib/python3.13/site-packages/patsy/highlevel.py", line 317, in dmatrices
+    (lhs, rhs) = _do_highlevel_design(
+                 ~~~~~~~~~~~~~~~~~~~~^
+        formula_like, data, eval_env, NA_action, return_type
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/patsy/highlevel.py", line 162, in _do_highlevel_design
+    design_infos = _try_incr_builders(
+        formula_like, data_iter_maker, eval_env, NA_action
+    )
+  File "/usr/local/lib/python3.13/site-packages/patsy/highlevel.py", line 56, in _try_incr_builders
+    return design_matrix_builders(
+        [formula_like.lhs_termlist, formula_like.rhs_termlist],
+    ...<2 lines>...
+        NA_action,
+    )
+  File "/usr/local/lib/python3.13/site-packages/patsy/build.py", line 746, in design_matrix_builders
+    (num_column_counts, cat_levels_contrasts) = _examine_factor_types(
+                                                ~~~~~~~~~~~~~~~~~~~~~^
+        all_factors, factor_states, data_iter_maker, NA_action
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/patsy/build.py", line 491, in _examine_factor_types
+    value = factor.eval(factor_states[factor], data)
+  File "/usr/local/lib/python3.13/site-packages/patsy/eval.py", line 599, in eval
+    return self._eval(memorize_state["eval_code"], memorize_state, data)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/patsy/eval.py", line 582, in _eval
+    return call_and_wrap_exc(
+        "Error evaluating factor",
+    ...<3 lines>...
+        inner_namespace=inner_namespace,
+    )
+  File "/usr/local/lib/python3.13/site-packages/patsy/compat.py", line 43, in call_and_wrap_exc
+    raise new_exc from e
+patsy.PatsyError: Error evaluating factor: TypeError: 'DataFrame' object is not callable
+    y ~ hq + C(yb) + em
+             ^^^^^

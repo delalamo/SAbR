@@ -1,0 +1,33 @@
+records 15897 | keys in >1 file 0
+S1 rows 12674 | unparsable ranges 0
+S1 rows on scanned single-domain V chains 162
+S1 rows matching only case-insensitively 12
+S1 errors with no residue found in range 18
+S1 errors >=50% in V region 131 | unique chains 107
+ledger duplicate keys 0
+runs whose i0/i1 do not match imgt0/imgt1 in the chosen record: 0
+v_status
+confirmed first occurrence             69
+not confirmed by SAbR/ANARCI           36
+copy of an earlier model               16
+artifact (synthesis ledger, strict)     5
+near copy (ledger)                      4
+confirmed, loose-ledger doubt           1
+S1 errors overlapping >1 run: 0
+best run not first but some overlapping run is first: 0
+investigator rows 131 mine 131
+only investigator: []
+only mine: []
+status disagreements: 0
+Empty DataFrame
+Columns: [k, status, v_status, all_stats]
+Index: []
+strict chains mine 67 investigator 67 | diff []
+mine: chains 67 entries 38 units 34 papers 25 EM chains 49 X-ray 18 EM entries 27 X entries 11 EM papers 17 max release 2022-02-02
+paper
+10.1038/s41422-021-00487-9    7
+10.7554/eLife.74589           4
+10.1038/s41422-020-00446-w    2
+10.1038/s41586-019-1530-7     2
+10.1038/s41421-021-00292-z    2
+10.7554/eLife.62611           2

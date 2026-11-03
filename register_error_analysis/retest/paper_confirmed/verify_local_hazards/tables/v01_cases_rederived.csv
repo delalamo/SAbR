@@ -1,0 +1,132 @@
+pdb,chain,s1_range,n_overlap_runs,overlap,imgt0,imgt1,mode,cls,flag,all_cls,all_flags,status_v,k
+7d3m,H,96 - 101,0,,,,,,,,,not confirmed by SAbR/ANARCI,7d3mH96 - 101
+7d3r,H,95 - 101,1,7.0,103.0,112.0,Dminus_CDR3long,5,DE_chain_end_artifact,5,DE_chain_end_artifact,"artifact (synthesis ledger, strict)",7d3rH95 - 101
+7laa,H,56 - 61,0,,,,,,,,,not confirmed by SAbR/ANARCI,7laaH56 - 61
+1ken,T,58 - 62,1,5.0,63.0,69.0,B_CDR2FR3,8,none,8,none,confirmed first occurrence,1kenT58 - 62
+1ken,H,58 - 62,1,5.0,63.0,69.0,B_CDR2FR3,8,none,8,none,confirmed first occurrence,1kenH58 - 62
+7v2a,I,107 - 119,1,13.0,112.0,123.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7v2aI107 - 119
+7v2a,G,107 - 119,1,13.0,112.0,123.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7v2aG107 - 119
+7v2a,E,107 - 119,1,13.0,112.0,123.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7v2aE107 - 119
+7m74,N,105 - 109,0,,,,,,,,,not confirmed by SAbR/ANARCI,7m74N105 - 109
+6x06,K,103 - 122,1,17.0,112.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,6x06K103 - 122
+7v3g,G,50 - 54,0,,,,,,,,,not confirmed by SAbR/ANARCI,7v3gG50 - 54
+6wju,A,27 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,6wjuA27 - 32
+6qxe,M,110 - 120,1,10.0,112.0,122.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,6qxeM110 - 120
+6qpg,O,110 - 120,1,10.0,112.0,122.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,6qpgO110 - 120
+6qxe,O,110 - 120,1,10.0,112.0,122.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,6qxeO110 - 120
+6qpg,M,110 - 120,1,10.0,112.0,122.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,6qpgM110 - 120
+7jtf,C,50 - 55,1,6.0,55.0,62.0,B_CDR2FR3,3,none,3,none,confirmed first occurrence,7jtfC50 - 55
+7jtf,A,50 - 55,1,6.0,55.0,62.0,B_CDR2FR3,3,none,3,none,confirmed first occurrence,7jtfA50 - 55
+5da0,B,59 - 64,0,,,,,,,,,not confirmed by SAbR/ANARCI,5da0B59 - 64
+6ukt,E,3 - 13,1,9.0,3.0,12.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,6uktE3 - 13
+7e39,B,101 - 105,1,5.0,120.0,126.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7e39B101 - 105
+7mdt,H,1 - 6,0,,,,,,,,,not confirmed by SAbR/ANARCI,7mdtH1 - 6
+7jhh,L,4 - 11,1,7.0,3.0,9.0,A_FR1Nterm,3,near_copy,3,near_copy,near copy (ledger),7jhhL4 - 11
+7jhg,L,4 - 11,1,8.0,3.0,10.0,A_FR1Nterm,3,near_copy,3,near_copy,near copy (ledger),7jhgL4 - 11
+7czv,M,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7czvM2 - 8
+7czv,M,28 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czvM28 - 32
+7czv,N,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7czvN2 - 8
+7czv,N,28 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czvN28 - 32
+7czv,K,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7czvK2 - 8
+7czv,K,28 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czvK28 - 32
+7czu,N,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7czuN2 - 8
+7czu,N,28 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czuN28 - 32
+7czu,K,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7czuK2 - 8
+7czu,K,28 - 32,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czuK28 - 32
+4r96,D,111 - 118,0,,,,,,,,,not confirmed by SAbR/ANARCI,4r96D111 - 118
+7e39,C,56 - 85,1,30.0,62.0,93.0,B_CDR2FR3,3,none,3,none,confirmed first occurrence,7e39C56 - 85
+7mxe,W,20 - 25,0,,,,,,,,,not confirmed by SAbR/ANARCI,7mxeW20 - 25
+7m3l,H2,76 - 88,1,6.0,90.0,95.0,C_FR3,9,indel_gap_artifact_confirmed,9,indel_gap_artifact_confirmed,"artifact (synthesis ledger, strict)",7m3lH276 - 88
+7e23,C,64 - 81,1,14.0,76.0,93.0,C_FR3,9,none,9,none,confirmed first occurrence,7e23C64 - 81
+7l5b,H,110 - 140,1,20.0,111.0,128.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7l5bH110 - 140
+7nqk,B,6 - 14,1,5.0,3.0,11.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7nqkB6 - 14
+7d3k,L,50 - 58,0,,,,,,,,,not confirmed by SAbR/ANARCI,7d3kL50 - 58
+7e5y,C,101 - 116,1,16.0,110.0,126.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7e5yC101 - 116
+3jbf,7,30 - 41,1,11.0,37.0,48.0,F_CDR1,8,none,8,none,confirmed first occurrence,3jbf730 - 41
+7m74,L,2 - 8,1,5.0,3.0,10.0,A_FR1Nterm,3,near_copy,3,near_copy,near copy (ledger),7m74L2 - 8
+7e3c,C,3 - 8,1,6.0,3.0,8.0,A_FR1Nterm,3,near_copy,3,near_copy,near copy (ledger),7e3cC3 - 8
+7e3c,C,50 - 73,1,23.0,57.0,89.0,B_CDR2FR3,3,none,3,none,confirmed first occurrence,7e3cC50 - 73
+7qji,B,2 - 11,1,9.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qjiB2 - 11
+7qji,B,78 - 85,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qjiB78 - 85
+7qjj,G,2 - 11,1,9.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qjjG2 - 11
+7qjj,G,78 - 85,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qjjG78 - 85
+7qjj,B,2 - 11,1,9.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qjjB2 - 11
+7qjj,B,78 - 85,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qjjB78 - 85
+7qji,G,2 - 11,1,9.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qjiG2 - 11
+7qji,G,78 - 85,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qjiG78 - 85
+7mhz,O,97 - 108,1,9.0,87.0,95.0,C_FR3,3,none,3,none,confirmed first occurrence,7mhzO97 - 108
+5zs0,B,102 - 127,1,18.0,110.0,128.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,5zs0B102 - 127
+7m7i,F,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7iF17 - 23
+7m7e,D,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7eD17 - 23
+7m7f,D,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7fD17 - 23
+7m7j,D,17 - 24,1,8.0,1.0,9.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7jD17 - 24
+7m7g,F,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7gF17 - 23
+7s6d,G,18 - 24,1,7.0,2.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7s6dG18 - 24
+7m7f,F,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7fF17 - 23
+7m7g,D,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7m7gD17 - 23
+7s6c,F,17 - 23,1,7.0,1.0,8.0,A_FR1Nterm,1b,,1b,nan,copy of an earlier model,7s6cF17 - 23
+6orp,L,21 - 27,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpL21 - 27
+6orp,L,75 - 87,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpL75 - 87
+6orp,K,21 - 27,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpK21 - 27
+6orp,K,75 - 87,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpK75 - 87
+6orp,E,21 - 27,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpE21 - 27
+6orp,E,75 - 87,0,,,,,,,,,not confirmed by SAbR/ANARCI,6orpE75 - 87
+7d4g,N,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7d4gN1 - 5
+7e3c,B,4 - 11,1,7.0,4.0,11.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7e3cB4 - 11
+7e3c,B,65 - 72,1,8.0,74.0,81.0,C_FR3,3,none,3,none,confirmed first occurrence,7e3cB65 - 72
+6ot0,L,5 - 13,1,6.0,4.0,9.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,6ot0L5 - 13
+6cmo,L,5 - 11,1,7.0,4.0,12.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,6cmoL5 - 11
+6ad0,L,1 - 29,1,29.0,1.0,32.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,6ad0L1 - 29
+7k9i,L,78 - 82,0,,,,,,,,,not confirmed by SAbR/ANARCI,7k9iL78 - 82
+7qic,B,3 - 13,1,11.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qicB3 - 13
+7qic,B,79 - 88,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qicB79 - 88
+7qia,B,3 - 13,1,11.0,3.0,16.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7qiaB3 - 13
+7qia,B,80 - 87,0,,,,,,,,,not confirmed by SAbR/ANARCI,7qiaB80 - 87
+7d00,K,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7d00K2 - 8
+7d00,N,2 - 8,1,7.0,1.0,9.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7d00N2 - 8
+6lht,L,27 - 53,1,23.0,31.0,57.0,F_CDR1,8,none,8,none,confirmed first occurrence,6lhtL27 - 53
+7cwu,P,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwuP1 - 5
+7cws,L,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,indel_gap_artifact_confirmed,3,indel_gap_artifact_confirmed,"artifact (synthesis ledger, strict)",7cwsL1 - 5
+7cws,N,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,indel_gap_artifact_confirmed,3,indel_gap_artifact_confirmed,"artifact (synthesis ledger, strict)",7cwsN1 - 5
+7e5s,U,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7e5sU1 - 5
+7cws,P,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,indel_gap_artifact_confirmed,3,indel_gap_artifact_confirmed,"artifact (synthesis ledger, strict)",7cwsP1 - 5
+7e5s,P,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7e5sP1 - 5
+7cwu,J,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwuJ1 - 5
+7cwt,L,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwtL1 - 5
+7e5r,X,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7e5rX1 - 5
+7cwu,N,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwuN1 - 5
+7cwt,N,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwtN1 - 5
+7cwt,P,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,7cwtP1 - 5
+7e5r,W,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7e5rW1 - 5
+7e5r,P,1 - 5,1,5.0,1.0,4.0,A_FR1Nterm,2,,2,nan,copy of an earlier model,7e5rP1 - 5
+7ey5,B,62 - 71,0,,,,,,,,,not confirmed by SAbR/ANARCI,7ey5B62 - 71
+7ey5,B,114 - 119,1,6.0,121.0,128.0,E_FR4bulge,5,none,5,none,confirmed first occurrence,7ey5B114 - 119
+7e5y,B,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7e5yB27 - 31
+7e5y,B,43 - 68,1,26.0,45.0,80.0,F_CDR1,9,none,9,none,confirmed first occurrence,7e5yB43 - 68
+7k66,C,95 - 106,1,10.0,115.0,127.0,Dminus_CDR3long,5,none,5,none,confirmed first occurrence,7k66C95 - 106
+7czy,N,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czyN27 - 31
+7czy,N,100 - 113,1,14.0,109.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7czyN100 - 113
+7czz,K,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czzK27 - 31
+7czz,K,100 - 113,1,14.0,109.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7czzK100 - 113
+7czz,N,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czzN27 - 31
+7czz,N,100 - 113,1,14.0,109.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7czzN100 - 113
+7czy,K,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czyK27 - 31
+7czy,K,100 - 113,1,14.0,109.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7czyK100 - 113
+7czz,M,27 - 31,0,,,,,,,,,not confirmed by SAbR/ANARCI,7czzM27 - 31
+7czz,M,100 - 113,1,14.0,109.0,127.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7czzM100 - 113
+6bpe,F,27 - 31,1,5.0,3.0,8.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,6bpeF27 - 31
+6bpe,C,27 - 31,1,5.0,3.0,8.0,A_FR1Nterm,3,none,3,none,confirmed first occurrence,6bpeC27 - 31
+7czs,I,107 - 114,1,8.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7czsI107 - 114
+7d00,J,107 - 115,1,9.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7d00J107 - 115
+7czr,H,107 - 114,1,8.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7czrH107 - 114
+7czs,J,107 - 114,1,8.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7czsJ107 - 114
+7czr,J,107 - 114,1,8.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7czrJ107 - 114
+7d00,H,107 - 115,1,9.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7d00H107 - 115
+7czs,H,107 - 114,1,8.0,120.0,128.0,E_FR4bulge,6,none,6,none,confirmed first occurrence,7czsH107 - 114
+7nj5,F,94 - 100,1,7.0,101.0,108.0,Dminus_CDR3long,3,DE_not_confirmed_other,3,DE_not_confirmed_other,"confirmed, loose-ledger doubt",7nj5F94 - 100
+7e23,B,61 - 84,1,21.0,72.0,93.0,C_FR3,3,none,3,none,confirmed first occurrence,7e23B61 - 84
+7e23,B,114 - 119,1,6.0,112.0,126.0,Dplus_CDR3short,5,none,5,none,confirmed first occurrence,7e23B114 - 119
+7ktx,I,73 - 86,1,14.0,80.0,93.0,C_FR3,3,none,3,none,confirmed first occurrence,7ktxI73 - 86
+7kra,I,73 - 86,1,14.0,80.0,93.0,C_FR3,3,none,3,none,confirmed first occurrence,7kraI73 - 86
+7c80,H,28 - 107,1,79.0,30.0,128.0,F_CDR1,5,none,5,none,confirmed first occurrence,7c80H28 - 107
+7ljr,T,44 - 51,0,,,,,,,,,not confirmed by SAbR/ANARCI,7ljrT44 - 51

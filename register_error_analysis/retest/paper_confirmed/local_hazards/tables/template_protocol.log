@@ -1,0 +1,54 @@
+in-window chains used (paper cases incl. copies + paper controls): 6326 EM 2748
+
+== (a) junction README reproduction (EM, all years, junction runs of any origin):
+                            chains  junction
+rel                                         
+other Ab, same CDR3 length     410         0
+CDR3 length differs by 1       128         0
+differs by >=2                 361         9
+identical antibody             507         4
+
+Paper window, EM chains with a recorded PDB starting model containing a same-type antibody domain:
+                            chains  entries  controls  case_any_strict  case_DE_strict  case_DE_incl
+rel                                                                                                 
+other Ab, same CDR3 length     174       48       171                1               0             0
+CDR3 length differs by 1        46       20        46                0               0             0
+differs by >=2                 125       40       122                3               3             3
+identical antibody             180       58       176                2               2             2
+cases with a non-identical template:
+ pdb chain template  cdr3_len  t_cdr3_len  dl                        rel  case_DE_strict  paper_case_strict
+3jbf     7     1i3u      17.0          17 0.0 other Ab, same CDR3 length           False               True
+7v2a     E     6z3p      18.0          14 4.0             differs by >=2            True               True
+7v2a     G     6z3p      18.0          14 4.0             differs by >=2            True               True
+7v2a     I     6z3p      18.0          14 4.0             differs by >=2            True               True
+7jhh     L     6cmo       9.0           9 0.0 other Ab, same CDR3 length           False              False
+7jhg     L     6cmo       9.0           9 0.0 other Ab, same CDR3 length           False              False
+case_DE_strict: template CDR3 differs >=2: 3/125 vs same or +-1: 0/220; Fisher p=0.0468
+paper_case_strict: template CDR3 differs >=2: 3/125 vs same or +-1: 1/220; Fisher p=0.137
+
+paper_strict chains by recorded starting model: {'none recorded': 44, 'experimental (PDB) model': 23} | in template table: 17
+
+== (b) error rate by recorded starting model / fitting protocol (EM, paper window, cases + paper controls)
+var                    level  chains  entries  strict  pct_strict  DE_strict  pct_DE_strict  incl  pct_incl
+irm experimental (PDB) model     801      191       7        0.87          5           0.62    12      1.50
+irm            none recorded    1947      533      42        2.16         15           0.77    57      2.93
+fit                ab initio     156       41       2        1.28          0           0.00     2      1.28
+fit             flexible fit     359       75       1        0.28          0           0.00     1      0.28
+fit             not recorded      89       23       2        2.25          0           0.00     2      2.25
+fit                    other    1707      488      38        2.23         15           0.88    57      3.34
+fit          rigid body only     437       97       6        1.37          5           1.14     7      1.60
+junction README (EM all years, CDR3/FR4 junction + bulge, all chains): rigid-body only 1.79% (1,226), flexible 1.13% (885), ab initio 0.23% (441); AlphaFold start 0.34% (290), PDB template 1.09%, none 1.70%
+paper_case_strict: rigid 6/437 vs ab initio 2/156 chains, Fisher OR 1.07 (Haldane CI 0.21-4.05) p=1 | entries 3/97 vs 2/41 p=0.634 | papers with a case: rigid 3, ab initio 1
+   adjusted (res, year; cluster pdb) rigid vs ab initio OR 1.08 (0.15-7.83) p=0.937
+   adjusted (res, year; cluster paper) rigid vs ab initio OR 1.08 (0.09-13.09) p=0.95
+case_DE_strict: rigid 5/437 vs ab initio 0/156 chains, Fisher OR inf (Haldane CI 0.22-72.40) p=0.333 | entries 2/97 vs 0/41 p=1 | papers with a case: rigid 2, ab initio 0
+   adjusted (res, year; cluster pdb) rigid vs ab initio OR 186325812.12 (41894279.95-828688505.96) p=4.76e-138
+   adjusted (res, year; cluster paper) rigid vs ab initio OR 186325812.12 (nan-nan) p=nan
+paper_case_incl_copies: rigid 7/437 vs ab initio 2/156 chains, Fisher OR 1.25 (Haldane CI 0.25-4.56) p=1 | entries 4/97 vs 2/41 p=1 | papers with a case: rigid 4, ab initio 1
+   adjusted (res, year; cluster pdb) rigid vs ab initio OR 1.18 (0.18-7.68) p=0.864
+   adjusted (res, year; cluster paper) rigid vs ab initio OR 1.18 (0.11-12.94) p=0.893
+paper_case_strict: no starting model recorded 42/1947 vs PDB template 7/801: Fisher OR 2.50 p=0.025
+case_DE_strict: no starting model recorded 15/1947 vs PDB template 5/801: Fisher OR 1.24 p=0.808
+
+AlphaFold starting models in the paper window: 0 EM chains in 0 entries (first release nan); paper cases among them: 0
+AlphaFold starting models after the window: 290 EM chains

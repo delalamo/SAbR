@@ -1,0 +1,126 @@
+25th percentile of window fit, full controls vs paper controls:
+             full  paper
+mode meth               
+A    EM     0.375  0.381
+     X-ray  0.385  0.384
+B    EM     0.487  0.482
+     X-ray  0.472  0.470
+C    EM     0.414  0.421
+     X-ray  0.452  0.451
+D+   EM     0.506  0.489
+     X-ray  0.519  0.524
+D-   EM     0.506  0.489
+     X-ray  0.519  0.524
+E    EM     0.439  0.434
+     X-ray  0.492  0.497
+F    EM     0.511  0.505
+     X-ray  0.494  0.495
+paper_strict unit x mode 36 | EM 26 X-ray 11 | papers 25 | by mode {'A': 11, 'D+': 8, 'C': 5, 'B': 4, 'F': 4, 'E': 3, 'D-': 1}
+paper_incl unit x mode 45 | EM 35 X-ray 11 | papers 32 | by mode {'A': 19, 'D+': 8, 'C': 5, 'B': 4, 'F': 4, 'E': 3, 'D-': 2}
+full unit x mode 187 | EM 156 X-ray 32 | papers 134 | by mode {'A': 56, 'D+': 34, 'B': 26, 'D-': 21, 'C': 21, 'E': 18, 'F': 11}
+rest unit x mode 149 | EM 128 X-ray 21 | papers 109 | by mode {'A': 45, 'D+': 26, 'B': 22, 'D-': 18, 'C': 16, 'E': 15, 'F': 7}
+rest_win unit x mode 35 | EM 27 X-ray 8 | papers 31 | by mode {'D+': 10, 'B': 7, 'D-': 7, 'A': 4, 'C': 3, 'E': 3, 'F': 1}
+rest_post unit x mode 114 | EM 101 X-ray 13 | papers 78 | by mode {'A': 41, 'D+': 16, 'B': 15, 'C': 13, 'E': 12, 'D-': 11, 'F': 6}
+controls paper units per mode 2396 EM 952
+controls full units per mode 6182 EM 4063
+
+===== EM
+                            feature          set  n_case  n_ctrl  pct_case  pct_ctrl_std    OR    lo     hi     p  gee_OR  gee_lo  gee_hi  gee_p  n_papers  opp_n  opp_OR  opp_lo  opp_hi  opp_p  min_det_OR80
+unbuilt within 5 / N-term not built paper_strict    26.0  5712.0    50.000        16.884 5.365 2.322 12.398 0.000   7.470   1.378  40.494  0.020     365.0   17.0   7.157   2.526  20.275  0.000         3.212
+unbuilt within 5 / N-term not built   paper_incl    35.0  6238.0    48.571        19.001 4.264 2.111  8.614 0.000   5.170   1.553  17.216  0.007     369.0   24.0   5.002   2.169  11.536  0.000         2.733
+unbuilt within 5 / N-term not built         full   156.0 28441.0    47.436        18.892 4.351 3.082  6.141 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built         rest   128.0 28441.0    46.875        19.246 4.181 2.855  6.123 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built     rest_win    27.0  4860.0    40.741        21.873 2.620 1.157  5.929 0.028     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built    rest_post   101.0 28441.0    48.515        18.743 4.720 3.059  7.285 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site paper_strict    26.0  5684.0    26.923        25.811 1.062 0.443  2.543 0.927   1.061   0.419   2.692  0.900     364.0   17.0   1.161   0.410   3.284  0.995         2.991
+    bottom-quartile map fit at site   paper_incl    35.0  6208.0    37.143        24.621 1.810 0.906  3.617 0.130   1.821   0.814   4.070  0.144     368.0   24.0   2.446   1.098   5.449  0.040         2.619
+    bottom-quartile map fit at site         full   155.0 28133.0    36.774        24.738 1.757 1.269  2.435 0.001     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site         rest   127.0 28133.0    37.795        24.642 1.845 1.290  2.640 0.001     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site     rest_win    27.0  4836.0    48.148        28.463 2.397 1.108  5.185 0.041     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site    rest_post   100.0 28133.0    35.000        24.647 1.636 1.086  2.465 0.023     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either paper_strict    26.0  5712.0    65.385        38.192 3.172 1.391  7.233 0.007   3.190   1.419   7.171  0.005     365.0   17.0   3.885   1.342  11.249  0.014         2.983
+                             either   paper_incl    35.0  6238.0    71.429        38.820 4.144 1.953  8.794 0.000   4.114   2.035   8.319  0.000     369.0   24.0   6.105   2.225  16.747  0.000         2.571
+                             either         full   156.0 28441.0    67.949        39.014 3.488 2.466  4.934 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either         rest   128.0 28441.0    67.969        39.205 3.471 2.366  5.091 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either     rest_win    27.0  4860.0    74.074        44.104 3.907 1.600  9.543 0.003     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either    rest_post   101.0 28441.0    66.337        38.775 3.280 2.142  5.022 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length paper_strict    26.0  5712.0    42.308        38.312 2.713 0.484 15.194 0.552   2.597   0.507  13.305  0.252     365.0   17.0   5.677   0.738  43.696  0.242         2.991
+       adjacent CDR atypical length   paper_incl    35.0  6238.0    34.286        31.317 2.713 0.484 15.194 0.552   2.597   0.507  13.305  0.252     369.0   24.0   5.677   0.738  43.696  0.242         2.564
+       adjacent CDR atypical length         full   156.0 28441.0    46.154        38.054 4.582 2.539  8.270 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length         rest   128.0 28441.0    46.875        37.777 5.163 2.729  9.766 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length     rest_win    27.0  4860.0    59.259        48.260 5.433 1.530 19.288 0.010     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length    rest_post   101.0 28441.0    43.564        35.028 5.028 2.407 10.501 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                            feature  het_z_p_vs_rest  het_z_p_vs_rest_win  caseonly_OR_vs_rest  caseonly_p_vs_rest  caseonly_OR_vs_rest_win  caseonly_p_vs_rest_win
+unbuilt within 5 / N-term not built            0.595                0.230                1.178               0.785                    2.599                   0.224
+    bottom-quartile map fit at site            0.251                0.171                0.727               0.521                    0.671                   0.706
+                             either            0.846                0.737                1.082               0.874                    1.936                   0.445
+       adjacent CDR atypical length            0.492                0.524                0.342               0.239                    0.000                   0.000
+
+===== X-ray
+                            feature          set  n_case  n_ctrl  pct_case  pct_ctrl_std     OR    lo     hi     p  gee_OR  gee_lo  gee_hi  gee_p  n_papers  opp_n  opp_OR  opp_lo  opp_hi  opp_p  min_det_OR80
+unbuilt within 5 / N-term not built paper_strict    11.0  4440.0    36.364         8.555  6.778 1.814 25.326 0.005   7.253   1.821  28.889  0.005     660.0   10.0   5.508   1.312  23.135  0.040         6.415
+unbuilt within 5 / N-term not built   paper_incl    11.0  4440.0    36.364         8.555  6.778 1.814 25.326 0.005   7.253   1.821  28.889  0.005     660.0   10.0   5.508   1.312  23.135  0.040         6.415
+unbuilt within 5 / N-term not built         full    32.0 13062.0    34.375         7.905  8.083 3.485 18.748 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built         rest    21.0 11044.0    33.333         7.407  9.395 3.144 28.073 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built     rest_win     8.0  4522.0    37.500         3.358 21.354 4.569 99.789 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built    rest_post    13.0  7858.0    30.769         9.925  6.275 1.453 27.099 0.035     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site paper_strict    10.0  4278.0    80.000        24.486 10.203 2.344 44.413 0.000  12.478   2.840  54.831  0.001     632.0    9.0   8.828   1.977  39.424  0.001         5.486
+    bottom-quartile map fit at site   paper_incl    10.0  4278.0    80.000        24.486 10.203 2.344 44.413 0.000  12.478   2.840  54.831  0.001     632.0    9.0   8.828   1.977  39.424  0.001         5.486
+    bottom-quartile map fit at site         full    31.0 12714.0    70.968        24.596  7.377 3.401 16.001 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site         rest    21.0 10754.0    66.667        24.239  6.305 2.533 15.698 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site     rest_win     8.0  4360.0    75.000        23.487  8.512 1.829 39.605 0.003     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site    rest_post    13.0  7655.0    61.538        24.416  5.236 1.670 16.410 0.005     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either paper_strict    11.0  4440.0    72.727        29.440  6.077 1.626 22.716 0.005   6.550   1.871  22.934  0.003     660.0   10.0   5.405   1.413  20.665  0.012         5.162
+                             either   paper_incl    11.0  4440.0    72.727        29.440  6.077 1.626 22.716 0.005   6.550   1.871  22.934  0.003     660.0   10.0   5.405   1.413  20.665  0.012         5.162
+                             either         full    32.0 13062.0    78.125        29.283  9.066 3.848 21.361 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either         rest    21.0 11044.0    80.952        28.723 11.834 3.827 36.593 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either     rest_win     8.0  4522.0   100.000        24.962    inf   NaN    NaN 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either    rest_post    13.0  7858.0    69.231        30.689  5.947 1.706 20.729 0.006     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length paper_strict    11.0  4440.0    54.545        49.962  2.369 0.229 24.474 0.996   2.471   0.208  29.359  0.474     660.0   10.0   2.239   0.217  23.114  0.971         7.266
+       adjacent CDR atypical length   paper_incl    11.0  4440.0    54.545        49.962  2.369 0.229 24.474 0.996   2.471   0.208  29.359  0.474     660.0   10.0   2.239   0.217  23.114  0.971         7.266
+       adjacent CDR atypical length         full    32.0 13062.0    46.875        38.434  3.650 1.150 11.585 0.044     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length         rest    21.0 11044.0    42.857        32.570  4.149 1.114 15.452 0.061     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length     rest_win     8.0  4522.0    62.500        43.072  5.605 1.019 30.821 0.099     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length    rest_post    13.0  7858.0    30.769        26.160  2.679 0.314 22.871 0.874     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                            feature  het_z_p_vs_rest  het_z_p_vs_rest_win  caseonly_OR_vs_rest  caseonly_p_vs_rest  caseonly_OR_vs_rest_win  caseonly_p_vs_rest_win
+unbuilt within 5 / N-term not built            0.709                0.268                3.259               0.395             2.322868e+09                     0.0
+    bottom-quartile map fit at site            0.586                0.867                3.109               0.531             1.000000e+00                     1.0
+                             either            0.452                  NaN                0.946               0.972             0.000000e+00                     0.0
+       adjacent CDR atypical length            0.682                0.559                0.000               0.000             7.946201e+04                     0.0
+
+===== all
+                            feature          set  n_case  n_ctrl  pct_case  pct_ctrl_std    OR    lo     hi     p  gee_OR  gee_lo  gee_hi  gee_p  n_papers  opp_n  opp_OR  opp_lo  opp_hi  opp_p  min_det_OR80
+unbuilt within 5 / N-term not built paper_strict    36.0 15484.0    44.444        12.587 5.852 2.914 11.753 0.000   7.288   2.372  22.397  0.001     990.0   25.0   7.755   3.380  17.792  0.000         2.959
+unbuilt within 5 / N-term not built   paper_incl    45.0 16772.0    44.444        14.298 4.969 2.686  9.191 0.000   5.877   2.314  14.925  0.000     994.0   32.0   6.199   3.016  12.741  0.000         2.612
+unbuilt within 5 / N-term not built         full   187.0 43274.0    44.920        15.240 5.151 3.755  7.068 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built         rest   149.0 43274.0    44.966        15.323 5.236 3.662  7.486 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built     rest_win    35.0 13448.0    40.000        11.731 5.456 2.649 11.236 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+unbuilt within 5 / N-term not built    rest_post   114.0 43274.0    46.491        15.537 5.607 3.714  8.467 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site paper_strict    35.0 15103.0    40.000        25.694 1.907 0.974  3.735 0.082   1.935   0.907   4.126  0.088     961.0   24.0   2.355   1.069   5.189  0.045         2.599
+    bottom-quartile map fit at site   paper_incl    44.0 16362.0    45.455        25.108 2.462 1.361  4.455 0.003   2.502   1.229   5.092  0.011     965.0   31.0   3.416   1.697   6.877  0.000         2.368
+    bottom-quartile map fit at site         full   185.0 42560.0    42.162        24.822 2.188 1.635  2.928 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site         rest   148.0 42560.0    41.892        24.786 2.172 1.568  3.009 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site     rest_win    35.0 13125.0    54.286        25.897 3.356 1.729  6.515 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+    bottom-quartile map fit at site    rest_post   113.0 42560.0    38.053        24.725 1.860 1.273  2.718 0.002     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either paper_strict    36.0 15484.0    66.667        34.029 3.996 1.975  8.088 0.000   3.981   2.121   7.474  0.000     990.0   25.0   5.541   2.268  13.540  0.000         2.517
+                             either   paper_incl    45.0 16772.0    71.111        34.844 4.809 2.488  9.296 0.000   4.729   2.667   8.384  0.000     994.0   32.0   7.581   3.193  18.003  0.000         2.294
+                             either         full   187.0 43274.0    69.519        35.850 4.296 3.120  5.916 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either         rest   149.0 43274.0    69.799        35.883 4.351 3.038  6.232 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either     rest_win    35.0 13448.0    80.000        33.537 7.879 3.433 18.082 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                             either    rest_post   114.0 43274.0    66.667        35.963 3.776 2.527  5.644 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length paper_strict    36.0 15484.0    44.444        40.095 2.656 0.658 10.720 0.338   2.597   0.669  10.089  0.168     990.0   25.0   3.873   0.837  17.919  0.175         2.537
+       adjacent CDR atypical length   paper_incl    45.0 16772.0    37.778        34.295 2.658 0.659 10.727 0.338   2.598   0.669  10.086  0.168     994.0   32.0   3.874   0.837  17.928  0.175         2.294
+       adjacent CDR atypical length         full   187.0 43274.0    45.989        37.811 4.372 2.584  7.396 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length         rest   149.0 43274.0    46.309        37.082 4.926 2.778  8.736 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length     rest_win    35.0 13448.0    60.000        47.142 5.427 1.960 15.028 0.001     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+       adjacent CDR atypical length    rest_post   114.0 43274.0    42.105        34.054 4.654 2.331  9.295 0.000     NaN     NaN     NaN    NaN       NaN    NaN     NaN     NaN     NaN    NaN           NaN
+                            feature  het_z_p_vs_rest  het_z_p_vs_rest_win  caseonly_OR_vs_rest  caseonly_p_vs_rest  caseonly_OR_vs_rest_win  caseonly_p_vs_rest_win
+unbuilt within 5 / N-term not built            0.781                0.891                1.033               0.948                    1.207                   0.751
+    bottom-quartile map fit at site            0.733                0.241                0.993               0.988                    1.269                   0.802
+                             either            0.833                0.222                0.952               0.905                    0.966                   0.959
+       adjacent CDR atypical length            0.422                0.418                0.370               0.179                    0.193                   0.122
+
+===== deepdive-style raw pooled % (EM; controls of the case chain class concatenated over modes)
+full cases {'gap': np.float64(47.4), 'poor': np.float64(36.8), 'gap_or_poor': np.float64(67.9), 'adj': np.float64(46.2)} | controls {'gap': np.float64(15.8), 'poor': np.float64(24.8), 'gap_or_poor': np.float64(36.8), 'adj': np.float64(38.2)}
+paper_strict cases {'gap': np.float64(50.0), 'poor': np.float64(26.9), 'gap_or_poor': np.float64(65.4), 'adj': np.float64(42.3)} | controls {'gap': np.float64(14.3), 'poor': np.float64(26.5), 'gap_or_poor': np.float64(37.0), 'adj': np.float64(34.2)}
+paper_incl cases {'gap': np.float64(48.6), 'poor': np.float64(37.1), 'gap_or_poor': np.float64(71.4), 'adj': np.float64(34.3)} | controls {'gap': np.float64(15.7), 'poor': np.float64(26.9), 'gap_or_poor': np.float64(38.4), 'adj': np.float64(39.7)}

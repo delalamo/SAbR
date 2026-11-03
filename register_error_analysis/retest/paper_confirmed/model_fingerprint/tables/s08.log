@@ -1,0 +1,19 @@
+   case_set method  n_pairs  n_papers  frac_case_lower  n_lower  sign_p  median_diff  fe_est   fe_lo   fe_hi     fe_p  fe_se  papers_lower  papers_n  paper_sign_p  het_p_vs_rest
+     strict     EM        6         4                1        6  0.0312      -0.0821 -0.0965  -0.116 -0.0765 3.42e-21 0.0102             4         4         0.125          0.071
+     strict  X-ray        4         2             0.75        3   0.625      -0.0918 -0.0763  -0.127 -0.0255  0.00325 0.0259             2         2           0.5          0.373
+     strict    all       10         5              0.9        9  0.0215      -0.0894 -0.0891  -0.111 -0.0674 1.02e-15 0.0111             5         5        0.0625          0.121
+incl_copies     EM        8         5                1        8 0.00781       -0.095   -0.11  -0.135 -0.0858  1.4e-18 0.0126             5         5        0.0625            NaN
+incl_copies  X-ray        4         2             0.75        3   0.625      -0.0918 -0.0763  -0.127 -0.0255  0.00325 0.0259             2         2           0.5            NaN
+incl_copies    all       12         6            0.917       11 0.00635      -0.0918  -0.102  -0.129 -0.0743 3.51e-13  0.014             6         6        0.0312            NaN
+  rest_case     EM       42        37             0.69       29  0.0195      -0.0574 -0.0631 -0.0933 -0.0328 4.44e-05 0.0154            26        37        0.0201            NaN
+  rest_case  X-ray        3         3            0.667        2       1       -0.016  -0.016  -0.138   0.106    0.797 0.0625             2         3             1            NaN
+  rest_case    all       45        40            0.689       31  0.0161      -0.0549 -0.0601 -0.0897 -0.0306 6.52e-05 0.0151            28        40        0.0166            NaN
+                                                                     test  n_case  case_papers  n_ctrl  case_mean  ctrl_mean     mw_p     est     lo      hi        p     se  paper_level_diff  paper_level_mw_p  het_p_vs_paper
+                  T8b strict case chains vs window controls in the sample      20           14      79      0.648      0.883 5.59e-06  -0.233 -0.343  -0.122 3.56e-05 0.0563            -0.242          0.000421             NaN
+                            T8b strict case chains vs all sample controls      20           14     282      0.648      0.875 1.68e-06  -0.221 -0.332   -0.11 9.74e-05 0.0567            -0.229          0.000155             NaN
+      T8b error-free chains of strict case entries vs all sample controls       8            8     282       0.74      0.875   0.0116  -0.143 -0.264 -0.0212   0.0213 0.0619             -0.13            0.0161             NaN
+             T8b incl_copies case chains vs window controls in the sample      23           16      79      0.663      0.883 6.14e-06  -0.215 -0.316  -0.113  3.2e-05 0.0516             -0.22           0.00112             NaN
+                       T8b incl_copies case chains vs all sample controls      23           16     282      0.663      0.875 1.43e-06  -0.202 -0.304    -0.1 0.000104 0.0521            -0.207          0.000405             NaN
+ T8b error-free chains of incl_copies case entries vs all sample controls      10            9     282      0.792      0.875    0.127 -0.0971 -0.221  0.0265    0.124 0.0631            -0.101            0.0715             NaN
+                              T8b rest_case chains vs all sample controls     131          106     282      0.737      0.875 2.15e-15  -0.139 -0.175  -0.103 5.13e-14 0.0185            -0.115          3.18e-08            0.17
+T8b all sample case chains vs all sample controls (full-set reproduction)     234          122     282      0.746      0.875 4.58e-19  -0.127 -0.158 -0.0965 7.09e-16 0.0158            -0.128          5.29e-13             NaN

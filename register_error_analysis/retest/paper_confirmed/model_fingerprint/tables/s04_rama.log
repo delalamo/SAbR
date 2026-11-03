@@ -1,0 +1,27 @@
+chains with beyond-site Rama: 15505 {('clean_other', 'EM'): 7134, ('clean_other', 'X-ray'): 1674, ('control', 'EM'): 2632, ('control', 'X-ray'): 3516, ('other', 'EM'): 141, ('other', 'X-ray'): 16, ('paper_copy', 'EM'): 19, ('paper_loose', 'EM'): 1, ('paper_strict', 'EM'): 48, ('paper_strict', 'X-ray'): 18, ('rest_case', 'EM'): 265, ('rest_case', 'X-ray'): 41}
+grp           method
+clean_other   EM        1912 mean 0.69
+              X-ray      368 mean 0.43
+control       EM         616 mean 0.90
+              X-ray      809 mean 0.06
+other         EM         52 mean -0.45
+              X-ray       12 mean 0.61
+paper_copy    EM         15 mean -0.05
+paper_strict  EM          27 mean 7.47
+              X-ray       11 mean 2.41
+rest_case     EM         146 mean 2.35
+              X-ray       23 mean 2.27
+full-set reproduction, EM chains, all first-occurrence vs clean: +3.11 (+1.09,+5.14) p=0.0026 n=317/9766
+                                     case_set method  n_entries  n_papers  n_case_chains  n_clean_chains  fe_est  fe_lo  fe_hi     fe_p  fe_se  entries_case_higher  entry_median_diff  entry_wilcoxon_p  paper_mean_diff  paper_n  paper_wilcoxon_p  het_p_vs_rest
+                                       strict     EM         15        11             24              40  -0.485  -3.69   2.72    0.766   1.63                    6             -0.909              0.91            0.204       11             0.898          0.713
+                                       strict  X-ray          9         8             15              16 -0.0208  -3.78   3.74    0.991   1.92                    5              0.868             0.883            -0.88        8             0.641          0.759
+                                       strict    all         24        18             39              56  -0.222  -2.75    2.3    0.863   1.29                   11             -0.731             0.954           -0.346       18              0.64          0.877
+                                  incl_copies     EM         29        17             43              89  -0.404  -2.47   1.66    0.701   1.05                   14             -0.202             0.239              0.8       17             0.548            NaN
+                                  incl_copies  X-ray          9         8             15              16 -0.0208  -3.78   3.74    0.991   1.92                    5              0.868             0.883            -0.88        8             0.641            NaN
+                                  incl_copies    all         38        24             58             105  -0.214  -1.98   1.55    0.812  0.899                   19              0.197             0.313            0.214       24             0.812            NaN
+                                    rest_case     EM        111        92            170             273   0.182  -1.35   1.72    0.816  0.784                   59              0.384             0.765             0.69       92             0.513            NaN
+                                    rest_case  X-ray         18        18             31              37  -0.713  -3.04   1.62    0.549   1.19                    6              -1.47            0.0898            -1.21       18            0.0898            NaN
+                                    rest_case    all        129       110            201             310 0.00617  -1.38   1.39    0.993  0.705                   65             0.0103             0.756             0.38      110             0.947            NaN
+neighbours of strict cases vs window controls     EM        NaN       NaN             40            2632    4.95   1.32   8.58  0.00751    NaN                  NaN                NaN               NaN              NaN      NaN               NaN            NaN
+neighbours of strict cases vs window controls  X-ray        NaN       NaN             16            3516    5.22  0.667   9.77   0.0246    NaN                  NaN                NaN               NaN              NaN      NaN               NaN            NaN
+neighbours of strict cases vs window controls    all        NaN       NaN             56            6148    4.93   2.01   7.84 0.000931    NaN                  NaN                NaN               NaN              NaN      NaN               NaN            NaN
