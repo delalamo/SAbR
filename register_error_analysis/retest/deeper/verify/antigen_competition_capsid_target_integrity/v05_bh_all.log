@@ -1,0 +1,73 @@
+71 tests
+                                                                                  test          capsid            other      OR       p  q_BH_all
+0                                                             R1 headline reproduction  20.8% (32/154)  5.6% (146/2598)  4.7219  0.0000    0.0000
+1                                              R2 headline, SE clustered by consortium  20.8% (32/154)  5.6% (146/2598)  4.7219  0.0000    0.0000
+2                                   R3 drop top-2 capsid error consortia (entry level)     5.7% (2/35)  5.6% (137/2440)  1.0945  0.8688    0.9066
+3                                   R3 drop top-3 capsid error consortia (entry level)     3.4% (1/29)  5.6% (137/2440)  0.6876  0.6521    0.7210
+4     R4 robust errors (drop D0-only, within-CDR1-gap-only, bovine-only error entries)  13.5% (19/141)  5.5% (143/2595)  2.8394  0.0026    0.0055
+5                        R5 R4 + drop all bovine-antibody entries (cases and controls)  13.7% (19/139)  5.5% (143/2587)  2.8794  0.0024    0.0053
+6                  R6 R5 + also drop error entries resting only on >=5-position shifts  13.0% (18/138)  5.5% (142/2586)  2.7572  0.0055    0.0099
+7                                                    R7 R5, SE clustered by consortium  13.7% (19/139)  5.5% (143/2587)  2.8794  0.0043    0.0081
+8                                  R8 R5 + drop top-1 remaining capsid error consortia    19.1% (9/47)  5.5% (134/2429)  4.3385  0.0005    0.0016
+9                                  R8 R5 + drop top-2 remaining capsid error consortia     5.7% (2/35)  5.5% (134/2429)  1.1027  0.8599    0.9066
+10                       R9 paper level, original errors: logit y~cap+year+res+log2(n)   29.0% (18/62)  8.7% (109/1249)  4.3938  0.0000    0.0000
+11                          R9 paper level, original errors: Fisher exact (unadjusted)   29.0% (18/62)  8.7% (109/1249)  4.2786  0.0000    0.0000
+12            R9 paper level, original errors: observed vs expected (Poisson-binomial)           18/62     expected 5.3  3.4070  0.0000    0.0002
+13                   R10 paper level, robust errors (R5): logit y~cap+year+res+log2(n)   23.2% (13/56)  8.6% (107/1244)  3.2867  0.0007    0.0022
+14                      R10 paper level, robust errors (R5): Fisher exact (unadjusted)   23.2% (13/56)  8.6% (107/1244)  3.2126  0.0011    0.0030
+15        R10 paper level, robust errors (R5): observed vs expected (Poisson-binomial)           13/56     expected 4.5  2.8714  0.0004    0.0015
+16                 R11 consortium level, original errors: logit y~cap+year+res+log2(n)     50.0% (4/8)   15.2% (84/554)  5.6136  0.0116    0.0196
+17                    R11 consortium level, original errors: Fisher exact (unadjusted)     50.0% (4/8)   15.2% (84/554)  5.5952  0.0238    0.0353
+18      R11 consortium level, original errors: observed vs expected (Poisson-binomial)             4/8     expected 1.2  3.4734  0.0131    0.0209
+19              R12 consortium level, robust errors (R5): logit y~cap+year+res+log2(n)     50.0% (4/8)   14.9% (82/551)  5.5495  0.0112    0.0194
+20                 R12 consortium level, robust errors (R5): Fisher exact (unadjusted)     50.0% (4/8)   14.9% (82/551)  5.7195  0.0224    0.0338
+21   R12 consortium level, robust errors (R5): observed vs expected (Poisson-binomial)             4/8     expected 1.1  3.4940  0.0122    0.0202
+22  R13 capsid class corrected (+ norovirus VP1 / rotavirus VP4 etc.), original errors  21.6% (36/167)  5.5% (142/2585)  4.9075  0.0000    0.0000
+23                                     R14 corrected class, robust errors (R5 filters)  15.1% (23/152)  5.4% (139/2574)  3.2103  0.0002    0.0007
+24                                   R15 robust errors, stratum: source organism mouse   15.9% (11/69)    3.6% (16/446)  4.9552  0.0134    0.0209
+25                               R15 robust errors, stratum: source organism not mouse    11.4% (8/70)  5.9% (127/2141)  1.9638  0.1164    0.1559
+26                               R16 robust errors, adjusted for source-organism mouse  13.7% (19/139)  5.5% (143/2587)  3.2314  0.0009    0.0024
+27                                                    R17 robust errors, period <=2019    19.2% (5/26)     5.2% (8/153)  3.6051  0.0469    0.0653
+28                                                   R17 robust errors, period 2020-21    26.3% (5/19)    8.1% (48/589)  3.7141  0.0509    0.0695
+29                                                     R17 robust errors, period 2022+     9.6% (9/94)   4.7% (87/1845)  2.2869  0.1329    0.1715
+30                                                     R18 lq_z error vs clean, capsid           -0.11            +0.21     NaN  0.0070    0.0124
+31                                                 R18 lq_z error vs clean, non-capsid           -0.26            +0.10     NaN  0.0000    0.0000
+32                                              R18 lq_z error vs clean, capsid robust           +0.21            +0.20     NaN  0.4077    0.4824
+33                         R19 lq_z error-vs-clean gap larger in capsids (interaction)             NaN              NaN  0.1187  0.6663    0.7210
+34                                                                       original: all  20.8% (32/154)  5.6% (146/2598)  4.7219  0.0000    0.0000
+35                                        original: SE clustered by curated consortium  20.8% (32/154)  5.6% (146/2598)  4.7219  0.0000    0.0001
+36                                                           original: drop HAFENSTEIN  17.6% (25/142)  5.6% (146/2598)  3.9093  0.0002    0.0007
+37                        original: drop WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E  18.7% (25/134)  5.5% (141/2562)  4.2736  0.0000    0.0000
+38                               original: drop LOU (Lou Z. / Li K., FMDV, bovine Abs)  17.2% (25/145)  5.6% (146/2598)  3.7993  0.0001    0.0005
+39                                                               original: drop ZHU P.  18.7% (26/139)  5.6% (146/2598)  4.1484  0.0001    0.0003
+40                                 original: drop XIAMEN (Xia N. / Li S.W. / Cheng T.)  24.8% (29/117)  5.6% (144/2562)  5.7670  0.0000    0.0000
+41                                                      original: drop LAB:Hogle, J.M.  20.9% (31/148)  5.6% (146/2598)  4.7579  0.0000    0.0000
+42                                                      original: drop LAB:McKenna, R.  21.5% (31/144)  5.6% (146/2598)  4.8667  0.0000    0.0000
+43                                            original: drop top-2 (HAFENSTEIN, WANGX)  14.8% (18/122)  5.5% (141/2562)  3.3031  0.0022    0.0053
+44                                       original: drop top-3 (HAFENSTEIN, WANGX, LOU)   9.7% (11/113)  5.5% (141/2562)  2.0836  0.1316    0.1715
+45                        original: consortium x capsid units, logit +year+res+log2(n)            7/33           89/631  1.5440  0.3693    0.4444
+46                                         original: consortium x capsid units, Fisher            7/33           89/631  1.6396  0.3049    0.3732
+47                                                                         robust: all  13.7% (19/139)  5.5% (143/2587)  2.8794  0.0024    0.0053
+48                                          robust: SE clustered by curated consortium  13.7% (19/139)  5.5% (143/2587)  2.8794  0.0135    0.0209
+49                                                             robust: drop HAFENSTEIN   9.4% (12/127)  5.5% (143/2587)  1.9455  0.1550    0.1965
+50                                                                 robust: drop ZHU P.  10.5% (13/124)  5.5% (143/2587)  2.1124  0.0297    0.0421
+51                                   robust: drop XIAMEN (Xia N. / Li S.W. / Cheng T.)  15.7% (16/102)  5.5% (141/2551)  3.2035  0.0011    0.0030
+52                                                        robust: drop LAB:Hogle, J.M.  13.5% (18/133)  5.5% (143/2587)  2.8935  0.0026    0.0055
+53                          robust: drop WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E  14.4% (18/125)  5.4% (138/2551)  3.2261  0.0008    0.0024
+54                                                        robust: drop LAB:McKenna, R.  14.0% (18/129)  5.5% (143/2587)  2.8991  0.0036    0.0074
+55                                                robust: drop top-2 (HAFENSTEIN, ZHU)    5.4% (6/112)  5.5% (143/2587)  1.0578  0.8925    0.9066
+56                                        robust: drop top-3 (HAFENSTEIN, ZHU, XIAMEN)     4.0% (3/75)  5.5% (141/2551)  0.7352  0.5499    0.6198
+57                          robust: consortium x capsid units, logit +year+res+log2(n)            6/32           87/628  1.3632  0.5465    0.6198
+58                                           robust: consortium x capsid units, Fisher            6/32           87/628  1.4350  0.4340    0.5051
+59                                                              units, original errors  13.2% (31/234)  3.6% (140/3873)  4.3120  0.0000    0.0000
+60                                                                units, robust errors  10.6% (23/218)  3.6% (137/3857)  3.3927  0.0021    0.0050
+61                                                                      lighter filter  14.1% (20/142)  5.5% (143/2595)  2.9891  0.0016    0.0040
+62                                            lighter filter, drop Hafenstein + Zhu P.    6.1% (7/115)  5.5% (143/2595)  1.2116  0.6703    0.7210
+63                                                             corrected class, robust  15.1% (23/152)  5.4% (139/2574)  3.2103  0.0002    0.0007
+64                                            corrected class, robust, drop Hafenstein  11.4% (16/140)  5.4% (139/2574)  2.3650  0.0288    0.0417
+65                                                corrected class, robust, drop Zhu P.  12.4% (17/137)  5.4% (139/2574)  2.5330  0.0043    0.0081
+66                                   corrected class, robust, drop Hafenstein + Zhu P.   8.0% (10/125)  5.4% (139/2574)  1.5934  0.2611    0.3252
+67                          corrected class, robust, drop Hafenstein + Zhu P. + Prasad    5.2% (6/116)  5.4% (139/2574)  1.0240  0.9546    0.9546
+68                                                              units, original errors  13.2% (31/234)  3.6% (140/3873)  4.3120  0.0000    0.0000
+69                                             units, robust errors (chain-level flag)   9.7% (21/216)  3.6% (137/3857)  3.0903  0.0042    0.0081
+70                                      units, robust errors, drop Hafenstein + Zhu P.    3.5% (6/172)  3.6% (137/3857)  1.0531  0.8938    0.9066

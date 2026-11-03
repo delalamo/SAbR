@@ -1,0 +1,207 @@
+== (a) near-duplicate copy leak among first-occurrence runs
+    pdb chain                       paper  imgt0  imgt1  delta earlier_pdb               earlier_paper  n_diff  same_lab
+0  8snd     C  10.1038/s41594-024-01389-1     62     67    1.0        7sp7  10.1038/s41586-022-04534-2       1      True
+1  8snc     C  10.1038/s41594-024-01389-1     62     67    1.0        7sp7  10.1038/s41586-022-04534-2       2      True
+2  9pv5     L                        9pv5    120    127    1.0        7wp6  10.1016/j.chom.2022.10.011       3     False
+entries whose first-occurrence runs are all near-duplicate copies: ['8snc', '8snd']
+
+== leak-corrected counts (EM)
+  entry, leak-corrected: host_enz                                        in 15/81 out 161/2669 OR 3.54 p=0.00013
+  paper, leak-corrected: host_enz                                        in 11/45 out 115/1266 OR 3.24 p=0.0025
+  entry, leak-corrected: vir_oth                                         in 6/14 out 170/2736 OR 11.32 p=0.00012
+  paper, leak-corrected: vir_oth                                         in 3/7 out 123/1304 OR 7.20 p=0.023
+  entry, leak-corrected: enz_comb                                        in 21/95 out 155/2655 OR 4.58 p=2.5e-07
+  paper, leak-corrected: enz_comb                                        in 14/51 out 112/1260 OR 3.88 p=0.00017
+
+== (b) within-lab comparison (paper level, labs with both enzyme and non-enzyme EM antibody papers)
+  host_enz: labs with both kinds of paper 18, papers 80, informative labs (both error and clean papers) 7
+          sum  size
+host_enz           
+0           7    58
+1           5    22
+  conditional logit (lab strata) OR 1.25 (0.26-5.91) p=0.78
+            labn                         paper  host_enz  y  n  dyear
+296       feng_l    10.1038/s41392-024-02114-6         0  1  2   2024
+657       feng_l    10.1038/s41586-025-08667-y         0  0  2   2024
+674       feng_l    10.1038/s41587-026-03187-0         0  0  1   2026
+1180      feng_l               Feng, L.L._2023         0  1  3   2023
+420       feng_l    10.1038/s41467-023-37869-z         1  0  1   2023
+298      jiang_y    10.1038/s41401-025-01633-4         0  0  1   2024
+310      jiang_y    10.1038/s41421-022-00503-1         0  0  1   2022
+377      jiang_y    10.1038/s41467-021-25364-2         0  0  1   2021
+440      jiang_y    10.1038/s41467-023-41885-4         0  0  2   2023
+1196     jiang_y                Jiang, Y._2025         0  0  1   2025
+945      jiang_y       10.1126/science.abg4998         1  1  1   2021
+1025       liu_y          10.1128/jvi.01732-18         0  0  1   2019
+490        liu_y    10.1038/s41467-025-57843-1         1  1  2   2024
+1003     mousa_j          10.1128/jvi.00453-25         0  1  2   2024
+1010     mousa_j          10.1128/jvi.00896-22         0  1  1   2022
+1227     mousa_j              Mousa, J.J._2025         0  0  2   2025
+1228     mousa_j                Mousa, J._2026         1  0  1   2026
+1229  naismith_j           Naismith, J.H._2020         0  0  1   2020
+1230  naismith_j           Naismith, J.H._2025         1  1  2   2025
+1231  naismith_j           Naismith, J.H._2026         1  1  2   2026
+732      zhang_h    10.1038/s42003-021-02039-8         0  0  1   2020
+1040     zhang_h  10.1158/2159-8290.cd-23-0984         0  0  1   2023
+1296     zhang_h                Zhang, H._2025         0  1  2   2025
+411      zhang_h    10.1038/s41467-022-35581-y         1  0  2   2022
+368      zheng_h    10.1038/s41467-020-19887-3         0  1  2   2020
+737      zheng_h    10.1038/s42003-022-04173-3         1  0  1   2022
+  enz_comb: labs with both kinds of paper 19, papers 88, informative labs (both error and clean papers) 8
+          sum  size
+enz_comb           
+0           7    65
+1           4    23
+  conditional logit (lab strata) OR 1.14 (0.25-5.15) p=0.86
+            labn                         paper  enz_comb  y  n  dyear
+296       feng_l    10.1038/s41392-024-02114-6         0  1  2   2024
+657       feng_l    10.1038/s41586-025-08667-y         0  0  2   2024
+674       feng_l    10.1038/s41587-026-03187-0         0  0  1   2026
+1180      feng_l               Feng, L.L._2023         0  1  3   2023
+420       feng_l    10.1038/s41467-023-37869-z         1  0  1   2023
+298      jiang_y    10.1038/s41401-025-01633-4         0  0  1   2024
+310      jiang_y    10.1038/s41421-022-00503-1         0  0  1   2022
+377      jiang_y    10.1038/s41467-021-25364-2         0  0  1   2021
+440      jiang_y    10.1038/s41467-023-41885-4         0  0  2   2023
+1196     jiang_y                Jiang, Y._2025         0  0  1   2025
+945      jiang_y       10.1126/science.abg4998         1  1  1   2021
+1025       liu_y          10.1128/jvi.01732-18         0  0  1   2019
+490        liu_y    10.1038/s41467-025-57843-1         1  1  2   2024
+1003     mousa_j          10.1128/jvi.00453-25         0  1  2   2024
+1010     mousa_j          10.1128/jvi.00896-22         0  1  1   2022
+1227     mousa_j              Mousa, J.J._2025         0  0  2   2025
+1228     mousa_j                Mousa, J._2026         1  0  1   2026
+1229  naismith_j           Naismith, J.H._2020         0  0  1   2020
+1230  naismith_j           Naismith, J.H._2025         1  1  2   2025
+1231  naismith_j           Naismith, J.H._2026         1  1  2   2026
+20      nureki_o    10.1016/j.bbrc.2022.04.065         0  0  1   2022
+23      nureki_o    10.1016/j.bbrc.2023.149361         0  0  1   2023
+221     nureki_o  10.1016/j.molcel.2021.06.024         0  0  2   2020
+225     nureki_o  10.1016/j.molcel.2022.07.003         0  0  5   2021
+458     nureki_o    10.1038/s41467-024-49030-5         0  0  1   2024
+696     nureki_o     10.1038/s41594-019-0237-7         0  1  1   2019
+700     nureki_o     10.1038/s41594-020-0386-8         0  0  1   2020
+26      nureki_o    10.1016/j.bbrc.2026.153976         1  0  1   2026
+732      zhang_h    10.1038/s42003-021-02039-8         0  0  1   2020
+1040     zhang_h  10.1158/2159-8290.cd-23-0984         0  0  1   2023
+1296     zhang_h                Zhang, H._2025         0  1  2   2025
+411      zhang_h    10.1038/s41467-022-35581-y         1  0  2   2022
+368      zheng_h    10.1038/s41467-020-19887-3         0  1  2   2020
+737      zheng_h    10.1038/s42003-022-04173-3         1  0  1   2022
+
+== (c) paper-level fragility and within-year permutation
+  host_enz: paper-level Fisher fragility index = 4 (flipping 4 of 12 enzyme error papers to clean gives p>=0.05)
+  host_enz: within-year permutation of class labels among papers: obs 12 error papers, null mean 4.3, p=0.0007
+  enz_comb: paper-level Fisher fragility index = 7 (flipping 7 of 15 enzyme error papers to clean gives p>=0.05)
+  enz_comb: within-year permutation of class labels among papers: obs 15 error papers, null mean 5.1, p=0.0001
+
+== (d) auxiliary (tool) antibodies by contacted antigen class, EM units
+                            sum  size   mean
+agcls                                       
+fiducial target               1   121  0.008
+channel/transporter           1    59  0.017
+GPCR                          2    53  0.038
+none                          0    38  0.000
+unmapped/peptide              0    22  0.000
+enzyme                        2     7  0.286
+other protein                 0     5  0.000
+viral surface glycoprotein    0     5  0.000
+  aux units: enzyme(+viral other) vs transporter/GPCR/receptor/other targets in 2/7 out 3/117 OR 15.20 p=0.025
+  aux units: host enzyme vs transporter/GPCR/receptor/other targets      in 2/7 out 3/117 OR 15.20 p=0.025
+
+== (e) paper-level models with lab experience
+  y ~ host_enz + C(ycat) + res + ln                  OR 4.11 (1.88-8.98) p=0.00041
+  y ~ host_enz + lexp + C(ycat) + res + ln           OR 3.88 (1.76-8.55) p=0.00078
+  y ~ enz_comb + C(ycat) + res + ln                  OR 4.49 (2.14-9.39) p=6.8e-05
+  y ~ enz_comb + lexp + C(ycat) + res + ln           OR 4.26 (2.02-8.97) p=0.00014
+
+== host-enzyme EM entries: error status, EC numbers
+                                                                                                     n  err                                    labs                                 ec
+tgt_name                                                                                                                                                                              
+5'-AMP-activated protein kinase catalytic subunit alpha-1                                            3    3                               melcher_k       2.7.11.31;2.7.11.1;2.7.11.26
+E3 ubiquitin-protein ligase CHIP                                                                     6    2                            southworth_d                           2.3.2.27
+UDP-Gal::undecaprenolphosphate Gal-1-P transferase WbaP                                              3    2                              naismith_j                                   
+non-specific serine/threonine protein kinase                                                         3    2                               versees_w                           2.7.11.1
+Mannosyltransferase                                                                                  2    1                          liu_y,mancia_f                                   
+Protein-cysteine N-palmitoyltransferase HHAT                                                         2    1                       jiang_y,siebold_c                            2.3.1.-
+T-complex protein 1 subunit epsilon                                                                  2    1  structuralgenomicsconsortiumsgc_,yue_w                            3.6.1.-
+Lysosomal acid glucosylceramidase                                                                    1    1                                arnold_p  3.2.1.45;3.2.1.-;3.2.1.46;2.4.1.-
+Prothrombin                                                                                          1    1                                 pozzi_n                           3.4.21.5
+Tryptase alpha/beta-1                                                                                1    1                                 rohou_a                          3.4.21.59
+Arginase-1                                                                                           6    0                                 palte_r                            3.5.3.1
+ATP-dependent DNA helicase Q5                                                                        3    0                               gilbert_r                            5.6.2.4
+Hyaluronan synthase 1                                                                                3    0                                zimmer_j                          2.4.1.212
+Lysozyme C                                                                                           3    0                    gilbert_r,yonekura_k                           3.2.1.17
+Protein-serine O-palmitoleoyltransferase porcupine                                                   3    0                                    li_x                          2.3.1.250
+Adenylate cyclase                                                                                    2    0                               korkhov_v                            4.6.1.1
+Coagulation factor XI                                                                                2    0                              franklin_m                          3.4.21.27
+Dolichyl pyrophosphate Man9GlcNAc2 alpha-1,3-glucosyltransferase                                     2    0                                locher_k                          2.4.1.267
+Erythronolide synthase EryA1; Erythronolide synthase EryA3                                           2    0                                khosla_c                  2.3.1.94;2.3.1.94
+NAD(+) hydrolase SARM1                                                                               2    0                                 zhang_h                    3.2.2.-;3.2.2.6
+Protein-arginine deiminase type-4                                                                    2    0                                 verba_k                           3.5.3.15
+Putative zinc metalloprotease aq_1964                                                                2    0                                  nogi_t                           3.4.24.-
+Rhodopsin kinase GRK1                                                                                2    0                                tesmer_j                          2.7.11.14
+Serine protease EatA                                                                                 2    0                              berndsen_z                           3.4.21.-
+Serine protease HTRA1                                                                                2    0                            kirchhofer_d                           3.4.21.-
+UbiA prenyltransferase domain-containing protein 1                                                   2    0                                    li_x                           2.5.1.39
+1-phosphatidylinositol 4,5-bisphosphate phosphodiesterase epsilon-1                                  1    0                                  lyon_a                           3.1.4.11
+Alkane 1-monooxygenase                                                                               1    0                                  feng_l                                   
+Beta-ketoacyl-acyl-carrier-protein synthase I                                                        1    0                                  chen_m                           2.3.1.41
+C-mannosyltransferase dpy-19                                                                         1    0                                locher_k                            2.4.1.-
+Choline binding protein E                                                                            1    0                                 mousa_j                                   
+Cytosolic 10-formyltetrahydrofolate dehydrogenase                                                    1    0                                    ma_x                            1.5.1.6
+Dol-P-Man:Man(5)GlcNAc(2)-PP-Dol alpha-1,3-mannosyltransferase                                       1    0                                locher_k                          2.4.1.258
+E3 ubiquitin-protein ligase NEDD4-like                                                               1    0                                clarke_o                  2.3.2.26;2.3.2.36
+GTPase NRas                                                                                          1    0                                 koide_s                            3.6.5.2
+IgA protease                                                                                         1    0                             gomisruth_f                                   
+L-lactate dehydrogenase (cytochrome); Mitochondrial import inner membrane translocase subunit TIM44  1    0                                  wang_g                            1.1.2.3
+LPXTG-motif cell wall anchor domain protein                                                          1    0                                 zheng_h                                   
+Oligosaccharyltransferase                                                                            1    0                               quigley_a                                   
+Phosphatidylethanolamine transferase Mcr-1                                                           1    0                                mancia_f                           2.7.8.43
+Phosphatidylglycerol lysyltransferase                                                                1    0                               bublitz_m                            2.3.2.3
+Protein translocase subunit SecA                                                                     1    0                                    li_l                            7.4.2.8
+Subtilisin-like protease                                                                             1    0                              matthews_s                            3.4.-.-
+
+== EC-bearing targets in other classes, EM (name, n, errors)
+                                                                                                                               size  sum
+tgt_cls                   tgt_name                                                                                                      
+channel/transporter       Broad substrate specificity ATP-binding cassette transporter ABCG2                                     13    0
+                          ATP-dependent translocase ABCB1                                                                         9    0
+receptor/membrane protein Receptor tyrosine-protein kinase erbB-2                                                                 9    1
+                          Disintegrin and metalloproteinase domain-containing protein 17                                          5    0
+GPCR                      Endo-1,4-beta-xylanase; Probable G protein-coupled receptor 139                                         4    0
+channel/transporter       Calcium-transporting ATPase type 2C member 1                                                            4    0
+                          ATP-binding cassette sub-family G member 8                                                              4    0
+receptor/membrane protein Atrial natriuretic peptide receptor 1                                                                   4    0
+channel/transporter       NADPH oxidase 2                                                                                         3    0
+receptor/membrane protein Ceramide synthase 6                                                                                     3    0
+GPCR                      Endoglucanase H; Taste receptor type 2 member 46                                                        3    0
+channel/transporter       Phosphatidylcholine translocator ABCB4                                                                  3    0
+GPCR                      Soluble cytochrome b562; Endoglucanase H; Endothelin-1 receptor                                         3    0
+                          Endolysin; Beta-2 adrenergic receptor                                                                   2    0
+channel/transporter       ATP-dependent lipid A-core flippase                                                                     2    0
+GPCR                      Endothelin receptor type B; exo-alpha-sialidase                                                         2    0
+                          Soluble cytochrome b562; P2Y purinoceptor 1; Oplophorus-luciferin 2-monooxygenase catalytic subunit     1    0
+                          Guanine nucleotide-binding protein G(s) subunit alpha isoforms short; Relaxin receptor 1                1    0
+                          Endoglucanase H; Endothelin-1 receptor                                                                  1    0
+channel/transporter       Cystic fibrosis transmembrane conductance regulator                                                     1    0
+receptor/membrane protein ADP-ribosyl cyclase/cyclic ADP-ribose hydrolase 1                                                       1    0
+                          5'-nucleotidase                                                                                         1    0
+GPCR                      exo-alpha-sialidase; Taste receptor type 2 member 14                                                    1    0
+channel/transporter       Angiotensin-converting enzyme 2                                                                         1    0
+receptor/membrane protein Bifunctional heparan sulfate N-deacetylase/N-sulfotransferase 1                                         1    0
+                          Angiotensin-converting enzyme 2                                                                         1    0
+                          Ectonucleotide pyrophosphatase/phosphodiesterase family member 1                                        1    0
+                          Disintegrin and metalloproteinase domain-containing protein 10                                          1    0
+                          GTPase KRas                                                                                             1    0
+                          Hyaluronidase PH-20                                                                                     1    0
+                          Insulin-degrading enzyme                                                                                1    0
+                          Proto-oncogene tyrosine-protein kinase ROS                                                              1    0
+                          Receptor tyrosine-protein kinase erbB-2; Maltose/maltodextrin-binding periplasmic protein               1    0
+                          Transmembrane protease serine 2                                                                         1    0
+                          Transmembrane protease serine 2; Small ubiquitin-related modifier                                       1    0
+                          Transmembrane protease serine 6                                                                         1    0
+toxin                     Cytolethal distending toxin subunit B homolog                                                           1    0
+                          Tetanus toxin                                                                                           1    1
+                          Toxin A                                                                                                 1    0
+                          Zinc metalloproteinase-disintegrin-like ecarin                                                          1    0

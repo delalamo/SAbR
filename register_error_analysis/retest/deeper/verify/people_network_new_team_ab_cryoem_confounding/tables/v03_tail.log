@@ -1,0 +1,26 @@
+leave-one-year-category-out:
+  left_out     n      OR       p
+0     2020  1194  2.0037  0.0014
+1     2021  1118  1.8621  0.0049
+2     2022  1090  1.7010  0.0137
+3     2023  1122  1.7654  0.0077
+4     2024  1065  2.4462  0.0000
+5   <=2019  1194  2.0295  0.0006
+6   >=2025  1029  2.2944  0.0002
+
+ {'test': 'one study per last-author lab (500 random draws)', 'n_per_draw': 570, 'OR_median': np.float64(1.5775436567722565), 'OR_2_5': np.float64(1.1897040139305386), 'OR_97_5': np.float64(2.0861659281791027), 'p_median': np.float64(0.11325017713742494), 'frac_p_lt_05': np.float64(0.224)}
+
+within-lab informative labs: 31 studies 294
+     size  sum      mean
+new                     
+0     275   43  0.156364
+1      19   10  0.526316
+labs with both new and experienced studies: 15 {0: {'size': 147, 'sum': 19, 'mean': 0.1292517006802721}, 1: {'size': 19, 'sum': 10, 'mean': 0.5263157894736842}}
+their year distribution by new: {0: {'mean': 2022.3945578231292, '50%': 2023.0}, 1: {'mean': 2021.842105263158, '50%': 2022.0}}
+                                                    test  n_studies  n_labs  n_labs_discordant_exposure  n_err      OR      lo       hi       p
+0                      within-lab conditional logit: new        294      31                          15     53  3.8067  1.1739  12.3444  0.0259
+1                within-lab conditional logit: new+dep_c        294      31                          15     53  4.1935  1.2127  14.5007  0.0235
+2                within-lab conditional logit: new+ylate        294      31                          15     53  4.0519  1.1940  13.7501  0.0248
+3  within-lab conditional logit: new+dep_c+res_med+l2_nv        294      31                          15     53  5.2169  1.4078  19.3318  0.0134
+
+ {'test': 'IPW (propensity on full covariates incl. country, tier, map fit, antigen class)', 'OR': np.float64(1.782573231853452), 'lo': np.float64(1.1194344428568805), 'hi': np.float64(2.8385470423896115), 'p': np.float64(0.014880549289596158), 'wrate_new': np.float64(0.12383716046285236), 'wrate_old': np.float64(0.07346501905662131), 'ps_auc': np.float64(0.7727960354720919)}

@@ -1,0 +1,78 @@
+test,stratum,term,adj,OR,lo,hi,p,n,n_err
+full adj,EM bound only,l_labs_acc_12m,C(ycat) + res + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0759846538212139,0.9801639617758084,1.1811727633417788,0.12381659564620096,2504,172
+full adj,EM bound only,l_labs_fam_12m,C(ycat) + res + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0303660918838622,0.9322147492635684,1.1388516263475876,0.5580874295605309,2504,172
+full adj,EM non-SARS2 bound,l_labs_acc_12m,C(ycat) + res + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.9826942849514548,0.7798360719506283,1.2383218632869155,0.8823571731850126,1843,130
+full adj,EM non-SARS2 bound,l_labs_fam_12m,C(ycat) + res + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.9457453857879946,0.8131465102051427,1.0999670090370708,0.4692219860132736,1843,130
+full adj,EM SARS2,l_labs_acc_12m,C(ycat) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.9344539794888603,0.5645111565121944,1.5468325642625358,0.7920626958622156,661,42
+full adj,EM SARS2,l_labs_fam_12m,C(ycat) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.7461386666360155,0.4774631176773119,1.16600191561943,0.19855146284313419,661,42
+full adj,EM 2020-21,l_labs_acc_12m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.0774962900558949,0.9203218243278554,1.2615133363072604,0.35349861554580675,605,58
+full adj,EM 2020-21,l_labs_fam_12m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.041409342150886,0.8670008605995182,1.2509023545480713,0.6643778181284751,605,58
+full adj,EM non-SARS2 2020-21,l_labs_acc_12m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,0.3113376402532774,0.1124890830859037,0.8616936291004922,0.02466876381131316,347,33
+full adj,EM non-SARS2 2020-21,l_labs_fam_12m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,0.6904645784010806,0.46894229717571656,1.016631122630303,0.060599901014752065,347,33
+full adj,EM non-SARS2 non-capenz,l_labs_acc_12m,C(ycat) + res + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.9670258596361532,0.780028857391377,1.1988518172678813,0.7597463314688173,1799,79
+full adj,EM non-SARS2 non-capenz,l_labs_fam_12m,C(ycat) + res + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,0.933445909210237,0.8004656709045458,1.0885179678432826,0.3797746570644971,1799,79
+"race, year+res",EM,race_1m,C(ycat) + res,0.8997116570325429,0.5538616928010138,1.4615220303583383,0.6694276408201822,2707,174
+"race, full adj",EM,race_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.5070524082284011,0.9851524152684354,2.3054371343424687,0.05862476321712784,2707,174
+"race, full adj half-year",EM,race_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.4716891280971711,0.9627792362568207,2.249600747706266,0.07429920891863677,2707,174
+"race, year+res",EM,l_labs_acc_1m,C(ycat) + res,0.9666648634235174,0.8437913135980483,1.1074313555007056,0.6249898046057847,2707,174
+"race, full adj",EM,l_labs_acc_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.1700191316444206,1.0175980024033824,1.3452706915508523,0.027458852865081273,2707,174
+"race, full adj half-year",EM,l_labs_acc_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.1468585081878708,0.9993093712072948,1.3161934388885748,0.05116042305634037,2707,174
+"race, year+res",EM,l_labs_acc_6m,C(ycat) + res,0.9473558974499331,0.8570098691894283,1.0472262090540683,0.2902499974038595,2707,174
+"race, full adj",EM,l_labs_acc_6m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0931710114799613,0.9872398171835385,1.2104686617577483,0.08671008516367631,2707,174
+"race, full adj half-year",EM,l_labs_acc_6m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0816841460542383,0.9789329222780734,1.195220392733638,0.12310840573876376,2707,174
+"race, year+res",EM non-SARS2,race_1m,C(ycat) + res,0.9570197363659754,0.5126089524476765,1.7867163096171021,0.8903052138984032,2046,132
+"race, full adj",EM non-SARS2,race_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.2026494956550051,0.7161024795927844,2.0197748934226873,0.4854402616304051,2046,132
+"race, full adj half-year",EM non-SARS2,race_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.235268224065732,0.73483468737273,2.0765045684520493,0.42527545484587415,2046,132
+"race, year+res",EM non-SARS2,l_labs_acc_1m,C(ycat) + res,1.0207764062322093,0.749708086138637,1.3898535853962488,0.8961018855606513,2046,132
+"race, full adj",EM non-SARS2,l_labs_acc_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.2456038338429265,0.8987106287408696,1.726394304535991,0.1872641160255698,2046,132
+"race, full adj half-year",EM non-SARS2,l_labs_acc_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.2527345275727375,0.9136589899496584,1.7176471898551111,0.1617421107977972,2046,132
+"race, year+res",EM non-SARS2,l_labs_acc_6m,C(ycat) + res,0.8454362652056189,0.6523661928310854,1.095646105484035,0.20430525990036852,2046,132
+"race, full adj",EM non-SARS2,l_labs_acc_6m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0234171855798864,0.7935884772276857,1.319805876465309,0.8584276954581084,2046,132
+"race, full adj half-year",EM non-SARS2,l_labs_acc_6m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0419938292398636,0.8133331333879744,1.3349402546176994,0.7448566625761623,2046,132
+"race, year+res",EM 2020-21,race_1m,C(ycat) + res,0.657158969840417,0.28041708042019975,1.5400556592151484,0.3339510602933007,605,58
+"race, full adj",EM 2020-21,race_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.2842183386302854,0.5408370605435474,3.0493781983373123,0.5707527080368366,605,58
+"race, full adj half-year",EM 2020-21,race_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.2435594502741778,0.5203693085750907,2.9718126739656863,0.6238549894012304,605,58
+"race, year+res",EM 2020-21,l_labs_acc_1m,C(ycat) + res,0.958555532057015,0.7754192548212646,1.1849444056543303,0.6955891725168999,605,58
+"race, full adj",EM 2020-21,l_labs_acc_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.159119940717495,0.9273406093052204,1.448830153114449,0.19454544347925584,605,58
+"race, full adj half-year",EM 2020-21,l_labs_acc_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.124230854391587,0.9033662357537168,1.399094812207052,0.29403902529626247,605,58
+"race, year+res",EM 2020-21,l_labs_acc_6m,C(ycat) + res,0.9507373105884245,0.8097180811296917,1.116316227598397,0.5374316754769715,605,58
+"race, full adj",EM 2020-21,l_labs_acc_6m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.1007056288058015,0.9288225650990714,1.304396476581667,0.26802674139273175,605,58
+"race, full adj half-year",EM 2020-21,l_labs_acc_6m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,1.0837162828883524,0.920420649570731,1.2759828697292783,0.33463948569889745,605,58
+"race, year+res",EM 2022+,race_1m,C(ycat) + res,1.0711380681004004,0.5955830001238901,1.9264095192361015,0.8184933081371617,1924,104
+"race, full adj",EM 2022+,race_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.556466779233272,0.9237899436711744,2.6224455585967306,0.09648316191367771,1924,104
+"race, full adj half-year",EM 2022+,race_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.5138638759884324,0.9019046776649902,2.541048840057126,0.11659148449633458,1924,104
+"race, year+res",EM 2022+,l_labs_acc_1m,C(ycat) + res,0.970644069456364,0.8175349438779913,1.152427693306547,0.733718430073167,1924,104
+"race, full adj",EM 2022+,l_labs_acc_1m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.1561175926997853,0.9584760697869912,1.3945135724118707,0.12937086149803215,1924,104
+"race, full adj half-year",EM 2022+,l_labs_acc_1m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.1457284398957481,0.9507703008638901,1.380663296690277,0.15286131554938162,1924,104
+"race, year+res",EM 2022+,l_labs_acc_6m,C(ycat) + res,0.9453113833271671,0.8368860558874764,1.06778408501536,0.3655645501405519,1924,104
+"race, full adj",EM 2022+,l_labs_acc_6m,C(ycat) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0697165686004986,0.9383567526797609,1.2194653407358658,0.31337265376611767,1924,104
+"race, full adj half-year",EM 2022+,l_labs_acc_6m,C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.0657319363641804,0.9350743348034308,1.214646277747862,0.34008286610950467,1924,104
+dose-response year+res,EM,"C(labs_cat, Treatment('0'))[T.1-2]",,0.562519802987802,0.2868514762409247,1.1031092916100922,0.09405795376522495,2707,174
+dose-response year+res,EM,"C(labs_cat, Treatment('0'))[T.10-49]",,0.3573252973001763,0.10817216943610332,1.1803532161392032,0.09141332838144864,2707,174
+dose-response year+res,EM,"C(labs_cat, Treatment('0'))[T.3-9]",,0.42922530927989844,0.22919208236088107,0.803842629416547,0.00824035102629873,2707,174
+dose-response year+res,EM,"C(labs_cat, Treatment('0'))[T.50+]",,0.7128861530836113,0.38332544881715985,1.325783792405488,0.28501882725053085,2707,174
+dose-response full adj,EM,"C(labs_cat, Treatment('0'))[T.1-2]",,0.7494941266984484,0.42728042755044693,1.3146903291963865,0.314553195733698,2707,174
+dose-response full adj,EM,"C(labs_cat, Treatment('0'))[T.10-49]",,0.5935497799049317,0.18221032815016158,1.9334872221669968,0.38664185034881493,2707,174
+dose-response full adj,EM,"C(labs_cat, Treatment('0'))[T.3-9]",,0.8030545574508617,0.4148743290047482,1.554438482105309,0.5151119277138889,2707,174
+dose-response full adj,EM,"C(labs_cat, Treatment('0'))[T.50+]",,1.719246788841338,0.9083809132834477,3.253931778748122,0.09596135524491746,2707,174
+dose-response year+res,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.1-2]",,0.5787622313971161,0.2938476388665626,1.1399299371055294,0.11381629638323983,2046,132
+dose-response year+res,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.10-49]",,0.4391699567290554,0.13231302725164534,1.457681491381658,0.1788473400147077,2046,132
+dose-response year+res,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.3-9]",,0.4614593065263729,0.24498415924738562,0.8692182067362525,0.0166744384493917,2046,132
+dose-response year+res,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.50+]",,1.4132132675176223,0.2508295487152335,7.962266605818524,0.69498271419636,2046,132
+dose-response full adj,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.1-2]",,0.7233362629087506,0.41069373421112654,1.2739793808732092,0.26207766340213934,2046,132
+dose-response full adj,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.10-49]",,0.6770617201975114,0.21073859651541207,2.1752663277478357,0.5125269799247203,2046,132
+dose-response full adj,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.3-9]",,0.8139803185887439,0.4180503386151459,1.584890377662831,0.5449140472113909,2046,132
+dose-response full adj,EM non-SARS2,"C(labs_cat, Treatment('0'))[T.50+]",,5.405340720088012,0.9540649627085915,30.624443242619954,0.056543219670927666,2046,132
+SARS2: year+res,EM,sars2[T.True],C(ycat) + res,0.8436580176776586,0.4823449025977375,1.4756222092500975,0.5511831778732504,2707,174
+SARS2: half-year+res,EM,sars2[T.True],C(half) + res,0.762106141888151,0.443907142913561,1.3083947415028165,0.3245341620828487,2707,174
+SARS2: + antibody features,EM,sars2[T.True],C(half) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam,1.149854735964127,0.685371995553011,1.9291215900239789,0.5968580544836299,2707,174
+SARS2: + ab + modelling,EM,sars2[T.True],C(half) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.1588352464792426,0.6875558911378001,1.9531490396516187,0.5799386185728117,2707,174
+SARS2: full,EM,sars2[T.True],C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.5959723082288304,0.9162630765576599,2.7799086024536224,0.0987192180843748,2707,174
+SARS2: full + lqz_min,EM,sars2[T.True],C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid + lqz_min,1.1975540206571313,0.642924416187033,2.2306442192652036,0.569987682865748,2696,174
+SARS2: year+res,EM 2020-21,sars2[T.True],C(ycat) + res,1.0563235850178567,0.4480567760724846,2.490352954922089,0.9003466548126349,605,58
+SARS2: full,EM 2020-21,sars2[T.True],C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + expstart + rigid,2.23980828365755,0.8425745716881201,5.954061890913476,0.10597063059698725,605,58
+SARS2: year+res,EM 2022+,sars2[T.True],C(ycat) + res,0.6810097495651346,0.33408197122410915,1.388205048310308,0.29038904802837306,1924,104
+SARS2: full,EM 2022+,sars2[T.True],C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid,1.2350630324656358,0.5810128188693445,2.6253821682138008,0.5831982305116781,1924,104
+"SARS2 observed/expected from non-SARS2 model (half-year, res, ab, modelling, class)",EM SARS2,O/E,,1.7842287146651254,,,8.774444956793414e-05,661,42
+earliest 25 SARS2 EM entries all clean: P(0 errors) under non-SARS2 model,EM SARS2 earliest 25,P0,,,,,0.5583512300595923,25,0
+Omicron race window: Omicron-titled SARS2 EM vs non-SARS2 EM same window (Fisher),EM 2021-12..2022-06,omicron,,0.9031339031339032,,,1.0,233,17

@@ -1,0 +1,15 @@
+                    chains  units  entries
+group                                     
+fresh_matched          136    136      131
+same_entry_correct      66     40       26
+jobs 168
+0 2
+25 11
+50 21
+75 32
+100 44
+125 54
+150 65
+status
+ok    202
+Name: count, dtype: int64

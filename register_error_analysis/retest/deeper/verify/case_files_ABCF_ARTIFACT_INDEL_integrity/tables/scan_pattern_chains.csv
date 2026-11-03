@@ -1,0 +1,101 @@
+pattern,pdb,chain,method,res,year,v_gene,v_id,species,built,n_dis,dis,run_any,run_first,err_first
+FR3:80+84,5dhz,H,X-ray,4.3,2015,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(2 ),,False
+FR3:81 (control),6u59,F,EM,3.86,2019,IGHV3-33*02,0.59,human,True,0,,,,False
+FR3:81 (control),6u59,H,EM,3.86,2019,IGHV3-33*02,0.59,human,True,0,,,,False
+FR3:81 (control),6u59,K,EM,3.86,2019,IGHV3-33*02,0.59,human,True,0,,,,False
+FR1:26,7eaj,F,EM,4.1,2021,IGHV1-12*01,0.77,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR3:96,7te9,H,EM,3.92,2022,IGHV5-12-2*01,0.95,mouse,True,3,93/94 94/95 95/96,93-95(9 ),93-95,True
+FR3:96,7te9,M,EM,3.92,2022,IGHV5-12-2*01,0.95,mouse,True,3,93/94 94/95 95/96,93-95(9 ),93-95,True
+FR3:81 (control),7jwp,A,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,C,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,E,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,G,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,I,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,K,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,M,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:81 (control),7jwp,O,X-ray,3.0,2020,IGHV3-49*04,0.54,human,True,0,,,,False
+FR3:80+84,2x7l,A,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,2x7l,C,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,2x7l,E,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,2x7l,G,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,2x7l,H,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,2x7l,J,X-ray,3.17,2010,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(9 ),81-83,True
+FR3:80+84,5dhy,A,X-ray,3.1,2015,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(2 ),,False
+FR3:80+84,5dhy,H,X-ray,3.1,2015,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(2 ),,False
+FR3:80+84,6cf2,A,X-ray,3.0,2018,IGHV3-66*01,0.59,human,True,3,81/80 82/83 83/84,81-83(1b),,False
+FR3:81 (control),6did,D,EM,4.71,2018,IGHV3-33*02,0.67,human,True,0,,,,False
+FR3:81 (control),6did,K,EM,4.71,2018,IGHV3-33*02,0.67,human,True,0,,,,False
+FR3:81 (control),6did,L,EM,4.71,2018,IGHV3-33*02,0.67,human,True,0,,,,False
+FR3:81 (control),6p62,C,EM,3.57,2019,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),6p62,F,EM,3.57,2019,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),6p62,H,EM,3.57,2019,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),6vo0,G,EM,3.52,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6vo0,H,EM,3.52,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6vo0,I,EM,3.52,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6x97,E,EM,3.65,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6x97,H,EM,3.65,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6x97,J,EM,3.65,2020,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),6x96,E,EM,3.4,2020,IGHV3-33*02,0.67,human,True,0,,,,False
+FR3:81 (control),6x96,H,EM,3.4,2020,IGHV3-33*02,0.67,human,True,0,,,,False
+FR3:81 (control),6x96,J,EM,3.4,2020,IGHV3-33*02,0.67,human,True,0,,,,False
+FR1:26,7eak,F,EM,3.9,2021,IGHV1-12*01,0.77,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR3:81 (control),7nks,C,X-ray,3.5,2021,IGHV3-53*04,0.6,human,True,0,,,,False
+FR3:81 (control),7nks,H,X-ray,3.5,2021,IGHV3-53*04,0.6,human,True,0,,,,False
+FR3:96,7teb,H,EM,4.23,2022,IGHV5-12-2*01,0.95,mouse,True,3,93/94 94/95 95/96,93-95(9 ),93-95,True
+FR3:96,7teb,M,EM,4.23,2022,IGHV5-12-2*01,0.95,mouse,True,3,93/94 94/95 95/96,93-95(9 ),93-95,True
+FR3:81 (control),7sgf,H,EM,4.41,2021,IGHV3-53*04,0.54,human,True,0,,,,False
+FR3:81 (control),7sgf,J,EM,4.41,2021,IGHV3-53*04,0.54,human,True,0,,,,False
+FR3:81 (control),7sgf,M,EM,4.41,2021,IGHV3-53*04,0.54,human,True,0,,,,False
+FR3:81 (control),7u8g,D,EM,3.2,2022,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),8h01,E,EM,3.7,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8h01,G,EM,3.7,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8h01,I,EM,3.7,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8h00,E,EM,3.41,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8h00,G,EM,3.41,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8h00,I,EM,3.41,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8gzz,E,EM,3.52,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8gzz,G,EM,3.52,2022,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR1:26,8gsd,H,EM,3.1,2022,IGHV1-47-27*01,0.81,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR1:26,8gsc,H,EM,3.4,2022,IGHV1-47-27*01,0.81,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR1:26,8gsf,E,EM,3.6,2022,IGHV1-47-27*01,0.81,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR1:26,8gsf,H,EM,3.6,2022,IGHV1-47-27*01,0.81,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR1:26,8gse,H,EM,3.7,2022,IGHV1-47-27*01,0.81,mouse,True,5,27/26 28/27 29/28 30/29 35/30,27-35(8 ),27-35,True
+FR3:81 (control),8itu,E,EM,3.68,2023,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8itu,G,EM,3.68,2023,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8itu,I,EM,3.68,2023,IGHV5-17*01,0.63,mouse,True,0,,,,False
+FR3:81 (control),8kei,C,EM,3.56,2023,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:96,8xlk,K,EM,4.2,2023,IGHV5-12-2*01,0.95,mouse,True,3,93/94 94/95 95/96,93-95(9 ),93-95,True
+FR3:84,9bop,M,EM,3.0,2024,IGHV3-53*04,0.55,human,True,3,81/82 82/83 83/84,81-83(9 ),81-83,True
+FR3:84,9bop,O,EM,3.0,2024,IGHV3-53*04,0.55,human,True,3,81/82 82/83 83/84,81-83(9 ),81-83,True
+FR3:81 (control),9bop,A,EM,3.0,2024,IGHV3-64*04,0.64,human,True,0,,,,False
+FR3:81 (control),9bop,C,EM,3.0,2024,IGHV3-64*04,0.64,human,True,0,,,,False
+FR3:81 (control),9bop,E,EM,3.0,2024,IGHV3-64*04,0.64,human,True,0,,,,False
+FR3:84+85,9e89,H,EM,3.5,2024,IGHV3-7*01,0.76,human,True,3,81/83 82/84 83/85,81-83(9 ),81-83,True
+FR3:85,9jrt,N,EM,3.28,2024,IGHV3-23*01,0.72,human,False,0,,,,False
+FR3:85,9jro,N,EM,3.5,2024,IGHV3-23*01,0.72,human,False,0,,,,False
+FR3:81 (control),9ml7,H,EM,3.2,2024,IGHV3-53*04,0.62,human,True,0,,,,False
+FR3:81 (control),9ml6,H,EM,3.5,2024,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),9ml6,M,EM,3.5,2024,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:81 (control),9ml6,P,EM,3.5,2024,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:84,9ml5,H,EM,3.4,2024,IGHV3-53*04,0.65,human,True,2,85/84 86/85,85-95(9 ),85-95,True
+FR3:84,9ml5,M,EM,3.4,2024,IGHV3-53*04,0.65,human,True,2,85/84 86/85,85-95(9 ),85-95,True
+FR3:81 (control),9ml4,H,EM,3.3,2024,IGHV3-23*01,0.61,human,True,0,,,,False
+FR3:81 (control),9ml4,M,EM,3.3,2024,IGHV3-23*01,0.61,human,True,0,,,,False
+FR3:81 (control),9ml4,P,EM,3.3,2024,IGHV3-23*01,0.61,human,True,0,,,,False
+FR3:85,9yfu,N,EM,3.08,2025,IGHV3-23*01,0.72,human,True,4,81/82 82/83 83/84 84/85,81-84(9 ),81-84,True
+FR3:84+85,30bg,H,X-ray,3.31,2026,IGHV1-69*01,0.97,human,True,3,81/83 82/84 83/85,81-83(9 ),81-83,True
+FR3:81 (control),30ae,H,X-ray,3.5,2026,IGHV3-53*04,0.61,human,True,0,,,,False
+FR3:84,30ad,H,X-ray,3.2,2026,IGHV3-53*04,0.61,human,True,3,81/82 82/83 83/84,81-83(9 ),81-83,True
+FR3:81 (control),8df1,H,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8df1,M,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8df1,O,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8df1,Q,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8df1,S,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8df1,U,X-ray,3.3,2022,IGHV3-53*04,0.63,human,True,0,,,,False
+FR3:81 (control),8r61,A,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:81 (control),8r61,D,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:81 (control),8r61,G,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:81 (control),8r61,J,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:81 (control),8r61,M,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:81 (control),8r61,P,X-ray,3.1,2023,IGHV2-9-1*01,0.59,mouse,True,0,,,,False
+FR3:84,9pf9,H,X-ray,3.93,2025,IGHV2-5*01,0.97,human,True,3,81/82 82/83 83/84,81-83(9 ),81-83,True

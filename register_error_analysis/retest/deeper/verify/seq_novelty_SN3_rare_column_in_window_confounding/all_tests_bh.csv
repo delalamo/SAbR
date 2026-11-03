@@ -1,0 +1,33 @@
+source,test,effect,p,n,q_BH
+v01,"SN3 O/E, controls = clean_EM (investigator)",O/E 14.9 (14/199 vs exp 0.94),2.0504695460132205e-12,,1.0935837578737176e-11
+v01,"SN3 O/E, controls = all_EM_not_first_error",O/E 12.3 (14/199 vs exp 1.14),2.4704290433072007e-11,,9.881716173228803e-11
+v01,"SN3 O/E, controls = all_EM_units",O/E 10.4 (14/199 vs exp 1.34),1.9962573634406514e-10,,7.097803958900093e-10
+v01,"SN3 O/E, controls = clean_Xray",O/E 7.7 (14/199 vs exp 1.82),9.17627066877144e-09,,2.258774318466816e-08
+v06,"any run in W ~ rare col, EM+X-ray, excl. FR3 window",OR 14.06 (7.77-25.44),2.3090551091299263e-18,32110.0,7.388976349215764e-17
+v06,"any run in W ~ rare col, EM only, excl. FR3 window",OR 13.45 (6.77-26.74),1.2073197814793511e-13,21300.0,1.931711650366962e-12
+v06,"any run in W ~ rare col, X-ray only, excl. FR3 window",OR 25.31 (7.06-90.69),6.995493425249114e-07,10810.0,1.4923719307198109e-06
+v06,any run: rare col x EM interaction (excl. FR3),OR 0.76 (0.19-3.06),0.703540335038533,32110.0,0.726235184555905
+v06,first-occurrence run in W: EM M0 window FE,OR 11.53 (5.79-22.95); 14/104 rare-col unit-windows are errors,3.441835044444506e-12,25518.0,1.5734103060317742e-11
+v06,first-occurrence run in W: EM M1 +year+res+ctype,OR 9.39 (4.45-19.81); 14/104 rare-col unit-windows are errors,4.0805780615166435e-09,25518.0,1.1870772542593872e-08
+v06,first-occurrence run in W: EM M2 +sars2+vhh+nonhm,OR 8.53 (4.13-17.61); 14/104 rare-col unit-windows are errors,7.058160091551624e-09,25518.0,1.8821760244137664e-08
+v06,first-occurrence run in W: EM M3 +atypical CDR length,OR 7.16 (3.34-15.37); 14/104 rare-col unit-windows are errors,4.291988553781809e-07,25518.0,9.810259551501277e-07
+v06,first-occurrence run in W: EM M4 +unbuilt gap in window,OR 4.91 (2.08-11.59); 14/104 rare-col unit-windows are errors,0.0002887466422303,25518.0,0.0004399948833985524
+v06,first-occurrence run in W: EM M3 within no-gap,OR 8.95 (3.62-22.12); 11/75 rare-col unit-windows are errors,2.084112490750803e-06,23498.0,3.923035276707394e-06
+v06,first-occurrence run in W: EM M4 excl. CDR3/FR4 windows (bovine),OR 4.42 (1.48-13.27); 9/73 rare-col unit-windows are errors,0.0079654211712347,17000.0,0.010195739099180416
+v06,first-occurrence run in W: X-ray M1,OR 13.33 (3.32-53.56); 4/96 rare-col unit-windows are errors,0.0002629032007299,12957.0,0.00042064512116783996
+v06,first-occurrence run in W: X-ray M1b (no year),OR 11.65 (3.20-42.46); 4/96 rare-col unit-windows are errors,0.0001986047599047,12957.0,0.00033449222720791577
+v06,first-occurrence run in W: pooled rc x EM interaction,OR 0.92 (0.23-3.67); 18/200 rare-col unit-windows are errors,0.9009611523239246,38475.0,0.9009611523239246
+v06,first-occurrence run in W: EM rc x 2020-21 peak interaction,OR 0.71 (0.16-3.21); 14/104 rare-col unit-windows are errors,0.6597199270399987,25518.0,0.7037012555093319
+v05,high-res (1.1-2.6 A) X-ray chains with a rare column: run touching the rare column vs 4.7% detector background,15/44 = 0.34,7.533882017381148e-10,44.0,2.4108422455619674e-09
+v05,same column families as the SN3 positives,12/18,1.6532950496551016e-12,18.0,1.0935837578737176e-11
+v07,SN3 recount: as published (all 199 unit-modes),"14/199 vs exp 0.94, O/E 14.9",2.0504695460132205e-12,199.0,1.0935837578737176e-11
+v07,SN3 recount: drop the 6 positives reproduced as tool disagreement at high resolution,"8/193 vs exp 0.93, O/E 8.6",6.226358032775218e-06,193.0,1.1069080947155942e-05
+v07,SN3 recount: ... and count only confirmed model deviations as positive,"5/193 vs exp 0.93, O/E 5.4",0.0027282162046624,193.0,0.0036376216062165337
+v07,SN3 recount: ... confirmed model deviations with a register shift (exclude D0),"4/193 vs exp 0.93, O/E 4.3",0.0151349946565739,193.0,0.017937771444828325
+v07,SN3 recount: drop artifacts and the bovine FMDV lab (Lou Z./Kun L.),"4/186 vs exp 0.88, O/E 4.5",0.0126294667467035,186.0,0.015543959072865847
+v07,SN3 recount: ... confirmed model deviations only,"1/186 vs exp 0.88, O/E 1.1",0.5864066743839926,186.0,0.6470694338030264
+v07,SN3 recount: drop artifacts; confirmed + probable model deviations,"6/193 vs exp 0.93, O/E 6.4",0.0004139099136505,193.0,0.0006020507834916364
+v07,SN3 recount: drop artifacts and bovine lab; confirmed + probable model deviations,"2/186 vs exp 0.88, O/E 2.3",0.2212566692596299,186.0,0.25286476486814846
+v07,"SN3 recount: species+atypical-length matched, as published","14/199 vs exp 0.80, O/E 17.5",2.410912303711488e-13,199.0,2.571639790625587e-12
+v07,"SN3 recount: species+atypical-length matched, artifacts dropped","8/193 vs exp 0.80, O/E 10.0",1.9967996859081588e-06,193.0,3.923035276707394e-06
+v07,"SN3 recount: species+atypical-length matched, confirmed model deviations only","5/193 vs exp 0.80, O/E 6.3",0.0013892937454977,193.0,0.0019329304285185393

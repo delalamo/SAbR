@@ -1,0 +1,14 @@
+                                                        test     metric  n_err  n_ctl  n_papers  OR_perSD      lo       hi       p
+0                            within paper, adjusted for none    fw_orig     25    108      21.0   10.0504  2.9509  34.2298  0.0002
+1                      within paper, adjusted for chain type    fw_orig     25    108      21.0    9.6099  2.7175  33.9832  0.0004
+2   within paper, adjusted for chain type + res + n_V_chains    fw_orig     25    108      21.0   13.1502  3.2679  52.9178  0.0003
+3                                   matched + log n_V_chains    fw_orig     49    271       NaN    3.1589     NaN      NaN  0.0000
+4                            within paper, adjusted for none  fw_seqref     25    108      21.0    5.7795  2.1715  15.3818  0.0004
+5                      within paper, adjusted for chain type  fw_seqref     25    108      21.0    5.8669  2.1747  15.8277  0.0005
+6   within paper, adjusted for chain type + res + n_V_chains  fw_seqref     25    108      21.0    6.9876  2.4691  19.7749  0.0002
+7                                   matched + log n_V_chains  fw_seqref     49    271       NaN    3.0391     NaN      NaN  0.0000
+8                            within paper, adjusted for none    fw_core     25    108      21.0    5.9513  2.2679  15.6166  0.0003
+9                      within paper, adjusted for chain type    fw_core     25    108      21.0    5.4449  2.0911  14.1776  0.0005
+10  within paper, adjusted for chain type + res + n_V_chains    fw_core     25    108      21.0    6.5518  2.2035  19.4803  0.0007
+11                                  matched + log n_V_chains    fw_core     47    271       NaN    2.8028     NaN      NaN  0.0000
+error vs matched n_V_chains median 2.0 4.0

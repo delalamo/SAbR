@@ -1,0 +1,31 @@
+=== (a) A-mode: FR4 truncation with and without adjustment for SEQRES N-terminal truncation
+A      trunc_true M2 OR 10.9 p=0.0006 | + nt_trunc OR 5.2 (1.7-15.9) p=0.011
+A      trunc_true | M2 + model_end_fr4 OR 1.34 (0.40-4.47) p=0.3
+   co-occurrence in controls: P(nt_trunc | FR4 trunc) = 0.44 vs 0.075
+notDE  trunc_true M2 OR 6.1 p=0.005 | + nt_trunc OR 4.6 (1.6-13.4) p=0.014
+notDE  trunc_true | M2 + model_end_fr4 OR 1.02 (0.32-3.27) p=0.31
+   co-occurrence in controls: P(nt_trunc | FR4 trunc) = 0.44 vs 0.075
+
+=== (b) one unit per paper, cases kept (one per paper), one random control per paper, 2000 draws
+D_all  cases 47 papers, controls 1427 papers: median OR 6.3, median p 0.054, frac p<0.05 0.45
+E      cases 17 papers, controls 1444 papers: median OR 19.1, median p 0.0079, frac p<0.05 1.00
+ANY    cases 141 papers, controls 1350 papers: median OR 8.8, median p 0.0002, frac p<0.05 1.00
+
+=== (c) deepdive window features for D+/D-/E cases: SEQRES-truncated vs not
+                             n  unmod_near_any  win_fit_pct  trunc
+mode case  model_end_fr4                                          
+D+   False False          4026           0.264        0.565  0.000
+           True            121           0.702        0.584  0.306
+     True  False            20           0.500        0.498  0.000
+           True             11           0.818        0.570  0.182
+D-   False False          4030           0.264        0.566  0.000
+           True            120           0.700        0.583  0.308
+     True  False            17           0.412        0.435  0.000
+           True              3           1.000        0.606  0.000
+E    False False          4038           0.266        0.502  0.000
+           True            124           0.710        0.579  0.282
+     True  False            17           0.471        0.500  0.000
+           True              1           1.000        0.782  0.000
+   mode   pdb chain  year   res  unmod_near  win_fit_pct  mod_last_anarci  seq_last_imgt            irm    fit
+10   D+  7wtf     J  2022  3.00         0.0     0.536765            124.0          124.0  none recorded  other
+13   D+  8khr     H  2023  3.25         0.0     0.549465            120.0          120.0  none recorded  other

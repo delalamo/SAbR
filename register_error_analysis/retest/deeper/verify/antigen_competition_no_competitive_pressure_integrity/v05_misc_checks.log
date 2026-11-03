@@ -1,0 +1,62 @@
+     pdb     deposit    last_author  err_first  err_any                  modes                         doi
+24  7jvc  2020-08-20    Veesler, D.      False    False                    NaN  10.1016/j.cell.2020.09.037
+25  7a5r  2020-08-21  Gamblin, S.J.      False    False                    NaN  10.1038/s41467-020-19146-5
+26  7a5s  2020-08-21  Gamblin, S.J.      False    False                    NaN  10.1038/s41467-020-19146-5
+27  7jw0  2020-08-24    Veesler, D.      False    False                    NaN  10.1016/j.cell.2020.09.037
+28  7cwl  2020-08-29       Wang, N.      False    False                    NaN  10.1038/s41422-020-00444-y
+29  7cwm  2020-08-29       Wang, X.      False    False                    NaN  10.1038/s41422-020-00444-y
+30  7cwn  2020-08-29       Wang, X.      False    False                    NaN  10.1038/s41422-020-00444-y
+31  7cwo  2020-08-29       Wang, N.      False    False                    NaN  10.1038/s41422-020-00444-y
+32  7cws  2020-08-31       Wang, X.       True     True             A_FR1Nterm  10.1038/s41422-020-00446-w
+33  7cwt  2020-08-31       Wang, X.       True     True             A_FR1Nterm  10.1038/s41422-020-00446-w
+34  7cwu  2020-08-31       Wang, N.       True     True             A_FR1Nterm  10.1038/s41422-020-00446-w
+35  7cyh  2020-09-03        Zhu, L.      False    False                    NaN                         NaN
+36  7cyp  2020-09-04        Zhu, L.      False    False                    NaN         10.1093/nsr/nwaa297
+37  7czp  2020-09-09       Zhou, Q.      False    False                    NaN  10.1038/s41422-021-00487-9
+38  7czr  2020-09-09       Zhou, Q.       True     True  A_FR1Nterm;E_FR4bulge  10.1038/s41422-021-00487-9
+39  7czs  2020-09-09       Zhou, Q.       True     True  A_FR1Nterm;E_FR4bulge  10.1038/s41422-021-00487-9
+           mean  size  sum
+sars2                     
+False  0.024779  1130   28
+True   0.053571   112    6
+       pdb     deposit    last_author  labs_acc_12m                                          tgt_name  sars2
+1956  7wvl  2022-02-10     Nair, D.T.         164.0                                Spike glycoprotein   True
+1258  7f5h  2021-06-22         Li, D.         162.0                                Spike glycoprotein   True
+2300  8f2x  2022-11-08    Joyce, G.M.         142.0                                Spike glycoprotein   True
+1216  7e5y  2021-02-21     Yang, X.M.         140.0                                Spike glycoprotein   True
+1372  7l5b  2020-12-21    Shapiro, L.         120.0                                Spike glycoprotein   True
+3473  9lfp  2025-01-08        Guo, F.          71.0                                Spike glycoprotein   True
+2450  8idm  2023-02-13       Tian, L.           3.0                                Spike glycoprotein  False
+411   4xnz  2015-01-16    Kwong, P.D.           2.0                       Envelope glycoprotein gp160  False
+1311  7k66  2020-09-18  Spiegel, P.C.           1.0  Coagulation factor VIII; Coagulation factor VIII  False
+289   3wsq  2014-03-20     Zhou, L.J.           1.0           Receptor tyrosine-protein kinase erbB-2  False
+non-SARS2 EM families with highest median other labs (fam, +-12m):
+                 n  err  labs_med                         cls
+fam1                                                         
+g30_4905_30     46    4     135.0  viral surface glycoprotein
+g30_127001_30  107    3      84.0                        GPCR
+P0ABE7          48    2      34.5                        GPCR
+g30_161017_30   90    6      23.0  viral surface glycoprotein
+g30_201308_30  260    9      17.0  viral surface glycoprotein
+g30_27931_30    60    0      11.0                        GPCR
+g30_114341_30   31    0       9.0  viral surface glycoprotein
+P42212          11    0       9.0         channel/transporter
+g30_324_30      47    0       9.0               other protein
+g30_68766_30    30    0       8.0  viral surface glycoprotein
+non-SARS2 labs_fam_12m, as investigator     : OR 0.817 (0.717-0.930) p=0.0023 n=2046 err=132
+  excluding fiducial-only entries           : OR 0.842 (0.737-0.962) p=0.0113 n=1843 err=130
+  excluding GPCR targets                    : OR 0.807 (0.696-0.935) p=0.0043 n=1740 err=120
+  excluding GPCR + fiducial-only            : OR 0.806 (0.694-0.935) p=0.0045 n=1732 err=120
+  excl GPCR+fid, also excl capsid/enzyme    : OR 0.913 (0.762-1.094) p=0.3250 n=1486 err=67
+  accession-level, excl GPCR+fid            : OR 0.820 (0.626-1.074) p=0.1488 n=1732 err=120
+X-ray SARS2 6/112 vs non-SARS2 28/1130, Fisher p=0.117
+X-ray SARS2 adjusted period+res: OR 1.549 (0.583-4.112) p=0.3800 n=1242 err=34
+EM analysis entries whose target keys mix a fiducial accession with a real target: 69 errors 4
+                            n  err  labs12_med
+tgt_cls                                       
+GPCR                       49    3        30.0
+channel/transporter        15    0         9.0
+other protein               2    1         3.0
+receptor/membrane protein   3    0         5.0
+headline l_labs_acc_12m, excluding these entries: OR 0.942 (0.856-1.036) p=0.2164 n=2638 err=170
+non-SARS2 l_labs_acc_12m, excluding these entries: OR 0.785 (0.587-1.050) p=0.1029 n=1977 err=128

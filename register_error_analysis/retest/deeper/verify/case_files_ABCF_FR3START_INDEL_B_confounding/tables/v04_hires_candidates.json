@@ -1,0 +1,135 @@
+{
+ "9om5_a": {
+  "pattern": "H:(74, 75)+()",
+  "outcome": "B_first",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "8qtd_L": {
+  "pattern": "L:(66, 67, 68, 69, 70, 71, 72, 74)+()",
+  "outcome": "clean",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "8bw0_H": {
+  "pattern": "H:()+('70A',)",
+  "outcome": "B_first",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "9lad",
+    "B",
+    2.02,
+    "H"
+   ]
+  ]
+ },
+ "8jag_H": {
+  "pattern": "H:(66, 67, 68)+()",
+  "outcome": "B_first",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "9uot_B": {
+  "pattern": "H:(71, 72, 74)+()",
+  "outcome": "clean",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "9pyh_L": {
+  "pattern": "K:(66,)+()",
+  "outcome": "B_first",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "9pyn",
+    "B",
+    2.34,
+    "K"
+   ]
+  ]
+ },
+ "8dua_D": {
+  "pattern": "H:(74, 75)+()",
+  "outcome": "clean",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "8snc_C": {
+  "pattern": "H:(68,)+()",
+  "outcome": "B_first",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "6vo3_G": {
+  "pattern": "H:()+('67A',)",
+  "outcome": "clean",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "3se9",
+    "H",
+    2.0,
+    "H"
+   ]
+  ]
+ },
+ "7rsn_E": {
+  "pattern": "H:()+('67A',)",
+  "outcome": "clean",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "3se9",
+    "H",
+    2.0,
+    "H"
+   ]
+  ]
+ },
+ "22ge_G": {
+  "pattern": "H:()+('69A',)",
+  "outcome": "B_first",
+  "n_hires_entries": 0,
+  "n_hires_V": 0,
+  "picks": []
+ },
+ "6crq_D": {
+  "pattern": "H:()+('67A',)",
+  "outcome": "clean",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "3se9",
+    "H",
+    2.0,
+    "H"
+   ]
+  ]
+ },
+ "8r4d_B": {
+  "pattern": "H:()+('67A', '67B', '67C')",
+  "outcome": "B_first",
+  "n_hires_entries": 1,
+  "n_hires_V": 1,
+  "picks": [
+   [
+    "6oca",
+    "C",
+    2.113,
+    "H"
+   ]
+  ]
+ }
+}

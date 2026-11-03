@@ -1,0 +1,209 @@
+=== 0. Reproduction (EM, first-occurrence error units vs clean units of the same chain types)
+ANY    cases 9/183 (4.9%)  ctrl 35/4036 (0.87%)  Fisher OR 5.9 p=8.5e-05  Firth-M2 OR 7.8 (3.6-16.7) p=7e-06
+D_all  cases 4/59 (6.8%)  ctrl 35/4036 (0.87%)  Fisher OR 8.3 p=0.0022  Firth-M2 OR 14.7 (4.9-43.9) p=0.00027
+Dplus  cases 2/32 (6.2%)  ctrl 35/4036 (0.87%)  Fisher OR 7.6 p=0.034  Firth-M2 OR 12.4 (3.0-50.5) p=0.015
+E      cases 2/18 (11.1%)  ctrl 35/4036 (0.87%)  Fisher OR 14.3 p=0.011  Firth-M2 OR 17.0 (4.6-63.3) p=0.0067
+A      cases 4/59 (6.8%)  ctrl 35/4036 (0.87%)  Fisher OR 8.3 p=0.0022  Firth-M2 OR 10.0 (3.5-28.2) p=0.00085
+notDE  cases 4/107 (3.7%)  ctrl 35/4036 (0.87%)  Fisher OR 4.4 p=0.017  Firth-M2 OR 5.6 (2.0-15.5) p=0.0066
+
+=== 1. Spurious truncations (SEQRES continues >5 residues after the ANARCI V parse) among EM truncated units
+       pdb chain ctype  err_first_u  clean modes_u  seq_last_imgt  mod_last_anarci  seq_len  seq_tail_after_v
+686   9cj7     H     H         True  False      D0          122.0            122.0      293               153
+2664  9dzq     G     H        False   True                  121.0            121.0      224               109
+2937  5ywo     M     K        False   True                  117.0            117.0      215               121
+4227  9yq4     C     H        False  False                  122.0            122.0      134                12
+6407  9zb5     G     H        False   True                  121.0            121.0      240               125
+
+=== 2. Corrected truncation (spurious ANARCI parse stops removed)
+ANY    8/183 vs 32/4036  Fisher OR 5.7 p=0.00025; Firth-M2 OR 7.5 (3.3-16.6) p=2.9e-05
+D_all  3/59 vs 32/4036  Fisher OR 6.7 p=0.013; Firth-M2 OR 11.4 (3.4-38.2) p=0.0034
+Dplus  2/32 vs 32/4036  Fisher OR 8.3 p=0.029; Firth-M2 OR 13.3 (3.2-54.8) p=0.014
+E      2/18 vs 32/4036  Fisher OR 15.6 p=0.0096; Firth-M2 OR 18.0 (4.8-67.7) p=0.006
+
+=== 3. Period: truncation prevalence among clean EM units by deposition period, and year-stratified exact tests
+            n  trunc_pct  true_pct
+per4                              
+2020-21   839       0.48      0.48
+2022-23  1181       0.68      0.68
+<=2019    297       1.68      1.35
+>=2024   1719       1.05      0.93
+error units:
+          n  trunc_pct
+per4                  
+2020-21  55       1.82
+2022-23  53       9.43
+<=2019   14       7.14
+>=2024   61       3.28
+ANY    trunc      strat yb    MH OR 6.6  exact stratified p=4e-05  obs 9 vs expected 1.75
+ANY    trunc      strat per4  MH OR 6.3  exact stratified p=5.7e-05  obs 9 vs expected 1.82
+ANY    trunc      strat year x ctype MH OR 7.2  exact stratified p=2.8e-05  obs 9 vs expected 1.68
+ANY    trunc_true strat yb    MH OR 6.3  exact stratified p=0.00014  obs 8 vs expected 1.60
+ANY    trunc_true strat per4  MH OR 6.0  exact stratified p=0.00019  obs 8 vs expected 1.67
+ANY    trunc_true strat year x ctype MH OR 6.9  exact stratified p=9.6e-05  obs 8 vs expected 1.53
+D_all  trunc      strat yb    MH OR 10.1  exact stratified p=0.0011  obs 4 vs expected 0.47
+D_all  trunc      strat per4  MH OR 9.2  exact stratified p=0.0015  obs 4 vs expected 0.51
+D_all  trunc      strat year x ctype MH OR 12.8  exact stratified p=0.00048  obs 4 vs expected 0.39
+D_all  trunc_true strat yb    MH OR 7.8  exact stratified p=0.0092  obs 3 vs expected 0.44
+D_all  trunc_true strat per4  MH OR 7.3  exact stratified p=0.011  obs 3 vs expected 0.46
+D_all  trunc_true strat year x ctype MH OR 10.3  exact stratified p=0.0044  obs 3 vs expected 0.34
+E      trunc      strat yb    MH OR 15.8  exact stratified p=0.0094  obs 2 vs expected 0.15
+E      trunc      strat per4  MH OR 15.8  exact stratified p=0.0091  obs 2 vs expected 0.15
+E      trunc      strat year x ctype MH OR 16.3  exact stratified p=0.0096  obs 2 vs expected 0.15
+E      trunc_true strat yb    MH OR 17.1  exact stratified p=0.0083  obs 2 vs expected 0.14
+E      trunc_true strat per4  MH OR 17.0  exact stratified p=0.0081  obs 2 vs expected 0.14
+E      trunc_true strat year x ctype MH OR 17.5  exact stratified p=0.0086  obs 2 vs expected 0.14
+
+=== 4. Paper clustering
+ANY    trunc      cluster-robust M1 OR 7.0 (3.5-14.0) p=3.5e-08 | one unit per paper (300 draws): median OR 7.1 median p 0.014, frac p<0.05 0.75
+ANY    trunc_true cluster-robust M1 OR 6.7 (3.3-13.7) p=1.5e-07 | one unit per paper (300 draws): median OR 6.7 median p 0.023, frac p<0.05 0.64
+   papers among exposed: cases 9 papers / 9 labs; controls 28 papers / 28 labs
+D_all  trunc      cluster-robust M1 OR 12.3 (4.5-33.7) p=9.5e-07 | one unit per paper (300 draws): median OR 7.4 median p 0.19, frac p<0.05 0.32
+D_all  trunc_true cluster-robust M1 OR 9.6 (3.3-27.9) p=3.3e-05 | one unit per paper (300 draws): median OR 6.3 median p 0.22, frac p<0.05 0.08
+   papers among exposed: cases 4 papers / 4 labs; controls 28 papers / 28 labs
+E      trunc      cluster-robust M1 OR 14.7 (3.3-65.7) p=0.00045 | one unit per paper (300 draws): median OR 34.3 median p 0.048, frac p<0.05 0.54
+E      trunc_true cluster-robust M1 OR 15.6 (3.5-70.1) p=0.00034 | one unit per paper (300 draws): median OR 37.5 median p 0.044, frac p<0.05 0.63
+   papers among exposed: cases 2 papers / 2 labs; controls 28 papers / 28 labs
+
+=== 5. Simpler known factor: the model itself ends inside FR4 (last modelled residue IMGT <125), whatever the SEQRES
+--- ANY
+y                            0    1
+model_end_fr4 trunc_true           
+0.0           0           3903  139
+1.0           0             90   36
+              1             32    8
+ANY    model_end_fr4  44/183 (24.0%) vs 122/4025 (3.03%) Firth-M2 OR 10.5 (7.0-15.7) p=3.4e-24
+ANY    unbuilt_cterm  35/183 (19.1%) vs 86/4025 (2.14%) Firth-M2 OR 10.4 (6.6-16.3) p=1e-19
+ANY    trunc_true | M2 + model_end_fr4: OR 0.83 (0.34-2.02) p=0.18
+ANY    within model-ends-in-FR4 units: SEQRES-truncated 8/44 errors vs 32/122 controls; Fisher OR 0.62 p=0.31
+--- D_all
+y                            0   1
+model_end_fr4 trunc_true          
+0.0           0           3903  36
+1.0           0             90  20
+              1             32   3
+D_all  model_end_fr4  23/59 (39.0%) vs 122/4025 (3.03%) Firth-M2 OR 27.5 (14.9-50.8) p=2e-20
+D_all  unbuilt_cterm  19/59 (32.2%) vs 86/4025 (2.14%) Firth-M2 OR 24.9 (13.1-47.3) p=5.1e-17
+D_all  trunc_true | M2 + model_end_fr4: OR 0.67 (0.19-2.36) p=0.23
+D_all  within model-ends-in-FR4 units: SEQRES-truncated 3/23 errors vs 32/122 controls; Fisher OR 0.42 p=0.29
+--- Dplus
+y                            0   1
+model_end_fr4 trunc_true          
+0.0           0           3903  18
+1.0           0             90  12
+              1             32   2
+Dplus  model_end_fr4  14/32 (43.8%) vs 122/4025 (3.03%) Firth-M2 OR 33.3 (15.6-70.7) p=1.8e-14
+Dplus  unbuilt_cterm  12/32 (37.5%) vs 86/4025 (2.14%) Firth-M2 OR 32.8 (15.1-71.1) p=5.4e-13
+Dplus  trunc_true | M2 + model_end_fr4: OR 0.70 (0.16-3.06) p=0.33
+Dplus  within model-ends-in-FR4 units: SEQRES-truncated 2/14 errors vs 32/122 controls; Fisher OR 0.47 p=0.52
+--- E
+y                            0   1
+model_end_fr4 trunc_true          
+0.0           0           3903  14
+1.0           0             90   2
+              1             32   2
+E      model_end_fr4  4/18 (22.2%) vs 122/4025 (3.03%) Firth-M2 OR 10.0 (3.7-27.0) p=0.00093
+E      unbuilt_cterm  2/18 (11.1%) vs 86/4025 (2.14%) Firth-M2 OR 6.6 (1.9-22.7) p=0.04
+E      trunc_true | M2 + model_end_fr4: OR 2.74 (0.51-14.60) p=0.27
+E      within model-ends-in-FR4 units: SEQRES-truncated 2/4 errors vs 32/122 controls; Fisher OR 2.81 p=0.29
+
+=== 6. Error definition: do the D/E runs of truncated units reach the last modelled residue?
+D_all truncated cases, run reaches chain end: {True: 4} | non-truncated cases: {True: 41, False: 14}
+   non-chain-end D/E cases with truncated SEQRES: 0
+   cases whose run does not reach the chain end: 0/14 truncated vs controls 35/4036; Fisher p=1
+E truncated cases, run reaches chain end: {True: 2} | non-truncated cases: {True: 16}
+   non-chain-end D/E cases with truncated SEQRES: 0
+   cases whose run does not reach the chain end: 0/0 truncated vs controls 35/4036; Fisher p=1
+
+=== 7. Specificity: is SEQRES N-terminal truncation (a marker of SEQRES = modelled residues) also enriched in D/E?
+D_all  SEQRES starts after IMGT 1: 9/59 (15.3%) vs 7.8%  Firth-M2 OR 1.88 (0.92-3.87) p=0.043
+D_all  trunc_true | M2 + nt_trunc: OR 9.5 (2.7-33.4) p=0.0067
+E      SEQRES starts after IMGT 1: 1/18 (5.6%) vs 7.8%  Firth-M2 OR 1.15 (0.26-5.03) p=0.49
+E      trunc_true | M2 + nt_trunc: OR 22.2 (5.5-89.0) p=0.0046
+
+=== 8. Alternative control: all other EM units without a first-occurrence error at this location (errors elsewhere allowed)
+D_all  3/59 vs 37/4160 (0.89%) Firth-M2 OR 10.4 (3.2-34.3) p=0.004
+E      2/18 vs 38/4201 (0.90%) Firth-M2 OR 17.5 (4.8-64.2) p=0.0062
+
+=== 9. Leave-one-case-out (D_all, E; corrected truncation, Fisher)
+D_all  drop 8w5d_H: 2/58 vs 32/4036  OR 4.5 p=0.083
+D_all  drop 8khr_H: 2/58 vs 32/4036  OR 4.5 p=0.083
+D_all  drop 7wtf_J: 2/58 vs 32/4036  OR 4.5 p=0.083
+E      drop 7wtf_J: 1/17 vs 32/4036  OR 7.8 p=0.13
+E      drop 7o85_B: 1/17 vs 32/4036  OR 7.8 p=0.13
+
+=== All tests (BH across this verifier's tests)
+                           test   mode        feature  n_err  err_exposed  err_pct  n_ctrl  ctrl_exposed  ctrl_pct       OR       p    q_bh                                        note
+0                    fisher_raw    ANY          trunc    183            9   4.9180    4036            35    0.8672   5.9128  0.0001  0.0004                                            
+1                      firth_M2    ANY          trunc    183            9   4.9180    4036            35    0.8672   7.7959  0.0000  0.0001                                            
+2                    fisher_raw  D_all          trunc     59            4   6.7797    4036            35    0.8672   8.3138  0.0022  0.0054                                            
+3                      firth_M2  D_all          trunc     59            4   6.7797    4036            35    0.8672  14.7259  0.0003  0.0010                                            
+4                    fisher_raw  Dplus          trunc     32            2   6.2500    4036            35    0.8672   7.6210  0.0336  0.0437                                            
+5                      firth_M2  Dplus          trunc     32            2   6.2500    4036            35    0.8672  12.4010  0.0155  0.0216                                            
+6                    fisher_raw      E          trunc     18            2  11.1111    4036            35    0.8672  14.2893  0.0113  0.0171                                            
+7                      firth_M2      E          trunc     18            2  11.1111    4036            35    0.8672  16.9909  0.0067  0.0127                                            
+8                    fisher_raw      A          trunc     59            4   6.7797    4036            35    0.8672   8.3138  0.0022  0.0054                                            
+9                      firth_M2      A          trunc     59            4   6.7797    4036            35    0.8672   9.9784  0.0008  0.0025                                            
+10                   fisher_raw  notDE          trunc    107            4   3.7383    4036            35    0.8672   4.4394  0.0173  0.0237                                            
+11                     firth_M2  notDE          trunc    107            4   3.7383    4036            35    0.8672   5.5673  0.0066  0.0127                                            
+12             fisher_corrected    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   5.7200  0.0003  0.0009                                            
+13           firth_M2_corrected    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   7.4536  0.0000  0.0002                                            
+14             fisher_corrected  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   6.7031  0.0134  0.0196                                            
+15           firth_M2_corrected  D_all     trunc_true     59            3   5.0847    4036            32    0.7929  11.3684  0.0034  0.0080                                            
+16             fisher_corrected  Dplus     trunc_true     32            2   6.2500    4036            32    0.7929   8.3417  0.0288  0.0380                                            
+17           firth_M2_corrected  Dplus     trunc_true     32            2   6.2500    4036            32    0.7929  13.2881  0.0138  0.0196                                            
+18             fisher_corrected      E     trunc_true     18            2  11.1111    4036            32    0.7929  15.6406  0.0096  0.0151                                            
+19           firth_M2_corrected      E     trunc_true     18            2  11.1111    4036            32    0.7929  18.0111  0.0060  0.0127                                            
+20               exact_strat_yb    ANY          trunc    183            9   4.9180    4036            35    0.8672   6.6086  0.0000  0.0002                              obs 9 exp 1.75
+21             exact_strat_per4    ANY          trunc    183            9   4.9180    4036            35    0.8672   6.2845  0.0001  0.0003                              obs 9 exp 1.82
+22       exact_strat_year_ctype    ANY          trunc    183            9   4.9180    4036            35    0.8672   7.1567  0.0000  0.0002                              obs 9 exp 1.68
+23               exact_strat_yb    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   6.3167  0.0001  0.0006                              obs 8 exp 1.60
+24             exact_strat_per4    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   6.0236  0.0002  0.0007                              obs 8 exp 1.67
+25       exact_strat_year_ctype    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   6.9321  0.0001  0.0004                              obs 8 exp 1.53
+26               exact_strat_yb  D_all          trunc     59            4   6.7797    4036            35    0.8672  10.0977  0.0011  0.0031                              obs 4 exp 0.47
+27             exact_strat_per4  D_all          trunc     59            4   6.7797    4036            35    0.8672   9.2457  0.0015  0.0038                              obs 4 exp 0.51
+28       exact_strat_year_ctype  D_all          trunc     59            4   6.7797    4036            35    0.8672  12.8295  0.0005  0.0015                              obs 4 exp 0.39
+29               exact_strat_yb  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   7.8212  0.0092  0.0151                              obs 3 exp 0.44
+30             exact_strat_per4  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   7.3374  0.0105  0.0163                              obs 3 exp 0.46
+31       exact_strat_year_ctype  D_all     trunc_true     59            3   5.0847    4036            32    0.7929  10.3086  0.0044  0.0099                              obs 3 exp 0.34
+32               exact_strat_yb      E          trunc     18            2  11.1111    4036            35    0.8672  15.8317  0.0094  0.0151                              obs 2 exp 0.15
+33             exact_strat_per4      E          trunc     18            2  11.1111    4036            35    0.8672  15.7883  0.0091  0.0151                              obs 2 exp 0.15
+34       exact_strat_year_ctype      E          trunc     18            2  11.1111    4036            35    0.8672  16.2793  0.0096  0.0151                              obs 2 exp 0.15
+35               exact_strat_yb      E     trunc_true     18            2  11.1111    4036            32    0.7929  17.1016  0.0083  0.0150                              obs 2 exp 0.14
+36             exact_strat_per4      E     trunc_true     18            2  11.1111    4036            32    0.7929  17.0493  0.0081  0.0149                              obs 2 exp 0.14
+37       exact_strat_year_ctype      E     trunc_true     18            2  11.1111    4036            32    0.7929  17.4548  0.0086  0.0151                              obs 2 exp 0.14
+38       logit_M1_cluster_paper    ANY          trunc    183            9   4.9180    4036            35    0.8672   7.0015  0.0000  0.0000                                            
+39           one_unit_per_paper    ANY          trunc    183            9   4.9180    4036            35    0.8672   7.0759  0.0137  0.0196  frac p<0.05 0.75; median exposed cases 3.0
+40       logit_M1_cluster_paper    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   6.7144  0.0000  0.0000                                            
+41           one_unit_per_paper    ANY     trunc_true    183            8   4.3716    4036            32    0.7929   6.6646  0.0228  0.0307  frac p<0.05 0.64; median exposed cases 3.0
+42       logit_M1_cluster_paper  D_all          trunc     59            4   6.7797    4036            35    0.8672  12.3440  0.0000  0.0000                                            
+43           one_unit_per_paper  D_all          trunc     59            4   6.7797    4036            35    0.8672   7.4393  0.1907  0.2240  frac p<0.05 0.32; median exposed cases 1.0
+44       logit_M1_cluster_paper  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   9.5908  0.0000  0.0002                                            
+45           one_unit_per_paper  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   6.2549  0.2214  0.2560  frac p<0.05 0.08; median exposed cases 1.0
+46       logit_M1_cluster_paper      E          trunc     18            2  11.1111    4036            35    0.8672  14.6549  0.0005  0.0015                                            
+47           one_unit_per_paper      E          trunc     18            2  11.1111    4036            35    0.8672  34.2569  0.0484  0.0587  frac p<0.05 0.54; median exposed cases 1.0
+48       logit_M1_cluster_paper      E     trunc_true     18            2  11.1111    4036            32    0.7929  15.6151  0.0003  0.0011                                            
+49           one_unit_per_paper      E     trunc_true     18            2  11.1111    4036            32    0.7929  37.5455  0.0444  0.0548  frac p<0.05 0.63; median exposed cases 1.0
+50                     firth_M2    ANY  model_end_fr4    183           44  24.0437    4025           122    3.0311  10.4730  0.0000  0.0000                                            
+51                     firth_M2    ANY  unbuilt_cterm    183           35  19.1257    4025            86    2.1366  10.4237  0.0000  0.0000                                            
+52           firth_M2+model_end    ANY     trunc_true    183            8   4.3716    4025            32    0.7950   0.8319  0.1783  0.2128                                            
+53  fisher_within_model_end_fr4    ANY     trunc_true     44            8  18.1818     122            32   26.2295   0.6250  0.3128  0.3355                                            
+54                     firth_M2  D_all  model_end_fr4     59           23  38.9831    4025           122    3.0311  27.4551  0.0000  0.0000                                            
+55                     firth_M2  D_all  unbuilt_cterm     59           19  32.2034    4025            86    2.1366  24.9102  0.0000  0.0000                                            
+56           firth_M2+model_end  D_all     trunc_true     59            3   5.0847    4025            32    0.7950   0.6703  0.2290  0.2607                                            
+57  fisher_within_model_end_fr4  D_all     trunc_true     23            3  13.0435     122            32   26.2295   0.4219  0.2866  0.3165                                            
+58                     firth_M2  Dplus  model_end_fr4     32           14  43.7500    4025           122    3.0311  33.2675  0.0000  0.0000                                            
+59                     firth_M2  Dplus  unbuilt_cterm     32           12  37.5000    4025            86    2.1366  32.7746  0.0000  0.0000                                            
+60           firth_M2+model_end  Dplus     trunc_true     32            2   6.2500    4025            32    0.7950   0.7029  0.3346  0.3538                                            
+61  fisher_within_model_end_fr4  Dplus     trunc_true     14            2  14.2857     122            32   26.2295   0.4688  0.5168  0.5311                                            
+62                     firth_M2      E  model_end_fr4     18            4  22.2222    4025           122    3.0311  10.0022  0.0009  0.0027                                            
+63                     firth_M2      E  unbuilt_cterm     18            2  11.1111    4025            86    2.1366   6.6129  0.0397  0.0506                                            
+64           firth_M2+model_end      E     trunc_true     18            2  11.1111    4025            32    0.7950   2.7382  0.2657  0.2980                                            
+65  fisher_within_model_end_fr4      E     trunc_true      4            2  50.0000     122            32   26.2295   2.8125  0.2943  0.3202                                            
+66   fisher_cases_not_chain_end  D_all          trunc     14            0   0.0000    4036            35    0.8672   0.0000  1.0000  1.0000                                            
+67   fisher_cases_not_chain_end      E          trunc      0            0   0.0000    4036            35    0.8672      NaN  1.0000  1.0000                                            
+68                     firth_M2  D_all       nt_trunc     59            9  15.2542    4036           313    7.7552   1.8836  0.0432  0.0542                                            
+69            firth_M2+nt_trunc  D_all     trunc_true     59            3   5.0847    4036            32    0.7929   9.5013  0.0067  0.0127                                            
+70                     firth_M2      E       nt_trunc     18            1   5.5556    4036           313    7.7552   1.1540  0.4897  0.5103                                            
+71            firth_M2+nt_trunc      E     trunc_true     18            2  11.1111    4036            32    0.7929  22.2033  0.0046  0.0100                                            
+72             firth_M2_altctrl  D_all     trunc_true     59            3   5.0847    4160            37    0.8894  10.4226  0.0040  0.0093                                            
+73             firth_M2_altctrl      E     trunc_true     18            2  11.1111    4201            38    0.9045  17.4781  0.0062  0.0127                                            

@@ -1,0 +1,8 @@
+9p4c (control, gap 81)     wild type       : I78 S79 K80 T82 S83 S84 T85 T86          gap [81]   | all-species HMMs gap [84]
+                           ISKTSSTTV->ISKASSTTV: I78 S79 K80 A81 S82 S83 T85 T86          gap [84]   | all-species HMMs gap [84]
+                           ISKTSSTTV->ISRASSTTV: I78 S79 R80 A81 S82 S83 T85 T86          gap [84]   | all-species HMMs gap [84]
+                           ISKTSSTTV->ISKTASTTV: I78 S79 K80 T81 A82 S83 T85 T86          gap [84]   | all-species HMMs gap [84]
+30ad (flagged, gap 84)     wild type       : I78 S79 K80 A81 S82 S83 T85 T86          gap [84]   | all-species HMMs gap [84]
+                           ISKASSTTV->ISKTSSTTV: I78 S79 K80 T82 S83 S84 T85 T86          gap [81]   | all-species HMMs gap [84]
+9bop (flagged, gap 84)     wild type       : I78 S79 K80 T81 A82 S83 T85 T86          gap [84]   | all-species HMMs gap [84]
+                           ISKTASTTV->ISKTSSTTV: I78 S79 K80 T82 S83 S84 T85 T86          gap [81]   | all-species HMMs gap [84]

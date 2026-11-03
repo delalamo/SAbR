@@ -1,0 +1,32 @@
+   subset  end_cat  n_chains  n_units  cterm_dplus_run  frac_cterm_dplus  any_dplus_runs_all  first_occ_dplus  frac_first_occ_dplus  any_run_104_128
+0     all      118        15        4               15             1.000                  15               15                 1.000               15
+1     all      119         8        5                8             1.000                   6                6                 0.750                8
+2     all  120-121        26       22                4             0.154                   4                4                 0.154                6
+3     all  122-124       345      163               17             0.049                   7                7                 0.020               38
+4     all    <=117        26        9                8             0.308                   0                0                 0.000               14
+5     all    >=125     15409     6246               96             0.006                  59               58                 0.004              200
+6      EM      118        15        4               15             1.000                  15               15                 1.000               15
+7      EM      119         8        5                8             1.000                   6                6                 0.750                8
+8      EM  120-121        25       21                4             0.160                   4                4                 0.160                6
+9      EM  122-124       328      150               17             0.052                   7                7                 0.021               38
+10     EM    <=117        18        8                8             0.444                   0                0                 0.000               14
+11     EM    >=125     10117     4090               84             0.008                  45               45                 0.004              178
+12  X-ray  120-121         1        1                0             0.000                   0                0                 0.000                0
+13  X-ray  122-124        17       13                0             0.000                   0                0                 0.000                0
+14  X-ray    <=117         8        1                0             0.000                   0                0                 0.000                0
+15  X-ray    >=125      5292     2214               12             0.002                  14               13                 0.002               22
+  subset          outcome  n_units  n_le121  rate_le121  rate_gt121        OR       lo        hi    p                                                    adjusted
+0    all         fo_dplus     6408       35      0.3429      0.0044  117.1681  47.6485  288.1174  0.0  year bin, resolution, chain type, method; cluster by paper
+1    all  cterm_run_dplus     6408       35      0.5143      0.0069  166.2306  74.4357  371.2277  0.0  year bin, resolution, chain type, method; cluster by paper
+2     EM         fo_dplus     4231       34      0.3529      0.0048  129.3938  50.9893  328.3581  0.0          year bin, resolution, chain type; cluster by paper
+3     EM  cterm_run_dplus     4231       34      0.5294      0.0081  223.7062  84.8980  589.4659  0.0          year bin, resolution, chain type; cluster by paper
+
+chains ending <=119: 49 cterm D+ run 31
+cterm_run_dplus  False  True 
+method                       
+EM                  10     31
+X-ray                8      0
+last residue SAbR minus ANARCI for chains ending 118 (W/F118 last):
+1     14
+15     1
+Name: count, dtype: int64

@@ -1,0 +1,162 @@
+analysis entries 3994 EM 2752 EM errors 178
+
+== 1. Reproduce (EM entries, year+res, paper-clustered)
+  1 reproduce: host enzyme vs all other EM                                                           15/81 (18.5%) vs    163/2671 (6.1%) OR 3.83 (1.84-8.00) p=0.00035
+  1 reproduce: viral enzyme vs all other EM                                                           8/16 (50.0%) vs    170/2736 (6.2%) OR 11.33 (3.45-37.22) p=6.3e-05
+  1 reproduce: host+viral enzyme vs all other EM                                                     23/97 (23.7%) vs    155/2655 (5.8%) OR 5.14 (2.85-9.25) p=5e-08
+
+== 2. Control choice (EM entries)
+  2a enzyme vs other antigen-bound entries (fiducial-only/unbound/no-contact removed)                21/92 (22.8%) vs    151/2412 (6.3%) OR 4.65 (2.48-8.74) p=1.7e-06
+  2b enzyme vs other non-SARS-CoV-2 EM entries                                                       23/97 (23.7%) vs    113/1991 (5.7%) OR 5.01 (2.70-9.27) p=3e-07
+  2c enzyme vs non-SARS2 antigen-bound entries                                                       21/92 (22.8%) vs    109/1751 (6.2%) OR 4.38 (2.27-8.45) p=1.1e-05
+  2d enzyme vs non-SARS2 antigen-bound, capsid removed                                               21/92 (22.8%) vs     77/1597 (4.8%) OR 5.47 (2.82-10.59) p=4.8e-07
+  2e host enzyme vs other non-viral protein targets (bound)                                          15/81 (18.5%) vs      40/922 (4.3%) OR 4.57 (1.99-10.53) p=0.00035
+   rates by class among non-viral bound EM entries: {'GPCR': '9.0% (10/111)', 'channel/transporter': '2.8% (12/435)', 'cytokine/growth factor/hormone': '0.0% (0/11)', 'enzyme': '18.5% (15/81)', 'other protein': '2.8% (4/142)', 'receptor/membrane protein': '5.2% (8/153)', 'toxin': '11.8% (2/17)', 'unmapped/peptide': '8.3% (4/48)'}
+  2f enzyme, lab-clustered SEs (all EM)                                                              23/97 (23.7%) vs    155/2655 (5.8%) OR 5.14 (2.73-9.68) p=4.2e-07
+
+== 3. Period x resolution stratification (EM entries)
+   2020-21: enzyme 34.6% (9/26) vs other 8.8% (52/592); host enzyme 29.4% (5/17)
+   2022+: enzyme 17.9% (12/67) vs other 4.9% (92/1886); host enzyme 16.1% (10/62)
+   <=2019: enzyme 50.0% (2/4) vs other 6.2% (11/177); host enzyme 0.0% (0/2)
+  3a enzyme, MH over period x resolution bin (entries; ignores clustering)                                   23/97 vs           149/2560 OR 5.23 (3.15-8.69) p=8.2e-12
+  3b enzyme within period <=2019                                                                       2/4 (50.0%) vs      11/177 (6.2%) OR 14.48 (nan-nan) p=0.026
+  3b enzyme within period 2020-21                                                                     9/26 (34.6%) vs      52/592 (8.8%) OR 6.77 (1.97-23.25) p=0.0024
+  3b enzyme within period 2022+                                                                      12/67 (17.9%) vs     92/1886 (4.9%) OR 4.40 (2.23-8.70) p=2e-05
+
+== 4. Paper level (one unit per paper; EM)
+   enzyme papers 51 error 15 | other papers 1260 error 112
+  4a paper level: enzyme (any entry) vs other EM papers                                              15/51 (29.4%) vs    112/1260 (8.9%) OR 4.49 (2.32-8.69) p=8.4e-06
+  4b paper level, lab-clustered                                                                      15/51 (29.4%) vs    112/1260 (8.9%) OR 4.49 (2.15-9.36) p=6.3e-05
+  4c paper level, antigen-bound papers only                                                          15/50 (30.0%) vs    108/1131 (9.5%) OR 4.23 (2.20-8.15) p=1.6e-05
+  4d paper level, antigen-bound non-SARS2 papers                                                     15/50 (30.0%) vs      81/840 (9.6%) OR 3.92 (2.02-7.63) p=5.6e-05
+   paper level 2020-21: enzyme 50.0% (5/10) vs other 11.3% (32/284)
+   paper level 2022+: enzyme 23.1% (9/39) vs other 7.9% (69/870)
+   paper level <=2019: enzyme 50.0% (1/2) vs other 10.4% (11/106)
+  4e paper level, MH over period                                                                             15/51 vs           112/1260 OR 4.48 (2.36-8.49) p=2.3e-06
+  4f paper level: host enzyme only                                                                   12/45 (26.7%) vs    115/1266 (9.1%) OR 4.11 (1.98-8.49) p=0.00014
+  4g lab x class level (one row per lab and class), adjusted for n papers                            12/45 (26.7%) vs     87/602 (14.5%) OR 3.42 (1.63-7.20) p=0.0012
+
+== 5. Cluster bootstrap over labs (paper-level OR, year+res+size)
+   bootstrap reps 400; median OR 4.60; 95% interval 2.32-8.62; P(OR<=1)=0.000
+
+== 6. Simpler known factors (EM entries): unbuilt residues, map fit, nanobody/megabody, starting model, fitting, atypical CDRs, lab experience
+   gap_any    enzyme 0.330 vs other 0.232  p=0.025
+   gap_frac   enzyme 0.235 vs other 0.139  p=0.011
+   nterm_any  enzyme 0.155 vs other 0.163  p=0.83
+   n_gaps     enzyme 0.464 vs other 0.274  p=0.0056
+   lq_z       enzyme 0.164 vs other 0.076  p=0.93
+   vhh        enzyme 0.433 vs other 0.270  p=0.00041
+   mega       enzyme 0.041 vs other 0.018  p=0.1
+   atyp       enzyme 1.000 vs other 0.997  p=0.59
+   v_id       enzyme 0.833 vs other 0.866  p=0.0024
+   mouse      enzyme 0.186 vs other 0.200  p=0.71
+   lexp       enzyme 1.796 vs other 3.024  p=1.1e-06
+   error rate by gap_any x enzyme:
+              mean  sum  size
+enz gap_any                  
+0   0.0      0.035   71  2040
+    1.0      0.137   84   615
+1   0.0      0.031    2    65
+    1.0      0.656   21    32
+  6 enzyme adjusted: base (same sample)                                                              23/95 (24.2%) vs    155/2643 (5.9%) OR 5.30 (2.94-9.54) p=2.8e-08
+  6 enzyme adjusted: + unbuilt residues (any gap, N-terminal truncation)                             23/95 (24.2%) vs    155/2643 (5.9%) OR 4.95 (2.82-8.68) p=2.6e-08
+  6 enzyme adjusted: + unbuilt + local map fit                                                       23/95 (24.2%) vs    155/2643 (5.9%) OR 5.27 (2.87-9.67) p=8.3e-08
+  6 enzyme adjusted: + unbuilt + map + VHH + megabody + atypical CDR + germline id + mouse + star    23/95 (24.2%) vs    155/2643 (5.9%) OR 6.28 (3.36-11.73) p=8e-09
+  6 enzyme adjusted: full + lab experience + SARS2 + capsid                                          23/95 (24.2%) vs    155/2643 (5.9%) OR 6.46 (3.40-12.29) p=1.3e-08
+  6 enzyme full model, lab-clustered                                                                 23/95 (24.2%) vs    155/2643 (5.9%) OR 6.46 (3.44-12.14) p=6.8e-09
+
+== 7. Chain-type / antibody-unit level (unit = antibody V region in one paper; EM chains)
+   units 4107 error units 171 | enzyme units 132 error 20
+                mean  sum  size
+kind      enz                  
+Fab heavy 0    0.042   72  1730
+          1    0.125    6    48
+VHH       0    0.051   27   531
+          1    0.306   11    36
+light     0    0.030   52  1714
+          1    0.062    3    48
+  7a unit level, adjusted for chain kind                                                            20/132 (15.2%) vs    151/3975 (3.8%) OR 4.18 (2.45-7.14) p=1.6e-07
+  7b unit level within VHH                                                                           11/36 (30.6%) vs      27/531 (5.1%) OR 6.83 (3.15-14.77) p=1.1e-06
+  7b unit level within Fab heavy                                                                      6/48 (12.5%) vs     72/1730 (4.2%) OR 3.82 (1.46-10.05) p=0.0065
+  7b unit level within light                                                                           3/48 (6.2%) vs     52/1714 (3.0%) OR 2.44 (0.53-11.34) p=0.25
+  7c unit level, + chain kind + unbuilt + megabody + atypical CDR + germline id                     20/132 (15.2%) vs    151/3975 (3.8%) OR 3.80 (2.20-6.56) p=1.6e-06
+  7d unit level, antigen-bound only, + chain kind                                                   18/127 (14.2%) vs    147/3783 (3.9%) OR 3.76 (2.14-6.61) p=4e-06
+
+== 8. Alternative enzyme definition (any target accession with an EC number, regardless of rule order)
+   crosstab tgt_cls-enzyme vs EC-based:
+enz_ec     0    1
+enz              
+0       2505  150
+1         18   79
+   EC-positive entries outside the enzyme class, by class: {'viral surface glycoprotein': 44, 'channel/transporter': 40, 'receptor/membrane protein': 35, 'GPCR': 18, 'viral capsid': 9, 'toxin': 4}
+  8a EC-based enzyme (any class) vs other EM                                                        23/229 (10.0%) vs    155/2523 (6.1%) OR 1.77 (1.00-3.10) p=0.048
+   EC-positive but not enzyme class: 4.7% (7/150)
+  8b EC-positive targets classed elsewhere (e.g. membrane enzymes) vs other non-enzyme EM             7/150 (4.7%) vs    148/2505 (5.9%) OR 0.83 (0.37-1.86) p=0.65
+
+== 9. Leave-one-paper-out and leave-k-labs-out (paper level)
+   enzyme error papers: 15
+                           paper                                   lab  n   period
+384   10.1038/s41467-021-27950-w                          Grimes, J.M.  8  2020-21
+490   10.1038/s41467-025-57843-1                               Liu, Y.  2    2022+
+491   10.1038/s41467-025-58340-1                            Arnold, P.  1    2022+
+541   10.1038/s41467-026-70491-3                           Rohou, A.L.  1    2022+
+590    10.1038/s41586-019-1530-7                          Grimes, J.M.  2   <=2019
+620   10.1038/s41586-022-04534-2                            Zimmer, J.  2  2020-21
+704   10.1038/s41594-022-00755-1  Structural Genomics Consortium (SGC)  2  2020-21
+717   10.1038/s41594-024-01389-1                            Zimmer, J.  6    2022+
+944      10.1126/science.abe7565                           Melcher, K.  3  2020-21
+945      10.1126/science.abg4998                             Jiang, Y.  1  2020-21
+1048    10.1182/blood.2023022942                             Pozzi, N.  1    2022+
+1154         10.7554/elife.94503                           Versees, W.  3    2022+
+1230         Naismith, J.H._2025                        Naismith, J.H.  2    2022+
+1231         Naismith, J.H._2026                        Naismith, J.H.  2    2022+
+1255         Southworth, D._2025                        Southworth, D.  6    2022+
+   leave-one-error-paper-out OR range 4.11-4.35
+  9 paper level, top-2 enzyme-error labs removed (Grimes, J.M., Zimmer, J.)                          11/47 (23.4%) vs    112/1260 (8.9%) OR 3.49 (1.66-7.34) p=0.001
+  9 paper level, top-3 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H.)           9/45 (20.0%) vs    112/1259 (8.9%) OR 2.86 (1.29-6.34) p=0.0099
+  9 paper level, top-4 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H., Liu,      8/44 (18.2%) vs    112/1258 (8.9%) OR 2.51 (1.10-5.77) p=0.029
+  9 paper level, top-6 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H., Liu,      6/42 (14.3%) vs    112/1258 (8.9%) OR 1.83 (0.74-4.51) p=0.19
+  9b paper level, same-lab reused antibody papers merged (Zimmer Nb881, Naismith megabody)           13/49 (26.5%) vs    112/1259 (8.9%) OR 3.80 (1.92-7.51) p=0.00012
+
+all tests:
+                                                                                                                           test         rate_in         rate_out       OR      lo       hi       p    q_BH     n  n_err
+0                                                                                      1 reproduce: host enzyme vs all other EM   15/81 (18.5%)  163/2671 (6.1%)   3.8321  1.8362   7.9978  0.0003  0.0005  2752    178
+1                                                                                     1 reproduce: viral enzyme vs all other EM    8/16 (50.0%)  170/2736 (6.2%)  11.3317  3.4500  37.2193  0.0001  0.0001  2752    178
+2                                                                                1 reproduce: host+viral enzyme vs all other EM   23/97 (23.7%)  155/2655 (5.8%)   5.1362  2.8523   9.2487  0.0000  0.0000  2752    178
+3                                           2a enzyme vs other antigen-bound entries (fiducial-only/unbound/no-contact removed)   21/92 (22.8%)  151/2412 (6.3%)   4.6523  2.4772   8.7372  0.0000  0.0000  2504    172
+4                                                                                  2b enzyme vs other non-SARS-CoV-2 EM entries   23/97 (23.7%)  113/1991 (5.7%)   5.0074  2.7037   9.2740  0.0000  0.0000  2088    136
+5                                                                                  2c enzyme vs non-SARS2 antigen-bound entries   21/92 (22.8%)  109/1751 (6.2%)   4.3754  2.2664   8.4469  0.0000  0.0000  1843    130
+6                                                                          2d enzyme vs non-SARS2 antigen-bound, capsid removed   21/92 (22.8%)   77/1597 (4.8%)   5.4650  2.8204  10.5894  0.0000  0.0000  1689     98
+7                                                                     2e host enzyme vs other non-viral protein targets (bound)   15/81 (18.5%)    40/922 (4.3%)   4.5746  1.9865  10.5346  0.0004  0.0005  1003     55
+8                                                                                         2f enzyme, lab-clustered SEs (all EM)   23/97 (23.7%)  155/2655 (5.8%)   5.1362  2.7257   9.6785  0.0000  0.0000  2752    178
+9                                                      3a enzyme, MH over period x resolution bin (entries; ignores clustering)           23/97         149/2560   5.2310  3.1503   8.6859  0.0000  0.0000  2752    178
+10                                                                                               3b enzyme within period <=2019     2/4 (50.0%)    11/177 (6.2%)  14.4783     NaN      NaN  0.0264  0.0302   181     13
+11                                                                                              3b enzyme within period 2020-21    9/26 (34.6%)    52/592 (8.8%)   6.7743  1.9737  23.2507  0.0024  0.0030   618     61
+12                                                                                                3b enzyme within period 2022+   12/67 (17.9%)   92/1886 (4.9%)   4.4040  2.2294   8.6995  0.0000  0.0000  1953    104
+13                                                                        4a paper level: enzyme (any entry) vs other EM papers   15/51 (29.4%)  112/1260 (8.9%)   4.4874  2.3185   8.6850  0.0000  0.0000  1311    127
+14                                                                                                4b paper level, lab-clustered   15/51 (29.4%)  112/1260 (8.9%)   4.4874  2.1503   9.3645  0.0001  0.0001  1311    127
+15                                                                                    4c paper level, antigen-bound papers only   15/50 (30.0%)  108/1131 (9.5%)   4.2333  2.1988   8.1501  0.0000  0.0000  1181    123
+16                                                                               4d paper level, antigen-bound non-SARS2 papers   15/50 (30.0%)    81/840 (9.6%)   3.9244  2.0174   7.6341  0.0001  0.0001   890     96
+17                                                                                               4e paper level, MH over period           15/51         112/1260   4.4799  2.3632   8.4924  0.0000  0.0000  1311    127
+18                                                                                             4f paper level: host enzyme only   12/45 (26.7%)  115/1266 (9.1%)   4.1052  1.9841   8.4940  0.0001  0.0002  1311    127
+19                                                      4g lab x class level (one row per lab and class), adjusted for n papers   12/45 (26.7%)   87/602 (14.5%)   3.4231  1.6278   7.1984  0.0012  0.0016   647     99
+20                                                             5 paper-level enzyme OR, lab cluster bootstrap (period+res+size)             NaN              NaN   4.6048  2.3185   8.6237  0.0025  0.0031  1311    127
+21                                                                                        6 enzyme adjusted: base (same sample)   23/95 (24.2%)  155/2643 (5.9%)   5.2989  2.9422   9.5434  0.0000  0.0000  2738    178
+22                                                       6 enzyme adjusted: + unbuilt residues (any gap, N-terminal truncation)   23/95 (24.2%)  155/2643 (5.9%)   4.9473  2.8183   8.6845  0.0000  0.0000  2738    178
+23                                                                                 6 enzyme adjusted: + unbuilt + local map fit   23/95 (24.2%)  155/2643 (5.9%)   5.2683  2.8694   9.6728  0.0000  0.0000  2738    178
+24              6 enzyme adjusted: + unbuilt + map + VHH + megabody + atypical CDR + germline id + mouse + starting model + fit   23/95 (24.2%)  155/2643 (5.9%)   6.2831  3.3647  11.7329  0.0000  0.0000  2738    178
+25                                                                    6 enzyme adjusted: full + lab experience + SARS2 + capsid   23/95 (24.2%)  155/2643 (5.9%)   6.4618  3.3986  12.2857  0.0000  0.0000  2738    178
+26                                                                                           6 enzyme full model, lab-clustered   23/95 (24.2%)  155/2643 (5.9%)   6.4618  3.4383  12.1440  0.0000  0.0000  2738    178
+27                                                                                       7a unit level, adjusted for chain kind  20/132 (15.2%)  151/3975 (3.8%)   4.1822  2.4491   7.1415  0.0000  0.0000  4107    171
+28                                                                                                     7b unit level within VHH   11/36 (30.6%)    27/531 (5.1%)   6.8256  3.1537  14.7729  0.0000  0.0000   567     38
+29                                                                                               7b unit level within Fab heavy    6/48 (12.5%)   72/1730 (4.2%)   3.8249  1.4561  10.0477  0.0065  0.0079  1778     78
+30                                                                                                   7b unit level within light     3/48 (6.2%)   52/1714 (3.0%)   2.4439  0.5269  11.3351  0.2536  0.2602  1762     55
+31                                                7c unit level, + chain kind + unbuilt + megabody + atypical CDR + germline id  20/132 (15.2%)  151/3975 (3.8%)   3.7980  2.2006   6.5552  0.0000  0.0000  4107    171
+32                                                                              7d unit level, antigen-bound only, + chain kind  18/127 (14.2%)  147/3783 (3.9%)   3.7632  2.1424   6.6102  0.0000  0.0000  3910    165
+33                                                                                   8a EC-based enzyme (any class) vs other EM  23/229 (10.0%)  155/2523 (6.1%)   1.7652  1.0048   3.1010  0.0481  0.0520  2752    178
+34                                      8b EC-positive targets classed elsewhere (e.g. membrane enzymes) vs other non-enzyme EM    7/150 (4.7%)  148/2505 (5.9%)   0.8324  0.3729   1.8577  0.6542  0.6542  2655    155
+35                                                    9 paper level, top-2 enzyme-error labs removed (Grimes, J.M., Zimmer, J.)   11/47 (23.4%)  112/1260 (8.9%)   3.4880  1.6568   7.3431  0.0010  0.0014  1307    123
+36                                    9 paper level, top-3 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H.)    9/45 (20.0%)  112/1259 (8.9%)   2.8552  1.2864   6.3374  0.0099  0.0117  1304    121
+37                           9 paper level, top-4 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H., Liu, Y.)    8/44 (18.2%)  112/1258 (8.9%)   2.5148  1.0968   5.7663  0.0294  0.0327  1302    120
+38  9 paper level, top-6 enzyme-error labs removed (Grimes, J.M., Zimmer, J., Naismith, J.H., Liu, Y., Arnold, P., Rohou, A.L.)    6/42 (14.3%)  112/1258 (8.9%)   1.8262  0.7395   4.5100  0.1917  0.2018  1300    118
+39                                     9b paper level, same-lab reused antibody papers merged (Zimmer Nb881, Naismith megabody)   13/49 (26.5%)  112/1259 (8.9%)   3.7996  1.9217   7.5126  0.0001  0.0002  1308    125

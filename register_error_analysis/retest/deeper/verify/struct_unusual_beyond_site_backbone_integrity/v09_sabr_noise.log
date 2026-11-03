@@ -1,0 +1,10 @@
+grid classifier accuracy on labelled residues 0.971
+Skipping CDR2; missing anchor at IMGT 54 or 67; preserving the learned alignment.
+Skipping CDR3; missing anchor at IMGT 104 or 118; preserving the learned alignment.
+       chains  runs  nonfav_mean  frac_any_diff  frac_run3  mean_diff_res
+sigma                                                                    
+0.00       40    40        5.031          0.000      0.000          0.000
+0.15       40    80       18.148          0.000      0.000          0.000
+0.30       40    80       41.791          0.000      0.000          0.000
+0.50       40    80       62.973          0.062      0.062          0.538
+0.80       40    80       74.444          0.325      0.275          3.950

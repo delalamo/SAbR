@@ -1,0 +1,17 @@
+test,stratum,OR,p,cases_in,cases_out
+"entry, leak-corrected: host_enz",EM,3.540372670807453,0.0001325777773872095,15/81,161/2669
+"paper, leak-corrected: host_enz",EM papers,3.2381074168797954,0.0024650188742891942,11/45,115/1266
+"entry, leak-corrected: vir_oth",EM,11.320588235294117,0.00012320347603244803,6/14,170/2736
+"paper, leak-corrected: vir_oth",EM papers,7.201219512195122,0.022740364637228325,3/7,123/1304
+"entry, leak-corrected: enz_comb",EM,4.577157802964255,2.533983071135493e-07,21/95,155/2655
+"paper, leak-corrected: enz_comb",EM papers,3.8783783783783785,0.00016517655849608172,14/51,112/1260
+"paper: host_enz, conditional on lab","EM papers, mixed labs",1.250018402526954,0.77820799346887,5/22,7/58
+"paper: enz_comb, conditional on lab","EM papers, mixed labs",1.143973850909593,0.8609592323009415,4/23,7/65
+"paper: host_enz, within-year permutation",EM papers,,0.0006999650017499125,12/45,
+"paper: enz_comb, within-year permutation",EM papers,,9.99950002499875e-05,15/51,
+aux units: enzyme(+viral other) vs transporter/GPCR/receptor/other targets,EM aux units,15.2,0.02533580009744969,2/7,3/117
+aux units: host enzyme vs transporter/GPCR/receptor/other targets,EM aux units,15.2,0.02533580009744969,2/7,3/117
+paper: y ~ host_enz + C(ycat) + res + ln,"EM papers, lab-clustered",4.105194195865609,0.0004094704217444633,,
+paper: y ~ host_enz + lexp + C(ycat) + res + ln,"EM papers, lab-clustered",3.8774358600412184,0.0007787909133766107,,
+paper: y ~ enz_comb + C(ycat) + res + ln,"EM papers, lab-clustered",4.487372386050056,6.802434976261392e-05,,
+paper: y ~ enz_comb + lexp + C(ycat) + res + ln,"EM papers, lab-clustered",4.255878053694745,0.00014074832861433626,,

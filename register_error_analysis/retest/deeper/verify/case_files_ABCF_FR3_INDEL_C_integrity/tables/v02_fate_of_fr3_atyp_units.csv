@@ -1,0 +1,9 @@
+grp,0,1,method
+C_first,14,10,EM
+clean,3977,59,EM
+copied/artifact_only,13,28,EM
+other_first,138,9,EM
+C_first,1,6,X-ray
+clean,2122,52,X-ray
+copied/artifact_only,3,9,X-ray
+other_first,28,1,X-ray

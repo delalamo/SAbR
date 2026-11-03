@@ -1,0 +1,119 @@
+== A. Pre-treatment confounders only (class + fiducial + antibody features; no modelling, no map)
+pre-treatment adj                          EM                       l_labs_acc_12m   OR 1.072 (0.98-1.18) p=0.1413 n=2707 err=174
+pre-treatment adj, lab-clustered           EM                       l_labs_acc_12m   OR 1.072 (0.98-1.18) p=0.1413 n=2707 err=174
+pre-treatment adj                          EM                       l_labs_fam_12m   OR 1.025 (0.93-1.13) p=0.6224 n=2707 err=174
+pre-treatment adj, lab-clustered           EM                       l_labs_fam_12m   OR 1.025 (0.93-1.13) p=0.6228 n=2707 err=174
+pre-treatment adj                          EM                       race_1m          OR 1.501 (0.98-2.30) p=0.0621 n=2707 err=174
+pre-treatment adj, lab-clustered           EM                       race_1m          OR 1.501 (0.97-2.32) p=0.0670 n=2707 err=174
+pre-treatment adj                          EM                       l_labs_acc_1m    OR 1.164 (1.01-1.34) p=0.0321 n=2707 err=174
+pre-treatment adj, lab-clustered           EM                       l_labs_acc_1m    OR 1.164 (1.01-1.34) p=0.0315 n=2707 err=174
+pre-treatment adj                          EM                       sars2[T.True]    OR 1.717 (0.99-2.97) p=0.0537 n=2707 err=174
+pre-treatment adj, lab-clustered           EM                       sars2[T.True]    OR 1.717 (0.99-2.97) p=0.0533 n=2707 err=174
+pre-treatment adj + sars2                  EM                       race_1m          OR 1.258 (0.76-2.09) p=0.3759 n=2707 err=174
+pre-treatment adj + sars2                  EM                       l_labs_acc_1m    OR 1.169 (0.87-1.57) p=0.2980 n=2707 err=174
+
+== B. SARS2 vs ordinary antigens (EM bound, non-capsid/enzyme, non-fiducial)
+ crude: SARS2 0.0635 42 / 661 | other 0.0482 77 / 1597
+  2020-21: SARS2 0.097 (25/258) vs other 0.056 (13/231)
+  2022+: SARS2 0.042 (17/403) vs other 0.048 (60/1238)
+SARS2 vs ordinary, year+res                EM ordinary              sars2[T.True]    OR 1.195 (0.68-2.10) p=0.5347 n=2258 err=119
+SARS2 vs ordinary, half-year+res           EM ordinary              sars2[T.True]    OR 1.025 (0.59-1.79) p=0.9291 n=2258 err=119
+SARS2 vs ordinary, + ab features           EM ordinary              sars2[T.True]    OR 1.298 (0.74-2.29) p=0.3672 n=2258 err=119
+SARS2 vs ordinary, + ab, lab-clust         EM ordinary              sars2[T.True]    OR 1.298 (0.74-2.27) p=0.3610 n=2258 err=119
+SARS2 vs ordinary, + ab + lqz_min          EM ordinary              sars2[T.True]    OR 0.935 (0.48-1.81) p=0.8416 n=2250 err=119
+SARS2 vs ordinary, + ab, res<=3.5          EM ordinary              sars2[T.True]    OR 1.188 (0.57-2.50) p=0.6483 n=1292 err=65
+SARS2 vs ordinary, + ab, res>3.5           EM ordinary              sars2[T.True]    OR 1.180 (0.54-2.56) p=0.6751 n=966 err=54
+SARS2 vs other viral glycoproteins         EM viral glycoprotein    sars2[T.True]    OR 1.082 (0.59-1.97) p=0.7963 n=1337 err=79
+SARS2 vs other viral glycoproteins, + ab   EM viral glycoprotein    sars2[T.True]    OR 1.133 (0.58-2.20) p=0.7134 n=1337 err=79
+ paper level crude: SARS2 papers 0.093 27 / 291 | other 0.08 63 / 786
+SARS2 vs ordinary, paper level             EM ordinary papers       sars2[T.True]    OR 0.962 (0.56-1.64) p=0.8881 n=1077 err=90
+SARS2 vs ordinary, paper level + ab        EM ordinary papers       sars2[T.True]    OR 1.340 (0.77-2.33) p=0.2999 n=1077 err=90
+
+== C. Local map fit: SARS2 vs other among CLEAN entries only (avoids error->poor fit)
+  clean entries lqz_min: SARS2 median -0.82 (n=619) vs other 0.35 (n=1903), MWU p=5.4e-53
+  clean entries lqz_mean: SARS2 median -0.49 (n=619) vs other 0.46 (n=1903), MWU p=1.5e-51
+              mean  sum  size
+lqz_t sars2                  
+high  False  0.029   16   544
+      True   0.029    4   140
+low   False  0.074   32   433
+      True   0.068   27   397
+mid   False  0.047   29   612
+      True   0.089   11   124
+
+== D. Leave-one-lab-out for adjusted positives (pre-treatment adj)
+  l_labs_acc_1m: full OR 1.16 p=0.032; dropping each of top-15 error labs: OR 1.13-1.18, p 0.024-0.076; largest p when dropping Zhou, Q. (OR 1.13, p=0.076)
+  race_1m: full OR 1.50 p=0.062; dropping each of top-15 error labs: OR 1.39-1.62, p 0.037-0.140; largest p when dropping Zhu, P. (OR 1.40, p=0.140)
+  sars2: full OR 1.30 p=0.367; dropping each of top-15 error labs: OR 1.17-1.39, p 0.245-0.598; largest p when dropping Feng, L.L. (OR 1.17, p=0.598)
+
+== E. 2020Q3 SARS2 spike in errors: which papers/labs?
+                                                                                                 sum  size
+lab2                                                               paper                                  
+Zhou, Q.                                                           10.1038/s41422-021-00487-9      7    12
+Wang, X.                                                           10.1038/s41422-020-00446-w      2     2
+Bjorkman, P.J.                                                     10.1038/s41586-020-2852-1       2     9
+Wang, N.                                                           10.1038/s41422-020-00446-w      1     1
+Das, H.                                                            10.1038/s41467-020-19204-y      0     1
+Bosch, B.J.                                                        10.1126/sciadv.abf5632          0     1
+Center for Structural Genomics of Infectious Diseases (CSGID)      10.1016/j.celrep.2021.109881    0     4
+Veesler, D.                                                        10.1016/j.cell.2020.09.037      0     6
+Seattle Structural Genomics Center for Infectious Disease (SSGCID) 10.1126/science.abe3354         0     2
+Gamblin, S.J.                                                      10.1038/s41467-020-19146-5      0     2
+ entries 26-50 by lab: {'Zhou, Q.': {'sum': 7, 'size': 12}, 'Wang, X.': {'sum': 2, 'size': 4}, 'Wang, N.': {'sum': 1, 'size': 3}, 'Veesler, D.': {'sum': 0, 'size': 1}, 'Seattle Structural Genomics Center for Infectious Disease (SSGCID)': {'sum': 0, 'size': 1}, 'Gamblin, S.J.': {'sum': 0, 'size': 2}}
+ non-SARS2 2020Q3 errors by lab: {'Lou, Z.': {'sum': 4, 'size': 4}, 'Hafenstein, S.L.': {'sum': 2, 'size': 2}, 'Melcher, K.': {'sum': 2, 'size': 2}, 'Li, S.W.': {'sum': 1, 'size': 1}, 'Kobilka, T.S.': {'sum': 0, 'size': 1}, 'Blacklow, S.C.': {'sum': 0, 'size': 1}}
+ SARS2 EM papers by half-year:
+         mean  sum  size
+half                    
+2020H1  0.000    0    11
+2020H2  0.136    3    22
+2021H1  0.179    7    39
+2021H2  0.081    3    37
+2022H1  0.058    3    52
+2022H2  0.074    2    27
+2023H1  0.053    1    19
+2023H2  0.176    3    17
+2024H1  0.077    2    26
+2024H2  0.071    1    14
+2025H1  0.091    1    11
+2025H2  0.000    0    11
+2026H1  0.000    0     5
+
+== BH over 214 tests; q<0.1:
+                                                                                    test               stratum            term      OR      lo      hi       p       q     n  n_err
+201  SARS2 observed/expected from non-SARS2 model (half-year, res, ab, modelling, class)              EM SARS2             O/E  1.7842     NaN     NaN  0.0001  0.0188   661     42
+21                                                        adj: + local map fit (lqz_min)                    EM  l_labs_fam_12m  0.8493  0.7736  0.9324  0.0006  0.0482  2696    174
+58                                                                               stratum  EM non-SARS2 2020-21  l_labs_acc_12m  0.2187  0.0910  0.5254  0.0007  0.0482   347     33
+22                                                                adj: + SARS2 indicator                    EM  l_labs_fam_12m  0.8107  0.7139  0.9206  0.0012  0.0607  2707    174
+60                                                                               stratum  EM non-SARS2 2020-21  l_labs_fam_12m  0.6571  0.5077  0.8504  0.0014  0.0607   347     33
+48                                                                               stratum          EM non-SARS2  l_labs_fam_12m  0.8168  0.7174  0.9301  0.0023  0.0805  2046    132
+
+ key tests:
+                                                                                    test       stratum            term      OR       p       q
+0                                                                              reproduce            EM  l_labs_acc_12m  0.9430  0.2187  0.5491
+1                                                                              reproduce            EM  l_labs_fam_12m  0.8951  0.0207  0.2602
+2                                                                              reproduce            EM         race_1m  0.8997  0.6694  0.8090
+12                                adj: full (half-year, res, fid, capenz, ab, modelling)            EM  l_labs_acc_12m  1.0665  0.1685  0.4713
+23                                adj: full (half-year, res, fid, capenz, ab, modelling)            EM  l_labs_fam_12m  1.0239  0.6377  0.8090
+34                                adj: full (half-year, res, fid, capenz, ab, modelling)            EM         race_1m  1.4717  0.0743  0.3716
+140                                                                       race, full adj            EM         race_1m  1.5071  0.0586  0.3584
+143                                                                       race, full adj            EM   l_labs_acc_1m  1.1700  0.0275  0.2671
+146                                                                       race, full adj            EM   l_labs_acc_6m  1.0932  0.0867  0.3896
+149                                                                       race, full adj  EM non-SARS2         race_1m  1.2026  0.4854  0.7823
+152                                                                       race, full adj  EM non-SARS2   l_labs_acc_1m  1.2456  0.1873  0.5073
+155                                                                       race, full adj  EM non-SARS2   l_labs_acc_6m  1.0234  0.8584  0.9278
+158                                                                       race, full adj    EM 2020-21         race_1m  1.2842  0.5708  0.7989
+161                                                                       race, full adj    EM 2020-21   l_labs_acc_1m  1.1591  0.1945  0.5154
+164                                                                       race, full adj    EM 2020-21   l_labs_acc_6m  1.1007  0.2680  0.6235
+167                                                                       race, full adj      EM 2022+         race_1m  1.5565  0.0965  0.3896
+170                                                                       race, full adj      EM 2022+   l_labs_acc_1m  1.1561  0.1294  0.4348
+173                                                                       race, full adj      EM 2022+   l_labs_acc_6m  1.0697  0.3134  0.6535
+195                                                                          SARS2: full            EM   sars2[T.True]  1.5960  0.0987  0.3912
+198                                                                          SARS2: full    EM 2020-21   sars2[T.True]  2.2398  0.1060  0.4123
+200                                                                          SARS2: full      EM 2022+   sars2[T.True]  1.2351  0.5832  0.7989
+201  SARS2 observed/expected from non-SARS2 model (half-year, res, ab, modelling, class)      EM SARS2             O/E  1.7842  0.0001  0.0188
+204                                                                    pre-treatment adj            EM  l_labs_acc_12m  1.0725  0.1413  0.4402
+206                                                                    pre-treatment adj            EM  l_labs_fam_12m  1.0254  0.6224  0.8057
+208                                                                    pre-treatment adj            EM         race_1m  1.5011  0.0621  0.3594
+210                                                                    pre-treatment adj            EM   l_labs_acc_1m  1.1643  0.0321  0.2749
+212                                                                    pre-treatment adj            EM   sars2[T.True]  1.7166  0.0537  0.3484
+218                                                     SARS2 vs ordinary, + ab features   EM ordinary   sars2[T.True]  1.2984  0.3672  0.6716

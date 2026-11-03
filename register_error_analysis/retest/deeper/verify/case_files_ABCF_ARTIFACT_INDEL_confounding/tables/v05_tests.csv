@@ -1,0 +1,15 @@
+test,claimed,control,OR,p,note,q_BH
+"T1 hi-res X-ray <=2.75 A, entries: disagreement in window",15/16,0/17,inf,1.542676724610376e-08,claimed: 5aam:5 1ghf:5 5dhv:3 9f1i:3 6dbd:3 4o4y:3 4ma3:3 7kbk:0 4o51:3 9f18:3 4rzc:3 4z9k:3 7mlh:3 8zca:3 5trp:3 30bh:3,2.1597474144545266e-07
+"T1b hi-res X-ray <=2.75 A, one per antibody",12/13,0/14,inf,7.478201043956866e-07,"exception: 7kbk (alpaca VHH, 2.09 A)",5.234740730769807e-06
+"T2 3-5 A scan, one per antibody",8/9,0/17,inf,5.760829559456562e-06,"claimed exception: 9ml5 (rabbit EM, run at 85-95 instead)",2.0162903458097967e-05
+T2 stratum EM=False,4/4,0/5,inf,0.007936507936507934,,0.009259259259259257
+T2 stratum EM=True,4/5,0/12,inf,0.0021008403361344537,,0.00267379679144385
+T2 Mantel-Haenszel across EM strata (0.5 added),,,83.76923076923079,0.0002213915595801197,2 strata,0.000516580305686946
+T2 stratum period=2020-21,1/1,0/5,inf,0.16666666666666669,,0.1794871794871795
+T2 stratum period=<=2019,1/1,0/3,inf,0.25,,0.25
+T2 stratum period=>=2022,6/7,0/9,inf,0.000874125874125874,,0.0015297202797202795
+T2 Mantel-Haenszel across period strata (0.5 added),,,46.575757575757585,0.0004246280278482617,3 strata,0.0008492560556965234
+T3 predicted model reproduces run window (IgFold),8/8,7/34,inf,5.4519951824188034e-05,"non-claimed reproduced: 4xnz,7m3l,7c80,5dum,8c8t,9yfu,8idm",0.0001526558651077265
+T3 predicted model reproduces run window (ImmuneBuilder),6/8,5/34,17.4,0.0019081983138465812,"non-claimed reproduced: 4xnz,7m3l,5dum,8c8t,9yfu",0.0026714776393852134
+T3 predicted model reproduces run window (both),6/8,5/34,17.4,0.0019081983138465812,"non-claimed reproduced: 4xnz,7m3l,5dum,8c8t,9yfu",0.0026714776393852134
+T4 FR3-gap-81 rabbit X-ray controls: disagree with ANARCI all-species vs default HMMs (paired),20/20 (all-species),0/20 (default),,1.9073486328125e-06,exact McNemar; ANARCI rabbit HMM moves the gap 81->84 in every rabbit VH,8.900960286458334e-06

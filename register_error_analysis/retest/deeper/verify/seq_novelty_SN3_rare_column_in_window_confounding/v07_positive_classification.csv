@@ -1,0 +1,15 @@
+mode,pdb,paper,last_author,cls,evidence
+C_FR3,8c8t,10.1016/j.chom.2023.06.006,"Mouquet, H.",tool artifact,"FR3 85A-G insertion: same run 83-85x / SAbR 82A..85 in 4/4 X-ray 1.6-2.6 A (5jxa, 4s1q, 7sx7, 4jb9); class already treated as convention artifact by the pipeline"
+A_FR1Nterm,7cws,10.1038/s41422-020-00446-w,"Wang, X.",tool artifact,"H 4A (EVQLLEQSG): same run 3-4A / SAbR 2..4 in 5/5 X-ray 1.75-2.5 A (4n0y, 1rhh, 4g6a, 6uyd, 6wo3)"
+B_CDR2FR3,7nk2,10.1038/s41467-021-27950-w,"Grimes, J.M.",tool artifact,H 73: same run 70-73 / SAbR 66..72 in 9wmg (1.96 A)
+A_FR1Nterm,8fsj,10.1038/s41467-023-39659-z,"Ofek, G.",tool artifact,H 4A (EVQLLEQSG): as above
+B_CDR2FR3,8bw0,10.1038/s41467-024-53746-9,"Rak, A.",tool artifact,H 70A: run 69-70A / SAbR 68A..70 in 9lad (2.02 A); EM run longer (63-70A)
+Dminus_CDR3long,8ult,10.1038/s41590-025-02286-5,"Bjorkman, P.J.",model deviation,same V domain in 8uki (1.75 A X-ray) numbered identically by both tools; EM chain 8ulu L slips
+A_FR1Nterm,7t6x,10.1126/science.abn9884,"Lander, G.C.",probable model deviation,"lambda extra FR1 residue at IMGT 10 (run ANARCI 2-10 vs SAbR 1-9, N-terminus unbuilt); a related lambda with an IMGT-10 residue (9nj9 L, 2.6 A EM) and 2 X-ray lambdas (4r26, 4fqc) give no run, but none has the identical insertion"
+A_FR1Nterm,22ge,10.1371/journal.pone.0338127,"Xu, Y.","untestable, insertion-placement form",rabbit 4-residue FR1 insertion: ANARCI 9A-C/10 vs SAbR 8A-D/9 (offset of one column)
+D0,7d3l,10.1371/journal.ppat.1009507,"Lou, Z.","model deviation, no register shift (D0)",bovine ultralong CDR3; 15/15 high-res bovine VH agree (other verifier); CDR3-internal
+D0,7d3m,10.1371/journal.ppat.1009507,"Lou, Z.",model deviation,bovine ultralong CDR3 (same lab); unit has D0 and Dminus runs
+Dminus_CDR3long,7d3m,10.1371/journal.ppat.1009507,"Lou, Z.",model deviation,bovine ultralong CDR3 (same lab); unit has D0 and Dminus runs
+Dplus_CDR3short,8grr,10.1371/journal.ppat.1011811,"Kun, L.",model deviation,"bovine CDR3 (same FMDV lab, Kun L.)"
+B_CDR2FR3,8r4b,10.7554/eLife.94503,"Versees, W.",tool artifact,H 67A-C (3-residue CDR2/FR3 insertion): run 61-67C / SAbR 60A..67 in 6oca (2.11 A)
+B_CDR2FR3,12iu,12iu,"Ward, A.B.","untestable, insertion-placement form",kappa 3-residue insertion placed in CDR2 (ANARCI) vs FR3 71A-C (SAbR); no high-res relative

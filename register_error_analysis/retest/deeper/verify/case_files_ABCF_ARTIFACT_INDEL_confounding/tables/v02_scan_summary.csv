@@ -1,0 +1,12 @@
+pattern,EM,chains,dis3,entries,entries_dis
+FR1_26,True,7,7,6,6
+FR3_80_84,False,10,10,4,4
+FR3_81,False,23,0,5,0
+FR3_81,True,44,0,17,0
+FR3_82,True,3,0,1,0
+FR3_84,False,2,2,2,2
+FR3_84,True,4,2,2,1
+FR3_84_85,False,1,True,1,1
+FR3_84_85,True,1,True,1,1
+FR3_85,True,1,True,1,1
+FR3_96,True,5,0,3,0

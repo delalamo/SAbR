@@ -1,0 +1,44 @@
+           grp  feat      n   any1    ge2    ge3
+0     EM 3-5 A     0  10349  0.007  0.005  0.005
+1     EM 3-5 A     1     41  0.732  0.610  0.317
+2  X-ray 3-5 A     0   5263  0.003  0.002  0.002
+3  X-ray 3-5 A     1     31  0.226  0.161  0.129
+     pdb chain  imgt0  imgt1  feat     q_run     q_V   pct_in_V                                  origin
+0   6p65     C     60     68     0  0.301250  0.3230  40.476190   7 CDR2 boundary, atypical CDR2 length
+1   6p65     F     60     68     0  0.300500  0.3250  43.650794   7 CDR2 boundary, atypical CDR2 length
+2   6p65     H     60     68     0  0.300125  0.3280  45.238095   7 CDR2 boundary, atypical CDR2 length
+3   7mkm     H     54     59     0  0.228333  0.2480  44.247788    8 CDR1/CDR2 boundary, typical length
+4   7nk2     F     67     73     0  0.185286  0.2165  42.553191  3 chain end or next to an unbuilt loop
+5   7ty0     J     60     67     0  0.465500  0.4520  59.223301  3 chain end or next to an unbuilt loop
+6   12iu     I     58     71     0  0.291000  0.4140  20.183486   7 CDR2 boundary, atypical CDR2 length
+7   12iu     Y     58     72     0  0.288545  0.4360  11.926606   7 CDR2 boundary, atypical CDR2 length
+8   12iu     Z     58     72     0  0.322364  0.4550  15.596330   7 CDR2 boundary, atypical CDR2 length
+10  7sp7     C     62     67     0  0.415833  0.4685  32.203390  3 chain end or next to an unbuilt loop
+11  7sp6     C     62     67     0  0.430333  0.4300  50.427350  3 chain end or next to an unbuilt loop
+12  7uow     H     53     59     0  0.090571  0.0450  59.829060    8 CDR1/CDR2 boundary, typical length
+15  8dg8     L     57     70     0  0.387571  0.4040  43.689320  3 chain end or next to an unbuilt loop
+14  8cr9     A     50     63     0  0.368500  0.3955  42.622951    8 CDR1/CDR2 boundary, typical length
+21  8snd     C     62     67     0  0.475167  0.5055  43.220339  3 chain end or next to an unbuilt loop
+23  8tng     H     64     70     0  0.416857  0.4020  61.157025   7 CDR2 boundary, atypical CDR2 length
+31  9pv3     H     54     94     0  0.269378  0.3800  23.015873       9 FR3 / other (still unexplained)
+26  9heo     D     63     69     0  0.245143  0.1790  65.079365    8 CDR1/CDR2 boundary, typical length
+30  9pv5     L     69     85     0  0.293786  0.3130  46.017699       9 FR3 / other (still unexplained)
+28  9heo     K     63     69     0  0.249571  0.1740  68.253968    8 CDR1/CDR2 boundary, typical length
+27  9heo     H     63     69     0  0.257714  0.1835  67.460317    8 CDR1/CDR2 boundary, typical length
+24  8tng     I     64     70     0  0.434143  0.3970  73.553719   7 CDR2 boundary, atypical CDR2 length
+25  9heo     B     63     69     0  0.255143  0.1815  68.253968    8 CDR1/CDR2 boundary, typical length
+9   22ge     G     53     60     1  0.092750  0.1450  43.307087   7 CDR2 boundary, atypical CDR2 length
+13  8bw0     H     63     70     1  0.472222  0.4820  42.735043    8 CDR1/CDR2 boundary, typical length
+20  8r4b     B     62     67     1  0.411000  0.3910  56.074766    8 CDR1/CDR2 boundary, typical length
+22  8snc     C     62     67     1  0.469833  0.4960  42.857143    8 CDR1/CDR2 boundary, typical length
+19  8r4d     B     62     67     1  0.494444  0.4350  67.289720    8 CDR1/CDR2 boundary, typical length
+17  8jam     H     57     70     1  0.414800  0.3690  68.224299   7 CDR2 boundary, atypical CDR2 length
+16  8jag     H     57     69     1  0.321000  0.3600  36.190476   7 CDR2 boundary, atypical CDR2 length
+18  8jap     H     57     74     1  0.295375  0.3200  43.809524   7 CDR2 boundary, atypical CDR2 length
+29  9pyh     L     67     69     1  0.514667  0.5320  41.904762       9 FR3 / other (still unexplained)
+32  9om5     c     63     72     1  0.258700  0.2340  55.555556    8 CDR1/CDR2 boundary, typical length
+33  9om5     g     63     72     1  0.247900  0.2310  53.846154    8 CDR1/CDR2 boundary, typical length
+34  9om5     k     63     72     1  0.248700  0.2430  52.136752    8 CDR1/CDR2 boundary, typical length
+feat 0 n 23 median pct of run Q within V 44.2
+feat 1 n 12 median pct of run Q within V 48.0
+MannwhitneyuResult(statistic=np.float64(146.0), pvalue=np.float64(0.7943537344082895))

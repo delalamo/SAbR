@@ -1,0 +1,25 @@
+test,err,ctl,OR,p,note,q_BH
+"investigator verdicts: D+ not confirmed, model ends <=IMGT118 vs later",4/4,7/36,inf,0.003610898347740454,,0.004900504900504902
+"investigator verdicts: D+ not confirmed, model ends <=IMGT119 vs later",8/8,3/32,inf,2.145512981426294e-06,,6.794124441183265e-06
+"investigator verdicts: D+ not confirmed, model ends <=IMGT121 vs later",10/12,1/28,135.0,8.045673680348603e-07,,3.057355998532469e-06
+"investigator verdicts, one D+ unit per paper, <=121",9/11,1/26,112.5,4.1368800774676585e-06,,1.1228674495983646e-05
+"v02 global verdicts: D+ not confirmed, ends <=121 vs later",8/12,2/28,26.0,0.00022808187194485008,indeterminate counted as not-not-confirmed,0.00033335042822708855
+"v02 global verdicts, determinate only: ends <=121 vs later",8/10,2/27,50.0,4.6122911398053717e-05,,8.763353165630206e-05
+"v02 global verdicts, determinate only: ends <=119 vs later",7/7,3/30,inf,1.165560937856953e-05,,2.7682072274102634e-05
+"v02 local verdicts: D+ not confirmed, ends <=121 vs later",8/12,2/28,26.0,0.00022808187194485008,indeterminate counted as not-not-confirmed,0.00033335042822708855
+"v02 local verdicts, determinate only: ends <=121 vs later",8/10,2/26,48.0,5.8563216974523656e-05,,0.00010115464750144995
+"v02 local verdicts, determinate only: ends <=119 vs later",7/7,3/29,inf,1.4375251566902421e-05,,3.0347753307905112e-05
+SAbR on clean chains truncated 117: D+-like run at the C-terminus,67/75,0/75 untruncated,,8.498308089069482e-34,95% CI 0.80-0.95,4.036696342308004e-33
+SAbR on clean chains truncated 118: D+-like run at the C-terminus,75/75,0/75 untruncated,,2.1545671444162033e-44,95% CI 0.95-1.00,1.3645591914635955e-43
+SAbR on clean chains truncated 118nometa: D+-like run at the C-terminus,75/75,0/75 untruncated,,2.1545671444162033e-44,95% CI 0.95-1.00,1.3645591914635955e-43
+SAbR on clean chains truncated 119: D+-like run at the C-terminus,75/75,0/75 untruncated,,2.1545671444162033e-44,95% CI 0.95-1.00,1.3645591914635955e-43
+SAbR on clean chains truncated 120: D+-like run at the C-terminus,3/75,0/75 untruncated,,0.2449664429530201,95% CI 0.01-0.11,0.31029082774049216
+SAbR on clean chains truncated 121: D+-like run at the C-terminus,1/75,0/75 untruncated,,1.0,95% CI 0.00-0.07,1.0
+SAbR on clean chains truncated 122: D+-like run at the C-terminus,0/75,0/75 untruncated,,1.0,95% CI 0.00-0.05,1.0
+SAbR on clean chains truncated 123: D+-like run at the C-terminus,0/75,0/75 untruncated,,1.0,95% CI 0.00-0.05,1.0
+SAbR on clean chains truncated 125: D+-like run at the C-terminus,0/75,0/75 untruncated,,1.0,95% CI 0.00-0.05,1.0
+"ImmuneBuilder model of the short-ended D+ antibodies, pred_full: D+-like C-terminal run",0/10,,,,7k22L1:none;7d3kH:none;7t3dH:none;8grrH:none;8pq2L:none;8tqiI:none;8tqiC:none;8w5qH:none;9dn2H:none;9fteB:none,
+"ImmuneBuilder model of the short-ended D+ antibodies, pred_same_end: D+-like C-terminal run",8/10,,,,7k22L1:109-118:+1;7d3kH:112C-119:+1;7t3dH:111A-118:+1;8grrH:111G-118:+3;8pq2L:109-119:+1;8tqiI:112F-119:+1;8tqiC:111-118:+1;8w5qH:none;9dn2H:110-119:+1;9fteB:none,
+"ImmuneBuilder model of the short-ended D+ antibodies, pred_same_built: D+-like C-terminal run",8/10,,,,7k22L1:109-118:+1;7d3kH:112C-119:+1;7t3dH:111A-118:+1;8grrH:111G-118:+3;8pq2L:109-119:+1;8tqiI:112F-119:+1;8tqiC:111-118:+1;8w5qH:none;9dn2H:110-119:+1;9fteB:none,
+"long-ended D+ models, trunc_full: SAbR C-terminal + run",26/28,,,,,
+"long-ended D+ models, trunc_118: SAbR C-terminal + run",27/27,,,,,

@@ -1,0 +1,65 @@
+2020-21 EM: error rate by bin x class group (entries)
+                   mean  size  sum
+bin   capenz fid                  
+0     0      0    0.101   119   12
+             1    0.000    10    0
+      1      0    0.500    36   18
+1-9   0      0    0.019   107    2
+             1    0.000    54    0
+      1      0    0.143    14    2
+10-49 0      0    0.000     4    0
+             1    0.000     2    0
+>=50  0      0    0.093   259   24
+
+2020-21 contested non-SARS2 target classes:
+                             mean  size  sum
+tgt_cls                                     
+GPCR                        0.000    61    0
+channel/transporter         0.027    37    1
+enzyme                      0.333     6    2
+other protein               0.000    10    0
+receptor/membrane protein   0.000     5    0
+unmapped/peptide            0.000     2    0
+viral capsid                0.000     8    0
+viral surface glycoprotein  0.019    54    1
+
+                                                                       test  rate_s2  rate_other      OR      lo       hi       p     n  n_err  n_err_pap
+0                            2020-21 SARS2 vs contested non-SARS2, year+res   0.0969      0.0219  5.3194  1.5800  17.9090  0.0070   441     29       17.0
+1                          2020-21 SARS2 vs contested non-SARS2, bound only   0.0969      0.0315  3.4260  1.0425  11.2588  0.0425   385     29       17.0
+2          2020-21 SARS2 vs contested non-SARS2, bound only + capsid/enzyme   0.0969      0.0315  6.1638  1.2967  29.2991  0.0222   385     29       17.0
+3   2020-21 SARS2 vs contested non-SARS2 surface glycoproteins only (viral)   0.0969      0.0185  5.9277  0.6539  53.7360  0.1136   312     26       14.0
+4                              2022+ SARS2 vs contested non-SARS2, year+res   0.0422      0.0507  0.8140  0.3710   1.7858  0.6077  1152     55       40.0
+5                            2022+ SARS2 vs contested non-SARS2, bound only   0.0422      0.0569  0.7272  0.3301   1.6017  0.4291  1071     55       40.0
+6            2022+ SARS2 vs contested non-SARS2, bound only + capsid/enzyme   0.0422      0.0569  0.9603  0.4385   2.1032  0.9194  1071     55       40.0
+7     2022+ SARS2 vs contested non-SARS2 surface glycoproteins only (viral)   0.0422      0.0726  0.6045  0.2598   1.4068  0.2428   651     35       26.0
+8                              EM quadratic term log2(1+labs12)^2, year+res      NaN         NaN  1.0622  1.0186   1.1076  0.0047  2707    174        NaN
+9                               EM linear term in quadratic model, year+res      NaN         NaN  0.6189  0.4539   0.8439  0.0024  2707    174        NaN
+10                       EM quadratic term log2(1+labs12)^2, year+res+class      NaN         NaN  1.0401  0.9953   1.0869  0.0803  2707    174        NaN
+11                        EM linear term in quadratic model, year+res+class      NaN         NaN  0.7535  0.5460   1.0400  0.0851  2707    174        NaN
+12                                 EM per doubling, year+res+class+fiducial      NaN         NaN  0.9817  0.8934   1.0787  0.7006  2707    174      124.0
+13                                               EM any other lab, year+res      NaN         NaN  0.5753  0.3648   0.9073  0.0174  2707    174      124.0
+14                                     EM any other lab, year+res+class+fid      NaN         NaN  0.7579  0.4879   1.1773  0.2173  2707    174      124.0
+15                           EM non-SARS2 any other lab, year+res+class+fid      NaN         NaN  0.7326  0.4513   1.1893  0.2081  2046    132       99.0
+16                               EM 2022+ any other lab, year+res+class+fid      NaN         NaN  0.8385  0.4741   1.4829  0.5448  1924    104       78.0
+
+lens-wide tests: 241 | p non-null 241
+                                                               test       stratum            term      OR       p  q_lens    q_re    q_re
+37                                        competition: labs_fam_12m  EM non-SARS2  l_labs_fam_12m  0.8168  0.0023  0.0143  0.0143  0.0143
+57                    competition l_labs_fam_12m adjusted: year+res            EM  l_labs_fam_12m  0.8932  0.0186  0.0773  0.0773  0.0773
+58                                        competition: labs_fam_12m            EM  l_labs_fam_12m  0.8951  0.0207  0.0844  0.0844  0.0844
+59   competition l_labs_fam_12m adjusted: year+res+class, non-SARS2            EM  l_labs_fam_12m  0.8232  0.0211  0.0846  0.0846  0.0846
+91              competition l_labs_fam_12m adjusted: year+res+class            EM  l_labs_fam_12m  0.9042  0.0860  0.2252  0.2252  0.2252
+98                                        competition: labs_acc_12m  EM non-SARS2  l_labs_acc_12m  0.8186  0.0960  0.2336  0.2336  0.2336
+124                   competition l_labs_acc_12m adjusted: year+res            EM  l_labs_acc_12m  0.9417  0.2084  0.4017  0.4017  0.4017
+129                                       competition: labs_acc_12m            EM  l_labs_acc_12m  0.9430  0.2187  0.4055  0.4055  0.4055
+178  competition l_labs_acc_12m adjusted: year+res+class, non-SARS2            EM  l_labs_acc_12m  0.9359  0.5688  0.7616  0.7616  0.7616
+201                                            competition: race_1m         X-ray         race_1m  1.2125  0.6442  0.7684  0.7684  0.7684
+204                                            competition: race_1m            EM         race_1m  0.8997  0.6694  0.7870  0.7870  0.7870
+205                                       competition: labs_acc_12m         X-ray  l_labs_acc_12m  1.0345  0.6940  0.8119  0.8119  0.8119
+224                                            competition: race_1m  EM non-SARS2         race_1m  0.9570  0.8903  0.9524  0.9524  0.9524
+227             competition l_labs_acc_12m adjusted: year+res+class            EM  l_labs_acc_12m  0.9940  0.9015  0.9524  0.9524  0.9524
+228                                       competition: labs_fam_12m         X-ray  l_labs_fam_12m  0.9890  0.9050  0.9524  0.9524  0.9524
+
+per-doubling OR 0.943 (upper 95% 1.035) -> implied OR for 0 vs 127 other labs: point 0.66, upper 1.28
+race_1m OR 0.90 (0.55-1.46): cannot exclude a 46% increase
+race_1m non-SARS2 OR 0.96 (0.51-1.79), exposed n=416, exposed errors=25

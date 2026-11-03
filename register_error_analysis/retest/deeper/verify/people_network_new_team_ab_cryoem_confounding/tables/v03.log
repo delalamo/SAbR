@@ -1,0 +1,72 @@
+                                                              test            OR      lo       hi       p     n  n_err  rate_new  rate_old
+0                                           interaction new x late  2.423000e-01  0.1039   0.5651  0.0010  1302    NaN       NaN       NaN
+1                                                   stratum late=0  3.063700e+00  1.9246   4.8771  0.0000   792   87.0    0.1756    0.0741
+2                                                   stratum late=1  7.932000e-01  0.3732   1.6859  0.5470   510   40.0    0.0643    0.0855
+3                                        interaction new x vhh_any  3.211000e-01  0.1331   0.7748  0.0115  1302    NaN       NaN       NaN
+4                                                stratum vhh_any=0  2.584800e+00  1.5797   4.2295  0.0002   918   92.0    0.1519    0.0731
+5                                                stratum vhh_any=1  8.195000e-01  0.3936   1.7059  0.5946   384   35.0    0.0896    0.0920
+6                                          interaction new x china  2.834400e+00  0.9740   8.2481  0.0559  1302    NaN       NaN       NaN
+7                                                  stratum china=0  1.694200e+00  1.0715   2.6787  0.0241   999   97.0    0.1288    0.0857
+8                                                  stratum china=1  6.111700e+00  2.2135  16.8752  0.0005   303   30.0    0.1398    0.0342
+9                                          interaction new x sars2  1.868000e+00  0.6564   5.3157  0.2416  1302    NaN       NaN       NaN
+10                                                 stratum sars2=0  1.797300e+00  1.1589   2.7872  0.0088  1010  100.0    0.1261    0.0857
+11                                                 stratum sars2=1  3.436800e+00  1.2803   9.2258  0.0143   292   27.0    0.1538    0.0514
+12                                     interaction new x novel_all  9.515000e-01  0.4331   2.0905  0.9015  1302    NaN       NaN       NaN
+13                                             stratum novel_all=0  2.179900e+00  1.1595   4.0984  0.0155   610   52.0    0.1122    0.0725
+14                                             stratum novel_all=1  1.865900e+00  1.1371   3.0616  0.0136   692   75.0    0.1496    0.0845
+15                                     interaction new x mouse_any  1.404600e+00  0.6382   3.0915  0.3986  1302    NaN       NaN       NaN
+16                                             stratum mouse_any=0  1.795000e+00  1.1200   2.8770  0.0151  1009   91.0    0.1176    0.0773
+17                                             stratum mouse_any=1  2.776100e+00  1.2876   5.9853  0.0092   293   36.0    0.1732    0.0843
+18                                    interaction new x lab_common  1.245600e+00  0.4600   3.3730  0.6657  1302    NaN       NaN       NaN
+19                                            stratum lab_common=0  2.149200e+00  1.3103   3.5252  0.0024   889   89.0    0.1591    0.0856
+20                                            stratum lab_common=1  2.818100e+00  1.1621   6.8339  0.0219   413   38.0    0.1168    0.0432
+21                                       stratum late=0, vhh_any=0  3.804900e+00     NaN      NaN  0.0000   562   66.0    0.2120    0.0714
+22                                       stratum late=0, vhh_any=1  1.245000e+00     NaN      NaN  0.6284   230   21.0    0.1053    0.0815
+23                                       stratum late=1, vhh_any=0  1.015200e+00     NaN      NaN  0.9743   356   26.0    0.0682    0.0759
+24                                       stratum late=1, vhh_any=1  3.829000e-01     NaN      NaN  0.2679   154   14.0    0.0513    0.1043
+25                                         stratum late=0, china=0  2.491900e+00     NaN      NaN  0.0011   592   60.0    0.1635    0.0785
+26                                         stratum late=0, china=1  5.732300e+00     NaN      NaN  0.0016   200   27.0    0.1917    0.0500
+27                                         stratum late=1, china=0  8.122000e-01     NaN      NaN  0.6280   407   37.0    0.0762    0.0960
+28                                         stratum late=1, china=1  7.832901e+08     NaN      NaN  0.1098   103    3.0    0.0455    0.0000
+29       non-China & last-author name not collision-prone, na flag  2.038000e+00  1.1991   3.4636  0.0085   823   83.0    0.1538    0.0885
+30  non-China & last-author name not collision-prone, all-key flag  2.351700e+00  1.3658   4.0491  0.0020   823   83.0    0.1732    0.0876
+31                                             China, all-key flag  1.099500e+00  0.3240   3.7314  0.8790   303   30.0    0.1333    0.0952
+32                                         non-China, all-key flag  2.360000e+00  1.4154   3.9351  0.0010   999   97.0    0.1689    0.0846
+
+by year category:
+       size     sum       mean       
+new       0   1   0   1      0      1
+ycat                                 
+2020     67  41   6   5  0.090  0.122
+2021    124  60  12  14  0.097  0.233
+2022    131  81   5  13  0.038  0.160
+2023    118  62   8  12  0.068  0.194
+2024    153  84  14   5  0.092  0.060
+<=2019   73  35   7   5  0.096  0.143
+>=2025  186  87  15   6  0.081  0.069
+
+leave-one-year-category-out:
+  left_out     n      OR       p
+0     2020  1194  2.0037  0.0014
+1     2021  1118  1.8621  0.0049
+2     2022  1090  1.7010  0.0137
+3     2023  1122  1.7654  0.0077
+4     2024  1065  2.4462  0.0000
+5   <=2019  1194  2.0295  0.0006
+6   >=2025  1029  2.2944  0.0002
+
+ {'test': 'one study per last-author lab (500 random draws)', 'n_per_draw': 570, 'OR_median': np.float64(1.5775436567722565), 'OR_2_5': np.float64(1.1897040139305386), 'OR_97_5': np.float64(2.0861659281791027), 'p_median': np.float64(0.11325017713742494), 'frac_p_lt_05': np.float64(0.224)}
+
+within-lab informative labs: 15 studies 166
+     size  sum      mean
+new                     
+0     147   19  0.129252
+1      19   10  0.526316
+                                                      test  n_studies  n_labs  n_err      OR      lo       hi       p
+0                        within-lab conditional logit: new        166      15     29  3.8081  1.1743  12.3492  0.0259
+1                within-lab conditional logit: new+dep_dec        166      15     29  1.0000  0.2953   3.3868  1.0000
+2  within-lab conditional logit: new+dep_dec+res_med+l2_nv        166      15     29  1.0000  0.2940   3.4013  1.0000
+Traceback (most recent call last):
+  File "/home/user/SAbR/register_error_analysis/retest/deeper/verify/people_network_new_team_ab_cryoem_confounding/v03_heterogeneity.py", line 119, in <module>
+    from sklearn.metrics import roc_auc_score
+ModuleNotFoundError: No module named 'sklearn'

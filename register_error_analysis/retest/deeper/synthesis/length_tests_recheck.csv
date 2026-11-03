@@ -1,0 +1,10 @@
+test,set,err_exposed,err_ref,OR,p
+heavy CDR2 IMGT7 [H2-9] vs 8,as published,44/552,58/1694,2.46,1.5291818585745835e-05
+heavy CDR2 IMGT7 [H2-9] vs 8,minus amyloid,44/552,58/1694,2.46,1.5291818585745835e-05
+heavy CDR2 IMGT7 [H2-9] vs 8,minus strict artifacts,37/545,49/1685,2.45,6.790018237481203e-05
+lambda CDR1 IMGT8 [L1-13] vs 9,as published,13/114,7/235,4.27,0.0029890089899684987
+lambda CDR1 IMGT8 [L1-13] vs 9,minus amyloid,6/107,5/233,2.56,0.13050596521485536
+lambda CDR1 IMGT8 [L1-13] vs 9,minus strict artifacts,6/107,5/233,2.56,0.13050596521485536
+kappa CDR1 IMGT12 [L1-17] vs 6,as published,8/78,29/821,3.11,0.007693079426725209
+kappa CDR1 IMGT12 [L1-17] vs 6,minus amyloid,8/78,29/821,3.11,0.007693079426725209
+kappa CDR1 IMGT12 [L1-17] vs 6,minus strict artifacts,8/78,25/817,3.58,0.003159051576103755

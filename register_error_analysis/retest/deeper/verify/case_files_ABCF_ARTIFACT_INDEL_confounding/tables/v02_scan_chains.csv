@@ -1,0 +1,104 @@
+src,pdb,chain,pattern,n_win,unbuilt_in_win,n_dis,dis3,detail,method,res,year,last_author,paper,species,v_gene,sars2,err_first,err_modes,err_any,runs_all_win,runs_first_win,method_idx,res_idx
+validation.jsonl,5dhz,H,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,4.3,2015,"Steven, A.C.",10.1016/j.str.2016.04.015,human,IGHV3-66*01,False,False,,True,"81-83(1.0,C_FR3,2 )",,X-RAY DIFFRACTION,4.3
+validation.jsonl,6u59,F,FR3_81,7,0.0,0.0,False,,EM,3.86,2019,"Ward, A.B.",10.1128/JVI.01861-19,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.86
+validation.jsonl,6u59,H,FR3_81,7,0.0,0.0,False,,EM,3.86,2019,"Ward, A.B.",10.1128/JVI.01861-19,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.86
+validation.jsonl,6u59,K,FR3_81,7,0.0,0.0,False,,EM,3.86,2019,"Ward, A.B.",10.1128/JVI.01861-19,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.86
+validation.jsonl,7eaj,F,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 ASN35/30,EM,4.1,2021,"Feng, R.",10.1038/s41421-021-00264-3,mouse,IGHV1-12*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,4.1
+validation.jsonl,7te9,H,FR3_96,8,0.0,0.0,False,,EM,3.92,2022,"Furukawa, H.",10.1038/s41467-022-28559-3,mouse,IGHV5-12-2*01,False,True,C_FR3,True,,,ELECTRON MICROSCOPY,3.92
+validation.jsonl,7te9,M,FR3_96,8,0.0,0.0,False,,EM,3.92,2022,"Furukawa, H.",10.1038/s41467-022-28559-3,mouse,IGHV5-12-2*01,False,True,C_FR3,True,,,ELECTRON MICROSCOPY,3.92
+validation.jsonl,7jwp,A,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,C,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,E,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,G,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,I,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,K,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,M,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+validation.jsonl,7jwp,O,FR3_81,7,0.0,0.0,False,,X-ray,3.0,2020,"Ho, H.",10.1073/pnas.2018024118,human,IGHV3-49*04,False,False,,False,,,X-RAY DIFFRACTION,3.0
+new.jsonl,7sgf,H,FR3_81,7,0.0,0.0,False,,EM,4.41,2021,"Ward, A.B.",10.1016/j.chom.2022.10.018,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,4.41
+new.jsonl,7sgf,J,FR3_81,7,0.0,0.0,False,,EM,4.41,2021,"Ward, A.B.",10.1016/j.chom.2022.10.018,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,4.41
+new.jsonl,7sgf,M,FR3_81,7,0.0,0.0,False,,EM,4.41,2021,"Ward, A.B.",10.1016/j.chom.2022.10.018,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,4.41
+new.jsonl,7u8g,D,FR3_81,7,0.0,0.0,False,,EM,3.2,2022,"Koerber, J.T.",10.1038/s41467-022-33711-0,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.2
+new.jsonl,8h01,E,FR3_81,7,0.0,0.0,False,,EM,3.7,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.7
+new.jsonl,8h01,G,FR3_81,7,0.0,0.0,False,,EM,3.7,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.7
+new.jsonl,8h01,I,FR3_81,7,0.0,0.0,False,,EM,3.7,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.7
+new.jsonl,8h00,E,FR3_81,7,0.0,0.0,False,,EM,3.41,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.41
+new.jsonl,8h00,G,FR3_81,7,0.0,0.0,False,,EM,3.41,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.41
+new.jsonl,8h00,I,FR3_81,7,0.0,0.0,False,,EM,3.41,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.41
+new.jsonl,8gzz,E,FR3_81,7,0.0,0.0,False,,EM,3.52,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.52
+new.jsonl,8gzz,G,FR3_81,7,0.0,0.0,False,,EM,3.52,2022,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.52
+new.jsonl,8gsd,H,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 SER35/30,EM,3.1,2022,"Fu, W.",10.3390/v14112322,mouse,IGHV1-47-27*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.1
+new.jsonl,8gsc,H,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 SER35/30,EM,3.4,2022,"Fu, W.",10.3390/v14112322,mouse,IGHV1-47-27*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.4
+new.jsonl,8gsf,E,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 SER35/30,EM,3.6,2022,"Fu, W.",10.3390/v14112322,mouse,IGHV1-47-27*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.6
+new.jsonl,8gsf,H,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 SER35/30,EM,3.6,2022,"Fu, W.",10.3390/v14112322,mouse,IGHV1-47-27*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.6
+new.jsonl,8gse,H,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 SER35/30,EM,3.7,2022,"Fu, W.",10.3390/v14112322,mouse,IGHV1-47-27*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.7
+new.jsonl,8itu,E,FR3_81,7,0.0,0.0,False,,EM,3.68,2023,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.68
+new.jsonl,8itu,G,FR3_81,7,0.0,0.0,False,,EM,3.68,2023,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.68
+new.jsonl,8itu,I,FR3_81,7,0.0,0.0,False,,EM,3.68,2023,"Ji, X.",10.1038/s42003-023-04759-5,mouse,IGHV5-17*01,True,False,,False,,,ELECTRON MICROSCOPY,3.68
+new.jsonl,8kei,C,FR3_81,7,0.0,0.0,False,,EM,3.56,2023,"Ye, R.D.",10.1073/pnas.2320388121,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.56
+new.jsonl,8xlk,K,FR3_96,8,0.0,0.0,False,,EM,4.2,2023,"Zhu, S.",10.1016/j.cell.2025.01.004,mouse,IGHV5-12-2*01,False,True,C_FR3,True,,,ELECTRON MICROSCOPY,4.2
+new.jsonl,9bop,M,FR3_84,7,0.0,3.0,True,THR81/82 ALA82/83 SER83/84,EM,3.0,2024,"Draper, S.J.",10.1038/s44298-026-00192-7,human,IGHV3-53*04,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.0
+new.jsonl,9bop,O,FR3_84,7,0.0,3.0,True,THR81/82 ALA82/83 SER83/84,EM,3.0,2024,"Draper, S.J.",10.1038/s44298-026-00192-7,human,IGHV3-53*04,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.0
+new.jsonl,9bop,A,FR3_81,7,0.0,0.0,False,,EM,3.0,2024,"Draper, S.J.",10.1038/s44298-026-00192-7,human,IGHV3-64*04,False,False,,False,,,ELECTRON MICROSCOPY,3.0
+new.jsonl,9bop,C,FR3_81,7,0.0,0.0,False,,EM,3.0,2024,"Draper, S.J.",10.1038/s44298-026-00192-7,human,IGHV3-64*04,False,False,,False,,,ELECTRON MICROSCOPY,3.0
+new.jsonl,9bop,E,FR3_81,7,0.0,0.0,False,,EM,3.0,2024,"Draper, S.J.",10.1038/s44298-026-00192-7,human,IGHV3-64*04,False,False,,False,,,ELECTRON MICROSCOPY,3.0
+new.jsonl,9e89,H,FR3_84_85,6,0.0,3.0,True,ASP81/83 ASN82/84 GLY83/85,EM,3.5,2024,"Hafenstein, S.",10.1073/pnas.2423460122,human,IGHV3-7*01,False,True,C_FR3,True,"81-83(2.0,C_FR3,9 )","81-83(2.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.5
+new.jsonl,9jrt,N,FR3_85,0,,,,,EM,3.28,2024,"Xu, E.H.",10.1038/s44318-025-00611-0,human,IGHV3-23*01,False,False,,False,,,ELECTRON MICROSCOPY,3.28
+new.jsonl,9jro,N,FR3_85,0,,,,,EM,3.5,2024,"Xu, E.H.",10.1038/s44318-025-00611-0,human,IGHV3-23*01,False,False,,False,,,ELECTRON MICROSCOPY,3.5
+new.jsonl,9ml7,H,FR3_81,7,0.0,0.0,False,,EM,3.2,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,False,,False,,,ELECTRON MICROSCOPY,3.2
+new.jsonl,9ml6,H,FR3_81,7,0.0,0.0,False,,EM,3.5,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,False,,False,,,ELECTRON MICROSCOPY,3.5
+new.jsonl,9ml6,M,FR3_81,7,0.0,0.0,False,,EM,3.5,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,False,,False,,,ELECTRON MICROSCOPY,3.5
+new.jsonl,9ml6,P,FR3_81,7,0.0,0.0,False,,EM,3.5,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,False,,False,,,ELECTRON MICROSCOPY,3.5
+new.jsonl,9ml5,H,FR3_84,7,0.0,2.0,False,THR85/84 THR86/85,EM,3.4,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,True,C_FR3;F_CDR1,True,"85-95(-1.0,C_FR3,9 )","85-95(-1.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.4
+new.jsonl,9ml5,M,FR3_84,7,0.0,2.0,False,THR85/84 THR86/85,EM,3.4,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-53*04,True,True,C_FR3;F_CDR1,True,"85-95(-1.0,C_FR3,9 )","85-95(-1.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.4
+new.jsonl,9ml4,H,FR3_81,7,0.0,0.0,False,,EM,3.3,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-23*01,True,False,,False,,,ELECTRON MICROSCOPY,3.3
+new.jsonl,9ml4,M,FR3_81,7,0.0,0.0,False,,EM,3.3,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-23*01,True,False,,False,,,ELECTRON MICROSCOPY,3.3
+new.jsonl,9ml4,P,FR3_81,7,0.0,0.0,False,,EM,3.3,2024,"Bjorkman, P.J.",10.1073/pnas.2501637122,human,IGHV3-23*01,True,False,,False,,,ELECTRON MICROSCOPY,3.3
+new.jsonl,9yfu,N,FR3_85,7,0.0,4.0,True,ASP81/82 ASP82/83 ALA83/84 LYS84/85,EM,3.08,2025,"Han, S.",10.1021/acs.jmedchem.6c00081,human,IGHV3-23*01,False,True,C_FR3,True,"81-84(1.0,C_FR3,9 )","81-84(1.0,C_FR3,9 )",ELECTRON MICROSCOPY,3.08
+new.jsonl,30bg,H,FR3_84_85,6,0.0,3.0,True,ASP81/83 GLU82/84 SER83/85,X-ray,3.31,2026,"Tzarum, N.",10.1371/journal.ppat.1014651,human,IGHV1-69*01,False,True,C_FR3,True,"81-83(2.0,C_FR3,9 )","81-83(2.0,C_FR3,9 )",X-RAY DIFFRACTION,3.31
+new.jsonl,30ae,H,FR3_81,7,0.0,0.0,False,,X-ray,3.5,2026,"McDonnell, J.M.",10.1073/pnas.2613091123,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.5
+new.jsonl,30ad,H,FR3_84,7,0.0,3.0,True,ALA81/82 SER82/83 SER83/84,X-ray,3.2,2026,"McDonnell, J.M.",10.1073/pnas.2613091123,human,IGHV3-53*04,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.2
+new.jsonl,8df1,H,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8df1,M,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8df1,O,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8df1,Q,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8df1,S,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8df1,U,FR3_81,7,0.0,0.0,False,,X-ray,3.3,2022,"McLellan, J.S.",10.1093/abt/tbac027,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.3
+new.jsonl,8r61,A,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,8r61,D,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,8r61,G,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,8r61,J,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,8r61,M,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,8r61,P,FR3_81,7,0.0,0.0,False,,X-ray,3.1,2023,"Gandini, R.",10.1101/2023.02.17.528943,mouse,IGHV2-9-1*01,False,False,,False,,,X-RAY DIFFRACTION,3.1
+new.jsonl,9pf9,H,FR3_84,7,0.0,3.0,True,ASP81/82 THR82/83 SER83/84,X-ray,3.93,2025,"Pancera, M.",10.1016/j.xcrm.2026.102618,human,IGHV2-5*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.93
+snapshot_rest.jsonl,2x7l,A,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,2x7l,C,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,2x7l,E,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,2x7l,G,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,2x7l,H,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,2x7l,J,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.17,2010,"Grimes, J.M.",10.1073/PNAS.0914946107,human,IGHV3-66*01,False,True,C_FR3,True,"81-83(1.0,C_FR3,9 )","81-83(1.0,C_FR3,9 )",X-RAY DIFFRACTION,3.17
+snapshot_rest.jsonl,5dhy,A,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.1,2015,"Steven, A.C.",10.1016/j.str.2016.04.015,human,IGHV3-66*01,False,False,,True,"81-83(1.0,C_FR3,2 )",,X-RAY DIFFRACTION,3.1
+snapshot_rest.jsonl,5dhy,H,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.1,2015,"Steven, A.C.",10.1016/j.str.2016.04.015,human,IGHV3-66*01,False,False,,True,"81-83(1.0,C_FR3,2 )",,X-RAY DIFFRACTION,3.1
+snapshot_rest.jsonl,6cf2,A,FR3_80_84,6,0.0,3.0,True,ASP81/80 THR82/83 SER83/84,X-ray,3.0,2018,"Wingfield, P.T.",10.1016/j.str.2018.06.001,human,IGHV3-66*01,False,False,,True,"81-83(1.0,C_FR3,1b)",,X-RAY DIFFRACTION,3.0
+snapshot_rest.jsonl,6did,D,FR3_81,7,0.0,0.0,False,,EM,4.71,2018,"Ward, A.B.",10.1016/j.immuni.2018.07.009,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,4.71
+snapshot_rest.jsonl,6did,K,FR3_81,7,0.0,0.0,False,,EM,4.71,2018,"Ward, A.B.",10.1016/j.immuni.2018.07.009,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,4.71
+snapshot_rest.jsonl,6did,L,FR3_81,7,0.0,0.0,False,,EM,4.71,2018,"Ward, A.B.",10.1016/j.immuni.2018.07.009,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,4.71
+snapshot_rest.jsonl,6p62,C,FR3_81,7,0.0,0.0,False,,EM,3.57,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.57
+snapshot_rest.jsonl,6p62,F,FR3_81,7,0.0,0.0,False,,EM,3.57,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.57
+snapshot_rest.jsonl,6p62,H,FR3_81,7,0.0,0.0,False,,EM,3.57,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.57
+snapshot_rest.jsonl,6p65,C,FR3_82,7,0.0,1.0,False,THR81/82,EM,3.94,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,True,B_CDR2FR3,True,,,ELECTRON MICROSCOPY,3.94
+snapshot_rest.jsonl,6p65,F,FR3_82,7,0.0,1.0,False,THR81/82,EM,3.94,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,True,B_CDR2FR3,True,,,ELECTRON MICROSCOPY,3.94
+snapshot_rest.jsonl,6p65,H,FR3_82,7,0.0,1.0,False,THR81/82,EM,3.94,2019,"Ward, A.B.",10.1016/j.immuni.2019.10.008,human,IGHV3-53*04,False,True,B_CDR2FR3,True,,,ELECTRON MICROSCOPY,3.94
+snapshot_rest.jsonl,6vo0,G,FR3_81,7,0.0,0.0,False,,EM,3.52,2020,"Ward, A.B.",10.1126/sciadv.aba0512,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.52
+snapshot_rest.jsonl,6vo0,H,FR3_81,7,0.0,0.0,False,,EM,3.52,2020,"Ward, A.B.",10.1126/sciadv.aba0512,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.52
+snapshot_rest.jsonl,6vo0,I,FR3_81,7,0.0,0.0,False,,EM,3.52,2020,"Ward, A.B.",10.1126/sciadv.aba0512,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.52
+snapshot_rest.jsonl,6x97,E,FR3_81,7,0.0,0.0,False,,EM,3.65,2020,"Ward, A.B.",6x97,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.65
+snapshot_rest.jsonl,6x97,H,FR3_81,7,0.0,0.0,False,,EM,3.65,2020,"Ward, A.B.",6x97,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.65
+snapshot_rest.jsonl,6x97,J,FR3_81,7,0.0,0.0,False,,EM,3.65,2020,"Ward, A.B.",6x97,human,IGHV3-53*04,False,False,,False,,,ELECTRON MICROSCOPY,3.65
+snapshot_rest.jsonl,6x96,E,FR3_81,7,0.0,0.0,False,,EM,3.4,2020,"Ward, A.B.",6x96,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.4
+snapshot_rest.jsonl,6x96,H,FR3_81,7,0.0,0.0,False,,EM,3.4,2020,"Ward, A.B.",6x96,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.4
+snapshot_rest.jsonl,6x96,J,FR3_81,7,0.0,0.0,False,,EM,3.4,2020,"Ward, A.B.",6x96,human,IGHV3-33*02,False,False,,False,,,ELECTRON MICROSCOPY,3.4
+snapshot_rest.jsonl,7eak,F,FR1_26,9,0.0,5.0,True,PHE27/26 TYR28/27 THR29/28 PHE30/29 ASN35/30,EM,3.9,2021,"Feng, R.",10.1038/s41421-021-00264-3,mouse,IGHV1-12*01,False,True,F_CDR1,True,"27-35(nan,F_CDR1,8 )","27-35(nan,F_CDR1,8 )",ELECTRON MICROSCOPY,3.9
+snapshot_rest.jsonl,7nks,C,FR3_81,7,0.0,0.0,False,,X-ray,3.5,2021,"Stass, R.",10.1128/mBio.02531-20,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.5
+snapshot_rest.jsonl,7nks,H,FR3_81,7,0.0,0.0,False,,X-ray,3.5,2021,"Stass, R.",10.1128/mBio.02531-20,human,IGHV3-53*04,False,False,,False,,,X-RAY DIFFRACTION,3.5
+snapshot_rest.jsonl,7teb,H,FR3_96,8,0.0,0.0,False,,EM,4.23,2022,"Furukawa, H.",10.1038/s41467-022-28559-3,mouse,IGHV5-12-2*01,False,True,C_FR3,True,,,ELECTRON MICROSCOPY,4.23
+snapshot_rest.jsonl,7teb,M,FR3_96,8,0.0,0.0,False,,EM,4.23,2022,"Furukawa, H.",10.1038/s41467-022-28559-3,mouse,IGHV5-12-2*01,False,True,C_FR3,True,,,ELECTRON MICROSCOPY,4.23

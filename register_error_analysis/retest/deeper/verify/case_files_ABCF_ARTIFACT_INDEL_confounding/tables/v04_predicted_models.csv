@@ -1,0 +1,85 @@
+fv_id,tool,pdbs,chain_type,imgt0,imgt1,delta,method,last_author,units,claimed_artifact,mode,n_dis_pred,reproduced,detail
+fv0001,immunebuilder,3jbf,H,37,48,-3.0,EM,"Hogle, J.M.",1,False,F_CDR1,0,False,
+fv0001,igfold,3jbf,H,37,48,-3.0,EM,"Hogle, J.M.",1,False,F_CDR1,0,False,
+fv0004,immunebuilder,4xnz,H,83,85,,X-ray,"Kwong, P.D.",1,False,C_FR3,10,True,S83/82A Q84/82B D85/82C P85A/82D D85B/82E D85C/82F P85D/82G D85E/83 W85F/84 G85G/85
+fv0004,igfold,4xnz,H,83,85,,X-ray,"Kwong, P.D.",1,False,C_FR3,10,True,S83/82A Q84/82B D85/82C P85A/82D D85B/82E D85C/82F P85D/82G D85E/83 W85F/84 G85G/85
+fv0014,immunebuilder,6lht,K,31,57,5.0,EM,"Li, S.W.",1,False,F_CDR1,0,False,
+fv0014,igfold,6lht,K,31,57,5.0,EM,"Li, S.W.",1,False,F_CDR1,0,False,
+fv0022,immunebuilder,7e23,H,72,93,3.0,EM,"Dou, C.",1,False,C_FR3,0,False,
+fv0022,igfold,7e23,H,72,93,3.0,EM,"Dou, C.",1,False,C_FR3,0,False,
+fv0022,immunebuilder,7e23,K,76,93,-2.0,EM,"Dou, C.",1,False,C_FR3,0,False,
+fv0022,igfold,7e23,K,76,93,-2.0,EM,"Dou, C.",1,False,C_FR3,0,False,
+fv0024,immunebuilder,7e3c,H,74,81,1.0,EM,"Liu, C.",1,False,C_FR3,0,False,
+fv0024,igfold,7e3c,H,74,81,1.0,EM,"Liu, C.",1,False,C_FR3,0,False,
+fv0025,immunebuilder,"7eaj,7eak",H,27,35,,EM,"Feng, R.",1,True,F_CDR1,5,True,F27/26 Y28/27 T29/28 F30/29 N35/30
+fv0025,igfold,"7eaj,7eak",H,27,35,,EM,"Feng, R.",1,True,F_CDR1,5,True,F27/26 Y28/27 T29/28 F30/29 N35/30
+fv0031,immunebuilder,7m3l,H,90,95,-1.0,EM,"Hafenstein, S.L.",1,False,C_FR3,4,True,Q90/89 L91/90 N92/91 R93/92
+fv0031,igfold,7m3l,H,90,95,-1.0,EM,"Hafenstein, S.L.",1,False,C_FR3,4,True,Q90/89 L91/90 N92/91 R93/92
+fv0034,immunebuilder,7mhz,H,87,95,-2.0,EM,"Jiang, Y.",1,False,C_FR3,0,False,
+fv0034,igfold,7mhz,H,87,95,-2.0,EM,"Jiang, Y.",1,False,C_FR3,0,False,
+fv0039,immunebuilder,"7te9,7teb,8xlk",H,93,95,1.0,EM,"Furukawa, H.",2,False,C_FR3,1,False,K95/96
+fv0039,igfold,"7te9,7teb,8xlk",H,93,95,1.0,EM,"Furukawa, H.",2,False,C_FR3,1,False,K95/96
+fv0041,immunebuilder,7c80,H,30,128,9.0,EM,"Wang, X.",1,False,F_CDR1,2,False,Q44/43 T45/44
+fv0041,igfold,7c80,H,30,128,9.0,EM,"Wang, X.",1,False,F_CDR1,3,True,Q44/43 T45/44 P46/45
+fv0046,immunebuilder,7e5y,L,45,80,1.0,X-ray,"Yang, X.M.",1,False,F_CDR1,2,False,V45A/46 P46/46A
+fv0046,igfold,7e5y,L,45,80,1.0,X-ray,"Yang, X.M.",1,False,F_CDR1,2,False,V45A/46 P46/46A
+fv0048,immunebuilder,"7kra,7ktx",H,80,93,-2.0,EM,"Frost, A.",1,False,C_FR3,0,False,
+fv0048,igfold,"7kra,7ktx",H,80,93,-2.0,EM,"Frost, A.",1,False,C_FR3,0,False,
+fv0056,immunebuilder,2x7l,H,81,83,1.0,X-ray,"Grimes, J.M.",1,True,C_FR3,3,True,D81/80 T82/83 S83/84
+fv0056,igfold,2x7l,H,81,83,1.0,X-ray,"Grimes, J.M.",1,True,C_FR3,3,True,D81/80 T82/83 S83/84
+fv0060,immunebuilder,5dum,H,27,34,,X-ray,"Wang, X.",1,False,F_CDR1,6,True,G27/25 F28/26 A29/27 Y30/28 S31/29 S34/30
+fv0060,igfold,5dum,H,27,34,,X-ray,"Wang, X.",1,False,F_CDR1,6,True,G27/25 F28/26 A29/27 Y30/28 S31/29 S34/30
+fv0074,immunebuilder,7kbt,H,99,112,-1.0,X-ray,"Childers, K.C.",1,False,C_FR3,0,False,
+fv0074,igfold,7kbt,H,99,112,-1.0,X-ray,"Childers, K.C.",1,False,C_FR3,0,False,
+fv0100,immunebuilder,7stf,K,86,93,-2.0,EM,"Miller, M.",1,False,C_FR3,0,False,
+fv0100,igfold,7stf,K,86,93,-2.0,EM,"Miller, M.",1,False,C_FR3,0,False,
+fv0104,immunebuilder,7ul5,H,99,112,-2.0,EM,"Skiniotis, G.",1,False,C_FR3,0,False,
+fv0104,igfold,7ul5,H,99,112,-2.0,EM,"Skiniotis, G.",1,False,C_FR3,0,False,
+fv0104,immunebuilder,9lfc,H,100,112,-2.0,EM,"Zhang, H.",1,False,C_FR3,0,False,
+fv0104,igfold,9lfc,H,100,112,-2.0,EM,"Zhang, H.",1,False,C_FR3,0,False,
+fv0112,immunebuilder,7y0o,H,95,112,-1.0,EM,"Wang, L.",1,False,C_FR3,0,False,
+fv0112,igfold,7y0o,H,95,112,-1.0,EM,"Wang, L.",1,False,C_FR3,1,False,R95/94
+fv0115,immunebuilder,8c8t,H,83,85,,EM,"Mouquet, H.",1,False,C_FR3,7,True,S83/82A W84/82B D85/82C F85A/82D D85B/83 T85C/84 F85D/85
+fv0115,igfold,8c8t,H,83,85,,EM,"Mouquet, H.",1,False,C_FR3,7,True,S83/82A W84/82B D85/82C F85A/82D D85B/83 T85C/84 F85D/85
+fv0116,immunebuilder,8cr9,H,81,92,2.0,EM,"Marlovits, T.C.",1,False,C_FR3,0,False,
+fv0116,igfold,8cr9,H,81,92,2.0,EM,"Marlovits, T.C.",1,False,C_FR3,0,False,
+fv0116,immunebuilder,8cr9,K,99,110,1.0,EM,"Marlovits, T.C.",1,False,C_FR3,0,False,
+fv0116,igfold,8cr9,K,99,110,1.0,EM,"Marlovits, T.C.",1,False,C_FR3,0,False,
+fv0121,immunebuilder,8g6i,H,81,93,2.0,EM,"Spiegel, P.C.",1,False,C_FR3,0,False,
+fv0121,igfold,8g6i,H,81,93,2.0,EM,"Spiegel, P.C.",1,False,C_FR3,0,False,
+fv0125,immunebuilder,"8gsc,8gsd,8gse,8gsf",H,27,35,,EM,"Fu, W.",1,True,F_CDR1,5,True,F27/26 Y28/27 T29/28 F30/29 S35/30
+fv0125,igfold,"8gsc,8gsd,8gse,8gsf",H,27,35,,EM,"Fu, W.",1,True,F_CDR1,5,True,F27/26 Y28/27 T29/28 F30/29 S35/30
+fv0126,immunebuilder,8hhx,L,75,82,-2.0,EM,"Wu, Y.-M.",1,False,C_FR3,0,False,
+fv0126,igfold,8hhx,L,75,82,-2.0,EM,"Wu, Y.-M.",1,False,C_FR3,0,False,
+fv0144,immunebuilder,8w5e,H,71,89,1.0,EM,"Zhu, P.",1,False,C_FR3,0,False,
+fv0144,igfold,8w5e,H,71,89,1.0,EM,"Zhu, P.",1,False,C_FR3,0,False,
+fv0158,immunebuilder,9bop,H,81,83,1.0,EM,"Draper, S.J.",1,True,C_FR3,3,True,T81/82 A82/83 S83/84
+fv0158,igfold,9bop,H,81,83,1.0,EM,"Draper, S.J.",1,True,C_FR3,3,True,T81/82 A82/83 S83/84
+fv0162,immunebuilder,9dm7,H,72,92,1.0,EM,"Liu, Y.",1,False,C_FR3,0,False,
+fv0162,igfold,9dm7,H,72,92,1.0,EM,"Liu, Y.",1,False,C_FR3,1,False,N92/94
+fv0164,immunebuilder,9e89,H,81,83,2.0,EM,"Hafenstein, S.",1,True,C_FR3,0,False,
+fv0164,igfold,9e89,H,81,83,2.0,EM,"Hafenstein, S.",1,True,C_FR3,3,True,D81/83 N82/84 G83/85
+fv0171,immunebuilder,9ma0,H,83,93,-2.0,EM,"Sun, C.",1,False,C_FR3,0,False,
+fv0171,igfold,9ma0,H,83,93,-2.0,EM,"Sun, C.",1,False,C_FR3,0,False,
+fv0174,immunebuilder,9ml5,H,31,41,1.0,EM,"Bjorkman, P.J.",1,False,F_CDR1,0,False,
+fv0174,igfold,9ml5,H,31,41,1.0,EM,"Bjorkman, P.J.",1,False,F_CDR1,0,False,
+fv0174,immunebuilder,9ml5,H,85,95,-1.0,EM,"Bjorkman, P.J.",1,False,C_FR3,0,False,
+fv0174,igfold,9ml5,H,85,95,-1.0,EM,"Bjorkman, P.J.",1,False,C_FR3,0,False,
+fv0179,immunebuilder,9pur,H,28,35,,EM,"McLellan, J.S.",1,False,F_CDR1,0,False,
+fv0179,igfold,9pur,H,28,35,,EM,"McLellan, J.S.",1,False,F_CDR1,0,False,
+fv0182,immunebuilder,9pv3,K,32,99,1.0,EM,"Ward, A.B.",1,False,F_CDR1,0,False,
+fv0182,igfold,9pv3,K,32,99,1.0,EM,"Ward, A.B.",1,False,F_CDR1,0,False,
+fv0185,immunebuilder,9yfu,H,81,84,1.0,EM,"Han, S.",1,False,C_FR3,4,True,D81/82 D82/83 A83/84 K84/85
+fv0185,igfold,9yfu,H,81,84,1.0,EM,"Han, S.",1,False,C_FR3,4,True,D81/82 D82/83 A83/84 K84/85
+fv0187,immunebuilder,9yc6,K,31,127,5.0,EM,"Ploug, M.",1,False,F_CDR1,0,False,
+fv0187,igfold,9yc6,K,31,127,5.0,EM,"Ploug, M.",1,False,F_CDR1,0,False,
+fv0189,immunebuilder,30bg,H,81,83,2.0,X-ray,"Tzarum, N.",1,True,C_FR3,0,False,
+fv0189,igfold,30bg,H,81,83,2.0,X-ray,"Tzarum, N.",1,True,C_FR3,3,True,D81/83 E82/84 S83/85
+fv0190,immunebuilder,30ad,H,81,83,1.0,X-ray,"McDonnell, J.M.",1,True,C_FR3,3,True,A81/82 S82/83 S83/84
+fv0190,igfold,30ad,H,81,83,1.0,X-ray,"McDonnell, J.M.",1,True,C_FR3,3,True,A81/82 S82/83 S83/84
+fv0200,immunebuilder,8idm,H,26,35,-2.0,X-ray,"Tian, L.",1,False,F_CDR1,0,False,
+fv0200,igfold,8idm,H,26,35,-2.0,X-ray,"Tian, L.",1,False,F_CDR1,6,True,S26/24 G27/25 Y28/26 T29/27 Y30/28 S35/29
+fv0203,immunebuilder,9rwi,H,84,96,-2.0,X-ray,"Dedi, N.",1,False,C_FR3,0,False,
+fv0203,igfold,9rwi,H,84,96,-2.0,X-ray,"Dedi, N.",1,False,C_FR3,0,False,
+fv0204,immunebuilder,9pf9,H,81,83,1.0,X-ray,"Pancera, M.",1,True,C_FR3,3,True,D81/82 T82/83 S83/84
+fv0204,igfold,9pf9,H,81,83,1.0,X-ray,"Pancera, M.",1,True,C_FR3,3,True,D81/82 T82/83 S83/84

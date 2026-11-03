@@ -1,0 +1,63 @@
+rebuilt set identical to investigator focal set: 3994 | y mismatches 0 | labs12 mismatches 0
+
+EM analysis set 2707 errors 174 | error papers 124 | clean papers 1232 | error labs 100
+labs_acc_12m error median/mean 0.5 31.97 clean 1.0 33.47
+
+EM entries excluded as copied/artifact-only: 64 | of these SARS2: 3
+                                             label            term      OR      lo      hi       p     n  n_err  n_err_papers
+0                EM headline (year clip2017 + res)  l_labs_acc_12m  0.9430  0.8588  1.0354  0.2187  2707    174           124
+1                EM headline (year clip2017 + res)   l_labs_acc_6m  0.9474  0.8570  1.0472  0.2902  2707    174           124
+2                EM headline (year clip2017 + res)         race_1m  0.8997  0.5539  1.4615  0.6694  2707    174           124
+3                EM headline (year clip2017 + res)  l_labs_fam_12m  0.8951  0.8149  0.9832  0.0207  2707    174           124
+4                            EM non-SARS2 headline  l_labs_fam_12m  0.8168  0.7174  0.9301  0.0023  2046    132            99
+5                            EM non-SARS2 headline  l_labs_acc_12m  0.8186  0.6467  1.0361  0.0960  2046    132            99
+6                      X-ray headline (period+res)  l_labs_acc_12m  1.0345  0.8736  1.2251  0.6940  1058     31            30
+7                         EM, full year categories  l_labs_acc_12m  0.9438  0.8595  1.0363  0.2250  2707    174           124
+8                   EM, deposit quarter categories  l_labs_acc_12m  0.9188  0.8415  1.0031  0.0587  2707    174           124
+9   EM, cubic spline of deposit date + spline(res)  l_labs_acc_12m  0.9346  0.8528  1.0242  0.1478  2707    174           124
+10                               EM, no adjustment  l_labs_acc_12m  0.9651  0.8844  1.0530  0.4241  2707    174           124
+11             EM, cluster by lab instead of paper  l_labs_acc_12m  0.9430  0.8574  1.0372  0.2271  2707    174           124
+12             EM, bound only (drop fiducial-only)  l_labs_acc_12m  0.9310  0.8507  1.0189  0.1205  2504    172           122
+13                           EM, + SARS2 indicator  l_labs_acc_12m  0.8551  0.7214  1.0135  0.0711  2707    174           124
+14                     EM, 2020-2022 deposits only  l_labs_acc_12m  0.9260  0.8205  1.0450  0.2126  1084     82            53
+15                              EM binary exposure           any12  0.5753  0.3648  0.9073  0.0174  2707    174           124
+16                    EM non-SARS2 binary exposure           any12  0.5492  0.3299  0.9144  0.0212  2046    132            99
+17                              EM binary exposure         ge10_12  0.8591  0.5004  1.4749  0.5818  2707    174           124
+18                    EM non-SARS2 binary exposure         ge10_12  0.8432  0.3039  2.3396  0.7432  2046    132            99
+19      EM outcome = any run incl. copied/artifact  l_labs_acc_12m  0.9286  0.8539  1.0098  0.0831  2771    238           157
+20     EM non-SARS2 outcome = any run incl. copied  l_labs_acc_12m  0.9456  0.7967  1.1224  0.5225  2107    193           130
+21                 EM paper level (+log n entries)        l_labs12  0.9273  0.8563  1.0043  0.0635  1294    124           124
+22                        EM paper level non-SARS2        l_labs12  0.8316  0.6701  1.0319  0.0940  1003     97            97
+
+leave-one-error-paper-out (n=124): OR range 0.918-0.954, p range 0.059-0.321, min p paper 10.1038/s41422-021-00487-9
+leave-one-error-lab-out (n=100): OR range 0.919-0.958, p range 0.062-0.362
+family non-SARS2 leave-one-error-paper-out: OR range 0.796-0.828, p max 0.0044
+family non-SARS2 leave-one-error-lab-out: OR range 0.795-0.830, p max 0.0049 (lab Zimmer, J.)
+
+permutation (papers within year x SARS2 strata) two-sided p for l_labs_acc_12m: 0.014 (stat -48.27)
+
+EM error rate by other labs same accession +-12m:
+        mean  size  sum
+bin                    
+0      0.083  1047   87
+1-2    0.048   567   27
+3-9    0.038   341   13
+10-49  0.028   108    3
+>=50   0.068   644   44
+                mean  size  sum
+period  bin                    
+2020-21 0      0.182   165   30
+        1-2    0.028   108    3
+        3-9    0.015    67    1
+        10-49  0.000     6    0
+        >=50   0.093   259   24
+2022+   0      0.063   776   49
+        1-2    0.052   425   22
+        3-9    0.042   236   10
+        10-49  0.029   102    3
+        >=50   0.052   385   20
+<=2019  0      0.075   106    8
+        1-2    0.059    34    2
+        3-9    0.053    38    2
+
+fraction of EM analysis entries with labs_acc_12m>=50 that are SARS2: 0.957 n 644

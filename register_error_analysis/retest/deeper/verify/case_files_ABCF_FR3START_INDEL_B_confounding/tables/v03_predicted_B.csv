@@ -1,0 +1,73 @@
+fv_id,tool,pdbs,chain_type,imgt0,imgt1,delta,method,last_author,feat,origin,n_dis_pred,n_dis_55_80,reproduced,detail
+fv0000,immunebuilder,1ken,H,63,69,-1.0,X-ray,"Knossow, M.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0000,igfold,1ken,H,63,69,-1.0,X-ray,"Knossow, M.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0003,immunebuilder,3ncy,H,62,100,1.0,X-ray,"Miller, C.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0003,igfold,3ncy,H,62,100,1.0,X-ray,"Miller, C.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0015,immunebuilder,6orp,L,70,83,-1.0,EM,"Bjorkman, P.J.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0015,igfold,6orp,L,70,83,-1.0,EM,"Bjorkman, P.J.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0023,immunebuilder,7e39,H,62,93,1.0,EM,"Liu, C.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0023,igfold,7e39,H,62,93,1.0,EM,"Liu, C.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0024,immunebuilder,7e3c,K,57,89,1.0,EM,"Liu, C.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0024,igfold,7e3c,K,57,89,1.0,EM,"Liu, C.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0033,immunebuilder,"7mkl,7mkm",H,54,59,1.0,EM,Center for Structural Genomics of Infectious Diseases (CSGID),0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0033,igfold,"7mkl,7mkm",H,54,59,1.0,EM,Center for Structural Genomics of Infectious Diseases (CSGID),0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0049,immunebuilder,7jtf,H,55,62,-1.0,X-ray,"Law, M.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0049,igfold,7jtf,H,55,62,-1.0,X-ray,"Law, M.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0053,immunebuilder,7oh0,H,63,69,-1.0,EM,"Zanotti, G.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0053,igfold,7oh0,H,63,69,-1.0,EM,"Zanotti, G.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0063,immunebuilder,5xbm,K,65,70,-2.0,X-ray,"Zhang, L.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,1,False,Q65/66
+fv0063,igfold,5xbm,K,65,70,-2.0,X-ray,"Zhang, L.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,1,False,Q65/66
+fv0063,immunebuilder,5xbm,K,65,74,-2.0,X-ray,"Zhang, L.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,1,False,Q65/66
+fv0063,igfold,5xbm,K,65,74,-2.0,X-ray,"Zhang, L.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,1,False,Q65/66
+fv0068,immunebuilder,6p65,H,60,68,1.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0068,igfold,6p65,H,60,68,1.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0081,immunebuilder,7nk2,H,67,73,-1.0,EM,"Grimes, J.M.",0.0,3 chain end or next to an unbuilt loop,7,11,True,Y67/66 A68/67 M69/68 D70/69 F71/70 V72/71 K73/72
+fv0081,igfold,7nk2,H,67,73,-1.0,EM,"Grimes, J.M.",0.0,3 chain end or next to an unbuilt loop,7,11,True,Y67/66 A68/67 M69/68 D70/69 F71/70 V72/71 K73/72
+fv0083,immunebuilder,7ty0,H,60,67,2.0,EM,"Veesler, D.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0083,igfold,7ty0,H,60,67,2.0,EM,"Veesler, D.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0092,immunebuilder,12iu,K,58,71,3.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",8,8,True,S58/65 N63/66 L64/67 E65/68 N66/69 L67/69A E68/69B A69/69C
+fv0092,igfold,12iu,K,58,71,3.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0092,immunebuilder,12iu,K,58,72,3.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",8,8,True,S58/65 N63/66 L64/67 E65/68 N66/69 L67/69A E68/69B A69/69C
+fv0092,igfold,12iu,K,58,72,3.0,EM,"Ward, A.B.",0.0,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0095,immunebuilder,22ge,H,53,60,-1.0,EM,"Xu, Y.",1.0,"7 CDR2 boundary, atypical CDR2 length",0,9,False,
+fv0095,igfold,22ge,H,53,60,-1.0,EM,"Xu, Y.",1.0,"7 CDR2 boundary, atypical CDR2 length",0,9,False,
+fv0099,immunebuilder,"7sp6,7sp7",H,62,67,1.0,EM,"Zimmer, J.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0099,igfold,"7sp6,7sp7",H,62,67,1.0,EM,"Zimmer, J.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0105,immunebuilder,7uow,H,53,59,1.0,EM,"Ortlund, E.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0105,igfold,7uow,H,53,59,1.0,EM,"Ortlund, E.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0114,immunebuilder,8bw0,H,63,70,-1.0,EM,"Rak, A.",1.0,"8 CDR1/CDR2 boundary, typical length",9,9,True,G63/62 G64/63 I65/64 T66/65 Y67/66 A68/67 P69/68 S70/69 T70A/70
+fv0114,igfold,8bw0,H,63,70,-1.0,EM,"Rak, A.",1.0,"8 CDR1/CDR2 boundary, typical length",9,9,True,G63/62 G64/63 I65/64 T66/65 Y67/66 A68/67 P69/68 S70/69 T70A/70
+fv0116,immunebuilder,8cr9,H,50,63,-3.0,EM,"Marlovits, T.C.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0116,igfold,8cr9,H,50,63,-3.0,EM,"Marlovits, T.C.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0117,immunebuilder,8dg8,L,57,70,1.0,EM,"Pancera, M.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0117,igfold,8dg8,L,57,70,1.0,EM,"Pancera, M.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0127,immunebuilder,8jag,H,57,69,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,5,False,A69/66
+fv0127,igfold,8jag,H,57,69,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",3,3,True,P57/66 T64/67 Y65/68
+fv0127,immunebuilder,8jam,H,57,70,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",2,5,False,A69/66 G70/67
+fv0127,igfold,8jam,H,57,70,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",3,3,True,P57/66 T64/67 Y65/68
+fv0127,immunebuilder,8jap,H,57,74,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",5,5,True,A69/66 G70/67 F71/68 T72/69 G74/70
+fv0127,igfold,8jap,H,57,74,-1.0,EM,"Li, Y.J.",1.0,"7 CDR2 boundary, atypical CDR2 length",3,3,True,P57/66 T64/67 Y65/68
+fv0131,immunebuilder,"8r4b,8r4d",H,62,67,-3.0,EM,"Versees, W.",1.0,"8 CDR1/CDR2 boundary, typical length",9,9,True,G62/60 T63/61A S64/61 T65/62 Y66/63 Y67/64 Q67A/65 D67B/66 H67C/67
+fv0131,igfold,"8r4b,8r4d",H,62,67,-3.0,EM,"Versees, W.",1.0,"8 CDR1/CDR2 boundary, typical length",9,9,True,G62/60 T63/61A S64/61 T65/62 Y66/63 Y67/64 Q67A/65 D67B/66 H67C/67
+fv0134,immunebuilder,8snd,H,62,67,1.0,EM,"Zimmer, J.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0134,igfold,8snd,H,62,67,1.0,EM,"Zimmer, J.",0.0,3 chain end or next to an unbuilt loop,0,0,False,
+fv0135,immunebuilder,8snc,H,62,67,1.0,EM,"Zimmer, J.",1.0,"8 CDR1/CDR2 boundary, typical length",6,6,True,G62/63 G63/64 G64/65 T65/66 D66/67 Y67/68
+fv0135,igfold,8snc,H,62,67,1.0,EM,"Zimmer, J.",1.0,"8 CDR1/CDR2 boundary, typical length",6,6,True,G62/63 G63/64 G64/65 T65/66 D66/67 Y67/68
+fv0138,immunebuilder,8tng,H,64,70,-3.0,EM,"Xu, J.",,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0138,igfold,8tng,H,64,70,-3.0,EM,"Xu, J.",,"7 CDR2 boundary, atypical CDR2 length",0,0,False,
+fv0168,immunebuilder,9heo,H,63,69,-1.0,EM,"Efremov, R.G.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0168,igfold,9heo,H,63,69,-1.0,EM,"Efremov, R.G.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0180,immunebuilder,9pyh,K,67,69,-1.0,EM,"Ward, A.B.",1.0,9 FR3 / other (still unexplained),3,3,True,T67/66 L68/67 N69/68
+fv0180,igfold,9pyh,K,67,69,-1.0,EM,"Ward, A.B.",1.0,9 FR3 / other (still unexplained),0,2,False,
+fv0181,immunebuilder,9pv5,K,69,85,2.0,EM,"Ward, A.B.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0181,igfold,9pv5,K,69,85,2.0,EM,"Ward, A.B.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0182,immunebuilder,9pv3,H,54,94,-2.0,EM,"Ward, A.B.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0182,igfold,9pv3,H,54,94,-2.0,EM,"Ward, A.B.",0.0,9 FR3 / other (still unexplained),0,0,False,
+fv0183,immunebuilder,9om5,H,63,72,-1.0,EM,"Zhou, T.",1.0,"8 CDR1/CDR2 boundary, typical length",10,11,True,L63/65 N64/66 Y65/67 K66/68 Y67/69 N68/70 P69/71 S70/72 V71/74 R72/75
+fv0183,igfold,9om5,H,63,72,-1.0,EM,"Zhou, T.",1.0,"8 CDR1/CDR2 boundary, typical length",10,11,True,L63/65 N64/66 Y65/67 K66/68 Y67/69 N68/70 P69/71 S70/72 V71/74 R72/75
+fv0192,immunebuilder,7f5h,H,56,59,,X-ray,"Li, D.",0.0,"8 CDR1/CDR2 boundary, typical length",4,4,True,I56/55 S57/56 S58/57 E59/58
+fv0192,igfold,7f5h,H,56,59,,X-ray,"Li, D.",0.0,"8 CDR1/CDR2 boundary, typical length",4,4,True,I56/55 S57/56 S58/57 E59/58
+fv0194,immunebuilder,7wvl,H,62,82,1.0,X-ray,"Nair, D.T.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0194,igfold,7wvl,H,62,82,1.0,X-ray,"Nair, D.T.",0.0,"8 CDR1/CDR2 boundary, typical length",0,0,False,
+fv0198,immunebuilder,8d50,H,64,67,-2.0,X-ray,"Wilson, I.A.",1.0,"7 CDR2 boundary, atypical CDR2 length",2,2,False,P64/65 Y65/66
+fv0198,igfold,8d50,H,64,67,-2.0,X-ray,"Wilson, I.A.",1.0,"7 CDR2 boundary, atypical CDR2 length",1,7,False,S67/66

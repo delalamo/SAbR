@@ -1,0 +1,150 @@
+EM analysis set 2707 174 | X-ray 1058 31
+
+== 1. Reproduce investigator (EM, year + res, paper-clustered)
+reproduce                                               EM                     l_labs_acc_12m   OR 0.943 (0.86-1.04) p=0.2187 n=2707 err=174  | C(ycat) + res
+reproduce                                               EM                     l_labs_fam_12m   OR 0.895 (0.81-0.98) p=0.0207 n=2707 err=174  | C(ycat) + res
+reproduce                                               EM                     race_1m          OR 0.900 (0.55-1.46) p=0.6694 n=2707 err=174  | C(ycat) + res
+
+== 2. Sequential adjustment, EM, labs same accession +-12 m (per doubling)
+adj: half-year FE                                       EM                     l_labs_acc_12m   OR 0.933 (0.85-1.02) p=0.1273 n=2707 err=174  | C(half) + res
+adj: date spline                                        EM                     l_labs_acc_12m   OR 0.934 (0.85-1.02) p=0.1419 n=2707 err=174  | bs(tnum, df=6) + res
+adj: year + resolution bins                             EM                     l_labs_acc_12m   OR 0.943 (0.86-1.04) p=0.2239 n=2707 err=174  | C(ycat) + C(resbin)
+adj: + fiducial-only                                    EM                     l_labs_acc_12m   OR 0.932 (0.85-1.02) p=0.1250 n=2707 err=174  | C(ycat) + res + fidonly
+adj: + capsid/enzyme                                    EM                     l_labs_acc_12m   OR 1.031 (0.94-1.13) p=0.5194 n=2707 err=174  | C(ycat) + res + capenz
+adj: + antibody features                                EM                     l_labs_acc_12m   OR 0.997 (0.91-1.09) p=0.9394 n=2707 err=174  | C(ycat) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam
+adj: + modelling                                        EM                     l_labs_acc_12m   OR 0.945 (0.86-1.04) p=0.2290 n=2707 err=174  | C(ycat) + res + af + expstart + rigid
+adj: + local map fit (lqz_min)                          EM                     l_labs_acc_12m   OR 0.885 (0.80-0.98) p=0.0157 n=2696 err=174  | C(ycat) + res + lqz_min
+adj: + SARS2 indicator                                  EM                     l_labs_acc_12m   OR 0.855 (0.72-1.01) p=0.0711 n=2707 err=174  | C(ycat) + res + sars2
+adj: full (half-year, res, fid, capenz, ab, modelling)  EM                     l_labs_acc_12m   OR 1.067 (0.97-1.17) p=0.1685 n=2707 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+adj: full + lqz_min + sars2                             EM                     l_labs_acc_12m   OR 0.993 (0.82-1.20) p=0.9466 n=2696 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid + lqz_min + sars2
+
+adj: half-year FE                                       EM                     l_labs_fam_12m   OR 0.894 (0.82-0.98) p=0.0135 n=2707 err=174  | C(half) + res
+adj: date spline                                        EM                     l_labs_fam_12m   OR 0.889 (0.81-0.97) p=0.0121 n=2707 err=174  | bs(tnum, df=6) + res
+adj: year + resolution bins                             EM                     l_labs_fam_12m   OR 0.897 (0.82-0.98) p=0.0227 n=2707 err=174  | C(ycat) + C(resbin)
+adj: + fiducial-only                                    EM                     l_labs_fam_12m   OR 0.894 (0.82-0.98) p=0.0160 n=2707 err=174  | C(ycat) + res + fidonly
+adj: + capsid/enzyme                                    EM                     l_labs_fam_12m   OR 0.986 (0.89-1.09) p=0.7787 n=2707 err=174  | C(ycat) + res + capenz
+adj: + antibody features                                EM                     l_labs_fam_12m   OR 0.934 (0.85-1.03) p=0.1592 n=2707 err=174  | C(ycat) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam
+adj: + modelling                                        EM                     l_labs_fam_12m   OR 0.894 (0.81-0.98) p=0.0190 n=2707 err=174  | C(ycat) + res + af + expstart + rigid
+adj: + local map fit (lqz_min)                          EM                     l_labs_fam_12m   OR 0.849 (0.77-0.93) p=0.0006 n=2696 err=174  | C(ycat) + res + lqz_min
+adj: + SARS2 indicator                                  EM                     l_labs_fam_12m   OR 0.811 (0.71-0.92) p=0.0012 n=2707 err=174  | C(ycat) + res + sars2
+adj: full (half-year, res, fid, capenz, ab, modelling)  EM                     l_labs_fam_12m   OR 1.024 (0.93-1.13) p=0.6377 n=2707 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+adj: full + lqz_min + sars2                             EM                     l_labs_fam_12m   OR 0.924 (0.79-1.08) p=0.3094 n=2696 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid + lqz_min + sars2
+
+adj: half-year FE                                       EM                     race_1m          OR 0.847 (0.53-1.36) p=0.4935 n=2707 err=174  | C(half) + res
+adj: date spline                                        EM                     race_1m          OR 0.862 (0.53-1.41) p=0.5512 n=2707 err=174  | bs(tnum, df=6) + res
+adj: year + resolution bins                             EM                     race_1m          OR 0.906 (0.56-1.47) p=0.6905 n=2707 err=174  | C(ycat) + C(resbin)
+adj: + fiducial-only                                    EM                     race_1m          OR 0.881 (0.54-1.44) p=0.6142 n=2707 err=174  | C(ycat) + res + fidonly
+adj: + capsid/enzyme                                    EM                     race_1m          OR 1.272 (0.82-1.98) p=0.2891 n=2707 err=174  | C(ycat) + res + capenz
+adj: + antibody features                                EM                     race_1m          OR 1.146 (0.73-1.79) p=0.5516 n=2707 err=174  | C(ycat) + res + any_vhh + any_mouse + min_vid + any_atyp + any_lam
+adj: + modelling                                        EM                     race_1m          OR 0.892 (0.55-1.44) p=0.6423 n=2707 err=174  | C(ycat) + res + af + expstart + rigid
+adj: + local map fit (lqz_min)                          EM                     race_1m          OR 0.710 (0.41-1.24) p=0.2309 n=2696 err=174  | C(ycat) + res + lqz_min
+adj: + SARS2 indicator                                  EM                     race_1m          OR 0.985 (0.55-1.78) p=0.9610 n=2707 err=174  | C(ycat) + res + sars2
+adj: full (half-year, res, fid, capenz, ab, modelling)  EM                     race_1m          OR 1.472 (0.96-2.25) p=0.0743 n=2707 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+adj: full + lqz_min + sars2                             EM                     race_1m          OR 1.254 (0.76-2.08) p=0.3798 n=2696 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid + lqz_min + sars2
+
+
+== 3. Clustering by lab (last author) instead of paper; lab fixed effects (conditional logit)
+lab-clustered                                           EM                     l_labs_acc_12m   OR 0.943 (0.86-1.04) p=0.2271 n=2707 err=174  | C(ycat) + res
+lab-clustered full                                      EM                     l_labs_acc_12m   OR 1.067 (0.97-1.17) p=0.1696 n=2707 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+within-lab conditional logit l_labs_acc_12m: OR 1.031 (0.92-1.16) p=0.6053 n=874 labs=66 err=130
+lab-clustered                                           EM                     l_labs_fam_12m   OR 0.895 (0.81-0.99) p=0.0263 n=2707 err=174  | C(ycat) + res
+lab-clustered full                                      EM                     l_labs_fam_12m   OR 1.024 (0.93-1.13) p=0.6378 n=2707 err=174  | C(half) + res + fidonly + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+within-lab conditional logit l_labs_fam_12m: OR 1.065 (0.94-1.21) p=0.3369 n=874 labs=66 err=130
+
+== 4. Strata (EM): SARS2, period, resolution, fiducial removed
+stratum                                                 EM bound only          l_labs_acc_12m   OR 0.931 (0.85-1.02) p=0.1205 n=2504 err=172  | C(ycat) + res
+stratum, full adj                                       EM bound only          l_labs_acc_12m   OR nan (nan-nan) p=nan n=2504 err=172  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM bound only          l_labs_fam_12m   OR 0.895 (0.82-0.98) p=0.0176 n=2504 err=172  | C(ycat) + res
+stratum, full adj                                       EM bound only          l_labs_fam_12m   OR nan (nan-nan) p=nan n=2504 err=172  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2           l_labs_acc_12m   OR 0.819 (0.65-1.04) p=0.0960 n=2046 err=132  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2           l_labs_acc_12m   OR 0.985 (0.78-1.24) p=0.8939 n=2046 err=132  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2           l_labs_fam_12m   OR 0.817 (0.72-0.93) p=0.0023 n=2046 err=132  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2           l_labs_fam_12m   OR 0.934 (0.80-1.09) p=0.3761 n=2046 err=132  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 bound only l_labs_acc_12m   OR 0.845 (0.68-1.06) p=0.1393 n=1843 err=130  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 bound only l_labs_acc_12m   OR nan (nan-nan) p=nan n=1843 err=130  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 bound only l_labs_fam_12m   OR 0.842 (0.74-0.96) p=0.0113 n=1843 err=130  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 bound only l_labs_fam_12m   OR nan (nan-nan) p=nan n=1843 err=130  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM SARS2               l_labs_acc_12m   OR 0.932 (0.59-1.48) p=0.7660 n=661 err=42  | C(ycat) + res
+stratum, full adj                                       EM SARS2               l_labs_acc_12m   OR nan (nan-nan) p=nan n=661 err=42  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM SARS2               l_labs_fam_12m   OR 0.739 (0.49-1.11) p=0.1446 n=661 err=42  | C(ycat) + res
+stratum, full adj                                       EM SARS2               l_labs_fam_12m   OR nan (nan-nan) p=nan n=661 err=42  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 2020-21   l_labs_acc_12m   OR 0.219 (0.09-0.53) p=0.0007 n=347 err=33  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 2020-21   l_labs_acc_12m   OR nan (nan-nan) p=nan n=347 err=33  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 2020-21   l_labs_fam_12m   OR 0.657 (0.51-0.85) p=0.0014 n=347 err=33  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 2020-21   l_labs_fam_12m   OR nan (nan-nan) p=nan n=347 err=33  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 2022+     l_labs_acc_12m   OR 0.944 (0.77-1.17) p=0.5933 n=1521 err=87  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 2022+     l_labs_acc_12m   OR 1.048 (0.84-1.31) p=0.6782 n=1521 err=87  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 2022+     l_labs_fam_12m   OR 0.872 (0.75-1.01) p=0.0735 n=1521 err=87  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 2022+     l_labs_fam_12m   OR 0.965 (0.82-1.13) p=0.6654 n=1521 err=87  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM 2020-21             l_labs_acc_12m   OR 0.942 (0.81-1.10) p=0.4479 n=605 err=58  | C(ycat) + res
+stratum, full adj                                       EM 2020-21             l_labs_acc_12m   OR nan (nan-nan) p=nan n=605 err=58  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM 2020-21             l_labs_fam_12m   OR 0.903 (0.77-1.07) p=0.2277 n=605 err=58  | C(ycat) + res
+stratum, full adj                                       EM 2020-21             l_labs_fam_12m   OR nan (nan-nan) p=nan n=605 err=58  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM 2022+               l_labs_acc_12m   OR 0.946 (0.85-1.06) p=0.3291 n=1924 err=104  | C(ycat) + res
+stratum, full adj                                       EM 2022+               l_labs_acc_12m   OR 1.058 (0.94-1.19) p=0.3507 n=1924 err=104  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM 2022+               l_labs_fam_12m   OR 0.894 (0.80-1.00) p=0.0484 n=1924 err=104  | C(ycat) + res
+stratum, full adj                                       EM 2022+               l_labs_fam_12m   OR 1.004 (0.89-1.13) p=0.9430 n=1924 err=104  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res<=3.3            l_labs_acc_12m   OR 0.941 (0.79-1.12) p=0.4914 n=1105 err=62  | C(ycat) + res
+stratum, full adj                                       EM res<=3.3            l_labs_acc_12m   OR 1.086 (0.92-1.29) p=0.3442 n=1105 err=62  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res<=3.3            l_labs_fam_12m   OR 0.904 (0.78-1.05) p=0.1951 n=1105 err=62  | C(ycat) + res
+stratum, full adj                                       EM res<=3.3            l_labs_fam_12m   OR 1.047 (0.90-1.22) p=0.5631 n=1105 err=62  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res 3.3-3.6         l_labs_acc_12m   OR 0.965 (0.83-1.13) p=0.6553 n=697 err=36  | C(ycat) + res
+stratum, full adj                                       EM res 3.3-3.6         l_labs_acc_12m   OR 1.063 (0.91-1.24) p=0.4486 n=697 err=36  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res 3.3-3.6         l_labs_fam_12m   OR 0.953 (0.81-1.12) p=0.5638 n=697 err=36  | C(ycat) + res
+stratum, full adj                                       EM res 3.3-3.6         l_labs_fam_12m   OR 1.071 (0.91-1.27) p=0.4178 n=697 err=36  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res>3.6             l_labs_acc_12m   OR 0.924 (0.83-1.03) p=0.1633 n=905 err=76  | C(ycat) + res
+stratum, full adj                                       EM res>3.6             l_labs_acc_12m   OR 1.060 (0.93-1.21) p=0.3963 n=905 err=76  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM res>3.6             l_labs_fam_12m   OR 0.853 (0.76-0.96) p=0.0083 n=905 err=76  | C(ycat) + res
+stratum, full adj                                       EM res>3.6             l_labs_fam_12m   OR 0.965 (0.83-1.13) p=0.6515 n=905 err=76  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 non-capsid/enzyme l_labs_acc_12m   OR 0.963 (0.77-1.20) p=0.7382 n=1799 err=79  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 non-capsid/enzyme l_labs_acc_12m   OR nan (nan-nan) p=nan n=1799 err=79  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+stratum                                                 EM non-SARS2 non-capsid/enzyme l_labs_fam_12m   OR 0.924 (0.80-1.07) p=0.3031 n=1799 err=79  | C(ycat) + res
+stratum, full adj                                       EM non-SARS2 non-capsid/enzyme l_labs_fam_12m   OR nan (nan-nan) p=nan n=1799 err=79  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+
+== 5. Paper level (EM; one row per paper; error paper = any first-occurrence error)
+paper level                                             EM papers              l_labs_acc_12m   OR 0.926 (0.85-1.01) p=0.0835 n=1294 err=124  | C(ycat) + res + ln
+paper level, full adj                                   EM papers              l_labs_acc_12m   OR 1.034 (0.94-1.14) p=0.4858 n=1294 err=124  | C(ycat) + res + ln + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+paper level                                             EM papers              l_labs_fam_12m   OR 0.903 (0.83-0.99) p=0.0250 n=1294 err=124  | C(ycat) + res + ln
+paper level, full adj                                   EM papers              l_labs_fam_12m   OR 1.003 (0.91-1.11) p=0.9578 n=1294 err=124  | C(ycat) + res + ln + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+paper level                                             EM papers non-SARS2    l_labs_acc_12m   OR 0.815 (0.64-1.03) p=0.0878 n=1003 err=97  | C(ycat) + res + ln
+paper level, full adj                                   EM papers non-SARS2    l_labs_acc_12m   OR 0.937 (0.75-1.17) p=0.5576 n=1003 err=97  | C(ycat) + res + ln + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+paper level                                             EM papers non-SARS2    l_labs_fam_12m   OR 0.863 (0.75-0.99) p=0.0347 n=1003 err=97  | C(ycat) + res + ln
+paper level, full adj                                   EM papers non-SARS2    l_labs_fam_12m   OR 0.936 (0.80-1.09) p=0.4061 n=1003 err=97  | C(ycat) + res + ln + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+
+== 6. Unit level (antibody-in-paper x chain type), EM, paper-clustered
+unit level                                              EM units all chains    l_labs_acc_12m   OR 0.921 (0.85-1.00) p=0.0525 n=4097 err=165  | C(ycat) + res
+unit level, full adj                                    EM units all chains    l_labs_acc_12m   OR 1.032 (0.94-1.13) p=0.4875 n=4097 err=165  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level, full adj                                    EM units all chains    l_labs_fam_12m   OR 0.999 (0.91-1.10) p=0.9869 n=4097 err=165  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level                                              EM units H             l_labs_acc_12m   OR 0.915 (0.84-1.00) p=0.0437 n=2326 err=111  | C(ycat) + res
+unit level, full adj                                    EM units H             l_labs_acc_12m   OR 1.021 (0.93-1.12) p=0.6701 n=2326 err=111  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level, full adj                                    EM units H             l_labs_fam_12m   OR 0.993 (0.90-1.10) p=0.8952 n=2326 err=111  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level                                              EM units K             l_labs_acc_12m   OR 0.958 (0.82-1.11) p=0.5774 n=1317 err=42  | C(ycat) + res
+unit level, full adj                                    EM units K             l_labs_acc_12m   OR nan (nan-nan) p=nan n=1317 err=42  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level, full adj                                    EM units K             l_labs_fam_12m   OR nan (nan-nan) p=nan n=1317 err=42  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level                                              EM units L             l_labs_acc_12m   OR 0.888 (0.70-1.13) p=0.3330 n=454 err=12  | C(ycat) + res
+unit level, full adj                                    EM units L             l_labs_acc_12m   OR nan (nan-nan) p=nan n=454 err=12  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level, full adj                                    EM units L             l_labs_fam_12m   OR nan (nan-nan) p=nan n=454 err=12  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level                                              EM units non-SARS2     l_labs_acc_12m   OR 0.846 (0.70-1.02) p=0.0758 n=3068 err=127  | C(ycat) + res
+unit level, full adj                                    EM units non-SARS2     l_labs_acc_12m   OR 0.967 (0.79-1.18) p=0.7424 n=3068 err=127  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+unit level, full adj                                    EM units non-SARS2     l_labs_fam_12m   OR 0.931 (0.81-1.07) p=0.3239 n=3068 err=127  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+
+== 7. Outcome definition: any run (incl. copied/artifact) vs none, all entries kept
+EM entries all 2771 any-run 238 copied/artifact-only 64
+outcome = any run                                       EM all entries         l_labs_acc_12m   OR 0.929 (0.85-1.01) p=0.0831 n=2771 err=238  | C(ycat) + res
+outcome = any run, full adj                             EM all entries         l_labs_acc_12m   OR 1.066 (0.98-1.16) p=0.1485 n=2771 err=238  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+copied/artifact-only among non-first                    EM                     l_labs_acc_12m   OR 0.878 (0.74-1.04) p=0.1300 n=2597 err=64  | C(ycat) + res
+outcome = any run                                       EM all entries         l_labs_fam_12m   OR 0.913 (0.84-0.99) p=0.0289 n=2771 err=238  | C(ycat) + res
+outcome = any run, full adj                             EM all entries         l_labs_fam_12m   OR 1.028 (0.94-1.13) p=0.5672 n=2771 err=238  | C(ycat) + res + capenz + fidonly + any_vhh + any_mouse + min_vid + any_atyp + any_lam + af + expstart + rigid
+copied/artifact-only among non-first                    EM                     l_labs_fam_12m   OR 0.966 (0.81-1.14) p=0.6890 n=2597 err=64  | C(ycat) + res
+
+== 8. First appearance of each unique antibody (vseq), EM, chain-level outcome = first-occurrence error
+first appearance                                        EM first-appearance chains l_labs_acc_12m   OR 0.915 (0.84-1.00) p=0.0525 n=3185 err=138  | C(ycat) + res
+first appearance, full adj                              EM first-appearance chains l_labs_acc_12m   OR 1.029 (0.93-1.14) p=0.5729 n=3185 err=138  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+first appearance, full adj                              EM first-appearance chains l_labs_fam_12m   OR 0.993 (0.89-1.11) p=0.9037 n=3185 err=138  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+first appearance                                        EM first-appearance non-SARS2 l_labs_acc_12m   OR 0.916 (0.74-1.13) p=0.4026 n=2320 err=107  | C(ycat) + res
+first appearance, full adj                              EM first-appearance non-SARS2 l_labs_acc_12m   OR 1.063 (0.85-1.33) p=0.5861 n=2320 err=107  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+first appearance, full adj                              EM first-appearance non-SARS2 l_labs_fam_12m   OR 0.976 (0.81-1.17) p=0.7940 n=2320 err=107  | C(ycat) + res + capenz + fidonly + vhh + mouse + vid + atyp + af + rigid
+
+== 9. X-ray
+X-ray                                                   X-ray                  l_labs_acc_12m   OR 1.035 (0.87-1.23) p=0.6940 n=1058 err=31  | C(period) + res
+X-ray, ab adj                                           X-ray                  l_labs_acc_12m   OR 1.122 (0.94-1.34) p=0.2052 n=1058 err=31  | C(period) + res + capenz + any_vhh + any_mouse + min_vid + any_atyp + any_lam

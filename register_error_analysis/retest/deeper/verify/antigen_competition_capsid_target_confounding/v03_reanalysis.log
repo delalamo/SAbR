@@ -1,0 +1,195 @@
+EM entries 2752 errors 178 | capsid 154 capsid errors 32
+
+== 1. Reproduction (EM, entry level)
+  R1 reproduce: year cat + res, cluster=paper                                                     OR   4.72 (2.53-8.82) p=1.1e-06 n=2752 err=178 cap_err=32/154
+
+== 2. Clustering by lab network instead of paper
+  R2a cluster=lab network (co-author merged)                                                      OR   4.72 (2.22-10.04) p=5.5e-05 n=2752 err=178 cap_err=32/154
+  R2b cluster=wider Rao Z. network                                                                OR   4.72 (1.94-11.47) p=0.00061 n=2752 err=178 cap_err=32/154
+
+== 3. Number of V chains per entry (more copies -> more chances)
+   n_V_chains capsid vs other EM: mean 3.42 3.6 MW p 9.282032027821056e-05
+  R3 + log2 n V chains, cluster=lab                                                               OR   4.80 (2.26-10.18) p=4.3e-05 n=2752 err=178 cap_err=32/154
+
+== 4. Period / resolution / SARS-CoV-2 strata (cluster=lab)
+    <=2019 capsid 19.2% (5/26) other 5.2% (8/155)
+  R4 period <=2019                                                                                OR   4.86 (1.17-20.14) p=0.029 n=181 err=13 cap_err=5/26
+    2020-21 capsid 46.4% (13/28) other 8.1% (48/590)
+  R4 period 2020-21                                                                               OR   9.40 (2.48-35.59) p=0.00097 n=618 err=61 cap_err=13/28
+    2022+ capsid 14.0% (14/100) other 4.9% (90/1853)
+  R4 period 2022+                                                                                 OR   3.39 (1.27-9.06) p=0.015 n=1953 err=104 cap_err=14/100
+   res <3.5 capsid 14.7% (10/68) other 4.9% (69/1421)
+  R4 resolution <3.5                                                                              OR   4.07 (1.54-10.72) p=0.0046 n=1489 err=79 cap_err=10/68
+   res >=3.5 capsid 25.6% (22/86) other 6.5% (77/1177)
+  R4 resolution >=3.5                                                                             OR   5.28 (2.36-11.80) p=5e-05 n=1263 err=99 cap_err=22/86
+  R4 non-SARS-CoV-2 EM only                                                                       OR   4.84 (2.32-10.11) p=2.7e-05 n=2088 err=136 cap_err=32/154
+   viral non-SARS2: capsid 20.8% (32/154) other viral 6.6% (46/702)
+  R4 vs other viral non-SARS-CoV-2 targets only                                                   OR   3.97 (1.84-8.56) p=0.00043 n=856 err=78 cap_err=32/154
+
+== 5. Antibody source organism (PDB entity annotation)
+cap              0      1
+frac_human   0.504  0.268
+all_human    0.488  0.260
+any_mouse    0.169  0.487
+any_cow      0.002  0.058
+any_rabbit   0.012  0.006
+any_rat      0.002  0.019
+any_camelid  0.194  0.078
+any_nhnm     0.350  0.253
+vhh          0.287  0.078
+vid_min      0.840  0.860
+longL3       0.034  0.058
+l1a          0.262  0.351
+l3a          0.997  0.994
+    all-human-antibody entries : capsid 5.0% (2/40) other 5.3% (67/1269)
+    entries with any mouse antibody : capsid 22.7% (17/75) other 3.2% (14/440)
+    entries with any non-human non-mouse antibody : capsid 33.3% (13/39) other 7.3% (66/909)
+  R5a capsid vs other, all-human-antibody EM entries (Fisher)                                     2/40 vs 67/1269  OR(Haldane) 1.16 p=1
+  R5b capsid vs other, entries with a mouse antibody (period+res)                                 OR  10.15 (2.14-48.18) p=0.0035 n=515 err=31 cap_err=17/75
+  R5c capsid vs other, entries with a non-human non-mouse antibody (Fisher)                       13/39 vs 66/909  OR(Haldane) 6.46 p=4.9e-06
+  R5d + antibody organism indicators + VHH                                                        OR   4.07 (2.05-8.07) p=6e-05 n=2752 err=178 cap_err=32/154
+  R5e + organism + VHH + min germline id + atypical L1/L3 + long L3                               OR   4.15 (2.12-8.11) p=3.1e-05 n=2752 err=178 cap_err=32/154
+
+== 6. Unbuilt residues and local map fit
+cap              0      1
+any_gap      0.224  0.279
+nterm_trunc  0.146  0.195
+lqz_min     -0.090  0.001
+lqz_mean     0.076  0.140
+  R6a + any V-region gap + N-term truncation                                                      OR   4.48 (2.21-9.10) p=3.2e-05 n=2748 err=178 cap_err=32/154
+  R6b + gaps + worst-chain lq_z                                                                   OR   4.75 (2.43-9.27) p=5e-06 n=2734 err=178 cap_err=32/153
+  R6c full: chains+organism+antibody+gaps+lq_z+start model+fit                                    OR   3.91 (1.99-7.67) p=7.5e-05 n=2734 err=178 cap_err=32/153
+
+== 7. Error definition: confirmed numbering artifacts; CDR-internal NaN-delta runs
+   EM error entries that are confirmed-artifact-only: capsid 7 of 32 | other 1 of 146
+  R7-0 confirmed numbering artifacts removed (FR1 gap 26, FR3 gap 84/84+85)                       OR   3.64 (1.60-8.27) p=0.002 n=2744 err=170 cap_err=25/147
+  R7-0b artifacts removed + full covariates                                                       OR   3.03 (1.50-6.10) p=0.0019 n=2726 err=170 cap_err=25/146
+   EM error entries with only non-canonical runs: capsid 11 of 32 | other 4 of 146
+   non-canonical first-occurrence runs (all methods): 38 entries 27 of which capsid entries 14
+  R7a among EM error entries: share whose errors are only non-canonical, capsid vs other          11/32 vs 4/146  OR(Haldane) 16.94 p=1e-06
+  R7b artifacts removed AND CDR-internal NaN-delta-only errors dropped                            OR   3.15 (1.47-6.73) p=0.0031 n=2737 err=163 cap_err=21/143
+  R7c R7b AND not next to an unbuilt residue                                                      OR   2.90 (1.29-6.53) p=0.01 n=2676 err=102 cap_err=12/134
+  R7d R7b + full covariates                                                                       OR   3.00 (1.47-6.13) p=0.0026 n=2719 err=163 cap_err=21/142
+   EM copied/artifact-only entries: capsid 0 of 154  other 64 of 2662
+
+== 8. Paper level (one row per EM paper), cluster=lab network
+   capsid papers 27.7% (18/65) labs 36 | other 8.7% (109/1246)
+   capsid error papers by lab network: {'NET Hafenstein': 6, 'NET Xiamen (Xia N.)': 3, 'NET Wang X./Zhu L. (IBP)': 3, 'NET Lou Z./Li K. (FMDV, bovine)': 3, 'Zhu, P.': 1, 'McKenna, R.': 1, 'Hogle, J.M.': 1}
+  R8a paper level, cluster=lab network                                                            OR   3.55 (1.52-8.33) p=0.0035 n=1311 err=127 cap_err=18/65
+  R8b paper level, confirmed artifacts removed                                                    OR   2.90 (1.28-6.58) p=0.011 n=1308 err=123 cap_err=15/63
+  R8b2 paper level, artifacts and NaN-delta-only removed                                          OR   2.76 (1.21-6.29) p=0.015 n=1305 err=119 cap_err=14/62
+   capsid error papers after artifact removal, by network: {'NET Hafenstein': 5, 'NET Xiamen (Xia N.)': 3, 'NET Lou Z./Li K. (FMDV, bovine)': 3, 'Zhu, P.': 1, 'NET Wang X./Zhu L. (IBP)': 1, 'McKenna, R.': 1, 'Hogle, J.M.': 1}
+  R8c-art paper level, artifacts removed, top 1 networks dropped (NET Hafenstein)                 OR   1.97 (0.90-4.28) p=0.088 n=1301 err=118 cap_err=10/56
+  R8c-art paper level, artifacts removed, top 2 networks dropped (NET Hafenstein; NET Xiamen (Xia N.)) OR   1.67 (0.60-4.66) p=0.32 n=1273 err=114 cap_err=7/44
+  R8c-art paper level, artifacts removed, top 3 networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Lou Z./Li K. (FMDV, bovine)) OR   0.95 (0.38-2.36) p=0.92 n=1270 err=111 cap_err=4/41
+  R8c paper level, top 1 capsid-error lab networks dropped (NET Hafenstein)                       OR   2.35 (1.10-5.01) p=0.027 n=1304 err=121 cap_err=12/58
+  R8c paper level, top 2 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.))  OR   2.15 (0.81-5.67) p=0.12 n=1276 err=117 cap_err=9/46
+  R8c paper level, top 3 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Wang X./Zhu L. (IBP)) OR   1.53 (0.48-4.89) p=0.47 n=1268 err=113 cap_err=6/41
+  R8c paper level, top 4 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Wang X./Zhu L. (IBP); NET Lou Z./Li K. (FMDV, bovine)) OR   0.76 (0.26-2.24) p=0.62 n=1265 err=110 cap_err=3/38
+     LONO paper level without NET Hafenstein                                                      OR   2.35 (1.10-5.01) p=0.027 n=1304 err=121 cap_err=12/58
+     LONO paper level without NET Xiamen (Xia N.)                                                 OR   3.65 (1.31-10.11) p=0.013 n=1283 err=123 cap_err=15/53
+     LONO paper level without NET Wang X./Zhu L. (IBP)                                            OR   3.14 (1.20-8.21) p=0.02 n=1303 err=123 cap_err=15/60
+     LONO paper level without NET Lou Z./Li K. (FMDV, bovine)                                     OR   2.97 (1.17-7.51) p=0.021 n=1308 err=124 cap_err=15/62
+     LONO paper level without Zhu, P.                                                             OR   3.41 (1.41-8.24) p=0.0065 n=1310 err=126 cap_err=17/64
+     LONO paper level without McKenna, R.                                                         OR   3.43 (1.41-8.35) p=0.0068 n=1309 err=126 cap_err=17/63
+     LONO paper level without Hogle, J.M.                                                         OR   3.50 (1.45-8.48) p=0.0055 n=1309 err=126 cap_err=17/63
+  R8d paper level, all-human-antibody papers (Fisher)                                             2/23 vs 48/569  OR(Haldane) 1.25 p=1
+  R8e paper level, papers with any non-human antibody                                             OR   4.90 (1.85-12.98) p=0.0014 n=719 err=77 cap_err=16/42
+
+== 9. Lab-network level: does each network err more on capsids than on its other antigens? (networks with both)
+   networks with capsid AND other EM entries: 23 | error on capsid only 0 other only 7 both 2 neither 14
+   exact McNemar p 0.015625
+   per-network capsid vs other error rates (networks with a capsid error):
+     NET Hafenstein                           capsid 58.3% (7/12)  other nan% (0/0)
+     NET Xiamen (Xia N.)                      capsid 8.1% (3/37)  other 5.3% (2/38)
+     NET Wang X./Zhu L. (IBP)                 capsid 46.7% (7/15)  other 18.2% (2/11)
+     NET Lou Z./Li K. (FMDV, bovine)          capsid 100.0% (7/7)  other nan% (0/0)
+     Zhu, P.                                  capsid 42.9% (6/14)  other nan% (0/0)
+     McKenna, R.                              capsid 10.0% (1/10)  other nan% (0/0)
+     Hogle, J.M.                              capsid 16.7% (1/6)  other nan% (0/0)
+
+== 10. Unit level (antibody-in-paper; EM): chain type, organism, germline, CDR length, nanobody
+   units 4107 errors 171 capsid units 234 capsid error units 31
+cap                 0       1    
+y                   0   1   0   1
+org2                             
+camelid           373  27  10   1
+human            2207  71  78   2
+macaque           231   6   4   0
+mouse             619  15  80  18
+other non-human   135  11  31  10
+synthetic         168  10   0   0
+  R10a unit level, year+res, cluster=lab                                                          OR   4.31 (2.24-8.31) p=1.3e-05 n=4107 err=171 cap_err=31/234
+  R10b unit level + chain type                                                                    OR   4.50 (2.29-8.86) p=1.4e-05 n=4107 err=171 cap_err=31/234
+  R10c unit level + chain type + antibody organism                                                OR   3.95 (2.13-7.32) p=1.3e-05 n=4107 err=171 cap_err=31/234
+  R10d + germline id + atypical L1/L3 + long L3 + VHH + copies                                    OR   3.84 (2.11-7.02) p=1.2e-05 n=4107 err=171 cap_err=31/234
+  R10e + gaps + lq_z                                                                              OR   3.57 (2.01-6.36) p=1.5e-05 n=4069 err=170 cap_err=31/232
+  R10f unit level within human antibodies: capsid vs other (Fisher)                               2/80 vs 71/2278  OR(Haldane) 0.98 p=1
+  R10f unit level within mouse antibodies: capsid vs other (Fisher)                               18/98 vs 15/634  OR(Haldane) 9.19 p=8.5e-09
+  R10f unit level within other non-human antibodies: capsid vs other (Fisher)                     10/41 vs 11/146  OR(Haldane) 3.93 p=0.0089
+   chain type H: capsid 15.6% (19/122) other 4.4% (97/2223)
+   chain type K: capsid 13.2% (10/76) other 2.7% (33/1241)
+   chain type L: capsid 5.6% (2/36) other 2.4% (10/409)
+
+== 11. Within-lab (conditional logit, lab network strata), journal tier, cap x human interaction
+  R11a + journal tier                                                                             OR   4.69 (2.25-9.79) p=3.7e-05 n=2752 err=178 cap_err=32/154
+   {'test': 'R11b within-lab conditional logit (all errors); informative labs=9', 'term': 'cap', 'OR': np.float64(1.1800195935610067), 'lo': np.float64(0.39235633726901403), 'hi': np.float64(3.548932714786689), 'p': np.float64(0.7682633072259369), 'n': 383, 'n_err': 32, 'n_cap': 61, 'n_cap_err': 10}
+     informative labs: ['Center for Structural Genomics of Infectious Diseases (CSGID)', 'Kwong, P.D.', 'Liu, Y.', 'Mouquet, H.', 'NET Wang X./Zhu L. (IBP)', 'NET Xiamen (Xia N.)', 'Pancera, M.', 'Wang, N.', 'Ward, A.B.']
+   {'test': 'R11b within-lab conditional logit (artifacts removed); informative labs=9', 'term': 'cap', 'OR': np.float64(0.47464690487782724), 'lo': np.float64(0.12102917313366528), 'hi': np.float64(1.8614494214654347), 'p': np.float64(0.2851586843250069), 'n': 377, 'n_err': 26, 'n_cap': 55, 'n_cap_err': 4}
+     informative labs: ['Center for Structural Genomics of Infectious Diseases (CSGID)', 'Kwong, P.D.', 'Liu, Y.', 'Mouquet, H.', 'NET Wang X./Zhu L. (IBP)', 'NET Xiamen (Xia N.)', 'Pancera, M.', 'Wang, N.', 'Ward, A.B.']
+  R11c unit level interaction capsid x human antibody (OR of interaction)                         OR   0.20 (0.05-0.76) p=0.018 n=4107 err=171 cap_err=31/234
+   human units: baseline 0.031; capsid human units n=80, observed errors 2, expected under OR 4: 9.1; P(X<=obs | OR 4) = 0.0040
+
+== All tests with BH q
+                                                                                                                                                         test       OR      lo       hi       p       q     n  n_err  n_cap  n_cap_err
+0                                                                                                                 R1 reproduce: year cat + res, cluster=paper   4.7219  2.5293   8.8152  0.0000  0.0000  2752    178  154.0       32.0
+1                                                                                                                  R2a cluster=lab network (co-author merged)   4.7219  2.2209  10.0391  0.0001  0.0002  2752    178  154.0       32.0
+2                                                                                                                            R2b cluster=wider Rao Z. network   4.7219  1.9436  11.4717  0.0006  0.0015  2752    178  154.0       32.0
+3                                                                                                                           R3 + log2 n V chains, cluster=lab   4.7990  2.2632  10.1757  0.0000  0.0001  2752    178  154.0       32.0
+4                                                                                                                                            R4 period <=2019   4.8551  1.1706  20.1371  0.0295  0.0376   181     13   26.0        5.0
+5                                                                                                                                           R4 period 2020-21   9.3987  2.4818  35.5927  0.0010  0.0023   618     61   28.0       13.0
+6                                                                                                                                             R4 period 2022+   3.3923  1.2702   9.0595  0.0148  0.0215  1953    104  100.0       14.0
+7                                                                                                                                          R4 resolution <3.5   4.0673  1.5427  10.7233  0.0046  0.0075  1489     79   68.0       10.0
+8                                                                                                                                         R4 resolution >=3.5   5.2807  2.3634  11.7991  0.0000  0.0002  1263     99   86.0       22.0
+9                                                                                                                                   R4 non-SARS-CoV-2 EM only   4.8410  2.3174  10.1128  0.0000  0.0001  2088    136  154.0       32.0
+10                                                                                                              R4 vs other viral non-SARS-CoV-2 targets only   3.9724  1.8425   8.5642  0.0004  0.0011   856     78  154.0       32.0
+11                                                                                                R5a capsid vs other, all-human-antibody EM entries (Fisher)   1.1568     NaN      NaN  1.0000  1.0000  1309     69    NaN        NaN
+12                                                                                            R5b capsid vs other, entries with a mouse antibody (period+res)  10.1485  2.1376  48.1815  0.0035  0.0062   515     31   75.0       17.0
+13                                                                                  R5c capsid vs other, entries with a non-human non-mouse antibody (Fisher)   6.4618     NaN      NaN  0.0000  0.0001   948     79    NaN        NaN
+14                                                                                                                   R5d + antibody organism indicators + VHH   4.0658  2.0492   8.0671  0.0001  0.0002  2752    178  154.0       32.0
+15                                                                                          R5e + organism + VHH + min germline id + atypical L1/L3 + long L3   4.1515  2.1244   8.1128  0.0000  0.0001  2752    178  154.0       32.0
+16                                                                                                                 R6a + any V-region gap + N-term truncation   4.4843  2.2095   9.1011  0.0000  0.0001  2748    178  154.0       32.0
+17                                                                                                                              R6b + gaps + worst-chain lq_z   4.7467  2.4314   9.2669  0.0000  0.0001  2734    178  153.0       32.0
+18                                                                                               R6c full: chains+organism+antibody+gaps+lq_z+start model+fit   3.9064  1.9898   7.6691  0.0001  0.0002  2734    178  153.0       32.0
+19                                                                                  R7-0 confirmed numbering artifacts removed (FR1 gap 26, FR3 gap 84/84+85)   3.6420  1.6033   8.2729  0.0020  0.0041  2744    170  147.0       25.0
+20                                                                                                                  R7-0b artifacts removed + full covariates   3.0287  1.5036   6.1010  0.0019  0.0041  2726    170  146.0       25.0
+21                                                                     R7a among EM error entries: share whose errors are only non-canonical, capsid vs other  16.9380     NaN      NaN  0.0000  0.0000   178     15    NaN        NaN
+22                                                                                       R7b artifacts removed AND CDR-internal NaN-delta-only errors dropped   3.1476  1.4726   6.7279  0.0031  0.0058  2737    163  143.0       21.0
+23                                                                                                                 R7c R7b AND not next to an unbuilt residue   2.8991  1.2875   6.5280  0.0102  0.0157  2676    102  134.0       12.0
+24                                                                                                                                  R7d R7b + full covariates   2.9980  1.4672   6.1262  0.0026  0.0051  2719    163  142.0       21.0
+25                                                                                                                       R8a paper level, cluster=lab network   3.5531  1.5157   8.3291  0.0035  0.0062  1311    127   65.0       18.0
+26                                                                                                               R8b paper level, confirmed artifacts removed   2.8991  1.2778   6.5774  0.0109  0.0163  1308    123   63.0       15.0
+27                                                                                                     R8b2 paper level, artifacts and NaN-delta-only removed   2.7628  1.2140   6.2878  0.0154  0.0215  1305    119   62.0       14.0
+28                                                                            R8c-art paper level, artifacts removed, top 1 networks dropped (NET Hafenstein)   1.9661  0.9035   4.2782  0.0883  0.1099  1301    118   56.0       10.0
+29                                                       R8c-art paper level, artifacts removed, top 2 networks dropped (NET Hafenstein; NET Xiamen (Xia N.))   1.6748  0.6021   4.6585  0.3231  0.3745  1273    114   44.0        7.0
+30                      R8c-art paper level, artifacts removed, top 3 networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Lou Z./Li K. (FMDV, bovine))   0.9534  0.3845   2.3641  0.9179  0.9753  1270    111   41.0        4.0
+31                                                                                  R8c paper level, top 1 capsid-error lab networks dropped (NET Hafenstein)   2.3507  1.1033   5.0085  0.0268  0.0350  1304    121   58.0       12.0
+32                                                             R8c paper level, top 2 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.))   2.1454  0.8124   5.6655  0.1234  0.1499  1276    117   46.0        9.0
+33                                   R8c paper level, top 3 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Wang X./Zhu L. (IBP))   1.5309  0.4793   4.8897  0.4723  0.5352  1268    113   41.0        6.0
+34  R8c paper level, top 4 capsid-error lab networks dropped (NET Hafenstein; NET Xiamen (Xia N.); NET Wang X./Zhu L. (IBP); NET Lou Z./Li K. (FMDV, bovine))   0.7624  0.2590   2.2443  0.6224  0.6900  1265    110   38.0        3.0
+35                                                                                                        R8d paper level, all-human-antibody papers (Fisher)   1.2503     NaN      NaN  1.0000  1.0000   592     50    NaN        NaN
+36                                                                                                        R8e paper level, papers with any non-human antibody   4.8986  1.8491  12.9771  0.0014  0.0031   719     77   42.0       16.0
+37                                                                                        R9 within-network McNemar: capsid-only vs other-only error networks   0.0667     NaN      NaN  0.0156  0.0215    23      7    NaN        NaN
+38                                                                                                                     R10a unit level, year+res, cluster=lab   4.3120  2.2384   8.3066  0.0000  0.0001  4107    171  234.0       31.0
+39                                                                                                                               R10b unit level + chain type   4.5013  2.2860   8.8636  0.0000  0.0001  4107    171  234.0       31.0
+40                                                                                                           R10c unit level + chain type + antibody organism   3.9499  2.1326   7.3157  0.0000  0.0001  4107    171  234.0       31.0
+41                                                                                               R10d + germline id + atypical L1/L3 + long L3 + VHH + copies   3.8446  2.1054   7.0207  0.0000  0.0001  4107    171  234.0       31.0
+42                                                                                                                                         R10e + gaps + lq_z   3.5726  2.0073   6.3587  0.0000  0.0001  4069    170  232.0       31.0
+43                                                                                          R10f unit level within human antibodies: capsid vs other (Fisher)   0.9833     NaN      NaN  1.0000  1.0000  2358     73    NaN        NaN
+44                                                                                          R10f unit level within mouse antibodies: capsid vs other (Fisher)   9.1851     NaN      NaN  0.0000  0.0000   732     33    NaN        NaN
+45                                                                                R10f unit level within other non-human antibodies: capsid vs other (Fisher)   3.9275     NaN      NaN  0.0089  0.0143   187     21    NaN        NaN
+46                                                                                                                                        R11a + journal tier   4.6944  2.2512   9.7893  0.0000  0.0001  2752    178  154.0       32.0
+47                                                                                         R11b within-lab conditional logit (all errors); informative labs=9   1.1800  0.3924   3.5489  0.7683  0.8336   383     32   61.0       10.0
+48                                                                                  R11b within-lab conditional logit (artifacts removed); informative labs=9   0.4746  0.1210   1.8614  0.2852  0.3382   377     26   55.0        4.0
+49                                                                                    R11c unit level interaction capsid x human antibody (OR of interaction)   0.1965  0.0510   0.7569  0.0180  0.0242  4107    171  234.0       31.0
+50                                                                             R11d human capsid units: observed vs expected under OR 4 (binomial lower tail)      NaN     NaN      NaN  0.0040  0.0067    80      2    NaN        NaN

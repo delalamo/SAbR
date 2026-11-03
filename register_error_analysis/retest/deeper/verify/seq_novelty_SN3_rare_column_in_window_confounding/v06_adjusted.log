@@ -1,0 +1,15 @@
+{'test': 'EM M0 window FE', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(11.5267), 'lo': np.float64(5.7897), 'hi': np.float64(22.9485), 'p': np.float64(0.0)}
+{'test': 'EM M1 +year+res+ctype', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(9.3914), 'lo': np.float64(4.4519), 'hi': np.float64(19.8116), 'p': np.float64(0.0)}
+{'test': 'EM M2 +sars2+vhh+nonhm', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(8.5263), 'lo': np.float64(4.1273), 'hi': np.float64(17.614), 'p': np.float64(0.0)}
+{'test': 'EM M3 +atypical CDR length', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(7.1623), 'lo': np.float64(3.3386), 'hi': np.float64(15.3655), 'p': np.float64(0.0)}
+{'test': 'EM M4 +unbuilt gap in window', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(4.906), 'lo': np.float64(2.0763), 'hi': np.float64(11.5922), 'p': np.float64(0.0003)}
+{'test': 'EM M3 within no-gap', 'n': 23498, 'n_y': 296, 'n_rc': 75, 'n_y_rc': 11, 'OR': np.float64(8.9475), 'lo': np.float64(3.6191), 'hi': np.float64(22.1209), 'p': np.float64(0.0)}
+{'test': 'EM M4 excl. CDR3/FR4 windows (bovine)', 'n': 17000, 'n_y': 186, 'n_rc': 73, 'n_y_rc': 9, 'OR': np.float64(4.4243), 'lo': np.float64(1.4751), 'hi': np.float64(13.2702), 'p': np.float64(0.008)}
+{'test': 'X-ray M1', 'n': 12957, 'n_y': 55, 'n_rc': 96, 'n_y_rc': 4, 'OR': np.float64(13.3278), 'lo': np.float64(3.3165), 'hi': np.float64(53.5592), 'p': np.float64(0.0003)}
+{'test': 'X-ray M1b (no year)', 'n': 12957, 'n_y': 55, 'n_rc': 96, 'n_y_rc': 4, 'OR': np.float64(11.6498), 'lo': np.float64(3.1961), 'hi': np.float64(42.4634), 'p': np.float64(0.0002)}
+{'test': 'pooled rc x EM interaction', 'n': 38475, 'n_y': 424, 'n_rc': 200, 'n_y_rc': 18, 'OR': np.float64(0.9157), 'lo': np.float64(0.2287), 'hi': np.float64(3.6666), 'p': np.float64(0.901)}
+{'test': 'EM rc x 2020-21 peak interaction', 'n': 25518, 'n_y': 369, 'n_rc': 104, 'n_y_rc': 14, 'OR': np.float64(0.713), 'lo': np.float64(0.1582), 'hi': np.float64(3.214), 'p': np.float64(0.6597)}
+
+Paper level (EM): papers with an error in a window holding a rare column: 11 of 140 error papers
+papers whose non-error unit-windows hold a rare column: 68 of 1486
+labs among positives: ['Bjorkman, P.J.', 'Kun, L.', 'Lander, G.C.', 'Lou, Z.', 'Mouquet, H.', 'Ofek, G.', 'Rak, A.', 'Versees, W.', 'Wang, N.', 'Ward, A.B.', 'Xu, Y.']

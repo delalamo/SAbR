@@ -1,0 +1,46 @@
+== role (text rule) by contacted-antigen group, EM units: share and error rate
+role              Antibody alone  Antibody of interest  Auxiliary  Unclear
+grp                                                                       
+host enzyme                 0.00                  0.27       0.47     0.26
+other                       0.01                  0.87       0.10     0.02
+transporter/GPCR            0.02                  0.12       0.78     0.07
+viral other                 0.00                  1.00       0.00     0.00
+                                       sum  size
+grp              role                           
+host enzyme      Antibody of interest    1    29
+                 Auxiliary               9    51
+                 Unclear                 3    28
+other            Antibody alone          0    24
+                 Antibody of interest  126  3135
+                 Auxiliary               6   367
+                 Unclear                 4    78
+transporter/GPCR Antibody alone          1    11
+                 Antibody of interest    1    57
+                 Auxiliary              14   379
+                 Unclear                 2    36
+viral other      Antibody of interest    4    12
+
+== aux_reagent flag share by group
+grp
+host enzyme         0.06
+other               0.05
+transporter/GPCR    0.23
+viral other         0.00
+
+== origin category of first-occurrence runs (entry-level, EM): share of entries with an origin-3 (chain end / next to unbuilt loop) run
+             sum  size
+grp                   
+host enzyme   11    15
+other         65   155
+viral other    5     8
+  Fisher host enzyme vs other: SignificanceResult(statistic=np.float64(3.8076923076923075), pvalue=np.float64(0.02792484670141743))
+
+== V chains per EM entry
+              count  mean   std  min  25%  50%  75%    max
+grp                                                       
+host enzyme    81.0  2.90  2.45  1.0  2.0  2.0  3.0   12.0
+other        2655.0  3.63  3.53  1.0  2.0  2.0  6.0  120.0
+viral other    16.0  1.75  1.00  1.0  1.0  1.5  2.0    4.0
+
+== unit-level host-enzyme leave-one-paper-out: OR 3.17 - 3.52 max p 0.0018
+  error units per enzyme error paper: {'10.1038/s41467-025-57843-1': 2, '10.1126/science.abe7565': 2, '10.1038/s41467-025-58340-1': 1, '10.1038/s41467-026-70491-3': 1, '10.1038/s41594-022-00755-1': 1, '10.1126/science.abg4998': 1, '10.1182/blood.2023022942': 1, '10.7554/eLife.94503': 1, '30us': 1, '9o7i': 1, '9s7s': 1}

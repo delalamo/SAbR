@@ -1,0 +1,30 @@
+Run-level flags (all methods):
+flag
+none                            344
+amyloid_fibril                   77
+indel_gap_artifact_confirmed     31
+DE_not_confirmed_other           13
+DE_chain_end_artifact            11
+near_copy                         7
+not_a_register_shift              3
+indel_gap_artifact_probable       2
+strict (confirmed artifacts + copies) | all: units 218, removed 38 (17.4%), remaining 180
+strict (confirmed artifacts + copies) | EM: units 183, removed 34 (18.6%), remaining 149
+loose (+probable / unconfirmed) | all: units 218, removed 51 (23.4%), remaining 167
+loose (+probable / unconfirmed) | EM: units 183, removed 47 (25.7%), remaining 136
+Strict removed units by flag (all methods):
+primary
+indel_gap_artifact_confirmed    16
+amyloid_fibril                  12
+DE_chain_end_artifact            5
+near_copy                        4
+not_a_register_shift             1
+Loose removed units by flag (all methods):
+fl
+indel_gap_artifact_confirmed    16
+amyloid_fibril                  12
+DE_not_confirmed_other          11
+DE_chain_end_artifact            5
+near_copy                        4
+indel_gap_artifact_probable      2
+not_a_register_shift             1

@@ -1,0 +1,149 @@
+entry err_first vs chain-derived mismatches: 0 | err_any mismatches: 0
+analysis entries 3994 errors 212 | EM 2752 178
+
+== 2. Entry level, EM (reproduce investigator)
+  entry: host_enz                                                [EM] in    15/81 out  163/2671 OR 3.50 p=0.00015
+  entry: host_enz, year+res                                      [EM] in    15/81 out  163/2671 OR 3.83 (1.84-8.00) p=0.00035
+  entry: host_enz, year+res, lab-clustered                       [EM] in    15/81 out  163/2671 OR 3.83 (1.74-8.43) p=0.00083
+  entry: vir_oth                                                 [EM] in     8/16 out  170/2736 OR 15.09 p=2.2e-06
+  entry: vir_oth, year+res                                       [EM] in     8/16 out  170/2736 OR 11.33 (3.45-37.22) p=6.3e-05
+  entry: vir_oth, year+res, lab-clustered                        [EM] in     8/16 out  170/2736 OR 11.33 (3.73-34.44) p=1.9e-05
+  entry: enz_comb                                                [EM] in    23/97 out  155/2655 OR 5.01 p=1.9e-08
+  entry: enz_comb, year+res                                      [EM] in    23/97 out  155/2655 OR 5.14 (2.85-9.25) p=5e-08
+  entry: enz_comb, year+res, lab-clustered                       [EM] in    23/97 out  155/2655 OR 5.14 (2.72-9.71) p=4.7e-07
+  entry: enz_comb                                                [X-ray] in     3/61 out   31/1181 OR 1.92 p=0.23
+  X-ray expected errors among 50 enzyme entries at X-ray base rate: 1.37 | P(0 errors) = 0.25
+
+== 3. Paper level, EM
+  papers 1311 error papers 127
+  paper: host_enz (any entry in class)                           [EM papers] in    12/45 out  115/1266 OR 3.64 p=0.00072
+  paper: host_enz, year+res+log n                                [EM papers] in    12/45 out  115/1266 OR 4.11 (1.88-8.98) p=0.00041
+  paper: host enzyme (modal class)                               [EM papers] in    12/44 out  115/1267 OR 3.76 p=0.00058
+  paper: host_mode, year+res+log n                               [EM papers] in    12/44 out  115/1267 OR 4.25 (1.93-9.34) p=0.00032
+  paper: vir_oth (any entry in class)                            [EM papers] in      4/7 out  123/1304 OR 12.80 p=0.0023
+  paper: vir_oth, year+res+log n                                 [EM papers] in      4/7 out  123/1304 OR 8.45 (1.58-45.22) p=0.013
+  paper: enz_comb (any entry in class)                           [EM papers] in    15/51 out  112/1260 OR 4.27 p=4.3e-05
+  paper: enz_comb, year+res+log n                                [EM papers] in    15/51 out  112/1260 OR 4.49 (2.14-9.39) p=6.8e-05
+  paper (alt def: DOI-less merged per lab): host_enz             [EM papers alt] in    11/44 out  114/1240 OR 3.29 p=0.0022
+  paper (alt def: DOI-less merged per lab): enz_comb             [EM papers alt] in    14/50 out  111/1234 OR 3.93 p=0.00015
+  papers with mixed enzyme / non-enzyme entries: 4
+  error labs, host enzyme papers: 11 | combined: 12 | error papers combined: 15 of 51
+
+== 4. By period (EM entries and papers)
+  <=2019   host_enz  entries in     0/2 out    13/179 OR 0.00 p=1 | papers in    0/1 out   12/107 OR 0.00 p=1
+  <=2019   enz_comb  entries in     2/4 out    11/177 OR 15.09 p=0.026 | papers in    1/2 out   11/106 OR 8.64 p=0.21
+  2020-21  host_enz  entries in    5/17 out    56/601 OR 4.06 p=0.019 | papers in    3/7 out   34/287 OR 5.58 p=0.045
+  2020-21  enz_comb  entries in    9/26 out    52/592 OR 5.50 p=0.0004 | papers in   5/10 out   32/284 OR 7.88 p=0.0038
+  2022+    host_enz  entries in   10/62 out   94/1891 OR 3.68 p=0.0012 | papers in   9/37 out   69/872 OR 3.74 p=0.0027
+  2022+    enz_comb  entries in   12/67 out   92/1886 OR 4.25 p=0.00014 | papers in   9/39 out   69/870 OR 3.48 p=0.004
+  Mantel-Haenszel host_enz: OR 3.65 p=4.5e-06 | homogeneity p=0.74
+  Mantel-Haenszel enz_comb: OR 5.00 p=4.6e-12 | homogeneity p=0.48
+  entry: host_enz, year+res, non-SARS2                           [EM non-SARS2] in    15/81 out  121/2007 OR 3.67 (1.71-7.87) p=0.00085
+  entry: enz_comb, year+res, non-SARS2                           [EM non-SARS2] in    23/97 out  113/1991 OR 5.01 (2.70-9.27) p=3e-07
+
+== 5. Fragility
+  host_enz leave-one-paper-out: OR range 3.13-3.64, max p 0.0027
+  host_enz leave-one-lab-out (normalised labs): OR range 3.13-3.58, max p 0.0028
+  host_enz: dropping the top 5 error papers (by error-entry count) makes entry Fisher p=0.3 (6/67) and paper Fisher p=0.09 (7/40)
+  paper: host_enz, one paper per lab-x-class (lab-level)         [EM labs] in    11/41 out    87/551 OR 1.96 p=0.08
+  enz_comb leave-one-paper-out: OR range 4.52-5.20, max p 6.5e-07
+  enz_comb leave-one-lab-out (normalised labs): OR range 4.48-4.92, max p 4.3e-06
+  enz_comb: dropping the top 7 error papers (by error-entry count) makes entry Fisher p=0.065 (8/69) and paper Fisher p=0.056 (8/44)
+  paper: enz_comb, one paper per lab-x-class (lab-level)         [EM labs] in    12/45 out    85/548 OR 1.98 p=0.06
+
+== 6. Chain/unit level: antigen class contacted by the antibody itself
+        pdb chain ctype  vhh        err_modes     ab_role_contact    ab_ag_cls   ab_ag_area      tgt_cls                  role                 chain_desc
+615    6qxe     M     H    1  Dplus_CDR3short             subject  viral other  1436.269326  viral other  Antibody of interest                     Nb8205
+616    6qxe     O     H    1  Dplus_CDR3short             subject  viral other  1436.269326  viral other  Antibody of interest                     Nb8205
+941    7mhz     O     H    0            C_FR3             subject       enzyme   759.467705       enzyme               Unclear       3H02 Fab heavy chain
+942    7nj5     F     H    1  Dminus_CDR3long  no antigen contact         none     0.000000  viral other  Antibody of interest                Nb8199 Core
+1275   7jhh     L     K    0       A_FR1Nterm             subject       enzyme  1437.493196       enzyme             Auxiliary            Fab light chain
+1294   7jhg     L     K    0       A_FR1Nterm             subject       enzyme  1541.187844       enzyme             Auxiliary            Fab light chain
+1328   7m74     L     K    0       A_FR1Nterm             subject       enzyme  1372.931375       enzyme             Auxiliary            Fab light chain
+4290   6qx3     O     H    1  Dplus_CDR3short             subject  viral other   651.786132  viral other  Antibody of interest                     Nb8205
+6102   7nk2     F     H    1        B_CDR2FR3  no antigen contact         none     0.000000  viral other  Antibody of interest               Nanobody8202
+6136   7nvn     N     H    1            other             subject       enzyme   954.760571       enzyme             Auxiliary                   Nanobody
+6919   30us     D     H    1  Dplus_CDR3short             subject       enzyme  1949.407446       enzyme             Auxiliary                   Megabody
+7140   7sp7     C     H    1        B_CDR2FR3             subject  viral other   771.596458  viral other  Antibody of interest               Nanobody 881
+7144   7sp6     C     H    1        B_CDR2FR3             subject  viral other   747.294437  viral other  Antibody of interest               Nanobody 881
+9764   8r4d     B     H    1        B_CDR2FR3             subject       enzyme   622.167973       enzyme             Auxiliary                    NbRoco1
+9792   8r4b     B     H    1        B_CDR2FR3             subject       enzyme   632.702109       enzyme             Auxiliary                    NbRoco1
+10011  8snd     C     H    1        B_CDR2FR3             subject  viral other   751.844511  viral other  Antibody of interest               Nanobody 881
+10033  8snc     C     H    1        B_CDR2FR3             subject  viral other   761.442333  viral other  Antibody of interest               Nanobody 881
+10467  8uf7     B     H    0       A_FR1Nterm             subject       enzyme   910.824579       enzyme               Unclear          POmAb Heavy Chain
+11627  9dm7     L     K    0       E_FR4bulge             subject       enzyme   884.626344       enzyme             Auxiliary         Fab_E6 light chain
+11628  9dm7     H     H    0            C_FR3             subject       enzyme   884.626344       enzyme             Auxiliary         Fab_E6 heavy chain
+11842  9fjf     D     H    1       A_FR1Nterm             subject       enzyme   625.697830       enzyme             Auxiliary               Nanobody Nb6
+12453  9mnb     E     H    0       A_FR1Nterm             subject       enzyme   861.897334       enzyme               Unclear  Heavy chain of E82.AS Fab
+12755  9o7h     D     H    0       A_FR1Nterm  no antigen contact         none     0.000000       enzyme               Unclear        2D2 Fab heavy chain
+12814  9o7i     D     H    0       A_FR1Nterm             subject       enzyme  1135.069982       enzyme  Antibody of interest        2D2 Fab heavy chain
+13373  9s7s     D     H    1  Dminus_CDR3long             subject       enzyme  1985.136341       enzyme             Auxiliary                   Megabody
+  erroneous chains in enzyme-target entries whose own contact class is enzyme/viral other: 22 of 25
+  unit (antibody-in-paper): host_enz by own contacts             [EM units] in   13/108 out  158/4099 OR 3.41 p=0.00037
+  unit: host_enz, year+res                                       [EM units] in   13/108 out  158/4099 OR 3.73 (1.85-7.53) p=0.00024
+  unit: host_enz, year+res+VHH                                   [EM units] in   13/108 out  158/4099 OR 3.70 (1.85-7.37) p=0.0002
+  unit: host_enz within VHH=0                                    [EM units] in     8/91 out  125/3547 OR 2.64 p=0.017
+  unit: host_enz within VHH=1                                    [EM units] in     5/17 out    33/552 OR 6.55 p=0.0035
+  unit (antibody-in-paper): enz_comb by own contacts             [EM units] in   17/120 out  154/4087 OR 4.22 p=5e-06
+  unit: enz_comb, year+res                                       [EM units] in   17/120 out  154/4087 OR 4.42 (2.38-8.21) p=2.4e-06
+  unit: enz_comb, year+res+VHH                                   [EM units] in   17/120 out  154/4087 OR 4.12 (2.25-7.55) p=4.6e-06
+  unit: enz_comb within VHH=0                                    [EM units] in     8/93 out  125/3545 OR 2.58 p=0.019
+  unit: enz_comb within VHH=1                                    [EM units] in     9/27 out    29/542 OR 8.84 p=2e-05
+
+== 7. Classification sensitivity
+ec_any                             0   1
+tgt_cls                                 
+GPCR                             289  18
+TCR                                5   0
+channel/transporter              399  40
+cytokine/growth factor/hormone    11   0
+enzyme                            10  71
+fiducial target                    1   0
+none                              21   0
+other protein                    143   0
+receptor/membrane protein        120  35
+toxin                             13   4
+unmapped/peptide                  53   0
+viral capsid                     145   9
+viral other                        8   8
+viral surface glycoprotein      1305  44
+  entry: target has EC number (non-viral), any class             [EM] in   14/168 out  164/2584 OR 1.34 p=0.33
+  entry: target has EC (non-viral), year+res                     [EM] in   14/168 out  164/2584 OR 1.42 (0.68-3.00) p=0.35
+  EC-bearing targets classed elsewhere (e.g. transporter/receptor): 2.1% (2/97)
+                           sum  size
+tgt_cls                             
+GPCR                         0    18
+channel/transporter          0    40
+receptor/membrane protein    1    35
+toxin                        1     4
+
+== 8. Error modes, EM first-occurrence error entries
+              A        B     
+            sum size sum size
+grp                          
+host enzyme   8   15   2   15
+other        50  155  23  155
+viral other   0    8   5    8
+  host-enzyme A_FR1Nterm entries by paper: 5 papers
+  B_CDR2FR3 entries in enzyme groups by paper: {'10.1038/s41586-022-04534-2': 2, '10.7554/elife.94503': 2, '10.1038/s41594-024-01389-1': 2, '10.1038/s41467-021-27950-w': 1}
+
+== 9. "viral other" (labelled viral enzymes) entries, EM
+       pdb  y       last_author  dyear      ab_status                                              tgt_name                                                                                 tgt_desc            modes
+117   24xy  0        Nureki, O.   2026  fiducial-only                                   P2Y purinoceptor 13                                Soluble cytochrome b562,P2Y purinoceptor 13,LgBiT tag,GFP              NaN
+928   6qx3  1      Grimes, J.M.   2019          bound                             Polymerase acidic protein                                                                Polymerase acidic protein  Dplus_CDR3short
+930   6qxe  1      Grimes, J.M.   2019          bound                             Polymerase acidic protein                                                                Polymerase acidic protein  Dplus_CDR3short
+1563  7nj3  0      Grimes, J.M.   2021     no contact         RNA-directed RNA polymerase catalytic subunit                                            RNA-directed RNA polymerase catalytic subunit              NaN
+1564  7nj5  1      Grimes, J.M.   2021     no contact         RNA-directed RNA polymerase catalytic subunit                                            RNA-directed RNA polymerase catalytic subunit  Dminus_CDR3long
+1565  7nj7  0      Grimes, J.M.   2021     no contact         RNA-directed RNA polymerase catalytic subunit                                            RNA-directed RNA polymerase catalytic subunit              NaN
+1567  7nk1  0      Grimes, J.M.   2021          bound                             Polymerase acidic protein                                                                Polymerase acidic protein              NaN
+1568  7nk2  1      Grimes, J.M.   2021     no contact         RNA-directed RNA polymerase catalytic subunit                                            RNA-directed RNA polymerase catalytic subunit        B_CDR2FR3
+1570  7nkc  0      Grimes, J.M.   2021          bound         RNA-directed RNA polymerase catalytic subunit                                            RNA-directed RNA polymerase catalytic subunit              NaN
+1676  7rfp  0            He, C.   2021          bound  Tumor necrosis factor receptor superfamily member 18  Tumor necrosis factor receptor superfamily member 18,Enhanced green fluorescent protein              NaN
+1742  7sp6  1        Zimmer, J.   2021          bound                                                   NaN                                                                      Hyaluronan synthase        B_CDR2FR3
+1743  7sp7  1        Zimmer, J.   2021          bound                                                   NaN                                                                      Hyaluronan synthase        B_CDR2FR3
+2741  8snc  1        Zimmer, J.   2023          bound                                                   NaN                                                                      Hyaluronan synthase        B_CDR2FR3
+2742  8snd  1        Zimmer, J.   2023          bound                                                   NaN                                                                      Hyaluronan synthase        B_CDR2FR3
+2743  8sne  0        Zimmer, J.   2023          bound                                                   NaN                                                                      Hyaluronan synthase              NaN
+3700  9nz3  0  Abeywickrema, P.   2025          bound                                                   NaN                                                                         Membrane protein              NaN
+
+wrote 50 tests

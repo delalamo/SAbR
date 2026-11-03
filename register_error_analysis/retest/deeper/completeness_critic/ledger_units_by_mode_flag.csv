@@ -1,0 +1,10 @@
+mode,DE_chain_end_artifact,DE_not_confirmed_other,amyloid_fibril,indel_gap_artifact_confirmed,indel_gap_artifact_probable,near_copy,none,not_a_register_shift
+A_FR1Nterm,0,0,6,2,0,3,56,0
+B_CDR2FR3,0,0,0,4,1,1,25,1
+C_FR3,0,0,0,9,1,1,20,0
+D0,0,0,0,0,0,0,9,0
+Dminus_CDR3long,2,9,0,0,0,0,12,0
+Dplus_CDR3short,9,2,0,0,0,0,32,0
+E_FR4bulge,0,2,0,0,0,1,17,0
+F_CDR1,0,0,2,2,0,0,11,0
+other,0,0,5,0,0,0,5,0

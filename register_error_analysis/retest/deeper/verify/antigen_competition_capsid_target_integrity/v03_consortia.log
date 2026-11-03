@@ -1,0 +1,50 @@
+
+== original errors: capsid error entries / capsid entries by curated consortium
+                                                        entries  err  papers  err_papers
+cons                                                                                    
+HAFENSTEIN                                                   12    7       7           6
+WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E3 papers)       20    7       8           3
+LOU (Lou Z. / Li K., FMDV, bovine Abs)                        9    7       4           3
+ZHU P.                                                       15    6       1           1
+XIAMEN (Xia N. / Li S.W. / Cheng T.)                         37    3      12           3
+LAB:Hogle, J.M.                                               6    1       2           1
+LAB:McKenna, R.                                              10    1       2           1
+  capsid consortia/labs with >=1 error: 7 of 33
+  original: all                                                          capsid  20.8% (32/154) other   5.6% (146/2598) OR 4.72 (2.53-8.82) p=1.1e-06
+  original: SE clustered by curated consortium                           capsid  20.8% (32/154) other   5.6% (146/2598) OR 4.72 (2.35-9.49) p=1.3e-05
+  original: drop HAFENSTEIN                                              capsid  17.6% (25/142) other   5.6% (146/2598) OR 3.91 (1.92-7.97) p=0.00017
+  original: drop WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E           capsid  18.7% (25/134) other   5.5% (141/2562) OR 4.27 (2.27-8.06) p=7.1e-06
+  original: drop LOU (Lou Z. / Li K., FMDV, bovine Abs)                  capsid  17.2% (25/145) other   5.6% (146/2598) OR 3.80 (1.93-7.47) p=0.00011
+  original: drop ZHU P.                                                  capsid  18.7% (26/139) other   5.6% (146/2598) OR 4.15 (2.06-8.34) p=6.6e-05
+  original: drop XIAMEN (Xia N. / Li S.W. / Cheng T.)                    capsid  24.8% (29/117) other   5.6% (144/2562) OR 5.77 (3.10-10.72) p=3.1e-08
+  original: drop LAB:Hogle, J.M.                                         capsid  20.9% (31/148) other   5.6% (146/2598) OR 4.76 (2.54-8.91) p=1.1e-06
+  original: drop LAB:McKenna, R.                                         capsid  21.5% (31/144) other   5.6% (146/2598) OR 4.87 (2.55-9.28) p=1.5e-06
+  original: drop top-2 (HAFENSTEIN, WANGX)                               capsid  14.8% (18/122) other   5.5% (141/2562) OR 3.30 (1.53-7.11) p=0.0022
+  original: drop top-3 (HAFENSTEIN, WANGX, LOU)                          capsid   9.7% (11/113) other   5.5% (141/2562) OR 2.08 (0.80-5.41) p=0.13
+  consortium-level units: capsid 7/33 vs other 89/631; Fisher OR 1.64 p=0.3; adjusted OR 1.54 p=0.37
+
+== robust errors: capsid error entries / capsid entries by curated consortium
+                                                        entries  err  papers  err_papers
+cons                                                                                    
+HAFENSTEIN                                                   12    7       7           6
+ZHU P.                                                       15    6       1           1
+XIAMEN (Xia N. / Li S.W. / Cheng T.)                         37    3      12           3
+LAB:Hogle, J.M.                                               6    1       2           1
+WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E3 papers)       14    1       6           1
+LAB:McKenna, R.                                              10    1       2           1
+  capsid consortia/labs with >=1 error: 6 of 32
+  robust: all                                                            capsid  13.7% (19/139) other   5.5% (143/2587) OR 2.88 (1.46-5.70) p=0.0024
+  robust: SE clustered by curated consortium                             capsid  13.7% (19/139) other   5.5% (143/2587) OR 2.88 (1.24-6.67) p=0.014
+  robust: drop HAFENSTEIN                                                capsid   9.4% (12/127) other   5.5% (143/2587) OR 1.95 (0.78-4.87) p=0.15
+  robust: drop ZHU P.                                                    capsid  10.5% (13/124) other   5.5% (143/2587) OR 2.11 (1.08-4.14) p=0.03
+  robust: drop XIAMEN (Xia N. / Li S.W. / Cheng T.)                      capsid  15.7% (16/102) other   5.5% (141/2551) OR 3.20 (1.59-6.45) p=0.0011
+  robust: drop LAB:Hogle, J.M.                                           capsid  13.5% (18/133) other   5.5% (143/2587) OR 2.89 (1.45-5.78) p=0.0026
+  robust: drop WANGX (Wang X. IBP / Rao Z.: Feng R., Fu W. E             capsid  14.4% (18/125) other   5.4% (138/2551) OR 3.23 (1.62-6.42) p=0.00084
+  robust: drop LAB:McKenna, R.                                           capsid  14.0% (18/129) other   5.5% (143/2587) OR 2.90 (1.41-5.94) p=0.0036
+  robust: drop top-2 (HAFENSTEIN, ZHU)                                   capsid    5.4% (6/112) other   5.5% (143/2587) OR 1.06 (0.47-2.39) p=0.89
+  robust: drop top-3 (HAFENSTEIN, ZHU, XIAMEN)                           capsid     4.0% (3/75) other   5.5% (141/2551) OR 0.74 (0.27-2.02) p=0.55
+  consortium-level units: capsid 6/32 vs other 87/628; Fisher OR 1.44 p=0.43; adjusted OR 1.36 p=0.55
+
+== Unit level (antibody in paper), EM
+  units, original errors                                                 capsid  13.2% (31/234) other   3.6% (140/3873) OR 4.31 (2.31-8.03) p=4.2e-06
+  units, robust errors                                                   capsid  10.6% (23/218) other   3.6% (137/3857) OR 3.39 (1.56-7.38) p=0.0021

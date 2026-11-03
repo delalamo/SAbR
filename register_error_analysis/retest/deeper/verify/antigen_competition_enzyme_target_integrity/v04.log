@@ -1,0 +1,77 @@
+aux (text-rule role) units: host enzyme 9/51 vs transporter/GPCR 14/379: OR 5.59 p=0.00052
+host-enzyme units: auxiliary 9/51 vs antibody of interest 1/29: OR 6.00 p=0.085
+first-occurrence entries: origin-3 run (chain end/unbuilt loop), host enzyme 11/15 vs other 65/155: OR 3.81 p=0.028
+first-occurrence entries: B_CDR2FR3 mode, host enzyme 2/15 vs other 23/155: OR 0.88 p=1
+first-occurrence entries: A_FR1Nterm mode, host enzyme 8/15 vs other 50/155: OR 2.40 p=0.15
+                                                                                                  test                   stratum cases_in cases_out       OR       p       q
+0                                                                                      entry: host_enz                        EM    15/81  163/2671   3.4969  0.0001  0.0004
+1                                                                            entry: host_enz, year+res                        EM    15/81  163/2671   3.8321  0.0003  0.0008
+2                                                             entry: host_enz, year+res, lab-clustered                        EM    15/81  163/2671   3.8321  0.0008  0.0015
+3                                                                                       entry: vir_oth                        EM     8/16  170/2736  15.0941  0.0000  0.0000
+4                                                                             entry: vir_oth, year+res                        EM     8/16  170/2736  11.3317  0.0001  0.0003
+5                                                              entry: vir_oth, year+res, lab-clustered                        EM     8/16  170/2736  11.3317  0.0000  0.0001
+6                                                                                      entry: enz_comb                        EM    23/97  155/2655   5.0131  0.0000  0.0000
+7                                                                            entry: enz_comb, year+res                        EM    23/97  155/2655   5.1362  0.0000  0.0000
+8                                                             entry: enz_comb, year+res, lab-clustered                        EM    23/97  155/2655   5.1362  0.0000  0.0000
+9                                                                                      entry: enz_comb                     X-ray     3/61   31/1181   1.9188  0.2311  0.2564
+10                                                                paper: host_enz (any entry in class)                 EM papers    12/45  115/1266   3.6395  0.0007  0.0014
+11                                                                     paper: host_enz, year+res+log n                 EM papers    12/45  115/1266   4.1052  0.0004  0.0009
+12                                                                    paper: host enzyme (modal class)                 EM papers    12/44  115/1267   3.7565  0.0006  0.0012
+13                                                                    paper: host_mode, year+res+log n                 EM papers    12/44  115/1267   4.2465  0.0003  0.0008
+14                                                                 paper: vir_oth (any entry in class)                 EM papers      4/7  123/1304  12.8022  0.0023  0.0039
+15                                                                      paper: vir_oth, year+res+log n                 EM papers      4/7  123/1304   8.4503  0.0126  0.0183
+16                                                                paper: enz_comb (any entry in class)                 EM papers    15/51  112/1260   4.2708  0.0000  0.0002
+17                                                                     paper: enz_comb, year+res+log n                 EM papers    15/51  112/1260   4.4874  0.0001  0.0003
+18                                                  paper (alt def: DOI-less merged per lab): host_enz             EM papers alt    11/44  114/1240   3.2924  0.0022  0.0038
+19                                                  paper (alt def: DOI-less merged per lab): enz_comb             EM papers alt    14/50  111/1234   3.9344  0.0001  0.0004
+20                                                                                     entry: host_enz                 EM <=2019      0/2    13/179   0.0000  1.0000  1.0000
+21                                                                                     paper: host_enz          EM papers <=2019      0/1    12/107   0.0000  1.0000  1.0000
+22                                                                                     entry: enz_comb                 EM <=2019      2/4    11/177  15.0909  0.0264  0.0335
+23                                                                                     paper: enz_comb          EM papers <=2019      1/2    11/106   8.6364  0.2108  0.2376
+24                                                                                     entry: host_enz                EM 2020-21     5/17    56/601   4.0551  0.0194  0.0265
+25                                                                                     paper: host_enz         EM papers 2020-21      3/7    34/287   5.5809  0.0451  0.0551
+26                                                                                     entry: enz_comb                EM 2020-21     9/26    52/592   5.4977  0.0004  0.0009
+27                                                                                     paper: enz_comb         EM papers 2020-21     5/10    32/284   7.8750  0.0038  0.0058
+28                                                                                     entry: host_enz                  EM 2022+    10/62   94/1891   3.6764  0.0012  0.0022
+29                                                                                     paper: host_enz           EM papers 2022+     9/37    69/872   3.7407  0.0027  0.0043
+30                                                                                     entry: enz_comb                  EM 2022+    12/67   92/1886   4.2545  0.0001  0.0004
+31                                                                                     paper: enz_comb           EM papers 2022+     9/39    69/870   3.4826  0.0040  0.0059
+32                                                          entry: host_enz, Mantel-Haenszel by period                        EM      NaN       NaN   3.6452  0.0000  0.0000
+33                                                          entry: enz_comb, Mantel-Haenszel by period                        EM      NaN       NaN   5.0017  0.0000  0.0000
+34                                                                entry: host_enz, year+res, non-SARS2              EM non-SARS2    15/81  121/2007   3.6657  0.0009  0.0015
+35                                                                entry: enz_comb, year+res, non-SARS2              EM non-SARS2    23/97  113/1991   5.0074  0.0000  0.0000
+36                                              paper: host_enz, one paper per lab-x-class (lab-level)                   EM labs    11/41    87/551   1.9556  0.0800  0.0947
+37                                              paper: enz_comb, one paper per lab-x-class (lab-level)                   EM labs    12/45    85/548   1.9807  0.0597  0.0719
+38                                                  unit (antibody-in-paper): host_enz by own contacts                  EM units   13/108  158/4099   3.4133  0.0004  0.0009
+39                                                                            unit: host_enz, year+res                  EM units   13/108  158/4099   3.7324  0.0002  0.0006
+40                                                                        unit: host_enz, year+res+VHH                  EM units   13/108  158/4099   3.6970  0.0002  0.0006
+41                                                                         unit: host_enz within VHH=0                  EM units     8/91  125/3547   2.6387  0.0171  0.0243
+42                                                                         unit: host_enz within VHH=1                  EM units     5/17    33/552   6.5530  0.0035  0.0054
+43                                                  unit (antibody-in-paper): enz_comb by own contacts                  EM units   17/120  154/4087   4.2152  0.0000  0.0000
+44                                                                            unit: enz_comb, year+res                  EM units   17/120  154/4087   4.4235  0.0000  0.0000
+45                                                                        unit: enz_comb, year+res+VHH                  EM units   17/120  154/4087   4.1206  0.0000  0.0000
+46                                                                         unit: enz_comb within VHH=0                  EM units     8/93  125/3545   2.5751  0.0193  0.0265
+47                                                                         unit: enz_comb within VHH=1                  EM units     9/27    29/542   8.8448  0.0000  0.0001
+48                                                  entry: target has EC number (non-viral), any class                        EM   14/168  164/2584   1.3415  0.3289  0.3592
+49                                                          entry: target has EC (non-viral), year+res                        EM   14/168  164/2584   1.4250  0.3520  0.3787
+50                                                                     entry, leak-corrected: host_enz                        EM    15/81  161/2669   3.5404  0.0001  0.0004
+51                                                                     paper, leak-corrected: host_enz                 EM papers    11/45  115/1266   3.2381  0.0025  0.0040
+52                                                                      entry, leak-corrected: vir_oth                        EM     6/14  170/2736  11.3206  0.0001  0.0004
+53                                                                      paper, leak-corrected: vir_oth                 EM papers      3/7  123/1304   7.2012  0.0227  0.0305
+54                                                                     entry, leak-corrected: enz_comb                        EM    21/95  155/2655   4.5772  0.0000  0.0000
+55                                                                     paper, leak-corrected: enz_comb                 EM papers    14/51  112/1260   3.8784  0.0002  0.0005
+56                                                                 paper: host_enz, conditional on lab     EM papers, mixed labs     5/22      7/58   1.2500  0.7782  0.8247
+57                                                                 paper: enz_comb, conditional on lab     EM papers, mixed labs     4/23      7/65   1.1440  0.8610  0.8989
+58                                                            paper: host_enz, within-year permutation                 EM papers    12/45       NaN      NaN  0.0007  0.0014
+59                                                            paper: enz_comb, within-year permutation                 EM papers    15/51       NaN      NaN  0.0001  0.0004
+60                          aux units: enzyme(+viral other) vs transporter/GPCR/receptor/other targets              EM aux units      2/7     3/117  15.2000  0.0253  0.0327
+61                                   aux units: host enzyme vs transporter/GPCR/receptor/other targets              EM aux units      2/7     3/117  15.2000  0.0253  0.0327
+62                                                            paper: y ~ host_enz + C(ycat) + res + ln  EM papers, lab-clustered      NaN       NaN   4.1052  0.0004  0.0009
+63                                                     paper: y ~ host_enz + lexp + C(ycat) + res + ln  EM papers, lab-clustered      NaN       NaN   3.8774  0.0008  0.0015
+64                                                            paper: y ~ enz_comb + C(ycat) + res + ln  EM papers, lab-clustered      NaN       NaN   4.4874  0.0001  0.0003
+65                                                     paper: y ~ enz_comb + lexp + C(ycat) + res + ln  EM papers, lab-clustered      NaN       NaN   4.2559  0.0001  0.0004
+66                             aux (text-rule role) units: host enzyme 9/51 vs transporter/GPCR 14/379                        EM      NaN       NaN   5.5867  0.0005  0.0011
+67                                      host-enzyme units: auxiliary 9/51 vs antibody of interest 1/29                        EM      NaN       NaN   6.0000  0.0847  0.0986
+68  first-occurrence entries: origin-3 run (chain end/unbuilt loop), host enzyme 11/15 vs other 65/155                        EM      NaN       NaN   3.8077  0.0279  0.0348
+69                          first-occurrence entries: B_CDR2FR3 mode, host enzyme 2/15 vs other 23/155                        EM      NaN       NaN   0.8829  1.0000  1.0000
+70                         first-occurrence entries: A_FR1Nterm mode, host enzyme 8/15 vs other 50/155                        EM      NaN       NaN   2.4000  0.1512  0.1732

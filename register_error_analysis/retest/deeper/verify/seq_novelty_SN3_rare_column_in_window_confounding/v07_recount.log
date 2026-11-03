@@ -1,0 +1,34 @@
+                mode   pdb     last_author  dep_year                                      cls
+33             C_FR3  8c8t     Mouquet, H.      2023                            tool artifact
+57        A_FR1Nterm  7cws        Wang, X.      2020                            tool artifact
+73         B_CDR2FR3  7nk2    Grimes, J.M.      2021                            tool artifact
+78        A_FR1Nterm  8fsj        Ofek, G.      2023                            tool artifact
+85         B_CDR2FR3  8bw0         Rak, A.      2022                            tool artifact
+114  Dminus_CDR3long  8ult  Bjorkman, P.J.      2023                          model deviation
+141       A_FR1Nterm  7t6x    Lander, G.C.      2021                 probable model deviation
+154       A_FR1Nterm  22ge          Xu, Y.      2026     untestable, insertion-placement form
+157               D0  7d3l         Lou, Z.      2020  model deviation, no register shift (D0)
+158               D0  7d3m         Lou, Z.      2020                          model deviation
+159  Dminus_CDR3long  7d3m         Lou, Z.      2020                          model deviation
+161  Dplus_CDR3short  8grr         Kun, L.      2022                          model deviation
+171        B_CDR2FR3  8r4b     Versees, W.      2023                            tool artifact
+173        B_CDR2FR3  12iu      Ward, A.B.      2026     untestable, insertion-placement form
+as published (all 199 unit-modes)                                      n=199 obs=14 (0.070) exp=0.94 (0.0047) O/E= 14.9 p=2.05e-12
+drop the 6 positives reproduced as tool disagreement at high resolution n=193 obs= 8 (0.041) exp=0.93 (0.0048) O/E=  8.6 p=6.23e-06
+  ... and count only confirmed model deviations as positive            n=193 obs= 5 (0.026) exp=0.93 (0.0048) O/E=  5.4 p=2.73e-03
+  ... confirmed model deviations with a register shift (exclude D0)    n=193 obs= 4 (0.021) exp=0.93 (0.0048) O/E=  4.3 p=1.51e-02
+drop artifacts and the bovine FMDV lab (Lou Z./Kun L.)                 n=186 obs= 4 (0.022) exp=0.88 (0.0047) O/E=  4.5 p=1.26e-02
+  ... confirmed model deviations only                                  n=186 obs= 1 (0.005) exp=0.88 (0.0047) O/E=  1.1 p=5.86e-01
+drop artifacts; confirmed + probable model deviations                  n=193 obs= 6 (0.031) exp=0.93 (0.0048) O/E=  6.4 p=4.14e-04
+drop artifacts and bovine lab; confirmed + probable model deviations   n=186 obs= 2 (0.011) exp=0.88 (0.0047) O/E=  2.3 p=2.21e-01
+
+Expectation matched on chain type, year bin (if >=30 controls), species group (human/mouse, nanobody, other) and atypical CDR length:
+       count      mean       std  min  25%  50%       75%       max
+obs                                                                
+False  185.0  0.004194  0.020286  0.0  0.0  0.0  0.003871  0.266667
+True    14.0  0.001756  0.005687  0.0  0.0  0.0  0.000000  0.021277
+species+atypical-length matched, as published                          n=199 obs=14 (0.070) exp=0.80 (0.0040) O/E= 17.5 p=2.41e-13
+species+atypical-length matched, artifacts dropped                     n=193 obs= 8 (0.041) exp=0.80 (0.0041) O/E= 10.0 p=2.00e-06
+species+atypical-length matched, confirmed model deviations only       n=193 obs= 5 (0.026) exp=0.80 (0.0041) O/E=  6.3 p=1.39e-03
+
+papers with >=1 positive: 12 of 134 ; labs: 12 ; confirmed model-deviation papers: 3 labs: ['Bjorkman, P.J.', 'Kun, L.', 'Lou, Z.']

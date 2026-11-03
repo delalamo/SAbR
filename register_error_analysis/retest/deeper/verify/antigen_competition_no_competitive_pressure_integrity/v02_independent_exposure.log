@@ -1,0 +1,50 @@
+protein chains 1111934 V-motif chains 38297 entries 12068
+concordance with investigator ANARCI entry list: both 11289 regex only 779 ANARCI only 683
+focal entries found by regex 0.9241
+antibody entries with >=1 antigen accession 9119 of 12068
+deposit date agreement entries.idx vs entries.csv: 1.0
+Spearman independent vs investigator labs_acc_12m: 0.934 n 3385 | exact agreement 0.685 | zero vs nonzero agreement 0.95
+                         stratum          term            OR      lo             hi       p     n  n_err
+0   EM all (incl. unbound/other)  l_v_labs_12m  9.378000e-01  0.8538   1.030100e+00  0.1801  2368    153
+1   EM all (incl. unbound/other)   l_v_labs_6m  9.368000e-01  0.8467   1.036400e+00  0.2054  2368    153
+2   EM all (incl. unbound/other)        v_race  9.497000e-01  0.5587   1.614500e+00  0.8489  2368    153
+3   EM all (incl. unbound/other)       v_any12  6.042000e-01  0.3718   9.818000e-01  0.0419  2368    153
+4                   EM non-SARS2  l_v_labs_12m  8.272000e-01  0.6360   1.076100e+00  0.1575  1723    112
+5                   EM non-SARS2   l_v_labs_6m  8.348000e-01  0.6206   1.122900e+00  0.2327  1723    112
+6                   EM non-SARS2        v_race  1.191000e+00  0.5983   2.371200e+00  0.6187  1723    112
+7                   EM non-SARS2       v_any12  5.961000e-01  0.3475   1.022300e+00  0.0601  1723    112
+8                       EM SARS2  l_v_labs_12m  2.897900e+00  0.3015   2.785180e+01  0.3568   645     41
+9                       EM SARS2   l_v_labs_6m  1.801900e+00  0.6651   4.881500e+00  0.2468   645     41
+10                      EM SARS2        v_race  7.346428e+08     NaN            NaN     NaN   645     41
+11                      EM SARS2       v_any12  1.261827e+08  0.0000  5.032104e+189  0.9303   645     41
+12                    EM 2020-21  l_v_labs_12m  9.539000e-01  0.8310   1.094900e+00  0.5023   531     55
+13                    EM 2020-21   l_v_labs_6m  9.546000e-01  0.8240   1.105900e+00  0.5362   531     55
+14                    EM 2020-21        v_race  7.601000e-01  0.3266   1.769100e+00  0.5245   531     55
+15                    EM 2020-21       v_any12  4.390000e-01  0.1904   1.012100e+00  0.0534   531     55
+16                      EM 2022+  l_v_labs_12m  9.252000e-01  0.8165   1.048300e+00  0.2225  1679     88
+17                      EM 2022+   l_v_labs_6m  9.203000e-01  0.8045   1.052800e+00  0.2263  1679     88
+18                      EM 2022+        v_race  1.110700e+00  0.5635   2.189000e+00  0.7617  1679     88
+19                      EM 2022+       v_any12  7.239000e-01  0.3866   1.355500e+00  0.3127  1679     88
+20                         X-ray  l_v_labs_12m  1.113200e+00  0.9567   1.295400e+00  0.1654  1029     28
+21                         X-ray   l_v_labs_6m  1.126600e+00  0.9575   1.325600e+00  0.1510  1029     28
+22                         X-ray        v_race  1.456800e+00  0.6454   3.288300e+00  0.3651  1029     28
+23                         X-ray       v_any12  1.663900e+00  0.7297   3.794300e+00  0.2260  1029     28
+        mean  size  sum
+bin                    
+0      0.081   864   70
+1-2    0.058   469   27
+3-9    0.031   324   10
+10-49  0.028    71    2
+>=50   0.069   640   44
+              mean  size  sum
+sars2 bin                    
+False 0      0.081   862   70
+      1-2    0.059   461   27
+      3-9    0.031   322   10
+      10-49  0.040    50    2
+      >=50   0.107    28    3
+True  0      0.000     2    0
+      1-2    0.000     8    0
+      3-9    0.000     2    0
+      10-49  0.000    21    0
+      >=50   0.067   612   41

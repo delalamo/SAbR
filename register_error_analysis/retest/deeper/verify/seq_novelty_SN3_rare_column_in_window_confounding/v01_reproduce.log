@@ -1,0 +1,77 @@
+/home/user/SAbR/register_error_analysis/retest/deeper/verify/seq_novelty_SN3_rare_column_in_window_confounding/v01_reproduce.py:19: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  U['yb']=pd.cut(U.dep_year,[0,2018,2019,2020,2021,2022,2023,2100],labels=False)
+unit-modes 199 positives 14
+clean_EM (investigator)             expected 0.94 (0.0047) O/E 14.9  poisson p=2.05e-12
+all_EM_not_first_error              expected 1.14 (0.0057) O/E 12.3  poisson p=2.47e-11
+all_EM_units                        expected 1.34 (0.0067) O/E 10.4  poisson p=2.00e-10
+clean_Xray                          expected 1.82 (0.0091) O/E 7.7  poisson p=9.18e-09
+all_units_any_method_not_first      expected 1.36 (0.0068) O/E 10.3  poisson p=2.47e-10
+                mode ctype   i0   i1                                                                                                                                                                  cols                                                                                                                                                         cols_anywhere   pdb                         paper     last_author  dep_year    res  sars2  vhh species
+33             C_FR3     H   83   85                                                                                                                                                       85A 85B 85C 85D                                                                                                                                                       85A 85B 85C 85D  8c8t    10.1016/j.chom.2023.06.006     Mouquet, H.      2023  3.200  False    0   human
+57        A_FR1Nterm     H    1    4                                                                                                                                                                    4A                                                                                                                                                                    4A  7cws    10.1038/s41422-020-00446-w        Wang, X.      2020  3.500   True    0   human
+73         B_CDR2FR3     H   67   73                                                                                                                                                                    73                                                                                                                                                                    73  7nk2    10.1038/s41467-021-27950-w    Grimes, J.M.      2021  4.840  False    1  alpaca
+78        A_FR1Nterm     H    3    4                                                                                                                                                                    4A                                                                                                                                        4A 60A 60B 60C 61D 61C 61B 61A  8fsj    10.1038/s41467-023-39659-z        Ofek, G.      2023  3.650  False    0   human
+85         B_CDR2FR3     H   63   70                                                                                                                                                                   70A                                                                                                                                                                   70A  8bw0    10.1038/s41467-024-53746-9         Rak, A.      2022  3.110  False    0   mouse
+114  Dminus_CDR3long     K  116  119                                                                                                                                                                  119A                                                                                                                                                                  119A  8ult    10.1038/s41590-025-02286-5  Bjorkman, P.J.      2023  3.800  False    0   human
+141       A_FR1Nterm     L    2   10                                                                                                                                                                    10                                                                                                                                                                    10  7t6x       10.1126/science.abn9884    Lander, G.C.      2021  3.830  False    0   human
+154       A_FR1Nterm     H    9   10                                                                                                                                                           9A 9B 9C 10                                                                                                                                                       9A 9B 9C 10 69A  22ge  10.1371/journal.pone.0338127          Xu, Y.      2026  3.100  False    0  rabbit
+157               D0     H  106  112                                                         111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I                                                         111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I  7d3l  10.1371/journal.ppat.1009507         Lou, Z.      2020  3.680  False    0     cow
+158               D0     H  111  112  111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 111S 111T 111U 111V 111W 111X 112X 112W 112V 112U 112T 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I  111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 111S 111T 111U 111V 111W 111X 112X 112W 112V 112U 112T 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I  7d3m  10.1371/journal.ppat.1009507         Lou, Z.      2020  3.715  False    0     cow
+159  Dminus_CDR3long     H  103  112  111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 111S 111T 111U 111V 111W 111X 112X 112W 112V 112U 112T 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I  111H 111I 111J 111K 111L 111M 111N 111O 111P 111Q 111R 111S 111T 111U 111V 111W 111X 112X 112W 112V 112U 112T 112S 112R 112Q 112P 112O 112N 112M 112L 112K 112J 112I  7d3m  10.1371/journal.ppat.1009507         Lou, Z.      2020  3.715  False    0     cow
+161  Dplus_CDR3short     H  111  118                                                                                                                                                                  111H                                                                                                                                                                  111H  8grr  10.1371/journal.ppat.1011811         Kun, L.      2022  3.720  False    0     cow
+171        B_CDR2FR3     H   62   67                                                                                                                                                           67A 67B 67C                                                                                                                                                           67A 67B 67C  8r4b           10.7554/eLife.94503     Versees, W.      2023  3.880  False    1  alpaca
+173        B_CDR2FR3     K   58   72                                                                                                                                                              58 63 64                                                                                                                                                              58 63 64  12iu                          12iu      Ward, A.B.      2026  3.060  False    0   human
+
+Occupancy (% of PDB unique V domains of that chain type) of each hit column:
+H 10 0.06%
+H 111H 0.96%
+H 111I 0.81%
+H 111J 0.81%
+H 111K 0.69%
+H 111L 0.69%
+H 111M 0.57%
+H 111N 0.57%
+H 111O 0.57%
+H 111P 0.57%
+H 111Q 0.56%
+H 111R 0.56%
+H 111S 0.54%
+H 111T 0.53%
+H 111U 0.53%
+H 111V 0.39%
+H 111W 0.36%
+H 111X 0.32%
+H 112I 0.93%
+H 112J 0.81%
+H 112K 0.75%
+H 112L 0.69%
+H 112M 0.62%
+H 112N 0.57%
+H 112O 0.57%
+H 112P 0.57%
+H 112Q 0.57%
+H 112R 0.56%
+H 112S 0.56%
+H 112T 0.54%
+H 112U 0.53%
+H 112V 0.53%
+H 112W 0.38%
+H 112X 0.35%
+H 4A 0.15%
+H 67A 0.05%
+H 67B 0.03%
+H 67C 0.03%
+H 70A 0.03%
+H 73 0.06%
+H 85A 0.23%
+H 85B 0.23%
+H 85C 0.21%
+H 85D 0.21%
+H 9A 0.02%
+H 9B 0.02%
+H 9C 0.02%
+K 119A 0.03%
+K 58 0.08%
+K 63 0.08%
+K 64 0.08%
+L 10 0.45%

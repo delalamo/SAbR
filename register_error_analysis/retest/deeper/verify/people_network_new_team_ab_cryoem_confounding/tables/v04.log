@@ -1,0 +1,22 @@
+error rate by lab productivity x new team:
+       size      sum       mean       
+new       0    1   0   1      0      1
+labbin                                
+1       176  197  16  22  0.091  0.112
+2-3     155  114  11  18  0.071  0.158
+4-9     255  126  18  20  0.071  0.159
+>=10    266   13  22   0  0.083  0.000
+
+copied/artifact-only studies: 33 new-team (na flag): 5
+                                                                                             test     n  n_err      OR      lo       hi       p     rho  OR_l2_labn  p_l2_labn
+0                                                             GEE exchangeable by last-author lab  1302    127  1.9865  1.3329   2.9606  0.0007  0.0214         NaN        NaN
+1                                                    weights 1/(studies of the lab), clustered SE  1302    127  1.5655  0.9654   2.5386  0.0692     NaN         NaN        NaN
+2                                         + log2 lab productivity (studies of the lab in the set)  1302    127  1.8345  1.1925   2.8222  0.0058     NaN      0.9446     0.3346
+3                                                                labs with <=3 studies in the set   642     67  1.6261  0.9668   2.7347  0.0668     NaN         NaN        NaN
+4                                                                labs with >=4 studies in the set   660     60  2.7700  1.4495   5.2935  0.0020     NaN         NaN        NaN
+5                                outcome = any run (first-occurrence or copied/artifact), na flag  1335    160  1.6129  1.1145   2.3341  0.0113     NaN         NaN        NaN
+6   unit level (antibody-in-paper), clustered by study, + chain type, nanobody, mouse, SARS-CoV-2  4079    171  1.9801  1.3131   2.9859  0.0011     NaN         NaN        NaN
+7                                                                    unit level, clustered by lab  4079    171  1.9801  1.3067   3.0004  0.0013     NaN         NaN        NaN
+8                                                                        unit level, chain type H  2330    116  1.7786  1.1736   2.6953  0.0066     NaN         NaN        NaN
+9                                                                        unit level, chain type K  1314     43  2.3092  1.0642   5.0108  0.0342     NaN         NaN        NaN
+10                                                                       unit level, chain type L   435     12  3.5289  0.7867  15.8289  0.0996     NaN         NaN        NaN

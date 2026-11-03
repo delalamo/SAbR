@@ -1,0 +1,21 @@
+Pooled across windows, unit level (unit x window with rare column):
+EM     rare_col=True  unit-windows=   136 with run(any)=   46 (0.338) first=14 (0.103)
+EM     rare_col=False unit-windows= 25424 with run(any)=  365 (0.014) first=355 (0.014)
+X-ray  rare_col=True  unit-windows=   105 with run(any)=   12 (0.114) first=4 (0.038)
+X-ray  rare_col=False unit-windows= 13227 with run(any)=   60 (0.005) first=53 (0.004)
+EM OR(run | rare col) = 37.0 p= 2.716042057648581e-56
+X-ray OR(run | rare col) = 27.8 p= 5.906459840456241e-18
+run     False  True 
+method              
+EM         90     46
+X-ray      93     12
+Fisher EM vs X-ray among rare-col unit-windows SignificanceResult(statistic=np.float64(0.25245441795231416), pvalue=np.float64(6.204023643132944e-05))
+
+Excluding window C (FR3 insertion already treated as convention artifact by the pipeline):
+EM     rare_col=True  unit-windows=    84 run(any)=  15 (0.179) first=13 (0.155)
+EM     rare_col=False unit-windows= 21216 run(any)= 321 (0.015) first=311 (0.015)
+X-ray  rare_col=True  unit-windows=    55 run(any)=   4 (0.073) first=3 (0.055)
+X-ray  rare_col=False unit-windows= 11055 run(any)=  46 (0.004) first=43 (0.004)
+EM excl C: OR(run | rare col) = 14.3 CI [ 7.4 27.5] p= 2.2930105711941883e-15
+X-ray excl C: OR(run | rare col) = 21.7 CI [ 6.5 72.3] p= 5.553155541121158e-07
+interaction rc x EM (excl C): ratio of ORs 0.66 p 0.5483131235902688

@@ -1,0 +1,33 @@
+  pdb_err chain_err       err      same  n
+0    12ty         C  0.900268  0.582298  2
+1    6lht         L  1.945139  0.965894  1
+2    7mlv         K  2.278485  1.066556  5
+3    9lfa         C  0.947591  1.217707  8
+4    9zxd         A  0.882114  0.917436  1
+                                                                                  test  n_err  n_ctl  err_mean  ctl_mean  OR_perSD      lo      hi       p    mw_p                                              note  q_within_file
+0                                                        base, matched (cluster paper)     49    271    1.5605    1.0154    3.1774  2.0912  4.8277  0.0000  0.0000                                               NaN         0.0000
+1                                            base, matched (cluster last author / lab)     49    271    1.5605    1.0154    3.1774  2.0622  4.8956  0.0000  0.0000                                               NaN         0.0000
+2                                  excl. 13 error chains that also carry a non-D/E run     36    271    1.3388    1.0154    2.1096  1.4469  3.0758  0.0001  0.0001                                               NaN         0.0002
+3              excl. error chains whose entry has another first-occurrence error chain     18    271    1.6910    1.0154    3.2110  1.8877  5.4621  0.0000  0.0030                                               NaN         0.0000
+4              excl. both (single isolated D/E error, no other runs in chain or entry)     12    271    1.2164    1.0154    1.7041  0.9791  2.9658  0.0594  0.4101                                               NaN         0.0813
+5                                                   fw_core, single isolated D/E error     12    271    1.1909    0.9873    1.6441  0.9551  2.8303  0.0728  0.4567                                               NaN         0.0917
+6                                   excl. 5 papers with the most distorted error chain     43    271    1.3772    1.0154    2.3602  1.6042  3.4727  0.0000  0.0000                                               NaN         0.0000
+7                                           truncate fw_orig>=2.5 A (outliers removed)     43    270    1.3560    1.0087    2.5202  1.7564  3.6161  0.0000  0.0000                                               NaN         0.0000
+8            CLEAN partner V chains of D/E error entries (as "cases") vs matched clean     40    271    1.3719    1.0154    2.2293  1.4821  3.3531  0.0001  0.0008                                               NaN         0.0002
+9                     paired, same entry: error chain vs clean partner chain (fw_orig)     26     26    1.7155    1.5247       NaN     NaN     NaN  0.0890     NaN                             error higher in 14/26         0.1052
+10                  paired, same entry: error chain vs clean partner chain (fw_seqref)     26     26    1.4780    1.4005       NaN     NaN     NaN  0.7454     NaN                             error higher in 13/26         0.7454
+11  same antibody (identical V seq), clean model elsewhere: error vs median clean copy      5     17    1.3907    0.9500       NaN     NaN     NaN  0.3125     NaN                               error higher in 3/5         0.3250
+12                       other first-occurrence error mode: all other modes vs matched    114    271    1.4773    1.0154    3.1245  2.0612  4.7363  0.0000  0.0000                                               NaN         0.0000
+13                                                 other mode all other modes, fw_core    102    271    1.4199    0.9873    2.9341  1.9175  4.4895  0.0000  0.0000                                               NaN         0.0000
+14                            other first-occurrence error mode: A_FR1Nterm vs matched     52    271    1.4320    1.0154    2.4170  1.6045  3.6410  0.0000  0.0000                                               NaN         0.0001
+15                                                      other mode A_FR1Nterm, fw_core     50    271    1.3714    0.9873    2.2848  1.5352  3.4005  0.0000  0.0001                                               NaN         0.0001
+16                             other first-occurrence error mode: B_CDR2FR3 vs matched     23    271    1.3886    1.0154    2.4683  1.4998  4.0621  0.0004  0.0003                                               NaN         0.0007
+17                                                       other mode B_CDR2FR3, fw_core     19    271    1.2679    0.9873    2.0447  1.3392  3.1219  0.0009  0.0069                                               NaN         0.0015
+18                                 other first-occurrence error mode: C_FR3 vs matched     20    271    1.7656    1.0154    3.0422  1.9816  4.6704  0.0000  0.0000                                               NaN         0.0000
+19                                                           other mode C_FR3, fw_core     15    271    1.8539    0.9873    3.2137  1.9753  5.2285  0.0000  0.0004                                               NaN         0.0000
+20                                other first-occurrence error mode: F_CDR1 vs matched      7    271    1.4904    1.0154    2.5794  1.2564  5.2956  0.0098  0.0033                                               NaN         0.0150
+21                                                          other mode F_CDR1, fw_core      6    271    1.4478    0.9873    2.4223  1.0906  5.3803  0.0298  0.0113                                               NaN         0.0430
+22                                 other first-occurrence error mode: other vs matched      4    271    1.1928    1.0154    1.8566  0.9416  3.6610  0.0741  0.1792                                               NaN         0.0917
+23                                                           other mode other, fw_core      4    271    1.1554    0.9873    1.7312  0.8498  3.5267  0.1306  0.1588                                               NaN         0.1477
+24                    D/E errors vs other-mode errors (is distortion specific to D/E?)     49    114    1.5605    1.4773    1.1836  0.9328  1.5017  0.1653  0.4259                                               NaN         0.1790
+25  clean controls: FR4 off-slot (confirmation false positive) in fw_rmsd>1.4 vs <=1.4     56    324    0.1429    0.0123   13.3333     NaN     NaN  0.0000     NaN  rates in err_mean/ctl_mean columns; OR is Fisher         0.0001

@@ -1,0 +1,143 @@
+first-occurrence runs 488 after amyloid removal 411
+             pattern   pdb chain method   res  year          v_gene species  built  n_dis                            dis    run_any run_first  err_first
+0          FR3:80+84  5dhz     H  X-ray  4.30  2015     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(2 )                False
+1   FR3:81 (control)  6u59     F     EM  3.86  2019     IGHV3-33*02   human   True      0                                                          False
+2   FR3:81 (control)  6u59     H     EM  3.86  2019     IGHV3-33*02   human   True      0                                                          False
+3   FR3:81 (control)  6u59     K     EM  3.86  2019     IGHV3-33*02   human   True      0                                                          False
+4             FR1:26  7eaj     F     EM  4.10  2021     IGHV1-12*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+5             FR3:96  7te9     H     EM  3.92  2022   IGHV5-12-2*01   mouse   True      3              93/94 94/95 95/96  93-95(9 )     93-95       True
+6             FR3:96  7te9     M     EM  3.92  2022   IGHV5-12-2*01   mouse   True      3              93/94 94/95 95/96  93-95(9 )     93-95       True
+7   FR3:81 (control)  7jwp     A  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+8   FR3:81 (control)  7jwp     C  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+9   FR3:81 (control)  7jwp     E  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+10  FR3:81 (control)  7jwp     G  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+11  FR3:81 (control)  7jwp     I  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+12  FR3:81 (control)  7jwp     K  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+13  FR3:81 (control)  7jwp     M  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+14  FR3:81 (control)  7jwp     O  X-ray  3.00  2020     IGHV3-49*04   human   True      0                                                          False
+15         FR3:80+84  2x7l     A  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+16         FR3:80+84  2x7l     C  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+17         FR3:80+84  2x7l     E  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+18         FR3:80+84  2x7l     G  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+19         FR3:80+84  2x7l     H  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+20         FR3:80+84  2x7l     J  X-ray  3.17  2010     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(9 )     81-83       True
+21         FR3:80+84  5dhy     A  X-ray  3.10  2015     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(2 )                False
+22         FR3:80+84  5dhy     H  X-ray  3.10  2015     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(2 )                False
+23         FR3:80+84  6cf2     A  X-ray  3.00  2018     IGHV3-66*01   human   True      3              81/80 82/83 83/84  81-83(1b)                False
+24  FR3:81 (control)  6did     D     EM  4.71  2018     IGHV3-33*02   human   True      0                                                          False
+25  FR3:81 (control)  6did     K     EM  4.71  2018     IGHV3-33*02   human   True      0                                                          False
+26  FR3:81 (control)  6did     L     EM  4.71  2018     IGHV3-33*02   human   True      0                                                          False
+27  FR3:81 (control)  6p62     C     EM  3.57  2019     IGHV3-53*04   human   True      0                                                          False
+28  FR3:81 (control)  6p62     F     EM  3.57  2019     IGHV3-53*04   human   True      0                                                          False
+29  FR3:81 (control)  6p62     H     EM  3.57  2019     IGHV3-53*04   human   True      0                                                          False
+30  FR3:81 (control)  6vo0     G     EM  3.52  2020     IGHV3-53*04   human   True      0                                                          False
+31  FR3:81 (control)  6vo0     H     EM  3.52  2020     IGHV3-53*04   human   True      0                                                          False
+32  FR3:81 (control)  6vo0     I     EM  3.52  2020     IGHV3-53*04   human   True      0                                                          False
+33  FR3:81 (control)  6x97     E     EM  3.65  2020     IGHV3-53*04   human   True      0                                                          False
+34  FR3:81 (control)  6x97     H     EM  3.65  2020     IGHV3-53*04   human   True      0                                                          False
+35  FR3:81 (control)  6x97     J     EM  3.65  2020     IGHV3-53*04   human   True      0                                                          False
+36  FR3:81 (control)  6x96     E     EM  3.40  2020     IGHV3-33*02   human   True      0                                                          False
+37  FR3:81 (control)  6x96     H     EM  3.40  2020     IGHV3-33*02   human   True      0                                                          False
+38  FR3:81 (control)  6x96     J     EM  3.40  2020     IGHV3-33*02   human   True      0                                                          False
+39            FR1:26  7eak     F     EM  3.90  2021     IGHV1-12*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+40  FR3:81 (control)  7nks     C  X-ray  3.50  2021     IGHV3-53*04   human   True      0                                                          False
+41  FR3:81 (control)  7nks     H  X-ray  3.50  2021     IGHV3-53*04   human   True      0                                                          False
+42            FR3:96  7teb     H     EM  4.23  2022   IGHV5-12-2*01   mouse   True      3              93/94 94/95 95/96  93-95(9 )     93-95       True
+43            FR3:96  7teb     M     EM  4.23  2022   IGHV5-12-2*01   mouse   True      3              93/94 94/95 95/96  93-95(9 )     93-95       True
+44  FR3:81 (control)  7sgf     H     EM  4.41  2021     IGHV3-53*04   human   True      0                                                          False
+45  FR3:81 (control)  7sgf     J     EM  4.41  2021     IGHV3-53*04   human   True      0                                                          False
+46  FR3:81 (control)  7sgf     M     EM  4.41  2021     IGHV3-53*04   human   True      0                                                          False
+47  FR3:81 (control)  7u8g     D     EM  3.20  2022     IGHV3-53*04   human   True      0                                                          False
+48  FR3:81 (control)  8h01     E     EM  3.70  2022     IGHV5-17*01   mouse   True      0                                                          False
+49  FR3:81 (control)  8h01     G     EM  3.70  2022     IGHV5-17*01   mouse   True      0                                                          False
+50  FR3:81 (control)  8h01     I     EM  3.70  2022     IGHV5-17*01   mouse   True      0                                                          False
+51  FR3:81 (control)  8h00     E     EM  3.41  2022     IGHV5-17*01   mouse   True      0                                                          False
+52  FR3:81 (control)  8h00     G     EM  3.41  2022     IGHV5-17*01   mouse   True      0                                                          False
+53  FR3:81 (control)  8h00     I     EM  3.41  2022     IGHV5-17*01   mouse   True      0                                                          False
+54  FR3:81 (control)  8gzz     E     EM  3.52  2022     IGHV5-17*01   mouse   True      0                                                          False
+55  FR3:81 (control)  8gzz     G     EM  3.52  2022     IGHV5-17*01   mouse   True      0                                                          False
+56            FR1:26  8gsd     H     EM  3.10  2022  IGHV1-47-27*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+57            FR1:26  8gsc     H     EM  3.40  2022  IGHV1-47-27*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+58            FR1:26  8gsf     E     EM  3.60  2022  IGHV1-47-27*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+59            FR1:26  8gsf     H     EM  3.60  2022  IGHV1-47-27*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+60            FR1:26  8gse     H     EM  3.70  2022  IGHV1-47-27*01   mouse   True      5  27/26 28/27 29/28 30/29 35/30  27-35(8 )     27-35       True
+61  FR3:81 (control)  8itu     E     EM  3.68  2023     IGHV5-17*01   mouse   True      0                                                          False
+62  FR3:81 (control)  8itu     G     EM  3.68  2023     IGHV5-17*01   mouse   True      0                                                          False
+63  FR3:81 (control)  8itu     I     EM  3.68  2023     IGHV5-17*01   mouse   True      0                                                          False
+64  FR3:81 (control)  8kei     C     EM  3.56  2023     IGHV3-53*04   human   True      0                                                          False
+65            FR3:96  8xlk     K     EM  4.20  2023   IGHV5-12-2*01   mouse   True      3              93/94 94/95 95/96  93-95(9 )     93-95       True
+66            FR3:84  9bop     M     EM  3.00  2024     IGHV3-53*04   human   True      3              81/82 82/83 83/84  81-83(9 )     81-83       True
+67            FR3:84  9bop     O     EM  3.00  2024     IGHV3-53*04   human   True      3              81/82 82/83 83/84  81-83(9 )     81-83       True
+68  FR3:81 (control)  9bop     A     EM  3.00  2024     IGHV3-64*04   human   True      0                                                          False
+69  FR3:81 (control)  9bop     C     EM  3.00  2024     IGHV3-64*04   human   True      0                                                          False
+70  FR3:81 (control)  9bop     E     EM  3.00  2024     IGHV3-64*04   human   True      0                                                          False
+71         FR3:84+85  9e89     H     EM  3.50  2024      IGHV3-7*01   human   True      3              81/83 82/84 83/85  81-83(9 )     81-83       True
+72            FR3:85  9jrt     N     EM  3.28  2024     IGHV3-23*01   human  False      0                                                          False
+73            FR3:85  9jro     N     EM  3.50  2024     IGHV3-23*01   human  False      0                                                          False
+74  FR3:81 (control)  9ml7     H     EM  3.20  2024     IGHV3-53*04   human   True      0                                                          False
+75  FR3:81 (control)  9ml6     H     EM  3.50  2024     IGHV3-53*04   human   True      0                                                          False
+76  FR3:81 (control)  9ml6     M     EM  3.50  2024     IGHV3-53*04   human   True      0                                                          False
+77  FR3:81 (control)  9ml6     P     EM  3.50  2024     IGHV3-53*04   human   True      0                                                          False
+78            FR3:84  9ml5     H     EM  3.40  2024     IGHV3-53*04   human   True      2                    85/84 86/85  85-95(9 )     85-95       True
+79            FR3:84  9ml5     M     EM  3.40  2024     IGHV3-53*04   human   True      2                    85/84 86/85  85-95(9 )     85-95       True
+80  FR3:81 (control)  9ml4     H     EM  3.30  2024     IGHV3-23*01   human   True      0                                                          False
+81  FR3:81 (control)  9ml4     M     EM  3.30  2024     IGHV3-23*01   human   True      0                                                          False
+82  FR3:81 (control)  9ml4     P     EM  3.30  2024     IGHV3-23*01   human   True      0                                                          False
+83            FR3:85  9yfu     N     EM  3.08  2025     IGHV3-23*01   human   True      4        81/82 82/83 83/84 84/85  81-84(9 )     81-84       True
+84         FR3:84+85  30bg     H  X-ray  3.31  2026     IGHV1-69*01   human   True      3              81/83 82/84 83/85  81-83(9 )     81-83       True
+85  FR3:81 (control)  30ae     H  X-ray  3.50  2026     IGHV3-53*04   human   True      0                                                          False
+86            FR3:84  30ad     H  X-ray  3.20  2026     IGHV3-53*04   human   True      3              81/82 82/83 83/84  81-83(9 )     81-83       True
+87  FR3:81 (control)  8df1     H  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+88  FR3:81 (control)  8df1     M  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+89  FR3:81 (control)  8df1     O  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+90  FR3:81 (control)  8df1     Q  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+91  FR3:81 (control)  8df1     S  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+92  FR3:81 (control)  8df1     U  X-ray  3.30  2022     IGHV3-53*04   human   True      0                                                          False
+93  FR3:81 (control)  8r61     A  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+94  FR3:81 (control)  8r61     D  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+95  FR3:81 (control)  8r61     G  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+96  FR3:81 (control)  8r61     J  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+97  FR3:81 (control)  8r61     M  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+98  FR3:81 (control)  8r61     P  X-ray  3.10  2023    IGHV2-9-1*01   mouse   True      0                                                          False
+99            FR3:84  9pf9     H  X-ray  3.93  2025      IGHV2-5*01   human   True      3              81/82 82/83 83/84  81-83(9 )     81-83       True
+
+Determinism among fully built windows (chain has >=3 disagreeing residues in window):
+                  chains  entries  dis3
+pattern                                
+FR1:26                 7        6     7
+FR3:80+84             10        4    10
+FR3:81 (control)      67       22     0
+FR3:84                 6        4     4
+FR3:84+85              2        2     2
+FR3:85                 1        1     1
+FR3:96                 5        3     5
+
+Unit recount:
+                  units  runs  art_units  art_runs  xray_units  art_xray_units
+mode                                                                         
+A_FR1Nterm          60    97          0         0           7               0
+B_CDR2FR3           31    54          0         0           6               0
+C_FR3               31    44          6        12           7               4
+D0                   9    10          0         0           0               0
+Dminus_CDR3long     22    28          0         0           2               0
+Dplus_CDR3short     39    90          0         0           8               0
+E_FR4bulge          20    56          0         0           1               0
+F_CDR1              13    20          2         7           3               0
+other                5    12          0         0           0               0
+      pdb chain    mode  imgt0  imgt1  delta method      last_author    pattern
+59   7eaj     F  F_CDR1     27     35    NaN     EM         Feng, R.     FR1:26
+134  2x7l     A   C_FR3     81     83    1.0  X-ray     Grimes, J.M.  FR3:80+84
+250  8gsd     H  F_CDR1     27     35    NaN     EM           Fu, W.     FR1:26
+325  9bop     M   C_FR3     81     83    1.0     EM     Draper, S.J.     FR3:84
+338  9e89     H   C_FR3     81     83    2.0     EM   Hafenstein, S.  FR3:84+85
+390  30bg     H   C_FR3     81     83    2.0  X-ray       Tzarum, N.  FR3:84+85
+391  30ad     H   C_FR3     81     83    1.0  X-ray  McDonnell, J.M.     FR3:84
+410  9pf9     H   C_FR3     81     83    1.0  X-ray      Pancera, M.     FR3:84
+
+Unflagged first-occurrence C runs inside IMGT 79-86:
+       pdb chain  imgt0  imgt1  delta method    res  last_author                                                                                                                                    unit
+7    4xnz     B     83     85    NaN  X-ray  3.389  Kwong, P.D.    10.1016/j.cell.2015.03.004|QVQLVESGSAMRKPGSSVKISCRASGFNFREYSIHWVRLIPGRGLEWMGWIKGMWGAVNYARQLQGRVSMTRQLSQDPDDPDWGVAYLDFSGLTSGDTGEYFCVR
+8    4xnz     E     83     85    NaN  X-ray  3.389  Kwong, P.D.    10.1016/j.cell.2015.03.004|QVQLVESGSAMRKPGSSVKISCRASGFNFREYSIHWVRLIPGRGLEWMGWIKGMWGAVNYARQLQGRVSMTRQLSQDPDDPDWGVAYLDFSGLTSGDTGEYFCVR
+9    4xnz     H     83     85    NaN  X-ray  3.389  Kwong, P.D.    10.1016/j.cell.2015.03.004|QVQLVESGSAMRKPGSSVKISCRASGFNFREYSIHWVRLIPGRGLEWMGWIKGMWGAVNYARQLQGRVSMTRQLSQDPDDPDWGVAYLDFSGLTSGDTGEYFCVR
+236  8c8t     S     83     85    NaN     EM  3.200  Mouquet, H.    10.1016/j.chom.2023.06.006|QVQLLQSGAAVTKPGASVRVSCEASGYNIRDYFIHWWRQAPGQGLQWVGWINPKTGQPNNPRQFQGRVSLTRHASWDFDTFSFYMDLKALRSDDTAVYFCARQRS
+384  9yfu     N     81     84    1.0     EM  3.080      Han, S.  10.1021/acs.jmedchem.6c00081|HHHHHHGENLYFQGSQVQLQESGGGLVQPGGSLRLSCAASGRTISRYAMSWFRQAPGKEREFVAVARRSGDGAFYADSVQGRFTVSRDDAKTVYLQMNSLKPEDT

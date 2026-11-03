@@ -1,0 +1,118 @@
+  ch['period']=pd.cut(pd.to_datetime(ch.deposit).dt.year,[0,2018,2021,2100],labels=['<=2018','2019-21','>=2022'])
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+  ch[f'rc_{w}']=ch[f'rareins_win_{w}'].fillna(0)>0
+window method period  rare_col  n_chains  n_units  run_any  run_first  units_run_any
+     A     EM    all      True        95       15    0.200      0.126          0.400
+     A     EM    all     False     10444     4245    0.013      0.011          0.015
+     A  X-ray    all      True        33       22    0.030      0.000          0.045
+     A  X-ray    all     False      5293     2200    0.002      0.002          0.004
+     F     EM    all      True        41       17    0.000      0.000          0.000
+     F     EM    all     False     10498     4243    0.010      0.010          0.008
+     F  X-ray    all      True        45        9    0.000      0.000          0.000
+     F  X-ray    all     False      5281     2213    0.001      0.001          0.001
+     B     EM    all      True        48       21    0.146      0.146          0.190
+     B     EM    all     False     10491     4239    0.012      0.012          0.010
+     B  X-ray    all      True        23       10    0.043      0.043          0.100
+     B  X-ray    all     False      5303     2212    0.002      0.002          0.004
+     C     EM    all      True       247       52    0.506      0.004          0.596
+     C     EM    all     False     10292     4208    0.012      0.012          0.010
+     C  X-ray    all      True        75       50    0.160      0.040          0.160
+     C  X-ray    all     False      5251     2172    0.004      0.003          0.006
+     D     EM    all      True        44       30    0.114      0.114          0.133
+     D     EM    all     False     10495     4230    0.024      0.024          0.022
+     D  X-ray    all      True        36       13    0.056      0.056          0.077
+     D  X-ray    all     False      5290     2209    0.004      0.004          0.006
+     E     EM    all      True         6        1    0.167      0.167          1.000
+     E     EM    all     False     10533     4259    0.023      0.023          0.020
+     E  X-ray    all      True         2        1    1.000      1.000          1.000
+     E  X-ray    all     False      5324     2221    0.004      0.003          0.006
+window method  period  rare_col  n_chains  n_units  run_any  run_first  units_run_any
+     A     EM  <=2018      True        21        5    0.000      0.000          0.000
+     A     EM 2019-21      True        36        7    0.472      0.278          0.571
+     A     EM  >=2022      True        38        4    0.053      0.053          0.500
+     A  X-ray  <=2018      True        23       15    0.043      0.000          0.067
+     A  X-ray 2019-21      True         4        3    0.000      0.000          0.000
+     A  X-ray  >=2022      True         6        4    0.000      0.000          0.000
+     F     EM  <=2018      True         0        0      NaN        NaN            NaN
+     F     EM 2019-21      True        11        5    0.000      0.000          0.000
+     F     EM  >=2022      True        30       12    0.000      0.000          0.000
+     F  X-ray  <=2018      True        23        5    0.000      0.000          0.000
+     F  X-ray 2019-21      True         4        1    0.000      0.000          0.000
+     F  X-ray  >=2022      True        18        3    0.000      0.000          0.000
+     B     EM  <=2018      True         6        2    0.000      0.000          0.000
+     B     EM 2019-21      True        16        7    0.000      0.000          0.000
+     B     EM  >=2022      True        26       12    0.269      0.269          0.333
+     B  X-ray  <=2018      True        10        5    0.000      0.000          0.000
+     B  X-ray 2019-21      True         9        2    0.000      0.000          0.000
+     B  X-ray  >=2022      True         4        3    0.250      0.250          0.333
+     C     EM  <=2018      True        66       15    0.591      0.000          0.533
+     C     EM 2019-21      True        64       15    0.578      0.000          0.667
+     C     EM  >=2022      True       117       24    0.419      0.009          0.583
+     C  X-ray  <=2018      True        61       38    0.180      0.049          0.184
+     C  X-ray 2019-21      True         5        5    0.200      0.000          0.200
+     C  X-ray  >=2022      True         9        7    0.000      0.000          0.000
+     D     EM  <=2018      True         4        2    0.000      0.000          0.000
+     D     EM 2019-21      True        18       11    0.167      0.167          0.182
+     D     EM  >=2022      True        22       17    0.091      0.091          0.118
+     D  X-ray  <=2018      True        29        8    0.000      0.000          0.000
+     D  X-ray 2019-21      True         5        3    0.400      0.400          0.333
+     D  X-ray  >=2022      True         2        2    0.000      0.000          0.000
+     E     EM  <=2018      True         0        0      NaN        NaN            NaN
+     E     EM 2019-21      True         0        0      NaN        NaN            NaN
+     E     EM  >=2022      True         6        1    0.167      0.167          1.000
+     E  X-ray  <=2018      True         0        0      NaN        NaN            NaN
+     E  X-ray 2019-21      True         2        1    1.000      1.000          1.000
+     E  X-ray  >=2022      True         0        0      NaN        NaN            NaN
+
+Pooled across windows, unit level (unit x window with rare column):
+EM     rare_col=True  unit-windows=   136 with run(any)=   46 (0.338) first=14 (0.103)
+EM     rare_col=False unit-windows= 25424 with run(any)=  365 (0.014) first=355 (0.014)
+X-ray  rare_col=True  unit-windows=   105 with run(any)=   12 (0.114) first=4 (0.038)
+X-ray  rare_col=False unit-windows= 13227 with run(any)=   60 (0.005) first=53 (0.004)
+EM OR(run | rare col) = 37.0 p= 2.716042057648581e-56
+X-ray OR(run | rare col) = 27.8 p= 5.906459840456241e-18
+Traceback (most recent call last):
+  File "/home/user/SAbR/register_error_analysis/retest/deeper/verify/seq_novelty_SN3_rare_column_in_window_confounding/v03_population.py", line 58, in <module>
+    ct=pd.crosstab(d.method,d.run); print(ct); print('Fisher EM vs X-ray among rare-col unit-windows',stats.fisher_exact(ct.values))
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/reshape/pivot.py", line 1099, in crosstab
+    df = DataFrame(data, index=common_idx)
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/frame.py", line 769, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy)
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/internals/construction.py", line 460, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, consolidate=copy)
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/internals/construction.py", line 118, in arrays_to_mgr
+    arrays, refs = _homogenize(arrays, index, dtype)
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/internals/construction.py", line 568, in _homogenize
+    val = val.reindex(index)
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/series.py", line 5525, in reindex
+    return super().reindex(
+           ~~~~~~~~~~~~~~~^
+        index=index,
+        ^^^^^^^^^^^^
+    ...<5 lines>...
+        copy=copy,
+        ^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/generic.py", line 5464, in reindex
+    return self._reindex_axes(
+           ~~~~~~~~~~~~~~~~~~^
+        axes, level, limit, tolerance, method, fill_value
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ).__finalize__(self, method="reindex")
+    ^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/generic.py", line 5486, in _reindex_axes
+    new_index, indexer = ax.reindex(
+                         ~~~~~~~~~~^
+        labels, level=level, limit=limit, tolerance=tolerance, method=method
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/indexes/base.py", line 4253, in reindex
+    raise ValueError("cannot reindex on an axis with duplicate labels")
+ValueError: cannot reindex on an axis with duplicate labels

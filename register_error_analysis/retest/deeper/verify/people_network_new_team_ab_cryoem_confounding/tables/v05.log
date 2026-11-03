@@ -1,0 +1,127 @@
+                                                          test    n  n_err  rate_new  rate_old      OR      lo      hi       p  frac_p_lt_05
+0                                      <=2023, full adjustment  792   87.0    0.1756    0.0741  2.6266  1.5252  4.5235  0.0005           NaN
+1                                      >=2024, full adjustment  510   40.0    0.0643    0.0855  1.2472  0.4984  3.1208  0.6370           NaN
+2                         <=2023 non-nanobody, full adjustment  562   66.0    0.2120    0.0714  2.6985  1.3941  5.2234  0.0032           NaN
+3                                any nanobody, full adjustment  384   35.0    0.0896    0.0920  0.7967  0.2979  2.1305  0.6507           NaN
+4             <=2023, non-China, all-key flag, full adjustment  592   60.0    0.2041    0.0810  2.6135  1.1899  5.7400  0.0167           NaN
+5   <=2023, one study per lab (500 draws; median OR, median p)  361    NaN       NaN       NaN  2.5437  1.8509  3.5396  0.0062         0.958
+6                                     year 2020 crude (Fisher)  108   11.0    0.1220    0.0896  1.4120     NaN     NaN  0.7447           NaN
+7                                     year 2021 crude (Fisher)  184   26.0    0.2333    0.0968  2.8406     NaN     NaN  0.0222           NaN
+8                                     year 2022 crude (Fisher)  212   18.0    0.1605    0.0382  4.8176     NaN     NaN  0.0039           NaN
+9                                     year 2023 crude (Fisher)  180   20.0    0.1935    0.0678  3.3000     NaN     NaN  0.0222           NaN
+10                                    year 2024 crude (Fisher)  237   19.0    0.0595    0.0915  0.6284     NaN     NaN  0.4610           NaN
+11                                  year <=2019 crude (Fisher)  108   12.0    0.1429    0.0959  1.5714     NaN     NaN  0.5198           NaN
+12                                  year >=2025 crude (Fisher)  273   21.0    0.0690    0.0806  0.8444     NaN     NaN  0.8124           NaN
+
+BH over 109 tests
+                                   source                                                                                           test       n  n_err            OR      lo       hi       p    q_BH
+0                 v02_adjusted_models.csv                                           A0 reproduce investigator base model (no clustering)  1302.0  127.0  1.997400e+00  1.3665   2.9196  0.0004  0.0026
+1                 v02_adjusted_models.csv                                                A1 base model, SEs clustered by last-author lab  1302.0  127.0  1.997400e+00  1.3515   2.9520  0.0005  0.0027
+2                 v02_adjusted_models.csv                                           B1 deposit year (each year) instead of year category  1302.0  127.0  2.048400e+00  1.3790   3.0428  0.0004  0.0026
+3                 v02_adjusted_models.csv                                                               B2 spline of deposit date (df 6)  1302.0  127.0  1.980500e+00  1.3431   2.9203  0.0006  0.0028
+4                 v02_adjusted_models.csv                                                             B3 deposit half-year fixed effects  1302.0  127.0  2.183600e+00  1.4446   3.3007  0.0002  0.0026
+5                 v02_adjusted_models.csv                                                                    C1 resolution spline (df 4)  1302.0  127.0  1.984800e+00  1.3422   2.9351  0.0006  0.0028
+6                 v02_adjusted_models.csv                                                      C2 resolution x year-category interaction  1302.0  127.0  2.045600e+00  1.3817   3.0283  0.0003  0.0026
+7                 v02_adjusted_models.csv                                                                    D1 + log2 number of entries  1302.0  127.0  1.960100e+00  1.3189   2.9129  0.0009  0.0033
+8                 v02_adjusted_models.csv                                 D2 + chain-type composition (kappa, lambda, any/only nanobody)  1302.0  127.0  2.061500e+00  1.3833   3.0724  0.0004  0.0026
+9                 v02_adjusted_models.csv                                                                                D3 + SARS-CoV-2  1302.0  127.0  2.079900e+00  1.3975   3.0955  0.0003  0.0026
+10                v02_adjusted_models.csv                                                                D4 + SARS-CoV-2 x year category     NaN    NaN           NaN     NaN      NaN     NaN     NaN
+11                v02_adjusted_models.csv                               E1 + mouse, nanobody, atypical CDR length, min germline identity  1302.0  127.0  2.057800e+00  1.3696   3.0918  0.0005  0.0027
+12                v02_adjusted_models.csv                                            E2 + any antibody never solved before (seq_novelty)  1302.0  127.0  1.898400e+00  1.2796   2.8166  0.0014  0.0042
+13                v02_adjusted_models.csv                                                                    E3 + auxiliary/subject role  1302.0  127.0  1.972900e+00  1.3318   2.9226  0.0007  0.0029
+14                v02_adjusted_models.csv                                              E4 + antigen class, first-of-family, novel target  1302.0  127.0  1.907100e+00  1.2596   2.8875  0.0023  0.0058
+15                v02_adjusted_models.csv                                                F1 + local map-model fit (median lq_z, chain Q)  1302.0  127.0  1.992100e+00  1.3423   2.9565  0.0006  0.0028
+16                v02_adjusted_models.csv                                              F2 + unbuilt-residue fraction (max over V chains)  1302.0  127.0  2.022400e+00  1.3739   2.9772  0.0004  0.0026
+17                v02_adjusted_models.csv                                                  F3 + starting-model type and fitting protocol  1302.0  127.0  1.924900e+00  1.3047   2.8399  0.0010  0.0035
+18                v02_adjusted_models.csv                                                                   G1 + number of audit authors  1302.0  127.0  1.957300e+00  1.3258   2.8896  0.0007  0.0029
+19                v02_adjusted_models.csv                                             G2 + last-author country (China/USA/other/unknown)  1302.0  127.0  2.101200e+00  1.4075   3.1369  0.0003  0.0026
+20                v02_adjusted_models.csv                                                                              G3 + journal tier  1302.0  127.0  1.984500e+00  1.3363   2.9472  0.0007  0.0029
+21                v02_adjusted_models.csv                                                        G4 + last-author prior antibody entries  1302.0  127.0  1.810600e+00  1.1928   2.7483  0.0053  0.0109
+22                v02_adjusted_models.csv                                                       H1 kitchen-sink model (all of the above)  1302.0  127.0  1.905600e+00  1.2226   2.9701  0.0044  0.0092
+23                v02_adjusted_models.csv                                                             H2 kitchen-sink, all-name-key flag  1302.0  127.0  2.111600e+00  1.1854   3.7614  0.0112  0.0198
+24                v02_adjusted_models.csv                                                                     H3 base, all-name-key flag  1302.0  127.0  2.069400e+00  1.2958   3.3048  0.0023  0.0058
+25                v02_adjusted_models.csv                                                                      R1 non-SARS-CoV-2 studies  1010.0  100.0  1.797300e+00  1.1589   2.7872  0.0088  0.0163
+26                v02_adjusted_models.csv                                                                          R2 SARS-CoV-2 studies   292.0   27.0  3.436800e+00  1.2803   9.2258  0.0143  0.0229
+27                v02_adjusted_models.csv                                                  R3 all antibodies novel (no copying possible)   692.0   75.0  1.865900e+00  1.1371   3.0616  0.0136  0.0224
+28                v02_adjusted_models.csv                                                                 R4 some antibody solved before   610.0   52.0  2.179900e+00  1.1595   4.0984  0.0155  0.0235
+29                v02_adjusted_models.csv                                                                        R5 single-entry studies   677.0   43.0  2.693300e+00  1.3720   5.2871  0.0040  0.0086
+30                v02_adjusted_models.csv                                                                         R6 multi-entry studies   625.0   84.0  1.700000e+00  1.0467   2.7609  0.0320  0.0425
+31                v02_adjusted_models.csv                                                                                   R7 res < 3.5   739.0   59.0  1.782800e+00  0.9921   3.2039  0.0532  0.0690
+32                v02_adjusted_models.csv                                                                                  R8 res >= 3.5   563.0   68.0  2.277600e+00  1.2998   3.9908  0.0040  0.0086
+33                v02_adjusted_models.csv                                                                                 R9 no nanobody   918.0   92.0  2.584800e+00  1.5797   4.2295  0.0002  0.0021
+34                v02_adjusted_models.csv                                                                               R10 any nanobody   384.0   35.0  8.195000e-01  0.3936   1.7059  0.5946  0.6546
+35                v02_adjusted_models.csv                                                                                  R11 published  1149.0  115.0  2.247200e+00  1.5004   3.3658  0.0001  0.0019
+36                v02_adjusted_models.csv                                                                          R12 China last author   303.0   30.0  6.111700e+00  2.2135  16.8752  0.0005  0.0027
+37                v02_adjusted_models.csv                                                                                  R13 non-China   999.0   97.0  1.694200e+00  1.0715   2.6787  0.0241  0.0333
+38                v02_adjusted_models.csv                                                                           R14 deposited <=2023   792.0   87.0  3.063700e+00  1.9246   4.8771  0.0000  0.0001
+39                v02_adjusted_models.csv                                                                           R15 deposited >=2024   510.0   40.0  7.932000e-01  0.3732   1.6859  0.5470  0.6147
+40                v02_adjusted_models.csv                                                                        R16 deposited 2020-2023   684.0   75.0  3.352000e+00  2.0540   5.4703  0.0000  0.0001
+41                v02_adjusted_models.csv                                                       R17 last-author name not collision-prone   889.0   89.0  2.149200e+00  1.3103   3.5252  0.0024  0.0058
+42                v02_adjusted_models.csv                                                                      R18 no auxiliary antibody  1092.0  118.0  2.227100e+00  1.4800   3.3514  0.0001  0.0021
+43                v02_mantel_haenszel.csv                                                                                           year  1302.0    NaN  1.840200e+00  1.2724   2.6614  0.0014  0.0042
+44                v02_mantel_haenszel.csv                                                                                  year x resbin  1212.0    NaN  1.831300e+00  1.2609   2.6597  0.0017  0.0047
+45                v02_mantel_haenszel.csv                                                                             half-year x resbin  1049.0    NaN  1.931200e+00  1.3034   2.8614  0.0014  0.0041
+46                v02_mantel_haenszel.csv                                                                          year x sars2 x resbin  1083.0    NaN  1.787600e+00  1.2215   2.6162  0.0035  0.0080
+47                  v03_heterogeneity.csv                                                                         interaction new x late  1302.0    NaN  2.423000e-01  0.1039   0.5651  0.0010  0.0035
+48                  v03_heterogeneity.csv                                                                                 stratum late=0   792.0   87.0  3.063700e+00  1.9246   4.8771  0.0000  0.0001
+49                  v03_heterogeneity.csv                                                                                 stratum late=1   510.0   40.0  7.932000e-01  0.3732   1.6859  0.5470  0.6147
+50                  v03_heterogeneity.csv                                                                      interaction new x vhh_any  1302.0    NaN  3.211000e-01  0.1331   0.7748  0.0115  0.0199
+51                  v03_heterogeneity.csv                                                                              stratum vhh_any=0   918.0   92.0  2.584800e+00  1.5797   4.2295  0.0002  0.0021
+52                  v03_heterogeneity.csv                                                                              stratum vhh_any=1   384.0   35.0  8.195000e-01  0.3936   1.7059  0.5946  0.6546
+53                  v03_heterogeneity.csv                                                                        interaction new x china  1302.0    NaN  2.834400e+00  0.9740   8.2481  0.0559  0.0717
+54                  v03_heterogeneity.csv                                                                                stratum china=0   999.0   97.0  1.694200e+00  1.0715   2.6787  0.0241  0.0333
+55                  v03_heterogeneity.csv                                                                                stratum china=1   303.0   30.0  6.111700e+00  2.2135  16.8752  0.0005  0.0027
+56                  v03_heterogeneity.csv                                                                        interaction new x sars2  1302.0    NaN  1.868000e+00  0.6564   5.3157  0.2416  0.2893
+57                  v03_heterogeneity.csv                                                                                stratum sars2=0  1010.0  100.0  1.797300e+00  1.1589   2.7872  0.0088  0.0163
+58                  v03_heterogeneity.csv                                                                                stratum sars2=1   292.0   27.0  3.436800e+00  1.2803   9.2258  0.0143  0.0229
+59                  v03_heterogeneity.csv                                                                    interaction new x novel_all  1302.0    NaN  9.515000e-01  0.4331   2.0905  0.9015  0.9099
+60                  v03_heterogeneity.csv                                                                            stratum novel_all=0   610.0   52.0  2.179900e+00  1.1595   4.0984  0.0155  0.0235
+61                  v03_heterogeneity.csv                                                                            stratum novel_all=1   692.0   75.0  1.865900e+00  1.1371   3.0616  0.0136  0.0224
+62                  v03_heterogeneity.csv                                                                    interaction new x mouse_any  1302.0    NaN  1.404600e+00  0.6382   3.0915  0.3986  0.4671
+63                  v03_heterogeneity.csv                                                                            stratum mouse_any=0  1009.0   91.0  1.795000e+00  1.1200   2.8770  0.0151  0.0235
+64                  v03_heterogeneity.csv                                                                            stratum mouse_any=1   293.0   36.0  2.776100e+00  1.2876   5.9853  0.0092  0.0167
+65                  v03_heterogeneity.csv                                                                   interaction new x lab_common  1302.0    NaN  1.245600e+00  0.4600   3.3730  0.6657  0.6977
+66                  v03_heterogeneity.csv                                                                           stratum lab_common=0   889.0   89.0  2.149200e+00  1.3103   3.5252  0.0024  0.0058
+67                  v03_heterogeneity.csv                                                                           stratum lab_common=1   413.0   38.0  2.818100e+00  1.1621   6.8339  0.0219  0.0319
+68                  v03_heterogeneity.csv                                                                      stratum late=0, vhh_any=0   562.0   66.0  3.804900e+00     NaN      NaN  0.0000  0.0001
+69                  v03_heterogeneity.csv                                                                      stratum late=0, vhh_any=1   230.0   21.0  1.245000e+00     NaN      NaN  0.6284  0.6782
+70                  v03_heterogeneity.csv                                                                      stratum late=1, vhh_any=0   356.0   26.0  1.015200e+00     NaN      NaN  0.9743  0.9743
+71                  v03_heterogeneity.csv                                                                      stratum late=1, vhh_any=1   154.0   14.0  3.829000e-01     NaN      NaN  0.2679  0.3174
+72                  v03_heterogeneity.csv                                                                        stratum late=0, china=0   592.0   60.0  2.491900e+00     NaN      NaN  0.0011  0.0036
+73                  v03_heterogeneity.csv                                                                        stratum late=0, china=1   200.0   27.0  5.732300e+00     NaN      NaN  0.0016  0.0045
+74                  v03_heterogeneity.csv                                                                        stratum late=1, china=0   407.0   37.0  8.122000e-01     NaN      NaN  0.6280  0.6782
+75                  v03_heterogeneity.csv                                                                        stratum late=1, china=1   103.0    3.0  7.832901e+08     NaN      NaN  0.1098  0.1345
+76                  v03_heterogeneity.csv                                      non-China & last-author name not collision-prone, na flag   823.0   83.0  2.038000e+00  1.1991   3.4636  0.0085  0.0163
+77                  v03_heterogeneity.csv                                 non-China & last-author name not collision-prone, all-key flag   823.0   83.0  2.351700e+00  1.3658   4.0491  0.0020  0.0053
+78                  v03_heterogeneity.csv                                                                            China, all-key flag   303.0   30.0  1.099500e+00  0.3240   3.7314  0.8790  0.8954
+79                  v03_heterogeneity.csv                                                                        non-China, all-key flag   999.0   97.0  2.360000e+00  1.4154   3.9351  0.0010  0.0035
+80   v03_lab_resampling_withinlab_ipw.csv                                               one study per last-author lab (500 random draws)     NaN    NaN  1.577500e+00     NaN      NaN  0.1133  0.1372
+81   v03_lab_resampling_withinlab_ipw.csv                IPW (propensity on full covariates incl. country, tier, map fit, antigen class)     NaN    NaN  1.782600e+00  1.1194   2.8385  0.0149  0.0235
+82   v03_lab_resampling_withinlab_ipw.csv                                                              within-lab conditional logit: new     NaN   53.0  3.806700e+00  1.1739  12.3444  0.0259  0.0349
+83   v03_lab_resampling_withinlab_ipw.csv                                                        within-lab conditional logit: new+dep_c     NaN   53.0  4.193500e+00  1.2127  14.5007  0.0235  0.0333
+84   v03_lab_resampling_withinlab_ipw.csv                                                        within-lab conditional logit: new+ylate     NaN   53.0  4.051900e+00  1.1940  13.7501  0.0248  0.0338
+85   v03_lab_resampling_withinlab_ipw.csv                                          within-lab conditional logit: new+dep_c+res_med+l2_nv     NaN   53.0  5.216900e+00  1.4078  19.3318  0.0134  0.0224
+86            v04_lab_structure_units.csv                                                            GEE exchangeable by last-author lab  1302.0  127.0  1.986500e+00  1.3329   2.9606  0.0007  0.0029
+87            v04_lab_structure_units.csv                                                   weights 1/(studies of the lab), clustered SE  1302.0  127.0  1.565500e+00  0.9654   2.5386  0.0692  0.0867
+88            v04_lab_structure_units.csv                                        + log2 lab productivity (studies of the lab in the set)  1302.0  127.0  1.834500e+00  1.1925   2.8222  0.0058  0.0116
+89            v04_lab_structure_units.csv                                                               labs with <=3 studies in the set   642.0   67.0  1.626100e+00  0.9668   2.7347  0.0668  0.0847
+90            v04_lab_structure_units.csv                                                               labs with >=4 studies in the set   660.0   60.0  2.770000e+00  1.4495   5.2935  0.0020  0.0053
+91            v04_lab_structure_units.csv                               outcome = any run (first-occurrence or copied/artifact), na flag  1335.0  160.0  1.612900e+00  1.1145   2.3341  0.0113  0.0198
+92            v04_lab_structure_units.csv  unit level (antibody-in-paper), clustered by study, + chain type, nanobody, mouse, SARS-CoV-2  4079.0  171.0  1.980100e+00  1.3131   2.9859  0.0011  0.0036
+93            v04_lab_structure_units.csv                                                                   unit level, clustered by lab  4079.0  171.0  1.980100e+00  1.3067   3.0004  0.0013  0.0040
+94            v04_lab_structure_units.csv                                                                       unit level, chain type H  2330.0  116.0  1.778600e+00  1.1736   2.6953  0.0066  0.0129
+95            v04_lab_structure_units.csv                                                                       unit level, chain type K  1314.0   43.0  2.309200e+00  1.0642   5.0108  0.0342  0.0449
+96            v04_lab_structure_units.csv                                                                       unit level, chain type L   435.0   12.0  3.528900e+00  0.7867  15.8289  0.0996  0.1234
+97                      v05_subgroups.csv                                                                        <=2023, full adjustment   792.0   87.0  2.626600e+00  1.5252   4.5235  0.0005  0.0027
+98                      v05_subgroups.csv                                                                        >=2024, full adjustment   510.0   40.0  1.247200e+00  0.4984   3.1208  0.6370  0.6807
+99                      v05_subgroups.csv                                                           <=2023 non-nanobody, full adjustment   562.0   66.0  2.698500e+00  1.3941   5.2234  0.0032  0.0075
+100                     v05_subgroups.csv                                                                  any nanobody, full adjustment   384.0   35.0  7.967000e-01  0.2979   2.1305  0.6507  0.6886
+101                     v05_subgroups.csv                                               <=2023, non-China, all-key flag, full adjustment   592.0   60.0  2.613500e+00  1.1899   5.7400  0.0167  0.0249
+102                     v05_subgroups.csv                                     <=2023, one study per lab (500 draws; median OR, median p)   361.0    NaN  2.543700e+00  1.8509   3.5396  0.0062  0.0123
+103                     v05_subgroups.csv                                                                       year 2020 crude (Fisher)   108.0   11.0  1.412000e+00     NaN      NaN  0.7447  0.7731
+104                     v05_subgroups.csv                                                                       year 2021 crude (Fisher)   184.0   26.0  2.840600e+00     NaN      NaN  0.0222  0.0319
+105                     v05_subgroups.csv                                                                       year 2022 crude (Fisher)   212.0   18.0  4.817600e+00     NaN      NaN  0.0039  0.0086
+106                     v05_subgroups.csv                                                                       year 2023 crude (Fisher)   180.0   20.0  3.300000e+00     NaN      NaN  0.0222  0.0319
+107                     v05_subgroups.csv                                                                       year 2024 crude (Fisher)   237.0   19.0  6.284000e-01     NaN      NaN  0.4610  0.5346
+108                     v05_subgroups.csv                                                                     year <=2019 crude (Fisher)   108.0   12.0  1.571400e+00     NaN      NaN  0.5198  0.5963
+109                     v05_subgroups.csv                                                                     year >=2025 crude (Fisher)   273.0   21.0  8.444000e-01     NaN      NaN  0.8124  0.8354

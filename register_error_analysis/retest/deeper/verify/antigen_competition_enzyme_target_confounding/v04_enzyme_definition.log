@@ -1,0 +1,6 @@
+EC-enzymes outside the enzyme class (non-viral, non-GPCR): 79 entries; classes {'channel/transporter': 40, 'receptor/membrane protein': 35, 'toxin': 4}
+  D1 broad host enzyme (class OR EC, non-viral, non-GPCR) vs other EM                   17/160 (10.6%) vs 161/2592 (6.2%)  OR 1.87 (0.95-3.66) p=0.068
+  D2 EC-enzymes classed as transporter/receptor/toxin etc. vs other EM                  2/79 (2.5%) vs 176/2673 (6.6%)  OR 0.46 (nan-nan) p=0.24
+  D3 within broad host enzymes: lens enzyme class vs EC-enzymes classed elsewhere       15/81 (18.5%) vs 2/79 (2.5%)  OR 8.41 (1.51-46.78) p=0.015
+  D4 paper level: broad host enzyme                                                     14/95 (14.7%) vs 113/1216 (9.3%)  OR 1.88 (1.01-3.50) p=0.046
+  D5 paper level: EC-enzymes classed elsewhere                                          2/50 (4.0%) vs 125/1261 (9.9%)  OR 0.47 (nan-nan) p=0.22

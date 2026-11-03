@@ -1,0 +1,33 @@
+pdb,lab,dyear,res,modes,err_chain_org,err_L3,flag
+3jbf,"Hogle, J.M.",2015,4.8,F_CDR1,Camelus dromedarius,17.0,register shift
+9b7u,"McKenna, R.",2024,3.73,A_FR1Nterm,Homo sapiens,21.0,register shift
+3jcx,NET Hafenstein,2016,4.1,A_FR1Nterm,Rattus norvegicus,16.0,register shift
+6bsp,NET Hafenstein,2017,4.7,A_FR1Nterm,Mus musculus,16.0,register shift
+7k22,NET Hafenstein,2020,3.2,Dplus_CDR3short,Rattus norvegicus,9.0,register shift
+7k23,NET Hafenstein,2020,3.3,Dplus_CDR3short,Rattus norvegicus,9.0,register shift
+7m3l,NET Hafenstein,2021,3.2,C_FR3,Mus musculus,13.0,register shift
+8e8l,NET Hafenstein,2022,3.13,A_FR1Nterm,Homo sapiens,22.0,register shift
+9e89,NET Hafenstein,2024,3.5,C_FR3,Canis lupus familiaris,25.0,confirmed numbering artifact
+7d3k,"NET Lou Z./Li K. (FMDV, bovine)",2020,3.9,Dminus_CDR3long;Dplus_CDR3short,Bos taurus,18.0,register shift
+7d3l,"NET Lou Z./Li K. (FMDV, bovine)",2020,3.68,D0,Bos taurus,50.0,CDR-internal disagreement only (no register shift)
+7d3m,"NET Lou Z./Li K. (FMDV, bovine)",2020,3.94,D0,Bos taurus,61.0,CDR-internal disagreement only (no register shift)
+7d3r,"NET Lou Z./Li K. (FMDV, bovine)",2020,3.49,Dminus_CDR3long,Bos taurus,61.0,register shift
+7fei,"NET Lou Z./Li K. (FMDV, bovine)",2021,3.91,D0,Bos taurus,20.0,CDR-internal disagreement only (no register shift)
+7fej,"NET Lou Z./Li K. (FMDV, bovine)",2021,3.91,D0,Bos taurus,20.0,CDR-internal disagreement only (no register shift)
+8grr,"NET Lou Z./Li K. (FMDV, bovine)",2022,3.72,Dplus_CDR3short,Bos taurus,29.0,register shift
+7c80,NET Wang X./Zhu L. (IBP),2020,3.7,D0;F_CDR1,Mus musculus,13.0,register shift
+7eaj,NET Wang X./Zhu L. (IBP),2021,4.1,F_CDR1,Mus musculus,10.0,confirmed numbering artifact
+7eak,NET Wang X./Zhu L. (IBP),2021,3.9,F_CDR1,Mus musculus,10.0,confirmed numbering artifact
+8gsc,NET Wang X./Zhu L. (IBP),2022,3.4,F_CDR1,Mus musculus,11.0,confirmed numbering artifact
+8gsd,NET Wang X./Zhu L. (IBP),2022,3.1,F_CDR1,Mus musculus,11.0,confirmed numbering artifact
+8gse,NET Wang X./Zhu L. (IBP),2022,3.7,F_CDR1,Mus musculus,11.0,confirmed numbering artifact
+8gsf,NET Wang X./Zhu L. (IBP),2022,3.6,F_CDR1,Mus musculus,11.0,confirmed numbering artifact
+6ad0,NET Xiamen (Xia N.),2018,3.9,A_FR1Nterm,Mus musculus,9.0,register shift
+6lht,NET Xiamen (Xia N.),2019,3.67,Dminus_CDR3long;F_CDR1,Mus musculus,9.0,register shift
+7cn2,NET Xiamen (Xia N.),2020,3.43,Dplus_CDR3short,Oryctolagus cuniculus,12.0,register shift
+8w5d,"Zhu, P.",2023,4.3,A_FR1Nterm;D0;Dminus_CDR3long,Mus musculus,17.0,register shift
+8w5e,"Zhu, P.",2023,3.8,A_FR1Nterm;C_FR3;D0,Mus musculus,13.0,register shift
+8w5m,"Zhu, P.",2023,3.1,A_FR1Nterm,Mus musculus,13.0,register shift
+8w5p,"Zhu, P.",2023,3.3,E_FR4bulge,Mus musculus,8.0,register shift
+8w5q,"Zhu, P.",2023,4.1,A_FR1Nterm;Dplus_CDR3short,Mus musculus,16.0,register shift
+8w5t,"Zhu, P.",2023,3.6,A_FR1Nterm,Mus musculus,10.0,register shift

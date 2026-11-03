@@ -1,0 +1,4 @@
+pdb,chain,paper,imgt0,imgt1,delta,earlier_pdb,earlier_paper,n_diff,same_lab
+8snd,C,10.1038/s41594-024-01389-1,62,67,1.0,7sp7,10.1038/s41586-022-04534-2,1,True
+8snc,C,10.1038/s41594-024-01389-1,62,67,1.0,7sp7,10.1038/s41586-022-04534-2,2,True
+9pv5,L,9pv5,120,127,1.0,7wp6,10.1016/j.chom.2022.10.011,3,False

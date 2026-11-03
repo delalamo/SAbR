@@ -1,0 +1,2 @@
+group,pdb,chain,res,ctype,species,rare_cols,n_disagree,n_runs,run_touches_rare,runs
+L_10_EM2.6,9nj9,L,2.6,L,human,10,1,0,False,

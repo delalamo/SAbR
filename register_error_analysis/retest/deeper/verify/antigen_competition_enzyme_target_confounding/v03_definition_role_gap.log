@@ -1,0 +1,60 @@
+== 1. Outcome definition: any disagreement run (copied/artifact runs included), all EM entries
+  1a any run (err_any), all EM entries                                                         36/110 (32.7%) vs    206/2706 (7.6%) OR 6.20 (3.51-10.96) p=3.2e-10
+  1b first-occurrence (lens definition, reproduced from entries.csv)                            23/97 (23.7%) vs    155/2655 (5.8%) OR 5.14 (2.85-9.25) p=5e-08
+  1c copied/artifact-only runs vs clean (entries without a first-occurrence error)              13/87 (14.9%) vs     51/2551 (2.0%) OR 10.52 (3.36-32.97) p=5.3e-05
+
+== 2. Antibody role (chains.csv role; EM chains)
+                           mean  sum  size
+enz role                                  
+0   Antibody alone        0.016    1    62
+    Antibody of interest  0.030  243  8071
+    Auxiliary             0.025   43  1687
+    Unclear               0.051   10   197
+1   Antibody of interest  0.082   10   122
+    Auxiliary             0.115   11    96
+    Unclear               0.060    4    67
+  2a chain level: enzyme adjusted for auxiliary role + chain kind                               25/285 (8.8%) vs   297/10017 (3.0%) OR 3.27 (1.61-6.60) p=0.00099
+  2b chain level within auxiliary-role antibodies                                               11/96 (11.5%) vs     43/1687 (2.5%) OR 6.40 (1.98-20.65) p=0.0019
+  2c chain level within antibody-of-interest                                                    10/122 (8.2%) vs    243/8071 (3.0%) OR 2.35 (0.69-7.95) p=0.17
+
+== 3. Unbuilt residues in the same chain: confounder or mediator?
+          mean  sum  size
+enz gap                  
+0   0    0.023  203  8662
+    1    0.069   94  1355
+1   0    0.017    4   242
+    1    0.488   21    43
+  clean chains with an unbuilt V stretch: enzyme 0.085 (n=260) vs other 0.130; Fisher p=0.031
+  3a chain level, chains with NO unbuilt V residue                                               4/242 (1.7%) vs    203/8662 (2.3%) OR 0.82 (0.17-4.07) p=0.81
+  3b chain level, chains WITH an unbuilt V stretch or N-terminal truncation                     21/43 (48.8%) vs     94/1355 (6.9%) OR 8.15 (2.53-26.29) p=0.00044
+  interaction enz:gap OR 13.95 p=0.0038
+  runs next to gap/chain end (rows enz):
+next_to_gap_origin  False  True 
+enz                             
+0                     219    107
+1                       9     16
+
+== 4. Known starting-model / rigid-body mechanism
+            mean  sum  size
+enz rigid                  
+0   0      0.029  263  8926
+    1      0.031   34  1091
+1   0      0.112   19   170
+    1      0.052    6   115
+  4a chain level, excluding rigid-body-only fitted entries                                     19/170 (11.2%) vs    263/8926 (2.9%) OR 4.01 (2.20-7.31) p=6.1e-06
+  4b chain level, excluding rigid-body-only and experimental-starting-model entries            15/148 (10.1%) vs    249/7702 (3.2%) OR 3.71 (1.95-7.04) p=6.2e-05
+  4c entry level, entries whose only errors are CDR3/FR4 junction slips removed                 18/92 (19.6%) vs    120/2620 (4.6%) OR 5.13 (2.64-9.97) p=1.4e-06
+
+== 5. Mode mix by distinct antibody (enzyme error chains)
+                 entries  antibodies  labs
+err_modes                                 
+A_FR1Nterm             8           7     5
+B_CDR2FR3              7           5     3
+C_FR3                  2           2     2
+Dminus_CDR3long        2           2     2
+Dplus_CDR3short        3           2     2
+E_FR4bulge             1           1     1
+other                  1           1     1
+  B_CDR2FR3: enzyme 5/19 distinct erroneous V regions vs other 20/147; Fisher p=0.17
+  A_FR1Nterm: enzyme 7/19 distinct erroneous V regions vs other 45/147; Fisher p=0.6
+  Dplus|Dminus: enzyme 3/19 distinct erroneous V regions vs other 48/147; Fisher p=0.19

@@ -1,0 +1,6 @@
+test,unit,rate_in,rate_out,OR,lo,hi,p,model
+"D1 broad host enzyme (class OR EC, non-viral, non-GPCR) vs other EM",entry,17/160 (10.6%),161/2592 (6.2%),1.8673147088938526,0.9539379306821557,3.655231760789611,0.0684009552879356,C(ycat) + res
+D2 EC-enzymes classed as transporter/receptor/toxin etc. vs other EM,entry,2/79 (2.5%),176/2673 (6.6%),0.4564561820341771,,,0.23923752943787285,Fisher
+D3 within broad host enzymes: lens enzyme class vs EC-enzymes classed elsewhere,entry,15/81 (18.5%),2/79 (2.5%),8.405917075081591,1.5105422834799265,46.77753323817318,0.015059491174164575,C(period) + res
+D4 paper level: broad host enzyme,paper,14/95 (14.7%),113/1216 (9.3%),1.8811451242824657,1.0124888441707591,3.495057747041092,0.04558312321432007,C(ycat) + res + ln
+D5 paper level: EC-enzymes classed elsewhere,paper,2/50 (4.0%),125/1261 (9.9%),0.4667926233211484,,,0.22301594210982445,Fisher

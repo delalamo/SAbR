@@ -1,0 +1,8 @@
+pdb,lab,pattern,run,predicted_IB,predicted_IgFold,hires_same_pattern,verdict
+8bw0,"Rak, A.",H ins 70A,"63-70A, -1",identical 9 res,identical 9 res,9lad_B 2.02 A: 3 res (69-70A),artifact (exact)
+8r4d (+8r4b),"Versees, W.",VHH ins 67A-C,"62-67C, -3",identical 9 res,identical 9 res,6oca_C 2.11 A: 10 res (61-67C),artifact (exact)
+9pyh,"Ward, A.B.",K del 66,"67-69, -1",identical 3 res,2 res,"9pyn_B 2.34 A, SAME antibody: 4 res (67-70)",artifact (exact)
+8snc,"Zimmer, J.",VHH del 68,"62-67, +1",identical 6 res,identical 6 res,none in PDB,"artifact (exact, map-free only)"
+9om5,"Zhou, T.",H del 74-75,"63-72, -1 (3 of 6 NCS copies; other 3 agree)","10 res, opposite shift","10 res, opposite shift","none; 8dua (same pattern, EM) clean; v10: c/g/k vs a/e/i NCS copies not register-shifted",not a register shift (conformational variant)
+"8jag (+8jam, 8jap)","Li, Y.J.",H del 66-68 (CDR2 4),"57-69, -1","1-5 res, other placement","3 res, shifted by one",none in PDB; v09: 88-100% closer to neighbour vs IgFold,possibly genuine (unresolved)
+22ge,"Xu, Y.",rabbit H ins 69A (CDR2 9),"53-60, -1 (not at the indel)",0 res in run (9 elsewhere in 55-80),0 res in run,none,off-site; possible genuine CDR2 error

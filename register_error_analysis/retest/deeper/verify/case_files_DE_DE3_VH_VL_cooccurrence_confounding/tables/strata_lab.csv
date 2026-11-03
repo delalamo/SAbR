@@ -1,0 +1,4 @@
+analysis,OR,p,n_strata,n,exposed_events,exposed,note
+MH over year-bin x res-bin x SARS2 strata (Fab units),24.937916113330314,0.0,13.0,1277,8.0,24.0,
+"Fab units, logit, SE clustered by last author (lab)",32.50945807760999,6.775930098264401e-14,,1641,8.0,24.0,
+one random Fab unit per lab (2000 draws),32.857142857142854,0.0005276917258816089,,476,3.0,10.0,share p<0.05 1.00

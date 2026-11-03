@@ -1,0 +1,20 @@
+pdb,chain,seq_first_imgt,S,S_sabr,entity_start,residues_before_V,modified_Nterm,author,year
+26pf,A,2.0,2.0,2.0,VQLVQSGAEVKK,0,False,"Zeng, M.S.",2026
+7wp6,D,3.0,3.0,2.0,QLAQSGAELARP,0,False,"Xia, N.",2022
+9ccg,C,3.0,3.0,2.0,QMTQSPSSLSAS,0,False,"Noinaj, N.",2024
+8khr,H,3.0,3.0,2.0,QLVQSGAEVKKP,0,False,"Liu, Z.",2023
+7mej,B,2.0,2.0,0.0,VQLVESGGGLVQ,0,False,"Taylor, D.J.",2021
+8e8l,H,4.0,4.0,3.0,LVQSGAELKKPG,0,False,"Charnesky, A.J.",2022
+9b7u,H,4.0,4.0,1.0,AVESGGGLVKPG,0,False,"McKenna, R.",2024
+9mnb,E,3.0,3.0,2.0,SVEESRGGLIKP,0,False,"Rohou, A.L.",2024
+9c7s,L,3.0,3.0,2.0,VLTQAPSASGTP,0,False,"Crowe, J.E.",2024
+9nyx,A,2.0,3.0,4.0,VQLVESGGGLVX,0,False,"Palczewski, K.",2025
+7f3q,B,2.0,2.0,1.0,AQMTQSPSSVSA,0,False,"Wang, K.",2021
+7m74,L,3.0,3.0,1.0,QMTQSPSSLSAS,0,False,"Melcher, K.",2021
+9yie,K,3.0,3.0,1.0,VLTQPPSVSAAP,0,False,"Bjorkman, P.J.",2025
+3jcx,H,7.0,7.0,9.0,SGPGLVQPSQTL,0,False,"Hafenstein, S.",2016
+7tz5,L,2.0,2.0,1.0,SVLTQPPSVSGA,0,False,"Mousa, J.J.",2022
+22ge,G,2.0,2.0,2.0,QQLEQSGGGAEG,0,False,"Xu, Y.",2026
+6bsp,A,7.0,7.0,6.0,SGGGLVKPGGSL,0,False,"Hafenstein, S.",2017
+8xef,B,2.0,2.0,1.0,VQLQESGPGLLK,0,False,"Feng, L.L.",2023
+9o7h,D,8.0,8.0,6.0,GPGLMKGGQTLS,0,False,"Southworth, D.",2025

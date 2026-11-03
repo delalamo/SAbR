@@ -1,0 +1,53 @@
+SARS2 EM analysis entries 664 errors 42 rate 0.063 | median other labs acc 12m 143.0 (all), 143.0 (clean), 105.0 (error)
+non-SARS2 EM rate 0.065 (136/2088)
+SARS2 vs other EM, unadjusted   : OR 0.97 (0.57-1.64) p=0.907 n=2752 err=178
+SARS2 vs other EM, year+res     : OR 0.82 (0.47-1.43) p=0.492 n=2752 err=178
+SARS2 vs other EM 2020-21, year+res: OR 0.97 (0.42-2.22) p=0.936 n=618 err=61 | rates 0.096 vs 0.101
+SARS2 vs other EM 2022+, year+res: OR 0.69 (0.34-1.42) p=0.315 n=1953 err=104 | rates 0.042 vs 0.056
+2020-21 SARS2 vs contested non-SARS2: OR 5.20 (1.55-17.42) p=0.00755 n=444 err=29 | rates 0.096 vs 0.022
+spike 30% family (g30_4905_30) vs other EM, year+res: OR 0.91 (0.52-1.58) p=0.737 n=2752 err=178 | rates 0.067 vs 0.064
+  spike family entries that are not flagged sars2: 46 | sars2 entries outside family: 40
+
+first 30 SARS2 EM entries in entries.csv (all, incl. excluded):
+       pdb     deposit   res                                                         last_author  err_first  err_any modes
+1105  6yor  2020-04-15  3.30                                                        Stuart, D.I.      False    False   NaN
+1153  7byr  2020-04-24  3.84                                                            Xiao, J.      False    False   NaN
+1048  6wps  2020-04-27  3.10  Seattle Structural Genomics Center for Infectious Disease (SSGCID)      False    False   NaN
+1049  6wpt  2020-04-27  3.70  Seattle Structural Genomics Center for Infectious Disease (SSGCID)      False    False   NaN
+1156  7c2l  2020-05-08  3.10                                                            Zhou, Q.      False    False   NaN
+1111  6z43  2020-05-22  3.30                                                      Naismith, J.H.      False    False   NaN
+1080  6xcm  2020-06-08  3.42                                                      Bjorkman, P.J.      False    False   NaN
+1081  6xcn  2020-06-08  3.66                                                      Bjorkman, P.J.      False    False   NaN
+1162  7cac  2020-06-08  3.55                                                            Wang, X.      False    False   NaN
+1163  7cah  2020-06-08  3.90                                                            Wang, X.      False    False   NaN
+1164  7cai  2020-06-08  3.49                                                            Wang, X.      False    False   NaN
+1165  7cak  2020-06-08  3.58                                                            Wang, X.      False    False   NaN
+1082  6xdg  2020-06-10  3.90                                                            Zhou, Y.      False    False   NaN
+1083  6xey  2020-06-14  3.25                                                            Ho, D.D.      False    False   NaN
+1113  6zdg  2020-06-14  4.70                                                        Stuart, D.I.      False    False   NaN
+1114  6zdh  2020-06-14  3.70                                                        Stuart, D.I.      False    False   NaN
+1116  6zfo  2020-06-17  4.40                                                        Stuart, D.I.      False    False   NaN
+1118  6zhd  2020-06-22  3.70                                                      Vogirala, V.K.      False    False   NaN
+1174  7chh  2020-07-05  3.49                                                            Wang, G.      False    False   NaN
+1122  7a25  2020-08-16  3.06                                                             Das, H.      False    False   NaN
+1324  7jv2  2020-08-20  3.50                                                         Veesler, D.      False    False   NaN
+1325  7jv4  2020-08-20  3.40                                                         Veesler, D.      False    False   NaN
+1327  7jv6  2020-08-20  3.00                                                         Veesler, D.      False    False   NaN
+1328  7jva  2020-08-20  3.60                                                         Veesler, D.      False    False   NaN
+1330  7jvc  2020-08-20  3.30                                                         Veesler, D.      False    False   NaN
+1125  7a5r  2020-08-21  3.70                                                       Gamblin, S.J.      False    False   NaN
+1126  7a5s  2020-08-21  3.90                                                       Gamblin, S.J.      False    False   NaN
+1332  7jw0  2020-08-24  4.30                                                         Veesler, D.      False    False   NaN
+1185  7cwl  2020-08-29  3.80                                                            Wang, N.      False    False   NaN
+1186  7cwm  2020-08-29  3.60                                                            Wang, X.      False    False   NaN
+index of first err_first SARS2 EM entry: 32 -> deposited 2020-08-31 7cws Wang, X.
+SARS2 EM entries deposited before 2020-09-01: 35 err_first 3 err_any 3 papers 15
+first 25: deposit range 2020-04-15 2020-08-20 | err_first 0 | err_any 0 | distinct papers 12 | labs 13
+P(all clean | 2020-21 EM entry rate 0.099, 25 independent entries) = 0.074
+P(all clean | 2020-21 EM paper rate 0.125, 12 independent papers) = 0.200
+2020-01-01..2020-09-01: SARS2 EM entries 35, err_first 3 (0.086) | non-SARS2 EM 87 err_first 6 (0.069)
+2020-09-01..2021-01-01: SARS2 EM entries 48, err_first 9 (0.188) | non-SARS2 EM 51 err_first 9 (0.176)
+2021-01-01..2021-07-01: SARS2 EM entries 91, err_first 9 (0.099) | non-SARS2 EM 116 err_first 13 (0.112)
+2021-07-01..2022-01-01: SARS2 EM entries 90, err_first 4 (0.044) | non-SARS2 EM 122 err_first 10 (0.082)
+2022-01-01..2023-01-01: SARS2 EM entries 205, err_first 7 (0.034) | non-SARS2 EM 282 err_first 17 (0.060)
+2023-01-01..2027-01-01: SARS2 EM entries 198, err_first 10 (0.051) | non-SARS2 EM 1306 err_first 82 (0.063)

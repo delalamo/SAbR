@@ -1,0 +1,13 @@
+set
+other_mode_error    131
+partner             124
+same_vseq_clean      17
+Name: count, dtype: int64
+panel {'H': 103, 'K': 66, 'L': 26}
+jobs 260
+0 2
+100 34
+200 68
+status
+ok    260
+Name: count, dtype: int64

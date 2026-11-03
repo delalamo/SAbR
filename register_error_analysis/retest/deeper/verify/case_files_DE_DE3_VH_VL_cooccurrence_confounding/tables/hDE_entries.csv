@@ -1,0 +1,33 @@
+pdb,paper,last_author,year,res,sars2,nH,nL,nHseq,nLseq,H_modes,L_modes,L_orig,H_lqz,L_lqz,irm,fit,L_oth,L_DE
+9yc6,10.1002/pro.70473,"Ploug, M.",2025,4.8,False,1,1,1,1,H:E_FR4bulge,L:F_CDR1,L:5,-0.8760442807106372,-1.055466303905274,experimental (PDB) model,flexible fit,True,False
+26pf,10.1007/S1142702531027,"Zeng, M.S.",2026,3.1,False,1,1,1,1,A:A_FR1Nterm;Dplus_CDR3short,,,-1.3120091953355602,-0.9514308098061892,none recorded,other,False,False
+7v2a,10.1007/s13238-021-00871-6,"Pan, L.",2021,3.4,True,3,3,1,1,E:Dplus_CDR3short G:Dplus_CDR3short I:Dplus_CDR3short,,,0.10722467715908739,0.13689380422940894,experimental (PDB) model,rigid body only,False,False
+7m6h,10.1016/j.cell.2021.04.032,"Bjorkman, P.J.",2021,4.0,True,2,2,1,1,D:Dplus_CDR3short E:Dplus_CDR3short,,,-1.4289771140017238,-1.818411283497131,experimental (PDB) model,rigid body only,False,False
+7t0w,10.1016/j.cell.2022.06.025,"Pruss, H.",2021,3.0,False,2,2,1,1,H:E_FR4bulge H2:E_FR4bulge,,,0.6083112535564206,0.8428793683701852,none recorded,other,False,False
+8w5q,10.1016/j.celrep.2025.115334,"Zhu, P.",2023,4.1,False,1,1,1,1,H:A_FR1Nterm;Dplus_CDR3short,L:A_FR1Nterm,L:3,0.7401496574669661,0.8145763554035995,none recorded,other,True,False
+8gnh,10.1016/j.ijbiomac.2022.12.120,"Su, X.D.",2022,3.74,True,1,1,1,1,H:Dplus_CDR3short,L:Dminus_CDR3long,L:5,-1.6790258846886974,-1.6553875087552936,none recorded,other,False,True
+7mkl,10.1016/j.immuni.2021.08.016,Center for Structural Genomics of Infectious Diseases (CSGID),2021,3.2,True,1,1,1,1,H:B_CDR2FR3;E_FR4bulge,,,-2.55085131943004,-2.3465405770297934,none recorded,other,False,False
+7mkm,10.1016/j.immuni.2021.08.016,Center for Structural Genomics of Infectious Diseases (CSGID),2021,3.16,True,1,1,1,1,H:B_CDR2FR3;E_FR4bulge,,,-1.3430556083293916,-1.1213775138658864,none recorded,other,False,False
+8khr,10.1016/j.xcrm.2024.101573,"Liu, Z.",2023,3.25,False,1,1,1,1,H:A_FR1Nterm;Dplus_CDR3short,,,-0.2402836803577474,-0.1476195389391657,none recorded,other,False,False
+5ken,10.1038/nmicrobiol.2016.128,"Ward, A.B.",2016,4.3,False,5,5,2,2,C:Dplus_CDR3short G:Dplus_CDR3short N:Dplus_CDR3short,,,-0.7494842551335504,-0.7135855425607509,none recorded,flexible fit,False,False
+8xsd,10.1038/s41392-024-02114-6,"Feng, L.L.",2024,3.55,True,3,3,1,1,G:Dplus_CDR3short H:Dplus_CDR3short I:Dplus_CDR3short,,,-2.2126786498871156,-2.1947856443168496,none recorded,other,False,False
+8z86,10.1038/s41392-024-02114-6,"Feng, L.L.",2024,3.87,True,1,1,1,1,H:Dplus_CDR3short,,,1.0370634367991551,0.842025866515876,none recorded,other,False,False
+7czr,10.1038/s41422-021-00487-9,"Zhou, Q.",2020,3.5,True,2,2,1,1,H:E_FR4bulge J:E_FR4bulge,K:A_FR1Nterm N:A_FR1Nterm,K:3 N:3,-2.5501772700601144,-2.418095461601612,none recorded,other,True,False
+7czs,10.1038/s41422-021-00487-9,"Zhou, Q.",2020,3.6,True,3,3,1,1,H:E_FR4bulge I:E_FR4bulge J:E_FR4bulge,K:A_FR1Nterm M:A_FR1Nterm N:A_FR1Nterm,K:3 M:3 N:3,-2.084504620408224,-2.1169569877969914,none recorded,other,True,False
+7czu,10.1038/s41422-021-00487-9,"Zhou, Q.",2020,3.4,True,2,2,1,1,H:Dplus_CDR3short J:Dplus_CDR3short,K:A_FR1Nterm N:A_FR1Nterm,K:3 N:3,-2.3616532606403577,-2.5042823897322464,none recorded,other,True,False
+7czv,10.1038/s41422-021-00487-9,"Zhou, Q.",2020,3.3,True,3,3,1,1,H:Dplus_CDR3short I:Dplus_CDR3short J:Dplus_CDR3short,K:A_FR1Nterm M:A_FR1Nterm N:A_FR1Nterm,K:3 M:3 N:3,-2.3245227274101983,-2.360257133222662,none recorded,other,True,False
+7d00,10.1038/s41422-021-00487-9,"Zhou, Q.",2020,3.0,True,2,2,1,1,H:E_FR4bulge J:E_FR4bulge,K:A_FR1Nterm N:A_FR1Nterm,K:3 N:3,-2.7079612351391393,-2.6704396091353844,none recorded,other,True,False
+7ey5,10.1038/s41422-021-00555-0,"Zhang, Z.Y.",2021,3.4,True,2,2,2,2,B:E_FR4bulge,,,0.6264891347708398,0.6475986251842851,none recorded,other,False,False
+6xja,10.1038/s41467-020-19887-3,"Zheng, H.",2020,4.0,False,1,1,1,1,H:Dminus_CDR3long,,,-0.7877804871633701,-0.9920313074241592,none recorded,other,False,False
+7stf,10.1038/s41467-023-40821-w,"Miller, M.",2021,3.14,False,1,1,1,1,H:A_FR1Nterm;Dplus_CDR3short,L:C_FR3,L:9,-0.3782734946276215,0.040770907190639,none recorded,rigid body only,True,False
+8jag,10.1038/s41467-024-54746-5,"Li, Y.J.",2023,3.55,False,1,1,1,1,H:B_CDR2FR3;Dminus_CDR3long,,,0.0949417972694471,-0.1367789967729019,none recorded,other,False,False
+8jam,10.1038/s41467-024-54746-5,"Li, Y.J.",2023,3.92,False,1,1,1,1,H:B_CDR2FR3;Dminus_CDR3long,,,0.1444813063541082,0.1938157255924815,none recorded,other,False,False
+8jap,10.1038/s41467-024-54746-5,"Li, Y.J.",2023,3.81,True,1,1,1,1,H:B_CDR2FR3;Dminus_CDR3long,,,-0.1918897548742208,-0.6409963206765972,none recorded,other,False,False
+6orp,10.1038/s41586-019-1250-z,"Bjorkman, P.J.",2019,4.4,False,3,3,1,1,D:A_FR1Nterm;Dminus_CDR3long H:A_FR1Nterm;Dminus_CDR3long J:A_FR1Nterm;Dminus_CDR3long,E:B_CDR2FR3 K:B_CDR2FR3 L:B_CDR2FR3,E:9 K:9 L:9,0.42889990579706616,0.35423896159782303,experimental (PDB) model,rigid body only,True,False
+7k8x,10.1038/s41586-020-2852-1,"Bjorkman, P.J.",2020,3.9,True,2,2,1,1,D:Dplus_CDR3short E:Dplus_CDR3short,,,-1.5083037263748504,-1.8528132782182503,experimental (PDB) model,rigid body only,False,False
+7k8y,10.1038/s41586-020-2852-1,"Bjorkman, P.J.",2020,4.4,True,1,1,1,1,G:Dplus_CDR3short,,,-0.981432365317741,-1.4998865834636026,experimental (PDB) model,rigid body only,False,False
+7e23,10.1038/s42003-021-02029-w,"Dou, C.",2021,3.3,True,1,1,1,1,B:C_FR3;Dplus_CDR3short,C:C_FR3,C:9,0.6053254942484041,0.3185279854847738,none recorded,other,True,False
+7d3r,10.1371/journal.ppat.1009507,"Lou, Z.",2020,3.49,False,1,1,1,1,H:Dminus_CDR3long,,,-1.1577432725420829,-1.6631048743025492,none recorded,rigid body only,False,False
+7kc1,10.3389/fimmu.2021.662909,"Kwong, P.D.",2020,3.41,False,3,3,1,1,E:E_FR4bulge H:E_FR4bulge J:E_FR4bulge,,,0.37476032040933854,0.2448741322220178,experimental (PDB) model,flexible fit,False,False
+9ma0,9ma0,"Sun, C.",2025,3.33,False,1,1,1,1,B:C_FR3;Dminus_CDR3long,,,-0.9451184356223205,-0.7511982490314661,none recorded,ab initio,False,False
+9pv5,9pv5,"Ward, A.B.",2025,3.9,False,2,2,2,2,H:E_FR4bulge,L:B_CDR2FR3;E_FR4bulge,L:6;9,-0.2772692083816028,-0.48961654927333476,none recorded,other,True,True

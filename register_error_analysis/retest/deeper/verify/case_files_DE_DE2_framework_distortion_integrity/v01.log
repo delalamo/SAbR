@@ -1,0 +1,32 @@
+                    chains  units  entries
+group                                     
+error                  155     69       78
+matched_clean          271    271      262
+other_mode_error       244    116      130
+within_paper_clean     121    121       66
+ref ('4m48', 'H') 122
+ref ('4jqi', 'H') 122
+ref ('5dt1', 'H') 122
+ref ('6cbv', 'L') 111
+ref ('1n8z', 'A') 110
+ref ('4b50', 'A') 119
+ref ('5iq9', 'B') 112
+ref ('7z1d', 'FFF') 121
+ref ('5cck', 'L') 112
+ref ('6axk', 'B') 115
+ref ('6yz5', 'F') 120
+ref ('6cbv', 'H') 124
+ref ('4m48', 'L') 111
+ref ('7jkm', 'K') 119
+ref ('5dt1', 'L') 115
+ref ('4jqi', 'L') 111
+jobs 582
+0 2
+100 39
+200 67
+300 102
+400 128
+500 159
+status
+ok    769
+Name: count, dtype: int64

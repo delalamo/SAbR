@@ -1,0 +1,136 @@
+set,pdb,chain,ct,feat,miss66,ins66,contiguous,n_dis_55_80,dis3,dis_detail,method,res,err_first,B_first,meth,grp
+new,22ge,G,H,1,(),"('69A',)",True,8,1,CYS55/54 VAL56/55 TYR57/56 SER58/57 GLY59/58 SER60/59 SER69/68A TRP69A/69,EM,3.1,True,1.0,EM,EM 3-5 A
+new,39hu,L,K,1,"(69, 70)",(),False,0,0,,EM,3.57,False,0.0,EM,EM 3-5 A
+snapshot_rest,6crq,D,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.2,False,0.0,EM,EM 3-5 A
+snapshot_rest,6crq,I,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.2,False,0.0,EM,EM 3-5 A
+snapshot_rest,6crq,J,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.2,False,0.0,EM,EM 3-5 A
+validation,6vo3,G,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.25,False,0.0,EM,EM 3-5 A
+validation,6vo3,H,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.25,False,0.0,EM,EM 3-5 A
+validation,6vo3,I,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.25,False,0.0,EM,EM 3-5 A
+snapshot_rest,6wdt,H,H,1,"(69, 70, 71)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,6wpt,L,K,1,"(72, 74)",(),False,0,0,,EM,3.7,False,0.0,EM,EM 3-5 A
+validation,7ey0,L,K,1,"(69, 70, 71, 72, 74)",(),False,0,0,,EM,3.2,False,0.0,EM,EM 3-5 A
+validation,7kra,I,H,1,"(69, 70, 71, 72, 74, 75)",(),True,1,0,VAL80/78,EM,3.2,True,0.0,EM,EM 3-5 A
+validation,7ktx,I,H,1,"(69, 70, 71, 72, 74, 75)",(),True,1,0,VAL80/78,EM,4.3,True,0.0,EM,EM 3-5 A
+snapshot_rest,7m30,N,K,1,"(66, 67)",(),False,0,0,,EM,3.81,False,0.0,EM,EM 3-5 A
+snapshot_rest,7nk2,F,H,1,"(66,)",(),True,7,1,TYR67/66 ALA68/67 MET69/68 ASP70/69 PHE71/70 VAL72/71 LYS73/72,EM,4.84,True,1.0,EM,EM 3-5 A
+snapshot_rest,7nki,F,H,1,"(66,)",(),True,0,0,,EM,4.67,False,0.0,EM,EM 3-5 A
+snapshot_rest,7r7n,H,H,1,"(70, 71, 72, 74)",(),False,0,0,,EM,3.95,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ra8,L,L,1,"(71, 72, 74)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ra8,G,L,1,"(71, 72, 74)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ra8,D,L,1,"(71, 72, 74)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ral,L,L,1,"(71, 72, 74)",(),False,0,0,,EM,3.7,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rsn,H,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,3.49,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rsn,F,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,3.49,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rsn,E,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,3.49,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rso,G,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rso,I,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7rso,H,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,EM,4.1,False,0.0,EM,EM 3-5 A
+new,7sp6,C,H,1,"(68, 69, 70, 71)",(),False,6,1,GLY62/63 GLY63/64 GLY64/65 THR65/66 ASP66/67 TYR67/68,EM,3.1,True,1.0,EM,EM 3-5 A
+new,7sp7,C,H,1,"(68, 69, 70, 71)",(),False,6,1,GLY62/63 GLY63/64 GLY64/65 THR65/66 ASP66/67 TYR67/68,EM,3.1,True,1.0,EM,EM 3-5 A
+snapshot_rest,7tlz,B,H,1,"(69,)",(),False,0,0,,EM,3.3,False,0.0,EM,EM 3-5 A
+snapshot_rest,7tm0,I,H,1,"(69,)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7tm0,G,H,1,"(69,)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7tm0,E,H,1,"(69,)",(),False,0,0,,EM,3.1,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ty0,K,H,1,"(70, 74)",(),False,0,0,,EM,3.5,False,0.0,EM,EM 3-5 A
+snapshot_rest,7ty0,J,H,1,"(68, 69, 70, 71, 72, 74)",(),False,8,1,SER60/62 ASN61/63 ASN62/64 TYR63/65 GLY64/66 THR65/67 HIS66/68 TYR67/69,EM,3.5,True,1.0,EM,EM 3-5 A
+snapshot_rest,7ty0,O,K,1,"(70,)",(),False,0,0,,EM,3.5,False,0.0,EM,EM 3-5 A
+new,7ul3,H,H,1,"(70,)",(),False,0,0,,EM,3.0,False,0.0,EM,EM 3-5 A
+new,7ul5,D,H,1,"(69, 70, 71, 72, 74, 75)",(),False,0,0,,EM,3.1,True,0.0,EM,EM 3-5 A
+new,7v6o,G,H,1,"(69,)",(),False,0,0,,EM,4.56,False,0.0,EM,EM 3-5 A
+new,7wuj,N,H,1,"(69, 70)",(),False,0,0,,EM,3.3,True,0.0,EM,EM 3-5 A
+new,8bw0,H,H,1,(),"('70A',)",True,9,1,GLY63/62 GLY64/63 ILE65/64 THR66/65 TYR67/66 ALA68/67 PRO69/68 SER70/69 THR70A/70,EM,3.11,True,1.0,EM,EM 3-5 A
+new,8dg8,L,L,1,"(71, 72)",(),False,7,1,LYS57/65 ASN65/66 ASN66/67 ARG67/68 PRO68/69 SER69/70 VAL70/71,EM,3.62,True,1.0,EM,EM 3-5 A
+new,8dua,D,H,1,"(74, 75)",(),True,0,0,,EM,4.32,False,0.0,EM,EM 3-5 A
+new,8dua,H,H,1,"(74, 75)",(),True,0,0,,EM,4.32,False,0.0,EM,EM 3-5 A
+new,8dua,J,H,1,"(74, 75)",(),True,0,0,,EM,4.32,False,0.0,EM,EM 3-5 A
+new,8jag,H,H,1,"(66, 67, 68)",(),True,4,1,PRO57/65 THR64/66 TYR65/67 ALA69/68,EM,3.55,True,1.0,EM,EM 3-5 A
+new,8jam,H,H,1,"(66, 67, 68)",(),True,5,1,PRO57/65 THR64/66 TYR65/67 ALA69/68 GLY70/69,EM,3.92,True,1.0,EM,EM 3-5 A
+new,8jap,H,H,1,"(66, 67, 68)",(),True,8,1,PRO57/65 THR64/66 TYR65/67 ALA69/68 GLY70/69 PHE71/70 THR72/71 GLY74/72,EM,3.81,True,1.0,EM,EM 3-5 A
+new,8qj2,D,H,1,"(68, 69, 70, 71, 72, 74, 75)",(),False,0,0,,EM,3.4,True,0.0,EM,EM 3-5 A
+new,8qtd,L,L,1,"(66, 67, 68, 69, 70, 71, 72, 74)",(),True,0,0,,EM,3.6,False,0.0,EM,EM 3-5 A
+new,8r4b,B,H,1,(),"('67A', '67B', '67C')",True,9,1,GLY62/60 THR63/61A SER64/61 THR65/62 TYR66/63 TYR67/64 GLN67A/65 ASP67B/66 HIS67C/67,EM,3.88,True,1.0,EM,EM 3-5 A
+new,8r4d,B,H,1,(),"('67A', '67B', '67C')",True,9,1,GLY62/60 THR63/61A SER64/61 THR65/62 TYR66/63 TYR67/64 GLN67A/65 ASP67B/66 HIS67C/67,EM,3.88,True,1.0,EM,EM 3-5 A
+new,8snc,C,H,1,"(68,)",(),True,6,1,GLY62/63 GLY63/64 GLY64/65 THR65/66 ASP66/67 TYR67/68,EM,3.2,True,1.0,EM,EM 3-5 A
+new,8snd,C,H,1,"(68, 69, 70, 71)",(),False,6,1,GLY62/63 GLY63/64 GLY64/65 THR65/66 ASP66/67 TYR67/68,EM,3.1,True,1.0,EM,EM 3-5 A
+new,8tgv,L,L,1,"(69, 70, 71)",(),False,0,0,,EM,3.75,False,0.0,EM,EM 3-5 A
+new,9b13,L,K,1,"(68, 69, 70, 71)",(),False,0,0,,EM,3.9,False,0.0,EM,EM 3-5 A
+new,9bop,P,K,1,"(69, 70, 71, 72, 74)",(),False,0,0,,EM,3.0,False,0.0,EM,EM 3-5 A
+new,9cbn,F,L,1,"(74,)",(),False,0,0,,EM,3.33,False,0.0,EM,EM 3-5 A
+new,9cjy,I,K,1,"(66,)",(),True,0,0,,EM,3.7,False,0.0,EM,EM 3-5 A
+new,9e8d,L,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,EM,4.1,False,0.0,EM,EM 3-5 A
+new,9fq3,D,L,1,"(69, 70, 71, 72, 74, 75)",(),False,0,0,,EM,3.8,False,0.0,EM,EM 3-5 A
+new,9fq3,F,L,1,"(69, 70, 71, 72, 74, 75)",(),False,0,0,,EM,3.8,False,0.0,EM,EM 3-5 A
+new,9j05,C,K,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,EM,3.2,False,0.0,EM,EM 3-5 A
+new,9jqp,I,K,1,"(72, 74, 75)",(),True,0,0,,EM,3.34,False,0.0,EM,EM 3-5 A
+new,9lfa,C,H,1,"(69, 70)",(),False,0,0,,EM,3.5,True,0.0,EM,EM 3-5 A
+new,9lsy,C,K,1,"(70,)",(),False,0,0,,EM,3.23,False,0.0,EM,EM 3-5 A
+new,9lsy,F,K,1,"(70,)",(),False,0,0,,EM,3.23,False,0.0,EM,EM 3-5 A
+new,9mqi,H,H,1,"(70,)",(),False,0,0,,EM,3.3,False,0.0,EM,EM 3-5 A
+new,9mqk,H,H,1,"(70,)",(),False,0,0,,EM,3.18,False,0.0,EM,EM 3-5 A
+new,9nnz,A,H,1,"(71, 72, 74, 75)",(),False,0,0,,EM,3.94,True,0.0,EM,EM 3-5 A
+new,9om5,a,H,1,"(74, 75)",(),True,1,0,ARG72/75,EM,3.4,False,0.0,EM,EM 3-5 A
+new,9om5,c,H,1,"(74, 75)",(),True,10,1,LEU63/62 ASN64/63 TYR65/64 LYS66/65 TYR67/66 ASN68/67 PRO69/68 SER70/69 VAL71/70 ARG72/75,EM,3.4,True,1.0,EM,EM 3-5 A
+new,9om5,e,H,1,"(74, 75)",(),True,1,0,ARG72/75,EM,3.4,False,0.0,EM,EM 3-5 A
+new,9om5,g,H,1,"(74, 75)",(),True,10,1,LEU63/62 ASN64/63 TYR65/64 LYS66/65 TYR67/66 ASN68/67 PRO69/68 SER70/69 VAL71/70 ARG72/75,EM,3.4,True,1.0,EM,EM 3-5 A
+new,9om5,i,H,1,"(74, 75)",(),True,1,0,ARG72/75,EM,3.4,False,0.0,EM,EM 3-5 A
+new,9om5,k,H,1,"(74, 75)",(),True,10,1,LEU63/62 ASN64/63 TYR65/64 LYS66/65 TYR67/66 ASN68/67 PRO69/68 SER70/69 VAL71/70 ARG72/75,EM,3.4,True,1.0,EM,EM 3-5 A
+new,9ot6,C,H,1,"(69, 70, 71, 72, 74)",(),False,0,0,,EM,3.54,False,0.0,EM,EM 3-5 A
+new,9ot6,H,H,1,"(69, 70, 71, 72, 74)",(),False,0,0,,EM,3.54,False,0.0,EM,EM 3-5 A
+new,9pyh,L,K,1,"(66,)",(),True,3,1,THR67/66 LEU68/67 ASN69/68,EM,3.3,True,1.0,EM,EM 3-5 A
+new,9uot,B,H,1,"(71, 72, 74)",(),True,0,0,,EM,3.2,False,0.0,EM,EM 3-5 A
+new,9wlb,L,K,1,"(75,)",(),False,0,0,,EM,3.74,False,0.0,EM,EM 3-5 A
+new,9yq4,C,H,1,"(68,)",(),False,6,1,GLY62/63 GLY63/64 GLY64/65 THR65/66 ASP66/67 TYR67/68,EM,3.3,False,0.0,EM,EM 3-5 A
+new,9zrt,L,K,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,EM,3.3,False,0.0,EM,EM 3-5 A
+new,46gh,T,H,1,"(72, 74, 75)",(),False,0,0,,X-ray,3.4,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,B,L,1,"(66, 67, 68, 69, 70, 71, 72, 74)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,D,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,F,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,H,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,K,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4hkb,N,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.6,False,0.0,X-ray,X-ray 3-5 A
+validation,4i3r,H,H,1,(),"('67A',)",True,2,0,GLY67A/68 SER68/68A,X-ray,3.0,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,4z0b,L,K,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.2,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5bk0,C,K,1,"(72,)",(),False,0,0,,X-ray,3.15,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5feh,B,H,1,"(66,)",(),True,0,0,,X-ray,3.1,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5i17,B,H,1,"(66, 67, 68)",(),False,2,0,ILE59/64 PHE62/65,X-ray,3.3,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5tq2,L,K,1,"(66, 67, 68, 69, 70)",(),True,1,0,ALA57/65,X-ray,3.289,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5wob,Q,H,1,"(66,)",(),False,0,0,,X-ray,3.95,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,5xbm,A,K,1,"(66,)",(),True,5,1,GLN65/57 SER67/65 ILE68/66 SER69/67 GLY70/68,X-ray,3.501,True,1.0,X-ray,X-ray 3-5 A
+snapshot_rest,5xbm,D,K,1,"(66,)",(),True,8,1,GLN65/57 SER67/65 ILE68/66 SER69/67 GLY70/68 ILE71/69 PRO72/70 SER74/71,X-ray,3.501,True,1.0,X-ray,X-ray 3-5 A
+snapshot_rest,6ch9,R,L,1,"(67, 68, 69, 70, 71, 72)",(),False,0,0,,X-ray,4.85,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6dez,B,H,1,"(71, 72, 74)",(),False,0,0,,X-ray,3.2,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6dl8,B,L,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.805,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6dl8,L,L,1,"(66, 67, 68)",(),True,0,0,,X-ray,3.805,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6e9q,H,L,1,"(75,)",(),True,0,0,,X-ray,3.4,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6nfj,B,H,1,"(69, 70, 71)",(),False,0,0,,X-ray,3.19,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6nfj,E,H,1,"(69, 70)",(),False,0,0,,X-ray,3.19,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6t3j,D,K,1,"(69,)",(),False,0,0,,X-ray,3.05,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6t3j,I,K,1,"(69,)",(),False,0,0,,X-ray,3.05,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6tnp,K,H,1,"(66,)",(),True,0,0,,X-ray,3.0,False,0.0,X-ray,X-ray 3-5 A
+snapshot_rest,6v80,J,H,1,"(68,)",(),False,1,0,ASP69/68,X-ray,3.53,False,0.0,X-ray,X-ray 3-5 A
+validation,6woq,H,K,1,"(66,)",(),True,0,0,,X-ray,3.667,False,0.0,X-ray,X-ray 3-5 A
+new,8be5,C,H,1,"(71, 72, 74, 75)",(),True,18,1,THR55/53 ILE56/54 VAL57/55 THR58/56 SER59/57 GLY60/58 GLY60A/59 SER61A/62 THR61/63 ALA62/64 GLY63/65 ASN64/66 THR65/67 ASN66/68 TYR67/78 VAL68/79 ASP69/80 SER70/81,X-ray,3.13,True,0.0,X-ray,X-ray 3-5 A
+new,8d50,D,H,1,"(66,)",(),True,3,1,PRO64/58 TYR65/64 SER67/65,X-ray,4.32,True,1.0,X-ray,X-ray 3-5 A
+new,8ddk,A,H,1,"(74,)",(),False,0,0,,X-ray,3.86,False,0.0,X-ray,X-ray 3-5 A
+new,8si1,A,L,1,"(68, 69)",(),False,0,0,,X-ray,3.2,False,0.0,X-ray,X-ray 3-5 A
+new,8si1,L,L,1,"(66, 67, 68, 69, 70)",(),True,1,0,ASP57/65,X-ray,3.2,False,0.0,X-ray,X-ray 3-5 A
+new,8si1,C,L,1,"(67, 68, 69, 70, 71, 72)",(),False,0,0,,X-ray,3.2,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,L,K,1,"(66, 67, 68, 69, 70, 71, 72)",(),True,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,J,K,1,"(69, 70)",(),False,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,H,K,1,"(66, 67, 68, 69, 70)",(),False,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,G,K,1,"(68, 69, 70, 71)",(),False,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,E,K,1,"(68, 69, 70)",(),False,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8t7f,B,K,1,"(66, 67, 68, 69, 70, 71, 72)",(),False,0,0,,X-ray,3.5,False,0.0,X-ray,X-ray 3-5 A
+new,8zua,L,K,1,"(67, 68, 69, 70, 71, 72, 74, 75)",(),True,0,0,,X-ray,3.49,False,0.0,X-ray,X-ray 3-5 A
+new,8zua,I,K,1,"(67, 68, 69, 70, 71, 72, 74, 75)",(),True,0,0,,X-ray,3.49,False,0.0,X-ray,X-ray 3-5 A
+new,8zua,G,K,1,"(66, 67, 68, 69, 70, 71, 72, 74, 75)",(),True,0,0,,X-ray,3.49,False,0.0,X-ray,X-ray 3-5 A
+new,8zua,D,K,1,"(67, 68, 69, 70, 71, 72, 74, 75)",(),True,0,0,,X-ray,3.49,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,F,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,C,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,I,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,R,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,O,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9mqo,L,L,1,"(66, 67, 68, 69, 70, 71)",(),True,0,0,,X-ray,3.181,False,0.0,X-ray,X-ray 3-5 A
+new,9puk,B,L,1,"(69, 70)",(),False,0,0,,X-ray,3.3,False,0.0,X-ray,X-ray 3-5 A
+new,9puo,B,L,1,"(69, 70)",(),False,0,0,,X-ray,3.1,False,0.0,X-ray,X-ray 3-5 A
