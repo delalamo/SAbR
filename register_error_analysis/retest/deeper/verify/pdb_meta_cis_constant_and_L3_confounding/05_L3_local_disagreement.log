@@ -1,0 +1,45 @@
+                                               0                  1
+set                                          all          drop Zhou
+n_err                                         31                 19
+err_L3_subthreshold_disagree                3/31               3/19
+ctrl_L3_subthreshold_disagree             0/2045             0/2040
+err_cis_displaced_113-117                      0                  0
+ctrl_cis_displaced_rate                    0.001              0.001
+err_any_V_cis                               7/31               7/19
+ctrl_any_V_cis                             0.749              0.750
+Pro115_cis_err_if_L3_agree          14.3% (4/28)       25.0% (4/16)
+Pro115_cis_ctrl_if_L3_agree    62.1% (1269/2045)  62.2% (1269/2040)
+OR                                      0.096137           0.176466
+p                                       0.011675           0.056485
+        pdb chain                       cluster                 modes  l3_disagree                                                        v_cis_pos  k_P115_cis
+21     6ad0     L        10.1126/sciadv.aat7459            A_FR1Nterm            0                                                              NaN         0.0
+309    7e23     C    10.1038/s42003-021-02029-w                 C_FR3            0                                                              NaN         0.0
+314    7e3c     C    10.1038/s41421-021-00292-z  A_FR1Nterm;B_CDR2FR3            0                                                              NaN         0.0
+525    7c80     L    10.1038/s41467-020-18250-w                    D0            1  2ILE;7SER;9ALA;12SER;49SER;58SER;83GLY;84ASN;93SER;97GLU;100GLY         0.0
+532    7czr     K    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+533    7czr     N    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+538    7czu     K    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+539    7czu     N    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+540    7czs     K    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+541    7czs     M    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+542    7czs     N    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+552    7d00     K    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+553    7d00     N    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+554    7czv     K    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+555    7czv     M    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+556    7czv     N    10.1038/s41422-021-00487-9            A_FR1Nterm            0                                                              NaN         0.0
+588    7jhh     L       10.1126/science.abe7565            A_FR1Nterm            0                                                              NaN         0.0
+603    7jhg     L       10.1126/science.abe7565            A_FR1Nterm            0                                                              NaN         0.0
+628    7m74     L       10.1126/science.abe7565            A_FR1Nterm            0                                                              NaN         0.0
+3428   7stf     L    10.1038/s41467-023-40821-w                 C_FR3            0                                                              NaN         0.0
+3464   7t6x     D       10.1126/science.abn9884                F_CDR1            0                                                      8PRO;115PRO         1.0
+6469   8t4d     L       10.1126/science.adj8321            A_FR1Nterm            0                                                           115PRO         1.0
+6470   8t4d     Q       10.1126/science.adj8321            A_FR1Nterm            0                                                           115PRO         1.0
+6471   8t4d     R       10.1126/science.adj8321            A_FR1Nterm            0                                                           115PRO         1.0
+6918   8w5e     L  10.1016/j.celrep.2025.115334         A_FR1Nterm;D0            1                                                              NaN         0.0
+6959   8w5t     L  10.1016/j.celrep.2025.115334            A_FR1Nterm            0                                                              NaN         0.0
+6967   8w5q     L  10.1016/j.celrep.2025.115334            A_FR1Nterm            0                                                              NaN         0.0
+7810   9cv7     L  10.1016/j.immuni.2025.04.010                 other            0                                                             8PRO         0.0
+9248   9pyh     L    10.1038/s41586-026-10429-3             B_CDR2FR3            0                                                              NaN         0.0
+9265   9pv3     L                          9pv3                F_CDR1            0                                                              NaN         0.0
+10001  9yc6     L             10.1002/pro.70473                F_CDR1            1                                                      8PRO;106GLN         0.0

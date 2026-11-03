@@ -1,0 +1,18 @@
+const_ok agreement i_ok      False  True 
+const_ok              
+False      7887      0
+True          0   2387
+ccis agreement among both ok i_ccis  0.0   1.0
+ccis             
+0.0     645     0
+1.0       0  1742
+K any const cis (investigator def, rebuilt) {'err_val': '20.7% (6/29)', 'ctrl_val': '80.8% (738/913)', 'OR': np.float64(0.03926158445297746), 'p': np.float64(0.0013169968095021233), 'note': None}
+H any const cis (investigator def, rebuilt) {'err_val': '41.9% (13/31)', 'ctrl_val': '71.9% (850/1183)', 'OR': np.float64(0.24702038845375898), 'p': np.float64(0.06051565490451128), 'note': None}
+pooled any const cis {'err_val': '31.7% (19/60)', 'ctrl_val': '73.8% (1726/2338)', 'OR': np.float64(0.11310428442654336), 'p': np.float64(0.0020427531894664213), 'note': None}
+Pro115 cis, investigator mode filter (regex D|E_FR4) {'err_val': '12.5% (3/24)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.07937375724521499), 'p': np.float64(0.02561885313430713), 'note': None}
+Pro115 cis, corrected filter (Dplus|Dminus|E_FR4 only) {'err_val': '12.9% (4/31)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.08383969190676785), 'p': np.float64(0.006897881711002213), 'note': None}
+modes of the 24 investigator Pro115 error chains:
+modes
+A_FR1Nterm    21
+C_FR3          2
+other          1

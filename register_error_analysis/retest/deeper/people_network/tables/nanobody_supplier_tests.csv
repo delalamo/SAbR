@@ -1,0 +1,13 @@
+test,n,n_exposed,err_exposed,err_unexposed,expected,OR,p,q
+nanobody studies: VUB/VIB co-author vs not (year-stratified exact),384,31.0,9/31,26/353,3.193004849342314,4.998224293008909,0.001561732311681815,0.018740787740181782
+... last author not in Belgium (supplier-type collaborations),375,26.0,7/26,25/349,2.6420743344103697,4.501707236015258,0.00819098441510962,0.01965836259626309
+non-nanobody studies: VUB/VIB co-author vs not,918,2.0,0/2,92/916,0.23529411764705882,0.0,0.9999999999999999,0.9999999999999999
+"nanobody studies: logit adj. year, resolution, V chains",384,,,,,3.817061766306318,0.006697140392818035,0.01965836259626309
+... + new-to-antibody-cryo-EM team,384,,,,,3.8222834547552282,0.006567000430538968,0.01965836259626309
+nanobody units: L1 VUB vs other (Mann-Whitney),567,,median 8.00,median 8.00,,,0.742158535073691,0.809627492807663
+nanobody units: L2 VUB vs other (Mann-Whitney),567,,median 8.00,median 8.00,,,0.3790810087349059,0.5054413449798746
+nanobody units: L3 VUB vs other (Mann-Whitney),567,,median 17.00,median 17.00,,,0.5232084421576948,0.6278501305892338
+nanobody units: v_id VUB vs other (Mann-Whitney),567,,median 0.73,median 0.75,,,0.07993510380231579,0.11990265570347369
+nanobody units (aux_reagent=False): error rate VUB vs other (Fisher),347,,9/51,23/296,,2.5434782608695654,0.03446969573329197,0.05909090697135766
+nanobody units (aux_reagent=True): error rate VUB vs other (Fisher),220,,2/11,4/209,,11.38888888888889,0.03062999362652383,0.05909090697135766
+"nanobody units: CDR2/FR3 (mode B) error, VUB vs other (Fisher)",567,,4/62,3/505,,11.540229885057471,0.0035422221597582954,0.01965836259626309

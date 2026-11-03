@@ -1,0 +1,25 @@
+unit,pdb,chain,status,mode,res,deposit,irm,fit,lq_z,last_author,title,last_built_imgt,fw_rmsd,cdr3_ag_contacts,confirm
+10.1016/j.celrep.2025.115334|DIVMSQSPSSLA,8w5v,L,correct,,3.4,2023-08-27,none recorded,other,0.7008878606670867,"Hou, B.D.",Cryo-EM structure of QbN10K-Ab40,122.0,1.0461327367228992,0.0,
+10.1016/j.celrep.2025.115334|DIVMSQSPSSLA,8w5u,L,correct,,3.9,2023-08-27,none recorded,other,0.9473170202682748,"Zhu, P.",Cryo-EM structure of QbN10F-Ab40,,,,
+10.1016/j.celrep.2025.115334|DIVMSQSPSSLA,8w5p,L,error,E_FR4bulge,3.3,2023-08-27,none recorded,other,0.6695947337504267,"Zhu, P.",Cryo-EM structure of Qb-Ab40,122.0,1.027122776611,0.0,not confirmed
+10.1016/j.ijbiomac.2023.128191|QVQLVESGGGLV,8w4f,D,correct,,4.2,2023-08-24,none recorded,other,-2.206480632423055,"Huang, Q.",SARS-CoV-2 spike protein in complex with a trivalent nanobod,,,,
+10.1038/s41392-021-00810-1|EVQLVESGGGLV,7vne,U,correct,,3.5,2021-10-10,none recorded,other,-1.1422532617601528,"Ying, T.",Structure of the SARS-CoV-2 spike glycoprotein in complex wi,,,,
+10.1038/s41421-021-00295-w|EVQLVESGGGLV,7e5y,C,error,Dplus_CDR3short,3.59,2021-02-21,experimental (PDB) model,not recorded,-0.1679915200683576,"Yang, X.M.",Molecular basis for neutralizing antibody 2B11 targeting SAR,126.0,0.609038008562661,5.0,confirmed
+10.1038/s41467-024-54746-5|DVVMTQSPLSLS,8jag,L,correct,,3.55,2023-05-06,none recorded,other,-0.1367789967729019,"Li, Y.J.",Cryo-EM structure of SARS-CoV-1 RBD in complex with W328-6H2,,,,
+10.1038/s41467-024-54746-5|DVVMTQSPLSLS,8jam,L,correct,,3.92,2023-05-06,none recorded,other,0.1938157255924815,"Li, Y.J.",Cryo-EM structure of Omicron BA.1 RBD in complex with W328-6,,,,
+10.1038/s41467-024-54746-5|DVVMTQSPLSLS,8jap,L,error,Dplus_CDR3short,3.81,2023-05-06,none recorded,other,-0.6409963206765972,"Li, Y.J.",Cryo-EM structure of SARS-CoV-2 WT RBD in complex with W328-,127.0,2.2520323656606056,0.0,not confirmed
+10.1038/s41564-024-01722-w|EVKLLESGGGLI,8tqi,C,error,Dplus_CDR3short,3.24,2023-08-07,none recorded,other,0.582908166236493,"Jardetzky, T.S.",Hemagglutinin-neuraminidase from Human parainfluenza virus t,118.0,0.5045718974699719,4.0,not confirmed
+10.1038/s41564-024-01722-w|QVQLQESGPGLV,8tqi,E,correct,,3.24,2023-08-07,none recorded,other,0.3067580751480034,"Jardetzky, T.S.",Hemagglutinin-neuraminidase from Human parainfluenza virus t,,,,
+10.1038/s41586-021-04022-z|DIVMTQSHKFMS,7mlv,I,correct,,4.1,2021-04-29,none recorded,other,-0.3062779168827054,"Gouaux, E.",Cryo-EM reveals partially and fully assembled native glycine,,,,
+10.1038/s41586-021-04022-z|DIVMTQSHKFMS,7mlu,I,correct,,4.1,2021-04-29,none recorded,other,-0.3518839805120211,"Gouaux, E.",Cryo-EM reveals partially and fully assembled native glycine,124.0,1.0313546228110126,2.0,
+10.1038/s41590-025-02286-5|YIQVTQSPSSLS,8ult,L,correct,,3.8,2023-10-16,experimental (PDB) model,rigid body only,0.8980925221949703,"Bjorkman, P.J.",Cryo-EM structure of the BG505 SOSIPv2 in complex with bNAb ,127.0,0.6270116791472133,2.0,
+10.1038/s41590-025-02286-5|YIQVTQSPSSLS,8ulu,L,error,Dminus_CDR3long,3.8,2023-10-16,experimental (PDB) model,rigid body only,0.9671274146882158,"Bjorkman, P.J.",Cryo-EM structure of the BG505 SOSIPv2 in complex with bNAb ,127.0,0.7237815168396641,2.0,not confirmed
+10.1073/pnas.2602538123|QVQLQESGGGLV,9zxc,A,correct,,3.4,2026-01-03,none recorded,other,,"Kruse, A.C.",Structure of AT118-R nanobody in complex with the angiotensi,124.0,0.9174358816458528,0.0,
+10.1073/pnas.2602538123|QVQLQESGGGLV,9zxd,A,error,E_FR4bulge,3.2,2026-01-03,none recorded,other,,"Kruse, A.C.",Structure of AT118-R nanobody in complex with the angiotensi,124.0,0.882113606540213,0.0,confirmed
+10.21203/rs.3.rs-9488000/v1|QVKLQESGGGLV,12tx,d,correct,,3.0,2026-04-18,none recorded,other,0.011029358727367,"Prasad, B.V.V.",M6 bound to A-B VP1 dimer of GII.4 Syd VLP from 6-fold axis,128.0,0.5868098139782548,6.0,
+10.21203/rs.3.rs-9488000/v1|QVKLQESGGGLV,12tz,D,correct,,3.5,2026-04-18,none recorded,other,-0.5298580689652252,"Prasad, B.V.V.",M6 bound to C-C VP1 dimer of GII.4 Syd VLP (C1 side),,,,
+10.21203/rs.3.rs-9488000/v1|QVKLQESGGGLV,12ua,C,error,Dplus_CDR3short,3.21,2026-04-18,none recorded,other,-0.6716640998457182,"Prasad, B.V.V.",M6 bound to C-C VP1 dimer of GII.4 Syd VLP (C2 side),128.0,0.8601503446806906,8.0,confirmed
+10.21203/rs.3.rs-9488000/v1|QVKLQESGGGLV,12ub,C,error,Dplus_CDR3short,3.05,2026-04-18,none recorded,other,-0.8846652317526863,"Prasad, B.V.V.",2 molecules of M6 bound to C-C VP1 dimer of GII.4 Syd VLP,128.0,0.9515962023265307,5.0,confirmed
+10.21203/rs.3.rs-9488000/v1|QVKLQESGGGLV,12ty,C,error,Dplus_CDR3short,3.5,2026-04-18,none recorded,other,-1.6024684013831594,"Prasad, B.V.V.",2 molecules of M6 bound to A-B VP1 dimer of GII.4 Syd VLP,128.0,0.9002683128046014,5.0,confirmed
+30us|VTTSKSSLRLSC,30us,C,correct,,3.0,2026-05-13,experimental (PDB) model,rigid body only,-0.3969410490338896,"Naismith, J.H.",Structure of E. coli WbaP in complex with a megabody,,,,
+9s7s|VTTSKSSLRLSC,9s7s,C,correct,,3.3,2025-08-05,experimental (PDB) model,rigid body only,-0.6580379424977814,"Naismith, J.H.",Structure of E. coli WbaP in complex with a megabody,,,,

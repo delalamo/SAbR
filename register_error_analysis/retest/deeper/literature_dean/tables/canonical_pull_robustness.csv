@@ -1,0 +1,4 @@
+reference,n,observed_more_common,expected,p
+"X-ray<=3.0 A unique V, <=2019 (main)",107,56,36.5,4e-05
+"all PDB unique V domains, all years",107,56,36.0,4e-05
+"study set clean chains (3-5 A, no run)",107,56,39.5,0.0002

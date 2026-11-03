@@ -1,0 +1,1010 @@
+### case A_FR1Nterm 6ad0 (case 6ad0) doi 10.1126/sciadv.aat7459
+- Presumable hydrogen bonds and salt bridges in the interaction interface are marked by red dashed lines.The cryo-EM density map of CVA10-M-2G8 at near-atomic resolution allowed us to build an atomic model of the capsid and the bound variable domain of the Fab.
+- This model reveals that the Fab-capsid interaction interface projects a footprint across three viral proteins (VP1 to VP3) and buries a total surface area of ~1100 Å2 on the capsid (Fig. 4C and fig.
+- In contrast, only one CDR in the light chain (LCDR) interacts with the VP1 C termini.The lower resolution limits of CVA10-A-2G8 and CVA10-P-2G8 density maps meant that only atomic models of the capsids in these immune complexes were successfully built.
+- The atomic model of the variable domain is also shown in (A).
+- The atomic models of capsid proteins from CVA10-M-2G8 and variable domains of Fab 2G8 are shown in colored ribbons, but capsid proteins of CVA10-A-2G8 and CVA10-P-2G8 are respectively shown in gray and white.
+- Particles in good classes were used to generate initial 3D models with the random model method in the program AUTO3DEM (48) and were further processed for 3D image reconstructions with the program RELION 2.0.
+- Local resolution variations were estimated using the program ResMap (50).Model building and refinementThe initial atomic model templates of all three particles and immune complexes were generated from homology modeling upon CVA6 [Protein Data Bank (PDB) code: 5XS4 (17)] and its immune complex [PDB code: 5XS7 (17)] by Accelrys Discovery Studio software (51).
+- Then, the template was docked into a segmented volume (enclosing a promoter) of final cryo-EM maps (viral particles or immune complexes) using Chimera (52).
+- The manual model building and automatic refinement were alternately and iteratively performed in Coot (53) and the module phenix.real_space_refine in PHENIX (53, 54).
+- The refined protomer was docked into the density of six neighboring protomers, which were then treated as a whole model for further optimization to avoid clashes between protomers.
+- Model statistics including bond lengths, bond angles, all atom clashes, rotamer statistics, Ramachandran plot statistics, etc., were closely inspected with Coot during the whole process.
+- Figures were prepared with Chimera (52) and PyMOL (58).
+- Model building and refinementThe initial atomic model templates of all three particles and immune complexes were generated from homology modeling upon CVA6 [Protein Data Bank (PDB) code: 5XS4 (17)] and its immune complex [PDB code: 5XS7 (17)] by Accelrys Discovery Studio software (51).
+- Then, the template was docked into a segmented volume (enclosing a promoter) of final cryo-EM maps (viral particles or immune complexes) using Chimera (52).
+- The manual model building and automatic refinement were alternately and iteratively performed in Coot (53) and the module phenix.real_space_refine in PHENIX (53, 54).
+- The refined protomer was docked into the density of six neighboring protomers, which were then treated as a whole model for further optimization to avoid clashes between protomers.
+- Model statistics including bond lengths, bond angles, all atom clashes, rotamer statistics, Ramachandran plot statistics, etc., were closely inspected with Coot during the whole process.
+- Figures were prepared with Chimera (52) and PyMOL (58).
+
+### case A_FR1Nterm 7czu (case 7czu) doi 10.1038/s41422-021-00487-9
+- The sensograms were fit in a 1:1 binding model with BIA Evaluation software (GE Healthcare).
+- After 2D classification with Relion, good particles were selected and subject to two cycles of heterogeneous refinement without symmetry using cryoSPARC.56 The good particles were selected and subjected to non-uniform refinement (beta) without symmetry, resulting in the three-dimensional (3D) reconstruction for the whole structure, which was further subject to 3D auto-refinement and post-processing with Relion.
+- For interface between S protein of SARS-CoV-2 and nAb, the dataset was subject to focused refinement with adapted mask on the region of the RBD–nAb sub-complex to improve the map quality.
+- Then the good particles were selected and subject to focused refinement with Relion, resulting in the 3D reconstruction of better quality on RBD–nAb sub-complex.The resolution was estimated with the gold-standard Fourier shell correlation 0.143 criterion57 with high-resolution noise substitution.58 Refer to Supplementary information, Figs.
+- S3, S4 and Table S2 for details of data collection and processing.Model building and structure refinementFor model building of the complex of S-ECD of SARS-CoV-2 with nAb, a model was first obtained for the nAb with Chainsaw59 using a template (PDB ID: 7C2L).
+- Then, the models of S-ECD (PDB ID: 7C2L) and the nAb were molecular dynamics flexible fitted60 into the whole cryo-EM map of the complex and the focused-refined cryo-EM map of the RBD–nAb sub-complex, respectively, which were merged and further manually adjusted with Coot.61 Each residue of the complex of S-ECD of SARS-CoV-2 with nAb was manually checked with the chemical properties taken into consideration during model building.
+- Structural refinement was performed in Phenix62 with secondary structure and geometry restraints to prevent overfitting.
+- To monitor the potential overfitting, the model was refined against one of the two independent half maps from the gold-standard 3D refinement approach.
+- Then, the refined model was tested against the other map.
+- Statistics associated with data collection, 3D reconstruction and model building were summarized in Supplementary information, Table S2.
+- After 2D classification with Relion, good particles were selected and subject to two cycles of heterogeneous refinement without symmetry using cryoSPARC.56 The good particles were selected and subjected to non-uniform refinement (beta) without symmetry, resulting in the three-dimensional (3D) reconstruction for the whole structure, which was further subject to 3D auto-refinement and post-processing with Relion.
+- For interface between S protein of SARS-CoV-2 and nAb, the dataset was subject to focused refinement with adapted mask on the region of the RBD–nAb sub-complex to improve the map quality.
+- Then the good particles were selected and subject to focused refinement with Relion, resulting in the 3D reconstruction of better quality on RBD–nAb sub-complex.The resolution was estimated with the gold-standard Fourier shell correlation 0.143 criterion57 with high-resolution noise substitution.58 Refer to Supplementary information, Figs.
+- Model building and structure refinementFor model building of the complex of S-ECD of SARS-CoV-2 with nAb, a model was first obtained for the nAb with Chainsaw59 using a template (PDB ID: 7C2L).
+- Then, the models of S-ECD (PDB ID: 7C2L) and the nAb were molecular dynamics flexible fitted60 into the whole cryo-EM map of the complex and the focused-refined cryo-EM map of the RBD–nAb sub-complex, respectively, which were merged and further manually adjusted with Coot.61 Each residue of the complex of S-ECD of SARS-CoV-2 with nAb was manually checked with the chemical properties taken into consideration during model building.
+- Structural refinement was performed in Phenix62 with secondary structure and geometry restraints to prevent overfitting.
+- To monitor the potential overfitting, the model was refined against one of the two independent half maps from the gold-standard 3D refinement approach.
+- Then, the refined model was tested against the other map.
+- Statistics associated with data collection, 3D reconstruction and model building were summarized in Supplementary information, Table S2.
+
+### case A_FR1Nterm 7jhg (case 7jhg) doi 10.1126/science.abe7565
+(no open-access full text)
+
+### case A_FR1Nterm 7tz5 (case 7tz5) doi 10.1128/jvi.00896-22
+(no open-access full text)
+
+### case A_FR1Nterm 8e8l (case 8e8l) doi 10.1038/s41467-023-41052-9
+- Refined maps were post-processed in DeepEMhancer35.Model building and contact identificationA model for the 9H2 Fab was generated using SabPred AbodyBuilder38.
+- Models for the capsid (PDB ID 1HXS, 1EAH, and 1PVC)5,36,37 (Supplementary Table 1) were used to initiate the build.
+- Each model was modified as necessary in Coot51 to add missing residues or change residues to the Sabin strain sequences.
+- The build was conducted first in ISOLDE52 and subsequently in PHENIX53 before validation with MolProbity54 (Supplementary Table 1).
+- Palmitic acid from 1HXS was fitted into pocket factor density.
+- For comparison and figures, contacts were plotted in Chimera or ChimeraX56,57, With roadmaps generated in RIVEM58.
+- The map examples for quality of fit to density were defined using ChimeraX’s Map Zone tool57.
+- Chimera was used to assess 9H2 buried surfaces and RMSD.
+- Model building and contact identificationA model for the 9H2 Fab was generated using SabPred AbodyBuilder38.
+- Models for the capsid (PDB ID 1HXS, 1EAH, and 1PVC)5,36,37 (Supplementary Table 1) were used to initiate the build.
+- Each model was modified as necessary in Coot51 to add missing residues or change residues to the Sabin strain sequences.
+- The build was conducted first in ISOLDE52 and subsequently in PHENIX53 before validation with MolProbity54 (Supplementary Table 1).
+- Palmitic acid from 1HXS was fitted into pocket factor density.
+- For comparison and figures, contacts were plotted in Chimera or ChimeraX56,57, With roadmaps generated in RIVEM58.
+- The map examples for quality of fit to density were defined using ChimeraX’s Map Zone tool57.
+- Chimera was used to assess 9H2 buried surfaces and RMSD.
+
+### case A_FR1Nterm 8rvn (case 8rvn) doi 10.1128/jvi.00638-24
+(no open-access full text)
+
+### case A_FR1Nterm 9mnb (case 9mnb) doi 10.1038/s41467-026-70491-3
+- Prior to fitting isotopic distributions, degenerate charge states were combined by direct summation of equivalent peak intensities.A total of 195 peptides (Supplementary Fig. 12) covering 88.8% of tryptase with an average redundancy of 10.60 unique peptides per residue were included for PF analysis using the empirical method71, with errors defined by the SEM of triplicate measurements.
+- The blotting chamber was maintained at 4 °C and 100% humidity during freezing.Movies were collected using a Titan Krios G3i (ThermoFisher) outfitted with a K3 camera and Bioquantum energy filter (Gatan).
+- Templates created from a ~ 9 Å map from data collected on a Glacios (ThermoFisher) outfitted with a K2 camera (Gatan) were used for particle picking.
+- Template picking yielded 8,899,017 picks, roughly evenly split across the collections.
+- All particles were subjected to four rounds of heterogeneous refinement using these volumes as starting models, with two copies of the ‘correct’ complex. 1,160,676 particles were re-extracted in a 450-pixel box, and binned to 256 pixels.
+- One round of heterogeneous refinement was run with no downsampling. 716,327 particles were re-extracted in a 450-pixel box, and binned to 324 pixels, giving a final pixel size of 1.164 Å pixel−1.
+- One round of heterogeneous refinement was run, particles downsampled to 256 pixels.
+- Two classes, constituting 680,181 particles, were subjected to non-uniform refinement.
+- The classes with tryptase centered was used as an initial model and filtered to 15 Å before refinement.
+- Non-uniform refinement was run after reference-based motion correction, per-particle defocus, per-group CTF parameter optimization, and duplicates were removed.
+- Local resolution, orientation diagnostics and local filtering jobs were run on the final map.For β-tryptase and E104.v2, a previous crystal structure (PDB: 6VVU) was used as an initial model.
+- An Alphafold2 model of Fab E82.AS was used as an initial model.
+- The nanobody was rigid fit into the density from the crystal structure PDB: 6ANA.
+- The initial templates were rigid fit into the cryoEM map of E82.AS:βI-tryptase:E104.v2:Nb using ChimeraX (v1.7.1)76.
+- The models were manually fit and mutated in E82.AS and E104.v2 with ISOLDE (v1.6)77.
+- The model was refined in Phenix real space refinement78.
+- Model geometry and map-to-model statistics were assessed using the EM validation check in Phenix (v1.20.1-4487).
+- CryoEM data collection, refinement and validation statistics are presented in Supplementary Table 1.
+- Figures were prepared in ChimeraX and PyMol (version 3.1.3)79.To create a complete structure to enable a morph between the enzyme and zymogen conformations, otherwise disordered loop residues (residues 16-25 and residues 141-155) were grafted into our E82.AS/E104.v2-bound structure PDB:9MNB from a β-tryptase protomer of 1A0L.
+- The peptide geometry of the fusion points was improved using Coot’s Bond regularization tools.
+- The overall positions of these two loops were then manually adjusted outwards using the ‘sculpting’ function of PyMOL to create a potential zymogen-like conformational model for these specific areas while maintaining reasonable backbone geometry.
+- Supplementary Movie 1 was made in ChimeraX using the morph function between the active enzyme conformation of β-tryptase as seen in the tetrameric state (PDB:1A0L) and this computationally-derived fusion that represents the E82.AS/E104.v2-bound β-tryptase structure in its inhibited zymogen-like structure.Epitope binning and competition binding of antibodies E82.AS, 31A.v11 and E104.v2The epitope binning assay, a label free dip and read assay, was run using Octet RED384 system (Sartorius Corporat
+- The resulting binding kinetic data was then collected and analyzed using Cytiva evaluation software, employing a 1:1 binding model.Reporting summaryFurther information on research design is available in the Nature Portfolio Reporting Summary linked to this article.
+
+### case A_FR1Nterm 6bpe (case 6bpe) doi 10.1038/s41586-018-0249-1
+(no open-access full text)
+
+### case B_CDR2FR3 7e39 (case 7e39) doi 10.1038/s41421-021-00292-z
+- The data were fitted into a 1:1 binding model using Biacore Evaluation Software (GE Healthcare).
+- After that 3D classification was performed using a map derived from the PDB model as the initial reference model.
+- The most homogeneous particles were selected for the final 3D auto-refinement with C3 symmetry (10D12 and 9G11) or without symmetry (7B8).
+- To improve the map quality of the interface between RBD and antibody 10D12 or 9G11, the dataset was expanded with C3 symmetry and then subjected to focused 3D classification and then a final round of focused 3D auto-refinement (Supplementary Fig.
+- Reconstruction resolutions were determined based on the gold-standard Fourier shell correlation (FSC = 0.143) criterion29.Cryo-EM data collection, refinement, and validation statistics could be found in Table 1.Site-directed mutagenesisBased on pcDNA3.1.S230, 50 mutant plasmids were generated10,24.
+- The pcDNA3.1.S2 recombinant plasmid was used as the template to generate the plasmid with mutagenesis in the S gene.
+- Following site-directed mutagenesis PCR, the template chain was digested using DpnI restriction endonuclease (NEB, USA).
+- After that 3D classification was performed using a map derived from the PDB model as the initial reference model.
+- The most homogeneous particles were selected for the final 3D auto-refinement with C3 symmetry (10D12 and 9G11) or without symmetry (7B8).
+- To improve the map quality of the interface between RBD and antibody 10D12 or 9G11, the dataset was expanded with C3 symmetry and then subjected to focused 3D classification and then a final round of focused 3D auto-refinement (Supplementary Fig.
+- Reconstruction resolutions were determined based on the gold-standard Fourier shell correlation (FSC = 0.143) criterion29.Cryo-EM data collection, refinement, and validation statistics could be found in Table 1.
+
+### case B_CDR2FR3 12iu (case 12iu) doi None
+(no open-access full text)
+
+### case B_CDR2FR3 8cr9 (case 8cr9) doi 10.1016/j.cell.2023.10.002
+(no open-access full text)
+
+### case B_CDR2FR3 7oh0 (case 7oh0) doi 10.1172/jci151676
+(no open-access full text)
+
+### case B_CDR2FR3 7mkl (case 7mkl) doi 10.1016/j.immuni.2021.08.016
+- Zivanov et al., 2018N/AcryoSPARC v3.1.0Punjani et al., 2017N/ADeepEMhancerSanchez-Garcia et al., 2021N/ACoot v0.9.5Emsley et al., 2010N/AIsolde v1.1.0Croll, 2018N/APhenix v1.19Adams et al., 2010N/AqtPISAKrissinel and Henrick, 2007N/AMDTrajMcGibbon et al., 2015N/AUCSF ChimeraXGoddard et al., 2018N/A Resource availabilityLead contactFurther information and requests for resources and reagents should be directed to the Lead Contact, Michael S.
+- All reagents will be made available on request after completion of a Materials Transfer Agreement.Experimental model and subject detailsVirusesThe 2019n-CoV/USA_WA1/2020 (WA1/2020) isolate of SARS-CoV-2 was obtained from the US Centers for Disease Control (CDC).
+- The signal obtained for binding of the human ACE2 in the presence of each dilution of tested culture supernatant was expressed as a percentage of the human ACE2 binding without antibody after subtracting the background signal.Sequencing, cloning, and expression of chimeric IgG1To generate chimeric human IgG1 from mouse hybridoma cell lines, cells were lysed in Trizol (Thermo) followed by RNA purification with Direct-Zol Micro kit (Zymo). 5′ RACE products were generated with Template Switching RT
+- Particles were picked using a general model in CrYOLO v1.7.6 (Wagner et al., 2019). 2D classification was performed in Relion 3.1 (Scheres, 2012;
+- The class of highest resolution and clearest Fab density (consisting of all RBDs in the down position, with one bound by Fab) was selected for iterative Bayesian polishing and per-particle CTF refinement in Relion 3.1 (Zivanov et al., 2019).
+- These particles were then used in non-uniform refinement in cryoSPARC v3.1.0 to generate a full-spike map (Punjani et al., 2017).
+- To improve map quality at the Fab/spike interface, a mask was generated encompassing only the Fv and RBD, and particles were subjected to highly constrained, local non-uniform refinement with dynamic masking in cryoSPARC v3.1.0.
+- Final maps were sharpened via deep learning employed through DeepEMhancer (Sanchez-Garcia et al., 2021).Model buildingThe locally refined map was used to construct a model of the RBD bound by SARS2-38 Fv.
+- An initial model for the RBD was adapted from a crystal structure of RBD bound to ACE2 (PDB: 6M0J).
+- For initial modeling of SARS2-38 Fv, pBLAST was used to identify pre-existing Fab structures with high sequence similarity (PDB: 1KIQ for VH, and PDB: 5XJM for VL).
+- These starting components were combined and docked into the map, then refined in Coot v0.9.5 (Emsley et al., 2010), Isolde v1.1.0 (Croll, 2018), and Phenix v1.19 (Adams et al., 2010).
+- Epitope and paratope contacts were identified using Protein Interfaces, Surfaces and Assemblies (PISA) solvent exclusion analysis (Krissinel and Henrick, 2007); close contacts and buried surface area were determined using MDTraj (McGibbon et al., 2015); and structures were visualized using UCSF ChimeraX (Goddard et al., 2018).The full-spike map was used to construct a model of the spike bound by one Fv with all RBDs in the down position.
+- An initial model was generated by combining the locally refined Fv/RBD structure with a previously solved cryo-EM structure of trimeric SARS-CoV-2 spike in the proper RBD configuration (PDB: 6VXX).
+- This model was docked into the full-spike map then refined using Coot v0.9.5, Isolde v1.1.0, and Phenix v1.19.RBD conservation analysisRBD sequence data (residues 333-520) were retrieved on March 28, 2021 from the COVID-19 CoV Genetics Browser (covidcg.org), enabled by data from GISAID (Chen et al., 2021a;
+- Results were visualized using a color-coded surface rendering of the RBD in UCSF ChimeraX.Neutralization assaysFRNTs were performed as described (Case et al., 2020).
+- The signal obtained for binding of the human ACE2 in the presence of each dilution of tested culture supernatant was expressed as a percentage of the human ACE2 binding without antibody after subtracting the background signal.Sequencing, cloning, and expression of chimeric IgG1To generate chimeric human IgG1 from mouse hybridoma cell lines, cells were lysed in Trizol (Thermo) followed by RNA purification with Direct-Zol Micro kit (Zymo). 5′ RACE products were generated with Template Switching RT
+- Particles were picked using a general model in CrYOLO v1.7.6 (Wagner et al., 2019). 2D classification was performed in Relion 3.1 (Scheres, 2012;
+- The class of highest resolution and clearest Fab density (consisting of all RBDs in the down position, with one bound by Fab) was selected for iterative Bayesian polishing and per-particle CTF refinement in Relion 3.1 (Zivanov et al., 2019).
+- These particles were then used in non-uniform refinement in cryoSPARC v3.1.0 to generate a full-spike map (Punjani et al., 2017).
+- To improve map quality at the Fab/spike interface, a mask was generated encompassing only the Fv and RBD, and particles were subjected to highly constrained, local non-uniform refinement with dynamic masking in cryoSPARC v3.1.0.
+- Final maps were sharpened via deep learning employed through DeepEMhancer (Sanchez-Garcia et al., 2021).Model buildingThe locally refined map was used to construct a model of the RBD bound by SARS2-38 Fv.
+- An initial model for the RBD was adapted from a crystal structure of RBD bound to ACE2 (PDB: 6M0J).
+- For initial modeling of SARS2-38 Fv, pBLAST was used to identify pre-existing Fab structures with high sequence similarity (PDB: 1KIQ for VH, and PDB: 5XJM for VL).
+- These starting components were combined and docked into the map, then refined in Coot v0.9.5 (Emsley et al., 2010), Isolde v1.1.0 (Croll, 2018), and Phenix v1.19 (Adams et al., 2010).
+- Epitope and paratope contacts were identified using Protein Interfaces, Surfaces and Assemblies (PISA) solvent exclusion analysis (Krissinel and Henrick, 2007); close contacts and buried surface area were determined using MDTraj (McGibbon et al., 2015); and structures were visualized using UCSF ChimeraX (Goddard et al., 201
+
+### case B_CDR2FR3 8dg8 (case 8dg8) doi 10.1038/s41467-023-36459-3
+- Consequently, we used the higher resolution structure for model building. 3 × 1 binds domain III of HPIV3 preF, protruding perpendicularly and binding only one protomer, with no additional contacts to other regions (Fig. 2b).
+- While there is not sufficient density to build this region, its proximity to the 3 × 1 binding site could indicate an additional binding epitope.
+- Comparison of the per-residue BSA of RSV preF in complex with MxR, MPE8, and ADI-19425 revealed common binding regions that share high sequence homology with HMPV (Fig.
+- The rigid geometry imposed by the disulfide bond may impair ADI-19425’s ability to bind HMPV.
+- Curve fitting was performed using a 1:1 binding model and ForteBio Octet data analysis software release 9.0.
+- The final 3 × 1:HPIV3 grids used for the collection were frozen with 4 µL of the sample at 0.19 mg/mL, a 12 s blot time, 0 blot force, and a 15 s wait between application and blotting.Cryo-EM data collection, processing, and model refinementDatasets were collected on a Titan Krios G3 cryo-electron microscope (Thermo Fisher Scientific) operating at 300 kV with a K3 DED (Gatan Inc.) at the Pacific Northwest Center for Cryo-EM (PNCC).
+- Blob picker was used to select ~50,000 particles, which underwent 2D classification to produce templates for template-based picking.
+- A single ab-initio model was generated and refined.
+- Particles were re-extracted at 1.02885 Å/px and subject to local CTF refinement and non-uniform refinement with C3 symmetry.
+- Non-uniform refinement with a custom mask cropping out the CH1 region and GCN4 domain produced a sharpened map (GSFSC = 0.143) of 2.41 Å resolution using C1 symmetry, and 2.24 Å using C3 symmetry.The template generation for 3 × 1:HPIV3 produced a mix of classes with either one, two, or three Fabs bound, all of which were used for original template picking.
+- Ab-initio modeling produced a single map with one Fab bound to HPIV3 preF, and subsequent refinement produced a map with a GSFSC resolution of 3.7 Å at the 0.143 cutoffs using C1 symmetry.
+- An additional three Fab map was produced with C3 symmetry in non-uniform refinement to 4.3 Å, though due to the low resolution, this map was not used in model building.
+- Minor improvements were made by performing a C3 homogenous refinement, followed by C3 symmetry expansion, 3D classification with four classes, and the removal of duplicate particles from the most homologous class, producing a stack of 1.04 million particles.
+- Particles were re-extracted with the Local Motion Correction job, binned to 1.02885 Å/px, and the map refined using C1 non-uniform refinement.
+- Both the DeepEM enhanced and cryoSPARC sharp maps were used in fitting the structures of MxR:RSV and 3 × 1:HPIV3 to the map.
+- Structure refinement and validation were done in the Phenix78 software suite and Coot79.
+- Further refinement was done in ChimeraX80 using the ISOLDE81 plugin as necessary.
+- For the co-infection model, 105 pfu of each virus was mixed in 100 µL 1 × DPBS, and 5 mg/kg of each monoclonal antibody was mixed in 50 µL 1 × DPBS.
+- Cryo-EM data collection, processing, and model refinementDatasets were collected on a Titan Krios G3 cryo-electron microscope (Thermo Fisher Scientific) operating at 300 kV with a K3 DED (Gatan Inc.) at the Pacific Northwest Center for Cryo-EM (PNCC).
+- Blob picker was used to select ~50,000 particles, which underwent 2D classification to produce templates for template-based picking.
+- A single ab-initio model was generated and refined.
+- Particles were re-extracted at 1.02885 Å/px and subject to local CTF refinement and non-uniform refinement with C3 symmetry.
+- Non-uniform refinement with a custom mask cropping out the CH1 region and GCN4 domain produced a sharpened map (GSFSC = 0.143) of 2.41 Å resolution using C1 symmetry, and 2.24 Å using C3 symmetry.The template generation for 3 × 1:HPIV3 produced a mix of classes with either one, two, or three Fabs bound, all of which were used for original template picking.
+- Ab-initio modeling produced a single map with one Fab bound to HPIV3 preF, and subsequent refinement produced a map with a GSFSC resolution of 3.7 Å at the 0.143 cutoffs using C1 symmetry.
+- An additional three Fab map was produced with C3 symmetry in non-uniform refinement to 4.3 Å, though due to the low resolution, this map was not used in model building.
+- Minor improvements were made by performing a C3 homogenous refinement, followed by C3 symmetry expansion, 3D classification with four classes, and the removal of duplicate particles from the most homologous class, producing a stack of 1.04 million particles.
+- Particles were re-extracted with the Local Motion Correction job, binned to 1.02885 Å/px, and the map refined using C1 non-uniform refinement.
+- Both the DeepEM enhanced and cryoSPARC sharp maps were used in fitting the structures of MxR:RSV and 3 × 1:HPIV3 to the map.
+- Structure refinement and validation were done in the Phenix78 software suite and Coot79.
+- Further refinement was done in ChimeraX80 using the ISOLDE81 plugin as necessary.
+
+### case B_CDR2FR3 7wvl (case 7wvl) doi 10.1371/journal.ppat.1010994
+- All the experiments were repeated at least three times.Purification, crystallization, data collection, refinement and analysisA total of 30 mg of P4A2 was digested for Fab preparation.
+- The diffraction data was processed using IMOSFLM [33] and AIMLESS [34] programs of the CCP4 suite (S3 Table).The structure was determined by molecular replacement using PHASER [35] and the search model was the STEC90-C11 Fab:RBD complex [36].
+- This model was subjected to iterative model building and refinement using COOT [37] and PHENIX [38], respectively and the sequence of the STEC90-C11 Fab was slowly changed to that of P4A2.
+- The refined structure was deposited with Protein Data Bank with the accession code 7WVLThe structure was visualized and analysed using PYMOL (Schrödinger Corp.) and the interactions were identified using the CONTACT program of CCP4 [39].
+- The cDNA (4 μL) was used as template in a 50 μL first round PCR which comprised of external antisense primer (0.25 μM) and a cocktail of VH (or VL as the case may be) family specific external sense primers, each at a final concentration of 0.1 μM, 1 × Q5 DNA polymerase buffer, dNTPs (200 μM) and Q5 DNA polymerase (0.5 U) as recommended by the manufacturer.
+- Two microliter of the first round PCR product was used as template in a 50 μL second round nested PCR following the protocol described above for the first round.
+
+### case C_FR3 9dm7 (case 9dm7) doi 10.1038/s41467-025-57843-1
+- After further particle sorting and 3D refinement, we obtained a map with an overall resolution of 3.0 Å (Fig. 1c, Supplementary Table 1 and Supplementary Figs. 2a–c, 3a–c).
+- Measured A450 values were plotted against the log Fab concentration, and EC50 values were determined in GraphPad Prism version 8.4.3 using a variable slope model assuming a sigmoidal dose response.Single-particle cryo-EM data processing and map refinementAll data sets were corrected for beam-induced motion with Patch Motion Correction implemented in cryoSPARC v.2.1571 and the contrast transfer function (CTF) was estimated with Patch CTF.
+- The resulting model was used to pick particles using Topaz Extract.
+- From the ab initio reconstruction, one good class of 174,773 particles was subjected to heterogeneous refinement, and a final class of 145,477 particles was then subjected to non-uniform refinement and yielded a reconstruction with a resolution of 3.24 Å (FSC = 0.143).
+- A subsequent local refinement was performed using a mask covering PimE and the variable region of the Fab and resulted in a density map at 3.02 Å resolution.For the substrate-bound structure, 12,083,984 particles were automatically picked using a blob-picker job and subjected to multiple rounds of 2D classification.
+- The resulting model was used to pick particles using Topaz Extract. 2,196,237 particles were extracted in a box of 320 pixels, and Fourier cropped to 80 pixels for initial cleanup.
+- One good class comprises of 78,648 particles were subjected to heterogeneous refinement and a final class comprised of 56,510 particles was subjected to non-uniform refinement and yielded a reconstruction with a resolution of 3.8 Å (FSC = 0.143).
+- A subsequent local refinement was performed using a mask covering PimE and the variable region of the Fab and resulted in a density map at 3.46 Å resolution.Model buildingModel building was performed in Coot72.
+- Most of the Fab, except for the binding interface, was built based on a preexisting model at high resolution (PDB ID 5UCB).
+- The atomic model of apo PimE was built de novo from the globally sharpened 3.02 Å map using the Phenix Map to Model tool.
+- Ramachandran outliers were manually fixed in Coot72 (version 0.9.6 EL).
+- The structure was then refined using Phenix real space refine74 with secondary structure and Ramachandran restraints imposed.
+- Models were validated using Molprobity within PHENIX 1.19.274,75.
+- For substrate-bound PimE, the model was built based on the apo structure, and the ligand files were generated in Coot (0.9.6 EL) and followed by iterative rounds of real-space refinement in PHENIX 1.19.2 and manual adjustment in Coot (0.9.6 EL).Expression and preparation of the PPM synthaseThe second domain of the gene encoding a PPM synthase in Mycobacterium tuberculosis H37Rv, which starts with a methionine at position 594 and named ppm1_D237 was cloned into the expression vector pET23a and in
+- E. coli BL21 (DE3) cells harboring the WT and mutated genes were grown, and membrane fractions were prepared as described above.
+- Molecular coordinates of both substrates and products were built using the coordinates from the ligand-bound cryo-EM structure.
+- RoseTTAFold All-atom was used to fold and dock both substrates and products for comparison.
+- Atomistic molecular simulations were performed with the CHARMM36m forcefield, with parameters for Ac1PIM4 and Ac1PIM5 taken from CHARMM-GUI Membrane Builder82,94,95.
+- Single-particle cryo-EM data processing and map refinementAll data sets were corrected for beam-induced motion with Patch Motion Correction implemented in cryoSPARC v.2.1571 and the contrast transfer function (CTF) was estimated with Patch CTF.
+- The resulting model was used to pick particles using Topaz Extract.
+- From the ab initio reconstruction, one good class of 174,773 particles was subjected to heterogeneous refinement, and a final class of 145,477 particles was then subjected to non-uniform refinement and yielded a reconstruction with a resolution of 3.24 Å (FSC = 0.143).
+- A subsequent local refinement was performed using a mask covering PimE and the variable region of the Fab and resulted in a density map at 3.02 Å resolution.For the substrate-bound structure, 12,083,984 particles were automatically picked using a blob-picker job and subjected to multiple rounds of 2D classification.
+- The resulting model was used to pick particles using Topaz Extract. 2,196,237 particles were extracted in a box of 320 pixels, and Fourier cropped to 80 pixels for initial cleanup.
+- One good class comprises of 78,648 particles were subjected to heterogeneous refinement and a final class comprised of 56,510 particles was subjected to non-uniform refinement and yielded a reconstruction with a resolution of 3.8 Å (FSC = 0.143).
+- A subsequent local refinement was performed using a mask covering PimE and the variable region of the Fab and resulted in a density map at 3.46 Å resolution.
+- Model buildingModel building was performed in Coot72.
+- Most of the Fab, except for the binding interface, was built based on a preexisting model at high resolution (PDB ID 5UCB).
+- The atomic model of apo PimE was built de novo from the globally sharpened 3.02 Å map using the Phenix Map to Model tool.
+- Ramachandran outliers were manually fixed in Coot72 (version 0.9.6 EL).
+- The structure was then refined using Phenix real space refine74 with secondary structure and Ramachandran restraints imposed.
+- Models were validated using Molprobity within PHENIX 1.19.274,75.
+- For substrate-bound PimE, the model was built based on the apo structure, and the ligand files were generated in Coot (0.9.6 EL) and followed by iterative rounds of real-space refinement in PHENIX 1.19.2 and manual adjustment in Coot (0.9.6 EL).
+
+### case C_FR3 7e23 (case 7e23) doi 10.1038/s42003-021-02029-w
+- The main PK kinetic parameters were calculated using Phoenix WinNonlin.Production of human monoclonal antibodyRecombinant vector constructionRecombinant antibody heavy chain variable region and light chain variable region were amplified (2× Phanta Max Master Mix, Vazyme, P515-01) using the positive clones screened from the library as the template.
+- KD was calculated using a 1:1 binding model in Octet Data Acquisition 9.0.0.49 (Sartorius AG).
+- KD was calculated using a 1:1 binding model in Octet Data Acquisition 9.0.0.49 (Sartorius AG).
+- The KD was calculated using a 1:1 binding model in Octet Data Acquisition 9.0.0.49.
+- The affinity was calculated using a 1:1 (Langmuir) binding fit model with BIA evaluation software.Pharmacokinetics studies of CA521FALA in rhesus monkeys and C57BL/6 miceA single intravenous injection dose of CA521 was conducted in rhesus monkeys (N = 3, 2 females and 1 male, age 3–5 years, bodyweight 3.00–3.90 kg) and C57BL/6 mice (N = 4, 4 males, age 5–7 weeks, bodyweight 21–23 g) at 50 and 10 mg/kg.
+- After that 3D classification was performed using a map derived from the PDB model as the initial reference model.
+- The most homogeneous particles were selected for the final 3D auto-refinement.
+
+### case C_FR3 8w5e (case 8w5e) doi 10.1016/j.celrep.2025.115334
+(no open-access full text)
+
+### case C_FR3 7kra (case 7kra) doi 10.7554/elife.62611
+- Materials and methodsKey resources tableReagent type (species) or resourceDesignationSource or referenceIdentifiersAdditional informationGene (Homo sapiens)hEMC1NIH Mammalian Gene CollectionNCBI: BC034589Gene (Homo sapiens)hEMC2NIH Mammalian Gene CollectionNCBI: BC021667Gene (Homo sapiens)hEMC3NIH Mammalian Gene CollectionNCBI: BC022807Gene (Homo sapiens)hEMC4Genestrand (Eurofins, Germany)Uniprot: Q5J8M3-1Gene (Homo sapiens)hEMC5NIH Mammalian Gene CollectionNCBI: BC033588Gene (Homo sapiens)hEMC6
+- (4) Finally, the final dual guide vector was generated by Gibson cloning (NEBuilder).To generate the hEMC knockout cell lines, K562 dCas9 KRAB cells were nucleofected with the respective hEMC knockout plasmids using Lonza SF Cell Line 96-well Nucleofector Kit (V4SC-2096).
+- The resulting class sums were then used as templates for automated particle picking using Gautomatch-v0.55 (Zhang, 2016), followed by extraction in RELION 2.0.
+- Subsequent particles were subjected to 3D auto-refine in Relion 2.0.
+- The Polara dataset was processed providing a reference model created in Spider (Shaikh et al., 2008) roughly mimicking the dimensions seen in 2D projections, then a second round was run using the resulting volume before two rounds of 3D classification without alignments.
+- The resulting subset of particles were subjected to 3D auto-refine and then 3D classification with local alignments.
+- The best 83,599 particles were then subjected to 3D refinement resulting in a 3D volume with ~8 Å reported resolution, which was rescaled and low-pass filtered for use as the reference for the DDM Krios dataset. 3D classification without alignments, 3D refinement, 3D classification with local alignments, and 3D auto refinement were performed resulting in a ~ 7 Å structure composed of 170,186 particles.
+- The combined dataset was subjected to two rounds of 3D refinement to form a consensus structure at ~6.8 Å all conducted in Relion 2.0.
+- These particles were then subjected to 3D refinement in THUNDER (Hu et al., 2018) using soft-edged mask.
+- Molecular graphics and analyses were performed with the UCSF Chimera package (Pettersen et al., 2004) and Coot 0.8.7 and Coot 0.9 (Emsley and Cowtan, 2004;
+- Punjani et al., 2019) and visualizing the resulting map and scaling in UCSF Chimera.Endogenous EMC + Fab DH4 in MSP1D1-yeast total extract nanodiscAll dose-fractionated image stacks were corrected for motion artefacts, 2x binned in the Fourier domain, and dose-weighted using MotionCor2 (Zheng et al., 2017) using Focus (Biyani et al., 2017) resulting in a 2x binned pixel size of 0.835 Å (nanodisc – UCSF Krios).
+- The resulting class sums were then used as templates for automated particle picking using Autopick in Relion 3.0, followed by extraction and one round of 2D classification per subset to remove ice contamination.
+- The resulting subsets of particles were subject to 3D refinement.
+- Punjani et al., 2019) along with a reference model.
+- These data were subjected to non-uniform homogenous refinement, a round of four class 3D heterogeneous refinement, another round of non-uniform refinement for the best class (roughly 1.2 million particles), non-uniform homogeneous refinement, a round of two class 3D heterogeneous refinement, and another non-uniform homogeneous refinement for the best class (roughly 500,000 particles).
+- These were then exported to RELION 3.0 using PyEM (Asarnow et al., 2019). 3D Classification was performed with local alignments, then CTF refinement of the best class (230,528 particles) resulting in a ~ 3.2 Å final reconstruction.
+- This was post-processed in both RELION 3.0 and using phenix.autosharpen, both resulting maps were used for model building.Model building and refinement of yEMC in nanodiscsStructural biology applications used in this project were compiled and configured by SBGrid (Morin et al., 2013).
+- The yeast EMC structure was built de novo using Coot (version 0.8.7 and 0.9) and UCSF ChimeraX (Goddard et al., 2018).
+- Visible secondary structure was built by hand for the entire structure using overlays of the yEMC detergent consensus map as well as the yEMC nanodisc unsharpened and sharpened map.
+- Visual inspection for landmark residues (tryptophan, tyrosine, leucine, and proline) in the sequences that correlated with the position of well densities as well as fit correlation in UCSF Chimera was computed to assign identities for yEMC1, yEMC3, yEMC5, and yEMC6.
+- Next several homology models were computed and overlain for yEMC2, with a predicted TPR structural domain, using Robetta (Raman et al., 2009;
+- These were used in addition to secondary structure prediction to guide sequence assignment, loop building, and helical packing.
+- EMC3, EMC5, and EMC6 were built off of the transmembrane helices using sphere refinement, real space refinement, regularization, and visual monitoring of the Ramachandran plot in Coot.
+- After building EMC1-3, EMC5-7, and EMC10, there remained several transmembrane helices and a beta strand fitted into the lumen but not connected to EMC1, EMC7, or EMC10.
+- However, there was an additional poorly resolved short helix and loop density in the cytoplasmic domain which was assigned to EMC4.Two poorly resolved transmembrane helices remained, however, due to the fact they did not have clear connectivity to any built strand, poly alanine alpha helices were built in but not assigned to a yEMC protein (Figure 5—figure supplement 5).
+- Additional density that was not built into was visualized in UCSF ChimeraX (Goddard et al., 2018) and allowed for subsequent assignment of several glycosylated residues and one POPC molecule.
+- Each subunit was built in a separate pdb file and subjected to iterative rounds of phenix.real_space_refine (Adams et al., 2011;
+- Liebschner et al., 2019) into segmented maps preceded and followed by adjustment in Coot.
+- Manual assignment of secondary structure restraints was used and improved during Phenix refinement.
+- Once all of the we
+
+### case C_FR3 7mhz (case 7mhz) doi 10.1126/science.abg4998
+(no open-access full text)
+
+### case C_FR3 9yfu (case 9yfu) doi 10.1021/acs.jmedchem.6c00081
+(no open-access full text)
+
+### case C_FR3 2x7l (case 2x7l) doi 10.1073/pnas.0914946107
+(no open-access full text)
+
+### case F_CDR1 3jbf (case 3jbf) doi 10.1128/jvi.03017-15
+(no open-access full text)
+
+### case F_CDR1 6lht (case 6lht) doi 10.1016/j.chom.2020.01.003
+(no open-access full text)
+
+### case F_CDR1 7t6x (case 7t6x) doi 10.1126/science.abn9884
+(no open-access full text)
+
+### case F_CDR1 8gse (case 8gse) doi 10.3390/v14112322
+- The best particles were selected, re-extracted with a pixel size of 1.35 Å/pixel, and subjected to auto-3D refinement, yielding F-, A-, and E-particles.
+- Next, BLOCK-based reconstruction [12] was used to achieve clearer density for the interfaces of the complexes by symmetry expanding and re-extracting the protomers and MAb region and subsequently returned to the virus particles and performed refinement for the complexes of E3 particles with 6D10.
+- Model Building, Refinement, and ValidationThe cryo-EM structures of E3-6D10 were modeled using antibodies 305-78-7 (PDB ID: 5HDQ) and NC10 (PDB ID: 1NMC) as the initial models.
+- After manual modification of the models by COOT [13], structure refinement was carried out using ‘phenix.real_space_refine’ in PHENIX with secondary structure restraint [11].
+- All the structural Figures were prepared in UCSF Chimera [15]. 2.7.
+- The best particles were selected, re-extracted with a pixel size of 1.35 Å/pixel, and subjected to auto-3D refinement, yielding F-, A-, and E-particles.
+- Next, BLOCK-based reconstruction [12] was used to achieve clearer density for the interfaces of the complexes by symmetry expanding and re-extracting the protomers and MAb region and subsequently returned to the virus particles and performed refinement for the complexes of E3 particles with 6D10.
+- Model Building, Refinement, and ValidationThe cryo-EM structures of E3-6D10 were modeled using antibodies 305-78-7 (PDB ID: 5HDQ) and NC10 (PDB ID: 1NMC) as the initial models.
+- After manual modification of the models by COOT [13], structure refinement was carried out using ‘phenix.real_space_refine’ in PHENIX with secondary structure restraint [11].
+- All the structural Figures were prepared in UCSF Chimera [15].
+- Cross-validation FSC curves for map-to-model fitting and the interfaces of E3 F-, A-, and E-particles with 6D10, respectively.
+- Table S2: Cryo-EM data collection and refinement statistics;
+
+### case F_CDR1 9ml5 (case 9ml5) doi 10.1073/pnas.2501637122
+- Where indicated, curves were plotted and integrated to obtain half-maximal effective concentrations (EC50) using GraphPad Prism v9.3.1 assuming a one-site binding model with a Hill coefficient.
+- Single-particle cryo-EM datasets for complexes were collected using SerialEM (90) on a 300 keV Titan Krios or a 200 keV Talos Arctica, and data were processed using cryoSPARC v4.3 (91) as described (33).Initial models were generated by docking Fab–SARS-2 RBD structures into the locally refined cryo-EM density using UCSF Chimera (92), followed by docking the remaining SARS-2 spike trimer (PDB 7SC1) into the cryo-EM density map.
+- The model was refined in Phenix (93) using real space refinement and the amino acid sequences for the mAbs were manually corrected in Coot (94).
+- X-ray datasets were processed, solved with molecular replacement, and refined using Phenix (93) and Coot (94) as described (33).
+- Single-particle cryo-EM datasets for complexes were collected using SerialEM (90) on a 300 keV Titan Krios or a 200 keV Talos Arctica, and data were processed using cryoSPARC v4.3 (91) as described (33).Initial models were generated by docking Fab–SARS-2 RBD structures into the locally refined cryo-EM density using UCSF Chimera (92), followed by docking the remaining SARS-2 spike trimer (PDB 7SC1) into the cryo-EM density map.
+- The model was refined in Phenix (93) using real space refinement and the amino acid sequences for the mAbs were manually corrected in Coot (94).
+- X-ray datasets were processed, solved with molecular replacement, and refined using Phenix (93) and Coot (94) as described (33).
+
+### case F_CDR1 9yc6 (case 9yc6) doi 10.1002/pro.70473
+(no open-access full text)
+
+### case F_CDR1 7e5y (case 7e5y) doi 10.1038/s41421-021-00295-w
+- The experimental data were fitted using a 1:1 binding model.
+- The IC50 was determined via a four-parameter logistic model using the GraphPad Prism v. 8.0.1.Authentic SARS-CoV-2 neutralization assayThe plaque reduction neutralization test (PRNT) was carried out in the Biosafety Level 3 facility of the Wuhan Institute of Virology, CAS, using a clinical isolate of SARS-CoV-2 (2019-nCoV-WIV04).
+- The initial model was completed using Coot65 and further refined with phenix.refine using Phenix66.
+- Two microliters of standard or cDNA template were utilized for qPCR using the RBD primers (RBD-qF: 5′-CAATGGTTTAACAGGCACAGG-3′;
+- The initial model was completed using Coot65 and further refined with phenix.refine using Phenix66.
+
+### control A_FR1Nterm 6aj7 (case 6ad0) doi 10.1038/s41564-018-0275-7
+(no open-access full text)
+
+### control A_FR1Nterm 6mjz (case 6ad0) doi 10.1073/pnas.1811980115
+(no open-access full text)
+
+### control A_FR1Nterm 7cyp (case 7czu) doi 10.1093/nsr/nwaa297
+- The HB27 produced in the CHO cell line was first tested in a newly established mouse model based on a SARS-CoV-2 mouse adapted strain MASCp6 [30].
+- (B) and (C) Virus titers of lung and trachea tissues at 3 or 5 dpi in mouse model based on a SARS-CoV-2 mouse adapted strain MASCp6.
+- (D) and (E) Virus titers of lung and trachea tissues at 3 or 5 dpi in hACE2 humanized mouse model.
+- Scale bar: 100 μm.Furthermore, we validated the in vivo protection efficacy of HB27 in a human ACE2 (hACE2) humanized mouse model that was susceptible to SARS-CoV-2 infection [31].
+- Similar to the studies with the MASCp6 strain of mice, either prophylactic or therapeutic administration of HB27 conferred a clear benefit on the hACE2 humanized mouse model as indicated by a significant reduction in viral RNA loads in the lungs and trachea at day five post-SARS-CoV-2 challenge.
+- To further verify these results in the cell-based viral infection model, we used real-time reverse transcriptase–PCR (RT–PCR) to quantify the amount of virus remaining on the surface of cells that were treated with HB27 pre- and post-viral attachment at 4°C.
+- More details can be found at https://clinicaltrials.gov/ct2/show/NCT04483375?cond=SCTA01&draw=2&rank=1.In summary, our results not only show how increasing access to panels of authentic neutralizing monoclonal antibodies will facilitate structure-function studies to unpick the underlying biological processes of virus–host interactions, but also provide molecular basis for applying HB27 for potential COVID-19 treatment, highlighting the promise of antibody-based therapeutic interventions.Suppleme
+- L.Z. and X.W. built and refined the structure model;
+- Rapid adaptation of SARS-CoV-2 in BALB/c mice: novel mouse model for vaccine efficacy. bioRxiv 2020; 2020.05.02.073411. 10.3390/vaccines804058431.
+- A mouse model of SARS-CoV-2 infection and pathogenesis.
+
+### control A_FR1Nterm 7chh (case 7jhg) doi 10.1016/j.cell.2020.09.035
+- RRID: AB_557403BD-368-2Cao et al., 2020N/ABD-598 to BD-632This studyN/ABD-236, BD-243, BD-369, BD-397Cao et al., 2020N/ABD-494 to BD-515Cao et al., 2020N/ABacterial and Virus StrainsDH10Bac E. coliInvitrogenCat#10359-016SARS-COV-2 VSV pseudotyped virusNIFDC (Nie et al., 2020)N/AAuthentic SARS-CoV-2 virus (SARS-CoV-2/WH-09/human/2020/CHN)Qin’s labN/AChemicals, Peptides, and Recombinant ProteinsX-tremeGENE 9 DNA Transfection ReagentRocheCat#19129300PolyethyleniminePolysciencesCat#23966-2SARS-COV-2
+- All antibody sequences used in this study can be found in Table S2.Experimental Model and Subject DetailsSARS-CoV-2 pseudovirusThe SARS-CoV-2 wildtype pseudovirus was constructed as previously described using VSV pseudotyped virus (G∗ΔG-VSV) and SARS-CoV-2 strain Wuhan-Hu-1 (GenBank: MN908947) (Nie et al., 2020).
+- The mutated pseudovirus was constructed by site-directed mutagenesis followed by transformation of E. coli DH5α competent cells (Li et al., 2020).Authentic SARS-CoV-2 virusThe authentic SARS-CoV-2 virus SARS-CoV-2/WH-09/human/2020/CHN was used in this study.
+- The resulting data were fit to a 1:1 binding model using the Biacore Evaluation Software.Measurement of antibody neutralization potencyThe pseudovirus neutralization assays were performed using Huh-7 cell lines (Cao et al., 2020).
+- All structures were solved by the molecular replacement method using the Phaser program (McCoy et al., 2007) in Phenix (Liebschner et al., 2019).
+- The structural models were then manually adjusted in Coot (Emsley et al., 2010) and refined using Phenix.Negative staining electron microscopyFor the negative-staining study, S2P, S6P, and BD-368-2 Fab were diluted to 0.02 mg/ml using 25 mM HEPES, pH 7.2, 150 mM NaCl.
+- Images were recorded using a CCD camera (Eagle, FEI).Cryo-EM data collection, processing, and structure buildingHoly-carbon gold grids (Quantifoil, R1.2/1.3) were glow-discharged for 30 seconds using a Solarus 950 plasma cleaner (Gatan) with a 4:1 O2/H2 ratio.
+- The local resolution map was analyzed using ResMap (Kucukelbir et al., 2014) and displayed using UCSF Chimera (Pettersen et al., 2004).The S trimer (PDB: 6VSB) and the Fv region of BD-368-2 Fab from the crystal structure described above were docked into the cryo-EM density using UCSF Chimera.
+- Refinement was performed using the real-space refinement in Phenix.
+- Figures were prepared using Pymol (Schrödinger) and UCSF Chimera.In vivo animal studyA total of thirty 14-16 weeks old hamsters were used in this study.
+- H&E stain, periodic acid-Schiff (PAS) stain, and modified Masson’s Trichrome stain were used to identify histopathological changes in hamster lungs.Quantification and Statistical AnalysisNeutralization curve and KD determinationGraphPad Prism 8 was used for fitting the four-parameter logistic curves and calculating the IC50 and IC80 for all neutralization assays.
+- KD values were fit to a 1:1 binding model by using the Biacore Evaluation Software following the manufacturer’s instructions.Viral load determinationViral load results for each hamster’s lung were expressed as log10-transformed numbers of genome equivalent copies per ml by comparing the Ct values to the standard curves.
+- The resulting data were fit to a 1:1 binding model using the Biacore Evaluation Software.Measurement of antibody neutralization potencyThe pseudovirus neutralization assays were performed using Huh-7 cell lines (Cao et al., 2020).
+- All structures were solved by the molecular replacement method using the Phaser program (McCoy et al., 2007) in Phenix (Liebschner et al., 2019).
+- The structural models were then manually adjusted in Coot (Emsley et al., 2010) and refined using Phenix.Negative staining electron microscopyFor the negative-staining study, S2P, S6P, and BD-368-2 Fab were diluted to 0.02 mg/ml using 25 mM HEPES, pH 7.2, 150 mM NaCl.
+- Images were recorded using a CCD camera (Eagle, FEI).Cryo-EM data collection, processing, and structure buildingHoly-carbon gold grids (Quantifoil, R1.2/1.3) were glow-discharged for 30 seconds using a Solarus 950 plasma cleaner (Gatan) with a 4:1 O2/H2 ratio.
+- The local resolution map was analyzed using ResMap (Kucukelbir et al., 2014) and displayed using UCSF Chimera (Pettersen et al., 2004).The S trimer (PDB: 6VSB) and the Fv region of BD-368-2 Fab from the crystal structure described above were docked into the cryo-EM density using UCSF Chimera.
+- Refinement was performed using the real-space refinement in Phenix.
+- Figures were prepared using Pymol (Schrödinger) and UCSF Chimera.In vivo animal studyA total of thirty 14-16 weeks old hamsters were used in this study.
+- All structures were solved by the molecular replacement method using the Phaser program (McCoy et al., 2007) in Phenix (Liebschner et al., 2019).
+- The structural models were then manually adjusted in Coot (Emsley et al., 2010) and refined using Phenix.
+- Cryo-EM data collection, processing, and structure buildingHoly-carbon gold grids (Quantifoil, R1.2/1.3) were glow-discharged for 30 seconds using a Solarus 950 plasma cleaner (Gatan) with a 4:1 O2/H2 ratio.
+- The local resolution map was analyzed using ResMap (Kucukelbir et al., 2014) and displayed using UCSF Chimera (Pettersen et al., 2004).The S trimer (PDB: 6VSB) and the Fv region of BD-368-2 Fab from the crystal structure described above were docked into the cryo-EM density using UCSF Chimera.
+- Refinement was performed using the real-space refinement in Phenix.
+- Figures were prepared using Pymol (Schrödinger) and UCSF Chimera.
+
+### control A_FR1Nterm 6ww5 (case 7jhg) doi 10.7554/elife.61350
+- Both maps are at a sufficiently high resolution and quality to allow direct model building, and the structures are nearly identical (r.m.s.d. 0.750 Å).
+- With two carboxylate moieties at approximately the same distance as those of native substrates, we hypothesized the terephthalate would bind within the VcINDY binding site, while its large benzene ring would provide stronger electron density than succinate, fumarate, or malate.Table 1.Cryo-EM data collection and structure determination of VcINDY and LaINDY.VcINDY-Na+-Fab84VcINDY-Na+LaINDY-apoLaINDY-MalateLaINDY-αKGEMDBEMD-21928EMD-21904EMD-21902EMD-21903EMD-21905PDB6WW56WU36WU16WU26WU4Data colle
+- The LaINDY map obtained in this way was at 3.09 Å resolution, allowing for direct model building (Figure 2b, Figure 2—figure supplement 1g–i, and Table 1).
+- We also solved a 2.85 Å X-ray structure of LaINDY in the presence of both malate and αKG (Figure 2e and Table 2), using the LaINDY-αKG cryo-EM structure as the search model for molecular replacement.
+- As with the apo LaINDY structure, all three LaINDY complex structures were in an outward-facing Co-S state.The LaINDY and VcINDY maps were all of sufficient quality to build side chains (Figure 2—figure supplement 2a–g), though side-chain rotamers were not always clear at these resolutions.
+- Still, the cryo-EM models’ accuracy are sufficient to allow us to interpret the observed side chain movements of 1–2 Å.Finally, to characterize the Co-S to Ci-S transition of a DASS protein, we used a custom biased MD simulation protocol (Figure 6—figure supplement 1a and Supplementary Note) to drive LaINDY to a Ci-S target model suggested by LaINDY’s internal inverted repeat topological symmetry (Video 1 and Supplementary Note).
+- We bookended this induced transition with unbiased MD simulations of LaINDY’s Co-S and Ci-S states (Video 2), which enabled us to characterize LaINDY’s equilibrium structural dynamics.Video 1.Approach used to generate and characterize the approximate LaINDY Ci-S target model used by the custom biased molecular dynamics simulation protocol to induce the structural transition.In this approach, the approximate target model suggested by LaINDY’s internal inverted repeat topological symmetry was gene
+- Next, the rigid-body domain transformations needed to structurally align the original state’s inverted repeats with those of the approximate target model were identified and quantified.
+- Wang Lab.Chemical compound, drugAmphipolAnatracePMAL-C8Software, algorithmcryoSPARCStructura BiotechnologyRRID:SCR_016501Software, algorithmChimeraPettersen et al., 2004RRID:SCR_004097Software, algorithmPyMOLSchrodingerRRID:SCR_000305Software, algorithmCOOTEmsley and Cowtan, 2004RRID:SCR_014222Software, algorithmPHENIXAdams et al., 2010RRID:SCR_014224Software, algorithmPrismGraphPad SoftwareRRID:SCR_002798OthersQuantiAuFoil R1.2/1.3QuantifoilLaINDY transport activity assays in whole cellsAs a ta
+- The sample was incubated with a 1:4 molar ratio of Fab84 for 1 hr at 4°C before SEC.Fab developmentThe plasmid pFab101, a modified pFab007 (Miller et al., 2012) which includes a N31T mutation in the VH region, was used as the template to construct a Fab phage-display library termed NYC1 containing 1.1 × 1011 sequences, following a previously described design (Miller et al., 2012).
+- After rigidification (Bailey et al., 2018), the subsequent Fab-containing plasmid was transformed into E. coli 55244 cells.
+- Each micrograph was dose-fractioned over 48 frames, with an accumulated dose of 40 e-/Å2.Cryo-EM image processingMotion correction, CTF estimation, particle picking, 2D classification, ab initio model generation, heterogenous and non-uniform refinement, and per particle CTF refinement were all performed with cryoSPARC (Punjani et al., 2017).
+- All maps were sharpened using Auto-sharpen Map in Phenix (Adams et al., 2010).Micrographs underwent motion correction and the CTF estimated, and those with an overall resolution worse than 8 Å excluded from subsequent steps.
+- These classes were used for template-based particle picking.
+- Template identified particles were extracted and subjected to 2D classification.
+- A subset of well resolved 2D classes were used for the initial ab initio model building, while all picked particles were subsequent used for heterogeneous 3D refinement.
+- After multiple rounds of 3D classification (ab initio model generation and heterogeneous 3D refinement with two or more classes), a single class was selected for non-uniform 3D refinement, resulting in the final map.For the VcINDY-Na+-Fab84 sample in nanodiscs, refinement of an initial 3.36 Å map indicated oblique views were rare in the particle set.
+- Projections of this map were therefore used as templates for an additional round of particle picking, with subsequent 3D classification, per particle CTF refinement and non-uniform 3D refinement.LaINDY crystallization and X-ray diffraction data collectionLaINDY protein purified in NG and αKG was concentrated to 2 mg/mL using a centrifugal filtration device and crystallized at 18°C using the hanging drop vapor diffusion method by mixing equal volumes of concentrated protein and well solution of 3
+- Crystals were of space group P21 with unit cell dimensions around a = 108 Å, b = 103 Å, c = 174 Å, β = 96°, and contained four molecules per asymmetric unit.Model building and refinementCryo-EM models were built in Coot (Emsley and Cowtan, 2004) and refined in Phenix real space refine (Adams et al., 2010).
+- The LaINDY-apo model was manually built, and subsequently used as an initial model for the LaINDY-malate and LaINDY-αKG structures.
+- VcINDY models were built using the VcINDY X-ray structure (PDB: 5UL9), with sodium and citrate removed, as an initial model.
+- The Fab was rebuilt from an initial model of a homologous X-ray structure (PDB: 5EII) with the variable loops removed.
+- In both VcINDY and LaINDY maps some discontinuous densities could be attributed to the aliphatic chains 
+
+### control A_FR1Nterm 7whz (case 7tz5) doi 10.1016/j.celrep.2022.110862
+- The medium-resolution structure revealed that three XMA01 bound to three RBDs of the Omicron spike, and the fitting of our three-Fab complex structure revealed that further binding of XMA04 and XMA09, especially the latter, will induce steric clashes with adjacent NTDs on the trimer (Figure 2E).
+- RRID: AB_2737665Streptavidin-APCMolecular ProbesCat#S32362DyLight 488 NHS EsterThermoFisher ScientificCat#46402EZ-Link Sulfo-NHS-LC-BiotinThermoFisher ScientificCat#21335Deposited dataCryo-EM structure of WT-S:XMA01:XMA04:XMA09This paperEMDB: EMD-32516PDB: 7WHZCryo-EM structure of Omicron-S:XMA01:XMA04:XMA09This paperEMDB: EMD-32517PDB: 7WI0Cryo-EM structure of Omicron-S:XMA01This paperEMDB: EMD-32518Experimental models: Cell linesExpiCHO cellsThermoFisher ScientificCat# A29127H1299-ACE2hR(Zhang
+- All reagents, which includes antibodies, proteins, plasmids, and virus, will be made available on request after completion of a Materials Transfer Agreement for non-commercial usage.Experimental model and subject detailsCell linesCell lines used in this study were obtained from the ATCC (H1299, BHK21, 293T and Vero) or Thermo Fisher Scientific Inc.
+- Cell image acquisitions performed with Opera Phenix (green, red and near-infrared channels in confocal mode) using a 20× water immersion objective at 1-h after probe incubation in wash-free and live-cell conditions.All quantitative image analyses were based on images that acquired by Opera Phenix (PerkinElmer).
+- Then, the fluorescence images were collected by Opera Phenix or Operetta CLS high-content equipment (PerkinElmer) and quantitatively determined using Columbus Software 2.5.0 (PerkinElmer).
+- After incubation for 12 h, post-infection cells were fluorescently imaged using Opera phenix or Operetta CLS (PerkinElmer), and quantitatively analyzed by Columbus image management analysis software to detect the number of green fluorescent positive cells.
+- Contrast transfer function (CTF) fitting and phase-shift estimation were conducted with Gctf (Zhang, 2016).
+- In brief, particles were automatically picked by using the “Blob picker” or “Template picker”.
+- Several rounds of reference-free 2D classifications were performed and the selected good particles were then subjected to ab-initio reconstruction, heterogeneous refinement and final non-uniform refinement.
+- Local map resolution was estimated with ResMap (Kucukelbir et al., 2014).Atomic model building, refinement, and 3D visualizationThe initial model of nAbs were generated from homology modeling by Accelrys Discovery Studio software (available from: URL: https://www.3dsbiovia.com).
+- The structure of RBD from the structure of WT trimeric spike (pdb no. 6VSB (Wrapp et al., 2020)) were used as the initial modes of our WT-RBD and Omicron RBD.
+- We initially fitted the templates into the corresponding final cryo-EM maps using Chimera (Pettersen et al., 2004), and further corrected and adjusted them manually by real-space refinement in Coot (Emsley and Cowtan, 2004).
+- The resulting models were then refined with phenix.real_space_refine in PHENIX (Adams et al., 2010).
+- All figures were generated with Chimera or ChimeraX (Goddard et al., 2018;
+- Pettersen et al., 2021).Therapeutic activity against Beta and Omicron variants in hamstersThe therapeutic activity of antibodies against SARS-CoV-2 Beta variant strain (GISAID: EPI_ISL_2,779,639) and Omicron variant strain (share an identical sequence with EPI_ISL_8,182,026) that were passaged on Vero cells (#CCL-81, ATCC) in vivo were performed in a Syrian hamster model (Wu et al., 2021).
+- Cell image acquisitions performed with Opera Phenix (green, red and near-infrared channels in confocal mode) using a 20× water immersion objective at 1-h after probe incubation in wash-free and live-cell conditions.All quantitative image analyses were based on images that acquired by Opera Phenix (PerkinElmer).
+- Then, the fluorescence images were collected by Opera Phenix or Operetta CLS high-content equipment (PerkinElmer) and quantitatively determined using Columbus Software 2.5.0 (PerkinElmer).
+- After incubation for 12 h, post-infection cells were fluorescently imaged using Opera phenix or Operetta CLS (PerkinElmer), and quantitatively analyzed by Columbus image management analysis software to detect the number of green fluorescent positive cells.
+- Contrast transfer function (CTF) fitting and phase-shift estimation were conducted with Gctf (Zhang, 2016).
+- In brief, particles were automatically picked by using the “Blob picker” or “Template picker”.
+- Several rounds of reference-free 2D classifications were performed and the selected good particles were then subjected to ab-initio reconstruction, heterogeneous refinement and final non-uniform refinement.
+- Local map resolution was estimated with ResMap (Kucukelbir et al., 2014).Atomic model building, refinement, and 3D visualizationThe initial model of nAbs were generated from homology modeling by Accelrys Discovery Studio software (available from: URL: https://www.3dsbiovia.com).
+- The structure of RBD from the structure of WT trimeric spike (pdb no. 6VSB (Wrapp et al., 2020)) were used as the initial modes of our WT-RBD and Omicron RBD.
+- We initially fitted the templates into the corresponding final cryo-EM maps using Chimera (Pettersen et al., 2004), and further corrected and adjusted them manually by real-space refinement in Coot (Emsley and Cowtan, 2004).
+- The resulting models were then refined with phenix.real_space_refine in PHENIX (Adams et al., 2010).
+- All figures were generated with Chimera or ChimeraX (Goddard et al., 2018;
+- Pettersen et al., 2021).Therapeutic activity against Beta and Omicron variants in hamstersThe therapeutic activity of antibodies against SARS-CoV-2 Beta variant strain (GISAID: EPI_ISL_2,779,639) and Omicron variant strain (share an identical sequence with EPI_ISL_8,182,026) that were passaged on Vero cells (#CCL-81, ATCC) in vivo were performed in a Syrian hamster model (Wu et al., 
+
+### control A_FR1Nterm 7wti (case 7tz5) doi 10.1038/s41422-022-00677-z
+- We obtained cryo-EM reconstructions of these complexes at 3.0–3.8 Å and performed local refinement to further improve the densities around the binding interface between RBD and antibodies, enabling reliable analysis of the mode of interaction (Fig. 1b, Supplementary information, Figs.
+- In addition, structural superimpositions reveal that XGv051 and either XGv286 or XGv264 can simultaneously bind to S trimer, informing strategies to rationally design two-antibody cocktails (Fig. 1e).To find out whether the observed in vitro neutralization potential confers in vivo protection, we tested one representative NAb, XGv051, in an established mouse model.
+
+### control A_FR1Nterm 7x49 (case 8e8l) doi 10.1016/j.chom.2022.08.001
+(no open-access full text)
+
+### control A_FR1Nterm 7yub (case 8e8l) doi 10.1038/s41422-023-00913-0
+- Recent findings suggested that targeting SPNS2 has shown promise in reducing disease severity of autoimmune diseases.5,6 Together with the fact that the reported lysolipid transporter MFSD2A7,8 and a bacterial homolog of spinster Hyphomonas neptunium (HnSPNS) structures9 can only offer limited insights into the S1P transport mechanism due to their low sequence homology (Supplementary information, Fig.
+- Left panel, orthogonal views of the cryo-EM density map; right panel, a model of the complex in the same view. b The hydrophobic pocket for the lipophilic tail of S1P and FTY720-P.
+- The structure is similar to the AlphaFold prediction of SPNS2 with a root mean square deviation (RMSD) of 1.137 Å over 406 Cα (Supplementary information, Fig.
+
+### control A_FR1Nterm 9cin (case 8rvn) doi 10.1126/scitranslmed.adw8573
+(no open-access full text)
+
+### control A_FR1Nterm 8vr9 (case 8rvn) doi 10.1073/pnas.2319029121
+- Cryo-EM Structure Determination of the R023 Fab Bound to Sotorasib–KRAS(G12C) Conjugate/MHC Complexes.To facilitate the structural analysis, we produced R023 Fab with a rigidified elbow in the heavy chain (23).
+- Although we utilized the elbow-rigidifying mutations in the Fab, the constant domains were less well defined than the rest of the complex (SI Appendix, Fig.
+- The rigidified elbow sequence (23) was introduced to the Fab gene of interest by PCR.
+- The maps obtained and the associated particles were processed further by performing multiple steps of heterogeneous refinement using decoy 3D volumes to both refine the maps and further clean the particle subsets.
+- After these passages, the remaining particles were re-extracted without binning (384 pixels box size) and used to perform nonuniform refinement (52).
+- For R023_soto-p8/A03, nonuniform refinement was performed with 123,857 particles, giving a map with an overall resolution of 3.11Å.
+- Those particles were used as a template to pick a new set of particles from the same micrographs using Template Picker, yielding 3,988,366 particles.
+- Those were extracted (384 pixels box size binned to 128 pixels) and cleaned with multiple steps of 2D classification and selection followed by heterogeneous refinement.
+- After removing particle duplicates, a final subset of 178,888 particles was re-extracted (384 pixels box size, unbinned), and Global and Local CFT refinements were performed.
+- A final step of local refinement was performed, using a mask that excluded map densities corresponding to the constant chains of Fab R023, resulting in the final map with an overall resolution of 3.06 Å.
+- All masks exploited for local refinement processes were realized using UCSF Chimera software (53).
+- For R023_soto-p7/A03, nonuniform refinement was performed with 75,897 particles, giving a map with an overall resolution of 3.16 Å.
+- After removing particle duplicates, a final subset of 68,717 particles was subjected to Global and Local CFT refinement, and a final step of local refinement was performed, using a mask that excluded the map densities corresponding to the constant chains of Fab R023.
+- For R023_soto-p7/A11, nonuniform refinement was performed with 97,535 particles, giving a map with an overall resolution of 3.29 Å.
+- After removing particle duplicates, a final subset of 90,612 particles was subjected to Global and Local CFT refinement, and a final step of local refinement was performed, using a mask that excluded map densities corresponding to the constant chains of Fab R023.
+- For R023_soto-p5/A02_A3-2, nonuniform refinement was performed with 128,550 particles, giving a map with an overall resolution of 3.10 Å.
+- These 3D classes were further processed through nonuniform refinement, yielding maps with overall resolutions from 3.80 to 4.23 Å.The maps obtained for R023_soto-p8/A03, R023_soto-p7/A03, and R023_soto-p7/A11 were used to build the three structure models using WinCoot (55) and Phenix 1.18.2 software (56).
+- As starting models, we used PDBID 3RL1 (for p/MHC moieties), and a model of Fab R023 generated with SWISS-MODEL (https://swissmodel.expasy.org/) (57).
+- The final structures were validated using Phenix and PDB deposition tools, obtaining the statistics summarized in Tab 1.
+- Cryo-EM maps and structures were visualized and imaged using UCSF Chimera X (58) and Pymol (Schrodinger, LLC.).
+- Geometric analysis of the docking angles of R023_soto-p/MHC complexes was performed using the web server TCR3d (61).Biolayer Interferometry.Binding of Fab R023 to soto-p/MHC complexes was assessed using an Octet RED96e instrument (Sartorius).
+- Then, to generate the heatmaps, for each mutation, the values obtained for the nonbinder population were subtracted from the values obtained for the binder population, yielding positive values for mutations enriched in the binder population (colored in shades of blue) and negative values for mutations enriched in the nonbinder population (colored in shades of red).Docking Angle Analysis.Docking angle analysis was performed using the TCR CoM method (62) and the TCR3d web tool (https://tcr3d.ibbr.
+- TCR-p/MHC CoM docking angles reported in Fig. 1C were from published data (62).
+- The maps obtained and the associated particles were processed further by performing multiple steps of heterogeneous refinement using decoy 3D volumes to both refine the maps and further clean the particle subsets.
+- After these passages, the remaining particles were re-extracted without binning (384 pixels box size) and used to perform nonuniform refinement (52).
+- For R023_soto-p8/A03, nonuniform refinement was performed with 123,857 particles, giving a map with an overall resolution of 3.11Å.
+- Those particles were used as a template to pick a new set of particles from the same micrographs using Template Picker, yielding 3,988,366 particles.
+- Those were extracted (384 pixels box size binned to 128 pixels) and cleaned with multiple steps of 2D classification and selection followed by heterogeneous refinement.
+- After removing particle duplicates, a final subset of 178,888 particles was re-extracted (384 pixels box size, unbinned), and Global and Local CFT refinements were performed.
+- A final step of local refinement was performed, using a mask that excluded map densities corresponding to the constant chains of Fab R023, resulting in the final map with an overall resolution of 3.06 Å.
+- All masks exploited for local refinement processes were realized using UCSF Chimera software (53).
+- For R023_soto-p7/A03, nonuniform refinement was performed with 75,897 particles, giving a map with an overall resolution of 3.16 Å.
+- After removing particle duplicates, a final subset of 68,717 particles was subjected to Global and Local CFT refinement, and a final step of local refinement was performed, using a mask that excluded the map densities corresponding to the constant chains of Fab R023.
+- For R023_soto-p7/A11, nonuniform refinement
+
+### control A_FR1Nterm 8rla (case 9mnb) doi 10.1038/s41589-025-01972-7
+- Because of minor flexibility within the DiGb interface, imposition of strict C2 symmetry prevents refinement to high-resolution signals.
+- In this way, this initial map could be further improved by forgoing strict C2 symmetry, with symmetry expansion and local refinement of RECQL5 alone improving the resolution to 3.18 Å (Fig. 2a,b and Extended Data Fig. 3).
+- Local resolution comparisons before and after local refinement with or without C2 symmetry expansion for RECQL5 (b), SPNS2 (d), lysozyme (f) and MBP (h).The rapid implementation of the homoDiGb method and the additional insights gained into target structure function led us to consider the limits of this technology.
+- Interestingly, for lysozyme, an archetype of X-ray structure determination that we solve here by cryo-EM single-particle analysis (SPA) for the first time, we found that C1 symmetry reconstruction followed by local refinement yielded better resolution than imposing C2 symmetry for the entire particle.
+- Particles other than the target DiGb complexes, such as those containing a single target complexed with monomeric nanobody or DiGb, can be excluded during initial model generation.
+- The output particles were used for ab initio reconstruction, followed by heterogeneous refinement.
+- Well-resolved classes were selected for nonuniform refinement (with C2 symmetry applied to RECQL5:homoDiGb, SPNS2:homoDiGb and MBP:homoDiGb and C1 symmetry applied to lysozyme:homoDiGb, SPNS2:heteroDiGb:sfGFP and RECQL5:heteroDiGb:sfGFP complexes), followed by local refinement with target-specific masks.
+- The masks were generated using the ‘molmap’ command in UCSF Chimera44 on the basis of roughly docked atomic models for the target proteins.
+- The particles from best-resolved classes were then merged for a final round of local refinement.
+- The local resolution estimation was calculated by cryoSPARC and presented using UCSF Chimera44 on the basis of the output maps from cryoSPARC.
+- The processing details for each dataset are shown in Extended Data Figs. 3c, 4c, 5c, 6c, 7c and 8c.Model building and refinementInitial models of RECQL5 and Gb5-006 were obtained from deposited crystal structures (Protein Data Bank (PDB) 7ZMV)22.
+- Those of sfGFP and GbEnhancer were obtained by modifying the existing models (PDB 3K1K).
+- For lysozyme and GbLysozyme, the initial model was obtained from a deposited structure (PDB 6JB2).
+- For MBP and GbMBP, the initial model was obtained from a deposited structure (PDB 5M13).
+- Models of SPNS2, GbD12 and GbC4 used the SPNS2:NbD12 structure published previously (PDB 8QV6)10 as starting models.
+- Model were rebuilt as necessary in Coot47 and then refined with PHENIX real-space refinement48.Affinity measurement of nanobodies and GbsPurified RECQL5 and sfGFP proteins were biotinylated using an EZ-Link Sulfo-NHS-LC-biotinylation kit (Thermo Scientific, 21435) following the manufacturer’s instructions.
+- Nonlinear regression was performed using Graphpad Prism 10.2.3 to estimate the dissociation constants of the Gbs and nanobodies.Dynamic analysis of the DiGb interfaceSelected particles used for the final rounds of nonuniform refinement49 for the dimer structures of RECQL5:homoDiGb, SPNS2:homoDiGb, RECQL5:heteroDiGb:sfGFP and SPNS2:heteroDiGb:sfGFP structures were used as inputs of 3DVA on cryoSparc43, yielding 60 density maps.
+- The atomic models for RECQL5:homoDiGb, SPNS2:homoDiGb, RECQL5:heteroDiGb:sfGFP and SPNS2heteroDiGb:sfGFP were then split at the DiGb interface and each model was half-docked into the 3D variability density maps using ChimeraX50.The movements of the DiGb interfaces were analyzed by first aligning a reference (static) Gb.
+- Model building and refinementInitial models of RECQL5 and Gb5-006 were obtained from deposited crystal structures (Protein Data Bank (PDB) 7ZMV)22.
+- Those of sfGFP and GbEnhancer were obtained by modifying the existing models (PDB 3K1K).
+- For lysozyme and GbLysozyme, the initial model was obtained from a deposited structure (PDB 6JB2).
+- For MBP and GbMBP, the initial model was obtained from a deposited structure (PDB 5M13).
+- Models of SPNS2, GbD12 and GbC4 used the SPNS2:NbD12 structure published previously (PDB 8QV6)10 as starting models.
+- Model were rebuilt as necessary in Coot47 and then refined with PHENIX real-space refinement48.
+- (e) The Fourier Shell Correlation curves of the overall complex and locally refined RECQL5 after symmetry expansion (SE).
+- (f) Particle orientation distribution of the final locally refined map.
+- (d) Cryo-EM map of SPNS2 monomer after symmetry expansion, with map-and-model overlays for TM7 residues 300-346 and central binding site bound with DDM.
+- (e) The Fourier Shell Correlation curves of the overall dimer complex and locally refined SPNS2 after symmetry expansion (SE).
+- (f) Particle orientation distribution of the final locally refined map.
+- (d) Cryo EM map of MBP monomer after symmetry expansion, with map-and-model overlays for residues 145-167 and 259-285.
+- (e) The Fourier Shell Correlation curves of the overall dimer complex and locally refined MBP after symmetry expansion (SE).
+- (f) Particle orientation distribution of the final locally refined map.
+- (d) Cryo-EM map of lysozyme monomer after symmetry expansion, with map-and-model overlays for residues 21-40 and 87-110 and the binding site with the bound chloride.
+- (e) The Fourier Shell Correlation curves of the overall dimer complex and locally refined SPNS2 after lysozyme.
+- (f) Particle orientation distribution of the final locally refined map.
+- (d) Overall view of sfGFP after local refinement, and structural details of peripheral regions of the central helix (51-73) and two beta sheets (12-22 and 105-116).
+- (f) The Fourier Shell Correlation curves of the overall complex, the locally refined map of sfGFP, and the locally refined map of RECQL5.
+- (g) Particle orientation distribution of the overall complex before local refinement of individual targets.
+- (d) Map and mo
+
+### control A_FR1Nterm 9ml7 (case 9mnb) doi 10.1073/pnas.2501637122
+- Where indicated, curves were plotted and integrated to obtain half-maximal effective concentrations (EC50) using GraphPad Prism v9.3.1 assuming a one-site binding model with a Hill coefficient.
+- Single-particle cryo-EM datasets for complexes were collected using SerialEM (90) on a 300 keV Titan Krios or a 200 keV Talos Arctica, and data were processed using cryoSPARC v4.3 (91) as described (33).Initial models were generated by docking Fab–SARS-2 RBD structures into the locally refined cryo-EM density using UCSF Chimera (92), followed by docking the remaining SARS-2 spike trimer (PDB 7SC1) into the cryo-EM density map.
+- The model was refined in Phenix (93) using real space refinement and the amino acid sequences for the mAbs were manually corrected in Coot (94).
+- X-ray datasets were processed, solved with molecular replacement, and refined using Phenix (93) and Coot (94) as described (33).
+- Single-particle cryo-EM datasets for complexes were collected using SerialEM (90) on a 300 keV Titan Krios or a 200 keV Talos Arctica, and data were processed using cryoSPARC v4.3 (91) as described (33).Initial models were generated by docking Fab–SARS-2 RBD structures into the locally refined cryo-EM density using UCSF Chimera (92), followed by docking the remaining SARS-2 spike trimer (PDB 7SC1) into the cryo-EM density map.
+- The model was refined in Phenix (93) using real space refinement and the amino acid sequences for the mAbs were manually corrected in Coot (94).
+- X-ray datasets were processed, solved with molecular replacement, and refined using Phenix (93) and Coot (94) as described (33).
+
+### control A_FR1Nterm 6b0e (case 6bpe) doi 10.1038/s41467-017-01924-3
+- Competition and kinetics data were analyzed using FortéBio’s Data Analysis software 9.0, and kinetic curves were fitted to a 1:1 binding model.
+- Mean kinetic constants reported are the result of three independent experiments.Co-crystallization and structure determinationFor crystallization studies, a Pfs25 construct with potential N-linked glycosylation sites at residue positions 91, 144, and 166 mutated to Gln was cloned into the pHLsec vector via AgeI and KpnI sites.
+- Refinement of the structures was carried out using phenix.refine47 and iterations of refinement using Coot48.
+- Using the same model, we evaluated whether a mixture of two antibodies showed higher %TRA (fewer oocysts) than a single antibody, for each mixture condition.
+- The theoretical additive effect (Bliss independence model; i.e., assuming the two mAbs act independently) was also determined by the line fits.Data availabilityThe crystal structures reported in this manuscript have been deposited in the Protein Data Bank, www.rcsb.org (PDB ID codes 6AZZ, 6B08, 6B0A, 6B0E, 6B0G, and 6B0H).
+- Co-crystallization and structure determinationFor crystallization studies, a Pfs25 construct with potential N-linked glycosylation sites at residue positions 91, 144, and 166 mutated to Gln was cloned into the pHLsec vector via AgeI and KpnI sites.
+- Refinement of the structures was carried out using phenix.refine47 and iterations of refinement using Coot48.
+
+### control A_FR1Nterm 6bkd (case 6bpe) doi 10.1126/sciadv.aav1882
+- The E2c3 HK6a-Fab AR3A structure was solved by molecular replacement method using Phaser (52), with the E2c H77-Fab AR3C (PDB entry 4MWF) as a search model.
+- The E2c3 HK6a-Fab AR3B and E2c3 HK6a-Fab AR3D structures were solved by molecular replacement method using the refined E2c3 HK6a-Fab AR3A structure as a search model.
+- Structure refinement was carried out in Phenix (53), and model building was performed with COOT (54).
+- Final refinement statistics are summarized in table S2.Enzyme-linked immunosorbent assayPurified E2 isolates were coated onto microwells at 5 μg/ml overnight at 4°C.
+- For the dilution series experiments, IC50 values were calculated in GraphPad Prism 6 using a three-parameter curve fitting.Panning of the phage display libraryThe construction of the phage display Ab library was previously described (16, 17).
+- The dilution factor required for PGM template preparation was determined such that the final concentration was 50 pM.
+- For the prepanning Fab library (Pan0), template preparation was performed with the Ion PGM Template IA 500 Kit, followed by NGS on the Ion PGM system using the Ion PGM Hi-Q Sequencing Kit and an Ion 316 v2 chip.
+- For the postpanning libraries (Pan1 to Pan3) obtained from two E1E2 panning procedures, template preparation and (Ion 530) chip loading were performed on Ion Chef using the Ion 530 Ext Kit, followed by NGS on the Ion S5 System.
+- The Ig PCRs were set up with the Platinum Taq High-Fidelity DNA Polymerase (Life Technologies) in a total volume of 50 μl, with 5 μl of cDNA as template, 1 μl of 5′-RACE primer, and 1 μl of 10 μM reverse primer.
+- The five donor libraries were further mixed at an equal ratio for template preparation and (Ion 530) chip loading on Ion Chef using the Ion 530 Ext Kit.
+
+### control B_CDR2FR3 7e3l (case 7e39) doi 10.1038/s41467-021-26539-7
+- For qRT-PCR, the viral RNA was extracted from the collected supernatant using Trizol LS (Invitrogen) and used as templates for the qRT-PCR analysis by Verso 1-Step qRT-PCR Kit (Thermo Scientific) following the manufacturer’s instructions. qRT-PCR was performed using the LightCycler 480 II PCR System (Roche) with the following program: 50 °C 15 mins; 95 °C 15 mins; 40 cycles of 95 °C 15 s, 50 °C 30 s, 72 °C 30 s.
+- For the dataset of SARS-CoV-2 S-58G6 Fab complex, a total of 1,255,599 particles were auto-picked using the template picker and 820,872 raw particles were extracted with a box size of 512 pixels in cryoSPARC32.
+- The following 2D, 3D classifications, and refinements were all performed in cryoSPARC. 237,062 particles were selected after two rounds of 2D classification, and these particles were used to do Ab-Initio reconstruction in six classes.
+- Then these six classes were used as 3D volume templates for heterogeneous refinement with all selected particles, with 108,020 particles converged into the SARS-CoV-2 S-58G6 Fab class.
+- Next, this particle set was used to perform non-uniform refinement, yielding a resolution of 3.56 Å.For the dataset of SARS-CoV-2 S-13G9 Fab complex, a total of 445,137 particles were auto-picked using the template picker and 266,357 raw particles were extracted with a box size of 512 pixels in cryoSPARC.
+- The following 2D, 3D classifications, and refinements were all performed in room temperature (RT). 70,519 particles were selected after two rounds of 2D classification, and these particles were used to do Ab-Initio reconstruction in six classes.
+- Then these 6 classes were used as 3D volume templates for heterogeneous refinement with all selected particles, with 52,880 particles converged into the SARS-CoV-2 S-13G9 Fab class.
+- Next, this particle set was used to perform non-uniform refinement, yielding a resolution of 3.92 Å.Although the overall resolution for these structures is up to 3.5 Å - 3.6 Å for 58G6 and 3.9 Å - 4.0 Å for 13G9, the maps for the binding interface between RBD and Fabs are quite weak due to the conformational heterogeneity of the RBD, which is similar to previous structural investigations14,17,21,33.
+- To improve the resolution for the binding interface, we subsequently added local refinement processing.
+- The full cryo-EM data processing workflow is described in Supplementary Fig. 10 and the model refinement statistics can be found in Supplementary Table 1.Model building and refinementTo build the structures of the SARS-CoV-2 S-58G6 Fab and S-13G9 Fab complexes, the structure of the SARS-CoV-2 S glycoprotein in complex with the C105 neutralizing antibody Fab fragment14 (PDB: 6XCN) was placed and rigid-body fitted into the cryo-EM electron density maps using UCSF Chimera34, respectively.
+- Both of the 58G6 and 13G9 Fab models were first predicted using Phyre226 and then manually built in Coot 0.935 with the guidance of the cryo-EM electron density maps, and overall real-space refinements were performed using Phenix 1.1836.
+- The corresponding structure data for the 13G9/SARS-CoV-2 RBD complex and 58G6/SARS-CoV-2 RBD complex was available in wwPDB as 7E3K (10.2210/pdb7E3K/pdb) and 7E3L (10.2210/pdb7E3L/pdb) respectively.Creation of figuresFigures of molecular structures were generated using PyMOL37 and UCSF ChimeraX38.Surface plasmon resonance (SPR) experimentsThe affinity of the neutralizing Abs binding to the S1 subunit of SARS-CoV-2 or B.1.351 was measured using the Biacore X100 platform at RT.
+- The affinity was calculated with Biacore X100 Evaluation Software (Version:2.0.2) using 1:1 binding fit model.To determine competition with the ACE2 peptidase domain, SARS-CoV-2 RBD was coated on a CM5 sensor chip via amine group for a final RU around 250.
+- The RBD9-1 amino acid residues were selected and mutated to alanine and synthesized by Genescripts (Wuhan, China). 50 μL synthesized peptide was added to the streptavidin-coated 384-well plate in duplets to make a final concentration of 5 μg/mL or other indicated concentrations.
+- Viral infections were conducted in an animal biosafety level 3 (ABSL-3) facility at Wuhan Institute of Virology, with a protocol approved by the Laboratory Animal Ethics Committee of Wuhan Institute of Virology, Chinese Academy of Sciences (Permit number: WIVA26201701).Protection efficacy of potent antibodies 58G6 and 510A5 was evaluated in an established hACE2 mouse model of SARS-CoV-2 infection.
+- For the dataset of SARS-CoV-2 S-58G6 Fab complex, a total of 1,255,599 particles were auto-picked using the template picker and 820,872 raw particles were extracted with a box size of 512 pixels in cryoSPARC32.
+- The following 2D, 3D classifications, and refinements were all performed in cryoSPARC. 237,062 particles were selected after two rounds of 2D classification, and these particles were used to do Ab-Initio reconstruction in six classes.
+- Then these six classes were used as 3D volume templates for heterogeneous refinement with all selected particles, with 108,020 particles converged into the SARS-CoV-2 S-58G6 Fab class.
+- Next, this particle set was used to perform non-uniform refinement, yielding a resolution of 3.56 Å.For the dataset of SARS-CoV-2 S-13G9 Fab complex, a total of 445,137 particles were auto-picked using the template picker and 266,357 raw particles were extracted with a box size of 512 pixels in cryoSPARC.
+- The following 2D, 3D classifications, and refinements were all performed in room temperature (RT). 70,519 particles were selected after two rounds of 2D classification, and these particles were used to do Ab-Initio reconstruction in six classes.
+- Then these 6 classes were used as 3D volume templates for heterogeneous refinement with all selected particles, with 52,880 particles converged into the SARS-CoV-2 S-13G9 Fab class.
+- Next, this particle set was used to perform non-uniform refinement, yielding a resolution of 3.92 Å.Although the overall resolution for these structures 
+
+### control B_CDR2FR3 7nka (case 7e39) doi 10.1038/s41467-021-27950-w
+- Particles taken from a subset of the dataset, picked using the cryoSPARC blob picker, were used to generate templates for complete picking using the cryoSPARC template picker.
+- To remove bad particles, 2D classes were generated before particles from good classes were subjected to ab initio model generation followed by heterogeneous refinement.
+- Particles from one class were then refined with non-uniform refinement and per particle CTF refinement to give a consensus refinement to 2.79 Å.
+- Further heterogeneous refinement using eight copies of the consensus model enabled the discrimination of three discrete conformations within the dataset.
+- These were all subsequently refined using a final non-uniform refinement32.
+- The wideTarget model provided the most easily interpretable maps.
+- A comparison of the unsharpened and deepEMhancer maps is shown in Supplementary Fig. 3.For model building the structure of the A/NT/60/68 influenza virus polymerase (PDB ID: 6RR7) was used as an initial model that was first changed to the polymerase sequence of the A/Brevig Mission/1/1918 influenza virus then rigid-body fit into the map with ChimeraX V1.133.
+- Iterative cycles of COOT34 and real-space refinement in PHENIX35 were used to improve model geometry and the fit to the map.
+- Model geometry was monitored using MolProbity36.
+- For the complete transcriptase and partial replicase conformations, the model of the polymerase core with the resolved PA endonuclease and priming loop PL was first positioned using ChimeraX V1.1437 before the PB2 C-terminal domains were generated and manually placed into the appropriate density.
+- These models were then rigid-body real-space refined in PHENIX.
+- Manual adjustment of the C-terminal PB2 domains in COOT was used to achieve domain connectivity and make gross changes to the model.
+- Due to the somewhat poorly resolved nature of these regions only restrained real-space refinement was carried out on these areas.The polymerase-vRNA-nanobody complex data were collected on a 300 kV Titan Krios microscope with either a K2 Summit (Gatan) and GIF Quantum energy filter or Falcon 3 detector or on a 200 kV Glacios (Thermo Fisher Scientific) microscope with a Falcon 3 detector at the Oxford Particle Imaging Centre.
+- Particles were subsequently picked by the blob picker and classified by 2D classification to provide templates for template based picking.
+- Iterative 2D classification produced a pool of particles from which three initial models were generated, with the classes showing extra density further refined with a non-uniform refinement.
+- As the maps were not of sufficient quality to build the complementarity-determining regions (CDRs) ab initio, a model for each nanobody was generated using SWISSMODEL39, and the CDR loops removed.
+- This approach was taken as modelling of CDRs is highly inaccurate and this approach avoids possible misinterpretation of our models.
+- To generate models, the resolved polymerase core with PA endonuclease and priming loop conformation (Class 2b) and the nanobody structure was fit in UCSF Chimera V1.17.
+- All maps and models have been deposited in the EMDB and PDB, respectively.
+- Cryo-EM figures were prepared using ChimeraX V1.133.
+- Cryo-EM data collection and refinement statistics are presented in Supplementary Table 1.SEC analysis of nanobody binding to cap-mid-linkOne hundred microliters of cap-mid-link at 1 mg ml−1 was mixed with a 1.5× molar excess of either Nb8193, Nb8194, Nb8195, Nb8197, or Nb8208 and applied to a Superdex 75 Increase 10/300 column equilibrated in 20 mM Na-HEPES pH 7.5, 150 mM NaCl, and 0.5 mM DTT.Crystallisation of nanobody-cap-mid-link complexesPurified cap-mid-link was mixed with a 1.5× molar exce
+- Molecular replacement in PHASER41 was carried out using cap-mid-link (PDB ID 6S5V) and nanobody (PDB ID 6QPG) structures as search models.
+- Subsequently iterative rounds of refinement in real and reciprocal space were carried out using COOT34 and PHENIX35, respectively.
+- Refinements were carried out without the use of Ramachandran restraints.
+- Data collection and refinement statistics are summarised in Supplementary Table 2.
+- Particles taken from a subset of the dataset, picked using the cryoSPARC blob picker, were used to generate templates for complete picking using the cryoSPARC template picker.
+- To remove bad particles, 2D classes were generated before particles from good classes were subjected to ab initio model generation followed by heterogeneous refinement.
+- Particles from one class were then refined with non-uniform refinement and per particle CTF refinement to give a consensus refinement to 2.79 Å.
+- Further heterogeneous refinement using eight copies of the consensus model enabled the discrimination of three discrete conformations within the dataset.
+- These were all subsequently refined using a final non-uniform refinement32.
+- The wideTarget model provided the most easily interpretable maps.
+- A comparison of the unsharpened and deepEMhancer maps is shown in Supplementary Fig. 3.For model building the structure of the A/NT/60/68 influenza virus polymerase (PDB ID: 6RR7) was used as an initial model that was first changed to the polymerase sequence of the A/Brevig Mission/1/1918 influenza virus then rigid-body fit into the map with ChimeraX V1.133.
+- Iterative cycles of COOT34 and real-space refinement in PHENIX35 were used to improve model geometry and the fit to the map.
+- Model geometry was monitored using MolProbity36.
+- For the complete transcriptase and partial replicase conformations, the model of the polymerase core with the resolved PA endonuclease and priming loop PL was first positioned using ChimeraX V1.1437 before the PB2 C-terminal domains were generated and manually placed into the appropriate density.
+- These models were then rigid-body real-space refined in PHENIX.
+- Manual adjustment of the C-terminal PB2 domains in COOT was used to achieve domain connectivity and make gross cha
+
+### control B_CDR2FR3 10gh (case 12iu) doi 10.1038/s41467-026-69630-7
+- The antibodies were further purified by size-exclusion chromatography with a Superdex 200 Increase 10/300 GL column (Cytiva Life Sciences) equilibrated in 20 mM HEPES (pH 7.5) with 100 mM NaCl.Generation of stable cell lines and cell stimulation assayThe chimeric ROS1AK receptor consisting of an HaloTag, the extracellular domain of ROS1, and the transmembrane domain with the intracellular domain of ALK was constructed into pcDNA3.1(−)-HaloGRD plasmid using the NEBuilder HiFi DNA Assembly Cloning
+- For stable expression of individual chimeric wild-type, mutated ROS1 or ROS1Δarm construct cell lines, the recombinant plasmids of ROS1AK wild-type, mutants, or ROS1Δarm were transfected into NIH/3T3 cells (ATCC CRL-1658, mouse embryo fibroblast cell) using Lipofectamine 2000 (Thermo Fisher Scientific).
+- After several rounds of 2D classification, the selected good 2D classes were then used as templates for the second round of template picking from all images.
+- Ab initio model reconstruction was used to generate initial 3D models.
+- Particles corresponding to different classes were selected and optimized through iterative rounds of heterogeneous refinement in cryoSPARC.
+- The best models were refined using non-uniform51 refinement and local refinement.
+- Local resolution was estimated from two half data maps under cryoSPARC.Model building, refinement, and validationAlphaFold prediction52 models of ROS1’s ECR, NELL2, Fab-RX5, and Fab-CT4 were used as starting templates for the model building.
+- The corresponding initial models were fitted into the cryo-EM maps using UCSF ChimeraX53 and manually rebuilt using Coot54.
+- Model refinement was performed using phenix.real_space_refine in PHENIX55,56.
+- Structural figures were generated in PyMOL (http://pymol.org/2/), UCSF Chimera57, and UCSF ChimeraX53.
+- The refined model was further manually adjusted in Coot54.
+- Detailed parameters and statistics for the model building and refinement process are provided in Table S1.Size exclusion chromatography-multiangle light scatteringSEC-MALS data were collected on a Dawn Heleos-II multi-angle static light scattering (MALS) detector (Wyatt) coupled to a Zenix-C SEC-300 column (Sepax Technologies) on an Agilent 1260 Infinity HPLC system.
+- Equilibrium responses were plotted against concentrations, and a one-site specific binding model was used to fit the data.
+- After several rounds of 2D classification, the selected good 2D classes were then used as templates for the second round of template picking from all images.
+- Ab initio model reconstruction was used to generate initial 3D models.
+- Particles corresponding to different classes were selected and optimized through iterative rounds of heterogeneous refinement in cryoSPARC.
+- The best models were refined using non-uniform51 refinement and local refinement.
+- Model building, refinement, and validationAlphaFold prediction52 models of ROS1’s ECR, NELL2, Fab-RX5, and Fab-CT4 were used as starting templates for the model building.
+- The corresponding initial models were fitted into the cryo-EM maps using UCSF ChimeraX53 and manually rebuilt using Coot54.
+- Model refinement was performed using phenix.real_space_refine in PHENIX55,56.
+- Structural figures were generated in PyMOL (http://pymol.org/2/), UCSF Chimera57, and UCSF ChimeraX53.
+- The refined model was further manually adjusted in Coot54.
+- Detailed parameters and statistics for the model building and refinement process are provided in Table S1.
+
+### control B_CDR2FR3 9zrt (case 12iu) doi 10.1126/scitranslmed.aef7084
+- Normality and log-normality were determined using the Shapiro-Wilk test, and IC50 and EC50 values were calculated by fitting data with four-parameter logistic curves.
+
+### control B_CDR2FR3 8i0z (case 8cr9) doi 10.1016/j.molcel.2023.04.025
+- Star+MethodsDetailed methods are provided in the online version of this paper and include the following: KEY RESOURCES TABLERESOURCE AVAILABILITY○Lead contact○Materials availability○Data and code availabilityEXPERIMENTAL MODEL AND SUBJECT DETAILS○Human cell lines○Insect cellsMETHOD DETAILS○General reagents, plasmids, and cell culture○Expression and purification of βarrs○Expression and purification of Fabs○Co-immunoprecipitation assay○Reconstitution of phosphopeptide-βarr-Fab complexes○Negative-s
+- RRID: AB_439702Chemicals, peptides, and recombinant proteinsTRISSRLCat# 71033HEPESSRLCat# 63732NaClSRLCat# 41721EDTASRLCat# 12070Phenylmethanesulfonyl Fluoride (PMSF)SRLCat# 84375 (84375)Benzamidine HydrochlorideSRLCat# 93014 (0248255)LysozymeSRLCat# 45822GlycerolSRLCat# 77453DithiothreitolHiMediaCat# MB070Lauryl Maltose Neopentyl Glycol (MNG)AnatraceCat# NG310, CAS no.1257852-96-2Paraformaldehyde (PFA)Sigma AldrichCat# P6148, CAS no. 30525-89-4Poly-D-lysineSigma AldrichCat# P0899TMB (Tetramethy
+- Asuka InoueN/ASoftware and algorithmsUCSF ChimeraPettersen et al.64 https://www.cgl.ucsf.edu/chimera/ UCSF Chimera XPettersen et al.65 https://www.rbvi.ucsf.edu/chimerax/ COOTEmsley et al.66 https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/ cryoSPARCPunjani et al.67 https://cryosparc.com/ PDBsumLaskowski et al.68 http://www.ebi.ac.uk/thornton-srv/databases/pdbsum/ PhenixLiebschner et al.69 https://www.phenix-online.org/ PyMolSchrodinger https://pymol.org/2/ Prism 8GraphPad Software https://w
+- Shukla (arshukla@iitk.ac.in).Materials availabilityReagents described in this manuscript are available upon reasonable request from the lead contact.Experimental Model and Subject DetailsHuman cell linesHEK-293 cells were purchased from ATCC for all the cellular experiments performed in the study.
+- Movies were recorded in counting mode with a Gatan K3 DED (Gatan, USA) using the automated SerialEM software at a nominal magnification of 46,000x and a pixel size of 0.878Å at sample level. 8,614 movie stacks consisting of 40 frames were recorded over a defocus range of 0.5 to 2.5μm with a total dose of 51e-/A2 and total exposure time of 3sec.Cryo-EM data processing and model buildingAll image processing steps were performed in cryoSPARC version 3.3.267 unless otherwise stated.
+- In brief, for the C5aR1pp-βarr1-Fab30 complex, 6,212 movie stacks were subjected to patch motion correction (multi), followed by CTF refinement with patch CTF multi. 5,790 motion corrected micrographs with CTF fit resolution better than 4.5Å were selected for further processing. 4,304,237 particle projections were automatically picked with blob picker, extracted with a box size of 480pixels and fourier cropped to 64pixels.
+- The class averages with clear secondary structural features were selected and re-extracted with a box size of 480pixels and fourier cropped to 256pixels resulting in a pixel size of 1.5375Å. 295,922 re-extracted particles were then subjected to Ab-initio reconstruction and 3D classification/Heterogeneous refinement with C1 symmetry yielding 4 models. 80,437 particles corresponding to a dimer and containing 47.9% of the total particles were subjected to non-uniform refinement with C2 symmetry to 
+- Further, local refinement was performed by masking out the variable domains of Fab30 resulting into an estimated resolution of 3.26Å.
+- The particles corresponding to the two ab-initio models were subjected to heterogenous refinement/3D classification which produced a 3D class with clear dimeric conformation and a particle count of 86,525.
+- This particle set was re-extracted with full box size of 480pixels (pixel size of 0.878) and subjected to non-uniform refinement with C2 symmetry which converge to a map with 4.81Å resolution as estimated using the gold standard Fourier Shell Correlation (GFSC) using the 0.143 criterion.
+- Local refinement was performed by masking out the variable domains of Fab30 which resulted into an estimated resolution of 4.45Å.For the V2Rpp-βarr2-Fab30 complex, 9,720 movies were motion corrected with 5x5 patches followed by CTF estimation with patch CTF (multi).
+- Following CTF refinement, 8,295 movies with CTF fit resolution better than 4.5Å were used for further processing.
+- This sub-set of particles was used for ab-initio reconstruction and subsequent rounds of 3D/Heterogeneous classification with C1 symmetry to obtain 2 models. 92,018 particles corresponding to a trimer were re-extracted with full box size of 512pixels which refined to an overall resolution of 4.18Å (voxel size of 0.82Å) with NU refinement (C3 symmetry) according to the gold standard Fourier shell correlation (FSC) criterion of 0.143.
+- Subsequently, local refinement was performed on βarr and the variable domains of Fab30 and resulted into an estimated resolution of 3.96Å.For the C5aR1pp-βarr2-Fab30 complex data set, 8,614 movies were motion corrected using patch motion correction (multi) and subsequent CTF estimation was performed through patch CTF (multi). 8,157 micrographs with CTF fit resolution better than 6Å were curated for particle picking using the blob picker sub-program. 4,012,616 particles were automatically picked 
+- Following heterogenous refinement/3D classification, the 3D class with evident features of a trimer and containing 38,206 particles was subjected to non-uniform refinement with C3 symmetry to yield a reconstruction at 4.41Å (final voxel size of 1.2487Å) as determined by gold standard Fourier Shell Correlation (FSC) using the 0.143 criterion.
+- Local refinement was performed masking out the variable domains of Fab30 which improved the resolution to 4.33Å.Model building and refinementCoordinates from a previously solved V2Rpp bound βarr1 structure (PDB 4JQI) was used to dock the model into the EM density map of C5aR1pp-βarr1-Fab30 using Chimera.64 The EM map was then used for manual rebuilding of the βarr1 residues and placing the phosphopeptide in COOT.66 The rebuilt model was subjected to real spa
+
+### control B_CDR2FR3 7m8l (case 7oh0) doi 10.1016/j.cell.2021.09.035
+(no open-access full text)
+
+### control B_CDR2FR3 7r7n (case 7oh0) doi 10.1038/s41586-021-03807-6
+(no open-access full text)
+
+### control B_CDR2FR3 7mjj (case 7mkl) doi 10.1371/journal.pbio.3001237
+- Micrographs were collected using EPU at nominal 92,000× magnification (physical pixel size 1.6 Å) over a defocus range of −2.0 μm to −1.0 μm with a total accumulated dose of 40 e–/Å2.Cryo-EM sample preparation and data collectionFor cryo-EM, both N501Y and unmutated SARS-CoV-2 spike ectodomain preparations were deposited on grids at a concentration of 2.25 mg/ml.
+- Particles were picked by crYOLO v.1.7.6 [35] with a general model (ftp://ftp.gwdg.de/pub/misc/sphire/crYOLO-GENERAL-MODELS/gmodel_phosnet_negstain_20190226.h5).
+- Final density maps were obtained by 3D homogeneous refinement.For cryo-EM data, motion correction in patch mode (EER upsampling factor 1, EER number of fractions 40), CTF estimation in patch mode, reference-free particle picking, and particle extraction (extraction box size 640, Fourier crop to box size 320) were performed on-the-fly in cryoSPARC.
+- The initial consensus maps were obtained by 3D homogeneous refinement.
+- Final 3D refinement was done with per particle CTF estimation and aberration correction.
+- Local refinements with a soft mask covering a single RBD and its bound VH ab8 or ACE2 resulted in improvement of the binding interfaces.
+- C3 symmetry expanded particles were used for local refinement of RBD and its bound Fab ab1.
+- Overall resolution and locally refined resolutions were according to the gold-standard Fourier shell correlation (FSC) [36].Model building and refinementCoordinates of PDB 6WGJ and 7CH5 were used as initial models to build the VH ab8 and Fab ab1, respectively.
+- Individual domains of SARS-CoV-2 HexaPro S trimer (PDB ID 6XKL) were docked into cryo-EM density using UCSF Chimera v.1.15 [37].
+- Initial models were first refined against sharpened locally refined maps, followed by iterative rounds of refinement against consensus map in Coot v.0.9.3 [38] and Phenix v.1.19 [39].
+- Glycans were added at N-linked glycosylation sites in Coot.
+- Model validation was performed using MolProbity [40].
+- Figures were prepared using UCSF Chimera, UCSF ChimeraX v.1.1.1 [41], and PyMOL v.2.2 (Schrodinger).Pseudovirus neutralization assaySARS-CoV-2 S N501Y plasmid was obtained from SARS-CoV-2 S plasmid (HDM-IDTSpike-fixK) by site-directed mutagenesis (Q5 Site-Directed Mutagenesis Kit, New England Biolabs).
+- The association (kon) and dissociation (koff) rates were derived from the sensorgram fitting and used to calculate the binding equilibrium constant (KD).
+- Cryo-EM sample preparation and data collectionFor cryo-EM, both N501Y and unmutated SARS-CoV-2 spike ectodomain preparations were deposited on grids at a concentration of 2.25 mg/ml.
+- Model building and refinementCoordinates of PDB 6WGJ and 7CH5 were used as initial models to build the VH ab8 and Fab ab1, respectively.
+- Individual domains of SARS-CoV-2 HexaPro S trimer (PDB ID 6XKL) were docked into cryo-EM density using UCSF Chimera v.1.15 [37].
+- Initial models were first refined against sharpened locally refined maps, followed by iterative rounds of refinement against consensus map in Coot v.0.9.3 [38] and Phenix v.1.19 [39].
+- Glycans were added at N-linked glycosylation sites in Coot.
+- Model validation was performed using MolProbity [40].
+- Figures were prepared using UCSF Chimera, UCSF ChimeraX v.1.1.1 [41], and PyMOL v.2.2 (Schrodinger).
+
+### control B_CDR2FR3 7xmx (case 8dg8) doi 10.1038/s41421-022-00449-4
+- Overall cryo-EM structures of the S-antibody complexesTo understand structural basis for the binding and neutralization by F61 and D2, we expressed and produced the six proline-stabilized (S6P) WT-S glycoprotein ectodomain with S1/S2 furin-cleavage site mutated to GSAS.
+- Due to the flexibility of the RBD with bound Fab, we performed local refinement to improve the density of the RBD-Fab region for building the RBD-Fab model, which was then fit back onto the S-Fab overall density as a rigid body.
+- Due to the conformational heterogeneity of the Fab-bound RBDs relative to the rest of the S trimer, only the variable region of the heavy chain (VH) and the light chain (VL) domains of the bound Fabs were built in all final models.It has been found that the apo SARS-CoV-2 S trimer usually exhibits a mixture of a closed form with all three RBDs in the down position and an open form with one RBD in the up position43,65,66.
+- The resulting data were fitted to a 1:1 binding model using the Biacore 8 K Evaluation software (GE Healthcare).
+- Its codons were optimized for insect cell expression and there were six sites mutated to proline.
+- There were six sites mutated to proline and these substitutions occurred at F817, A892, A899, A942, K986 and V987.
+- After one or two rounds of 2D classification, the preferable classes were selected and these selected particles were used to create 3D initial model and perform 3D classification.
+- Finally, a total of 412,558 particles for S-F61 complex, 790,425 particles for S-D2 complex and 670,525 particles for Omicron-S-F61-D2 complex were applied to 3D refinement to generate density map and post-processing was performed.
+- Local refinement was then performed to further improve the density of the interaction interface of the S and the Fabs.
+- Data collection and processing statistics of S-F61 complex, S-D2 complex and Omicron-S-F61-D2 complex were listed in Supplementary Table S1.Model building and refinementThe structure of the SARS-CoV-2 S in complex with ACE2 with 3-up RBDs (PDB: 7KMS) was used to generate the initial model of S for S-F61 and S-D2 structures, the structure of the SARS-CoV-2 Omicron S in complex with JMB2002 with 3-up RBDs (PDB: 7WPF) was used to generate the initial model of Omicron S for Omicron-S-F61-D2 structur
+- These atomic models were fit into the final density maps using UCSF Chimera v.1.1683.
+- Coot v.0.9.284 was subsequently used for manual adjustment and correction according to the protein sequences, map densities, Ramachandran plot, rotamers and bond geometry restraints.
+- The Real Space Refinement of PHENIX v.1.18.285 was also used to refine these structures.
+- The quality of the final models was evaluated by PHENIX v.1.18.285.
+- Figures were generated using PyMOL 2.0.786, UCSF Chimera v.1.1683, UCSF ChimeraX v.1.1387.
+- Model building and refinementThe structure of the SARS-CoV-2 S in complex with ACE2 with 3-up RBDs (PDB: 7KMS) was used to generate the initial model of S for S-F61 and S-D2 structures, the structure of the SARS-CoV-2 Omicron S in complex with JMB2002 with 3-up RBDs (PDB: 7WPF) was used to generate the initial model of Omicron S for Omicron-S-F61-D2 structure, and the initial model of Fabs was predicted using AlphaFold282.
+- These atomic models were fit into the final density maps using UCSF Chimera v.1.1683.
+- Coot v.0.9.284 was subsequently used for manual adjustment and correction according to the protein sequences, map densities, Ramachandran plot, rotamers and bond geometry restraints.
+- The Real Space Refinement of PHENIX v.1.18.285 was also used to refine these structures.
+- The quality of the final models was evaluated by PHENIX v.1.18.285.
+- Figures were generated using PyMOL 2.0.786, UCSF Chimera v.1.1683, UCSF ChimeraX v.1.1387.
+
+### control B_CDR2FR3 7wue (case 7wvl) doi 10.1126/scitranslmed.abm0899
+- Computational modeling and bioinformatics analysis were used to visualize these findings on the three-dimensional (3D) structure in the context of evolutionary conservation.
+- The S protein 3D structure modeling was constructed by CHARMM-GUI (37) and OpenMM (38) based on the Protein Data Bank (PDB) file 6VSB_1_1_1 (39), with the most abundant glycoform of BEAS-2B data as representative glycan profile (fig.
+- All 3D structure figures were drawn by UCSF ChimeraX (46).Animal immunization, virus challenge, and prophylactic study of m31A7For mice vaccination with a two-dose schedule, female 6- to 8-week-old BALB/c mice (n = 5) were immunized intramuscularly with 10 μg of purified SFG, SHM, or SMG mixed with aluminum hydroxide (50 μg) at days 0 and 14.
+
+### control B_CDR2FR3 7u0c (case 7wvl) doi 10.1038/s41467-022-30865-9
+- This process of de-replication effectively reduced the size of the data set that needed to be integrated into the database.The results of sequencing data processing are summarized in Supplementary Table 4.In silico protein modelingBefore the start of the computational analysis, the crystal structures of the bNAbs HEPC3 and AR3C in complex with HCV envelope glycoprotein E2 (PDB IDs: 6MEI and 4MWF) were relaxed using Rosetta Relax application41 using the following flags: -flip_HNQ-no_optH false-re
+- Each of these 1200 sequences was threaded using Rosetta onto the HEPC3 structure in the context of E2 and then relaxed to generate ten models for each HCDR3 sequence using the following XML script:<ROSETTASCRIPTS> <SCOREFXNS> <ScoreFunction Name="tal14" weights="talaris2014"/> <ScoreFunction Name="tal14_cart" weights=" talaris2014_cart"/> </SCOREFXNS> <FILTERS> </FILTERS> <TASKOPERATIONS> <ReadResfile Name="rr" filename="%%resfile%%"/> <InitializeFromCommandline Name="ifcl"/> <RestrictToRepackin
+- One-hot encoded loop sequence data were combined with either loop total score or protein complex interface score to estimate a score for each of the 20 amino acids at every position in the HCDR3 using Ridge regression model as implemented in sklearn.linear_model.Ridge.
+- The total score of the complex, predicted binding affinity, HCDR3 root-mean-square deviation (RMSD) to a template Ab, shape complementarity, and the number of unsatisfied hydrogen bond partners were calculated for each of the sequences and compared to the corresponding values of the template Ab.
+- We used these values to guide the selection of sequences for testing aiming for similar or better scores compared to the template Ab but due to the small number of the analyzed sequences, no strict selection cutoffs were implemented.
+- The HEPC3 bent HDCR3 loop conformation was modeled with multi-template Rosetta comparative modeling (RosettaCM) using both HEPC3.1 and HEPC3.4 structures as templates.
+- Similarly, the HEPC3.1 and HEPC3.4 straight HCDR3 loop conformation models were generated with RosettaCM using HEPC3 as a template.
+- The crystallographic structures of HEPC3 straight and HEPC3.1 and HEPC3.4 bent conformations were relaxed in Rosetta prior to MD simulation.
+- The best scoring poses of the Rosetta relaxed crystal structures or RosettaCM models were used to initiate all MD simulations.Systems were parameterized with Leap in AmberTools2042.
+- The HEPC3.1 and HEPC3.4 structures were solved by molecular replacement using the HEPC3 (PDB 6MED) and HEPC3.1 structures as search models.
+- The models were refined and validated using Phenix.refine56.
+- Iterative manual model building and corrections were performed using Coot57.
+- The HEPC3.1 and HEPC3.4 structures were solved by molecular replacement using the HEPC3 (PDB 6MED) and HEPC3.1 structures as search models.
+- The models were refined and validated using Phenix.refine56.
+- Iterative manual model building and corrections were performed using Coot57.
+
+### control C_FR3 9l1l (case 9dm7) doi None
+(no open-access full text)
+
+### control C_FR3 9jrt (case 9dm7) doi 10.1038/s44318-025-00611-0
+- Methods Reagents and tools tableReagent/resourceReference or sourceIdentifier or catalog number Experimental models E. coli OmniMAX 2 T1InvitrogenCat# C854003E. coli DH10BInvitrogenCat# EC0113Spodoptera frugiperda (Sf9)Expression systemsCat#94-001 FHigh FiveExpression systemsCat#94-002 FAD293ATCC Recombinant DNA pFastBac EP2-BRILThis studyN/ApFastBac anti-BRIL FabThis studyN/ApET-21d anti-Fab NanobodyThis studyN/ApFastBac EP4This studyN/ApFastBac Fab001This studyN/ApcDNA3.1 EP2This studyN/ApcDNA
+- The resin elution was concentrated using a 100-kDa MWCO Millipore concentrator and further refined via size exclusion chromatography on a Superdex 6 increase 10/300GL column (GE Healthcare) equilibrated with 20 mM HEPES, pH 7.4, 150 mM NaCl, 0.00075% (w/v) LMNG, 0.00015% CHS, 0.00025% (w/v) GDN, and 2 μM PF-04418948 or TG6-129.To form the final complex, purified EP2 was combined with FabBRIL and NbFab in a 1:1.2:1.5 molar ratio and incubated on ice for 30 min.
+- Subsequent analysis steps, encompassing particle picking, extraction, two-dimensional (2D) classification, Ab-Initio Reconstruction, multi-reference refinement, and local refinement, were executed using CryoSPARC v4.5.1 (Punjani et al, 2017).For the EP2-BRIL-FabBRIL-NbFab complexes, the processing pipeline began with the extraction of 3,285,427 and 2,260,400 particles from micrographs of EP2-PF-04418948 and EP2-TG6-129 complexes, respectively.
+- The final structures, achieved through Ab-Initio Reconstruction, multi-reference refinement, seeding-facilitating refinement, and local refinement in CryoSPARC v4.5.1, reached resolutions of 3.50 Å for EP2-PF-04418948 and 3.28 Å for EP2-TG6-129 (Appendix Figs.
+- The refined structures, obtained through the same series of reconstruction and refinement steps in CryoSPARC v4.5.1, achieved resolutions of 2.65 Å for EP4-grapiprant and 2.92 Å for EP4-TG6-129 (Appendix Figs.
+- S4 and S5).Model building and refinementFor each of the EP2 structures and EP4 structures, an atomic model predicted by Alphafold2 was used as the starting reference model for receptor building (Tunyasuvunakool et al, 2021).
+- They were rigid bodies that fit into the density.
+- All models were fitted into the EM density map using UCSF Chimera (Pettersen et al, 2004), followed by iterative rounds of manual adjustment and automated rebuilding in COOT (Emsley and Cowtan, 2004) and PHENIX (Adams et al, 2004), respectively.
+- The model was finalized by rebuilding in ISOLDE (Croll, 2018), followed by refinement in PHENIX with torsion-angle restraints to the input model.
+- The final model statistics were validated using Comprehensive validation (cryo-EM) in PHENIX and provided in Appendix Table S1.
+- All structural figures were prepared using Chimera, Chimera X (Pettersen et al, 2021), and PyMOL (Schrödinger, LLC.).GloSensor cAMP assayThe full-length EP2 or EP4 was cloned into the pcDNA3.1 vector (Invitrogen), incorporating an N-terminal FLAG tag.
+- A nonlinear regression analysis, employing a sigmoidal dose–response model, was conducted to determine the Emax values and half-maximum inhibitory concentrations (IC50) for each compound tested.Surface expression analysisCell-surface expression levels of both wild-type and mutant receptors were assessed using a fluorescence-activated cell sorting (FACS) assay.
+- Subsequent analysis steps, encompassing particle picking, extraction, two-dimensional (2D) classification, Ab-Initio Reconstruction, multi-reference refinement, and local refinement, were executed using CryoSPARC v4.5.1 (Punjani et al, 2017).For the EP2-BRIL-FabBRIL-NbFab complexes, the processing pipeline began with the extraction of 3,285,427 and 2,260,400 particles from micrographs of EP2-PF-04418948 and EP2-TG6-129 complexes, respectively.
+- The final structures, achieved through Ab-Initio Reconstruction, multi-reference refinement, seeding-facilitating refinement, and local refinement in CryoSPARC v4.5.1, reached resolutions of 3.50 Å for EP2-PF-04418948 and 3.28 Å for EP2-TG6-129 (Appendix Figs.
+- The refined structures, obtained through the same series of reconstruction and refinement steps in CryoSPARC v4.5.1, achieved resolutions of 2.65 Å for EP4-grapiprant and 2.92 Å for EP4-TG6-129 (Appendix Figs.
+- Model building and refinementFor each of the EP2 structures and EP4 structures, an atomic model predicted by Alphafold2 was used as the starting reference model for receptor building (Tunyasuvunakool et al, 2021).
+- They were rigid bodies that fit into the density.
+- All models were fitted into the EM density map using UCSF Chimera (Pettersen et al, 2004), followed by iterative rounds of manual adjustment and automated rebuilding in COOT (Emsley and Cowtan, 2004) and PHENIX (Adams et al, 2004), respectively.
+- The model was finalized by rebuilding in ISOLDE (Croll, 2018), followed by refinement in PHENIX with torsion-angle restraints to the input model.
+- The final model statistics were validated using Comprehensive validation (cryo-EM) in PHENIX and provided in Appendix Table S1.
+- All structural figures were prepared using Chimera, Chimera X (Pettersen et al, 2021), and PyMOL (Schrödinger, LLC.).
+
+### control C_FR3 7nda (case 7e23) doi 10.1016/j.cell.2021.02.032
+- RRID:AB_2571551FD7C antibodyHuang et al., 2020N/ABacterial and virus strainsSARS-CoV-2 (Australia/VIC01/2020)Caly et al., 2020N/A2019 n-CoV/USA_WA1/2020US CDCN/ADH5α bacteriaIn VitrogenCat#18263012Rosetta-gami 2(DE3)pLysS bacteriaSigma-AldrichCat#71352Biological samplesPBMCs from SARS-CoV-2 patientsJohn Radcliffe Hospital in Oxford UKN/AChemicals, peptides, and recombinant proteinsHis-tagged SARS-CoV-2 RBDThis paperN/ABiotinylated SARS-CoV-2 RBDThis paperN/AHis-tagged human ACE2This paperN/AHuma
+- PDB: 7ND4, 7ND5, 7ND6, 7ND7, 7ND8, 7ND9, 7NDA, 7NDB, 7NDC, 7NDDExperimental models: cell linesHEK293S GnTI- cellsATCCCat#CRL-3022;
+- Screaton)N/ASoftware and AlgorithmsXia2-dialsWinter et al., 2018https://xia2.github.io/parameters.htmlPHENIXLiebschner et al., 2019https://www.phenix-online.org/COOTEmsley and Cowtan, 2004https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/PyMOLDeLano and Bromberghttps://pymol.org/2/Data Acquisition Software 11.1.0.11Fortebiohttps://www.sartorius.com/en/products/protein-analysis/octet-systems-softwareData Analysis Software HT 11.1.0.25Fortebiohttps://www.sartorius.com/en/products/protein-analys
+- EM maps and structure models are deposited in EMDB and PDB with accession codes EMDB: EMD-12274, EMD-12275, EMD-12276, EMD-12277, EMD-12278, EMD-12279, EMD-12280, EMD-12281, EMD-12282, EMD-12283, EMD-12284 and PDB: 7ND4, 7ND5, 7ND6, 7ND7, 7ND8, 7ND9, 7NDA, 7NDB, 7NDC, 7NDD (see Table S5).
+- Code for the competition driven mAb mapping and clustering (mabscape) is available from https://github.com/helenginn/mabscape and https://snapcraft.io/mabscape.Experimental model and subject detailsPatient and blood samplesPatients were recruited from the John Radcliffe Hospital in Oxford, UK, between March and May 2020 by identification of patients hospitalised during the SARS-CoV-2 pandemic and recruited into the Sepsis Immunomics project [Oxford REC C, reference:19/SC/0296] ISARIC/WHO Clinica
+- Nucleoprotein was expressed using 2-L cultures of Rosettagami2(DE3)pLysS bacteria (Novagen) in terrific broth medium containing 40 mg/L kanamycin, at 15°C for 40 hr following induction with Isopropyl β-D-1-thiogalactopyranoside (1mM final concentration, Meridian Bioscience).
+- Expression was carried out using 2-L cultures of Rosettagami2(DE3)pLysS bacteria (Novagen) in terrific broth medium containing 40 mg/L kanamycin, at 15°C for 40 hr following induction with Isopropyl β-D-1-thiogalactopyranoside (1mM final concentration, Meridian Bioscience).
+- Sigma), and antibody-containing supernatants were harvested for further characterization.Construction of Fab expression plasmidsHeavy chain expression plasmids of specific antibodies were used as templates to amplify the first fragment, heavy chain vector include the variable region and CH1 until Kabat amino acid number 233.
+- The two fragments were ligated by Gibson assembly to make the Fab heavy chain expression plasmid.Construction of scFv antibody plasmidHeavy chain and light chain expression plasmids of specific antibodies were used as a template to amplify variable region gene of heavy and light chain respectively.
+- GraphPad PRISM software was used to perform nonlinear regression curve-fitting analyses of binding data to estimate dissociation constants (Kd).
+- Melting temperatures (Tm) were calculated by fitting of a 5-parameter sigmoid curve using the JTSA software (P.
+- For the RBD-S309-384 ternary complex, good crystals were obtained from Morpheus condition H1, containing 0.1 M amino acids (Glu, Ala, Gly, Lys, Ser), 0.1 M MES/imidazole/ pH 6.5, 10% (w/v) PEG 20000 and 20% (w/v) PEG MME 550.X-ray data collection, structure determination and refinementCrystals were soaked in a solution containing 25% glycerol and 75% reservoir solution for a few seconds and then mounted in loops and frozen in liquid nitrogen prior to data collection.
+- Sequence corrections to the target Fabs from the search models and model rebuilding were done with COOT (Emsley and Cowtan, 2004).
+- All the structures were refined with PHENIX (Liebschner et al., 2019) resulting in good R-factors and stereochemistry for most of the structures except for RBD-88-45 and RBD-53-75 in each of which there is presence of translational NCS with vectors (−0.003 0.502 0.489) and (0.044, 0, 0.5) and can only be refined to Rwork/Rfree of 0.250/0.285 and 0.242/0.284 to 2.53 Å and 2.50 Å, respectively.
+- Data collection and structure refinement statistics are given in Table S5.Cryo-EM Grid PreparationFor all Fab or IgG-Spike complexes, a 3 μL aliquot of S ~0.6 μm (determined by OD) with Fab (1:6 molar ratio) was prepared, aspirated and almost immediately applied to a freshly glow-discharged Cu support Cflat 2/1-200 mesh holey carbon-coated grid (high intensity, 20 s, Plasma Cleaner PDC-002-CE, Harrick Plasma).
+- After inspection of 2D classes, classes of interest were selected to generate templates for complete particle picking.
+- Binned particles were then subjected to one to three rounds of reference free 2D classification followed by 3D classification with an ab-initio derived model before further refinement and unbinning.For both 150 and 158, two data separate data collections were set up on the same grid, and refined particle sets from each collection were separated by exposure groups before being combined.
+- For 150, a total of 77,265 exposure-group split particles were initially combined (51,554 from 4726 movies and 25,711 from 2079 movies), re-classified into five classes, and the two best classes (42,655 particles) subjected to further non-uniform refinement, with obvious density for Fab bound to one RBD in an ‘up’ conformation.
+- Notably, discarded classes included a high proportion of undecorated S (28,463 particles, 4.4 Å reported resolution at GSFSC = 0.143, −43 Å2 B-factor).Classification using heterogeneous refinement in cryoSPARC was found to be generally poor, and, instead, 3D variability analysis was employed to try to better resolve full spike-Fab structures.
+- Local
+
+### control C_FR3 8wnu (case 8w5e) doi 10.1038/s44298-024-00024-6
+- Next, we superimposed the corresponding model of the “loose” tetrameric rsNS1 CryoEM map of DENV2 PVP94/07 clinical strain (PDB:7WUU), and a previously reported crystal structure of ZIKV rsNS1 (strain: BeH819015 strain;
+- Overall, our tetrameric ZIKV rsNS1 is highly similar to the other reported structures (RMSD:1.93), although our model showed a different angle within the trajectory of the dimer scaffold (Fig. 2b and Supplementary Fig. 2).
+- Of note, further examination of the intermolecular contacts of the only other available ZIKV MR766 rsNS1 structure (PDB:5K6K)21, showed that ZIKV rsNS1 could also form a microtubule-like structure with a central hydrophobic cavity of ~16.5 Å.Fig. 2ZIKV MR766 rsNS1 cryoEM structure in comparison with Zv rsNS1 crystal and DENV2 rsNS1 CryoEM structures.a cryoEM map fitting of rsNS1 tetramer between ZIKV (2.9 Å, this study, in cyan) and DENV2 (8.3 Å, EMDB-32842, in gray), with densities thresholded 
+- The RMSD values are reported across all matched pairs as calculated using the matchmaker to a single chain for the overall model (left) and to the β-roll only (residues 1–30, right). c Representative 2D class averages of the ZIKV MR766 rsNS1 cryoEM dataset are shown in the cyan box, grouped by the side and top views.
+- We recapitulated ZIKV rsNS1 filament-like form as observed in our representative 2D class averages (bottom left, white scale bar, 100 Å) and cryoEM model (Supplementary Fig. 1).
+- Particles were picked using a mix of Template Picker, Topaz48 and crYOLO v1.7.649 and extracted at box sizes of 400, 256, 540, 600, 416 pixels for rsNS1 filament, rsNS1, rsNS1:AA12:AfNb, rsNS1:EB9:AfNb, and rsNS1:GB5:AfNb datasets, respectively.
+- All resulting classes were refined respectively with no symmetry (C1) using Heterogeneous Refinement for further cleaning followed by rounds of Non-Uniform Refinement36, Local Refinement, and postprocessing using DeepEMhancer50.
+- Rigid body motion of the protein is modeled using 3DFlex51.
+- The map for rsNS1:GB5:AfNb was further improved during Non-Uniform Refinement with C2 symmetry imposed.Model building and refinementInitial map fitting was performed using predicted models generated using AlphaFold52,53, followed by manual corrections in Coot v0.9.8.x54 followed by cycles of real-space refinement in Phenix55 and ISOLDE56.
+- Map fitting and figures representing the map and model features were done using UCSF ChimeraX57.
+- As the map densities for AfNb and the constant domains of the fab are poor, this region was modeled based on one of the available CryoEM structures of AfNb-Fab (PDB:7PHP)35.
+- The refinement statistics of the model are summarized in Supplementary Table 1.Cryo-EM image filament processingThe following data processing was performed in Relion v3.0.5146.
+- Using these particles, 3D refinement was performed, resulting in a reconstruction at 8 Å resolution.
+- Particles were picked using a mix of Template Picker, Topaz48 and crYOLO v1.7.649 and extracted at box sizes of 400, 256, 540, 600, 416 pixels for rsNS1 filament, rsNS1, rsNS1:AA12:AfNb, rsNS1:EB9:AfNb, and rsNS1:GB5:AfNb datasets, respectively.
+- All resulting classes were refined respectively with no symmetry (C1) using Heterogeneous Refinement for further cleaning followed by rounds of Non-Uniform Refinement36, Local Refinement, and postprocessing using DeepEMhancer50.
+- Rigid body motion of the protein is modeled using 3DFlex51.
+- The map for rsNS1:GB5:AfNb was further improved during Non-Uniform Refinement with C2 symmetry imposed.
+- Model building and refinementInitial map fitting was performed using predicted models generated using AlphaFold52,53, followed by manual corrections in Coot v0.9.8.x54 followed by cycles of real-space refinement in Phenix55 and ISOLDE56.
+- Map fitting and figures representing the map and model features were done using UCSF ChimeraX57.
+- As the map densities for AfNb and the constant domains of the fab are poor, this region was modeled based on one of the available CryoEM structures of AfNb-Fab (PDB:7PHP)35.
+- The refinement statistics of the model are summarized in Supplementary Table 1.
+- Using these particles, 3D refinement was performed, resulting in a reconstruction at 8 Å resolution.
+
+### control C_FR3 8tzy (case 8w5e) doi 10.1038/s42003-025-08239-w
+- Based on local resolution analysis and side-chain features in the Fab–E2 interfaces, a resolution of 3.8 Å was achieved for two locally refined cryo-EM maps of the Fab HC84.26.5D–E2 complex as determined from gold standard FSC curves (Table 1) (Supplementary Fig. 2) (Fig. 1b).Table 1Cryo-EM data collection, refinement, and validation statistics for Fab HC84.26.5D–E2 complexFab HC84.26.5D–E2ecto1b09Global refinementLocal refinementLocal refinementInterface 1Interface 2PDB8TGV8U9Y8TGZEMDBEMD-41245
+- We determined the structure of the Fab CBH4B–E2 complex using dimeric Fab CBH4B as a fiducial marker and locally refined the Fab–E2 interface to 3.7 Å resolution based on gold standard FSC curves (Table 3) (Supplementary Fig. 4) (Fig. 1d).Table 2Cryo-EM data collection, refinement, and validation statistics for Fab CBH7–E2–Fab HC84.26.5D complexFab CBH7–E2ecto1b09–Fab HC84.26.5DPDB8THZEMDBEMD-41275Data collection and processing MicroscopeTitan Krios Magnification81,000 Voltage (kV)300 DetectorGa
+- We focused on the locally refined models used for interface evaluation.
+- This is reflected in reductions in total buried surface area between VH and CH1 from 1670 Å2 for CBH7 to 643 Å2 for CBH4B (745 Å2 for HC84.26.5D) and in total buried surface area between VL and CL from 1724 Å2 for CBH7 to 621 Å2 for CBH4B (742 Å2 for HC84.26.5D), as analyzed by PDBePISA (https://www.ebi.ac.uk/pdbe/pisa/)42.Table 4X-ray data collection and refinement statistics for Fab CBH7Fab CBH7PDB8TFEData collection and processing Wavelength (Å)0.98 Resolution range (Å)46.14–1.62 (1.65–1.62) 
+- Initial phases were obtained by molecular replacement with the program Phaser72 using E2-specific Fab HEPC3 (PDB accession code 6MED)20 as a search model.
+- Manual model building and corrections were performed using Coot73 with iterative cycles of refinement using REFMAC574.
+- The final model was validated with PROCHECK75 and MolProbity76.
+- Data collection, processing, and refinement statistics are summarized in Table 4.Cryo-EM sample preparation and data acquisitionFor each complex (Fab HC84.26.5D–E2, Fab CBH4B–E2, and Fab HC84.26.5D–E2–Fab CBH7), 3 μl of protein was applied to the carbon side of Quantifoil R1.2/1.3 (300 mesh) glow-discharged (PELCO easiGlow) grids.
+- To generate initial templates, 500 micrographs were used for blob picking with a blob size of 100–200 Å diameter. 2D class averages were generated after extracting the particles with a 320 pixel box and a binning factor of 2 (a pixel size of 2.24 Å).
+- Unique 2D class averages with prominent protein features were used as templates for further particle picking from all high-quality micrographs.
+- Template picking yielded 2,422,548 particles extracted with a 320 pixel box and a binning factor of 2 (a pixel size of 2.24 Å).
+- In C1 and C2 symmetry, the best resolved classes with 180,188 and 357,752 particles, respectively, were subjected to heterogeneous refinement followed by non-uniform and CTF refinement to yield cryo-EM maps at resolutions of 3.8 Å and 3.5 Å, respectively, based on the gold standard Fourier shell correlation (GSFSC) of with a criterion of 0.143.
+- To delineate Fab HC84.26.5D–E2 interactions, the best resolvable interface analyzed by local resolution estimation was subjected to local refinement using a soft mask (dilation radius = 4, soft padding width = 2) covering one E2 and one Fab HC84.26.5D molecule on two independent 3D reconstructions.
+- Data processing details are summarized in Supplementary Fig. 2.For the Fab CBH4B–E2 and Fab HC84.26.5D–E2–Fab CBH7 complexes, the same methods were followed for template picking and particle cleaning as described above.
+- Template picking yield 4,606,895 (Fab CBH4B–E2) and 3,265,955 (Fab HC84.26.5D–E2–Fab CBH7) particles. 2D and 3D classification were carried out to select consistent particle classes.
+- Finally, 200,763 (Fab CBH4B–E2) and 165,691 (Fab HC84.26.5D–E2–Fab CBH7) particles were selected for 3D refinements.
+- The Fab CBH4B–E2 interface was locally refined by generating a soft mask (dilation radius = 4, soft padding width = 2) covering E2, VL, and VHCH1.
+- Data processing details are summarized in Supplementary Figs. 3 and 4.Model building and refinementCrystal structures of dimeric Fab HC84.26.5D (PDB code 6X9X)40, HCV E2 (6MEI)20, and Fab CBH7 (8TFE) were used as initial models and docked into the EM maps of the Fab HC84.26.5D–E2, Fab CBH4B–E2, and Fab HC84.26.5D–E2–Fab CBH7 complexes using UCSF Chimera (https://www.cgl.ucsf.edu/chimera/).
+- The models were manually fitted in Coot73 and subjected to iterative real-space refinement using PHENIX with secondary structure and geometry restraints.
+- The MolProbity server76 was used to identify geometrical outliers and problematic regions in the model, which were manually corrected in Coot73.
+- Molecular dynamics flexible fitting (MDFF) was performed to improve the overall refinement statistics and minimize clashes.
+- Parameters for cryo-EM data collection and modeling statistics are summarized in Tables 1–3.
+- Figures were created using PyMOL, UCSF Chimera (https://www.cgl.ucsf.edu/chimera/), and UCSF ChimeraX (https://www.cgl.ucsf.edu/chimerax/).
+- Kinetic parameters, including the equilibrium dissociation constant (KD), were derived by globally fitting association and dissociation curves using Octet Data Analysis 10.0 software.Epitope conservation and entropy analysisThe 1b09 E2 sequence was aligned to a set of pre-aligned HCV reference E2 sequences downloaded from the Los Alamos National Laboratory (LANL) HCV database79 (N = 187 sequences) using the MAFFT multiple sequence alignment program80.
+- AlphaFold227 in the ColabFold framework83 was used to model structurally unresolved E2 residues, including HVR1, using the CBH7-bound cryo-EM E2 coordinates from this study as a ColabFold custom input template.
+- N-glycans with the mannose (Man3GlcNAc2) glycoform, which was noted previously to be a common component of mammalian expressed E2 N-glycans70, were m
+
+### control C_FR3 6x87 (case 7kra) doi 10.7554/elife.59018
+- RRID:SCR_003511 Software, algorithmcryoSPARC v2Punjani et al., 2017https://cryosparc.com/ Software, algorithmPhenix (phenix.refine; phenix.real_space_refine)Adams et al., 2010https://www.phenix-online.org/;
+- RRID:SCR_014224 Software, algorithmUCSF ChimeraPettersen et al., 2004https://www.cgl.ucsf.edu/chimera/;
+- RRID:SCR_004097 Software, algorithmUCSF ChimeraXGoddard et al., 2018https://www.cgl.ucsf.edu/chimerax/;
+- RRID:SCR_015872 Software, algorithmCootEmsley et al., 2010https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/;
+- MacKerell et al., 1998) force field for the protein and the TIP3P (Jorgensen et al., 1983) water model.
+- PbCSP αTSR) from strain ANKA (NCBI reference sequence XP_022712148.1) were designed with potential N-linked glycosylation sites mutated to glutamine and cloned into pcDNA3.4 expression vectors with a His tag.
+- Kinetics data were analyzed using the FortéBio’s Octet Data Analysis software 9.0.0.6, and curves were fitted to a 2:1 binding model.Binding thermodynamics by isothermal titration calorimetryCalorimetric titration experiments were performed with an Auto-iTC200 instrument (Malvern) at 37°C.
+- The experimental data were analyzed using the MicroCal ITC Origin 7.0 Analysis Software according to a 1:1 binding model.Size-exclusion chromatography-multi-angle light scattering (SEC-MALS)Full-length PbCSP was complexed with a molar excess of 3D11 Fab and loaded on a Superose 6 Increase 10/300 GL (GE Healthcare) using an Agilent Technologies 1260 Infinity II HPLC coupled in-line with the following calibrated detectors: (i) MiniDawn Treos MALS detector (Wyatt);
+- Refinement of the structures was performed using phenix.refine (Adams et al., 2010) and iterations of refinement using Coot (Emsley et al., 2010).
+- Manual particle selection was performed on 30 micrographs to create templates for template-based picking. 669,223 particle images were selected by template picking and individual particle images were corrected for beam-induced motion with the local motion algorithm (Rubinstein and Brubaker, 2015).
+- After several rounds of heterogeneous refinement, 165,747 particle images were selected for non-uniform refinement with no symmetry applied, which resulted in a 3.2 Å resolution map of the 3D11 Fab-PbCSP complex estimated from the gold-standard Fourier shell correlation (FSC) criterion.CryoEM model buildingTo create a starting model of the 3D11 Fab-PbCSP complex, seven copies of 3D11 Fab/PbCSP-peptide crystal structures were manually docked into the 3D11 Fab-PbCSP cryoEM map using UCSF Chimera (
+- All models were refined using phenix.real_space_refine (Adams et al., 2010) with secondary structure and geometry restraints.
+- The figures were prepared with UCSF Chimera (Pettersen et al., 2004) and UCSF ChimeraX (Goddard et al., 2018).
+- Refinement of the structures was performed using phenix.refine (Adams et al., 2010) and iterations of refinement using Coot (Emsley et al., 2010).
+- Manual particle selection was performed on 30 micrographs to create templates for template-based picking. 669,223 particle images were selected by template picking and individual particle images were corrected for beam-induced motion with the local motion algorithm (Rubinstein and Brubaker, 2015).
+- After several rounds of heterogeneous refinement, 165,747 particle images were selected for non-uniform refinement with no symmetry applied, which resulted in a 3.2 Å resolution map of the 3D11 Fab-PbCSP complex estimated from the gold-standard Fourier shell correlation (FSC) criterion.
+- CryoEM model buildingTo create a starting model of the 3D11 Fab-PbCSP complex, seven copies of 3D11 Fab/PbCSP-peptide crystal structures were manually docked into the 3D11 Fab-PbCSP cryoEM map using UCSF Chimera (Pettersen et al., 2004), followed by manual building using Coot (Emsley et al., 2010).
+- All models were refined using phenix.real_space_refine (Adams et al., 2010) with secondary structure and geometry restraints.
+- The figures were prepared with UCSF Chimera (Pettersen et al., 2004) and UCSF ChimeraX (Goddard et al., 2018).
+
+### control C_FR3 7q6z (case 7mhz) doi 10.1016/j.molcel.2021.11.018
+- RRID: CVCL_0224HEK293T Lenti-XTakara/ClontechCat# 632180Recombinant DNAPlasmid: pHR-CMV-TetO2-HHAT-wildtype-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-wildtype-Avi-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-wildtype-mVenus-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-F58E-Avi-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-E59R-Avi-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-G67L-Avi-1D4This manuscriptN/APlasmid: pHR-CMV-TetO2-HHAT-W255A-Avi-1D4This manuscriptN/APlasmid: pH
+- Particles were blob picked and the 2D classes were inspected and classes of interest were selected to generate templates for complete particle picking.For the HHAT-MB177-nhPalm-CoA complex, a total number of 606,945 particles were picked and extracted in a 400 px box Fourier cropped to 200 px (1.662 Å/px).
+- After template picking, 2D classification was skipped and 5 ab initio models were directly generated and further refined using heterogenous refinement, leading to a single good-looking class.
+- Particles within this class with a 3D ab initio class posterior probability lower than 90% were discarded (39,331 particles) and the other particles were recentered and re-extracted in a 400 px box Fourier cropped to 300 px (1.1053 Å/px) before running a non-uniform refinement.
+- The consensus map was refined to 3.0 Å.
+- CTF refinement and high order aberration correction improved map resolution to 2.89 Å.
+- Focus refinement in cryoSPARC after particle subtraction was performed on the nanobody-HHAT part improving the resolution to 2.7 Å.
+- This class was further refined using focus refinement in cryoSPARC, and despite the same reported resolution, the quality of the map was significantly improved.
+- In parallel, the particles were reverted to the original and a focus refinement after particles subtraction was performed on the megabody core, leading to a resolution of 2.6 Å.
+- Both focus refined maps were combined using Phenix combine focused map followed by phenix autosharpen map tool (Adams et al., 2010).
+- The combined map was used for model building after assessing that the quality of the combined map is identical to the focused maps.For the HHAT-MB169-nhPalm-CoA complex, a total number of 2,300,000 particles were picked and extracted in a 400 px box Fourier cropped to 200 px (1.662 Å/px).
+- Around 1,000,000 particles were selected after 2D classification and 5 ab initio models were then generated and further refined using heterogenous refinement, leading to a single good-looking class.
+- Particles within this class with a 3D ab initio class posterior probability lower than 90% were discarded and the other particles were recentered and re-extracted in a 400 px box Fourier cropped to 300 px (1.1053 Å/px) before running a non-uniform refinement.
+- The consensus map was refined to 3.4 Å.
+- The best-looking class containing 192K particles was further refined to 3.1 Å.
+- Focus refinement on the nanobody-HHAT part greatly improved the quality of the transmembrane regions of HHAT with a final resolution of 3.7 Å.Finally, for the HHAT-MB177-IMP-1575 complex, a total number of around 3,000,000 particles were picked and extracted in a 400 px box Fourier cropped to 200 px (1.62 Å/px).
+- Around 864k particles were selected after 2D classification and 5 ab initio models were then generated and further refined using heterogeneous refinement, leading to two good-looking classes.
+- Particles within these classes with a 3D ab initio class posterior probability lower than 90% were discarded and the other particles were recentered and re-extracted in a 400 px box Fourier cropped to 300 px (1.1053 Å/px) before running a non-uniform refinement.
+- The consensus map containing around 367k particles was refined to 4.0 Å.
+- After an extra step of 3D classification, the best-looking class containing 318K particles was further refined to 3.86 Å.
+- Focus refinement on the nanobody-HHAT part greatly improved the quality of the transmembrane regions of HHAT with a final resolution of 3.59 Å.Model building, refinement and validationThe structures were modeled by first fitting a homology model of HHAT and PDB entry 6XUX for the megabody component into the combined map of HHAT-MB177-nhPalm-CoA using UCSF Chimera (Pettersen et al., 2004).
+- One cycle of rigid body real space refinement followed by manual adjustment in Coot (Emsley et al., 2010) was performed to correctly position the Cα chain into the density.
+- Finally, cycles of Phenix (Adams et al., 2010) real space refinement and manual building in Coot (Emsley et al., 2010) were used to improve model geometry.
+- Map-to-model comparison in Phenix mtriage validated that no over-fitting was present in the structures.
+- Model geometry was validated for all models using MolProbity (Chen et al., 2010).
+- This model was then used to refine the HHAT-MB169-nhPalm-CoA and HHAT-MB177-IMP-1575 complexes in a similar way.
+- All map and model statistics are detailed in Table S1.Coarse-grained molecular dynamics simulationsLigands and the bound megabody were removed from the HHAT-MB177-nhPalm-CoA-heme structure and loops between D45-L51, W189-T197 and P409-Q422 modeled using Modeler 9.20 (https://salilab.org/modeler).
+- The model with the lowest DOPE score was selected and converted to CG resolution using matinize.py.
+- Palmitate was modeled with a charged headgroup (named PCN in the MARTINI topology) and cholesterol was modeled with inclusion of virtual sites.
+- TIP3P water was readded to the system along with approximately 0.15 M NaCl.The protein coordinates from the HHAT-nhPalm-CoA-heme structure were used to build the following systems: HHAT apo, HHAT with Palm-CoA bound and HHAT with Palm-CoA bound and heme covalently bound to Cys324.
+- The protein coordinates from the HHAT-IMP-1575 structure were used to build the following system: HHAT in an inhibited conformation (but without inhibitor bound) with heme covalently bound to Cys324.
+- The protonation state of residue sidechains in th
+
+### control C_FR3 9lyc (case 9yfu) doi 10.1016/j.celrep.2025.115478
+(no open-access full text)
+
+### control C_FR3 9ot6 (case 9yfu) doi 10.1016/j.jbc.2025.110886
+- Local masked refinement centered on the F3IN–TTC7B interface enabled unambiguous determination of the residues mediating the interaction between F3IN and the PI4KA complex.
+- Using a combination of manual model building and AlphaFold3 (35), we were able to generate a molecular model of F3IN binding to the PI4KA–TTC7B–FAM126A trimer with the density allowing for manual building of the CDR loops mediating interaction with the trimer (Fig.
+- B, molecular model of F3IN bound at the interface of TTC7B and the PI4KA horn domain.
+- E, overlay of the PI4KA–EFR3A (PDB: 9BAX) and PI4KA–F3IN models depicting binding of F3IN and EFR3A at the same TTC7B helix (represented as a black box with a red cross).
+- For expression in HEK293-AT1 cells, the F3IN nanobody sequence was amplified from the the pET22b-F3IN construct as template, using primers containing EcoRI and AgeI restriction sites.
+- The raw SDS-PAGE gel images for all purified proteins are shown in the source data.SpyCatcher and EGFP-SpyTagThe His10-TEV-SUMO-KCK-SpyCatcher and his10-TEV-SUMO-KCK-EGFP-SpyTag(AHIVMVDAYKPTK∗) fusion proteins were expressed in Rosetta (DE3) E. coli.
+- Using the ImageJ/Fiji plugin, TrackMate, every AF647–PI4KA membrane docking event was time stamped as previously described (58).
+- Although every molecule AF647–PI4KA was tracked until membrane dissociation or photobleaching, only new AF647–PI4KA membrane docking events were counted to calculate the cumulative membrane binding frequency.
+- Molecules that docked on the membrane surface but remained immobile were filtered out.
+- Final particle stack was manually curated to contain only micrographs with a CTF fit resolution less than or equal to 10.To generate initial 3D models, 587,975 particles were picked from 4021 micrographs using a template generated from a 3D reconstruction of the PI4KA complex from an independent dataset (without F3IN) lowpass filtered to 20 Å.
+- The resulting 69,526 particles underwent ab initio reconstruction with two classes.The complete dataset was then template picked as above (3,176,029 particles) and inspected with the inspect pics job, removing particles picking ice contamination. 2,262,222 particles were extracted with a box size of 560 pixels and subjected to two rounds of 2D classification with 40-online EM iterations.
+- The remaining 657,836 particles underwent heterogenous refinement using the two ab initio reconstructions from the small dataset.
+- About 329,699 particles from the class resembling the PI4KA complex underwent two rounds of homogeneous refinement followed by particle orientation rebalancing (rebalance percentile 80) prior to homogeneous refinement with C2 symmetry enforced.
+- About 282,982 particles then underwent C2 symmetry expansion followed by two rounds of masked local refinement with a mask covering the entire molecule.
+- To improve the quality of the TTC7B–F3IN interface, mask bases containing either TTC7B–F3IN were generated in ChimeraX and uploaded to cryoSPARC to generate masks used for masked local refinement and particle subtraction.
+- The masked local refinements had their fulcrums centered at the TTC7B–F3IN interface and generated refinements with an overall resolution of 3.66 Å (local refinement A) and 3.77 Å (local refinement B) based on the FSC 0.143 criterion.
+- A composite map was then generated using the global reconstruction and local refinement A and B in ChimeraX.
+- S2.The cryo-EM structure of PI4KA-TTC7B-FAM126A from PDB: 9BAX and the AlphaFold 3 prediction of Nb F3IN, with CDR loops removed, were merged in Coot (59) and fit into the map using ChimeraX (60).
+- The model then underwent rounds of refinement in Phenix (61) using realspace, rigid body, and ADP refinement with tight secondary structure restraints and model building in Coot (59).
+- The CDR3 loop in Nb F3IN was manually rebuild in coot, followed by refinement in Phenix.HDX–MS sample preparationHDX reactions examining TTC7B–FAM126A (1–308) in the presence and absence of F3IN were carried out in 10 μl reaction volumes containing 15 pmol of TTC7B–FAM126A (1.5 μM TTC7B–FAM126A) and 30 pmol of F3IN (3 μM F3IN in the bound state).
+- The data were fit to a 1:1 binding model using the “full (assoc and dissoc) setting.” Reported kinetic binding constants (KD, kon, and koff) values were calculated by taking the geometric mean of binding constants calculated for individual conditions and replicates.For the competition experiments, F3IN was diluted in BLI buffer to 100 nM and TTC7B–FAM126A or PI4KA complex was diluted in BLI buffer to 50 nM or 10 nM, respectively.
+- Final particle stack was manually curated to contain only micrographs with a CTF fit resolution less than or equal to 10.To generate initial 3D models, 587,975 particles were picked from 4021 micrographs using a template generated from a 3D reconstruction of the PI4KA complex from an independent dataset (without F3IN) lowpass filtered to 20 Å.
+- The resulting 69,526 particles underwent ab initio reconstruction with two classes.The complete dataset was then template picked as above (3,176,029 particles) and inspected with the inspect pics job, removing particles picking ice contamination. 2,262,222 particles were extracted with a box size of 560 pixels and subjected to two rounds of 2D classification with 40-online EM iterations.
+- The remaining 657,836 particles underwent heterogenous refinement using the two ab initio reconstructions from the small dataset.
+- About 329,699 particles from the class resembling the PI4KA complex underwent two rounds of homogeneous refinement followed by particle orientation rebalancing (rebalance percentile 80) prior to homogeneous refinement with C2 symmetry enforced.
+- About 282,982 particles then underwent C2 symmetry expansion followed by two rounds of masked local refinement with a mask covering the entire molecule.
+- To improve the quality of the TTC7B–F3IN interface, mask bases containing either TTC7B–F3IN were generated in ChimeraX and uploade
+
+### control C_FR3 3q6f (case 2x7l) doi 10.1016/j.str.2011.02.012
+(no open-access full text)
+
+### control F_CDR1 6jhr (case 6lht) doi 10.1371/journal.pbio.3000229
+- Movies (25 frames, each 0.2 s, total dose 30 e− Å−2) were recorded with a defocus of between 1 and 2.5 μm using SerialEM [41], which yields a final pixel size of 1.35 Å.Image processing, 3D reconstruction, model building, and refinementThe frames from each movie were aligned and averaged for the correction of beam-induced drift using MOTIONCORR [42].
+- The initial model was created by EMAN2 [47].
+- The crystal structure of HAV full particle (PDB ID code 4QPI) was used to fit the complex EM maps, and the atomic models of F4-, F6-, F7-, and F9-Fabs were built de novo into densities with the structure of R10 (PDB ID code 5WTG) as a guide, using COOT [48].
+- All models were further refined by positional and B-factor refinement in real space using Phenix [49] and rebuilding in COOT [48] iteratively.
+- The final models were evaluated by Molprobity [50] functions integrated in Phenix.
+- Data and refinement statistics are summarized in Table 1.Binding energy calculationIn antigen binding systems, the chain C, D, E, and G of F4 Fab-HAV, F6 Fab-HAV, F7 Fab-HAV, and F9 Fab-HAV structures were fetched out to perform MD simulation and binding energy calculations.
+- Gsolvnp is the nonpolar solvation free energy, usually computed as a linear function of the solvent-accessible surface area (SASA).Molecular dockingThe Phase program of the Schrodinger Suite 2013 [30] was used for the pharmacophore modeling.
+- Four key residues at positions of 31, 32, 101, and 102 from the heavy chain of the 5 NAbs were selected as a reference structure for modeling.
+- A total of 2,588 drugs were screened out using this procedure.The docking algorithm Glide [31], which is based on descriptor matching, was used to perform virtual screening and learn the interactions between small molecules and the protein structure.
+- The structure of HAV epitopes was prepared and then used to build the energy grid.
+- For Glide docking, the docking box was centered on the position of mass center of the 4 selected residues, and its outer box size was set to 40 × 40 × 40 Å.
+- All 2,588 drugs were docked to the antigen binding site on HAV capsids, and the 4 molecules were selected.
+- Image processing, 3D reconstruction, model building, and refinementThe frames from each movie were aligned and averaged for the correction of beam-induced drift using MOTIONCORR [42].
+- The initial model was created by EMAN2 [47].
+- The crystal structure of HAV full particle (PDB ID code 4QPI) was used to fit the complex EM maps, and the atomic models of F4-, F6-, F7-, and F9-Fabs were built de novo into densities with the structure of R10 (PDB ID code 5WTG) as a guide, using COOT [48].
+- All models were further refined by positional and B-factor refinement in real space using Phenix [49] and rebuilding in COOT [48] iteratively.
+- The final models were evaluated by Molprobity [50] functions integrated in Phenix.
+- Data and refinement statistics are summarized in Table 1.
+
+### control F_CDR1 7jic (case 6lht) doi 10.1126/science.abd9836
+(no open-access full text)
+
+### control F_CDR1 7m30 (case 7t6x) doi 10.1126/sciadv.abm2546
+- Atomic models of each component are docked in, shown as ribbons.
+- The flexibility and elongated shape of the Pentamer necessitated focused refinements of the Fabs along with the domains making up their respective epitopes.
+- Model building was facilitated by high-resolution crystal structures of unbound Fabs (1-103: 1.9 Å, 1-32: 2.1 Å, 2-18: 2.8 Å, and 2-25: 2.5 Å), which were then used as reference restraints and lightly refined as a part of the complex (tables S1 and S2).
+- Despite the ability to recognize the gH/gL heterodimer that serves as the scaffold for assembly of both the HCMV Pentamer and Trimer, 1-32 was only capable of neutralizing HCMV infection in epithelial cells (38).Fig. 4.Composite of cryo-EM structures of Pentamer bound by four neutralizing human antibodies.(A) Surface plasmon resonance sensorgrams showing binding of each of the four neutralizing Fabs, with data shown as black lines and the best fit of a 1:1 binding model shown as red lines.
+- Molecular replacement solutions were determined using PhaserMR (69), and models were iteratively built and refined using Coot (70), PHENIX (71), and ISOLDE (72).
+- Full crystallographic data collection and refinement statistics can be found in table S1.
+- Movies were collected using SerialEM (75) at a magnification of ×22,500, corresponding to a pixel size of 1.073 Å.Cryo-EM data processing and model buildingMotion correction, contrast transfer function (CTF) estimation, and nontemplated particle picking using BoxNet were performed in Warp (76).
+- Extracted particles were imported into cryoSPARC (77) for two-dimensional (2D) classification, ab initio 3D reconstruction calculation, 3D classification, and nonuniform refinement (78).
+- On the basis of the flexibility of the interface between the gH/gL and UL proteins, particle subtraction and focused refinement were also performed in cryoSPARC.
+- Crystal structures were docked into cryo-EM density maps using Chimera (80) before being refined in Coot (70), PHENIX (71), and ISOLDE (72).
+- Full cryo-EM data collection and refinement statistics can be found in table S2.Surface plasmon resonancePurified His-tagged Pentamer was immobilized to a single flow cell of a Ni-NTA sensor in Biacore X100 (GE Healthcare) to a level of ~800 response units using HBS-P+ buffer adjusted to a pH of 8.0.
+- Data were double reference–subtracted and fit to a 1:1 binding model using Biacore Evaluation Software (GE Healthcare).Biolayer interferometryPurified monoFc-tagged NRP2 or NRP2 a2b1b2 was immobilized to anti-human capture (AHC) tips (ForteBio) in a buffer composed of 10 mM Hepes (pH 8.0), 150 mM NaCl, 0.05% Tween 20, bovine serum albumin (BSA; 1 mg/ml), and 2 mM CaCl2.
+- Data were reference-subtracted and processed using Octet Data Analysis software v10.0 (ForteBio) with a 1:1 binding model.
+- Data were reference-subtracted and processed using Octet Data Analysis software v10.0 with a 1:1 binding model.HCMV neutralization assayAll of the Pentamer-specific antibodies used for the purposes of neutralization and inhibition assays were produced as described previously (39).
+- Molecular replacement solutions were determined using PhaserMR (69), and models were iteratively built and refined using Coot (70), PHENIX (71), and ISOLDE (72).
+- Full crystallographic data collection and refinement statistics can be found in table S1.
+- Cryo-EM data processing and model buildingMotion correction, contrast transfer function (CTF) estimation, and nontemplated particle picking using BoxNet were performed in Warp (76).
+- Extracted particles were imported into cryoSPARC (77) for two-dimensional (2D) classification, ab initio 3D reconstruction calculation, 3D classification, and nonuniform refinement (78).
+- On the basis of the flexibility of the interface between the gH/gL and UL proteins, particle subtraction and focused refinement were also performed in cryoSPARC.
+- Crystal structures were docked into cryo-EM density maps using Chimera (80) before being refined in Coot (70), PHENIX (71), and ISOLDE (72).
+- Full cryo-EM data collection and refinement statistics can be found in table S2.
+
+### control F_CDR1 7x2t (case 8gse) doi 10.1016/j.chom.2022.08.001
+(no open-access full text)
+
+### control F_CDR1 9l6c (case 9ml5) doi 10.1128/jvi.01844-24
+- Half-maximal inhibitory dilution (ID50) and half-maximal inhibitory concentration (IC50) were calculated using GraphPad Prism version 8.0 software by log (inhibitor) vs normalized response − variable slope (four parameters) model (60).Isolation of monoclonal antibody from a SARS-CoV-2 Delta-infected donorThawed PBMCs were stained with an antibody cocktail containing CD19-PE-Cy7, CD3-Pacific Blue, CD8-Pacific Blue, CD14-Pacific Blue, CD27-APC-H7, IgG-FITC (BD Biosciences), and IgA-FITC (Miltenyi 
+- Serially diluted antibodies were injected for 60 s, respectively, and the resulting data were fitted to a 1:1 binding model using the Biacore Evaluation software (GE Healthcare)(63).
+- Exposures were performed with a total dose of 50 e−/Å2, which were fractionated into 32 frames (64, 65).Cryo-EM data processing and model buildingA total of 3,523 movies were collected, containing 2,466 tilt 0° and 1,057 tilt 40°.
+- Hetero refinement and non-uniform refinement were executed.
+- Finally, 116,698 particles were used for non-uniform refinement, acquiring a density map at a resolution of 3.28 Å.
+- The predicted RBD of the Delta spike protein and ConD-852 by AlphaFold2 were used as the initial model and fitted into the density map by using Chimera.
+- The atomic model of the RBD/ConD-852 complex was further manually adjusted in Coot and refined in Phenix through the real-space refinement program.
+- The refinement cycle was repeated, and the quality of the final 3D atomic model was evaluated using MolProbity (64, 65).
+- The structure figures were prepared using PyMOL (http://www.pymol.org) or ChimeraX.
+- Cryo-EM data processing and model buildingA total of 3,523 movies were collected, containing 2,466 tilt 0° and 1,057 tilt 40°.
+- Hetero refinement and non-uniform refinement were executed.
+- Finally, 116,698 particles were used for non-uniform refinement, acquiring a density map at a resolution of 3.28 Å.
+- The predicted RBD of the Delta spike protein and ConD-852 by AlphaFold2 were used as the initial model and fitted into the density map by using Chimera.
+- The atomic model of the RBD/ConD-852 complex was further manually adjusted in Coot and refined in Phenix through the real-space refinement program.
+- The refinement cycle was repeated, and the quality of the final 3D atomic model was evaluated using MolProbity (64, 65).
+- The structure figures were prepared using PyMOL (http://www.pymol.org) or ChimeraX.
+
+### control F_CDR1 9kvd (case 9ml5) doi 10.1073/pnas.2503254122
+- Consequently, we obtained structures of two nonintact monomeric spike complexes bound to triple nAbs, refined to resolutions of 2.98 Å (S-prototype:4H1:4A5:4C1) and 3.44 Å (S-prototype: 3G5:4C11:4H5), respectively (Fig. 3 A–D and SI Appendix, Fig.
+- The NTD face nAbs 4C1 and 4H5, which would cause steric clash with adjacent NTD, even fitted onto the up RBD on the spike trimer (Fig. 3E).
+- The study involving these rhesus macaques was conducted at the Key Laboratory of Technical Evaluation of Fertility Regulation for Nonhuman Primate Inc in Fujian province and was approved by the Institutional Animal Care and Use Committee of Fujian Maternity and Child Health Hospital (approval number: 2021-01).Constructs, Protein Expressions, and Purifications.As previously described, expression cassettes encoding monomeric Sprototype and S1628x proteins [aa 1 to aa 1,192, containing mutated furi
+- After a 48-h incubation at 37 °C, fluorescence imaging of the cells was conducted using an Opera Phenix high-content imaging system (PerkinElmer).
+- A Pearson test and linear regression model were used for univariate correlation analysis.
+
+### control F_CDR1 9uhq (case 9yc6) doi None
+(no open-access full text)
+
+### control F_CDR1 7lq7 (case 7e5y) doi 10.1126/scitranslmed.abj5413
+- The key procedures used to achieve this aim were high-throughput B cell screening, in vitro neutralization assays, the hamster in vivo model, and SPR for characterization of antibody affinity and specificity.
+- Plasma and mAb IC50 values were estimated using an automated curve fitting script that fit four-parameter logistic model nonlinear regressions under 22 different combinations of model constraints and parameter starting values, or if those models failed to converge, then a quadratic regression model was used.
+- All 22 combinations of the logistic nonlinear regression were attempted, and if any succeeded, then the best fitting model was selected using its R2 value.
+- Regardless of the model fit, IC50 was estimated using interpolation to find the concentration or dilution that generated 50% neutralization.Authentic SARS-CoV-2 neutralization assay (Scripps)Vero E6 cells were seeded in 96-well half-well plates at about 8000 cells per well in a total volume of 50 μl of complete Dulbecco’s modified Eagle’s medium [DMEM; supplemented with 10% heat-inactivated serum, 1% GlutaMAX, and 1% penicillin/streptomycin (P/S)] the day before the in-cell enzyme-linked immunos
+- First, we plotted a standard curve of serially diluted virus (3000, 1000, 333, 111, 37, 12, 4, and 1 PFU) versus relative light units (RLU) using four-parameter logistic regression (GraphPad Prism version 8) belowy=a+b−a1+(xx0)cwhere a, b, c, and x0 are parameters fitted by standard curve.
+- Elution profiles were recorded with Unicorn software (Cytiva).Structure modelingEpitope bins represented by C135 (PDB ID: 7K8Z), S309 (PDB ID: 6WPS), ACE2 (PDB ID: 6M0J), CR3022 (PDB ID: 6W41), as well as NTD-specific antibody 4-8 were modeled onto a SARS-CoV-2 spike protein (PDB ID: 7C2L).
+- Structures were solved by molecular replacement using Phaser (66) with PDB 7JMW for RBD and COVA1-16 (34), whereas the model of CV503 was generated by Repertoire Builder (https://sysimm.org/rep_builder/) (67).
+- Iterative model building and refinement were carried out in Coot (68) and PHENIX (69), respectively.Single-particle nsEMThe bispecific antibodies were incubated with SARS-2 CoV 6P Mut7 at equal molar ratios for 30 min at room temperature.
+- RELION 3.0 (73) was used for 2D and 3D classifications and final refinements.
+- UCSF Chimera (74) enabled map segmentation and model docking.Hamster study (NIH)The SARS-CoV virus used for these studies was the 2019-nCoV/USA-WA1-A12/2020 isolate of SARS-CoV-2 provided by the U.S.
+
+### control F_CDR1 7pi3 (case 7e5y) doi 10.1038/s41467-022-28601-4
+- Eight residues were mutated to eliminate putative glycosylation sites (N103Q, N144Q, N334Q, N480Q, N498Q, N506Q, N526Q, N646Q, N964Q, and N1021).RCR complexAfter purification of RH5, CyRPA and RIPR, assembled RCR complex was produced by mixing equimolar concentrations of each protein and incubating for 60 min at room temperature.
+- A global Langmuir 1:1 interaction model was used to determine antibody kinetics.For kinetic analyses in the presence of calcium or magnesium, the same procedure was used starting from a top concentration of 100 nM, using TBS + P20 (150 mM NaCl, 20 mM Tris pH 7.4, 0.005% surfactant P20) with or without 1 mM CaCl2 or MgCl2.
+- Data collection and refinement statistics are provided in Supplementary Table 4.Phasing was done via molecular replacement using Phaser50, part of the CCP4 suite51.
+- Two search models were used, one of CyRPA from PDB 5TIH and the other anti-RH5 mAb R5.016 (6RCS).
+- In both cases, flexible regions such as CDR loops were removed from the search model prior to molecular replacement.
+- Models were refined using Coot53, Phenix54, and Buster55 before validation with MolProbity56.
+- In such cases, a model of the constant domain was docked into the density, based on regions that were interpretable, and the occupancy of residues occupying regions of weak electron density were set to zero.Statistical analysisStatistical analysis was done using Graphpad Prism v 9.1.0 for Mac.
+- Data collection and refinement statistics are provided in Supplementary Table 4.Phasing was done via molecular replacement using Phaser50, part of the CCP4 suite51.
+- Two search models were used, one of CyRPA from PDB 5TIH and the other anti-RH5 mAb R5.016 (6RCS).
+- In both cases, flexible regions such as CDR loops were removed from the search model prior to molecular replacement.
+- Models were refined using Coot53, Phenix54, and Buster55 before validation with MolProbity56.
+- In such cases, a model of the constant domain was docked into the density, based on regions that were interpretable, and the occupancy of residues occupying regions of weak electron density were set to zero.

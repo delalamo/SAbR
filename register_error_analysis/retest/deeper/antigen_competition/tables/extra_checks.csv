@@ -1,0 +1,6 @@
+test,OR,p,n,n_err,lo,hi
+"antigen-family dispersion, paper level, null = year+res+size",1.354064051907015,0.015968063872255488,1311,127,,
+"antigen-family dispersion, paper level, null = year+res+size+capsid/enzyme",1.1753123221168769,0.1377245508982036,1311,127,,
+"antigen-family dispersion, paper level non-SARS2, null = year+res+size+capsid/enzyme",1.1196658363234662,0.21756487025948104,1020,100,,
+"2020-21 non-SARS2 papers, zero competing labs: y ~ zero + C(ycat)+res+ln",7.312419806349838,0.0006991780173789324,189,23,2.314624716645579,23.101577996535788
+"2020-21 non-SARS2 papers, zero competing labs: y ~ zero + capenz + lexp + C(ycat)+res+ln",8.310896123275876,0.0015735493874526124,189,23,2.2355379731771414,30.896811058735207

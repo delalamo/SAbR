@@ -1,0 +1,13 @@
+test,p,q_BH
+"antibody-alone, EM entries, with fibrils (Fisher)",1e-11,6e-11
+"antibody-alone, EM entries, with fibrils (adjusted)",1.6e-07,6.4e-07
+"antibody-alone, EM entries, without fibrils (Fisher)",1.0,1.0
+"antibody-alone, EM entries, without fibrils (adjusted)",0.89,0.9709090909090909
+"lambda L1=8 vs 9, chains all methods, with fibrils",1.67e-15,2.004e-14
+"lambda L1=8 vs 9, chains all methods, without fibrils",0.0195,0.039
+"lambda L1=8 vs 9, units all methods, with fibrils",0.002,0.005688
+"lambda L1=8 vs 9, units all methods, without fibrils",0.0419,0.07182857142857142
+"lambda L1=8 vs 9, units EM, without fibrils",0.107,0.1605
+"lambda L1=8 vs 9, EM chains adjusted, with fibrils",0.00237,0.005688
+"lambda L1=8 vs 9, EM chains adjusted, without fibrils",0.277,0.33240000000000003
+"lambda L1=8 vs 9, EM units adjusted, without fibrils",0.125,0.16666666666666666

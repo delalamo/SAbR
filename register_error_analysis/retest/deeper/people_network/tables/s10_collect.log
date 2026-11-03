@@ -1,0 +1,33 @@
+                                              family                                                                  test                                         effect     n       p  q_lens
+75               exploratory: new-team effect by era                                                                <=2023                            OR 3.05 (1.91-4.87)   792  0.0000  0.0002
+0                                   entity aggregate                    any multi-lab hub on the study (aggregate) [entry]                 obs 18 vs exp 35.9, MH OR 0.42   534  0.0003  0.0096
+43                          experience (study level)                         no author with a prior antibody cryo-EM entry  OR 1.99 (1.36-2.91); err 0.472 vs clean 0.332  1302  0.0004  0.0096
+77               exploratory: new-team effect by era                                       interaction new_team x (>=2024)                            OR 0.24 (0.10-0.57)  1302  0.0013  0.0240
+63  post hoc: nanobody supplier (VUB/VIB co-authors)    nanobody studies: VUB/VIB co-author vs not (year-stratified exact)                        OR 5.00; 9/31 vs 26/353   384  0.0016  0.0240
+61                             carrier / persistence                        persistence, + lab antibody cryo-EM experience                            OR 2.55 (1.42-4.61)   842  0.0018  0.0240
+74  post hoc: nanobody supplier (VUB/VIB co-authors)        nanobody units: CDR2/FR3 (mode B) error, VUB vs other (Fisher)                        OR 11.54; 4/62 vs 3/505   567  0.0035  0.0390
+28                     network vs year-matched clean                                         entry: cross_mid: frac_linked                  obs 0.15 vs null 0.29 (x0.53)   178  0.0040  0.0390
+20                     network vs year-matched clean                                 entry: any (other study): frac_linked                  obs 0.53 vs null 0.64 (x0.82)   178  0.0060  0.0390
+67  post hoc: nanobody supplier (VUB/VIB co-authors)                                    ... + new-to-antibody-cryo-EM team                            OR 3.82; nan vs nan   384  0.0066  0.0390
+66  post hoc: nanobody supplier (VUB/VIB co-authors)               nanobody studies: logit adj. year, resolution, V chains                            OR 3.82; nan vs nan   384  0.0067  0.0390
+60                             carrier / persistence                  persistence: the same lab had an earlier error study                            OR 2.19 (1.24-3.86)   842  0.0068  0.0390
+41                          experience (study level)               most experienced author: prior antibody cryo-EM entries          OR 0.89 (0.81-0.97); err 2 vs clean 4  1302  0.0070  0.0390
+40                          experience (study level)                       most experienced author: prior antibody entries         OR 0.90 (0.84-0.97); err 4 vs clean 10  1302  0.0074  0.0390
+42                          experience (study level)                                  no author with a prior cryo-EM entry  OR 1.77 (1.16-2.68); err 0.299 vs clean 0.215  1302  0.0075  0.0390
+64  post hoc: nanobody supplier (VUB/VIB co-authors)         ... last author not in Belgium (supplier-type collaborations)                        OR 4.50; 7/26 vs 25/349   375  0.0082  0.0399
+24                     network vs year-matched clean                                         entry: cross_lab: frac_linked                  obs 0.33 vs null 0.48 (x0.69)   178  0.0120  0.0537
+34                          experience (study level)                           last author: prior antibody cryo-EM entries          OR 0.89 (0.81-0.97); err 1 vs clean 2  1302  0.0124  0.0537
+37                          experience (study level)                             last author: first antibody cryo-EM entry  OR 1.62 (1.11-2.38); err 0.465 vs clean 0.364  1302  0.0133  0.0548
+33                          experience (study level)                                   last author: prior antibody entries          OR 0.90 (0.83-0.98); err 4 vs clean 6  1302  0.0171  0.0667
+45                          experience (study level)      most experienced non-last author: prior antibody cryo-EM entries          OR 0.88 (0.78-0.98); err 0 vs clean 1  1302  0.0202  0.0744
+15                     network vs year-matched clean                                         study: cross_mid_noamb: edges                 obs 7.00 vs null 19.44 (x0.36)   127  0.0210  0.0744
+73  post hoc: nanobody supplier (VUB/VIB co-authors)   nanobody units (aux_reagent=True): error rate VUB vs other (Fisher)                        OR 11.39; 2/11 vs 4/209   220  0.0306  0.1039
+39                          experience (study level)                        most experienced author: prior cryo-EM entries        OR 0.92 (0.85-0.99); err 10 vs clean 13  1302  0.0324  0.1053
+72  post hoc: nanobody supplier (VUB/VIB co-authors)  nanobody units (aux_reagent=False): error rate VUB vs other (Fisher)                        OR 2.54; 9/51 vs 23/296   347  0.0345  0.1075
+16                     network vs year-matched clean                                   study: cross_mid_noamb: frac_linked                  obs 0.10 vs null 0.20 (x0.50)   127  0.0400  0.1199
+59                             carrier / persistence           any earlier cross-lab study via a co-author (connectedness)                            OR 0.68 (0.46-0.99)  1302  0.0415  0.1199
+44                          experience (study level)               most experienced non-last author: prior cryo-EM entries          OR 0.92 (0.84-1.00); err 1 vs clean 4  1302  0.0559  0.1557
+46                          experience (study level)                       authors with any prior cryo-EM entry (log2 1+n)          OR 0.80 (0.64-1.01); err 1 vs clean 2  1302  0.0603  0.1600
+2                                   entity aggregate                    any multi-lab hub on the study (aggregate) [study]                 obs 18 vs exp 26.1, MH OR 0.60   263  0.0615  0.1600
+78 tests
+wrote study_frame_pseudonymised.csv.gz 1302

@@ -1,0 +1,15 @@
+                                     keys                                                     stat  observed  null_mean  null_sd  ratio  p_upper  p_lower
+0                         all person keys            people on error studies of >=2 different labs        37     36.508    7.059  1.013    0.489    0.565
+1                         all person keys                   max distinct labs linked by one person         4      4.052    1.024  0.987    0.675    0.741
+2                         all person keys  non-last authors on error studies of >=2 different labs        20     21.850    5.646  0.915    0.639    0.425
+3  collision-prone name-only keys dropped            people on error studies of >=2 different labs        29     26.062    5.490  1.113    0.317    0.742
+4  collision-prone name-only keys dropped                   max distinct labs linked by one person         3      3.134    0.618  0.957    0.895    0.787
+5  collision-prone name-only keys dropped  non-last authors on error studies of >=2 different labs        15     13.868    4.239  1.082    0.422    0.673
+                                                                         test     n  n_err  n_exposed  err_rate_exposed_or_mean_err  err_rate_unexposed_or_mean_clean      OR      lo      hi       p       q
+0  carrier: a non-last co-author was on an earlier error study of another lab   823     69        279                        0.0824                            0.0846  1.0186  0.5202  1.9946  0.9571  0.9938
+1                                  carrier, + lab antibody cryo-EM experience   823     69        279                        0.0824                            0.0846  0.9974  0.5127  1.9402  0.9938  0.9938
+2                                      carrier, collision-prone names dropped   716     57        186                        0.0860                            0.0774  1.1824  0.5827  2.3991  0.6426  0.8996
+3                 carrier: share of earlier cross-lab studies that had errors   823     69        279                        0.0836                            0.0723  1.5526  0.3866  6.2353  0.5351  0.8996
+4                 any earlier cross-lab study via a co-author (connectedness)  1302    127        823                        0.0838                            0.1211  0.6757  0.4635  0.9850  0.0415  0.0969
+5                        persistence: the same lab had an earlier error study   842     77        296                        0.1216                            0.0751  2.1892  1.2409  3.8620  0.0068  0.0239
+6                              persistence, + lab antibody cryo-EM experience   842     77        296                        0.1216                            0.0751  2.5547  1.4157  4.6103  0.0018  0.0129

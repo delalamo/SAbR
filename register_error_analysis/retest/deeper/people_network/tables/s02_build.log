@@ -1,0 +1,10 @@
+audit authors 17270 entries 4085 person keys 4894 with ORCID (direct or mapped) 0.572
+entries.idx parsed 261584 EM 37607 antibody 11972
+grp     clean  err  excl
+method                  
+EM       1175  127    33
+X-ray     895   33    11
+grp     amyloid  clean  err  excl
+method                           
+EM           15   2574  178    64
+X-ray         0   1208   34    12

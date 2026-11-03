@@ -1,0 +1,17 @@
+EM share of entries whose antibodies are all new V regions, by class:
+                               n  all_novel    err
+cls2                                              
+viral surface glycoprotein  1349      0.647  0.059
+channel/transporter          439      0.519  0.027
+GPCR                         307      0.746  0.039
+receptor/membrane protein    155      0.613  0.052
+viral capsid                 154      0.701  0.208
+other protein                143      0.455  0.028
+enzyme                        97      0.649  0.237
+unmapped/peptide              53      0.698  0.075
+none                          21      0.524  0.095
+EM error rate by all-novel: {'mean': {0: 0.043, 1: 0.077}, 'size': {0: 1015, 1: 1737}, 'sum': {0: 44, 1: 134}}
+y ~ all_novel + C(ycat)+res {'all_novel': (np.float64(1.84), np.float64(0.0056))}
+y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res {'all_novel': (np.float64(1.61), np.float64(0.0284)), 'cap': (np.float64(4.9), np.float64(0.0)), 'enz': (np.float64(4.92), np.float64(0.0)), 'first_fam': (np.float64(1.32), np.float64(0.3207)), 'lexp': (np.float64(0.93), np.float64(0.0895))}
+2020-21 non-SARS2 papers: novel-V share by zero competitors: {0: 0.7, 1: 0.73}
+zero competing labs, + novel V + capsid/enzyme + experience: OR 8.09 [2.18, 30.04] p 0.0018 | novel V OR 1.33 p 0.673

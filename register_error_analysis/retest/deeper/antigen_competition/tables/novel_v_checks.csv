@@ -1,0 +1,8 @@
+test,OR,p,n,n_err
+novel-V model [y ~ all_novel + C(ycat)+res]: all_novel,1.84,0.0056,2730,176
+novel-V model [y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res]: all_novel,1.61,0.0284,2730,176
+novel-V model [y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res]: cap,4.9,0.0,2730,176
+novel-V model [y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res]: enz,4.92,0.0,2730,176
+novel-V model [y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res]: first_fam,1.32,0.3207,2730,176
+novel-V model [y ~ cap + enz + first_fam + all_novel + lexp + C(ycat)+res]: lexp,0.93,0.0895,2730,176
+"2020-21 non-SARS2 papers, zero competing labs, + novel V + capsid/enzyme + lab experience",8.089273879793598,0.0017907341945523514,189,23

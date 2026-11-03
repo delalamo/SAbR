@@ -1,0 +1,10 @@
+mode,units,runs,artifact_units,artifact_runs,artifact_units_EM,units_EM
+A_FR1Nterm,60,97,,,,53
+B_CDR2FR3,31,54,,,,25
+C_FR3,31,44,6.0,12.0,2.0,24
+D0,9,10,,,,9
+Dminus_CDR3long,22,28,,,,20
+Dplus_CDR3short,39,90,,,,32
+E_FR4bulge,20,56,,,,19
+F_CDR1,13,20,2.0,7.0,2.0,10
+other,5,12,,,,5

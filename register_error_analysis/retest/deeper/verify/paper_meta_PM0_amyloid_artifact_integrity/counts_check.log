@@ -1,0 +1,23 @@
+AL fibril entries in analysis set: 15 ['6ic3', '6z1o', '7nsl', '9els', '9faa', '9fab', '9fac', '9liv', '9liw', '9lix', '9liy', '9lj0', '9lja', '9ljb', '9v91']
+flagged err_first: 15 / 15 ; methods {'EM': 15}
+modes per entry: {'A_FR1Nterm': 7, 'other': 6, 'F_CDR1': 2}
+EM error units: 183 of 4260 ; amyloid error units: 12
+first-occurrence runs: 488 amyloid: 77 (15.8%); EM runs 428
+run length median amyloid vs other: 89.0 8.0
+|delta| median amyloid vs other: 17.0 1.0
+origin 'chain end/unbuilt loop' share of runs: with amyloid 0.445, without 0.348; amyloid runs in that class 74/217
+mode x amyloid (runs):
+ amy              False  True 
+mode                         
+A_FR1Nterm          97     34
+B_CDR2FR3           54      0
+C_FR3               44      0
+D0                  10      0
+Dminus_CDR3long     28      0
+Dplus_CDR3short     90      0
+E_FR4bulge          56      0
+F_CDR1              20      8
+other               12     35
+EM lambda error units: total 24 of which amyloid 12 ; lambda unit rate with/without amyloid: 0.050 / 0.026; kappa 0.032; heavy 0.048
+EM entry error rate 2024-2025: with amyloid 0.053 (53/1007), without 0.041
+class-level enrichment: 15/15 vs EM base rate 0.063 -> binomial p = 1.03e-18

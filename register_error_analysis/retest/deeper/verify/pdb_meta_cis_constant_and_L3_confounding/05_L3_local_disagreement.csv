@@ -1,0 +1,3 @@
+set,n_err,err_L3_subthreshold_disagree,ctrl_L3_subthreshold_disagree,err_cis_displaced_113-117,ctrl_cis_displaced_rate,err_any_V_cis,ctrl_any_V_cis,Pro115_cis_err_if_L3_agree,Pro115_cis_ctrl_if_L3_agree,OR,p
+all,31,3/31,0/2045,0,0.001,7/31,0.749,14.3% (4/28),62.1% (1269/2045),0.09613682404227729,0.011675407256315499
+drop Zhou,19,3/19,0/2040,0,0.001,7/19,0.750,25.0% (4/16),62.2% (1269/2040),0.1764660906779293,0.05648549232998698

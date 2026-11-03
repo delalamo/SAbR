@@ -1,0 +1,60 @@
+cases 59 controls 4036
+investigator seq_nt_trunc: cases 0.322 controls 0.078
+error-chain seq_trunc: cases 0.322 (19) controls 0.078
+agreement investigator vs error-chain-based: [[3763, 0], [0, 332]]
+
+Cross-tab: mode-A rate by model start (ANARCI IMGT of first built residue) x SEQRES truncated
+                  sum  count      rate
+mstart seq_trunc                      
+1      0           10   2887  0.003464
+2      0            7    645  0.010853
+       1            6    171  0.035088
+3      0           10    152  0.065789
+       1            8     74  0.108108
+4+     0           13     68  0.191176
+       1            5     87  0.057471
+
+Model start distribution, cases vs controls
+y          0   1
+mstart          
+1       2877  10
+2        803  13
+3        208  18
+4+       137  18
+
+--- Models (feature = SEQRES starts after IMGT 1, error chain for cases)
+crude                                                                  n=59/4036 0.322 vs 0.078  OR 5.65 [3.23-9.87] p=1.2e-09
+M2 (investigator covariates)                                           n=59/4036 0.322 vs 0.078  OR 5.32 [2.89-9.82] p=8.5e-08
+M2 cluster-robust by paper                                             n=59/4036 0.322 vs 0.078  OR 5.32 [2.68-10.59] p=1.9e-06
+M2 cluster-robust by last author                                       n=59/4036 0.322 vs 0.078  OR 5.32 [2.50-11.34] p=1.5e-05
+M2 + model start category (1/2/3/4+)                                   n=59/4036 0.322 vs 0.078  OR 1.17 [0.60-2.28] p=0.65
+fail M2 + model start, cluster paper The weights and list don't have the same length.
+M2 + model start, cluster paper                                        n=59/4036 0.322 vs 0.078  OR nan [nan-nan] p=nan
+M2 + model N-term not at IMGT 1 (binary)                               n=59/4036 0.322 vs 0.078  OR 1.72 [0.93-3.20] p=0.084
+M2: model starts after IMGT 1 (feature = model_trunc)                  n=59/4036 0.831 vs 0.284  OR 12.89 [6.38-26.01] p=9.8e-13
+Only units whose model starts after IMGT 1: SEQRES trunc vs SEQRES full (unbuilt) n=49/1148 0.388 vs 0.273  OR 1.83 [0.97-3.42] p=0.06
+  same, simpler covariates + model start                               n=49/1148 0.388 vs 0.273  OR 1.01 [0.53-1.92] p=0.97
+
+Units where SEQRES start == model start (the deposited record matches the built model):
+  M2, built model and record start together                            n=28/3156 0.643 vs 0.089  OR 19.26 [8.20-45.25] p=1.1e-11
+
+--- Strata (crude Fisher, feature = seq_trunc)
+deposit 0-2019                           cases 2/6 (0.33)  ctrl 24/297 (0.081)  OR 5.69 p=0.086
+deposit 2020-2021                        cases 3/14 (0.21)  ctrl 66/839 (0.079)  OR 3.19 p=0.097
+deposit 2022-2023                        cases 5/19 (0.26)  ctrl 83/1181 (0.070)  OR 4.72 p=0.0097
+deposit 2024-2100                        cases 9/20 (0.45)  ctrl 140/1719 (0.081)  OR 9.23 p=1.5e-05
+chain H                                  cases 13/33 (0.39)  ctrl 163/2273 (0.072)  OR 8.41 p=2.9e-07
+chain K                                  cases 3/15 (0.20)  ctrl 54/1312 (0.041)  OR 5.82 p=0.024
+chain L                                  cases 3/11 (0.27)  ctrl 96/451 (0.213)  OR 1.39 p=0.71
+light (K+L)                              cases 6/26 (0.23)  ctrl 150/1763 (0.085)  OR 3.23 p=0.021
+res < 3.5                                cases 8/24 (0.33)  ctrl 151/2182 (0.069)  OR 6.73 p=0.00017
+res >= 3.5                               cases 11/35 (0.31)  ctrl 162/1854 (0.087)  OR 4.79 p=0.00016
+SARS-CoV-2                               cases 5/12 (0.42)  ctrl 77/1007 (0.076)  OR 8.63 p=0.0015
+not SARS-CoV-2                           cases 14/47 (0.30)  ctrl 236/3029 (0.078)  OR 5.02 p=1.1e-05
+human/mouse non-nanobody                 cases 14/45 (0.31)  ctrl 213/3363 (0.063)  OR 6.68 p=5.9e-07
+first structure of antibody (n_prior_same_ab=0) cases 18/54 (0.33)  ctrl 192/2713 (0.071)  OR 6.57 p=2.9e-08
+model starts at IMGT 1                   cases 0/10 (0.00)  ctrl 0/2877 (0.000)  OR nan p=1
+model starts at IMGT 2                   cases 6/13 (0.46)  ctrl 165/803 (0.205)  OR 3.31 p=0.036
+model starts at IMGT 3                   cases 8/18 (0.44)  ctrl 66/208 (0.317)  OR 1.72 p=0.3
+model starts at IMGT >=4                 cases 5/18 (0.28)  ctrl 82/137 (0.599)  OR 0.26 p=0.012
+model starts at IMGT >1                  cases 19/49 (0.39)  ctrl 313/1148 (0.273)  OR 1.69 p=0.1

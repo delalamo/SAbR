@@ -1,0 +1,84 @@
+EM studies: error 127 clean 1175 | entries: error 178 clean 2574
+strong-tie co-author groups: 84 people in groups 588 largest [('G0001', 130), ('G0003', 116), ('G0005', 50)]
+PDB-wide cryo-EM multi-lab hubs (>=5 labs as non-last author since 2015, <25% as last author, uncommon surname): 310
+published EM studies with affiliations: 1090 with a facility mention: 80
+     unit                                               cls  n_tested     min_p     min_q  n_q10  n_p05
+0   entry        any multi-lab hub on the study (aggregate)         1  0.999943  0.999943      0      0
+1   entry  co-author group (strong ties >=3 shared studies)        61  0.013716  0.836664      0      1
+2   entry                                 lab (last author)       233  0.000001  0.000288     11     17
+3   entry                      multi-lab cryo-EM hub person        76  0.050421  1.000000      0      0
+4   entry                             person (any position)      1164  0.000001  0.001437     16     56
+5   entry                     person (non-last author only)       977  0.000055  0.053961      8     39
+6   study                  any facility mention (aggregate)         1  0.596345  0.596345      0      0
+7   study        any multi-lab hub on the study (aggregate)         1  0.981052  0.981052      0      0
+8   study  co-author group (strong ties >=3 shared studies)        53  0.011669  0.618452      0      1
+9   study                              country (any author)        31  0.009956  0.308636      0      2
+10  study                             country (last author)        19  0.099028  1.000000      0      0
+11  study                facility mention (any affiliation)        12  0.299223  1.000000      0      0
+12  study              institution (any author affiliation)       274  0.001421  0.325373      0     10
+13  study                                 lab (last author)       108  0.000916  0.098900      1      7
+14  study                      multi-lab cryo-EM hub person        46  0.168498  1.000000      0      0
+15  study                             person (any position)       503  0.000916  0.460617      0     13
+16  study                     person (non-last author only)       389  0.022251  1.000000      0      6
+
+Top study-level hits:
+                                                   cls                                                                                               entity   n  n_err  expected      OR_MH   p_upper  q_within_class  q_all_classes  n_labs  n_err_labs
+484                              person (any position)                                                                                                P0813   3      3  0.302391        inf  0.000916        0.460617       0.657958       1           1
+995                                  lab (last author)                                                                                                P0813   3      3  0.302391        inf  0.000916        0.098900       0.657958       1           1
+1326              institution (any author affiliation)  key laboratory enteric pathogenic microbiology jiangsu provincial center disease control prevention   3      3  0.345627        inf  0.001421        0.325373       0.680716       3           3
+28                               person (any position)                                                                                                P2509   3      3  0.384461        inf  0.001966        0.494483       0.682570       3           3
+1195              institution (any author affiliation)                                                                                     emory university  15      6  1.551604   5.682737  0.002375        0.325373       0.682570       7           4
+1145              institution (any author affiliation)                                                                      california institute technology  21      7  2.302179   4.138297  0.004782        0.436734       1.000000       4           2
+1241              institution (any author affiliation)                                                                          philipps university marburg   5      3  0.525737  10.427969  0.009453        0.647519       1.000000       3           2
+1412                              country (any author)                                                                                              Belgium  57     12  5.899551   2.552316  0.009956        0.308636       1.000000      44          11
+1013  co-author group (strong ties >=3 shared studies)                                                                                                G0014  40      9  3.913808   2.772206  0.011669        0.618452       1.000000       9           4
+907                                  lab (last author)                                                                                                P3599  20      6  2.149781   3.629076  0.014566        0.592597       1.000000       1           1
+67                               person (any position)                                                                                                P3599  21      6  2.234686   3.430204  0.017815        1.000000       1.000000       2           1
+197                              person (any position)                                                                                                P3707   6      3  0.648148   9.466667  0.017984        1.000000       1.000000       3           2
+1270              institution (any author affiliation)                                                                           vrije universiteit brussel  10      4  1.129288   5.345320  0.018075        0.928041       1.000000       9           4
+1193              institution (any author affiliation)                                                                                      university park   6      3  0.667941   8.367497  0.020322        0.928041       1.000000       5           2
+468                              person (any position)                                                                                                P4741   3      2  0.268203  22.601889  0.022251        1.000000       1.000000       1           1
+
+Top entry-level hits:
+                                cls entity   n  n_err  expected      OR_MH   p_upper  q_within_class  q_all_classes  n_labs  n_err_labs
+1825          person (any position)  P4555   6      6  0.653826        inf  0.000001        0.001437       0.001550       1           1
+3639              lab (last author)  P4555   6      6  0.653826        inf  0.000001        0.000288       0.001550       1           1
+3704              lab (last author)  P0669  13      6  0.635179  19.764224  0.000012        0.001439       0.010342       1           1
+2093          person (any position)  P0669  16      6  0.760416  13.743911  0.000047        0.021430       0.023124       2           1
+1824          person (any position)  P4085   6      5  0.621292  54.207932  0.000055        0.021430       0.023124       2           1
+2929  person (non-last author only)  P4085   6      5  0.621292  54.207932  0.000055        0.053961       0.023124       2           1
+2324          person (any position)  P0939  14      6  1.027848  11.673913  0.000185        0.043069       0.046473       2           1
+2326          person (any position)  P2883  14      6  1.027848  11.673913  0.000185        0.043069       0.046473       1           1
+3339  person (non-last author only)  P0939  14      6  1.027848  11.673913  0.000185        0.070042       0.046473       2           1
+3758              lab (last author)  P2883  14      6  1.027848  11.673913  0.000185        0.014369       0.046473       1           1
+
+Aggregate rows:
+                                             cls   unit        entity    n  n_err   expected     OR_MH   p_upper     p_two  n_labs  n_err_labs  q_within_class  q_all_classes
+3948  any multi-lab hub on the study (aggregate)  entry       has_hub  534     18  35.891042  0.415108  0.999943  0.000271     160          14        0.999943            1.0
+1386            any facility mention (aggregate)  study  any_facility   80      8   8.244312  0.964893  0.596345  1.000000      50           8        0.596345            1.0
+1099  any multi-lab hub on the study (aggregate)  study       has_hub  263     18  26.096178  0.598270  0.981052  0.061524     156          17        0.981052            1.0
+
+entry-level person/lab hits (q<0.1): distinct error studies behind them
+                        cls entity   n  n_err  n_studies  n_err_studies
+1825  person (any position)  P4555   6      6          2              2
+3704      lab (last author)  P0669  13      6          5              2
+1824  person (any position)  P4085   6      5          3              2
+2324  person (any position)  P0939  14      6          1              1
+2326  person (any position)  P2883  14      6          1              1
+1753  person (any position)  P1317  15      7          7              1
+2325  person (any position)  P0086  15      6          1              1
+2288  person (any position)  P4768   3      3          1              1
+2289  person (any position)  P4854   3      3          1              1
+2592  person (any position)  P3052   9      4          1              1
+2593  person (any position)  P4138   9      4          1              1
+2594  person (any position)  P3485   9      4          1              1
+2595  person (any position)  P3602   9      4          1              1
+2358  person (any position)  P3834   4      3          2              2
+1791  person (any position)  P3056   3      3          1              1
+1815  person (any position)  P3942   3      3          2              2
+3632      lab (last author)  P4236   3      3          8              2
+3689      lab (last author)  P4177   8      4          2              2
+3761      lab (last author)  P0619   5      3          2              2
+3637      lab (last author)  P4543   4      3          3              2
+3625      lab (last author)  P2872  25      7         12              1
+3581      lab (last author)  P0813   7      3          3              3

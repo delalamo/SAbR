@@ -1,0 +1,9 @@
+test,OR,lo,hi,p,err_cis_paperw,ctrl_cis_paperw,n_err
+paper-weighted GLM (all),0.11545915843489457,0.04365099913023773,0.3053954670480754,1.3611133384253286e-05,0.16129032258064516,0.5850921655813964,
+"paper cluster bootstrap, stratified by error/clean papers (all), n=994",0.035462729602985486,0.009945189811340661,0.10318466522838521,0.0,,,
+"drop two largest error papers (10.1038/s41422-021-00487-9, 10.7554/eLife.61056) (all)",0.06565142667822253,,,8.092961934524052e-08,,,43.0
+paper-weighted GLM (noFR1),0.16206119616380626,0.05978451737337206,0.4393082432700473,0.0003480620571879399,0.20833333333333334,0.5850921655813964,
+"paper cluster bootstrap, stratified by error/clean papers (noFR1), n=993",0.07128906300928023,0.01622587302477355,0.2044700141249006,0.0,,,
+"drop two largest error papers (10.7554/eLife.61056, 10.1038/s41422-021-00487-9) (noFR1)",0.1280091498145312,,,5.947857104306584e-05,,,27.0
+within-paper sign test: error chains less cis than same-paper clean chains (papers lower/higher/tie = 5/1/9),,,,0.21875,,,
+error papers with clean kappa chains where ALL kappa chains are trans: 7/15,,,,,,,

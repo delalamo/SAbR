@@ -1,0 +1,26 @@
+subset: first built IMGT 2-8, SEQRES start 1-8: cases 48 controls 1076
+y             0   1   All
+fb  trunc                
+2   0       638   7   645
+    1       165   6   171
+3   0       142  10   152
+    1        66   8    74
+4   0        29   7    36
+    1        15   2    17
+5   0        15   5    20
+    1         6   3     9
+All        1076  48  1124
+  fb=2: trunc err 6/171 (0.035)  full-unbuilt err 7/645 (0.011)
+  fb=3: trunc err 8/74 (0.108)  full-unbuilt err 10/152 (0.066)
+  fb=4: trunc err 2/17 (0.118)  full-unbuilt err 7/36 (0.194)
+  fb=5: trunc err 3/9 (0.333)  full-unbuilt err 5/20 (0.250)
+MH OR truncated vs full-but-unbuilt, strata = first built position: 1.68 (0.91-3.11) p=0.0898; homogeneity p=0.347
+raw: trunc share err 19/48 (0.396) ctrl 252/1076 (0.234) Fisher OR 2.14 p=0.015
+M2                               OR 2.49 (1.32-4.72) p=0.00498
+M2 + first-built position        OR 2.44 (1.22-4.90) p=0.0119
+M2 + first-built (linear)        OR 2.30 (1.14-4.61) p=0.0193
+all units M2 (claim)                          OR 5.32 (2.89-9.82) p=8.55e-08
+all units M2 + first-built category           OR 1.33 (0.67-2.62) p=0.417
+all units M2 + first-built cat, trunc 2-8     OR 2.32 (1.21-4.47) p=0.0115
+truncated cases with first SEQRES residue built: 18 / 19
+truncated (2-8) controls with first SEQRES residue built: 247 / 258

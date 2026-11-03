@@ -1,0 +1,13 @@
+
+Error modes (first-occurrence entries, EM) by target class:
+grp              SARS-CoV-2  capsid  enzyme  other
+mode                                              
+A_FR1Nterm               17      10       8     23
+B_CDR2FR3                 5       0       7     18
+C_FR3                     5       3       2     14
+D0                        0       7       0      3
+Dminus_CDR3long           5       4       2     11
+Dplus_CDR3short          17       6       3     14
+E_FR4bulge                9       1       1     10
+F_CDR1                    1       9       0      4
+other                     0       0       1      5

@@ -1,0 +1,23 @@
+EM units by group: SEQRES truncation and model-start>1 rates
+                          n  seq_trunc  model_start_gt1
+grp                                                    
+A case                   59   0.322034         0.830508
+clean                  4036   0.077552         0.284440
+copied/artifact only     41   0.146341         0.219512
+other first-occ error   124   0.088710         0.387097
+
+copied/artifact-only EM units with N-terminal (IMGT<=10) runs:
+            n  seq_trunc
+nterm_run               
+False      32   0.156250
+True        9   0.111111
+
+--- broader controls: all EM units without a first-occurrence mode-A error (cluster-robust by paper)
+broad controls, M2                                                          n=59/4190 0.322 vs 0.079 OR 5.32 [2.69-10.53] p=1.6e-06
+broad controls, M2 + model start                                            n=59/4190 0.322 vs 0.079 OR 1.23 [0.60-2.52] p=0.58
+
+--- clean controls, cluster-robust by paper, M2 + model start
+clean controls, M2 + model start                                            n=59/4025 0.322 vs 0.078 OR 1.17 [0.55-2.48] p=0.68
+clean controls, M2 + model start (linear IMGT)                              n=59/4025 0.322 vs 0.078 OR 4.00 [1.54-10.43] p=0.0045
+model start 2-3 only (residual SEQRES effect)                               n=31/1011 0.452 vs 0.228 OR 2.31 [1.06-5.06] p=0.036
+model start >=2 (SEQRES-trunc vs unbuilt-but-in-SEQRES)                     n=49/1148 0.388 vs 0.273 OR 1.01 [0.46-2.20] p=0.98

@@ -1,0 +1,60 @@
+K_const investigator model (chain, year bin + res, cluster=paper) {'n_err': 29, 'n_ctrl': 912, 'err': '20.7% (6/29)', 'ctrl': '80.8% (737/912)', 'OR': np.float64(0.0393), 'p': np.float64(0.0013), 'note': None}
+K_const error clusters {'n_err_papers': 10, 'n_err_entries': 18, 'top_paper_share': np.float64(0.5862)}
+K_const drop Zhou Q. 2021 Cell Res paper {'n_err': 12, 'n_ctrl': 910, 'err': '50.0% (6/12)', 'ctrl': '81.0% (737/910)', 'OR': np.float64(0.1377), 'p': np.float64(0.0252), 'p_fisher': np.float64(0.0162), 'note': None}
+K_const leave-one-error-paper-out (worst case) {'OR_max': np.float64(0.1377), 'p_max': np.float64(0.0252)}
+K_const paper-level means (one vote per paper), Mann-Whitney {'n_err_papers': 10, 'n_ctrl_papers': 342, 'err': '0.400', 'ctrl': '0.765', 'err_any_cis': '4/10', 'ctrl_any_cis': '270/342', 'p': np.float64(0.0112), 'p_fisher_anycis': np.float64(0.0097)}
+K_const paper-weighted GLM (1 vote per paper x status) {'OR': 0.1104, 'p': 0.007}
+K_const +sars2 {'n_err': 29, 'OR': np.float64(0.0384), 'p': np.float64(0.002), 'note': None}
+K_const +chain_q {'n_err': 29, 'OR': np.float64(0.0527), 'p': np.float64(0.0009), 'note': None}
+K_const +C(irm) {'n_err': 29, 'OR': np.float64(0.0427), 'p': np.float64(0.0007), 'note': None}
+K_const +sars2+chain_q+C(irm) {'n_err': 29, 'OR': np.float64(0.0527), 'p': np.float64(0.0014), 'note': None}
+K_const within-paper conditional logit {'n_strata': 2, 'n_informative_strata': 0, 'n_err': 18, 'n_ctrl': 4, 'err': '0.056', 'ctrl': '0.500', 'OR': nan, 'p': nan}
+K_const within-entry conditional logit {'n_strata': 0, 'n_informative_strata': 0, 'n_err': 0, 'n_ctrl': 0, 'err': 'nan', 'ctrl': 'nan', 'OR': nan, 'p': nan}
+H_const investigator model (chain, year bin + res, cluster=paper) {'n_err': 31, 'n_ctrl': 1173, 'err': '41.9% (13/31)', 'ctrl': '72.3% (848/1173)', 'OR': np.float64(0.2415), 'p': np.float64(0.0544), 'note': None}
+H_const error clusters {'n_err_papers': 18, 'n_err_entries': 22, 'top_paper_share': np.float64(0.3871)}
+H_const drop Zhou Q. 2021 Cell Res paper {'n_err': 19, 'n_ctrl': 1163, 'err': '68.4% (13/19)', 'ctrl': '72.9% (848/1163)', 'OR': np.float64(0.7515), 'p': np.float64(0.6283), 'p_fisher': np.float64(0.6124), 'note': None}
+H_const leave-one-error-paper-out (worst case) {'OR_max': np.float64(0.7515), 'p_max': np.float64(0.6283)}
+H_const paper-level means (one vote per paper), Mann-Whitney {'n_err_papers': 18, 'n_ctrl_papers': 400, 'err': '0.611', 'ctrl': '0.709', 'err_any_cis': '11/18', 'ctrl_any_cis': '294/400', 'p': np.float64(0.4381), 'p_fisher_anycis': np.float64(0.2789)}
+H_const paper-weighted GLM (1 vote per paper x status) {'OR': 0.5224, 'p': 0.2074}
+H_const +sars2 {'n_err': 31, 'OR': np.float64(0.2337), 'p': np.float64(0.0347), 'note': None}
+H_const +chain_q {'n_err': 31, 'OR': np.float64(0.3717), 'p': np.float64(0.1142), 'note': None}
+H_const +C(irm) {'n_err': 31, 'OR': np.float64(0.2726), 'p': np.float64(0.0628), 'note': None}
+H_const +sars2+chain_q+C(irm) {'n_err': 31, 'OR': np.float64(0.297), 'p': np.float64(0.0231), 'note': None}
+H_const within-paper conditional logit {'n_strata': 11, 'n_informative_strata': 2, 'n_err': 24, 'n_ctrl': 38, 'err': '0.333', 'ctrl': '0.632', 'OR': 0.0001, 'p': 0.8551}
+H_const within-entry conditional logit {'n_strata': 6, 'n_informative_strata': 1, 'n_err': 8, 'n_ctrl': 12, 'err': '0.625', 'ctrl': '0.750', 'OR': 0.0001, 'p': 0.9182}
+all_const investigator model (chain, year bin + res, cluster=paper) {'n_err': 60, 'n_ctrl': 2327, 'err': '31.7% (19/60)', 'ctrl': '74.0% (1723/2327)', 'OR': np.float64(0.1123), 'p': np.float64(0.0019), 'note': None}
+all_const error clusters {'n_err_papers': 23, 'n_err_entries': 31, 'top_paper_share': np.float64(0.4833)}
+all_const drop Zhou Q. 2021 Cell Res paper {'n_err': 31, 'n_ctrl': 2312, 'err': '61.3% (19/31)', 'ctrl': '74.5% (1723/2312)', 'OR': np.float64(0.3763), 'p': np.float64(0.0537), 'p_fisher': np.float64(0.0999), 'note': None}
+all_const leave-one-error-paper-out (worst case) {'OR_max': np.float64(0.3763), 'p_max': np.float64(0.0537)}
+all_const paper-level means (one vote per paper), Mann-Whitney {'n_err_papers': 23, 'n_ctrl_papers': 411, 'err': '0.543', 'ctrl': '0.722', 'err_any_cis': '13/23', 'ctrl_any_cis': '334/411', 'p': np.float64(0.113), 'p_fisher_anycis': np.float64(0.0124)}
+all_const paper-weighted GLM (1 vote per paper x status) {'OR': 0.349, 'p': 0.0171}
+all_const +sars2 {'n_err': 60, 'OR': np.float64(0.1152), 'p': np.float64(0.001), 'note': None}
+all_const +chain_q {'n_err': 60, 'OR': np.float64(0.1627), 'p': np.float64(0.0011), 'note': None}
+all_const +C(irm) {'n_err': 60, 'OR': np.float64(0.1258), 'p': np.float64(0.0016), 'note': None}
+all_const +sars2+chain_q+C(irm) {'n_err': 60, 'OR': np.float64(0.1653), 'p': np.float64(0.0003), 'note': None}
+all_const within-paper conditional logit {'n_strata': 21, 'n_informative_strata': 7, 'n_err': 56, 'n_ctrl': 91, 'err': '0.321', 'ctrl': '0.703', 'OR': 0.3869, 'p': 0.2519}
+all_const within-entry conditional logit {'n_strata': 21, 'n_informative_strata': 7, 'n_err': 27, 'n_ctrl': 50, 'err': '0.519', 'ctrl': '0.680', 'OR': 0.6189, 'p': 0.5513}
+K_Pro115_noCDRmode(inv) investigator model (chain, year bin + res, cluster=paper) {'n_err': 24, 'n_ctrl': 2045, 'err': '12.5% (3/24)', 'ctrl': '62.1% (1269/2045)', 'OR': np.float64(0.0794), 'p': np.float64(0.0256), 'note': None}
+K_Pro115_noCDRmode(inv) error clusters {'n_err_papers': 8, 'n_err_entries': 15, 'top_paper_share': np.float64(0.5)}
+K_Pro115_noCDRmode(inv) drop Zhou Q. 2021 Cell Res paper {'n_err': 12, 'n_ctrl': 2040, 'err': '25.0% (3/12)', 'ctrl': '62.2% (1269/2040)', 'OR': np.float64(0.1577), 'p': np.float64(0.1097), 'p_fisher': np.float64(0.0134), 'note': None}
+K_Pro115_noCDRmode(inv) leave-one-error-paper-out (worst case) {'OR_max': np.float64(0.1577), 'p_max': np.float64(0.1097)}
+K_Pro115_noCDRmode(inv) paper-level means (one vote per paper), Mann-Whitney {'n_err_papers': 8, 'n_ctrl_papers': 635, 'err': '0.125', 'ctrl': '0.594', 'err_any_cis': '1/8', 'ctrl_any_cis': '411/635', 'p': np.float64(0.0059), 'p_fisher_anycis': np.float64(0.004)}
+K_Pro115_noCDRmode(inv) paper-weighted GLM (1 vote per paper x status) {'OR': 0.0858, 'p': 0.0331}
+K_Pro115_noCDRmode(inv) +sars2 {'n_err': 24, 'OR': np.float64(0.0844), 'p': np.float64(0.0258), 'note': None}
+K_Pro115_noCDRmode(inv) +chain_q {'n_err': 24, 'OR': np.float64(0.0906), 'p': np.float64(0.0301), 'note': None}
+K_Pro115_noCDRmode(inv) +C(irm) {'n_err': 24, 'OR': np.float64(0.0869), 'p': np.float64(0.0351), 'note': None}
+K_Pro115_noCDRmode(inv) +sars2+chain_q+C(irm) {'n_err': 24, 'OR': np.float64(0.0903), 'p': np.float64(0.0353), 'note': None}
+K_Pro115_noCDRmode(inv) within-paper conditional logit {'n_strata': 4, 'n_informative_strata': 1, 'n_err': 18, 'n_ctrl': 18, 'err': '0.167', 'ctrl': '0.389', 'OR': 0.0001, 'p': 0.8837}
+K_Pro115_noCDRmode(inv) within-entry conditional logit {'n_strata': 0, 'n_informative_strata': 0, 'n_err': 0, 'n_ctrl': 0, 'err': 'nan', 'ctrl': 'nan', 'OR': nan, 'p': nan}
+K_Pro115_noCDR3FR4mode investigator model (chain, year bin + res, cluster=paper) {'n_err': 31, 'n_ctrl': 2045, 'err': '12.9% (4/31)', 'ctrl': '62.1% (1269/2045)', 'OR': np.float64(0.0838), 'p': np.float64(0.0069), 'note': None}
+K_Pro115_noCDR3FR4mode error clusters {'n_err_papers': 14, 'n_err_entries': 22, 'top_paper_share': np.float64(0.3871)}
+K_Pro115_noCDR3FR4mode drop Zhou Q. 2021 Cell Res paper {'n_err': 19, 'n_ctrl': 2040, 'err': '21.1% (4/19)', 'ctrl': '62.2% (1269/2040)', 'OR': np.float64(0.1403), 'p': np.float64(0.03), 'p_fisher': np.float64(0.0004), 'note': None}
+K_Pro115_noCDR3FR4mode leave-one-error-paper-out (worst case) {'OR_max': np.float64(0.1403), 'p_max': np.float64(0.03)}
+K_Pro115_noCDR3FR4mode paper-level means (one vote per paper), Mann-Whitney {'n_err_papers': 14, 'n_ctrl_papers': 635, 'err': '0.143', 'ctrl': '0.594', 'err_any_cis': '2/14', 'ctrl_any_cis': '411/635', 'p': np.float64(0.0005), 'p_fisher_anycis': np.float64(0.0002)}
+K_Pro115_noCDR3FR4mode paper-weighted GLM (1 vote per paper x status) {'OR': 0.1046, 'p': 0.0073}
+K_Pro115_noCDR3FR4mode +sars2 {'n_err': 31, 'OR': np.float64(0.0861), 'p': np.float64(0.0062), 'note': None}
+K_Pro115_noCDR3FR4mode +chain_q {'n_err': 31, 'OR': np.float64(0.0896), 'p': np.float64(0.0069), 'note': None}
+K_Pro115_noCDR3FR4mode +C(irm) {'n_err': 31, 'OR': np.float64(0.0908), 'p': np.float64(0.0106), 'note': None}
+K_Pro115_noCDR3FR4mode +sars2+chain_q+C(irm) {'n_err': 31, 'OR': np.float64(0.092), 'p': np.float64(0.0086), 'note': None}
+K_Pro115_noCDR3FR4mode within-paper conditional logit {'n_strata': 8, 'n_informative_strata': 2, 'n_err': 23, 'n_ctrl': 24, 'err': '0.130', 'ctrl': '0.333', 'OR': 0.0001, 'p': 0.8562}
+K_Pro115_noCDR3FR4mode within-entry conditional logit {'n_strata': 1, 'n_informative_strata': 0, 'n_err': 1, 'n_ctrl': 1, 'err': '0.000', 'ctrl': '0.000', 'OR': nan, 'p': nan}

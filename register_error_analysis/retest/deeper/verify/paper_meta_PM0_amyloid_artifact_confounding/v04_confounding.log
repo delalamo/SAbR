@@ -1,0 +1,76 @@
+{'test': 'expected flagged AL entries | y ~ C(ybin) + res + l2v', 'n': 15, 'observed': 15, 'expected': np.float64(0.7718941949786661), 'p': 2.654425093920732e-20, 'papers_obs': 7, 'papers_expected': np.float64(0.7279619794327611), 'p_papers': 2.7372284257560097e-08}
+{'test': 'expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + sars2', 'n': 15, 'observed': 15, 'expected': np.float64(0.8783185807966497), 'p': 1.6914810754048084e-19, 'papers_obs': 7, 'papers_expected': np.float64(0.8232202327182556), 'p_papers': 6.686096312905389e-08}
+{'test': 'expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + no_H + sars2', 'n': 15, 'observed': 15, 'expected': np.float64(2.6384937817092133), 'p': 3.025782768064235e-12, 'papers_obs': 7, 'papers_expected': np.float64(2.1783369059094086), 'p_papers': 9.398455413891921e-05}
+       pdb  year   res  n_V_chains  has_L  no_H      p
+763   6ic3  2018  3.30           8      1     1  0.182
+1110  6z1o  2020  3.20           6      1     1  0.327
+1576  7nsl  2021  3.10           7      1     1  0.254
+3344  9els  2024  3.02           5      1     1  0.143
+3353  9faa  2024  3.60           5      1     1  0.172
+3354  9fab  2024  3.90           5      1     1  0.189
+3355  9fac  2024  3.90           5      1     1  0.189
+3551  9liv  2025  3.10           3      1     1  0.146
+3552  9liw  2025  3.20           3      1     1  0.150
+3553  9lix  2025  3.00           6      1     1  0.142
+3554  9liy  2025  3.20           6      1     1  0.152
+3555  9lj0  2025  3.30           3      1     1  0.155
+3556  9lja  2025  3.10           3      1     1  0.146
+3557  9ljb  2025  3.20           6      1     1  0.152
+3928  9v91  2025  3.00           6      1     1  0.142
+EM entries 2018+ with light-chain V only: {'n': {False: 5, True: 15}, 'err': {False: 1, True: 15}}
+       pdb  year  res  err_first  err_any                                                                                              title
+1583  7o85  2021  3.3       True     True                                   Anthrax toxin prepore in complex with the neutralizing Fab cAb29
+1776  7t92  2021  3.1      False    False  Structure of the peroxisomal retro-translocon formed by a heterotrimeric ubiquitin ligase complex
+2958  8w5g  2023  4.0      False    False                                                                        Cryo-EM structure of Qb-Ab7
+2969  8w5w  2023  3.3      False    False                                                                        Cryo-EM structure of Qb-Ab8
+3123  9axl  2024  3.3      False    False                            Structure of the semi-extended AlphaIIbBeta3 in complex with R21D10 Fab
+EM lambda units 2018+, 3.0-3.95 A:
+          n  err      rate
+amy                      
+False  390    9  0.023077
+True    12   12  1.000000
+(2017, 2021] {'size': {False: 98, True: 3}, 'sum': {False: 3, True: 3}}
+(2021, 2023] {'size': {False: 110}, 'sum': {False: 4}}
+(2023, 2026] {'size': {False: 182, True: 9}, 'sum': {False: 2, True: 9}}
+        count  mean   std   min   25%   50%   75%   max
+grp                                                    
+AL       15.0  0.83  0.36 -0.14  0.68  0.90  1.09  1.29
+clean  2523.0  0.11  0.94 -3.52 -0.27  0.40  0.76  1.85
+error   174.0 -0.22  1.00 -2.75 -0.96  0.13  0.56  1.57
+{'test': 'entry lq_z: AL vs clean (EM 2018+), adj res+year, cluster paper', 'n': '15 vs 2523', 'observed': np.float64(0.9), 'expected': np.float64(0.4), 'effect': np.float64(0.62), 'ci': '0.41..0.82', 'p': np.float64(5.344070531136772e-09), 'p_mw': np.float64(0.00011939567044708338)}
+{'test': 'entry lq_z: error vs clean (EM 2018+), adj res+year, cluster paper', 'n': '174 vs 2523', 'observed': np.float64(0.13), 'expected': np.float64(0.4), 'effect': np.float64(-0.27), 'ci': '-0.49..-0.05', 'p': np.float64(0.017330708664689828), 'p_mw': np.float64(1.5874785582911064e-06)}
+        count   mean    std    min    50%    90%    99%    max
+grp                                                           
+AL       77.0  0.965  0.085  0.685  1.000  1.000  1.000  1.000
+clean  9980.0  0.000  0.003  0.000  0.000  0.000  0.019  0.042
+error   322.0  0.112  0.103  0.021  0.080  0.202  0.493  1.000
+other   160.0  0.062  0.013  0.042  0.058  0.078  0.088  0.097
+non-AL EM chains with >50% residues disagreeing:         pdb chain    grp      fdis  nres
+544    7c80     H  error  0.750000   120
+763    3jcx     H  error  1.000000   115
+9490   9pv3     L  error  0.513274   113
+10234  9yc6     L  error  0.713043   115
+        n  err  amy  rate_with  rate_without
+year                                        
+2018   76    3    1     0.0395        0.0267
+2019   81    7    0     0.0864        0.0864
+2020  221   27    1     0.1222        0.1182
+2021  419   36    1     0.0859        0.0837
+2022  487   24    0     0.0493        0.0493
+2023  400   29    0     0.0725        0.0725
+2024  539   26    4     0.0482        0.0411
+2025  468   27    8     0.0577        0.0413
+2026   97   10    0     0.1031        0.1031
+light-chain units EM 2018+ with AL {'size': {'K': 1336, 'L': 473}, 'sum': {'K': 43, 'L': 24}, 'mean': {'K': 0.0322, 'L': 0.0507}}
+light-chain units EM 2018+ without AL {'size': {'K': 1336, 'L': 461}, 'sum': {'K': 43, 'L': 12}, 'mean': {'K': 0.0322, 'L': 0.026}}
+                                                                           test            n              observed              expected             p  papers_obs  papers_expected      p_papers  effect            ci      p_mw          q_bh
+0                         expected flagged AL entries | y ~ C(ybin) + res + l2v           15                    15              0.771894  2.654425e-20         7.0         0.727962  2.737228e-08     NaN           NaN       NaN  1.327213e-19
+1         expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + sars2           15                    15              0.878319  1.691481e-19         7.0         0.823220  6.686096e-08     NaN           NaN       NaN  5.638270e-19
+2  expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + no_H + sars2           15                    15              2.638494  3.025783e-12         7.0         2.178337  9.398455e-05     NaN           NaN       NaN  6.051566e-12
+3                           lambda units EM 2018+ 3.0-3.95A: AL fibril vs other          402                 12/12          9/390 (2.3%)  9.329537e-18         NaN              NaN           NaN     NaN           NaN       NaN  2.332384e-17
+4               entry lq_z: AL vs clean (EM 2018+), adj res+year, cluster paper   15 vs 2523                   0.9                   0.4  5.344071e-09         NaN              NaN           NaN    0.62    0.41..0.82  0.000119  7.634386e-09
+5            entry lq_z: error vs clean (EM 2018+), adj res+year, cluster paper  174 vs 2523                  0.13                   0.4  1.733071e-02         NaN              NaN           NaN   -0.27  -0.49..-0.05  0.000002  2.166339e-02
+6        chains with >50% V residues SAbR!=ANARCI: AL vs non-AL EM error chains    77 vs 322                 77/77                 4/322  3.300237e-78         NaN              NaN           NaN     NaN           NaN       NaN  3.300237e-77
+7      CA-cloud thickness (3rd PC SD, A): AL fibril entries vs non-AL EM chains    15 vs 351  median 1.3 (max 3.0)  median 6.0 (min 5.0)  5.413330e-11         NaN              NaN           NaN     NaN           NaN       NaN  9.022216e-11
+8                           lambda vs kappa unit error rate, EM 2018+ (with AL)         1809       L 24/473 (5.1%)      K 43/1336 (3.2%)  8.778655e-02         NaN              NaN           NaN    1.61           NaN       NaN  9.754061e-02
+9                        lambda vs kappa unit error rate, EM 2018+ (without AL)         1797       L 12/461 (2.6%)      K 43/1336 (3.2%)  6.380736e-01         NaN              NaN           NaN    0.80           NaN       NaN  6.380736e-01

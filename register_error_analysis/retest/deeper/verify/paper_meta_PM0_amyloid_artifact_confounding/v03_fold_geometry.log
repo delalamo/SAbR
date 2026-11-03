@@ -1,0 +1,119 @@
+chains selected: {'clean': 180, 'error_nonamy': 171, 'AL_fibril': 77, 'AL_fibril_outside_set': 3}
+grp          AL_fibril  AL_fibril_outside_set  clean  error_nonamy
+n_ca  count       77.0                    3.0  180.0         171.0
+      mean        93.6                   78.3  111.7         112.0
+      std          9.4                    2.3    8.7          10.4
+      min         80.0                   77.0   94.0          83.0
+      0%          80.0                   77.0   94.0          83.0
+      50%         91.0                   77.0  109.0         113.0
+      100%       107.0                   81.0  142.0         145.0
+      max        107.0                   81.0  142.0         145.0
+thick count       77.0                    3.0  180.0         171.0
+      mean         1.6                    1.7    6.0           6.0
+      std          0.5                    0.4    0.2           0.3
+      min          1.0                    1.3    5.4           5.0
+      0%           1.0                    1.3    5.4           5.0
+      50%          1.3                    1.9    5.9           6.0
+      100%         3.0                    1.9    6.5           7.8
+      max          3.0                    1.9    6.5           7.8
+rg    count       77.0                    3.0  180.0         171.0
+      mean        24.7                   21.3   13.4          13.6
+      std          1.9                    0.3    0.7           1.2
+      min         21.5                   21.1   12.2          12.2
+      0%          21.5                   21.1   12.2          12.2
+      50%         24.5                   21.2   13.3          13.4
+      100%        28.0                   21.7   17.0          23.0
+      max         28.0                   21.7   17.0          23.0
+dAG   count       48.0                    2.0  178.0         150.0
+      mean        34.8                   33.2    6.0           7.3
+      std         22.5                    0.0    1.5           3.6
+      min          7.9                   33.2    4.0           4.7
+      0%           7.9                   33.2    4.0           4.7
+      50%         22.7                   33.2    5.6           6.1
+      100%        73.9                   33.2   11.9          31.8
+      max         73.9                   33.2   11.9          31.8
+      pdb chain                    grp ctype    year  res  n_ca    s1    s2  thick    rg   dAG
+34   6hud     A  AL_fibril_outside_set     L     NaN  NaN    77  17.0  12.5    1.9  21.1  33.2
+37   6ic3     A              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+38   6ic3     B              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+39   6ic3     C              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+40   6ic3     D              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+41   6ic3     E              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+42   6ic3     F              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+43   6ic3     G              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+44   6ic3     H              AL_fibril     L  2018.0  3.3    91  20.4  12.6    1.1  23.8   NaN
+81   6z1i     A  AL_fibril_outside_set     L     NaN  NaN    81  18.2  12.0    1.3  21.7   NaN
+82   6z1o     A              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+83   6z1o     B              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+84   6z1o     C              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+85   6z1o     D              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+86   6z1o     E              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+87   6z1o     F              AL_fibril     L  2020.0  3.2    88  19.1  11.8    1.3  22.3  13.9
+175  7nsl     A              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+176  7nsl     B              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+177  7nsl     C              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+178  7nsl     D              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+179  7nsl     E              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+180  7nsl     F              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+181  7nsl     G              AL_fibril     L  2021.0  3.1    85  22.8   9.1    1.8  24.5  73.9
+228  8cpe     A  AL_fibril_outside_set     L     NaN  NaN    77  17.3  12.4    1.9  21.2  33.2
+332  9els     A              AL_fibril     L  2024.0  3.0    92  17.8  15.1    3.0  23.4  36.8
+333  9els     B              AL_fibril     L  2024.0  3.0    92  17.8  15.1    3.0  23.4  36.8
+334  9els     C              AL_fibril     L  2024.0  3.0    92  17.8  15.1    3.0  23.4  36.8
+335  9els     D              AL_fibril     L  2024.0  3.0    92  17.8  15.1    3.0  23.4  36.8
+336  9els     E              AL_fibril     L  2024.0  3.0    92  17.8  15.1    3.0  23.4  36.8
+337  9faa     A              AL_fibril     L  2024.0  3.6   107  24.0  14.1    1.1  27.7  22.4
+338  9faa     B              AL_fibril     L  2024.0  3.6   107  24.0  14.1    1.1  27.7  22.4
+339  9faa     C              AL_fibril     L  2024.0  3.6   107  24.0  14.1    1.1  27.7  22.4
+340  9faa     D              AL_fibril     L  2024.0  3.6   107  24.0  14.1    1.1  27.7  22.4
+341  9faa     E              AL_fibril     L  2024.0  3.6   107  24.0  14.1    1.1  27.7  22.4
+342  9fab     A              AL_fibril     L  2024.0  3.9   107  24.0  14.6    1.1  28.0  22.7
+343  9fab     B              AL_fibril     L  2024.0  3.9   107  24.0  14.6    1.1  28.0  22.7
+344  9fab     C              AL_fibril     L  2024.0  3.9   107  24.0  14.6    1.1  28.0  22.7
+345  9fab     D              AL_fibril     L  2024.0  3.9   107  24.0  14.6    1.1  28.0  22.7
+346  9fab     E              AL_fibril     L  2024.0  3.9   107  24.0  14.6    1.1  28.0  22.7
+347  9fac     A              AL_fibril     L  2024.0  3.9   107  23.9  13.7    1.1  27.4  22.6
+348  9fac     B              AL_fibril     L  2024.0  3.9   107  23.9  13.7    1.1  27.4  22.4
+349  9fac     C              AL_fibril     L  2024.0  3.9   107  23.9  13.7    1.1  27.4  22.6
+350  9fac     D              AL_fibril     L  2024.0  3.9   107  23.9  13.7    1.1  27.5  22.4
+351  9fac     E              AL_fibril     L  2024.0  3.9   107  23.9  13.7    1.0  27.4  22.7
+361  9liv    AA              AL_fibril     L  2025.0  3.1   102  20.4  13.1    1.2  24.2   8.1
+362  9liv    AB              AL_fibril     L  2025.0  3.1   102  20.4  13.1    1.2  24.2   8.1
+363  9liv    AC              AL_fibril     L  2025.0  3.1   102  20.4  13.1    1.2  24.2   8.1
+364  9liw    AA              AL_fibril     L  2025.0  3.2   102  20.9  13.0    1.3  24.5   7.9
+365  9liw    AB              AL_fibril     L  2025.0  3.2   102  20.9  13.0    1.3  24.5   7.9
+366  9liw    AC              AL_fibril     L  2025.0  3.2   102  20.9  13.0    1.3  24.5   7.9
+367  9lix     A              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+368  9lix     B              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+369  9lix     C              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+370  9lix     D              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+371  9lix     E              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+372  9lix     F              AL_fibril     L  2025.0  3.0    89  23.2  11.6    2.0  25.8   NaN
+373  9liy     A              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+374  9liy     B              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+375  9liy     C              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+376  9liy     D              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+377  9liy     E              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+378  9liy     F              AL_fibril     L  2025.0  3.2    80  22.6   8.7    1.9  24.1   NaN
+379  9lj0     A              AL_fibril     L  2025.0  3.3    94  17.7  15.6    2.1  23.6   NaN
+380  9lj0     B              AL_fibril     L  2025.0  3.3    94  17.7  15.6    2.1  23.6   NaN
+381  9lj0     C              AL_fibril     L  2025.0  3.3    94  17.7  15.6    2.1  23.6   NaN
+382  9lja     A              AL_fibril     L  2025.0  3.1   102  21.5  13.3    2.0  25.2  56.6
+383  9lja     B              AL_fibril     L  2025.0  3.1   102  21.5  13.3    2.0  25.2  56.6
+384  9lja     C              AL_fibril     L  2025.0  3.1   102  21.5  13.3    2.0  25.2  56.6
+385  9ljb     A              AL_fibril     L  2025.0  3.2   101  21.4  13.2    1.9  25.1  55.8
+386  9ljb     B              AL_fibril     L  2025.0  3.2   101  21.4  13.2    1.9  25.1  55.8
+387  9ljb     C              AL_fibril     L  2025.0  3.2   101  21.4  13.2    1.9  25.1  55.8
+388  9ljb     D              AL_fibril     L  2025.0  3.2    99  21.4  13.0    1.9  24.9  53.9
+389  9ljb     E              AL_fibril     L  2025.0  3.2    99  21.4  13.0    1.9  24.9  53.9
+390  9ljb     F              AL_fibril     L  2025.0  3.2    99  21.4  13.0    1.9  24.9  53.9
+417  9v91     A              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+418  9v91     B              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+419  9v91     C              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+420  9v91     D              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+421  9v91     E              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+422  9v91     F              AL_fibril     L  2025.0  3.0    80  18.4  11.4    1.1  21.5   NaN
+min thickness among non-AL chains: 5.0  max thickness among AL: 2.98
+non-AL chains with thick<5 or dAG>25:       pdb chain           grp     thick         rg        dAG
+88   7c80     H  error_nonamy  5.835756  16.122106  27.736918
+320  9cj7     H  error_nonamy  5.718105  14.630969  31.827023

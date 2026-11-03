@@ -1,0 +1,30 @@
+error chains scanned: 459 entries: 227  of 227 error entries
+amy               False  True 
+thickness count  382.00  77.00
+          mean     5.98   1.58
+          std      0.28   0.53
+          min      4.77   1.03
+          25%      5.84   1.12
+          50%      6.00   1.30
+          75%      6.13   1.93
+          max      7.81   2.96
+rg        count  382.00  77.00
+          mean    13.64  24.68
+          std      1.02   1.86
+          min     12.17  21.50
+          25%     13.15  23.61
+          50%     13.46  24.48
+          75%     13.85  25.83
+          max     23.00  27.99
+lr        count  382.00  77.00
+          mean     0.78   0.02
+          std      0.13   0.01
+          min      0.00   0.00
+          25%      0.71   0.01
+          50%      0.80   0.02
+          75%      0.88   0.02
+          max      1.04   0.04
+non-fibril error chains with thickness<4 A or LR contacts<0.3: 2
+ pdb chain ctype method  n_ca  thickness        rg       lr err_modes                                                                                title
+8g6i     C     H     EM   120   7.077064 14.722305 0.233333     C_FR3 Coagulation factor VIII bound to a patient-derived anti-C1 domain antibody inhibitor
+8hhx     I     L     EM   110   7.808304 15.284227 0.000000     C_FR3                                        SARS-CoV-2 Delta Spike in complex with FP-12A

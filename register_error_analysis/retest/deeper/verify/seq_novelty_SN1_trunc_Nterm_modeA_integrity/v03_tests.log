@@ -1,0 +1,67 @@
+cases 59 controls 4036
+
+== 1. Reproduction
+1a unit, seq_first>1 (detector ANARCI)                       trunc        err 19/59 (0.322)  ctrl 313/4036 (0.0776)  OR 5.65  Fisher p=7.7e-08
+1b M2                                                        trunc        OR 5.32 (2.89-9.82) p=8.5e-08 n=59/4036
+1c seq_first 2-8 only                                        trunc_2_8    err 19/59 (0.322)  ctrl 258/4036 (0.0639)  OR 6.96  Fisher p=3.8e-09
+
+== 2. Overlap with "N-terminus not built" (first built residue, ANARCI label > 1)
+built_first_anarci   1.0  2.0  3.0  4.0  5.0  6.0  7.0  8.0  9.0   All
+y   trunc                                                             
+0   0               2877  638  142   29    9    0    1    5   11  3712
+    1                  0  165   66   15    1    1    0    4   61   313
+1   0                 10    7   10    7    0    2    1    2    1    40
+    1                  0    6    8    2    0    0    2    1    0    19
+All                 2887  816  226   53   10    3    4   12   73  4084
+2a N-term unbuilt (first built IMGT>1), any SEQRES           bgt1         err 49/59 (0.831)  ctrl 1148/4036 (0.2844)  OR 12.33  Fisher p=8e-18
+2b full SEQRES but IMGT1 unbuilt                             unbuilt_full err 30/59 (0.508)  ctrl 835/4036 (0.2069)  OR 3.97  Fisher p=3.6e-07
+2c M2 + both: truncated SEQRES (ref: built from 1)           trunc        OR 18.99 (8.39-42.97) p=1.6e-12 n=59/4036
+2c M2 + both: full SEQRES, unbuilt                           unbuilt_full OR 11.02 (5.29-22.94) p=1.4e-10 n=59/4036
+2d among N-term-unbuilt only: truncated vs full SEQRES       trunc        OR 1.83 (0.97-3.42) p=0.06 n=49/1148
+2d2 among N-term-unbuilt, + first-built position, trunc 2-8  trunc_2_8    OR 2.60 (1.33-5.08) p=0.005 n=49/1148
+2d raw among first-built>1: trunc err 19/49  ctrl 313/1148  OR 1.69 p=0.1
+                            sum  size      mean
+cat                                            
+full SEQRES, IMGT1 unbuilt   30   865  0.034682
+full SEQRES, built from 1    10  2898  0.003451
+truncated SEQRES             19   332  0.057229
+   first built IMGT=2.0: full SEQRES err 7/645  truncated err 6/171
+   first built IMGT=3.0: full SEQRES err 10/152  truncated err 8/74
+   first built IMGT=4.0: full SEQRES err 7/36  truncated err 2/17
+   first built IMGT=5.0+: full SEQRES err 6/32  truncated err 3/70
+2e MH OR truncated vs full SEQRES within first-built strata: 1.13 p=0.66
+
+== 3. Alternative controls
+3a ctrl = EM units without any mode A run (other errors allowed) trunc        err 19/59 (0.322)  ctrl 329/4192 (0.0785)  OR 5.58  Fisher p=9.1e-08
+3a M2                                                        trunc        OR 5.33 (2.90-9.81) p=7.4e-08 n=59/4192
+3b both restricted to first built residue <= IMGT 8          trunc        err 19/58 (0.328)  ctrl 252/3953 (0.0637)  OR 7.15  Fisher p=2.7e-09
+
+== 4. De-duplication and influence
+dedup by lab x V sequence: cases 56 controls 3642
+4a dedup Fisher: err 19/56 ctrl 251/3642 OR 6.94 p=4.9e-09
+4a dedup M2                                                  trunc        OR 6.73 (3.66-12.37) p=8.6e-10 n=56/3642
+4b leave-one-lab-out M2 (n=42): OR min 4.71 max 6.21; p max 1.5e-06
+4c drop 3 truncated cases that are not N-terminal slips      trunc        err 16/56 (0.286)  ctrl 313/4036 (0.0776)  OR 4.76  Fisher p=4.5e-06
+
+== 5. Period and resolution structure of truncation among controls
+trunc       0      1
+yb                  
+2019    0.951  0.049
+2020    0.889  0.111
+2021    0.938  0.062
+2022    0.912  0.088
+2023    0.951  0.049
+<=2018  0.897  0.103
+>=2024  0.919  0.081
+trunc    0  1
+yb           
+2019     2  0
+2020     4  0
+2021     7  3
+2022     2  3
+2023    12  2
+<=2018   2  2
+>=2024  11  9
+
+== 6. X-ray units (same definition)
+6a X-ray units (3-5 A)                                       trunc        err 1/7 (0.143)  ctrl 110/2115 (0.0520)  OR 3.04  Fisher p=0.31

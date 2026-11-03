@@ -1,0 +1,21 @@
+                    chains  entries  units
+group                                     
+error                  174       90     80
+matched_clean          271      262    271
+within_paper_clean     131       71    131
+ref H 5dt1 H 145
+ref K 1n8z A 110
+ref L 5dt1 L 115
+entries to analyse 401
+0 3
+50 20
+100 33
+150 49
+200 63
+250 80
+300 96
+350 109
+400 119
+status
+ok    554
+Name: count, dtype: int64

@@ -1,0 +1,7 @@
+mode,grp,n,labs,years,EM,res_med,sars2,pdb_template,tpl_cdr3_mismatch,rigid_only,EMDB_local_refine_kw,fr4_model_trunc,cdr3_contacts_ag,partner_chain_err,crowded_antigen(>=10 labs/6mo),same_ab_elsewhere,clashscore_med,chainQ_med,fw_rmsd_med,w118_ca10_med,PDBj_processed,oa_methods
+Dminus_CDR3long,case,9,9,2019-2025,1.0,3.74,0.22,0.11,0.11,0.22,0.11,0.11,0.78,0.22,0.22,0.22,9.74,0.28,1.92,15.0,0.56,0.56
+Dminus_CDR3long,control,18,17,2019-2025,1.0,3.7,0.28,0.22,0.11,0.17,0.06,0.0,0.5,0.22,0.22,0.39,6.74,0.32,1.15,16.0,0.44,0.56
+Dplus_CDR3short,case,9,9,2016-2026,1.0,3.55,0.67,0.33,0.22,0.22,0.11,0.11,1.0,0.22,0.67,0.67,10.94,0.15,1.19,14.5,0.56,0.78
+Dplus_CDR3short,control,17,14,2016-2026,1.0,3.6,0.71,0.12,0.0,0.12,0.06,0.06,1.0,0.06,0.71,0.65,11.9,0.25,1.11,18.0,0.41,0.76
+E_FR4bulge,case,9,9,2020-2026,1.0,3.2,0.22,0.11,0.0,0.0,0.0,0.22,0.78,0.33,0.22,0.44,7.6,0.3,1.4,16.0,0.11,0.67
+E_FR4bulge,control,17,15,2020-2026,1.0,3.4,0.35,0.12,0.0,0.06,0.12,0.12,0.76,0.18,0.35,0.47,9.5,0.39,1.01,15.0,0.12,0.71

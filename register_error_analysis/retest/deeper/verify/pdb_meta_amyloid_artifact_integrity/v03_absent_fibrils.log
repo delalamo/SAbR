@@ -1,0 +1,36 @@
+ pdb  res  deposit                                                                                                            title  in_scope_3_5A  in_analysis_set
+6hud 4.00 10/06/18        Cryo-EM structure of cardiac amyloid fibrils from an immunoglobulin light chain (AL) amyloidosis patient.           True            False
+6ic3 3.30 12/02/18                                                                    AL amyloid fibril from a lambda 1 light chain           True             True
+6z1i 3.40 05/13/20                                                  AL amyloid fibril from a lambda 3 light chain in conformation B           True            False
+6z1o 3.20 05/14/20                                                  AL amyloid fibril from a lambda 3 light chain in conformation A           True             True
+7nsl 3.10 03/08/21                                                                    AL amyloid fibril from a lambda 1 light chain           True             True
+8cpe 4.00 03/02/23                 CryoEM structure of AL55 amyloid fibrils extracted from the kidney of an AL amyloidosis patient.           True            False
+8r47 2.25 11/13/23                                                                    AL amyloid fibril from the FOR010 light chain          False            False
+9els 3.02 12/04/24                                                                Light chain amyloidosis amyloid fibril - IGLV6-57           True             True
+9eme 2.92 03/08/24                                                                    AL amyloid fibril from the FOR103 light chain          False            False
+9faa 3.60 05/10/24                                                    Cryo-EM structure of cardiac collagen-associated amyloid AL59           True             True
+9fab 3.90 05/10/24                                            Additional cryo-EM structure of cardiac amyloid AL59 - bent polymorph           True             True
+9fac 3.90 05/10/24                                           Additional cryo-EM structure of cardiac amyloid AL59 - mixed polymorph           True             True
+9liv 3.10 01/14/25 The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 1) - polymorph 1.           True             True
+9liw 3.20 01/14/25         The cryo-EM structure of amyloid fibrils from heart of an AL amyloidosis patient (case 1) - polymorph 1.           True             True
+9lix 3.00 01/14/25 The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 2) - polymorph 1.           True             True
+9liy 3.20 01/14/25 The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 2) - polymorph 2.           True             True
+9lj0 3.30 01/14/25               The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 3).           True             True
+9lja 3.10 01/14/25 The cryo-EM structure of amyloid fibrils from abdominal fat of a multiple myeloma patient (case 1)- polymorph 1.           True             True
+9ljb 3.20 01/14/25 The cryo-EM structure of amyloid fibrils from abdominal fat of a multiple myeloma patient (case 1)- polymorph 2.           True             True
+9ljc 2.70 01/14/25              The cryo-EM structure of amyloid fibrils from abdominal fat of a multiple myeloma patient (case 2).          False            False
+9oka 2.92 05/09/25                                                Cardiac lambda-6 light chain amyloid AL-224L single protofilament          False            False
+9v91 3.00 05/30/25  Cryo-EM structure of renal amyloid fibril from an immunoglobulin light chain amyloidosis patient in polymorph B           True             True
+9x45 2.93 10/10/25  Cryo-EM structure of renal amyloid fibril from an immunoglobulin light chain amyloidosis patient in polymorph A          False            False
+3-5 A AL fibrils: 18  in analysis set: 15
+new 8cpe A n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 121, 77, 2)]  residues in runs 77/77
+new 8cpe B n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 121, 77, 2)]  residues in runs 77/77
+new 8cpe C n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 121, 77, 2)]  residues in runs 77/77
+new 8cpe D n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 121, 77, 2)]  residues in runs 77/77
+new 8cpe E n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 121, 77, 2)]  residues in runs 77/77
+snapshot_rest 6hud A n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 30, 29, 1), (79, 121, 40, -35)]  residues in runs 69/77
+snapshot_rest 6hud B n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 30, 29, 1), (79, 121, 40, -35)]  residues in runs 69/77
+snapshot_rest 6hud C n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 30, 29, 1), (79, 121, 40, -35)]  residues in runs 69/77
+snapshot_rest 6hud D n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 30, 29, 1), (79, 121, 40, -35)]  residues in runs 69/77
+snapshot_rest 6hud E n_res 77 runs (imgt0, imgt1, length, delta at start): [(1, 30, 29, 1), (79, 121, 40, -35)]  residues in runs 69/77
+processed by SAbR: ['6hud', '8cpe']  never processed: ['6z1i']

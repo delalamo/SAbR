@@ -1,0 +1,89 @@
+== 1. Capsid and enzyme targets: map quality, resolution, fitting, antibody type (EM)
+
+capsid: n=154 vs 2598
+   res: 3.607 vs 3.519 (median 3.540 vs 3.400) p=0.0153
+   lq: 0.379 vs 0.379 (median 0.405 vs 0.420) p=0.9
+   lq_z: 0.140 vs 0.076 (median 0.371 vs 0.366) p=0.421
+   vhh: 0.078 vs 0.287 (median 0.000 vs 0.000) p=1.64e-08
+   mouse: 0.562 vs 0.178 (median 1.000 vs 0.000) p=2.58e-33
+   atyp: 0.994 vs 0.997 (median 1.000 vs 1.000) p=0.471
+   v_id: 0.882 vs 0.863 (median 0.916 vs 0.880) p=0.000582
+   fit protocol: {'other': 0.75, 'rigid body only': 0.12, 'flexible fit': 0.05, 'not recorded': 0.05, 'ab initio': 0.04} | others {'other': 0.77, 'rigid body only': 0.11, 'flexible fit': 0.07, 'ab initio': 0.05, 'not recorded': 0.0}
+   starting model: {'none recorded': 0.89, 'experimental (PDB) model': 0.08, 'AlphaFold model': 0.03, 'other in-silico model': 0.01} | others {'none recorded': 0.76, 'experimental (PDB) model': 0.2, 'AlphaFold model': 0.04, 'other in-silico model': 0.01}
+
+enzyme (incl. viral enzymes): n=97 vs 2655
+   res: 3.532 vs 3.524 (median 3.460 vs 3.410) p=0.852
+   lq: 0.393 vs 0.378 (median 0.421 vs 0.418) p=0.583
+   lq_z: 0.164 vs 0.076 (median 0.273 vs 0.367) p=0.929
+   vhh: 0.433 vs 0.270 (median 0.000 vs 0.000) p=0.000407
+   mouse: 0.186 vs 0.200 (median 0.000 vs 0.000) p=0.71
+   atyp: 1.000 vs 0.997 (median 1.000 vs 1.000) p=0.566
+   v_id: 0.833 vs 0.866 (median 0.854 vs 0.884) p=0.00244
+   fit protocol: {'other': 0.59, 'rigid body only': 0.28, 'flexible fit': 0.11, 'ab initio': 0.02} | others {'other': 0.78, 'rigid body only': 0.1, 'flexible fit': 0.07, 'ab initio': 0.05, 'not recorded': 0.01}
+   starting model: {'none recorded': 0.64, 'experimental (PDB) model': 0.27, 'AlphaFold model': 0.09} | others {'none recorded': 0.77, 'experimental (PDB) model': 0.19, 'AlphaFold model': 0.03, 'other in-silico model': 0.01}
+
+EM entries with local map fit: 2738 errors 178
+  class only                               cap: OR 5.36 (2.84-10.10) p=2.1e-07
+  class only                               enz: OR 6.18 (3.40-11.23) p=2.3e-09
+  + local map fit (lq_z)                   cap: OR 5.56 (2.95-10.48) p=1.2e-07
+  + local map fit (lq_z)                   enz: OR 6.61 (3.56-12.25) p=2.1e-09
+  + lq_z + nanobody + fit protocol         cap: OR 5.66 (2.93-10.93) p=2.4e-07
+  + lq_z + nanobody + fit protocol         enz: OR 7.09 (3.80-13.23) p=7.3e-10
+  + lq_z + nanobody + fit + mouse + germline identity cap: OR 4.83 (2.62-8.89) p=4.3e-07
+  + lq_z + nanobody + fit + mouse + germline identity enz: OR 6.86 (3.58-13.16) p=6.8e-09
+  within cap: lq_z errors -0.11 vs clean 0.21 (n 32/153) p=0.00697
+  within enz: lq_z errors 0.05 vs clean 0.20 (n 23/95) p=0.206
+
+== 2. Paper-level class rates (EM papers; error paper = any first-occurrence error)
+                                papers  err_papers  labs   rate
+cls                                                            
+viral surface glycoprotein         622          58   263  0.093
+GPCR                               178          10   105  0.056
+channel/transporter                165           9   108  0.055
+receptor/membrane protein          103           7    80  0.068
+other protein                       63           4    54  0.063
+viral capsid                        62          18    43  0.290
+enzyme                              49          15    43  0.306
+unmapped/peptide                    30           2    22  0.067
+none                                14           2    14  0.143
+toxin                               14           2    12  0.143
+cytokine/growth factor/hormone       8           0     8  0.000
+TCR                                  3           0     3  0.000
+  viral capsid                 OR 4.39 (2.39-8.07) p=1.9e-06
+  enzyme                       OR 4.74 (2.43-9.25) p=4.9e-06
+  channel/transporter          OR 0.43 (0.20-0.90) p=0.025
+  GPCR                         OR 0.62 (0.31-1.28) p=0.2
+  viral surface glycoprotein   OR 0.80 (0.54-1.21) p=0.29
+
+== 3. Leave-one-lab-out (EM entries): capsid and enzyme ORs
+cap error labs: {'Lou, Z.': 6, 'Zhu, P.': 6, 'Fu, W.': 4, 'Hafenstein, S.': 3, 'Hafenstein, S.L.': 3, 'Li, S.W.': 2, 'Feng, R.': 2, 'Hogle, J.M.': 1, 'Cheng, T.': 1, 'Wang, X.': 1, 'Charnesky, A.J.': 1, 'Kun, L.': 1, 'McKenna, R.': 1}
+   drop-one ORs: [('Lou, Z.', np.float64(3.87), np.float64(0.0001)), ('Zhu, P.', np.float64(4.1), np.float64(0.0001)), ('Fu, W.', np.float64(4.22), np.float64(0.0)), ('Hafenstein, S.', np.float64(4.5), np.float64(0.0)), ('Hafenstein, S.L.', np.float64(4.31), np.float64(0.0)), ('Li, S.W.', np.float64(4.56), np.float64(0.0)), ('Feng, R.', np.float64(4.41), np.float64(0.0)), ('Hogle, J.M.', np.float64(4.76), np.float64(0.0)), ('Cheng, T.', np.float64(4.57), np.float64(0.0)), ('Wang, X.', np.float64(5.0), np.float64(0.0)), ('Charnesky, A.J.', np.float64(4.56), np.float64(0.0)), ('Kun, L.', np.float64(4.56), np.float64(0.0)), ('McKenna, R.', np.float64(4.87), np.float64(0.0))]
+   both top-2 labs removed: OR 3.18 (1.54-6.56) p=0.0017
+enz error labs: {'Grimes, J.M.': 4, 'Zimmer, J.': 4, 'Melcher, K.': 3, 'Naismith, J.H.': 2, 'Versees, W.': 2, 'Southworth, D.': 2, 'Jiang, Y.': 1, 'Yue, W.': 1, 'Pozzi, N.': 1, 'Liu, Y.': 1, 'Arnold, P.': 1, 'Rohou, A.L.': 1}
+   drop-one ORs: [('Grimes, J.M.', np.float64(4.74), np.float64(0.0)), ('Zimmer, J.', np.float64(4.48), np.float64(0.0)), ('Melcher, K.', np.float64(4.52), np.float64(0.0)), ('Naismith, J.H.', np.float64(4.7), np.float64(0.0)), ('Versees, W.', np.float64(4.77), np.float64(0.0)), ('Southworth, D.', np.float64(4.84), np.float64(0.0)), ('Jiang, Y.', np.float64(4.91), np.float64(0.0)), ('Yue, W.', np.float64(4.92), np.float64(0.0)), ('Pozzi, N.', np.float64(4.9), np.float64(0.0)), ('Liu, Y.', np.float64(4.87), np.float64(0.0)), ('Arnold, P.', np.float64(4.88), np.float64(0.0)), ('Rohou, A.L.', np.float64(4.87), np.float64(0.0))]
+   both top-2 labs removed: OR 4.00 (1.94-8.24) p=0.00017
+
+== 4. Competition adjusted for target class (EM, entries with a target)
+  l_labs_acc_12m   year+res                     OR 0.94 (0.86-1.03) p=0.21 n=2690
+  l_labs_acc_12m   year+res+class               OR 0.99 (0.90-1.09) p=0.9 n=2690
+  l_labs_acc_12m   year+res+class, non-SARS2    OR 0.94 (0.75-1.18) p=0.57 n=2029
+  l_labs_fam_12m   year+res                     OR 0.89 (0.81-0.98) p=0.019 n=2690
+  l_labs_fam_12m   year+res+class               OR 0.90 (0.81-1.01) p=0.086 n=2690
+  l_labs_fam_12m   year+res+class, non-SARS2    OR 0.82 (0.70-0.97) p=0.021 n=2029
+  first_acc        year+res                     OR 1.54 (1.01-2.35) p=0.045 n=2690
+  first_acc        year+res+class               OR 1.12 (0.72-1.75) p=0.6 n=2690
+  first_acc        year+res+class, non-SARS2    OR 1.14 (0.71-1.83) p=0.58 n=2029
+  first_fam        year+res                     OR 2.21 (1.34-3.64) p=0.002 n=2690
+  first_fam        year+res+class               OR 2.09 (1.18-3.72) p=0.012 n=2690
+  first_fam        year+res+class, non-SARS2    OR 2.00 (1.10-3.63) p=0.023 n=2029
+  l_prev12_fam     year+res                     OR 0.91 (0.85-0.98) p=0.015 n=2690
+  l_prev12_fam     year+res+class               OR 0.92 (0.84-1.00) p=0.059 n=2690
+  l_prev12_fam     year+res+class, non-SARS2    OR 0.88 (0.77-0.99) p=0.038 n=2029
+
+  2020-21 non-SARS2, zero other labs (+-12m) vs >=1, by paper:
+       mean  size  sum
+zero                  
+0     0.040   100    4
+1     0.205    88   18
+  paper-level OR 7.25 2.49 21.07 p 0.0003
+  excl capsid/enzyme OR 8.29 1.71 40.25 p 0.0087 n 163 11

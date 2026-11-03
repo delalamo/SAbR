@@ -1,0 +1,6 @@
+model,term,OR,lo,hi,p
+y ~ connected_x + C(ycat) + res_med + l2_nv,connected_x,0.6756576747350546,0.4634539358949691,0.9850240942431845,0.04150849656589606
+y ~ connected_x + first_abem_team_na + C(ycat) + res_med + l2_nv,connected_x,0.7428934407011636,0.5063009409775651,1.0900447136661915,0.12870379087218864
+y ~ connected_x + first_abem_team_na + C(ycat) + res_med + l2_nv,first_abem_team_na,1.910205546692556,1.300827905742338,2.8050483961079484,0.0009613289806201713
+y ~ connected_x + first_abem_team_na + l_n_auth + C(ycat) + res_med + l2_nv,connected_x,0.7084673227414662,0.4686447808097139,1.0710157627814494,0.10213734401416195
+y ~ connected_x + first_abem_team_na + l_n_auth + C(ycat) + res_med + l2_nv,first_abem_team_na,1.9316374737663515,1.3126573604132281,2.8424960256832392,0.0008371018494051715

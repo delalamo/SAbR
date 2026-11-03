@@ -1,0 +1,64 @@
+reference set: unique V domains with an X-ray <=3.0 A structure, first released <=2019: 3593 {'H': 1945, 'K': 1265, 'L': 383}
+EM units 4200 error units 181 | X-ray-only units 2222
+
+== Rare CDR lengths (ref freq <5% among X-ray<=3.0 A unique V domains, <=2019) vs first-occurrence errors, EM units
+T1 any CDR length rare -> any error: n=4200 y=181 exposed 0.042 (50/1179) vs 0.043 (131/3021)  OR 0.85 (0.59-1.21) p=0.355
+T2 rare CDR1 length -> any error: n=4200 y=181 exposed 0.044 (14/320) vs 0.043 (167/3880)  OR 0.90 (0.51-1.59) p=0.714
+T3 rare CDR2 length -> any error: n=4200 y=181 exposed 0.116 (14/121) vs 0.041 (167/4079)  OR 2.64 (1.46-4.78) p=0.00133
+T4 rare CDR3 length -> any error: n=4200 y=181 exposed 0.035 (32/924) vs 0.045 (149/3276)  OR 0.66 (0.44-0.99) p=0.042
+T5 rare CDR1 length -> F_CDR1 mode: n=4200 y=12 exposed 0.006 (2/320) vs 0.003 (10/3880)  OR 2.52 (0.51-12.38) p=0.255
+T6 rare CDR2 length -> B_CDR2FR3 mode: n=4200 y=25 exposed 0.050 (6/121) vs 0.005 (19/4079)  OR 8.43 (3.15-22.57) p=2.23e-05
+T7 rare CDR3 length -> CDR3/FR4 modes (D+,D-,D0,E): n=4200 y=75 exposed 0.018 (17/924) vs 0.018 (58/3276)  OR 0.86 (0.49-1.52) p=0.608
+T8 rare any length -> A_FR1Nterm mode (location mismatch control): n=4200 y=58 exposed 0.010 (12/1179) vs 0.015 (46/3021)  OR 0.63 (0.32-1.23) p=0.177
+T9 rarity score (-log10 min ref freq) -> any error (per decade): n=4200 y=181 exposed mean x in y=1: 1.195 vs mean x in y=0: 1.134  OR 1.10 (0.81-1.48) p=0.538
+
+== Modal pull: does the slipped register correspond to a more common CDR3 length in the reference?
+T10 log2 freq(L3-1)/freq(L3) -> D+ (CDR3 built short): n=4200 y=31 exposed mean x in y=1: -0.396 vs mean x in y=0: -0.713  OR 1.03 (0.80-1.32) p=0.847
+T11 log2 freq(L3+1)/freq(L3) -> D- (CDR3 built long): n=4200 y=20 exposed mean x in y=1: -0.361 vs mean x in y=0: -1.110  OR 1.29 (1.00-1.66) p=0.0482
+T12 L3-1 more common than L3 -> D+: n=4200 y=31 exposed 0.009 (16/1877) vs 0.006 (15/2323)  OR 0.92 (0.42-2.00) p=0.825
+T13 L3+1 more common than L3 -> D-: n=4200 y=20 exposed 0.007 (7/950) vs 0.004 (13/3250)  OR 1.84 (0.70-4.81) p=0.215
+  H: D+ units 23, of which L3-1 more common: 15; controls with L3-1 more common: 0.661
+  K: D+ units 7, of which L3-1 more common: 1; controls with L3-1 more common: 0.180
+  L: D+ units 1, of which L3-1 more common: 0; controls with L3-1 more common: 0.160
+
+== Has an X-ray <=3.0 A structure of the same V domain anywhere in the PDB (enters SAbDab-style curated sets)
+T14 V domain has X-ray<=3.0 A structure (any date) -> any error: n=4200 y=181 exposed 0.015 (13/845) vs 0.050 (168/3355)  OR 0.29 (0.16-0.51) p=2.18e-05
+T15 germline identity <85% -> any error (context): n=4200 y=181 exposed 0.063 (83/1317) vs 0.034 (98/2883)  OR 1.80 (1.31-2.48) p=0.000262
+
+== Specific canonical lengths (North nomenclature in brackets)
+T16 heavy CDR2 IMGT 7 [H2-9] vs 8 [H2-10] -> any error: n=2271 y=103 exposed 0.080 (44/552) vs 0.034 (59/1719)  OR 2.44 (1.63-3.67) p=1.57e-05
+T17 heavy CDR2 IMGT 7 vs 8 -> B_CDR2FR3 mode: n=2271 y=14 exposed 0.014 (8/552) vs 0.003 (6/1719)  OR 4.09 (1.40-11.91) p=0.00986
+T18 lambda CDR1 IMGT 8 [L1-13] vs 9 [L1-14] -> any error (replication): n=349 y=20 exposed 0.114 (13/114) vs 0.030 (7/235)  OR 4.27 (1.64-11.15) p=0.00299
+T19 kappa CDR1 IMGT 12 [L1-17] vs 6 [L1-11] -> any error (replication): n=901 y=37 exposed 0.103 (8/78) vs 0.035 (29/823)  OR 3.13 (1.36-7.21) p=0.00745
+
+                                                                       test     n  n_y                exposed              unexposed        OR        lo         hi         p         q
+0                                      T1 any CDR length rare -> any error  4200  181        0.042 (50/1179)       0.043 (131/3021)  0.845517  0.592336   1.206913  0.355384  0.482307
+1                                         T2 rare CDR1 length -> any error  4200  181         0.044 (14/320)       0.043 (167/3880)  0.899495  0.510121   1.586079  0.714350  0.798391
+2                                         T3 rare CDR2 length -> any error  4200  181         0.116 (14/121)       0.041 (167/4079)  2.640040  1.459507   4.775456  0.001326  0.005039
+3                                         T4 rare CDR3 length -> any error  4200  181         0.035 (32/924)       0.045 (149/3276)  0.658349  0.439996   0.985064  0.042037  0.088744
+4                                       T5 rare CDR1 length -> F_CDR1 mode  4200   12          0.006 (2/320)        0.003 (10/3880)  2.521209  0.513525  12.378162  0.254682  0.372227
+5                                    T6 rare CDR2 length -> B_CDR2FR3 mode  4200   25          0.050 (6/121)        0.005 (19/4079)  8.425768  3.146144  22.565261  0.000022  0.000141
+6                       T7 rare CDR3 length -> CDR3/FR4 modes (D+,D-,D0,E)  4200   75         0.018 (17/924)        0.018 (58/3276)  0.862005  0.488727   1.520382  0.608026  0.722031
+7        T8 rare any length -> A_FR1Nterm mode (location mismatch control)  4200   58        0.010 (12/1179)        0.015 (46/3021)  0.627198  0.318540   1.234938  0.177174  0.306028
+8          T9 rarity score (-log10 min ref freq) -> any error (per decade)  4200  181   mean x in y=1: 1.195   mean x in y=0: 1.134  1.098604  0.814583   1.481656  0.537766  0.681171
+9                    T10 log2 freq(L3-1)/freq(L3) -> D+ (CDR3 built short)  4200   31  mean x in y=1: -0.396  mean x in y=0: -0.713  1.025294  0.795974   1.320682  0.846659  0.846659
+10                    T11 log2 freq(L3+1)/freq(L3) -> D- (CDR3 built long)  4200   20  mean x in y=1: -0.361  mean x in y=0: -1.110  1.290534  1.002013   1.662133  0.048207  0.091594
+11                                      T12 L3-1 more common than L3 -> D+  4200   31        0.009 (16/1877)        0.006 (15/2323)  0.915305  0.418163   2.003484  0.824770  0.846659
+12                                      T13 L3+1 more common than L3 -> D-  4200   20          0.007 (7/950)        0.004 (13/3250)  1.838718  0.702542   4.812355  0.214696  0.339936
+13         T14 V domain has X-ray<=3.0 A structure (any date) -> any error  4200  181         0.015 (13/845)       0.050 (168/3355)  0.288038  0.162135   0.511707  0.000022  0.000141
+14                       T15 germline identity <85% -> any error (context)  4200  181        0.063 (83/1317)        0.034 (98/2883)  1.804205  1.314285   2.476749  0.000262  0.001243
+15                  T16 heavy CDR2 IMGT 7 [H2-9] vs 8 [H2-10] -> any error  2271  103         0.080 (44/552)        0.034 (59/1719)  2.444210  1.629138   3.667069  0.000016  0.000141
+16                            T17 heavy CDR2 IMGT 7 vs 8 -> B_CDR2FR3 mode  2271   14          0.014 (8/552)         0.003 (6/1719)  4.087319  1.402980  11.907635  0.009863  0.023424
+17  T18 lambda CDR1 IMGT 8 [L1-13] vs 9 [L1-14] -> any error (replication)   349   20         0.114 (13/114)          0.030 (7/235)  4.274531  1.638299  11.152795  0.002989  0.009465
+18  T19 kappa CDR1 IMGT 12 [L1-17] vs 6 [L1-11] -> any error (replication)   901   37           0.103 (8/78)         0.035 (29/823)  3.127928  1.356825   7.210903  0.007450  0.020221
+
+== Jensen-Shannon distance of CDR-length distributions vs reference (EM clean units / EM error units)
+  H1: clean 0.054  error 0.066  n_err=114
+  H2: clean 0.064  error 0.200  n_err=114
+  H3: clean 0.214  error 0.257  n_err=114
+  K1: clean 0.134  error 0.270  n_err=43
+  K2: clean 0.000  error 0.128  n_err=43
+  K3: clean 0.099  error 0.120  n_err=43
+  L1: clean 0.112  error 0.227  n_err=24
+  L2: clean 0.084  error 0.195  n_err=24
+  L3: clean 0.114  error 0.237  n_err=24

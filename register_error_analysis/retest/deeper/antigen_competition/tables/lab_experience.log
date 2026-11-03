@@ -1,0 +1,68 @@
+EM: lab experience, errors vs clean (medians):
+   lab_prior_ab  lab_prior_any  lab_prior_em  new_ab_lab
+y                                                       
+0           7.0           46.0          11.5         0.0
+1           3.0           28.0          10.0         0.0
+   new_ab_lab
+y            
+0       0.242
+1       0.258
+
+EM error rate by lab antibody experience (prior antibody entries of the last author):
+                 mean  size  sum
+period  expbin                  
+2020-21 0       0.108   186   20
+        1-4     0.154   130   20
+        5-19    0.097   154   15
+        >=20    0.041   148    6
+2022+   0       0.058   433   25
+        1-4     0.091   362   33
+        5-19    0.052   563   29
+        >=20    0.029   595   17
+<=2019  0       0.020    51    1
+        1-4     0.148    54    8
+        5-19    0.059    34    2
+        >=20    0.048    42    2
+  l_lab_prior_ab     EM             OR 0.88 (0.81-0.95) p=0.002
+  l_lab_prior_ab     EM non-SARS2   OR 0.89 (0.81-0.97) p=0.0083
+  l_lab_prior_ab     X-ray          OR 0.87 (0.75-1.01) p=0.065
+  new_ab_lab         EM             OR 1.06 (0.66-1.69) p=0.82
+  new_ab_lab         EM non-SARS2   OR 1.10 (0.66-1.84) p=0.72
+  new_ab_lab         X-ray          OR 1.47 (0.68-3.20) p=0.33
+  l_lab_prior_any    EM             OR 0.95 (0.89-1.02) p=0.16
+  l_lab_prior_any    EM non-SARS2   OR 0.97 (0.90-1.05) p=0.47
+  l_lab_prior_any    X-ray          OR 0.91 (0.82-1.02) p=0.095
+  l_lab_prior_em     EM             OR 0.93 (0.86-1.01) p=0.091
+  l_lab_prior_em     EM non-SARS2   OR 0.95 (0.88-1.04) p=0.26
+  l_lab_prior_em     X-ray          OR 0.77 (0.61-0.99) p=0.041
+
+Do capsid/enzyme/novel-family effects survive adjustment for lab antibody experience? (EM)
+  without experience                       cap              OR 5.25 (2.85-9.70) p=1.1e-07
+  without experience                       enz              OR 4.67 (2.34-9.31) p=1.2e-05
+  without experience                       first_fam        OR 1.60 (0.96-2.66) p=0.072
+  with log2(1+prior antibody entries)      cap              OR 5.03 (2.73-9.30) p=2.4e-07
+  with log2(1+prior antibody entries)      enz              OR 4.46 (2.24-8.89) p=2.1e-05
+  with log2(1+prior antibody entries)      first_fam        OR 1.43 (0.84-2.43) p=0.18
+  with log2(1+prior antibody entries)      l_lab_prior_ab   OR 0.92 (0.85-1.00) p=0.06
+  with antibody + EM experience            cap              OR 4.99 (2.65-9.39) p=6.1e-07
+  with antibody + EM experience            enz              OR 4.47 (2.25-8.87) p=1.9e-05
+  with antibody + EM experience            first_fam        OR 1.43 (0.84-2.42) p=0.19
+  with antibody + EM experience            l_lab_prior_ab   OR 0.91 (0.80-1.04) p=0.18
+  with antibody + EM experience            l_lab_prior_em   OR 1.02 (0.89-1.16) p=0.82
+
+Lab antibody experience by target class (EM, median prior antibody entries; share of new antibody labs):
+                                   n  med_prior_ab  new_lab    err
+cls2                                                              
+viral surface glycoprotein      1349          11.0    0.168  0.059
+channel/transporter              439           4.0    0.360  0.027
+GPCR                             307           4.0    0.287  0.039
+receptor/membrane protein        155           7.0    0.245  0.052
+viral capsid                     154           6.0    0.312  0.208
+other protein                    143           5.0    0.315  0.028
+enzyme                            97           2.0    0.361  0.237
+unmapped/peptide                  53           5.0    0.245  0.075
+none                              21           3.0    0.381  0.095
+toxin                             17           4.0    0.235  0.118
+cytokine/growth factor/hormone    11           1.0    0.455  0.000
+TCR                                5          14.0    0.200  0.000
+fiducial target                    1           7.0    0.000  0.000

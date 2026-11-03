@@ -1,0 +1,72 @@
+K const modelled: err 29 ctrl 912 | cis err 0.207 ctrl 0.808
+  investigator model: {'OR': np.float64(0.0392770145315104), 'p': np.float64(0.0013228125967313768), 'err_val': '20.7% (6/29)', 'ctrl_val': '80.8% (737/912)'}
+  error chains: papers 10 entries 18 labs 10
+                             n  entries  cis              lab    yr   res                       modes
+cluster                                                                                              
+10.1038/s41422-021-00487-9  17        7  0.0         Zhou, Q.  2020  3.30  A_FR1Nterm|Dplus_CDR3short
+10.1126/science.abe7565      3        3  3.0      Melcher, K.  2020  3.92                  A_FR1Nterm
+10.1016/j.str.2025.08.008    2        1  0.0       Noinaj, N.  2024  3.87                  A_FR1Nterm
+10.1002/pro.70473            1        1  0.0        Ploug, M.  2025  4.80                      F_CDR1
+10.1016/j.cell.2023.10.002   1        1  1.0  Marlovits, T.C.  2023  4.20                       C_FR3
+10.1038/s41467-020-18250-w   1        1  1.0         Wang, X.  2020  3.70                          D0
+10.1038/s41467-023-40821-w   1        1  0.0       Miller, M.  2021  3.14                       C_FR3
+10.1038/s41586-018-0215-y    1        1  1.0         Xu, H.E.  2018  4.50                  A_FR1Nterm
+10.1038/s41594-019-0237-7    1        1  0.0       Nureki, O.  2019  4.10             Dminus_CDR3long
+10.1093/abt/tbad002          1        1  0.0         Wang, K.  2021  3.30                  A_FR1Nterm
+  fraction of all EM error chains of this type with constant domain modelled: 0.337 vs ctrl 0.289
+H const modelled: err 31 ctrl 1173 | cis err 0.419 ctrl 0.723
+  investigator model: {'OR': np.float64(0.24153862659214395), 'p': np.float64(0.0543799512963218), 'err_val': '41.9% (13/31)', 'ctrl_val': '72.3% (848/1173)'}
+  error chains: papers 18 entries 22 labs 17
+                                 n  entries  cis              lab    yr   res                       modes
+cluster                                                                                                  
+10.1038/s41422-021-00487-9      12        5  0.0         Zhou, Q.  2020  3.40  Dplus_CDR3short|E_FR4bulge
+10.1002/advs.77172               3        1  3.0         Zhou, T.  2025  3.40                   B_CDR2FR3
+10.1002/pro.70473                1        1  1.0        Ploug, M.  2025  4.80                  E_FR4bulge
+10.1016/j.cell.2023.10.002       1        1  1.0  Marlovits, T.C.  2023  4.20             B_CDR2FR3;C_FR3
+10.1016/j.ijbiomac.2023.128191   1        1  0.0        Huang, Q.  2023  4.20             Dminus_CDR3long
+10.1016/j.str.2023.04.010        1        1  0.0      Ortlund, E.  2022  4.40                   B_CDR2FR3
+10.1038/s41467-020-18250-w       1        1  1.0         Wang, X.  2020  3.70                      F_CDR1
+10.1038/s41467-020-19887-3       1        1  1.0        Zheng, H.  2020  4.00             Dminus_CDR3long
+10.1038/s41467-023-39659-z       1        1  1.0         Ofek, G.  2023  3.65                  A_FR1Nterm
+10.1038/s41467-023-40821-w       1        1  0.0       Miller, M.  2021  3.14  A_FR1Nterm;Dplus_CDR3short
+10.1038/s41467-026-70491-3       1        1  1.0      Rohou, A.L.  2024  3.00                  A_FR1Nterm
+10.1073/pnas.2602538123          1        1  0.0      Kruse, A.C.  2026  3.20                  E_FR4bulge
+10.1172/JCI151676                1        1  1.0      Zanotti, G.  2021  3.90                   B_CDR2FR3
+10.1182/blood.2023020181         1        1  1.0    Spiegel, P.C.  2023  4.23                       C_FR3
+10.1182/blood.2023022942         1        1  1.0        Pozzi, N.  2023  3.20                  A_FR1Nterm
+10.1371/journal.pone.0338127     1        1  0.0           Xu, Y.  2026  3.10        A_FR1Nterm;B_CDR2FR3
+9o7h                             1        1  0.0   Southworth, D.  2025  4.80                  A_FR1Nterm
+9o7i                             1        1  1.0   Southworth, D.  2025  3.40                  A_FR1Nterm
+  fraction of all EM error chains of this type with constant domain modelled: 0.144 vs ctrl 0.214
+Pro115 investigator (excl. any CDR-containing mode) {'OR': None, 'p': None, 'err_val': '12.5% (3/24)', 'ctrl_val': '62.1% (1269/2045)'}
+   modes of error chains: {'A_FR1Nterm': 21, 'C_FR3': 2, 'other': 1}
+   papers 8 entries 15
+                               n  cis          lab    yr   res
+cluster                                                       
+10.1016/j.celrep.2025.115334   2    0      Zhu, P.  2023  3.85
+10.1016/j.immuni.2025.04.010   1    0   Ward, A.B.  2024  3.80
+10.1038/s41422-021-00487-9    12    0     Zhou, Q.  2020  3.40
+10.1038/s41467-023-40821-w     1    0   Miller, M.  2021  3.14
+10.1038/s42003-021-02029-w     1    0      Dou, C.  2021  3.30
+10.1126/sciadv.aat7459         1    0    Cheng, T.  2018  3.90
+10.1126/science.abe7565        3    0  Melcher, K.  2020  3.92
+10.1126/science.adj8321        3    3   Ward, A.B.  2023  3.10
+Pro115 intended (excl. CDR3/FR4 modes only) {'OR': None, 'p': None, 'err_val': '12.9% (4/31)', 'ctrl_val': '62.1% (1269/2045)'}
+   modes of error chains: {'A_FR1Nterm': 21, 'F_CDR1': 3, 'C_FR3': 2, 'A_FR1Nterm;B_CDR2FR3': 1, 'D0': 1, 'A_FR1Nterm;D0': 1, 'other': 1, 'B_CDR2FR3': 1}
+   papers 14 entries 22
+                               n  cis           lab    yr   res
+cluster                                                        
+10.1002/pro.70473              1    0     Ploug, M.  2025  4.80
+10.1016/j.celrep.2025.115334   3    0       Zhu, P.  2023  3.80
+10.1016/j.immuni.2025.04.010   1    0    Ward, A.B.  2024  3.80
+10.1038/s41421-021-00292-z     1    0       Liu, C.  2021  4.20
+10.1038/s41422-021-00487-9    12    0      Zhou, Q.  2020  3.40
+10.1038/s41467-020-18250-w     1    0      Wang, X.  2020  3.70
+10.1038/s41467-023-40821-w     1    0    Miller, M.  2021  3.14
+10.1038/s41586-026-10429-3     1    0    Ward, A.B.  2025  3.30
+10.1038/s42003-021-02029-w     1    0       Dou, C.  2021  3.30
+10.1126/sciadv.aat7459         1    0     Cheng, T.  2018  3.90
+10.1126/science.abe7565        3    0   Melcher, K.  2020  3.92
+10.1126/science.abn9884        1    1  Lander, G.C.  2021  3.83
+10.1126/science.adj8321        3    3    Ward, A.B.  2023  3.10
+9pv3                           1    0    Ward, A.B.  2025  3.95

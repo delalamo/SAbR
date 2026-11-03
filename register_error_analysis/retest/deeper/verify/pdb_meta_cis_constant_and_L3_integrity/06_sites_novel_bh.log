@@ -1,0 +1,94 @@
+Ck Tyr-Pro (FYP) site modelled: any canonical site cis | {'err_val': '20.7% (6/29)', 'ctrl_val': '80.8% (734/908)', 'OR': np.float64(0.0389785691528347), 'p': np.float64(0.001340089410627394)}
+Ck Tyr-Pro (FYP) site modelled: any canonical site cis, drop Zhou | {'err_val': '50.0% (6/12)', 'ctrl_val': '81.0% (734/906)', 'OR': np.float64(0.13629252611067988), 'p': np.float64(0.025255197574807476)}
+CH1 Phe-Pro/Glu-Pro (FPEP) sites modelled: any canonical site cis | {'err_val': '41.4% (12/29)', 'ctrl_val': '71.9% (820/1141)', 'OR': np.float64(0.25202244021373515), 'p': np.float64(0.07279804159532391)}
+CH1 Phe-Pro/Glu-Pro (FPEP) sites modelled: any canonical site cis, drop Zhou | {'err_val': '70.6% (12/17)', 'ctrl_val': '72.5% (820/1131)', 'OR': np.float64(0.7639658329860988), 'p': np.float64(0.7060807664625284)}
+K error cis offsets from V end (top): {33: 6}
+K clean cis offsets from V end (top): {33: 713, 32: 9, 35: 6, 48: 4, 36: 3}
+H error cis offsets from V end (top): {33: 9, 35: 9, 63: 1, 30: 1, 75: 1}
+H clean cis offsets from V end (top): {33: 712, 35: 618, 75: 113, 34: 70, 36: 64}
+novel V: any constant cis (investigator def) | {'err_val': '28.1% (16/57)', 'ctrl_val': '72.7% (1002/1378)', 'OR': np.float64(0.1357630351909013), 'p': np.float64(0.00117504546881993)}
+novel V: drop Zhou | {'err_val': '57.1% (16/28)', 'ctrl_val': '73.5% (1002/1363)', 'OR': np.float64(0.3563688288677791), 'p': np.float64(0.03916131686606954)}
+novel V: + entry all-trans elsewhere | {'err_val': '28.1% (16/57)', 'ctrl_val': '72.7% (1002/1378)', 'OR': np.float64(0.48996550133821276), 'p': np.float64(0.29020925890828375)}
+novel V: Ck only, drop Zhou | {'err_val': '40.0% (4/10)', 'ctrl_val': '80.9% (427/528)', 'OR': np.float64(0.13044923381936246), 'p': np.float64(0.01809238708768521)}
+        pdb chain      last_author            modes  n_cis_chain  n_cis_const  other_cis   res     deposit
+31     6cmo     L         Xu, H.E.       A_FR1Nterm            1            1          2  4.50  2018-03-05
+96     6jmr     F       Nureki, O.  Dminus_CDR3long            0            0          0  4.10  2019-03-13
+525    7c80     L         Wang, X.               D0           12            1         18  3.70  2020-05-28
+588    7jhh     L      Melcher, K.       A_FR1Nterm            1            1          1  3.92  2020-07-20
+603    7jhg     L      Melcher, K.       A_FR1Nterm            1            1          1  3.47  2020-07-20
+628    7m74     L      Melcher, K.       A_FR1Nterm            1            1          1  3.93  2021-03-26
+3241   7f3q     B         Wang, K.       A_FR1Nterm            0            0          4  3.30  2021-06-16
+3428   7stf     L       Miller, M.            C_FR3            0            0          0  3.14  2021-11-12
+4774   8cr9     B  Marlovits, T.C.            C_FR3            2            1          3  4.20  2023-03-08
+7692   9ccg     C       Noinaj, N.       A_FR1Nterm            0            0          0  3.87  2024-06-21
+7693   9ccg     E       Noinaj, N.       A_FR1Nterm            0            0          0  3.87  2024-06-21
+10001  9yc6     L        Ploug, M.           F_CDR1            2            0          3  4.80  2025-09-18
+   src           set                                                                          test        err_val           ctrl_val        OR         p  q_BH_verifier
+0   04            Ck                           investigator model (chain, cluster-robust by paper)   20.7% (6/29)    80.8% (738/913)  0.039262  0.001317       0.018225
+1   04            Ck                                                            drop Zhou Q. paper   50.0% (6/12)    81.0% (738/911)  0.137584  0.025056       0.057325
+2   04            Ck                                               leave-one-paper-out: worst case            NaN                NaN  0.137584  0.025056       0.057325
+3   04            Ck               unit level (antibody-in-paper; majority vote), cluster by paper   38.5% (5/13)    79.0% (332/420)  0.095000  0.006168       0.033504
+4   04            Ck                                                      unit level, drop Zhou Q.   50.0% (5/10)    79.2% (332/419)  0.146226  0.026540       0.057325
+5   04            Ck                                paper level (majority vote), Fisher unadjusted   40.0% (4/10)    78.4% (269/343)  0.183395  0.010965       0.044107
+6   04            Ck                                                     paper level, drop Zhou Q.    44.4% (4/9)              78.4%  0.220074  0.029819       0.057325
+7   04            Ck                            cluster (paper) bootstrap of adjusted OR, 400 reps            NaN                NaN  0.040789  0.002494       0.018842
+8   04            Ck                   only chains whose entry has >=1 cis peptide in OTHER chains    75.0% (6/8)    92.1% (724/786)  0.228242  0.194988       0.229394
+9   04            Ck                       adjusted for entry all-trans elsewhere (other_alltrans)   20.7% (6/29)    80.8% (738/913)  0.192560  0.131450       0.166815
+10  04            Ck                                   drop Zhou + only entries with cis elsewhere    75.0% (6/8)    92.1% (724/786)  0.228242  0.194988       0.229394
+11  04           CH1                           investigator model (chain, cluster-robust by paper)  41.9% (13/31)   71.9% (850/1183)  0.247020  0.060516       0.095699
+12  04           CH1                                                            drop Zhou Q. paper  68.4% (13/19)   72.5% (850/1173)  0.778499  0.672080       0.692446
+13  04           CH1                                               leave-one-paper-out: worst case            NaN                NaN  0.778499  0.672080       0.692446
+14  04           CH1               unit level (antibody-in-paper; majority vote), cluster by paper  57.9% (11/19)    72.2% (369/511)  0.428170  0.123350       0.164467
+15  04           CH1                                                      unit level, drop Zhou Q.  64.7% (11/17)    72.8% (369/507)  0.605113  0.356747       0.404314
+16  04           CH1                                paper level (majority vote), Fisher unadjusted  61.1% (11/18)    71.9% (292/406)  0.613503  0.422783       0.471299
+17  04           CH1                                                     paper level, drop Zhou Q.  64.7% (11/17)              71.9%  0.715753  0.583779       0.640273
+18  04           CH1                            cluster (paper) bootstrap of adjusted OR, 400 reps            NaN                NaN  0.287067  0.132170       0.166815
+19  04           CH1                   only chains whose entry has >=1 cis peptide in OTHER chains  80.0% (12/15)    85.5% (843/986)  0.694223  0.645884       0.686251
+20  04           CH1                       adjusted for entry all-trans elsewhere (other_alltrans)  41.9% (13/31)   71.9% (850/1183)  0.748256  0.721940       0.721940
+21  04           CH1                                   drop Zhou + only entries with cis elsewhere  80.0% (12/15)    85.5% (843/986)  0.694223  0.645884       0.686251
+22  04  pooled_const                           investigator model (chain, cluster-robust by paper)  31.7% (19/60)  73.8% (1726/2338)  0.113104  0.002043       0.018842
+23  04  pooled_const                                                            drop Zhou Q. paper  61.3% (19/31)  74.3% (1726/2323)  0.383153  0.059491       0.095699
+24  04  pooled_const                                               leave-one-paper-out: worst case            NaN                NaN  0.383153  0.059491       0.095699
+25  04  pooled_const               unit level (antibody-in-paper; majority vote), cluster by paper  50.0% (16/32)   74.5% (755/1014)  0.233227  0.004078       0.025207
+26  04  pooled_const                                                      unit level, drop Zhou Q.  59.3% (16/27)   75.0% (755/1007)  0.350949  0.025582       0.057325
+27  04  pooled_const                                paper level (majority vote), Fisher unadjusted  56.5% (13/23)    78.8% (328/416)  0.348780  0.019139       0.057325
+28  04  pooled_const                                                     paper level, drop Zhou Q.  59.1% (13/22)              78.8%  0.387534  0.037096       0.066383
+29  04  pooled_const                            cluster (paper) bootstrap of adjusted OR, 400 reps            NaN                NaN  0.125675  0.017456       0.057325
+30  04  pooled_const                   only chains whose entry has >=1 cis peptide in OTHER chains  78.3% (18/23)  87.5% (1703/1946)  0.445101  0.195660       0.229394
+31  04  pooled_const                       adjusted for entry all-trans elsewhere (other_alltrans)  31.7% (19/60)  73.8% (1726/2338)  0.396909  0.132470       0.166815
+32  04  pooled_const                                   drop Zhou + only entries with cis elsewhere  78.3% (18/23)  87.5% (1703/1946)  0.445101  0.195660       0.229394
+33  04    Pro115_inv                           investigator model (chain, cluster-robust by paper)   12.5% (3/24)  62.1% (1269/2045)  0.079374  0.025619       0.057325
+34  04    Pro115_inv                                                            drop Zhou Q. paper   25.0% (3/12)  62.2% (1269/2040)  0.157668  0.109661       0.149140
+35  04    Pro115_inv                                               leave-one-paper-out: worst case            NaN                NaN  0.157668  0.109661       0.149140
+36  04    Pro115_inv               unit level (antibody-in-paper; majority vote), cluster by paper    9.1% (1/11)    60.8% (540/888)  0.053539  0.011503       0.044107
+37  04    Pro115_inv                                                      unit level, drop Zhou Q.    11.1% (1/9)    60.9% (540/886)  0.067711  0.022594       0.057325
+38  04    Pro115_inv                                paper level (majority vote), Fisher unadjusted    12.5% (1/8)    61.9% (393/635)  0.087968  0.006614       0.033504
+39  04    Pro115_inv                                                     paper level, drop Zhou Q.    14.3% (1/7)              61.9%  0.102629  0.015096       0.054030
+40  04    Pro115_inv                            cluster (paper) bootstrap of adjusted OR, 400 reps            NaN                NaN  0.072102  0.007481       0.033915
+41  04    Pro115_inv                   only chains whose entry has >=1 cis peptide in OTHER chains    42.9% (3/7)  73.4% (1095/1492)  0.155412  0.108701       0.149140
+42  04    Pro115_inv                       adjusted for entry all-trans elsewhere (other_alltrans)   12.5% (3/24)  62.1% (1269/2045)  0.148911  0.067487       0.104299
+43  04    Pro115_inv                                   drop Zhou + only entries with cis elsewhere    42.9% (3/7)  73.4% (1095/1492)  0.155412  0.108701       0.149140
+44  04   Pro115_corr                           investigator model (chain, cluster-robust by paper)   12.9% (4/31)  62.1% (1269/2045)  0.083840  0.006898       0.033504
+45  04   Pro115_corr                                                            drop Zhou Q. paper   21.1% (4/19)  62.2% (1269/2040)  0.140271  0.030039       0.057325
+46  04   Pro115_corr                                               leave-one-paper-out: worst case            NaN                NaN  0.140271  0.030039       0.057325
+47  04   Pro115_corr               unit level (antibody-in-paper; majority vote), cluster by paper   11.1% (2/18)    60.8% (540/888)  0.069936  0.001914       0.018842
+48  04   Pro115_corr                                                      unit level, drop Zhou Q.   12.5% (2/16)    60.9% (540/886)  0.083647  0.004038       0.025207
+49  04   Pro115_corr                                paper level (majority vote), Fisher unadjusted   14.3% (2/14)    61.9% (393/635)  0.102629  0.000422       0.018225
+50  04   Pro115_corr                                                     paper level, drop Zhou Q.   15.4% (2/13)              61.9%  0.111959  0.000931       0.018225
+51  04   Pro115_corr                            cluster (paper) bootstrap of adjusted OR, 400 reps            NaN                NaN  0.078925  0.002494       0.018842
+52  04   Pro115_corr                   only chains whose entry has >=1 cis peptide in OTHER chains   30.0% (3/10)  73.4% (1095/1492)  0.113725  0.030349       0.057325
+53  04   Pro115_corr                       adjusted for entry all-trans elsewhere (other_alltrans)   12.9% (4/31)  62.1% (1269/2045)  0.141750  0.027123       0.057325
+54  04   Pro115_corr                                   drop Zhou + only entries with cis elsewhere   30.0% (3/10)  73.4% (1095/1492)  0.113725  0.030349       0.057325
+55  05           NaN                                  investigator filter (regex D|E_FR4 on modes)   12.5% (3/24)  62.1% (1269/2045)  0.079374  0.025619       0.057325
+56  05           NaN                                 position filter: no run overlapping IMGT>=104   14.3% (4/28)  62.1% (1269/2045)  0.096137  0.011675       0.044107
+57  05           NaN                                                    position filter, drop Zhou   25.0% (4/16)  62.2% (1269/2040)  0.176466  0.056485       0.095699
+58  05           NaN                           position filter, FR1-mode (A) chains only as errors   13.6% (3/22)  62.1% (1269/2045)  0.085220  0.034152       0.062766
+59  05           NaN                                  position filter, non-A chains only as errors    16.7% (1/6)  62.1% (1269/2045)  0.157096  0.095855       0.141698
+60  06           NaN                        Ck Tyr-Pro (FYP) site modelled: any canonical site cis   20.7% (6/29)    80.8% (734/908)  0.038979  0.001340       0.018225
+61  06           NaN             Ck Tyr-Pro (FYP) site modelled: any canonical site cis, drop Zhou   50.0% (6/12)    81.0% (734/906)  0.136293  0.025255       0.057325
+62  06           NaN             CH1 Phe-Pro/Glu-Pro (FPEP) sites modelled: any canonical site cis  41.4% (12/29)   71.9% (820/1141)  0.252022  0.072798       0.110006
+63  06           NaN  CH1 Phe-Pro/Glu-Pro (FPEP) sites modelled: any canonical site cis, drop Zhou  70.6% (12/17)   72.5% (820/1131)  0.763966  0.706081       0.716619
+64  06           NaN                                  novel V: any constant cis (investigator def)  28.1% (16/57)  72.7% (1002/1378)  0.135763  0.001175       0.018225
+65  06           NaN                                                            novel V: drop Zhou  57.1% (16/28)  73.5% (1002/1363)  0.356369  0.039161       0.068281
+66  06           NaN                                          novel V: + entry all-trans elsewhere  28.1% (16/57)  72.7% (1002/1378)  0.489966  0.290209       0.334478
+67  06           NaN                                                   novel V: Ck only, drop Zhou   40.0% (4/10)    80.9% (427/528)  0.130449  0.018092       0.057325

@@ -1,0 +1,22 @@
+                                                                                                        test  n_err  n_err_papers  n_ctrl            err              ctrl     OR        p    note   q_BH
+                                                              C-kappa any cis (investigator set) [reproduce]     29            10     912   20.7% (6/29)   80.8% (737/912) 0.0393  0.00132     NaN 0.0126
+                                                                                     CH1 any cis [reproduce]     31            18    1173  41.9% (13/31)  72.3% (848/1173)  0.242   0.0544     NaN 0.0906
+                                                                            all constant any cis [reproduce]     60            23    2327  31.7% (19/60) 74.0% (1723/2327)  0.112  0.00186     NaN 0.0136
+                                        kappa Pro115 cis, no CDR-mode error (investigator regex) [reproduce]     24             8    2045   12.5% (3/24) 62.1% (1269/2045) 0.0794   0.0256     NaN 0.0594
+                                                                                 C-kappa any cis | drop Zhou     12             9     910   50.0% (6/12)   81.0% (737/910)  0.138   0.0252     NaN 0.0594
+                                                                                     CH1 any cis | drop Zhou     19            17    1163  68.4% (13/19)  72.9% (848/1163)  0.752    0.628     NaN  0.665
+                                                                            all constant any cis | drop Zhou     31            22    2312  61.3% (19/31) 74.5% (1723/2312)  0.376   0.0537     NaN 0.0906
+                                                            kappa Pro115 cis (no CDR3/FR4 error) | drop Zhou     19            13    2040   21.1% (4/19) 62.2% (1269/2040)   0.14     0.03     NaN 0.0613
+     C-kappa any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]      9             9     341            4/9           270/341   0.21   0.0259     NaN 0.0594
+         CH1 any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]     17            17     399          11/17           294/399  0.655    0.409     NaN  0.479
+all constant any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]     22            22     410          13/22           334/410  0.329   0.0226     NaN 0.0594
+    kappa Pro115 cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]     13            13     634           2/13           411/634 0.0987 0.000427     NaN 0.0126
+                                                             C-kappa any cis | entries with >=1 cis anywhere      8             6     809    75.0% (6/8)   91.1% (737/809)  0.255    0.228     NaN  0.286
+                                                        all constant any cis | entries with >=1 cis anywhere     24            17    1973  79.2% (19/24) 87.3% (1723/1973)  0.476    0.226     NaN  0.286
+                                                            kappa Pro115 cis | entries with >=1 cis anywhere     12             8    1692   33.3% (4/12) 75.0% (1269/1692)  0.146   0.0243     NaN 0.0594
+                                                            kappa Pro115 cis | Pro8 modelled TRANS (stratum)     28            11     679   10.7% (3/28)   31.1% (211/679)  0.403    0.457     NaN  0.513
+                                                              kappa Pro115 cis | Pro8 modelled CIS (stratum)      3             3    1210            NaN               NaN    NaN      NaN too few    NaN
+                                                              kappa Pro115 cis, adjusted for Pro8 cis status     31            14    1889   12.9% (4/31) 62.2% (1175/1889)  0.278    0.239     NaN  0.295
+                                                    entry: no cis peptide anywhere in the entry (EM entries)    178           131    2574 51.7% (92/178) 39.6% (1019/2574)   1.82  0.00586     NaN 0.0269
+                                                          entry: no cis peptide anywhere | drop Zhou entries    171           130    2569 49.7% (85/171) 39.5% (1014/2569)   1.65   0.0145     NaN  0.043
+n tests in BH: 110

@@ -1,0 +1,33 @@
+                                                                                   test  n_err  n_err_papers  n_ctrl           err              ctrl      OR       p  p_fisher    note
+                                                C-kappa Tyr-Pro cis | modelled | <=2019      2             2      56           NaN               NaN     NaN     NaN       NaN too few
+                                    C-kappa Tyr-Pro cis | modelled | <=2019 | drop Zhou      2             2      56           NaN               NaN     NaN     NaN       NaN too few
+                                          kappa Pro115 cis (no CDR3/FR4 error) | <=2019      1             1     199           NaN               NaN     NaN     NaN       NaN too few
+                              kappa Pro115 cis (no CDR3/FR4 error) | <=2019 | drop Zhou      1             1     199           NaN               NaN     NaN     NaN       NaN too few
+                                                     any constant cis (pooled) | <=2019      2             2     130           NaN               NaN     NaN     NaN       NaN too few
+                                         any constant cis (pooled) | <=2019 | drop Zhou      2             2     130           NaN               NaN     NaN     NaN       NaN too few
+                                               C-kappa Tyr-Pro cis | modelled | 2020-21     23             5     290  17.4% (4/23)   82.8% (240/290)   0.054    0.01  1.65e-10     NaN
+                                   C-kappa Tyr-Pro cis | modelled | 2020-21 | drop Zhou      6             4     288   66.7% (4/6)   83.3% (240/288)   0.416   0.376     0.271     NaN
+                                         kappa Pro115 cis (no CDR3/FR4 error) | 2020-21     20             7     531   5.0% (1/20)   58.8% (312/531)  0.0352 0.00614  9.43e-07     NaN
+                             kappa Pro115 cis (no CDR3/FR4 error) | 2020-21 | drop Zhou      8             6     526   12.5% (1/8)   59.3% (312/526)  0.0955  0.0464    0.0101     NaN
+                                                    any constant cis (pooled) | 2020-21     39             7     688  17.9% (7/39)   78.9% (543/688)  0.0612 0.00223  7.37e-15     NaN
+                                        any constant cis (pooled) | 2020-21 | drop Zhou     10             6     673  70.0% (7/10)   80.7% (543/673)   0.485   0.404     0.419     NaN
+                                                C-kappa Tyr-Pro cis | modelled | >=2022      4             3     561           NaN               NaN     NaN     NaN       NaN too few
+                                    C-kappa Tyr-Pro cis | modelled | >=2022 | drop Zhou      4             3     561           NaN               NaN     NaN     NaN       NaN too few
+                                          kappa Pro115 cis (no CDR3/FR4 error) | >=2022     10             6    1315  30.0% (3/10)  59.8% (786/1315)    0.24   0.183     0.101     NaN
+                              kappa Pro115 cis (no CDR3/FR4 error) | >=2022 | drop Zhou     10             6    1315  30.0% (3/10)  59.8% (786/1315)    0.24   0.183     0.101     NaN
+                                                     any constant cis (pooled) | >=2022     19            14    1509 57.9% (11/19) 69.6% (1051/1509)   0.422   0.193     0.316     NaN
+                                         any constant cis (pooled) | >=2022 | drop Zhou     19            14    1509 57.9% (11/19) 69.6% (1051/1509)   0.422   0.193     0.316     NaN
+                                                NOVEL V only: any constant cis (pooled)     57            21    1370 28.1% (16/57)  72.9% (999/1370)   0.135 0.00104   7.7e-12     NaN
+                                    NOVEL V only: any constant cis (pooled) | drop Zhou     28            20    1355 57.1% (16/28)  73.7% (999/1355)   0.351  0.0357    0.0806     NaN
+                                                          kappa Pro115 cis, L3 = 9 only     27            11    1856  14.8% (4/27) 64.3% (1194/1856)  0.0928  0.0125  2.07e-07     NaN
+                                              kappa Pro115 cis, L3 = 9 only | drop Zhou     15            10    1851  26.7% (4/15) 64.5% (1194/1851)   0.172  0.0712   0.00462     NaN
+                                                 kappa Pro115 cis, + species + L3 class     31            14    2045  12.9% (4/31) 62.1% (1269/2045)  0.0879 0.00734  2.84e-08     NaN
+                                              C-kappa Tyr-Pro cis | modelled, + species     29            10     907  20.7% (6/29)   80.8% (733/907)   0.044 0.00221  1.32e-11     NaN
+                                  C-kappa Tyr-Pro cis | modelled, + species | drop Zhou     12             9     905  50.0% (6/12)   81.0% (733/905)   0.136  0.0281    0.0162     NaN
+                 C-kappa Tyr-Pro site: cis, + local resolution at site (EMDB-VA subset)      5             4     127   20.0% (1/5)   80.3% (102/127) 0.00058 0.00557   0.00829     NaN
+                 C-kappa Tyr-Pro site: cis, EMDB-VA subset without local-res adjustment      5             4     127   20.0% (1/5)   80.3% (102/127)   0.021   0.143   0.00829     NaN
+kappa Pro115 site (CDR-L3/FR4 window): cis, + local resolution at site (EMDB-VA subset)      8             6     250   37.5% (3/8)   60.4% (151/250)   0.488   0.434     0.274     NaN
+kappa Pro115 site (CDR-L3/FR4 window): cis, EMDB-VA subset without local-res adjustment      8             6     250   37.5% (3/8)   60.4% (151/250)   0.528   0.455     0.274     NaN
+                                 site  n_err  n_ctrl  err_median  ctrl_median  p_MW  ctrl_cis_vs_lr_spearman
+                 C-kappa Tyr-Pro site      5     127       0.581          0.6 0.402                  0.00432
+kappa Pro115 site (CDR-L3/FR4 window)      8     250       0.338        0.353 0.453                  -0.0633

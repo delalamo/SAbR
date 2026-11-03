@@ -1,0 +1,25 @@
+                                                                        test  n_err  n_err_papers  n_ctrl           err              ctrl     OR       p  p_fisher    note
+                           ck_YP: site modelled (Pro and i-1 not unobserved)     35            15    2038 82.9% (29/35)  44.5% (907/2038)   4.84   0.038  6.89e-06     NaN
+         ck_YP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper     18            14    2033 66.7% (12/18)  44.5% (905/2033)   2.15   0.249    0.0929     NaN
+                   ck_YP: cis | site present (unmodelled counted as not cis)     35            15    2038  17.1% (6/35)  36.0% (733/2038)  0.283   0.119    0.0206     NaN
+ ck_YP: cis | site present (unmodelled counted as not cis) | drop Zhou paper     18            14    2033  33.3% (6/18)  36.1% (733/2033)   0.68   0.572         1     NaN
+                                                  ck_YP: cis | site modelled     29            10     907  20.7% (6/29)   80.8% (733/907)  0.039 0.00135  1.32e-11     NaN
+                                ck_YP: cis | site modelled | drop Zhou paper     12             9     905  50.0% (6/12)   81.0% (733/905)  0.136  0.0254    0.0162     NaN
+                          ch1_FP: site modelled (Pro and i-1 not unobserved)     68            38    2597 42.6% (29/68) 43.8% (1137/2597)   0.77   0.578     0.902     NaN
+        ch1_FP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper     56            37    2584 30.4% (17/56) 43.6% (1127/2584)  0.471    0.06    0.0559     NaN
+                  ch1_FP: cis | site present (unmodelled counted as not cis)     68            38    2597 17.6% (12/68)  30.8% (800/2597)  0.382  0.0518    0.0225     NaN
+ch1_FP: cis | site present (unmodelled counted as not cis) | drop Zhou paper     56            37    2584 21.4% (12/56)  31.0% (800/2584)  0.481   0.123     0.144     NaN
+                                                 ch1_FP: cis | site modelled     29            15    1137 41.4% (12/29)  70.4% (800/1137)  0.269  0.0909   0.00163     NaN
+                               ch1_FP: cis | site modelled | drop Zhou paper     17            14    1127 70.6% (12/17)  71.0% (800/1127)  0.811   0.772         1     NaN
+                          ch1_EP: site modelled (Pro and i-1 not unobserved)     68            38    2597 42.6% (29/68) 43.8% (1138/2597)   0.77   0.578     0.902     NaN
+        ch1_EP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper     56            37    2584 30.4% (17/56) 43.7% (1128/2584)  0.471  0.0601    0.0558     NaN
+                  ch1_EP: cis | site present (unmodelled counted as not cis)     68            38    2597 14.7% (10/68)  27.4% (712/2597)  0.364  0.0598    0.0186     NaN
+ch1_EP: cis | site present (unmodelled counted as not cis) | drop Zhou paper     56            37    2584 17.9% (10/56)  27.6% (712/2584)  0.458   0.131     0.129     NaN
+                                                 ch1_EP: cis | site modelled     29            15    1138 34.5% (10/29)  62.6% (712/1138)  0.292   0.111   0.00312     NaN
+                               ch1_EP: cis | site modelled | drop Zhou paper     17            14    1128 58.8% (10/17)  63.1% (712/1128)  0.748   0.665     0.801     NaN
+                          k_P115: site modelled (Pro and i-1 not unobserved)     31            14    2045           NaN               NaN    NaN     NaN       NaN too few
+        k_P115: site modelled (Pro and i-1 not unobserved) | drop Zhou paper     19            13    2040           NaN               NaN    NaN     NaN       NaN too few
+                  k_P115: cis | site present (unmodelled counted as not cis)     31            14    2045  12.9% (4/31) 62.1% (1269/2045) 0.0838  0.0069  2.84e-08     NaN
+k_P115: cis | site present (unmodelled counted as not cis) | drop Zhou paper     19            13    2040  21.1% (4/19) 62.2% (1269/2040)   0.14    0.03  0.000436     NaN
+                                                 k_P115: cis | site modelled     31            14    2045  12.9% (4/31) 62.1% (1269/2045) 0.0838  0.0069  2.84e-08     NaN
+                               k_P115: cis | site modelled | drop Zhou paper     19            13    2040  21.1% (4/19) 62.2% (1269/2040)   0.14    0.03  0.000436     NaN

@@ -1,0 +1,12 @@
+model,term,OR,lo,hi,p
+y ~ has_hub + C(ycat) + res + l2_nv,has_hub,0.6686445486163458,0.3946151746267702,1.1329658896600048,0.13465968974488648
+y ~ has_hub + l_lab_prior_abem + C(ycat) + res + l2_nv,has_hub,0.6338438509332663,0.3731660786687455,1.0766199028571082,0.09163475493733464
+y ~ has_hub + l_lab_prior_abem + C(ycat) + res + l2_nv,l_lab_prior_abem,0.8840943143185668,0.8063908277945462,0.9692852766544117,0.008674998526843844
+y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv,has_hub,0.7104462764606321,0.40101441409031446,1.2586428168217991,0.24135501894049338
+y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv,l_lab_prior_abem,0.8934360711439322,0.8041889938631347,0.9925875873861515,0.035858838889488084
+y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv,l_team_max_em_na,0.9767366210041024,0.8908332501453988,1.0709236848251908,0.6162781635799482
+y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv,l_n_auth,0.881811014682064,0.6558771670634618,1.1855736175358773,0.4049440618017859
+y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv,l_lab_prior_abem,0.909735574897222,0.8185636270004056,1.011062291231234,0.07912635945711985
+y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv,l_team_max_em_na,0.9894787701982004,0.8928763909130001,1.0965327862144598,0.8400766369348027
+y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv,l_nonlast_max_abem_na,0.932366749634802,0.8105722677933739,1.0724617537077699,0.3268451436855643
+y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv,l_n_auth,0.856292865467586,0.6420147882721651,1.1420881338637525,0.29105518287868537

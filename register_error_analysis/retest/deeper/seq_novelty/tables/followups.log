@@ -1,0 +1,73 @@
+== (1) FR1/NT novelty with SEQRES N-terminal truncation as covariate
+any error  nn_diff_FR1  M2                           OR/SD 0.86 (0.77-0.95) p=0.00322 n=183/4036
+any error  nn_diff_FR1  M2+N-trunc                   OR/SD 0.89 (0.80-0.99) p=0.0306 n=183/4036
+any error  nn_diff_FR1  M2+N-trunc+prior same Ab     OR/SD 0.91 (0.82-1.02) p=0.109 n=183/4036
+any error  nn_any_NT    M2                           OR/SD 0.92 (0.83-1.02) p=0.11 n=183/4036
+any error  nn_any_NT    M2+N-trunc                   OR/SD 0.98 (0.87-1.10) p=0.766 n=183/4036
+any error  nn_any_NT    M2+N-trunc+prior same Ab     OR/SD 0.98 (0.87-1.11) p=0.758 n=183/4036
+any error  nn_diff_NT   M2                           OR/SD 0.93 (0.83-1.04) p=0.224 n=183/4036
+any error  nn_diff_NT   M2+N-trunc                   OR/SD 1.01 (0.89-1.14) p=0.908 n=183/4036
+any error  nn_diff_NT   M2+N-trunc+prior same Ab     OR/SD 0.99 (0.87-1.13) p=0.895 n=183/4036
+any error  nn_any_V     M2                           OR/SD 0.69 (0.59-0.80) p=1.2e-06 n=183/4036
+any error  nn_any_V     M2+N-trunc                   OR/SD 0.69 (0.59-0.80) p=9.67e-07 n=183/4036
+any error  nn_any_V     M2+N-trunc+prior same Ab     OR/SD 0.88 (0.71-1.09) p=0.233 n=183/4036
+any error  nn_diff_V    M2                           OR/SD 0.82 (0.69-0.97) p=0.0178 n=183/4036
+any error  nn_diff_V    M2+N-trunc                   OR/SD 0.83 (0.70-0.97) p=0.0239 n=183/4036
+any error  nn_diff_V    M2+N-trunc+prior same Ab     OR/SD 0.92 (0.77-1.09) p=0.327 n=183/4036
+any error  nn_diff_FR1  M3+N-trunc                   OR/SD 0.84 (0.73-0.96) p=0.0128 n=114/2317
+any error  nn_any_V     M3+N-trunc                   OR/SD 0.95 (0.76-1.17) p=0.609 n=114/2317
+mode A     nn_diff_FR1  M2                           OR/SD 0.84 (0.73-0.97) p=0.0159 n=59/4036
+mode A     nn_diff_FR1  M2+N-trunc                   OR/SD 0.93 (0.80-1.09) p=0.391 n=59/4036
+mode A     nn_diff_FR1  M2+N-trunc+prior same Ab     OR/SD 0.97 (0.83-1.13) p=0.675 n=59/4036
+mode A     nn_any_NT    M2                           OR/SD 0.97 (0.79-1.19) p=0.76 n=59/4036
+mode A     nn_any_NT    M2+N-trunc                   OR/SD 1.17 (0.93-1.45) p=0.176 n=59/4036
+mode A     nn_any_NT    M2+N-trunc+prior same Ab     OR/SD 1.19 (0.92-1.53) p=0.19 n=59/4036
+mode A     nn_diff_NT   M2                           OR/SD 1.00 (0.80-1.26) p=0.967 n=59/4036
+mode A     nn_diff_NT   M2+N-trunc                   OR/SD 1.24 (0.96-1.58) p=0.0951 n=59/4036
+mode A     nn_diff_NT   M2+N-trunc+prior same Ab     OR/SD 1.22 (0.93-1.60) p=0.155 n=59/4036
+mode A     nn_any_V     M2                           OR/SD 0.72 (0.56-0.94) p=0.0165 n=59/4036
+mode A     nn_any_V     M2+N-trunc                   OR/SD 0.72 (0.56-0.93) p=0.0115 n=59/4036
+mode A     nn_any_V     M2+N-trunc+prior same Ab     OR/SD 1.23 (0.84-1.81) p=0.294 n=59/4036
+mode A     nn_diff_V    M2                           OR/SD 0.94 (0.70-1.27) p=0.689 n=59/4036
+mode A     nn_diff_V    M2+N-trunc                   OR/SD 0.97 (0.72-1.30) p=0.833 n=59/4036
+mode A     nn_diff_V    M2+N-trunc+prior same Ab     OR/SD 1.16 (0.84-1.60) p=0.377 n=59/4036
+mode A     nn_diff_FR1  M3+N-trunc                   OR/SD 0.91 (0.73-1.15) p=0.441 n=40/2317
+mode A     nn_any_V     M3+N-trunc                   OR/SD 1.31 (0.87-1.98) p=0.201 n=40/2317
+
+== (2) prior structure of the same antibody: first-occurrence cases vs all flagged (incl. copied/artifact) vs clean
+first-occurrence       prior same Ab: cases 0.131 (n=183) clean 0.328 (n=4036) adj OR 0.32 p=6.29e-07
+any run incl. copied   prior same Ab: cases 0.259 (n=224) clean 0.328 (n=4036) adj OR 0.76 p=0.0834
+
+== (3) period composition (EM units; first-occurrence error vs clean, others excluded)
+          n  err_rate  prior_same_ab  nn_any_V  nn_diff_V  first_V  first_VJ  nonhm    vhh  nt_trunc  fr4_trunc  sars2
+half                                                                                                                  
+2018H1   51     0.020          0.490     0.930      0.841    0.000     0.078  0.039  0.020     0.098      0.000  0.000
+2018H2   73     0.027          0.356     0.890      0.834    0.027     0.164  0.123  0.151     0.164      0.027  0.000
+2019H1   62     0.081          0.387     0.894      0.846    0.000     0.032  0.129  0.113     0.032      0.016  0.000
+2019H2   68     0.029          0.397     0.920      0.889    0.000     0.118  0.088  0.118     0.059      0.000  0.000
+2020H1  112     0.036          0.420     0.899      0.856    0.009     0.098  0.116  0.116     0.116      0.009  0.205
+2020H2  187     0.086          0.278     0.896      0.873    0.005     0.080  0.134  0.107     0.102      0.005  0.481
+2021H1  309     0.074          0.246     0.897      0.874    0.006     0.045  0.126  0.133     0.068      0.006  0.524
+2021H2  286     0.042          0.283     0.903      0.875    0.003     0.028  0.154  0.140     0.073      0.003  0.448
+2022H1  411     0.029          0.221     0.895      0.876    0.002     0.027  0.100  0.114     0.090      0.019  0.516
+2022H2  255     0.031          0.376     0.909      0.876    0.008     0.012  0.137  0.129     0.090      0.004  0.349
+2023H1  249     0.040          0.361     0.906      0.869    0.016     0.036  0.165  0.205     0.016      0.000  0.201
+2023H2  319     0.072          0.254     0.884      0.861    0.003     0.022  0.107  0.119     0.075      0.013  0.163
+2024H1  376     0.035          0.330     0.896      0.866    0.008     0.037  0.231  0.223     0.125      0.021  0.207
+2024H2  371     0.030          0.423     0.912      0.868    0.011     0.030  0.164  0.146     0.075      0.016  0.164
+2025H1  439     0.039          0.319     0.904      0.871    0.000     0.016  0.096  0.114     0.091      0.009  0.096
+2025H2  415     0.027          0.287     0.879      0.850    0.002     0.012  0.142  0.118     0.060      0.002  0.094
+2026H1  155     0.058          0.361     0.921      0.898    0.006     0.013  0.084  0.084     0.084      0.006  0.123
+Spearman half-year error rate vs prior-same-Ab share SignificanceResult(statistic=np.float64(-0.34068627450980393), pvalue=np.float64(0.18085079957050132))
+Spearman half-year error rate vs mean nn_diff_V SignificanceResult(statistic=np.float64(0.24754901960784317), pvalue=np.float64(0.33808764785888096))
+interaction nn_any_V x 2020-21: OR(f) outside peak 0.72 p=0.00045; ratio in peak 0.87 p=0.0248
+interaction nn_diff_V x 2020-21: OR(f) outside peak 0.82 p=0.0496; ratio in peak 0.97 p=0.854
+interaction psa x 2020-21: OR(f) outside peak 0.65 p=0.000163; ratio in peak 0.62 p=0.109
+
+== (4) V and J gene heterogeneity of first-occurrence error rate (EM units, human/mouse non-nanobody, genes with >=20 units)
+q_vg H: 23 genes, chi2 p=0.00102; top: IGHV4-34 16.1% (n=31), IGHV5-51 10.7% (n=28), IGHV3-53 9.5% (n=42)
+q_vg K: 11 genes, chi2 p=0.284; top: IGKV1-9 7.7% (n=26), IGKV1-12 5.1% (n=39), IGKV10-96 4.2% (n=24)
+q_vg L: 8 genes, chi2 p=0.0131; top: IGLV1-44 18.5% (n=27), IGLV1-47 14.3% (n=21), IGLV3-1 7.4% (n=27)
+q_jg H: 6 genes, chi2 p=0.398; top: IGHJ1 5.8% (n=69), IGHJ2 4.9% (n=265), IGHJ3 4.6% (n=195)
+q_jg K: 5 genes, chi2 p=0.401; top: IGKJ5 5.2% (n=172), IGKJ1 3.0% (n=561), IGKJ4 2.8% (n=248)
+q_jg L: 4 genes, chi2 p=0.967; top: IGLJ7 7.1% (n=28), IGLJ3 5.4% (n=92), IGLJ2 5.0% (n=201)

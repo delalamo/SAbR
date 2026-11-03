@@ -1,0 +1,61 @@
+set,analysis,n_err,n_ctrl,err,ctrl,OR,p,note,n_err_papers,n_err_entries,top_paper_share,p_fisher,OR_max,p_max,n_ctrl_papers,err_any_cis,ctrl_any_cis,p_fisher_anycis,n_strata,n_informative_strata
+K_const,"investigator model (chain, year bin + res, cluster=paper)",29.0,912.0,20.7% (6/29),80.8% (737/912),0.0392770145315104,0.0013228125967313768,,,,,,,,,,,,,
+K_const,error clusters,,,,,,,,10.0,18.0,0.5862068965517241,,,,,,,,,
+K_const,drop Zhou Q. 2021 Cell Res paper,12.0,910.0,50.0% (6/12),81.0% (737/910),0.1376975156720701,0.02517982580572243,,,,,0.01616977992479619,,,,,,,,
+K_const,leave-one-error-paper-out (worst case),,,,,,,,,,,,0.1376975156720701,0.02517982580572243,,,,,,
+K_const,"paper-level means (one vote per paper), Mann-Whitney",,,0.400,0.765,,0.011236335672095376,,10.0,,,,,,342.0,4/10,270/342,0.00974003156537988,,
+K_const,paper-weighted GLM (1 vote per paper x status),,,,,0.1103719854682641,0.007028585457489108,,,,,,,,,,,,,
+K_const,+sars2,29.0,,,,0.038373958487596914,0.0020376883758054035,,,,,,,,,,,,,
+K_const,+chain_q,29.0,,,,0.05267939378120118,0.0009286681662970669,,,,,,,,,,,,,
+K_const,+C(irm),29.0,,,,0.04272268618103821,0.0007312664131241428,,,,,,,,,,,,,
+K_const,+sars2+chain_q+C(irm),29.0,,,,0.05268341351225965,0.001369129745328109,,,,,,,,,,,,,
+K_const,within-paper conditional logit,18.0,4.0,0.056,0.500,,,,,,,,,,,,,,2.0,0.0
+K_const,within-entry conditional logit,0.0,0.0,nan,nan,,,,,,,,,,,,,,0.0,0.0
+H_const,"investigator model (chain, year bin + res, cluster=paper)",31.0,1173.0,41.9% (13/31),72.3% (848/1173),0.24153862659214395,0.0543799512963218,,,,,,,,,,,,,
+H_const,error clusters,,,,,,,,18.0,22.0,0.3870967741935484,,,,,,,,,
+H_const,drop Zhou Q. 2021 Cell Res paper,19.0,1163.0,68.4% (13/19),72.9% (848/1163),0.7515196369301459,0.6283270075209884,,,,,0.6124075771162623,,,,,,,,
+H_const,leave-one-error-paper-out (worst case),,,,,,,,,,,,0.7515196369301459,0.6283270075209884,,,,,,
+H_const,"paper-level means (one vote per paper), Mann-Whitney",,,0.611,0.709,,0.4380841739860939,,18.0,,,,,,400.0,11/18,294/400,0.27890211982156454,,
+H_const,paper-weighted GLM (1 vote per paper x status),,,,,0.5223538913838884,0.2073826676774181,,,,,,,,,,,,,
+H_const,+sars2,31.0,,,,0.23371621747662918,0.03466241839857906,,,,,,,,,,,,,
+H_const,+chain_q,31.0,,,,0.37173248357849764,0.11421535959868884,,,,,,,,,,,,,
+H_const,+C(irm),31.0,,,,0.2726243880311481,0.06279632764906883,,,,,,,,,,,,,
+H_const,+sars2+chain_q+C(irm),31.0,,,,0.2970039854800333,0.023060520464289323,,,,,,,,,,,,,
+H_const,within-paper conditional logit,24.0,38.0,0.333,0.632,6.539919473468591e-05,0.855051024450286,,,,,,,,,,,,11.0,2.0
+H_const,within-entry conditional logit,8.0,12.0,0.625,0.750,0.0001323677740451301,0.9181812471875725,,,,,,,,,,,,6.0,1.0
+all_const,"investigator model (chain, year bin + res, cluster=paper)",60.0,2327.0,31.7% (19/60),74.0% (1723/2327),0.11225169837214374,0.001858115345131809,,,,,,,,,,,,,
+all_const,error clusters,,,,,,,,23.0,31.0,0.48333333333333334,,,,,,,,,
+all_const,drop Zhou Q. 2021 Cell Res paper,31.0,2312.0,61.3% (19/31),74.5% (1723/2312),0.3762661439028143,0.05369882977890256,,,,,0.09987624645194805,,,,,,,,
+all_const,leave-one-error-paper-out (worst case),,,,,,,,,,,,0.3762661439028143,0.05369882977890256,,,,,,
+all_const,"paper-level means (one vote per paper), Mann-Whitney",,,0.543,0.722,,0.11300709178660043,,23.0,,,,,,411.0,13/23,334/411,0.012424965888562517,,
+all_const,paper-weighted GLM (1 vote per paper x status),,,,,0.3490113502623521,0.017083257870427988,,,,,,,,,,,,,
+all_const,+sars2,60.0,,,,0.11524434219966832,0.0009534709755645233,,,,,,,,,,,,,
+all_const,+chain_q,60.0,,,,0.16270734079516505,0.0011191152665805954,,,,,,,,,,,,,
+all_const,+C(irm),60.0,,,,0.1257842236116825,0.0015586035825864097,,,,,,,,,,,,,
+all_const,+sars2+chain_q+C(irm),60.0,,,,0.1652947455108658,0.00033143931280790333,,,,,,,,,,,,,
+all_const,within-paper conditional logit,56.0,91.0,0.321,0.703,0.3869358059712733,0.2519328041964285,,,,,,,,,,,,21.0,7.0
+all_const,within-entry conditional logit,27.0,50.0,0.519,0.680,0.6188636159208277,0.551329118044375,,,,,,,,,,,,21.0,7.0
+K_Pro115_noCDRmode(inv),"investigator model (chain, year bin + res, cluster=paper)",24.0,2045.0,12.5% (3/24),62.1% (1269/2045),0.07937375724521499,0.02561885313430713,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),error clusters,,,,,,,,8.0,15.0,0.5,,,,,,,,,
+K_Pro115_noCDRmode(inv),drop Zhou Q. 2021 Cell Res paper,12.0,2040.0,25.0% (3/12),62.2% (1269/2040),0.15766822597407637,0.10966148101543076,,,,,0.013431143082485214,,,,,,,,
+K_Pro115_noCDRmode(inv),leave-one-error-paper-out (worst case),,,,,,,,,,,,0.15766822597407637,0.10966148101543076,,,,,,
+K_Pro115_noCDRmode(inv),"paper-level means (one vote per paper), Mann-Whitney",,,0.125,0.594,,0.005855005616859612,,8.0,,,,,,635.0,1/8,411/635,0.004029651922537144,,
+K_Pro115_noCDRmode(inv),paper-weighted GLM (1 vote per paper x status),,,,,0.08581944588715179,0.033073565886266386,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),+sars2,24.0,,,,0.08437417318885766,0.025831163149264053,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),+chain_q,24.0,,,,0.09057461461508907,0.030087248180672436,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),+C(irm),24.0,,,,0.0868504856529026,0.03513047361484336,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),+sars2+chain_q+C(irm),24.0,,,,0.09026690210229064,0.035318608110582565,,,,,,,,,,,,,
+K_Pro115_noCDRmode(inv),within-paper conditional logit,18.0,18.0,0.167,0.389,5.5780892749631515e-05,0.8837132357056492,,,,,,,,,,,,4.0,1.0
+K_Pro115_noCDRmode(inv),within-entry conditional logit,0.0,0.0,nan,nan,,,,,,,,,,,,,,0.0,0.0
+K_Pro115_noCDR3FR4mode,"investigator model (chain, year bin + res, cluster=paper)",31.0,2045.0,12.9% (4/31),62.1% (1269/2045),0.08383969190676785,0.006897881711002213,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,error clusters,,,,,,,,14.0,22.0,0.3870967741935484,,,,,,,,,
+K_Pro115_noCDR3FR4mode,drop Zhou Q. 2021 Cell Res paper,19.0,2040.0,21.1% (4/19),62.2% (1269/2040),0.14027114614336345,0.030038877042381052,,,,,0.00043584931077264035,,,,,,,,
+K_Pro115_noCDR3FR4mode,leave-one-error-paper-out (worst case),,,,,,,,,,,,0.14027114614336345,0.030038877042381052,,,,,,
+K_Pro115_noCDR3FR4mode,"paper-level means (one vote per paper), Mann-Whitney",,,0.143,0.594,,0.0004919164385209713,,14.0,,,,,,635.0,2/14,411/635,0.0001851095737323722,,
+K_Pro115_noCDR3FR4mode,paper-weighted GLM (1 vote per paper x status),,,,,0.10464527301933475,0.007282994864341732,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,+sars2,31.0,,,,0.0861090982293549,0.006162750951464304,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,+chain_q,31.0,,,,0.08961806582435256,0.006879528633135348,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,+C(irm),31.0,,,,0.09076740132403599,0.010605053979100028,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,+sars2+chain_q+C(irm),31.0,,,,0.09197830477477702,0.008635506808802113,,,,,,,,,,,,,
+K_Pro115_noCDR3FR4mode,within-paper conditional logit,23.0,24.0,0.130,0.333,7.220985188036262e-05,0.8562487196035669,,,,,,,,,,,,8.0,2.0
+K_Pro115_noCDR3FR4mode,within-entry conditional logit,1.0,1.0,0.000,0.000,,,,,,,,,,,,,,1.0,0.0

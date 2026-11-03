@@ -1,0 +1,52 @@
+table,test,error_value,control_value,OR,lo,hi,p,q_lens
+scan_tests,T1 atypical FR3 length -> C_FR3,41.7% (10/24),1.46% (59/4036),52.1240564620295,19.26295886325257,141.04361024410582,7.002108059399585e-15,1.785537555146894e-13
+scan_tests,T2 FR3 shorter than norm -> C_FR3,37.5% (9/24),0.87% (35/4036),53.17983663762479,19.61945606127193,144.14747360845615,5.6975597083202e-15,1.785537555146894e-13
+scan_tests,T1b atypical FR3 length -> B_CDR2FR3,36.0% (9/25),1.46% (59/4036),44.14695201207287,14.539087397745902,134.0492232172993,2.3307343852469575e-11,2.377349072951897e-10
+scan_tests,T3 atypical FR1 gap (IMGT 11-26) -> F_CDR1,20.0% (2/10),0.39% (14/3585),65.42713946166941,7.702773974262858,555.7362311862971,0.0001279607367376,0.0008157496967022
+scan_tests,T4 atypical FR1 gap -> F_CDR1 runs with undefined shift,66.7% (2/3),0.26% (6/2273),1121.9015757230516,19.239256330739387,65421.6111045231,0.0007107817231374,0.0040277630977786
+scan_tests,"T4b atypical FR1 gap -> A_FR1Nterm (Fisher exact, unadjusted)",0.0% (0/53),0.35% (14/4036),0.0,,,1.0,1.0
+scan_tests,T5 rabbit-like heavy N-terminus -> A_FR1Nterm,3.8% (2/53),0.64% (26/4036),5.934014596075692,1.1550716367821303,30.48514750525481,0.0329561718161047,0.10504779766383372
+scan_tests,T6 earlier near-identical V (90-99.9%) carries a A_FR1Nterm run -> A_FR1Nterm,7.5% (4/53),5.82% (235/4036),1.814176490341305,0.4429206586791122,7.43075824894303,0.4076947377885692,0.7425868438291795
+scan_tests,T6 earlier near-identical V (90-99.9%) carries a B_CDR2FR3 run -> B_CDR2FR3,8.0% (2/25),0.47% (19/4036),16.21072652850561,1.97045815569004,133.36373260358292,0.0095759880035041,0.037567337552208396
+scan_tests,"T6 earlier near-identical V (90-99.9%) carries a C_FR3 run -> C_FR3 (Fisher exact, unadjusted)",0.0% (0/24),3.20% (129/4036),0.0,,,1.0,1.0
+scan_tests,"T6 earlier near-identical V (90-99.9%) carries a F_CDR1 run -> F_CDR1 (Fisher exact, unadjusted)",0.0% (0/10),0.20% (7/3585),0.0,,,1.0,1.0
+scan_tests,"T1-excl atypical FR3 length -> C_FR3, artifact-explained units removed",36.4% (8/22),1.46% (59/4036),40.53935642885314,13.729764610508925,119.69902371142533,2.0556176973079547e-11,2.377349072951897e-10
+scan_tests,"T2-excl FR3 shorter than norm -> C_FR3, artifact-explained units removed",31.8% (7/22),0.87% (35/4036),40.06141524351221,13.301506851023914,120.65678041503772,5.3664119937857635e-11,4.5614501947178993e-10
+scan_tests,T7 indel at the CDR2/FR3 boundary (IMGT 66-75) -> B_CDR2FR3,28.0% (7/25),0.15% (6/4036),221.84889349225688,54.34264911915994,905.6778118383268,5.203690685895322e-14,8.846274166022048e-13
+scan_tests,"T7b indel at IMGT 66-75 -> C_FR3 (location control) (Fisher exact, unadjusted)",0.0% (0/22),0.15% (6/4036),0.0,,,1.0,1.0
+scan_tests,T7c indel at IMGT 66-75 -> A_FR1Nterm (location control),1.9% (1/53),0.15% (6/4036),9.983093425093982,0.8601600416610408,115.86466414052286,0.0658369832033722,0.1975109496101166
+rabbit_tests,rabbit V region -> any first-occurrence error,5.3% (7/133),1.57% (55/3505),3.2598074514697912,1.3858025811481058,7.66800752518031,0.006777723715424,0.03142399177151127
+rabbit_tests,rabbit V region -> A_FR1Nterm,7.0% (3/43),1.57% (55/3505),4.555743004928372,1.1434027471462034,18.15177930852036,0.0315580637144839,0.10504779766383372
+rabbit_tests,rabbit V region -> F_CDR1,12.5% (1/8),1.57% (55/3505),7.360482918394338,0.7132492951822497,75.95760578793363,0.0936990355378973,0.265480600690709
+rabbit_tests,rabbit V region -> B_CDR2FR3,11.1% (2/18),1.57% (55/3505),8.0885292965653,1.718319759569054,38.07458176341011,0.0081717227723351,0.034729821782424175
+rabbit_tests,rabbit V region -> C_FR3,9.5% (2/21),1.57% (55/3505),6.46577950871291,1.294248732501244,32.30159984356143,0.0229518580421322,0.08361034001062444
+casefile_tests,"site map fit, percentile within V domain",0.31 (n=29),0.51 (n=44),-0.2003065858226722,,,3.8913489873241403e-08,2.835125690764731e-07
+casefile_tests,unbuilt residues within the window +-5,31% (9/29),24% (11/45),1.3909090909090909,,,0.5969560286757934,0.8954340430136902
+casefile_tests,A: SEQRES N-terminal residues not built,38% (3/8),33% (5/15),1.2,,,1.0,1.0
+casefile_tests,indel / atypical length in the run region (SEQRES-based),34% (10/29),22% (10/45),1.8421052631578947,,,0.2897767359529966,0.5627496946006404
+casefile_tests,run explained by a high-res-confirmed gap-placement artifact,7% (2/29),0% (0/45),inf,,,0.1503146982599037,0.35272120161224696
+casefile_tests,"clashes per residue, site minus rest of V",-0.00 (n=29),-0.04 (n=44),0.0372691334598355,,,0.1106641321392562,0.29704582837379295
+casefile_tests,B-factor z of the site within the V domain,0.66 (n=29),0.00 (n=44),0.6615248153152165,,,0.0010155612708092,0.00517936248112692
+casefile_tests,"local resolution, site minus V domain (A)",0.00 (n=11),0.01 (n=19),-0.0051303571428573,,,0.7306268857145148,0.980578188722112
+casefile_tests,site contacts a non-antibody chain,41% (12/29),41% (18/44),1.0196078431372548,,,1.0,1.0
+casefile_tests,site contacts the partner chain,52% (15/29),34% (15/44),2.071428571428572,,,0.152154243832734,0.35272120161224696
+casefile_tests,V domain contacts a non-antibody chain,93% (27/29),89% (39/44),1.7307692307692308,,,0.6955629075651737,0.958748872589834
+casefile_tests,"antibody template named (paper or PDB record), full text available",71% (10/14),67% (22/33),1.25,,,1.0,1.0
+casefile_tests,a different antibody named as template,48% (14/29),40% (18/45),1.4,,,0.6312029812960659,0.9197529156028389
+casefile_tests,named different-antibody template differs in length at the site,24% (7/29),18% (8/45),1.4715909090909092,,,0.5615178436306301,0.8836206654893055
+casefile_tests,methods mention: homology_tool,21% (3/14),15% (5/33),1.5272727272727271,,,0.6794839060840322,0.958748872589834
+casefile_tests,methods mention: alphafold,7% (1/14),24% (8/33),0.2403846153846154,,,0.2444977786266471,0.49877546839836007
+casefile_tests,methods mention: rigid_body,7% (1/14),27% (9/33),0.2051282051282051,,,0.2415780976091939,0.49877546839836007
+casefile_tests,methods mention: mutated,0% (0/14),3% (1/33),0.0,,,1.0,1.0
+casefile_tests,methods mention: isolde,14% (2/14),6% (2/33),2.583333333333333,,,0.5717545482577859,0.8836206654893055
+casefile_tests,methods mention: rosetta,7% (1/14),12% (4/33),0.5576923076923077,,,1.0,1.0
+casefile_tests,methods mention: local_refine,50% (7/14),52% (17/33),0.9411764705882352,,,1.0,1.0
+casefile_tests,methods mention: fv_only,21% (3/14),24% (8/33),0.8522727272727273,,,1.0,1.0
+casefile_tests,methods mention: poor_density,7% (1/14),6% (2/33),1.1923076923076923,,,1.0,1.0
+casefile_tests,methods mention: icosahedral,29% (4/14),9% (3/33),4.0,,,0.1732045057472712,0.3840621649178622
+casefile_tests,methods mention: own_crystal,0% (0/14),6% (2/33),0.0,,,1.0,1.0
+casefile_tests,same V region solved before at <3 A,14% (4/29),20% (9/45),0.64,,,0.549437179294033,0.8836206654893055
+casefile_tests,>=5 other-lab same-antigen entries in the scan within +-6 months,21% (6/29),31% (14/45),0.577639751552795,,,0.4243583750734273,0.746285418232579
+casefile_tests,first antibody structure of the antigen,48% (14/29),30% (13/43),2.1538461538461537,,,0.1422860770847602,0.35272120161224696
+casefile_tests,germline identity,0.90 (n=29),0.90 (n=45),-0.0042147293700089,,,0.5062369790153829,0.8606028643261509
+casefile_tests,identity to nearest earlier V (different antibody),0.86 (n=29),0.87 (n=45),-0.0107212662696838,,,0.2979263089062214,0.5627496946006404

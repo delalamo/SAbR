@@ -1,0 +1,24 @@
+<=2019 papers 107 | niche papers {'mean': 0.119, 'size': 59.0, 'sum': 7.0} | contested {'mean': 0.083, 'size': 48.0, 'sum': 4.0} | adj OR 0.29 [0.03, 2.91] p 0.2931
+2020-21 papers 189 | niche papers {'mean': 0.213, 'size': 89.0, 'sum': 19.0} | contested {'mean': 0.04, 'size': 100.0, 'sum': 4.0} | adj OR 8.31 [2.24, 30.9] p 0.0016
+2022+ papers 735 | niche papers {'mean': 0.1, 'size': 412.0, 'sum': 41.0} | contested {'mean': 0.077, 'size': 323.0, 'sum': 25.0} | adj OR 1.06 [0.61, 1.84] p 0.8307
+                                           lab  n_err                         cls                                                    antigen                                                       desc         dep
+paper                                                                                                                                                                                                              
+10.1038/s41467-020-18250-w            Wang, X.      1                viral capsid                                         Genome polyprotein                                                        VP2  2020-05-28
+10.1126/science.abe7565            Melcher, K.      3                      enzyme  5'-AMP-activated protein kinase catalytic subunit alpha-1  5'-AMP-activated protein kinase catalytic subunit alpha-1  2020-07-20
+10.1038/s41541-020-00236-w            Li, S.W.      1                viral capsid                                    Major capsid protein L1                                    Major capsid protein L1  2020-07-29
+10.7554/elife.61056           Hafenstein, S.L.      2                viral capsid                                         Capsid protein VP1                                         Capsid protein VP1  2020-09-08
+10.1371/journal.ppat.1009507           Lou, Z.      4                viral capsid                                         Genome polyprotein                                             O/TIBET/99 VP2  2020-09-19
+10.3389/fimmu.2021.662909          Kwong, P.D.      1  viral surface glycoprotein                                              Hemagglutinin  Fusion protein of Hemagglutinin and Envelope glycoprotein  2020-10-04
+10.7554/elife.62611                  Frost, A.      2   receptor/membrane protein                      ER membrane protein complex subunit 1                      ER membrane protein complex subunit 1  2020-11-19
+10.1038/s41467-021-27950-w        Grimes, J.M.      2                      enzyme              RNA-directed RNA polymerase catalytic subunit              RNA-directed RNA polymerase catalytic subunit  2021-02-16
+10.1126/sciadv.abh3355            Newstead, S.      1         channel/transporter                          Solute carrier family 15 member 2                          Solute carrier family 15 member 2  2021-03-01
+10.1038/s41421-021-00264-3            Feng, R.      2                viral capsid                                         Genome polyprotein                                                        VP1  2021-03-07
+10.1073/pnas.2025452118       Hafenstein, S.L.      1                viral capsid                                           Capsid protein 2                                           Capsid protein 2  2021-03-18
+10.1107/s2059798321007816          Frank, G.A.      1                       toxin                                         Protective antigen                                   Protective antigen PA-63  2021-04-14
+10.1038/s41586-021-04022-z          Gouaux, E.      1         channel/transporter                                   Glycine receptor alpha 1                                   Glycine receptor alpha 1  2021-04-29
+10.1172/jci151676                  Zanotti, G.      1                       toxin                                              Tetanus toxin                                              Tetanus toxin  2021-05-07
+10.1128/jvi.01308-21                   Lou, Z.      2                viral capsid                                RNA-directed RNA polymerase                                         Capsid protein VP0  2021-07-20
+10.1038/s41586-022-04534-2          Zimmer, J.      2                      enzyme                                                        NaN                                        Hyaluronan synthase  2021-11-02
+10.1038/s41467-023-40821-w          Miller, M.      1   receptor/membrane protein      HLA class I histocompatibility antigen, A alpha chain      HLA class I histocompatibility antigen, A alpha chain  2021-11-12
+10.1126/science.abn9884           Lander, G.C.      1  viral surface glycoprotein                                         Genome polyprotein                                   Envelope glycoprotein E2  2021-12-14
+10.7554/elife.74589             Manatschal, C.      2         channel/transporter           Natural resistance-associated macrophage protein                          Divalent metal cation transporter  2021-12-14

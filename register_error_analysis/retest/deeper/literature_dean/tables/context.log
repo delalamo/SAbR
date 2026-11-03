@@ -1,0 +1,69 @@
+1. Canonical pull (apparent length more common than true) by starting model / period / fit:
+                           n  obs   exp
+irm                                    
+AlphaFold model            1    0   0.0
+experimental (PDB) model  22   10   7.5
+none recorded             83   45  28.0
+other in-silico model      1    1   1.0
+          n  obs   exp
+period                
+2020-21  31   17  10.0
+<=2019   15    8   5.5
+>=2022   61   31  21.0
+                  n  obs   exp
+fit                           
+ab initio         2    1   1.0
+flexible fit      2    0   0.0
+not recorded     20    8   6.0
+other            71   39  24.0
+rigid body only  12    8   5.5
+2. EM, released <=2021-07-31: chains passing ABB2-style filter (<=3.5 A, no internal V-domain gap): error 0.591 (75/127) vs clean 0.345 (650/1886); OR 2.74 p=5.5e-08
+   -> error UNITS with >=1 passing error chain: 17 of 43; entries: 21
+2. X-ray, released <=2021-07-31: chains passing ABB2-style filter (<=3.5 A, no internal V-domain gap): error 0.528 (19/36) vs clean 0.653 (2150/3294); OR 0.59 p=0.16
+   -> error UNITS with >=1 passing error chain: 8 of 19; entries: 8
+   internal V-domain gap present: EM error 0.195 (n=399) vs clean 0.044 (n=9980)
+   N-terminus not modelled (first ANARCI IMGT pos >2): EM error 0.338 vs clean 0.092
+   internal V-domain gap present: X-ray error 0.283 (n=60) vs clean 0.100 (n=5250)
+   N-terminus not modelled (first ANARCI IMGT pos >2): X-ray error 0.267 vs clean 0.074
+
+3. PDB-wide: new unique antibody V domains per first-release year; share with no X-ray <=3.0 A structure ever; share seen in any EM entry
+            new_V  frac_no_xray30  frac_any_em  frac_lambda  frac_heavy
+first_year                                                             
+2010          140           0.079        0.079        0.136       0.529
+2011          136           0.147        0.103        0.118       0.551
+2012          179           0.117        0.067        0.168       0.503
+2013          267           0.112        0.082        0.101       0.551
+2014          289           0.176        0.104        0.118       0.564
+2015          356           0.230        0.115        0.169       0.545
+2016          359           0.240        0.134        0.078       0.568
+2017          441           0.163        0.111        0.122       0.565
+2018          453           0.192        0.181        0.110       0.547
+2019          573           0.274        0.218        0.124       0.572
+2020          686           0.327        0.316        0.108       0.569
+2021         1109           0.459        0.439        0.108       0.570
+2022         1004           0.539        0.518        0.134       0.585
+2023         1076           0.502        0.469        0.122       0.576
+2024         1104           0.602        0.518        0.098       0.578
+2025         1295           0.694        0.663        0.106       0.575
+
+   study set (3-5 A antibody V chains) by deposition year
+       chains  frac_em  frac_vhh  frac_sars2  mean_vid  err_rate
+dyear                                                           
+2012      138    0.000     0.000       0.000     0.888     0.000
+2013      146    0.000     0.055       0.000     0.877     0.000
+2014      302    0.000     0.026       0.000     0.883     0.003
+2015      254    0.047     0.055       0.000     0.844     0.020
+2016      347    0.133     0.081       0.000     0.881     0.012
+2017      521    0.228     0.107       0.000     0.880     0.010
+2018      767    0.592     0.053       0.000     0.829     0.014
+2019      704    0.493     0.111       0.000     0.847     0.027
+2020     1345    0.640     0.074       0.359     0.880     0.064
+2021     2010    0.761     0.116       0.405     0.881     0.033
+2022     2329    0.819     0.103       0.419     0.886     0.018
+2023     1838    0.748     0.119       0.152     0.861     0.022
+2024     2070    0.834     0.222       0.190     0.855     0.038
+2025     1971    0.890     0.097       0.095     0.859     0.034
+4. X-ray<=3.0 A, all years human: V genes covered 104; unique V domains per gene median 22, IQR 8-57, top: {'IGHV3-23': 647, 'IGKV1-39': 283, 'IGHV3-66': 256, 'IGKV3-20': 183, 'IGHV1-69': 178}
+4. X-ray<=3.0 A, all years mouse: V genes covered 244; unique V domains per gene median 5, IQR 2-11, top: {'IGKV1-117': 91, 'IGKV1-110': 65, 'IGKV10-96': 54, 'IGLV1': 48, 'IGHV14-3': 45}
+4. all PDB V domains human: V genes covered 107; unique V domains per gene median 36, IQR 12-106, top: {'IGHV3-23': 1052, 'IGKV1-39': 516, 'IGHV3-66': 447, 'IGKV3-20': 355, 'IGHV1-69': 331}
+4. all PDB V domains mouse: V genes covered 262; unique V domains per gene median 8, IQR 3-16, top: {'IGKV1-117': 109, 'IGKV10-96': 85, 'IGKV1-110': 73, 'IGHV14-3': 61, 'IGLV1': 57}

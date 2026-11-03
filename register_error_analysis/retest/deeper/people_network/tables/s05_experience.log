@@ -1,0 +1,135 @@
+                                                             exposure                   term   unit  err_value  control_value      OR      lo      hi       p     n  n_err  q_primary
+0                           last author: prior PDB entries (log2 1+n)        l_lab_prior_all  study    32.0000        41.0000  0.9750  0.9044  1.0510  0.5082  1302    127     0.5082
+1                           last author: prior PDB entries (log2 1+n)        l_lab_prior_all  entry    29.0000        48.0000  0.9544  0.8914  1.0217  0.1794  2752    178     0.2153
+6                                  last author: prior cryo-EM entries         l_lab_prior_em  study    10.0000         8.0000  0.9425  0.8693  1.0218  0.1507  1302    127     0.1871
+7                                  last author: prior cryo-EM entries         l_lab_prior_em  entry    11.0000        11.0000  0.9350  0.8663  1.0091  0.0842  2752    178     0.1123
+12                                last author: prior antibody entries         l_lab_prior_ab  study     4.0000         6.0000  0.9049  0.8336  0.9824  0.0171  1302    127     0.0324
+13                                last author: prior antibody entries         l_lab_prior_ab  entry     3.0000         7.0000  0.8739  0.8071  0.9463  0.0009  2752    178     0.0062
+18                        last author: prior antibody cryo-EM entries       l_lab_prior_abem  study     1.0000         2.0000  0.8894  0.8113  0.9750  0.0124  1302    127     0.0280
+19                        last author: prior antibody cryo-EM entries       l_lab_prior_abem  entry     1.0000         3.0000  0.8513  0.7733  0.9373  0.0010  2752    178     0.0062
+24                                   last author: first cryo-EM entry           first_em_lab  study     0.2598         0.2230  1.3122  0.8501  2.0257  0.2199  1302    127     0.2554
+25                                   last author: first cryo-EM entry           first_em_lab  entry     0.2303         0.1845  1.2455  0.7826  1.9821  0.3544  2752    178     0.3753
+30                                  last author: first antibody entry           first_ab_lab  study     0.2835         0.2502  1.2217  0.8029  1.8591  0.3498  1302    127     0.3753
+31                                  last author: first antibody entry           first_ab_lab  entry     0.2753         0.2385  1.1816  0.7479  1.8666  0.4745  2752    178     0.4881
+36                          last author: first antibody cryo-EM entry         first_abem_lab  study     0.4646         0.3643  1.6240  1.1060  2.3844  0.0133  1302    127     0.0283
+37                          last author: first antibody cryo-EM entry         first_abem_lab  entry     0.4719         0.3380  1.6950  1.1205  2.5639  0.0125  2752    178     0.0280
+42                         most experienced author: prior PDB entries      l_team_max_all_na  study    40.0000        48.0000  0.9441  0.8858  1.0062  0.0768  1302    127     0.1064
+43                         most experienced author: prior PDB entries      l_team_max_all_na  entry    31.5000        59.0000  0.9169  0.8577  0.9801  0.0108  2752    178     0.0280
+48                     most experienced author: prior cryo-EM entries       l_team_max_em_na  study    10.0000        13.0000  0.9190  0.8505  0.9929  0.0324  1302    127     0.0530
+49                     most experienced author: prior cryo-EM entries       l_team_max_em_na  entry     9.0000        17.0000  0.8861  0.8218  0.9555  0.0017  2752    178     0.0075
+54                    most experienced author: prior antibody entries       l_team_max_ab_na  study     4.0000        10.0000  0.9017  0.8361  0.9726  0.0074  1302    127     0.0225
+55                    most experienced author: prior antibody entries       l_team_max_ab_na  entry     3.0000        11.0000  0.8574  0.7883  0.9326  0.0003  2752    178     0.0033
+60            most experienced author: prior antibody cryo-EM entries     l_team_max_abem_na  study     2.0000         4.0000  0.8866  0.8123  0.9677  0.0070  1302    127     0.0225
+61            most experienced author: prior antibody cryo-EM entries     l_team_max_abem_na  entry     0.5000         5.0000  0.8278  0.7509  0.9125  0.0001  2752    178     0.0026
+66                               no author with a prior cryo-EM entry       first_em_team_na  study     0.2992         0.2153  1.7651  1.1638  2.6772  0.0075  1302    127     0.0225
+67                               no author with a prior cryo-EM entry       first_em_team_na  entry     0.2921         0.1985  1.7121  1.0967  2.6728  0.0180  2752    178     0.0324
+72                      no author with a prior antibody cryo-EM entry     first_abem_team_na  study     0.4724         0.3319  1.9921  1.3632  2.9113  0.0004  1302    127     0.0033
+73                      no author with a prior antibody cryo-EM entry     first_abem_team_na  entry     0.5000         0.3166  2.2182  1.4728  3.3407  0.0001  2752    178     0.0026
+78            most experienced non-last author: prior cryo-EM entries    l_nonlast_max_em_na  study     1.0000         4.0000  0.9179  0.8407  1.0022  0.0559  1302    127     0.0838
+79            most experienced non-last author: prior cryo-EM entries    l_nonlast_max_em_na  entry     1.0000         4.0000  0.8866  0.8074  0.9734  0.0116  2752    178     0.0280
+84   most experienced non-last author: prior antibody cryo-EM entries  l_nonlast_max_abem_na  study     0.0000         1.0000  0.8755  0.7826  0.9795  0.0202  1302    127     0.0346
+85   most experienced non-last author: prior antibody cryo-EM entries  l_nonlast_max_abem_na  entry     0.0000         1.0000  0.8146  0.7193  0.9226  0.0012  2752    178     0.0064
+90                    authors with any prior cryo-EM entry (log2 1+n)       l_n_em_people_na  study     1.0000         2.0000  0.8015  0.6363  1.0096  0.0603  1302    127     0.0868
+91                    authors with any prior cryo-EM entry (log2 1+n)       l_n_em_people_na  entry     1.0000         2.0000  0.7356  0.5746  0.9416  0.0148  2752    178     0.0296
+96       multi-lab cryo-EM hub person (core-staff proxy) on the entry                has_hub  study     0.1417         0.2085  0.6686  0.3946  1.1330  0.1347  1302    127     0.1731
+97       multi-lab cryo-EM hub person (core-staff proxy) on the entry                has_hub  entry     0.1011         0.2005  0.4196  0.2358  0.7467  0.0031  2752    178     0.0126
+102                                          audit authors (log2 1+n)               l_n_auth  study     3.0000         3.0000  0.8422  0.6374  1.1129  0.2272  1302    127     0.2556
+103                                          audit authors (log2 1+n)               l_n_auth  entry     3.0000         3.0000  0.7225  0.5238  0.9965  0.0475  2752    178     0.0744
+
+Sensitivities (study level):
+unit                                                              study, 2020-21  study, 2022+  study, last-author name not collision-prone  study, non-SARS-CoV-2
+exposure                                                                                                                                                          
+audit authors (log2 1+n)                                                    0.74          0.68                                         0.97                   0.96
+authors with any prior cryo-EM entry (log2 1+n)                             0.61          0.83                                         0.86                   0.96
+last author: first antibody cryo-EM entry                                   1.38          1.99                                         1.83                   1.48
+last author: first antibody entry                                           1.35          1.32                                         1.26                   1.19
+last author: first cryo-EM entry                                            0.75          2.10                                         1.36                   1.13
+last author: prior PDB entries (log2 1+n)                                   0.96          0.96                                         1.01                   0.99
+last author: prior antibody cryo-EM entries                                 0.87          0.88                                         0.92                   0.91
+last author: prior antibody entries                                         0.88          0.91                                         0.94                   0.91
+last author: prior cryo-EM entries                                          0.97          0.92                                         0.96                   0.98
+most experienced author: prior PDB entries                                  0.91          0.95                                         0.94                   1.01
+most experienced author: prior antibody cryo-EM entries                     0.80          0.92                                         0.89                   0.92
+most experienced author: prior antibody entries                             0.81          0.94                                         0.89                   0.93
+most experienced author: prior cryo-EM entries                              0.86          0.93                                         0.92                   0.98
+most experienced non-last author: prior antibody cryo-EM entries            0.80          0.91                                         0.90                   0.90
+most experienced non-last author: prior cryo-EM entries                     0.87          0.91                                         0.94                   0.96
+multi-lab cryo-EM hub person (core-staff proxy) on the entry                1.26          0.31                                         0.75                   0.68
+no author with a prior antibody cryo-EM entry                               2.45          1.86                                         2.14                   1.79
+no author with a prior cryo-EM entry                                        2.65          1.57                                         1.84                   1.26
+unit                                                              study, 2020-21  study, 2022+  study, last-author name not collision-prone  study, non-SARS-CoV-2
+exposure                                                                                                                                                          
+audit authors (log2 1+n)                                                   0.252         0.068                                        0.848                  0.809
+authors with any prior cryo-EM entry (log2 1+n)                            0.025         0.220                                        0.354                  0.746
+last author: first antibody cryo-EM entry                                  0.375         0.005                                        0.010                  0.077
+last author: first antibody entry                                          0.426         0.314                                        0.365                  0.464
+last author: first cryo-EM entry                                           0.506         0.007                                        0.222                  0.616
+last author: prior PDB entries (log2 1+n)                                  0.550         0.363                                        0.878                  0.815
+last author: prior antibody cryo-EM entries                                0.165         0.030                                        0.122                  0.067
+last author: prior antibody entries                                        0.107         0.069                                        0.163                  0.054
+last author: prior cryo-EM entries                                         0.747         0.099                                        0.403                  0.617
+most experienced author: prior PDB entries                                 0.112         0.199                                        0.283                  0.722
+most experienced author: prior antibody cryo-EM entries                    0.020         0.112                                        0.032                  0.074
+most experienced author: prior antibody entries                            0.009         0.164                                        0.024                  0.115
+most experienced author: prior cryo-EM entries                             0.048         0.127                                        0.150                  0.684
+most experienced non-last author: prior antibody cryo-EM entries           0.063         0.162                                        0.119                  0.095
+most experienced non-last author: prior cryo-EM entries                    0.119         0.098                                        0.281                  0.404
+multi-lab cryo-EM hub person (core-staff proxy) on the entry               0.583         0.013                                        0.341                  0.197
+no author with a prior antibody cryo-EM entry                              0.014         0.011                                        0.002                  0.009
+no author with a prior cryo-EM entry                                       0.012         0.087                                        0.115                  0.394
+
+Joint models (study level):
+                                                                                                 model                   term     OR     lo     hi      p
+0                                                                  y ~ has_hub + C(ycat) + res + l2_nv                has_hub  0.669  0.395  1.133  0.135
+1                                               y ~ has_hub + l_lab_prior_abem + C(ycat) + res + l2_nv                has_hub  0.634  0.373  1.077  0.092
+2                                               y ~ has_hub + l_lab_prior_abem + C(ycat) + res + l2_nv       l_lab_prior_abem  0.884  0.806  0.969  0.009
+3                 y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv                has_hub  0.710  0.401  1.259  0.241
+4                 y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv       l_lab_prior_abem  0.893  0.804  0.993  0.036
+5                 y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv       l_team_max_em_na  0.977  0.891  1.071  0.616
+6                 y ~ has_hub + l_lab_prior_abem + l_team_max_em_na + l_n_auth + C(ycat) + res + l2_nv               l_n_auth  0.882  0.656  1.186  0.405
+7   y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv       l_lab_prior_abem  0.910  0.819  1.011  0.079
+8   y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv       l_team_max_em_na  0.989  0.893  1.097  0.840
+9   y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv  l_nonlast_max_abem_na  0.932  0.811  1.072  0.327
+10  y ~ l_lab_prior_abem + l_team_max_em_na + l_nonlast_max_abem_na + l_n_auth + C(ycat) + res + l2_nv               l_n_auth  0.856  0.642  1.142  0.291
+Error rate per study by last-author prior antibody cryo-EM entries
+                size  sum   mean
+period  labbin                  
+2020-21 0        140   19  0.136
+        1-4       56    8  0.143
+        5-19      61    8  0.131
+        >=20      35    2  0.057
+2022+   0        291   35  0.120
+        1-4      193   12  0.062
+        5-19     205   18  0.088
+        >=20     213   13  0.061
+<=2019  0         56    5  0.089
+        1-4       24    3  0.125
+        5-19      14    3  0.214
+        >=20      14    1  0.071
+
+by most-experienced author prior cryo-EM entries (collision-prone names ignored)
+                 size  sum   mean
+period  teambin                  
+2020-21 0          58   13  0.224
+        1-9        66    4  0.061
+        10-49     130   17  0.131
+        >=50       38    3  0.079
+2022+   0         220   24  0.109
+        1-9       175   14  0.080
+        10-49     291   22  0.076
+        >=50      216   18  0.083
+<=2019  0          13    1  0.077
+        1-9        38    5  0.132
+        10-49      46    4  0.087
+        >=50       11    2  0.182
+
+by multi-lab hub on the study
+                 size  sum   mean
+period  has_hub                  
+2020-21 0         223   28  0.126
+        1          69    9  0.130
+2022+   0         743   73  0.098
+        1         159    5  0.031
+<=2019  0          73    8  0.110
+        1          35    4  0.114
+

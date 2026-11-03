@@ -1,0 +1,36 @@
+                         n_ca  thickness  mid_axis  long_axis     rg  lr_contacts_per_res
+group                                                                                    
+AL fibril                91.0       1.30     12.52      21.26  24.48                 0.02
+AL fibril (not in set)   77.0       1.89     12.37      17.03  21.13                 0.01
+clean EM H              126.5       6.09      6.49      10.36  13.75                 0.85
+clean EM K              107.5       5.86      6.24       9.94  13.13                 0.82
+clean EM L              108.5       6.01      6.15      10.11  13.33                 0.83
+error EM (non-fibril)   115.0       5.95      6.54      10.14  13.57                 0.78
+group
+AL fibril                 77
+AL fibril (not in set)    10
+clean EM H                12
+clean EM K                12
+clean EM L                12
+error EM (non-fibril)     30
+max fibril thickness 2.96 ; min non-fibril thickness 5.23
+max fibril LR contacts 0.04 ; min non-fibril LR contacts 0.23
+      thickness     rg  lr_contacts_per_res
+pdb                                        
+6hud       1.90  21.07                 0.00
+6ic3       1.08  23.83                 0.02
+6z1o       1.28  22.35                 0.01
+7nsl       1.80  24.48                 0.02
+8cpe       1.86  21.22                 0.01
+9els       2.96  23.41                 0.00
+9faa       1.07  27.71                 0.04
+9fab       1.12  27.99                 0.02
+9fac       1.08  27.43                 0.01
+9liv       1.24  24.15                 0.01
+9liw       1.30  24.54                 0.01
+9lix       1.94  25.83                 0.02
+9liy       1.93  24.13                 0.01
+9lj0       2.05  23.61                 0.01
+9lja       2.00  25.23                 0.04
+9ljb       1.92  25.01                 0.04
+9v91       1.12  21.50                 0.00

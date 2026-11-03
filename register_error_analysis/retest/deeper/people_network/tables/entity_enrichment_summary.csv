@@ -1,0 +1,18 @@
+unit,cls,n_tested,min_p,min_q,n_q10,n_p05
+entry,any multi-lab hub on the study (aggregate),1,0.9999429719595375,0.9999429719595375,0,0
+entry,co-author group (strong ties >=3 shared studies),61,0.0137157957930207,0.8366635433742627,0,1
+entry,lab (last author),233,1.234324398254495e-06,0.00028759758479329734,11,17
+entry,multi-lab cryo-EM hub person,76,0.05042077361951554,1.0,0,0
+entry,person (any position),1164,1.234324398254495e-06,0.0014367535995682323,16,56
+entry,person (non-last author only),977,5.523178001045302e-05,0.053961449070212594,8,39
+study,any facility mention (aggregate),1,0.5963451726385747,0.5963451726385747,0,0
+study,any multi-lab hub on the study (aggregate),1,0.9810522382589729,0.9810522382589729,0,0
+study,co-author group (strong ties >=3 shared studies),53,0.011668899842796343,0.6184516916682062,0,1
+study,country (any author),31,0.009956015411440547,0.30863647775465697,0,2
+study,country (last author),19,0.09902841254463693,1.0,0,0
+study,facility mention (any affiliation),12,0.2992226476389373,1.0,0,0
+study,institution (any author affiliation),274,0.0014211188431823704,0.32537256125337954,0,10
+study,lab (last author),108,0.0009157388785923035,0.09889979888796879,1,7
+study,multi-lab cryo-EM hub person,46,0.1684977452576775,1.0,0,0
+study,person (any position),503,0.0009157388785923035,0.46061665593192874,0,13
+study,person (non-last author only),389,0.02225107288398428,1.0,0,6

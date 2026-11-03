@@ -1,0 +1,41 @@
+Error rate per study by last-author prior antibody cryo-EM entries
+                size  sum   mean
+period  labbin                  
+2020-21 0        140   19  0.136
+        1-4       56    8  0.143
+        5-19      61    8  0.131
+        >=20      35    2  0.057
+2022+   0        291   35  0.120
+        1-4      193   12  0.062
+        5-19     205   18  0.088
+        >=20     213   13  0.061
+<=2019  0         56    5  0.089
+        1-4       24    3  0.125
+        5-19      14    3  0.214
+        >=20      14    1  0.071
+
+by most-experienced author prior cryo-EM entries (collision-prone names ignored)
+                 size  sum   mean
+period  teambin                  
+2020-21 0          58   13  0.224
+        1-9        66    4  0.061
+        10-49     130   17  0.131
+        >=50       38    3  0.079
+2022+   0         220   24  0.109
+        1-9       175   14  0.080
+        10-49     291   22  0.076
+        >=50      216   18  0.083
+<=2019  0          13    1  0.077
+        1-9        38    5  0.132
+        10-49      46    4  0.087
+        >=50       11    2  0.182
+
+by multi-lab hub on the study
+                 size  sum   mean
+period  has_hub                  
+2020-21 0         223   28  0.126
+        1          69    9  0.130
+2022+   0         743   73  0.098
+        1         159    5  0.031
+<=2019  0          73    8  0.110
+        1          35    4  0.114

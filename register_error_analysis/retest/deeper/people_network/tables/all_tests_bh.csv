@@ -1,0 +1,79 @@
+family,test,effect,n,p,q_lens
+entity aggregate,any multi-lab hub on the study (aggregate) [entry],"obs 18 vs exp 35.9, MH OR 0.42",534,0.0002709243114105,0.009626686642081599
+entity aggregate,any facility mention (aggregate) [study],"obs 8 vs exp 8.2, MH OR 0.96",80,1.0,1.0
+entity aggregate,any multi-lab hub on the study (aggregate) [study],"obs 18 vs exp 26.1, MH OR 0.60",263,0.0615244369507223,0.15996353607187797
+network vs year-matched clean,study: any: edges,obs 120.00 vs null 131.54 (x0.91),127,0.7416291854072964,0.904505714621061
+network vs year-matched clean,study: any: frac_linked,obs 0.56 vs null 0.59 (x0.94),127,0.5397301349325337,0.713541534317587
+network vs year-matched clean,study: any: n_comp_nonsingleton,obs 21.00 vs null 16.54 (x1.27),127,0.2208895552223888,0.3828752290521406
+network vs year-matched clean,study: any: largest,obs 13.00 vs null 22.82 (x0.57),127,0.3108445777111444,0.49481381758100534
+network vs year-matched clean,study: cross_lab: edges,obs 45.00 vs null 62.45 (x0.72),127,0.3018490754622688,0.4905047476261868
+network vs year-matched clean,study: cross_lab: frac_linked,obs 0.38 vs null 0.43 (x0.87),127,0.4517741129435282,0.6641123882503192
+network vs year-matched clean,study: cross_lab: n_comp_nonsingleton,obs 12.00 vs null 10.75 (x1.12),127,0.7806096951524236,0.9225387306346825
+network vs year-matched clean,study: cross_lab: largest,obs 13.00 vs null 21.17 (x0.61),127,0.4097951024487756,0.6146926536731634
+network vs year-matched clean,study: cross_mid: edges,obs 20.00 vs null 34.41 (x0.58),127,0.178910544727636,0.34887556221889027
+network vs year-matched clean,study: cross_mid: frac_linked,obs 0.18 vs null 0.27 (x0.67),127,0.0909545227386306,0.21498341738221777
+network vs year-matched clean,study: cross_mid: n_comp_nonsingleton,obs 8.00 vs null 8.38 (x0.95),127,1.0,1.0
+network vs year-matched clean,study: cross_mid: largest,obs 8.00 vs null 14.53 (x0.55),127,0.4597701149425286,0.6641123882503192
+network vs year-matched clean,study: cross_mid_noamb: edges,obs 7.00 vs null 19.44 (x0.36),127,0.0209895052473762,0.07441733678615199
+network vs year-matched clean,study: cross_mid_noamb: frac_linked,obs 0.10 vs null 0.20 (x0.50),127,0.0399800099950024,0.11991343452369868
+network vs year-matched clean,study: cross_mid_noamb: n_comp_nonsingleton,obs 6.00 vs null 9.12 (x0.66),127,0.2518740629685156,0.4180037640754089
+network vs year-matched clean,study: cross_mid_noamb: largest,obs 3.00 vs null 5.85 (x0.51),127,0.2128935532233882,0.3828752290521406
+network vs year-matched clean,entry: any (other study): edges,obs 188.00 vs null 254.44 (x0.74),178,0.0949525237381308,0.21783226034041772
+network vs year-matched clean,entry: any (other study): frac_linked,obs 0.53 vs null 0.64 (x0.82),178,0.0059970014992502,0.03900547398785856
+network vs year-matched clean,entry: any (other study): n_comp_nonsingleton,obs 21.00 vs null 19.78 (x1.06),178,0.8125937031484258,0.9460046096354808
+network vs year-matched clean,entry: any (other study): largest,obs 17.00 vs null 34.64 (x0.49),178,0.1399300349825086,0.291328020200426
+network vs year-matched clean,entry: cross_lab: edges,obs 79.00 vs null 110.87 (x0.71),178,0.191904047976012,0.36381809095452267
+network vs year-matched clean,entry: cross_lab: frac_linked,obs 0.33 vs null 0.48 (x0.69),178,0.0119940029985006,0.05366851371869303
+network vs year-matched clean,entry: cross_lab: n_comp_nonsingleton,obs 12.00 vs null 13.51 (x0.89),178,0.7606196901549226,0.912743628185907
+network vs year-matched clean,entry: cross_lab: largest,obs 17.00 vs null 31.39 (x0.54),178,0.1959020489755122,0.36381809095452267
+network vs year-matched clean,entry: cross_mid: edges,obs 33.00 vs null 54.76 (x0.60),178,0.1229385307346326,0.27397729706575263
+network vs year-matched clean,entry: cross_mid: frac_linked,obs 0.15 vs null 0.29 (x0.53),178,0.0039980009995002,0.03898050974512696
+network vs year-matched clean,entry: cross_mid: n_comp_nonsingleton,obs 7.00 vs null 11.30 (x0.62),178,0.1419290354822588,0.291328020200426
+network vs year-matched clean,entry: cross_mid: largest,obs 14.00 vs null 19.27 (x0.73),178,0.673663168415792,0.8475117280069642
+experience (study level),last author: prior PDB entries (log2 1+n),OR 0.97 (0.90-1.05); err 32 vs clean 41,1302,0.5081584599526137,0.713541534317587
+experience (study level),last author: prior cryo-EM entries,OR 0.94 (0.87-1.02); err 10 vs clean 8,1302,0.1507326827238002,0.3014653654476004
+experience (study level),last author: prior antibody entries,OR 0.90 (0.83-0.98); err 4 vs clean 6,1302,0.0170929914787383,0.06666266676707938
+experience (study level),last author: prior antibody cryo-EM entries,OR 0.89 (0.81-0.97); err 1 vs clean 2,1302,0.0123850416273907,0.05366851371869303
+experience (study level),last author: first cryo-EM entry,OR 1.31 (0.85-2.03); err 0.26 vs clean 0.223,1302,0.2199263373529831,0.3828752290521406
+experience (study level),last author: first antibody entry,OR 1.22 (0.80-1.86); err 0.283 vs clean 0.25,1302,0.349835844144159,0.545743916864888
+experience (study level),last author: first antibody cryo-EM entry,OR 1.62 (1.11-2.38); err 0.465 vs clean 0.364,1302,0.0133499270768592,0.05480496378921146
+experience (study level),most experienced author: prior PDB entries,OR 0.94 (0.89-1.01); err 40 vs clean 48,1302,0.0768380443255001,0.19333443410932283
+experience (study level),most experienced author: prior cryo-EM entries,OR 0.92 (0.85-0.99); err 10 vs clean 13,1302,0.0324028583394184,0.1053092896031098
+experience (study level),most experienced author: prior antibody entries,OR 0.90 (0.84-0.97); err 4 vs clean 10,1302,0.0073527750889679,0.03900547398785856
+experience (study level),most experienced author: prior antibody cryo-EM entries,OR 0.89 (0.81-0.97); err 2 vs clean 4,1302,0.0070496448293429,0.03900547398785856
+experience (study level),no author with a prior cryo-EM entry,OR 1.77 (1.16-2.68); err 0.299 vs clean 0.215,1302,0.0075010526899728,0.03900547398785856
+experience (study level),no author with a prior antibody cryo-EM entry,OR 1.99 (1.36-2.91); err 0.472 vs clean 0.332,1302,0.0003702571785416,0.009626686642081599
+experience (study level),most experienced non-last author: prior cryo-EM entries,OR 0.92 (0.84-1.00); err 1 vs clean 4,1302,0.0558767277742979,0.15565659879982985
+experience (study level),most experienced non-last author: prior antibody cryo-EM entries,OR 0.88 (0.78-0.98); err 0 vs clean 1,1302,0.0202054028280991,0.07441733678615199
+experience (study level),authors with any prior cryo-EM entry (log2 1+n),OR 0.80 (0.64-1.01); err 1 vs clean 2,1302,0.0602987129235223,0.15996353607187797
+experience (study level),multi-lab cryo-EM hub person (core-staff proxy) on the entry,OR 0.67 (0.39-1.13); err 0.142 vs clean 0.209,1302,0.1346596897448864,0.291328020200426
+experience (study level),audit authors (log2 1+n),OR 0.84 (0.64-1.11); err 3 vs clean 3,1302,0.227230023344496,0.38530308306240624
+cross-lab person linking (permutation),people on error studies of >=2 different labs [all person keys],obs 37 vs null 36.5 (x1.01),127,0.977511244377811,1.0
+cross-lab person linking (permutation),max distinct labs linked by one person [all person keys],obs 4 vs null 4.1 (x0.99),127,1.0,1.0
+cross-lab person linking (permutation),non-last authors on error studies of >=2 different labs [all person keys],obs 20 vs null 21.8 (x0.92),127,0.849575212393803,0.9603893705321251
+cross-lab person linking (permutation),people on error studies of >=2 different labs [collision-prone name-only keys dropped],obs 29 vs null 26.1 (x1.11),127,0.6346826586706646,0.8216243141667804
+cross-lab person linking (permutation),max distinct labs linked by one person [collision-prone name-only keys dropped],obs 3 vs null 3.1 (x0.96),127,1.0,1.0
+cross-lab person linking (permutation),non-last authors on error studies of >=2 different labs [collision-prone name-only keys dropped],obs 15 vs null 13.9 (x1.08),127,0.8445777111444278,0.9603893705321251
+carrier / persistence,carrier: a non-last co-author was on an earlier error study of another lab,OR 1.02 (0.52-1.99),823,0.9570761843129646,1.0
+carrier / persistence,"carrier, + lab antibody cryo-EM experience",OR 1.00 (0.51-1.94),823,0.993842915524396,1.0
+carrier / persistence,"carrier, collision-prone names dropped",OR 1.18 (0.58-2.40),716,0.6425523482586359,0.8216243141667804
+carrier / persistence,carrier: share of earlier cross-lab studies that had errors,OR 1.55 (0.39-6.24),823,0.5351242351600649,0.713541534317587
+carrier / persistence,any earlier cross-lab study via a co-author (connectedness),OR 0.68 (0.46-0.99),1302,0.0415084965658957,0.11991343452369868
+carrier / persistence,persistence: the same lab had an earlier error study,OR 2.19 (1.24-3.86),842,0.0068249024658939,0.03900547398785856
+carrier / persistence,"persistence, + lab antibody cryo-EM experience",OR 2.55 (1.42-4.61),842,0.0018457839403187,0.0239951912241431
+carrier / persistence,same-lab pairs of error studies sharing an error mode,obs 15 vs null 19.9 of 73 pairs,73,0.873625274945011,0.9734681635101551
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody studies: VUB/VIB co-author vs not (year-stratified exact),OR 5.00; 9/31 vs 26/353,384,0.0015617323116818,0.0239951912241431
+post hoc: nanobody supplier (VUB/VIB co-authors),... last author not in Belgium (supplier-type collaborations),OR 4.50; 7/26 vs 25/349,375,0.0081909844151096,0.0399310490236593
+post hoc: nanobody supplier (VUB/VIB co-authors),non-nanobody studies: VUB/VIB co-author vs not,OR 0.00; 0/2 vs 92/916,918,1.0,1.0
+post hoc: nanobody supplier (VUB/VIB co-authors),"nanobody studies: logit adj. year, resolution, V chains",OR 3.82; nan vs nan,384,0.006697140392818,0.03900547398785856
+post hoc: nanobody supplier (VUB/VIB co-authors),... + new-to-antibody-cryo-EM team,OR 3.82; nan vs nan,384,0.0065670004305389,0.03900547398785856
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units: L1 VUB vs other (Mann-Whitney),median 8.00 vs median 8.00,567,0.742158535073691,0.904505714621061
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units: L2 VUB vs other (Mann-Whitney),median 8.00 vs median 8.00,567,0.3790810087349059,0.5797709545357385
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units: L3 VUB vs other (Mann-Whitney),median 17.00 vs median 17.00,567,0.5232084421576948,0.713541534317587
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units: v_id VUB vs other (Mann-Whitney),median 0.73 vs median 0.75,567,0.0799351038023157,0.1948418155181445
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units (aux_reagent=False): error rate VUB vs other (Fisher),OR 2.54; 9/51 vs 23/296,347,0.0344696957332919,0.10754545068787072
+post hoc: nanobody supplier (VUB/VIB co-authors),nanobody units (aux_reagent=True): error rate VUB vs other (Fisher),OR 11.39; 2/11 vs 4/209,220,0.0306299936265238,0.10387563055951549
+post hoc: nanobody supplier (VUB/VIB co-authors),"nanobody units: CDR2/FR3 (mode B) error, VUB vs other (Fisher)",OR 11.54; 4/62 vs 3/505,567,0.0035422221597582,0.03898050974512696
+exploratory: new-team effect by era,<=2023,OR 3.05 (1.91-4.87),792,3.1019679460769835e-06,0.00024195349979400473
+exploratory: new-team effect by era,>=2024,OR 0.79 (0.38-1.65),510,0.5345723963178447,0.713541534317587
+exploratory: new-team effect by era,interaction new_team x (>=2024),OR 0.24 (0.10-0.57),1302,0.0012573050447358,0.0239951912241431

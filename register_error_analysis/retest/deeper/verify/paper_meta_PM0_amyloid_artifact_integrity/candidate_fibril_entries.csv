@@ -1,0 +1,19 @@
+pdb,method,res,year,err_first,err_any,modes,title
+4m1c,X-ray,3.5007,2013,False,False,,Crystal Structure Analysis of Fab-Bound Human Insulin Degrading Enzyme (IDE) in Complex with Amyloid-Beta (1-40)
+5d9q,X-ray,4.4,2015,False,False,,Crystal Structure of the BG505 SOSIP gp140 HIV-1 Env trimer in Complex with the Broadly Neutralizing Fab PGT122 and scFv NIH45-46
+6ic3,EM,3.3,2018,True,True,other,AL amyloid fibril from a lambda 1 light chain
+6z1o,EM,3.2,2020,True,True,other,AL amyloid fibril from a lambda 3 light chain in conformation A
+7nsl,EM,3.1,2021,True,True,A_FR1Nterm,AL amyloid fibril from a lambda 1 light chain
+7o85,EM,3.3,2021,True,True,E_FR4bulge,Anthrax toxin prepore in complex with the neutralizing Fab cAb29
+9els,EM,3.02,2024,True,True,F_CDR1,Light chain amyloidosis amyloid fibril - IGLV6-57
+9faa,EM,3.6,2024,True,True,A_FR1Nterm,Cryo-EM structure of cardiac collagen-associated amyloid AL59
+9fab,EM,3.9,2024,True,True,A_FR1Nterm,Additional cryo-EM structure of cardiac amyloid AL59 - bent polymorph
+9fac,EM,3.9,2024,True,True,A_FR1Nterm,Additional cryo-EM structure of cardiac amyloid AL59 - mixed polymorph
+9liv,EM,3.1,2025,True,True,F_CDR1,The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 1) - polymorph 1.
+9liw,EM,3.2,2025,True,True,A_FR1Nterm,The cryo-EM structure of amyloid fibrils from heart of an AL amyloidosis patient (case 1) - polymorph 1.
+9lix,EM,3.0,2025,True,True,other,The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 2) - polymorph 1.
+9liy,EM,3.2,2025,True,True,other,The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 2) - polymorph 2.
+9lj0,EM,3.3,2025,True,True,other,The cryo-EM structure of amyloid fibrils from abdominal fat of an AL amyloidosis patient (case 3).
+9lja,EM,3.1,2025,True,True,A_FR1Nterm,The cryo-EM structure of amyloid fibrils from abdominal fat of a multiple myeloma patient (case 1)- polymorph 1.
+9ljb,EM,3.2,2025,True,True,A_FR1Nterm,The cryo-EM structure of amyloid fibrils from abdominal fat of a multiple myeloma patient (case 1)- polymorph 2.
+9v91,EM,3.0,2025,True,True,other,Cryo-EM structure of renal amyloid fibril from an immunoglobulin light chain amyloidosis patient in polymorph B

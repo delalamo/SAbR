@@ -1,0 +1,70 @@
+
+=== Ck: error chains 29 from 10 papers, 13 units, 18 entries; Zhou chains 17
+Ck | investigator model (chain, cluster-robust by paper) | {'err_val': '20.7% (6/29)', 'ctrl_val': '80.8% (738/913)', 'OR': np.float64(0.03926158445297746), 'p': np.float64(0.0013169968095021233), 'note': None}
+Ck | drop Zhou Q. paper | {'err_val': '50.0% (6/12)', 'ctrl_val': '81.0% (738/911)', 'OR': np.float64(0.13758383749629124), 'p': np.float64(0.025055713422985387), 'note': None}
+Ck | leave-one-paper-out: worst case | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.13758383749629124), 'p': np.float64(0.025055713422985387), 'note': 'paper dropped 10.1038/s41422-021-00487-9'}
+Ck | unit level (antibody-in-paper; majority vote), cluster by paper | {'err_val': '38.5% (5/13)', 'ctrl_val': '79.0% (332/420)', 'OR': np.float64(0.09500004742911679), 'p': np.float64(0.006167518902459797), 'note': None}
+Ck | unit level, drop Zhou Q. | {'err_val': '50.0% (5/10)', 'ctrl_val': '79.2% (332/419)', 'OR': np.float64(0.1462258987765771), 'p': np.float64(0.02654006405568802), 'note': None}
+Ck | paper level (majority vote), Fisher unadjusted | {'err_val': '40.0% (4/10)', 'ctrl_val': '78.4% (269/343)', 'OR': np.float64(0.18339529120198264), 'p': np.float64(0.010965357966935315), 'note': None}
+Ck | paper level, drop Zhou Q. | {'err_val': '44.4% (4/9)', 'ctrl_val': '78.4%', 'OR': np.float64(0.2200743494423792), 'p': np.float64(0.02981896254400011), 'note': None}
+Ck | cluster (paper) bootstrap of adjusted OR, 400 reps | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.040789231224490366), 'p': np.float64(0.0024937655860349127), 'note': 'one-sided bootstrap p = share of reps with OR>=1; n_ok=400'}
+Ck | only chains whose entry has >=1 cis peptide in OTHER chains | {'err_val': '75.0% (6/8)', 'ctrl_val': '92.1% (724/786)', 'OR': np.float64(0.22824172608203813), 'p': np.float64(0.19498796064767254), 'note': None}
+Ck | adjusted for entry all-trans elsewhere (other_alltrans) | {'err_val': '20.7% (6/29)', 'ctrl_val': '80.8% (738/913)', 'OR': np.float64(0.1925599211757052), 'p': np.float64(0.13145025968547977), 'note': None}
+Ck | drop Zhou + only entries with cis elsewhere | {'err_val': '75.0% (6/8)', 'ctrl_val': '92.1% (724/786)', 'OR': np.float64(0.22824172608203813), 'p': np.float64(0.19498796064767254), 'note': None}
+
+=== CH1: error chains 31 from 18 papers, 19 units, 22 entries; Zhou chains 12
+CH1 | investigator model (chain, cluster-robust by paper) | {'err_val': '41.9% (13/31)', 'ctrl_val': '71.9% (850/1183)', 'OR': np.float64(0.24702038845375898), 'p': np.float64(0.06051565490451128), 'note': None}
+CH1 | drop Zhou Q. paper | {'err_val': '68.4% (13/19)', 'ctrl_val': '72.5% (850/1173)', 'OR': np.float64(0.7784994451795861), 'p': np.float64(0.6720795938761306), 'note': None}
+CH1 | leave-one-paper-out: worst case | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.7784994451795861), 'p': np.float64(0.6720795938761306), 'note': 'paper dropped 10.1038/s41422-021-00487-9'}
+CH1 | unit level (antibody-in-paper; majority vote), cluster by paper | {'err_val': '57.9% (11/19)', 'ctrl_val': '72.2% (369/511)', 'OR': np.float64(0.42817000256559995), 'p': np.float64(0.1233503043265989), 'note': None}
+CH1 | unit level, drop Zhou Q. | {'err_val': '64.7% (11/17)', 'ctrl_val': '72.8% (369/507)', 'OR': np.float64(0.6051130770619705), 'p': np.float64(0.35674723072657943), 'note': None}
+CH1 | paper level (majority vote), Fisher unadjusted | {'err_val': '61.1% (11/18)', 'ctrl_val': '71.9% (292/406)', 'OR': np.float64(0.6135029354207436), 'p': np.float64(0.42278337195776516), 'note': None}
+CH1 | paper level, drop Zhou Q. | {'err_val': '64.7% (11/17)', 'ctrl_val': '71.9%', 'OR': np.float64(0.7157534246575342), 'p': np.float64(0.5837787261171548), 'note': None}
+CH1 | cluster (paper) bootstrap of adjusted OR, 400 reps | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.28706736339814), 'p': np.float64(0.13216957605985039), 'note': 'one-sided bootstrap p = share of reps with OR>=1; n_ok=400'}
+CH1 | only chains whose entry has >=1 cis peptide in OTHER chains | {'err_val': '80.0% (12/15)', 'ctrl_val': '85.5% (843/986)', 'OR': np.float64(0.6942232401171556), 'p': np.float64(0.645883565903933), 'note': None}
+CH1 | adjusted for entry all-trans elsewhere (other_alltrans) | {'err_val': '41.9% (13/31)', 'ctrl_val': '71.9% (850/1183)', 'OR': np.float64(0.7482564252937116), 'p': np.float64(0.7219395615984543), 'note': None}
+CH1 | drop Zhou + only entries with cis elsewhere | {'err_val': '80.0% (12/15)', 'ctrl_val': '85.5% (843/986)', 'OR': np.float64(0.6942232401171556), 'p': np.float64(0.645883565903933), 'note': None}
+
+=== pooled_const: error chains 60 from 23 papers, 32 units, 31 entries; Zhou chains 29
+pooled_const | investigator model (chain, cluster-robust by paper) | {'err_val': '31.7% (19/60)', 'ctrl_val': '73.8% (1726/2338)', 'OR': np.float64(0.11310428442654336), 'p': np.float64(0.0020427531894664213), 'note': None}
+pooled_const | drop Zhou Q. paper | {'err_val': '61.3% (19/31)', 'ctrl_val': '74.3% (1726/2323)', 'OR': np.float64(0.383152550066085), 'p': np.float64(0.05949052603637002), 'note': None}
+pooled_const | leave-one-paper-out: worst case | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.383152550066085), 'p': np.float64(0.05949052603637002), 'note': 'paper dropped 10.1038/s41422-021-00487-9'}
+pooled_const | unit level (antibody-in-paper; majority vote), cluster by paper | {'err_val': '50.0% (16/32)', 'ctrl_val': '74.5% (755/1014)', 'OR': np.float64(0.2332273192631087), 'p': np.float64(0.004077677177031889), 'note': None}
+pooled_const | unit level, drop Zhou Q. | {'err_val': '59.3% (16/27)', 'ctrl_val': '75.0% (755/1007)', 'OR': np.float64(0.35094905579149865), 'p': np.float64(0.025581979295941037), 'note': None}
+pooled_const | paper level (majority vote), Fisher unadjusted | {'err_val': '56.5% (13/23)', 'ctrl_val': '78.8% (328/416)', 'OR': np.float64(0.348780487804878), 'p': np.float64(0.019139062401610986), 'note': None}
+pooled_const | paper level, drop Zhou Q. | {'err_val': '59.1% (13/22)', 'ctrl_val': '78.8%', 'OR': np.float64(0.3875338753387534), 'p': np.float64(0.03709613900180404), 'note': None}
+pooled_const | cluster (paper) bootstrap of adjusted OR, 400 reps | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.12567492570613661), 'p': np.float64(0.017456359102244388), 'note': 'one-sided bootstrap p = share of reps with OR>=1; n_ok=400'}
+pooled_const | only chains whose entry has >=1 cis peptide in OTHER chains | {'err_val': '78.3% (18/23)', 'ctrl_val': '87.5% (1703/1946)', 'OR': np.float64(0.44510115453352705), 'p': np.float64(0.1956598692207695), 'note': None}
+pooled_const | adjusted for entry all-trans elsewhere (other_alltrans) | {'err_val': '31.7% (19/60)', 'ctrl_val': '73.8% (1726/2338)', 'OR': np.float64(0.39690854839350026), 'p': np.float64(0.13247043026741892), 'note': None}
+pooled_const | drop Zhou + only entries with cis elsewhere | {'err_val': '78.3% (18/23)', 'ctrl_val': '87.5% (1703/1946)', 'OR': np.float64(0.44510115453352705), 'p': np.float64(0.1956598692207695), 'note': None}
+
+=== Pro115_inv: error chains 24 from 8 papers, 11 units, 15 entries; Zhou chains 12
+Pro115_inv | investigator model (chain, cluster-robust by paper) | {'err_val': '12.5% (3/24)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.07937375724521499), 'p': np.float64(0.02561885313430713), 'note': None}
+Pro115_inv | drop Zhou Q. paper | {'err_val': '25.0% (3/12)', 'ctrl_val': '62.2% (1269/2040)', 'OR': np.float64(0.15766822597407637), 'p': np.float64(0.10966148101543076), 'note': None}
+Pro115_inv | leave-one-paper-out: worst case | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.15766822597407637), 'p': np.float64(0.10966148101543076), 'note': 'paper dropped 10.1038/s41422-021-00487-9'}
+Pro115_inv | unit level (antibody-in-paper; majority vote), cluster by paper | {'err_val': '9.1% (1/11)', 'ctrl_val': '60.8% (540/888)', 'OR': np.float64(0.053539303364685834), 'p': np.float64(0.01150322053188048), 'note': None}
+Pro115_inv | unit level, drop Zhou Q. | {'err_val': '11.1% (1/9)', 'ctrl_val': '60.9% (540/886)', 'OR': np.float64(0.067710841119879), 'p': np.float64(0.022593698929423204), 'note': None}
+Pro115_inv | paper level (majority vote), Fisher unadjusted | {'err_val': '12.5% (1/8)', 'ctrl_val': '61.9% (393/635)', 'OR': np.float64(0.08796801163213377), 'p': np.float64(0.00661386035842963), 'note': None}
+Pro115_inv | paper level, drop Zhou Q. | {'err_val': '14.3% (1/7)', 'ctrl_val': '61.9%', 'OR': np.float64(0.10262934690415607), 'p': np.float64(0.015096492784823154), 'note': None}
+Pro115_inv | cluster (paper) bootstrap of adjusted OR, 400 reps | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.07210248623955795), 'p': np.float64(0.007481296758104738), 'note': 'one-sided bootstrap p = share of reps with OR>=1; n_ok=400'}
+Pro115_inv | only chains whose entry has >=1 cis peptide in OTHER chains | {'err_val': '42.9% (3/7)', 'ctrl_val': '73.4% (1095/1492)', 'OR': np.float64(0.1554117346821367), 'p': np.float64(0.10870092240182862), 'note': None}
+Pro115_inv | adjusted for entry all-trans elsewhere (other_alltrans) | {'err_val': '12.5% (3/24)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.1489109500864021), 'p': np.float64(0.06748736708121318), 'note': None}
+Pro115_inv | drop Zhou + only entries with cis elsewhere | {'err_val': '42.9% (3/7)', 'ctrl_val': '73.4% (1095/1492)', 'OR': np.float64(0.1554117346821367), 'p': np.float64(0.10870092240182862), 'note': None}
+
+=== Pro115_corr: error chains 31 from 14 papers, 18 units, 22 entries; Zhou chains 12
+Pro115_corr | investigator model (chain, cluster-robust by paper) | {'err_val': '12.9% (4/31)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.08383969190676785), 'p': np.float64(0.006897881711002213), 'note': None}
+Pro115_corr | drop Zhou Q. paper | {'err_val': '21.1% (4/19)', 'ctrl_val': '62.2% (1269/2040)', 'OR': np.float64(0.14027114614336345), 'p': np.float64(0.030038877042381052), 'note': None}
+Pro115_corr | leave-one-paper-out: worst case | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.14027114614336345), 'p': np.float64(0.030038877042381052), 'note': 'paper dropped 10.1038/s41422-021-00487-9'}
+Pro115_corr | unit level (antibody-in-paper; majority vote), cluster by paper | {'err_val': '11.1% (2/18)', 'ctrl_val': '60.8% (540/888)', 'OR': np.float64(0.06993551550034541), 'p': np.float64(0.0019137334760965688), 'note': None}
+Pro115_corr | unit level, drop Zhou Q. | {'err_val': '12.5% (2/16)', 'ctrl_val': '60.9% (540/886)', 'OR': np.float64(0.08364740329429159), 'p': np.float64(0.00403773466277762), 'note': None}
+Pro115_corr | paper level (majority vote), Fisher unadjusted | {'err_val': '14.3% (2/14)', 'ctrl_val': '61.9% (393/635)', 'OR': np.float64(0.10262934690415607), 'p': np.float64(0.0004219770513619079), 'note': None}
+Pro115_corr | paper level, drop Zhou Q. | {'err_val': '15.4% (2/13)', 'ctrl_val': '61.9%', 'OR': np.float64(0.11195928753180662), 'p': np.float64(0.0009313740274205472), 'note': None}
+Pro115_corr | cluster (paper) bootstrap of adjusted OR, 400 reps | {'err_val': None, 'ctrl_val': None, 'OR': np.float64(0.07892463949329462), 'p': np.float64(0.0024937655860349127), 'note': 'one-sided bootstrap p = share of reps with OR>=1; n_ok=400'}
+Pro115_corr | only chains whose entry has >=1 cis peptide in OTHER chains | {'err_val': '30.0% (3/10)', 'ctrl_val': '73.4% (1095/1492)', 'OR': np.float64(0.11372526246879765), 'p': np.float64(0.03034850571226921), 'note': None}
+Pro115_corr | adjusted for entry all-trans elsewhere (other_alltrans) | {'err_val': '12.9% (4/31)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.14175048563868078), 'p': np.float64(0.02712258357159523), 'note': None}
+Pro115_corr | drop Zhou + only entries with cis elsewhere | {'err_val': '30.0% (3/10)', 'ctrl_val': '73.4% (1095/1492)', 'OR': np.float64(0.11372526246879765), 'p': np.float64(0.03034850571226921), 'note': None}
+
+entry level: entry has zero cis peptides anywhere {'err_val': '51.7% (92/178)', 'ctrl_val': '39.0% (1027/2635)', 'OR': np.float64(1.7879740417496424), 'p': np.float64(0.004866092147898691)}
+  drop Zhou {'err_val': '49.7% (85/171)', 'ctrl_val': '38.9% (1022/2630)', 'OR': np.float64(1.6584801527580504), 'p': np.float64(0.01156838342872295)}
+clean partner chains in error entries vs clean chains elsewhere (const cis) {'err_val': '63.8% (37/58)', 'ctrl_val': '74.1% (1689/2280)', 'OR': np.float64(0.5390842981568402), 'p': np.float64(0.30659977070698397)}
+  drop Zhou {'err_val': '69.8% (37/53)', 'ctrl_val': '74.4% (1689/2270)', 'OR': np.float64(0.6923092184578032), 'p': np.float64(0.5452201699661181)}

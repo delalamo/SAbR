@@ -1,0 +1,10 @@
+mode,n_chains,n_units,n_papers,cis8
+A_FR1Nterm,28,14,10,0
+F_CDR1,4,4,4,2
+B_CDR2FR3,6,4,4,0
+C_FR3,3,3,3,1
+Dplus_CDR3short,19,4,4,0
+Dminus_CDR3long,4,4,4,1
+D0,2,2,2,0
+E_FR4bulge,7,7,7,0
+other,1,1,1,1

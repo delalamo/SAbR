@@ -1,0 +1,271 @@
+analysis entries 3994 errors 212 | EM 2752 178
+
+== A. Binding status (amyloid removed)
+EM {'bound': '6.9% (172/2504)', 'fiducial-only': '1.0% (2/203)', 'other': '8.3% (2/24)', 'unbound': '9.5% (2/21)'}
+X-ray {'bound': '2.9% (31/1058)', 'fiducial-only': '0.0% (0/5)', 'other': '7.1% (2/28)', 'unbound': '0.7% (1/151)'}
+      test stratum                          term      OR  lo  hi       p     n  n_err
+0  unbound      EM  unbound (Fisher, unadjusted)  1.8563 NaN NaN  0.6425  2752    178
+      test stratum                          term      OR  lo  hi       p     n  n_err
+0  fidonly      EM  fidonly (Fisher, unadjusted)  0.1668 NaN NaN  0.0002  2752    178
+
+== B. Target class (EM): rate, adjusted OR vs all other EM entries
+   stratum                                   test         rate_in         rate_out       OR      lo       hi       p
+0       EM                            class: GPCR   3.9% (12/307)  6.8% (166/2445)   0.5908  0.2771   1.2595  0.1730
+1       EM             class: channel/transporter   2.7% (12/439)  7.2% (166/2313)   0.3887  0.1822   0.8293  0.0145
+2       EM                          class: enzyme   18.5% (15/81)  6.1% (163/2671)   3.8321  1.8362   7.9978  0.0003
+3       EM                            class: none     9.5% (2/21)  6.4% (176/2731)   1.8563     NaN      NaN  0.6425
+4       EM                   class: other protein    2.8% (4/143)  6.7% (174/2609)   0.4115  0.1451   1.1667  0.0949
+5       EM       class: receptor/membrane protein    5.2% (8/155)  6.5% (170/2597)   0.9185  0.4031   2.0932  0.8398
+6       EM                           class: toxin    11.8% (2/17)  6.4% (176/2735)   2.3389     NaN      NaN  0.3020
+7       EM                class: unmapped/peptide     7.5% (4/53)  6.4% (174/2699)   1.4056  0.4075   4.8478  0.5899
+8       EM                    class: viral capsid  20.8% (32/154)  5.6% (146/2598)   4.7219  2.5293   8.8152  0.0000
+9       EM                     class: viral other    50.0% (8/16)  6.2% (170/2736)  11.3317  3.4500  37.2193  0.0001
+10      EM      class: viral surface glycoprotein  5.9% (79/1349)   7.1% (99/1403)   0.7136  0.4523   1.1260  0.1470
+11   X-ray                            class: GPCR     0.0% (0/42)   2.8% (34/1200)   0.3978     NaN      NaN  0.6262
+12   X-ray             class: channel/transporter    1.9% (3/158)   2.9% (31/1084)   0.7453  0.1625   3.4178  0.7052
+13   X-ray  class: cytokine/growth factor/hormone     0.0% (0/29)   2.8% (34/1213)   0.5795     NaN      NaN  1.0000
+14   X-ray                          class: enzyme     0.0% (0/50)   2.9% (34/1192)   0.3325     NaN      NaN  0.3962
+15   X-ray                            class: none    0.7% (1/151)   3.0% (33/1091)   0.3149     NaN      NaN  0.1121
+16   X-ray                   class: other protein     6.2% (5/81)   2.5% (29/1161)   2.4040  0.8795   6.5709  0.0873
+17   X-ray       class: receptor/membrane protein    2.2% (4/186)   2.8% (30/1056)   0.7221  0.2378   2.1926  0.5656
+18   X-ray                           class: toxin     0.0% (0/20)   2.8% (34/1222)   0.8402     NaN      NaN  1.0000
+19   X-ray                class: unmapped/peptide     0.0% (0/18)   2.8% (34/1224)   0.9326     NaN      NaN  1.0000
+20   X-ray                    class: viral capsid     0.0% (0/37)   2.8% (34/1205)   0.4528     NaN      NaN  0.6215
+21   X-ray      class: viral surface glycoprotein   3.7% (17/454)    2.2% (17/788)   1.6011  0.7442   3.4446  0.2285
+EM global LR test target class: chi2 87.2 df 10 p 1.9021836690980977e-14
+EM non-SARS2 global LR test target class: chi2 84.7 df 10 p 5.946871130305586e-14
+
+== C. Target organism (EM)
+                         test          rate_in         rate_out      OR      lo      hi       p
+0         organism: bacterial    8.1% (12/148)  6.4% (166/2604)  1.3758  0.6431  2.9432  0.4110
+1             organism: human    3.6% (30/822)  7.7% (148/1930)  0.4924  0.2931  0.8273  0.0074
+2              organism: none      9.5% (2/21)  6.4% (176/2731)  1.8563     NaN     NaN  0.6425
+3   organism: other eukaryote      2.0% (2/99)  6.6% (176/2653)  0.3599     NaN     NaN  0.0909
+4  organism: other vertebrate    8.5% (11/130)  6.4% (167/2622)  1.3961  0.6393  3.0488  0.4025
+5             organism: viral  7.8% (119/1519)   4.8% (59/1233)  1.5221  0.9804  2.3630  0.0613
+
+== D. Specific antigen families (EM, >=15 entries)
+                                                                           test        rate_in         rate_out  n_papers  n_err_papers       OR      lo       hi       p
+21                                 antigen family: Capsid protein [g30_6819_30]   40.0% (6/15)  6.3% (172/2737)         1             1  10.0516  5.9806  16.8938  0.0000
+8                   antigen family: Envelope glycoprotein gp160 [g30_201308_30]   3.4% (9/265)  6.8% (169/2487)       110             9   0.4226  0.2089   0.8551  0.0166
+11              antigen family: Glucagon-like peptide 1 receptor [g30_27931_30]    0.0% (0/61)  6.6% (178/2691)        37             0   0.1145     NaN      NaN  0.0312
+17                              antigen family: Genome polyprotein [g30_393_30]  14.3% (11/77)  6.2% (167/2675)        25             7   2.9899  0.9477   9.4330  0.0617
+15                                 antigen family: Beta-arrestin-1 [g30_324_30]    0.0% (0/47)  6.6% (178/2705)        19             0   0.1490     NaN      NaN  0.0712
+5   antigen family: Gamma-aminobutyric acid receptor subunit alph [g30_1553_30]    1.5% (1/68)  6.6% (177/2684)        16             1   0.3139     NaN      NaN  0.1275
+3                                              antigen family:  [g30_127001_30]   2.8% (3/107)  6.6% (175/2645)        65             3   0.4473  0.1351   1.4815  0.1879
+7                          antigen family: Fusion glycoprotein F0 [g30_1641_30]   13.3% (2/15)  6.4% (176/2737)        14             2   2.6875     NaN      NaN  0.2527
+22                            antigen family: Genome polyprotein [g30_68766_30]    0.0% (0/30)  6.5% (178/2722)        19             0   0.2337     NaN      NaN  0.2579
+2                        antigen family: Fusion glycoprotein F0 [g30_114341_30]    0.0% (0/31)  6.5% (178/2721)        18             0   0.2262     NaN      NaN  0.2609
+16                         antigen family: Structural polyprotein [g30_3500_30]    0.0% (0/23)  6.5% (178/2729)         9             0   0.3041     NaN      NaN  0.3964
+1                         antigen family: Spike glycoprotein; Fibritin [P10104]    0.0% (0/27)  6.5% (178/2725)        14             0   0.2595     NaN      NaN  0.4152
+18                           antigen family: Calcitonin receptor [g30_43709_30]    0.0% (0/15)  6.5% (178/2737)         6             0   0.4625     NaN      NaN  0.6185
+23                                   antigen family: Neuraminidase [g30_705_30]    0.0% (0/15)  6.5% (178/2737)         8             0   0.4625     NaN      NaN  0.6185
+24   antigen family: Sodium- and chloride-dependent taurine transp [g30_964_30]    0.0% (0/16)  6.5% (178/2736)         4             0   0.4343     NaN      NaN  0.6194
+20        antigen family: Cobalt/magnesium transport protein CorA [g30_5933_30]    0.0% (0/16)  6.5% (178/2736)         2             0   0.4343     NaN      NaN  0.6194
+12  antigen family: Broad substrate specificity ATP-binding casse [g30_2803_30]    0.0% (0/17)  6.5% (178/2735)         8             0   0.4094     NaN      NaN  0.6217
+14         antigen family: Sodium-dependent serotonin transporter [g30_3147_30]    0.0% (0/19)  6.5% (178/2733)         8             0   0.3671     NaN      NaN  0.6302
+9                      antigen family: Circumsporozoite protein [g30_206608_30]    0.0% (0/20)  6.5% (178/2732)         8             0   0.3490     NaN      NaN  0.6359
+10                           antigen family: Spike glycoprotein [g30_207049_30]    0.0% (0/20)  6.5% (178/2732)         9             0   0.3490     NaN      NaN  0.6359
+4                         antigen family: Envelope glycoprotein [g30_147122_30]    8.7% (2/23)  6.4% (176/2729)        14             2   1.6823     NaN      NaN  0.6576
+19                             antigen family: Spike glycoprotein [g30_4905_30]  6.7% (45/670)  6.4% (133/2082)       290            27   0.9094  0.5222   1.5839  0.7374
+0        antigen family: Soluble cytochrome b562; C-C chemokine recept [P0ABE7]    4.2% (2/48)  6.5% (176/2704)        28             2   0.7702     NaN      NaN  0.7671
+6                                 antigen family: Hemagglutinin [g30_161017_30]    6.6% (6/91)  6.5% (172/2661)        52             6   1.0827  0.4359   2.6890  0.8641
+13           antigen family: Glutamate receptor ionotropic, NMDA 1 [g30_281_30]    4.3% (1/23)  6.5% (177/2729)         5             1   0.9587     NaN      NaN  1.0000
+EM all: families 393, dispersion obs 814 vs null mean 390 (ratio 2.09), p=0.002
+EM non-SARS2: families 391, dispersion obs 781 vs null mean 391 (ratio 2.00), p=0.002
+EM all (paper level): papers 1311, error papers 127, families 369, dispersion ratio 1.36, p=0.014
+EM non-SARS2 (paper level): papers 1039, error papers 102, families 368, dispersion ratio 1.26, p=0.054
+
+== E. Competition / novelty (bound or fiducial-only entries with a target)
+         stratum                               test  err_median  clean_median  err_mean  clean_mean      OR     lo      hi      p     n  n_err
+0             EM           competition: labs_acc_6m         0.0           1.0    20.040      21.169   0.947  0.857   1.047  0.290  2707    174
+1             EM          competition: labs_acc_12m         0.5           1.0    31.966      33.473   0.943  0.859   1.035  0.219  2707    174
+2             EM           competition: labs_fam_6m         2.0           6.0    22.948      26.342   0.896  0.810   0.992  0.034  2707    174
+3             EM          competition: labs_fam_12m         2.0           8.0    36.753      41.586   0.895  0.815   0.983  0.021  2707    174
+4             EM  competition: labs_acc_contact_12m         0.0           1.0    31.494      32.834   0.957  0.874   1.047  0.334  2707    174
+5             EM               competition: race_1m         0.0           0.0     0.379       0.389   0.900  0.554   1.462  0.669  2707    174
+6             EM             competition: first_acc         0.0           0.0     0.374       0.300   1.526  1.000   2.330  0.050  2707    174
+7             EM             competition: first_fam         0.0           0.0     0.218       0.121   2.187  1.325   3.610  0.002  2707    174
+8             EM          competition: first_allpdb         0.0           0.0     0.208       0.167   1.432  0.860   2.384  0.167  2605    168
+9             EM            competition: prev12_acc         1.0           2.0    59.207      72.210   0.945  0.873   1.022  0.154  2707    174
+10            EM            competition: prev12_fam         6.0          14.0    71.879      90.984   0.913  0.848   0.984  0.017  2707    174
+11            EM         competition: prev12_allpdb         2.0           5.0   105.530     129.267   0.950  0.881   1.023  0.176  2605    168
+12            EM   competition: prev12_otherlab_acc         0.0           1.0    16.621      19.729   0.941  0.851   1.040  0.234  2707    174
+13  EM non-SARS2           competition: labs_acc_6m         0.0           0.0     2.470       2.553   0.845  0.652   1.096  0.204  2046    132
+14  EM non-SARS2          competition: labs_acc_12m         0.0           1.0     3.659       4.041   0.819  0.647   1.036  0.096  2046    132
+15  EM non-SARS2           competition: labs_fam_6m         1.0           2.0     6.114       8.650   0.817  0.708   0.944  0.006  2046    132
+16  EM non-SARS2          competition: labs_fam_12m         1.5           3.0     9.583      13.605   0.817  0.717   0.930  0.002  2046    132
+17  EM non-SARS2  competition: labs_acc_contact_12m         0.0           0.0     3.250       3.341   0.872  0.696   1.094  0.238  2046    132
+18  EM non-SARS2               competition: race_1m         0.0           0.0     0.189       0.204   0.957  0.513   1.787  0.890  2046    132
+19  EM non-SARS2             competition: first_acc         0.0           0.0     0.485       0.394   1.500  0.960   2.343  0.075  2046    132
+20  EM non-SARS2             competition: first_fam         0.0           0.0     0.280       0.160   2.086  1.230   3.539  0.006  2046    132
+21  EM non-SARS2          competition: first_allpdb         0.0           0.0     0.276       0.221   1.394  0.822   2.365  0.218  1952    127
+22  EM non-SARS2            competition: prev12_acc         0.0           1.0     8.348       8.824   0.853  0.719   1.012  0.068  2046    132
+23  EM non-SARS2            competition: prev12_fam         2.0           6.0    23.439      30.112   0.870  0.786   0.964  0.008  2046    132
+24  EM non-SARS2         competition: prev12_allpdb         0.0           2.0    16.433      16.569   0.884  0.771   1.015  0.080  1952    127
+25  EM non-SARS2   competition: prev12_otherlab_acc         0.0           0.0     2.386       2.468   0.826  0.623   1.096  0.185  2046    132
+26      EM SARS2           competition: labs_acc_6m        71.5          87.0    75.262      78.732   0.929  0.570   1.513  0.768   661     42
+27      EM SARS2          competition: labs_acc_12m       105.0         143.0   120.929     124.480   0.932  0.588   1.478  0.766   661     42
+28      EM SARS2           competition: labs_fam_6m        71.5          88.0    75.857      81.047   0.734  0.485   1.113  0.146   661     42
+29      EM SARS2          competition: labs_fam_12m       106.5         145.0   122.143     128.105   0.739  0.492   1.109  0.145   661     42
+30      EM SARS2  competition: labs_acc_contact_12m       104.5         143.0   120.262     124.031   0.932  0.588   1.477  0.765   661     42
+31      EM SARS2               competition: race_1m         1.0           1.0     0.976       0.960   1.187    NaN     NaN  1.000   661     42
+32      EM SARS2             competition: first_acc         0.0           0.0     0.024       0.008   4.038    NaN     NaN  0.327   661     42
+33      EM SARS2             competition: first_fam         0.0           0.0     0.024       0.000  44.783    NaN     NaN  0.064   661     42
+34      EM SARS2          competition: first_allpdb         0.0           0.0     0.000       0.007   1.629    NaN     NaN  1.000   653     41
+35      EM SARS2            competition: prev12_acc       205.5         323.0   219.048     268.205   1.026  0.698   1.508  0.897   661     42
+36      EM SARS2            competition: prev12_fam       211.5         327.0   224.119     279.205   0.919  0.583   1.450  0.717   661     42
+37      EM SARS2         competition: prev12_allpdb       347.0         507.5   381.512     465.333   1.418  0.974   2.063  0.068   653     41
+38      EM SARS2   competition: prev12_otherlab_acc        57.0          82.0    61.357      73.100   1.019  0.623   1.667  0.941   661     42
+39     EM <=2019           competition: labs_acc_6m         0.0           0.0     0.750       0.753   0.780  0.306   1.989  0.602   178     12
+40     EM <=2019          competition: labs_acc_12m         0.0           0.0     1.167       1.295   0.774  0.405   1.480  0.439   178     12
+41     EM <=2019           competition: labs_fam_6m         1.5           1.0     3.000       3.620   0.847  0.512   1.401  0.517   178     12
+42     EM <=2019          competition: labs_fam_12m         1.5           3.0     4.250       5.687   0.733  0.450   1.194  0.212   178     12
+43     EM <=2019  competition: labs_acc_contact_12m         0.0           0.0     1.083       1.163   0.787  0.413   1.500  0.466   178     12
+44     EM <=2019               competition: race_1m         0.0           0.0     0.167       0.151   1.321    NaN     NaN  1.000   178     12
+45     EM <=2019             competition: first_acc         0.0           0.0     0.417       0.482   1.019  0.263   3.942  0.978   178     12
+46     EM <=2019             competition: first_fam         0.0           0.0     0.250       0.163   2.253  0.348  14.576  0.394   178     12
+47     EM <=2019          competition: first_allpdb         0.0           0.0     0.333       0.256   1.802  0.374   8.689  0.463   176     12
+48     EM <=2019            competition: prev12_acc         1.0           0.0     2.833       2.620   1.041  0.771   1.406  0.793   178     12
+49     EM <=2019            competition: prev12_fam         2.0           3.0    12.417      13.976   0.912  0.700   1.189  0.497   178     12
+50     EM <=2019         competition: prev12_allpdb         2.0           1.0     6.583       4.329   1.104  0.755   1.615  0.608   176     12
+51     EM <=2019   competition: prev12_otherlab_acc         0.0           0.0     0.833       0.699   0.922  0.405   2.098  0.847   178     12
+52    EM 2020-21           competition: labs_acc_6m         0.0           3.0    34.034      38.459   0.951  0.810   1.116  0.537   605     58
+53    EM 2020-21          competition: labs_acc_12m         0.0           4.0    53.966      61.185   0.942  0.808   1.099  0.448   605     58
+54    EM 2020-21           competition: labs_fam_6m         2.5          14.0    34.741      41.739   0.894  0.746   1.071  0.224   605     58
+55    EM 2020-21          competition: labs_fam_12m         6.0          19.0    55.362      66.424   0.903  0.766   1.066  0.228   605     58
+56    EM 2020-21  competition: labs_acc_contact_12m         0.0           3.0    53.517      60.420   0.964  0.836   1.111  0.611   605     58
+57    EM 2020-21               competition: race_1m         0.0           1.0     0.448       0.559   0.657  0.280   1.540  0.334   605     58
+58    EM 2020-21             competition: first_acc         0.0           0.0     0.448       0.212   3.072  1.404   6.725  0.005   605     58
+59    EM 2020-21             competition: first_fam         0.0           0.0     0.224       0.088   3.144  1.285   7.689  0.012   605     58
+60    EM 2020-21          competition: first_allpdb         0.0           0.0     0.263       0.101   3.120  1.223   7.959  0.017   590     57
+61    EM 2020-21            competition: prev12_acc         0.5           7.0    79.603     104.910   0.946  0.827   1.081  0.414   605     58
+62    EM 2020-21            competition: prev12_fam         7.5          37.0    82.448     114.285   0.897  0.775   1.039  0.147   605     58
+63    EM 2020-21         competition: prev12_allpdb         2.0          16.0   134.561     176.167   0.946  0.829   1.079  0.409   590     57
+64    EM 2020-21   competition: prev12_otherlab_acc         0.0           3.0    22.190      28.038   0.940  0.791   1.116  0.480   605     58
+65      EM 2022+           competition: labs_acc_6m         0.0           1.0    14.462      17.835   0.945  0.837   1.068  0.366  1924    104
+66      EM 2022+          competition: labs_acc_12m         1.0           1.0    23.250      28.079   0.946  0.845   1.058  0.329  1924    104
+67      EM 2022+           competition: labs_fam_6m         2.0           4.0    18.673      23.787   0.898  0.799   1.010  0.074  1924    104
+68      EM 2022+          competition: labs_fam_12m         2.0           8.0    30.125      37.395   0.894  0.800   0.999  0.048  1924    104
+69      EM 2022+  competition: labs_acc_contact_12m         1.0           1.0    22.721      27.432   0.953  0.853   1.065  0.396  1924    104
+70      EM 2022+               competition: race_1m         0.0           0.0     0.365       0.359   1.071  0.596   1.926  0.818  1924    104
+71      EM 2022+             competition: first_acc         0.0           0.0     0.327       0.310   1.133  0.664   1.934  0.647  1924    104
+72      EM 2022+             competition: first_fam         0.0           0.0     0.212       0.127   1.878  0.967   3.645  0.063  1924    104
+73      EM 2022+          competition: first_allpdb         0.0           0.0     0.162       0.179   0.937  0.507   1.732  0.835  1839     99
+74      EM 2022+            competition: prev12_acc         0.5           2.0    54.337      68.730   0.941  0.855   1.034  0.207  1924    104
+75      EM 2022+            competition: prev12_fam         6.0          14.0    72.846      91.005   0.923  0.848   1.005  0.065  1924    104
+76      EM 2022+         competition: prev12_allpdb         3.0           4.0   100.808     126.676   0.948  0.867   1.036  0.241  1839     99
+77      EM 2022+   competition: prev12_otherlab_acc         0.0           1.0    15.337      18.967   0.941  0.835   1.062  0.325  1924    104
+78         X-ray           competition: labs_acc_6m         0.0           0.0    15.774       8.304   1.048  0.876   1.253  0.608  1058     31
+79         X-ray          competition: labs_acc_12m         0.0           0.0    26.032      13.341   1.035  0.874   1.225  0.694  1058     31
+80         X-ray           competition: labs_fam_6m         1.0           1.0    17.000      10.730   0.984  0.807   1.198  0.870  1058     31
+81         X-ray          competition: labs_fam_12m         1.0           1.0    28.516      17.269   0.989  0.824   1.187  0.905  1058     31
+82         X-ray  competition: labs_acc_contact_12m         0.0           0.0    25.935      13.204   1.044  0.886   1.230  0.610  1058     31
+83         X-ray               competition: race_1m         0.0           0.0     0.290       0.213   1.213  0.535   2.747  0.644  1058     31
+84         X-ray             competition: first_acc         1.0           0.0     0.516       0.428   1.621  0.766   3.431  0.206  1058     31
+85         X-ray             competition: first_fam         0.0           0.0     0.323       0.223   1.919  0.839   4.385  0.122  1058     31
+86         X-ray          competition: first_allpdb         0.0           0.0     0.321       0.215   1.891  0.787   4.546  0.155  1026     28
+87         X-ray            competition: prev12_acc         0.0           0.0    57.065      27.826   1.048  0.907   1.210  0.524  1058     31
+88         X-ray            competition: prev12_fam         2.0           2.0    61.613      35.899   1.002  0.864   1.161  0.982  1058     31
+89         X-ray         competition: prev12_allpdb         1.0           1.0   104.929      49.391   1.047  0.908   1.208  0.524  1026     28
+90         X-ray   competition: prev12_otherlab_acc         0.0           0.0    15.194       7.737   1.064  0.884   1.280  0.511  1058     31
+
+ EM error rate by number of other labs (same antigen, +-12 months), by SARS2:
+                     mean  size  sum
+sars2 period  bin                   
+False 2020-21 0     0.181   171   31
+              1-2   0.028   108    3
+              3-9   0.015    67    1
+              >=10  0.000     8    0
+      2022+   0     0.063   778   49
+              1-2   0.053   417   22
+              3-9   0.043   230   10
+              >=10  0.056   107    6
+      <=2019  0     0.075   106    8
+              1-2   0.057    35    2
+              3-9   0.051    39    2
+True  2020-21 0     1.000     1    1
+              >=10  0.092   260   24
+      2022+   0     0.000     4    0
+              1-2   0.000     9    0
+              3-9   0.000    10    0
+              >=10  0.045   380   17
+
+ EM first antibody structure of the antigen, by period:
+                    mean  size  sum
+period  first_acc                  
+2020-21 0.0        0.069   467   32
+        1.0        0.189   148   28
+2022+   0.0        0.052  1334   70
+        1.0        0.057   601   34
+<=2019  0.0        0.074    95    7
+        1.0        0.059    85    5
+
+== E2. Paper-level competition (EM, error paper = any error entry)
+EM papers l_labs12 {'OR': np.float64(0.923), 'lo': np.float64(0.853), 'hi': np.float64(1.0), 'p': np.float64(0.05), 'n': 1299, 'n_err': 125, 'err_median': np.float64(0.585), 'clean_median': np.float64(1.0)}
+EM papers l_labs6 {'OR': np.float64(0.927), 'lo': np.float64(0.852), 'hi': np.float64(1.01), 'p': np.float64(0.082), 'n': 1299, 'n_err': 125, 'err_median': np.float64(0.0), 'clean_median': np.float64(1.0)}
+EM papers l_fam12 {'OR': np.float64(0.898), 'lo': np.float64(0.829), 'hi': np.float64(0.973), 'p': np.float64(0.009), 'n': 1299, 'n_err': 125, 'err_median': np.float64(2.0), 'clean_median': np.float64(3.17)}
+EM papers first {'OR': np.float64(1.266), 'lo': np.float64(0.847), 'hi': np.float64(1.892), 'p': np.float64(0.25), 'n': 1299, 'n_err': 125, 'err_median': np.float64(0.0), 'clean_median': np.float64(0.0)}
+EM papers l_prev {'OR': np.float64(0.941), 'lo': np.float64(0.879), 'hi': np.float64(1.007), 'p': np.float64(0.081), 'n': 1299, 'n_err': 125, 'err_median': np.float64(1.0), 'clean_median': np.float64(1.0)}
+EM papers l_prevall {'OR': np.float64(0.946), 'lo': np.float64(0.888), 'hi': np.float64(1.007), 'p': np.float64(0.082), 'n': 1252, 'n_err': 123, 'err_median': np.float64(1.585), 'clean_median': np.float64(2.0)}
+EM papers non-SARS2 l_labs12 {'OR': np.float64(0.826), 'lo': np.float64(0.664), 'hi': np.float64(1.027), 'p': np.float64(0.085), 'n': 1008, 'n_err': 98, 'err_median': np.float64(0.0), 'clean_median': np.float64(0.0)}
+EM papers non-SARS2 l_labs6 {'OR': np.float64(0.865), 'lo': np.float64(0.684), 'hi': np.float64(1.093), 'p': np.float64(0.224), 'n': 1008, 'n_err': 98, 'err_median': np.float64(0.0), 'clean_median': np.float64(0.0)}
+EM papers non-SARS2 l_fam12 {'OR': np.float64(0.858), 'lo': np.float64(0.759), 'hi': np.float64(0.971), 'p': np.float64(0.015), 'n': 1008, 'n_err': 98, 'err_median': np.float64(1.585), 'clean_median': np.float64(2.0)}
+EM papers non-SARS2 first {'OR': np.float64(1.133), 'lo': np.float64(0.737), 'hi': np.float64(1.743), 'p': np.float64(0.569), 'n': 1008, 'n_err': 98, 'err_median': np.float64(0.5), 'clean_median': np.float64(0.0)}
+EM papers non-SARS2 l_prev {'OR': np.float64(0.913), 'lo': np.float64(0.781), 'hi': np.float64(1.067), 'p': np.float64(0.252), 'n': 1008, 'n_err': 98, 'err_median': np.float64(0.0), 'clean_median': np.float64(0.0)}
+EM papers non-SARS2 l_prevall {'OR': np.float64(0.922), 'lo': np.float64(0.811), 'hi': np.float64(1.048), 'p': np.float64(0.214), 'n': 965, 'n_err': 97, 'err_median': np.float64(0.585), 'clean_median': np.float64(1.0)}
+
+== G. Antibody role from contacts (unit = antibody in paper), EM
+{'fiducial': '1.4% (2/139)', 'no antigen contact': '4.1% (6/148)', 'subject': '4.2% (162/3896)', 'unknown': '16.7% (1/6)'}
+role_old            Antibody alone  Antibody of interest  Auxiliary  Unclear
+role_c                                                                      
+fiducial                         0                     3        135        1
+no antigen contact              28                    54         59        7
+subject                         13                  3159        594      130
+unknown                          0                     2          4        0
+EM units fid 1.4% (2/139) 4.2% (169/4050) 0.42 0.1269
+EM units nocont 4.1% (6/148) 4.1% (165/4041) 0.94 0.8976
+EM units non-SARS2 fid 1.4% (2/139) 4.3% (131/3015) 0.4 0.1264
+EM units non-SARS2 nocont 4.3% (6/138) 4.2% (127/3016) 0.96 0.9301
+X-ray units fid 0.0% (0/5) 1.6% (35/2163) 5.45 1.0
+X-ray units nocont 0.6% (2/316) 1.8% (33/1852) 0.43 0.2217
+
+ EM units by antigen class contacted:
+                                 mean  size  sum
+agcls                                           
+viral surface glycoprotein      0.031  2424   75
+channel/transporter             0.025   355    9
+receptor/membrane protein       0.029   315    9
+viral capsid                    0.135   229   31
+other protein                   0.026   195    5
+none                            0.041   148    6
+fiducial target                 0.014   143    2
+GPCR                            0.073   123    9
+enzyme                          0.120   108   13
+unmapped/peptide                0.082    61    5
+toxin                           0.054    37    2
+cytokine/growth factor/hormone  0.000    24    0
+viral other                     0.333    12    4
+TCR                             0.000     9    0
+unknown                         0.167     6    1
+
+== Tests with q<0.1:
+                                             test       stratum                          term       OR      lo       hi       p       q     n  n_err
+53   antigen family: Capsid protein [g30_6819_30]            EM                          is_f  10.0516  5.9806  16.8938  0.0000  0.0000  2752    178
+24             class: global LR (EM, unclustered)            EM                            LR      NaN     NaN      NaN  0.0000  0.0000  2735    178
+25   class: global LR (EM non-SARS2, unclustered)  EM non-SARS2                            LR      NaN     NaN      NaN  0.0000  0.0000  2071    136
+10                            class: viral capsid            EM                        is_cls   4.7219  2.5293   8.8152  0.0000  0.0000  2752    178
+11                             class: viral other            EM                        is_cls  11.3317  3.4500  37.2193  0.0001  0.0021  2752    178
+1                                         fidonly            EM  fidonly (Fisher, unadjusted)   0.1668     NaN      NaN  0.0002  0.0046  2752    178
+4                                   class: enzyme            EM                        is_cls   3.8321  1.8362   7.9978  0.0003  0.0084  2752    178
+57              antigen-family dispersion: EM all        EM all                    chi2 ratio   2.0888     NaN      NaN  0.0020  0.0349  2752    178
+58        antigen-family dispersion: EM non-SARS2  EM non-SARS2                    chi2 ratio   1.9977     NaN      NaN  0.0020  0.0349  2088    136
+68                         competition: first_fam            EM                     first_fam   2.1873  1.3252   3.6103  0.0022  0.0349  2707    174
+77                      competition: labs_fam_12m  EM non-SARS2                l_labs_fam_12m   0.8168  0.7174   0.9301  0.0023  0.0349  2046    132
+119                        competition: first_acc    EM 2020-21                     first_acc   3.0723  1.4036   6.7248  0.0050  0.0706   605     58
+76                       competition: labs_fam_6m  EM non-SARS2                 l_labs_fam_6m   0.8171  0.7075   0.9437  0.0060  0.0778  2046    132
+81                         competition: first_fam  EM non-SARS2                     first_fam   2.0859  1.2295   3.5387  0.0064  0.0778  2046    132
+27                                organism: human            EM                          is_o   0.4924  0.2931   0.8273  0.0074  0.0798  2752    178
+84                        competition: prev12_fam  EM non-SARS2                  l_prev12_fam   0.8701  0.7857   0.9635  0.0075  0.0798  2046    132
+154              paper-level competition: l_fam12     EM papers                       l_fam12   0.8983  0.8293   0.9730  0.0085  0.0853  1299    125
+total tests 170

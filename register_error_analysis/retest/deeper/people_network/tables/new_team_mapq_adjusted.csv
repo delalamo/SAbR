@@ -1,0 +1,7 @@
+model,term,n,OR,lo,hi,p
+y ~ first_abem_team_na + lq_z + C(ycat) + res_med + l2_nv,first_abem_team_na,1295,1.946244146359862,1.328613254028481,2.850992390565772,0.0006292080362541239
+y ~ first_abem_team_na + lq_z + C(ycat) + res_med + l2_nv,lq_z,1295,0.8474104733915326,0.6920720189643931,1.0376152925359168,0.10903103336170951
+y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv,first_abem_team_na,1295,1.9363381114862677,1.3192745103518853,2.8420205594619885,0.0007374734778594866
+y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv,lq_z,1295,0.8480775437284397,0.6928016936374446,1.0381549681269286,0.11025403038554106
+y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv,af_start,1295,0.5476824388198155,0.16372172265974305,1.8321090745851043,0.32846219398373344
+y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv,flex,1295,1.0499255583363447,0.5319955558117664,2.0720918925080687,0.8882991563130437

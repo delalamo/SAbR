@@ -1,0 +1,26 @@
+test,stratum,term,OR,lo,hi,p,n,n_err,rate_in,rate_out,n_papers,n_err_papers,n_labs
+antigen family: Capsid protein [g30_6819_30],EM,is_f,10.05160730946967,5.980589401454741,16.893788006782078,3.001606485367971e-18,2752,178,40.0% (6/15),6.3% (172/2737),1,1,2
+antigen family: Envelope glycoprotein gp160 [g30_201308_30],EM,is_f,0.4225984833931259,0.20885841031018854,0.8550743917898055,0.016603217668876784,2752,178,3.4% (9/265),6.8% (169/2487),110,9,31
+antigen family: Glucagon-like peptide 1 receptor [g30_27931_30],EM,"is_f (Fisher, unadjusted)",0.11448156498371706,,,0.03118509580666624,2752,178,0.0% (0/61),6.6% (178/2691),37,0,24
+antigen family: Genome polyprotein [g30_393_30],EM,is_f,2.989889888269669,0.9476743780320719,9.433030744738232,0.06172229919388578,2752,178,14.3% (11/77),6.2% (167/2675),25,7,19
+antigen family: Beta-arrestin-1 [g30_324_30],EM,"is_f (Fisher, unadjusted)",0.14904909332153915,,,0.07124931889802878,2752,178,0.0% (0/47),6.6% (178/2705),19,0,16
+antigen family: Gamma-aminobutyric acid receptor subunit alph [g30_1553_30],EM,"is_f (Fisher, unadjusted)",0.3139280125195618,,,0.12748163113115557,2752,178,1.5% (1/68),6.6% (177/2684),16,1,11
+antigen family:  [g30_127001_30],EM,is_f,0.44731176875142686,0.13505825865766063,1.481492656962972,0.1879458067421511,2752,178,2.8% (3/107),6.6% (175/2645),65,3,50
+antigen family: Fusion glycoprotein F0 [g30_1641_30],EM,"is_f (Fisher, unadjusted)",2.6875459028433535,,,0.2526683695048227,2752,178,13.3% (2/15),6.4% (176/2737),14,2,11
+antigen family: Genome polyprotein [g30_68766_30],EM,"is_f (Fisher, unadjusted)",0.2336869173899068,,,0.2579046006395789,2752,178,0.0% (0/30),6.5% (178/2722),19,0,18
+antigen family: Fusion glycoprotein F0 [g30_114341_30],EM,"is_f (Fisher, unadjusted)",0.22617936063314215,,,0.2608727678334374,2752,178,0.0% (0/31),6.5% (178/2721),18,0,14
+antigen family: Structural polyprotein [g30_3500_30],EM,"is_f (Fisher, unadjusted)",0.3041301627033792,,,0.39642007296819637,2752,178,0.0% (0/23),6.5% (178/2729),9,0,9
+antigen family: Spike glycoprotein; Fibritin [P10104],EM,"is_f (Fisher, unadjusted)",0.2594856124267889,,,0.41517871057339123,2752,178,0.0% (0/27),6.5% (178/2725),14,0,13
+antigen family: Calcitonin receptor [g30_43709_30],EM,"is_f (Fisher, unadjusted)",0.4625463088461191,,,0.6184750567070509,2752,178,0.0% (0/15),6.5% (178/2737),6,0,3
+antigen family: Neuraminidase [g30_705_30],EM,"is_f (Fisher, unadjusted)",0.4625463088461191,,,0.6184750567070509,2752,178,0.0% (0/15),6.5% (178/2737),8,0,6
+antigen family: Sodium- and chloride-dependent taurine transp [g30_964_30],EM,"is_f (Fisher, unadjusted)",0.43434343434343436,,,0.6193578936236952,2752,178,0.0% (0/16),6.5% (178/2736),4,0,4
+antigen family: Cobalt/magnesium transport protein CorA [g30_5933_30],EM,"is_f (Fisher, unadjusted)",0.43434343434343436,,,0.6193578936236952,2752,178,0.0% (0/16),6.5% (178/2736),2,0,1
+antigen family: Broad substrate specificity ATP-binding casse [g30_2803_30],EM,"is_f (Fisher, unadjusted)",0.40936374549819926,,,0.6217316896544139,2752,178,0.0% (0/17),6.5% (178/2735),8,0,5
+antigen family: Sodium-dependent serotonin transporter [g30_3147_30],EM,"is_f (Fisher, unadjusted)",0.3670904259139553,,,0.6301887945219806,2752,178,0.0% (0/19),6.5% (178/2733),8,0,6
+antigen family: Circumsporozoite protein [g30_206608_30],EM,"is_f (Fisher, unadjusted)",0.34904693584750973,,,0.6359360482208417,2752,178,0.0% (0/20),6.5% (178/2732),8,0,3
+antigen family: Spike glycoprotein [g30_207049_30],EM,"is_f (Fisher, unadjusted)",0.34904693584750973,,,0.6359360482208417,2752,178,0.0% (0/20),6.5% (178/2732),9,0,8
+antigen family: Envelope glycoprotein [g30_147122_30],EM,"is_f (Fisher, unadjusted)",1.682258383292707,,,0.6575689880639567,2752,178,8.7% (2/23),6.4% (176/2729),14,2,7
+antigen family: Spike glycoprotein [g30_4905_30],EM,is_f,0.9094318093679673,0.5221594647050704,1.58393416531757,0.7373586989319274,2752,178,6.7% (45/670),6.4% (133/2082),290,27,160
+antigen family: Soluble cytochrome b562; C-C chemokine recept [P0ABE7],EM,"is_f (Fisher, unadjusted)",0.7702031740229675,,,0.7671118425746906,2752,178,4.2% (2/48),6.5% (176/2704),28,2,24
+antigen family: Hemagglutinin [g30_161017_30],EM,is_f,1.0826960706180282,0.43594062826155344,2.6889688763498527,0.8640783401942416,2752,178,6.6% (6/91),6.5% (172/2661),52,6,30
+"antigen family: Glutamate receptor ionotropic, NMDA 1 [g30_281_30]",EM,"is_f (Fisher, unadjusted)",0.9586854460093897,,,1.0,2752,178,4.3% (1/23),6.5% (177/2729),5,1,4

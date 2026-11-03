@@ -1,0 +1,7 @@
+keys,stat,observed,null_mean,null_sd,ratio,p_upper,p_lower
+all person keys,people on error studies of >=2 different labs,37,36.5075,7.0589619456404495,1.0134903786893104,0.48875562218890556,0.5647176411794103
+all person keys,max distinct labs linked by one person,4,4.052,1.0243515021710077,0.987166831194472,0.6746626686656672,0.7411294352823589
+all person keys,non-last authors on error studies of >=2 different labs,20,21.8495,5.645604462765701,0.9153527540675989,0.6391804097951025,0.42478760619690153
+collision-prone name-only keys dropped,people on error studies of >=2 different labs,29,26.0615,5.490238405570381,1.1127525276749228,0.3173413293353323,0.7416291854072964
+collision-prone name-only keys dropped,max distinct labs linked by one person,3,3.1335,0.6178007364838601,0.9573958831977022,0.894552723638181,0.7871064467766117
+collision-prone name-only keys dropped,non-last authors on error studies of >=2 different labs,15,13.8675,4.239450878356771,1.0816657652785289,0.4222888555722139,0.672663668165917

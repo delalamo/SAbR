@@ -1,0 +1,30 @@
+method    control amyloid level           L1_8          L1_9       OR     p_fisher
+   all all_nonerr    with chain 12.3% (59/480) 1.9% (19/986) 7.132517 1.673982e-15
+   all all_nonerr    with  unit  8.4% (15/178)  2.1% (7/332) 4.272568 2.036759e-03
+   all all_nonerr without chain  2.8% (12/433) 1.0% (10/977) 2.756295 1.947132e-02
+   all all_nonerr without  unit   4.7% (8/171)  1.5% (5/330) 3.190184 4.192339e-02
+   all clean_only    with chain 12.3% (59/480) 1.9% (19/986) 7.132517 1.673982e-15
+   all clean_only    with  unit  8.4% (15/178)  2.1% (7/332) 4.272568 2.036759e-03
+   all clean_only without chain  2.8% (12/433) 1.0% (10/977) 2.756295 1.947132e-02
+   all clean_only without  unit   4.7% (8/171)  1.5% (5/330) 3.190184 4.192339e-02
+    EM all_nonerr    with chain 17.2% (57/332) 2.6% (19/731) 7.767273 4.134882e-16
+    EM all_nonerr    with  unit 11.3% (13/115)  3.0% (7/237) 4.187675 2.607229e-03
+    EM all_nonerr without chain  3.5% (10/285) 1.4% (10/722) 2.589091 4.222896e-02
+    EM all_nonerr without  unit   5.6% (6/108)  2.1% (5/235) 2.705882 1.071968e-01
+    EM clean_only    with chain 17.2% (57/332) 2.6% (19/731) 7.767273 4.134882e-16
+    EM clean_only    with  unit 11.3% (13/115)  3.0% (7/237) 4.187675 2.607229e-03
+    EM clean_only without chain  3.5% (10/285) 1.4% (10/722) 2.589091 4.222896e-02
+    EM clean_only without  unit   5.6% (6/108)  2.1% (5/235) 2.705882 1.071968e-01
+EM lambda chains, clean-only control, with amyloid: n=1063 err=76 adj OR(L1=8)=8.34 p=0.00237
+   unit level: n=352 err=20 rate L1=8 11.3% vs L1=9 3.0%  adj OR=4.11 p=0.00909
+EM lambda chains, clean-only control, without amyloid: n=1007 err=20 adj OR(L1=8)=2.17 p=0.277
+   unit level: n=343 err=11 rate L1=8 5.6% vs L1=9 2.1%  adj OR=2.73 p=0.125
+   LOPO Fisher p (units, without amyloid): min 0.0763 median 0.296 max 0.296
+   L1=8 error units: 6 of 108 ; L1=9 error units: 5 of 235
+   L1=8 error units list:  pdb      v_gene       err_modes    last_author
+6orp IGLV1-40*01       B_CDR2FR3 Bjorkman, P.J.
+26pf IGLV1-44*01 Dminus_CDR3long     Zeng, M.S.
+7t6x IGLV1-47*01      A_FR1Nterm   Lander, G.C.
+8hhx IGLV6-57*02           C_FR3      Wu, Y.-M.
+9c7s IGLV1-47*01      A_FR1Nterm    Crowe, J.E.
+9yie IGLV1-51*01      A_FR1Nterm Bjorkman, P.J.

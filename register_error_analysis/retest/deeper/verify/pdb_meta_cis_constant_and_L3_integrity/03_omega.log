@@ -1,0 +1,9 @@
+                   n  agree_const_count  agree_chain_count  agree_site  omega_const_cis_any  nonplanar_const_mean
+grp                                                                                                              
+control_sample  80.0             0.9625             0.9625         1.0             0.500000              0.112500
+error           60.0             1.0000             1.0000         1.0             0.316667              0.016667
+partner         50.0             1.0000             1.0000         1.0             0.680000              0.120000
+      pdb chain  y ctype                       paper  ann_const_cis  omega_const_cis  ann_chain_cis  omega_chain_cis  n_omega site_omega  ann_site_cis  omega_site_cis  nonplanar_const             grp
+81   7sd3     K  0     H  10.1038/s41467-022-34008-y              3                2              4                3      218     -13;-5             2               2                0  control_sample
+82   7sd3     G  0     H  10.1038/s41467-022-34008-y              3                2              3                2      218     -8;-11             2               2                0  control_sample
+128  8vh1     K  0     H  10.1038/s41467-024-53120-9              2                3              2                3      219       -6;2             2               2                0  control_sample

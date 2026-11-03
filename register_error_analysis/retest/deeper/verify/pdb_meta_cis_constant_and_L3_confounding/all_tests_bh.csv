@@ -1,0 +1,111 @@
+test,p,src,q_BH
+C-kappa any cis (investigator set) [reproduce],0.0013228125967313768,06,0.012550355998840917
+CH1 any cis [reproduce],0.0543799512963218,06,0.09063325216053635
+all constant any cis [reproduce],0.001858115345131809,06,0.01361730749001639
+"kappa Pro115 cis, no CDR-mode error (investigator regex) [reproduce]",0.02561885313430713,06,0.059373329126086796
+C-kappa any cis | drop Zhou,0.02517982580572243,06,0.059373329126086796
+CH1 any cis | drop Zhou,0.6283270075209884,06,0.6645766425702762
+all constant any cis | drop Zhou,0.05369882977890256,06,0.09063325216053635
+kappa Pro115 cis (no CDR3/FR4 error) | drop Zhou,0.030038877042381052,06,0.06128883888655489
+"C-kappa any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]",0.025908361800474237,06,0.059373329126086796
+"CH1 any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]",0.4089559862359019,06,0.47856551580797035
+"all constant any cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]",0.022642722559991377,06,0.059373329126086796
+"kappa Pro115 cis | drop Zhou [paper level: papers with any cis among their error / clean chains, Fisher]",0.00042718115409841,06,0.012550355998840917
+C-kappa any cis | entries with >=1 cis anywhere,0.22845552636781163,06,0.28556940795976454
+all constant any cis | entries with >=1 cis anywhere,0.22645637616977699,06,0.28556940795976454
+kappa Pro115 cis | entries with >=1 cis anywhere,0.024254927022339806,06,0.059373329126086796
+kappa Pro115 cis | Pro8 modelled TRANS (stratum),0.4570750721642042,06,0.5130434483475761
+"kappa Pro115 cis, adjusted for Pro8 cis status",0.23856045221499456,06,0.2948499971196562
+entry: no cis peptide anywhere in the entry (EM entries),0.005855390483311487,06,0.02691153272196107
+entry: no cis peptide anywhere | drop Zhou entries,0.014456923360069606,06,0.04298004242182856
+"K_const: investigator model (chain, year bin + res, cluster=paper)",0.0013228125967313,02,0.012550355998840917
+K_const: drop Zhou Q. 2021 Cell Res paper,0.0251798258057224,02,0.059373329126086796
+"K_const: paper-level means (one vote per paper), Mann-Whitney",0.0112363356720953,02,0.03635285070383774
+K_const: paper-weighted GLM (1 vote per paper x status),0.0070285854574891,02,0.02691153272196107
+K_const: +sars2,0.0020376883758054,02,0.01361730749001639
+K_const: +chain_q,0.000928668166297,02,0.012550355998840917
+K_const: +C(irm),0.0007312664131241,02,0.012550355998840917
+K_const: +sars2+chain_q+C(irm),0.0013691297453281,02,0.012550355998840917
+"H_const: investigator model (chain, year bin + res, cluster=paper)",0.0543799512963218,02,0.09063325216053635
+H_const: drop Zhou Q. 2021 Cell Res paper,0.6283270075209884,02,0.6645766425702762
+"H_const: paper-level means (one vote per paper), Mann-Whitney",0.4380841739860939,02,0.5019714493590659
+H_const: paper-weighted GLM (1 vote per paper x status),0.2073826676774181,02,0.2652569005176278
+H_const: +sars2,0.034662418398579,02,0.0664723648973573
+H_const: +chain_q,0.1142153595986888,02,0.1631647994266983
+H_const: +C(irm),0.0627963276490688,02,0.09729008509010659
+H_const: +sars2+chain_q+C(irm),0.0230605204642893,02,0.059373329126086796
+H_const: within-paper conditional logit,0.855051024450286,02,0.8721051773740033
+H_const: within-entry conditional logit,0.9181812471875724,02,0.9181812471875724
+"all_const: investigator model (chain, year bin + res, cluster=paper)",0.0018581153451318,02,0.01361730749001639
+all_const: drop Zhou Q. 2021 Cell Res paper,0.0536988297789025,02,0.09063325216053635
+"all_const: paper-level means (one vote per paper), Mann-Whitney",0.1130070917866004,02,0.1631647994266983
+all_const: paper-weighted GLM (1 vote per paper x status),0.0170832578704279,02,0.049451535940712346
+all_const: +sars2,0.0009534709755645,02,0.012550355998840917
+all_const: +chain_q,0.0011191152665805,02,0.012550355998840917
+all_const: +C(irm),0.0015586035825864,02,0.01318818416034646
+all_const: +sars2+chain_q+C(irm),0.0003314393128079,02,0.012550355998840917
+all_const: within-paper conditional logit,0.2519328041964285,02,0.30453415891875973
+all_const: within-entry conditional logit,0.551329118044375,02,0.6125879089381945
+"K_Pro115_noCDRmode(inv): investigator model (chain, year bin + res, cluster=paper)",0.0256188531343071,02,0.059373329126086796
+K_Pro115_noCDRmode(inv): drop Zhou Q. 2021 Cell Res paper,0.1096614810154307,02,0.16298153774937893
+"K_Pro115_noCDRmode(inv): paper-level means (one vote per paper), Mann-Whitney",0.0058550056168596,02,0.02691153272196107
+K_Pro115_noCDRmode(inv): paper-weighted GLM (1 vote per paper x status),0.0330735658862663,02,0.0661471317725326
+K_Pro115_noCDRmode(inv): +sars2,0.025831163149264,02,0.059373329126086796
+K_Pro115_noCDRmode(inv): +chain_q,0.0300872481806724,02,0.06128883888655489
+K_Pro115_noCDRmode(inv): +C(irm),0.0351304736148433,02,0.0664723648973573
+K_Pro115_noCDRmode(inv): +sars2+chain_q+C(irm),0.0353186081105825,02,0.0664723648973573
+K_Pro115_noCDRmode(inv): within-paper conditional logit,0.8837132357056492,02,0.8918206965836826
+"K_Pro115_noCDR3FR4mode: investigator model (chain, year bin + res, cluster=paper)",0.0068978817110022,02,0.02691153272196107
+K_Pro115_noCDR3FR4mode: drop Zhou Q. 2021 Cell Res paper,0.030038877042381,02,0.06128883888655489
+"K_Pro115_noCDR3FR4mode: paper-level means (one vote per paper), Mann-Whitney",0.0004919164385209,02,0.012550355998840917
+K_Pro115_noCDR3FR4mode: paper-weighted GLM (1 vote per paper x status),0.0072829948643417,02,0.02691153272196107
+K_Pro115_noCDR3FR4mode: +sars2,0.0061627509514643,02,0.02691153272196107
+K_Pro115_noCDR3FR4mode: +chain_q,0.0068795286331353,02,0.02691153272196107
+K_Pro115_noCDR3FR4mode: +C(irm),0.0106050539791,02,0.035350179930333334
+K_Pro115_noCDR3FR4mode: +sars2+chain_q+C(irm),0.0086355068088021,02,0.030642120934459064
+K_Pro115_noCDR3FR4mode: within-paper conditional logit,0.8562487196035669,02,0.8721051773740033
+ck_YP: site modelled (Pro and i-1 not unobserved),0.03798141885875,03,0.06963260124104166
+ck_YP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper,0.2487160013812929,03,0.3039862239104691
+ck_YP: cis | site present (unmodelled counted as not cis),0.1187664121354519,03,0.16749109403717574
+ck_YP: cis | site present (unmodelled counted as not cis) | drop Zhou paper,0.5717055141290102,03,0.6231810577621838
+ck_YP: cis | site modelled,0.0013458206922961,03,0.012550355998840917
+ck_YP: cis | site modelled | drop Zhou paper,0.0253787050496419,03,0.059373329126086796
+ch1_FP: site modelled (Pro and i-1 not unobserved),0.5778587990158431,03,0.6231810577621838
+ch1_FP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper,0.0599775121382773,03,0.09442063723763047
+ch1_FP: cis | site present (unmodelled counted as not cis),0.0518215104646329,03,0.09063325216053635
+ch1_FP: cis | site present (unmodelled counted as not cis) | drop Zhou paper,0.1233708370624476,03,0.1717821781882182
+ch1_FP: cis | site modelled,0.090859581497127,03,0.13691169814635573
+ch1_FP: cis | site modelled | drop Zhou paper,0.7719824631425264,03,0.801113876846018
+ch1_EP: site modelled (Pro and i-1 not unobserved),0.5775331195267741,03,0.6231810577621838
+ch1_EP: site modelled (Pro and i-1 not unobserved) | drop Zhou paper,0.0600858600603103,03,0.09442063723763047
+ch1_EP: cis | site present (unmodelled counted as not cis),0.059796857799064,03,0.09442063723763047
+ch1_EP: cis | site present (unmodelled counted as not cis) | drop Zhou paper,0.130817195916897,03,0.17987364438573336
+ch1_EP: cis | site modelled,0.1111237757382129,03,0.16298153774937893
+ch1_EP: cis | site modelled | drop Zhou paper,0.6645566154006479,03,0.6962021685149644
+k_P115: cis | site present (unmodelled counted as not cis),0.0068978817110022,03,0.02691153272196107
+k_P115: cis | site present (unmodelled counted as not cis) | drop Zhou paper,0.030038877042381,03,0.06128883888655489
+k_P115: cis | site modelled,0.0068978817110022,03,0.02691153272196107
+k_P115: cis | site modelled | drop Zhou paper,0.030038877042381,03,0.06128883888655489
+C-kappa Tyr-Pro cis | modelled | 2020-21,0.0100149918399357,04,0.03442653444977897
+C-kappa Tyr-Pro cis | modelled | 2020-21 | drop Zhou,0.3756924245752253,04,0.44919746416603024
+kappa Pro115 cis (no CDR3/FR4 error) | 2020-21,0.0061375383631309,04,0.02691153272196107
+kappa Pro115 cis (no CDR3/FR4 error) | 2020-21 | drop Zhou,0.0464000125104799,04,0.08367215370742277
+any constant cis (pooled) | 2020-21,0.0022282866801845,04,0.01361730749001639
+any constant cis (pooled) | 2020-21 | drop Zhou,0.403579777568827,04,0.4773524250814083
+kappa Pro115 cis (no CDR3/FR4 error) | >=2022,0.1831192753859515,04,0.2426881962946345
+kappa Pro115 cis (no CDR3/FR4 error) | >=2022 | drop Zhou,0.1831192753859515,04,0.2426881962946345
+any constant cis (pooled) | >=2022,0.1929706861235539,04,0.24972677027754034
+any constant cis (pooled) | >=2022 | drop Zhou,0.1929706861235539,04,0.24972677027754034
+NOVEL V only: any constant cis (pooled),0.0010422687745958,04,0.012550355998840917
+NOVEL V only: any constant cis (pooled) | drop Zhou,0.0356533593540371,04,0.0664723648973573
+"kappa Pro115 cis, L3 = 9 only",0.0125195948252968,04,0.03825431752174022
+"kappa Pro115 cis, L3 = 9 only | drop Zhou",0.0711658291836174,04,0.10872557236385992
+"kappa Pro115 cis, + species + L3 class",0.0073395089241712,04,0.02691153272196107
+"C-kappa Tyr-Pro cis | modelled, + species",0.0022061072844098,04,0.01361730749001639
+"C-kappa Tyr-Pro cis | modelled, + species | drop Zhou",0.0280641263051395,04,0.06128883888655489
+"C-kappa Tyr-Pro site: cis, + local resolution at site (EMDB-VA subset)",0.0055710249014785,04,0.02691153272196107
+"C-kappa Tyr-Pro site: cis, EMDB-VA subset without local-res adjustment",0.143448912272903,04,0.19480716481505345
+"kappa Pro115 site (CDR-L3/FR4 window): cis, + local resolution at site (EMDB-VA subset)",0.4340296052755186,04,0.5019714493590659
+"kappa Pro115 site (CDR-L3/FR4 window): cis, EMDB-VA subset without local-res adjustment",0.4547598325700733,04,0.5130434483475761
+"Pro115 cis, chains with full SAbR/ANARCI agreement over IMGT 105-118 | all",0.0116754072563154,05,0.036694137091276974
+"Pro115 cis, chains with full SAbR/ANARCI agreement over IMGT 105-118 | drop Zhou",0.0564854923299869,05,0.09273737546714265

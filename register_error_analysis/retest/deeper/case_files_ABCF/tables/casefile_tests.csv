@@ -1,0 +1,31 @@
+test,kind,case,control,effect,p,q
+"site map fit, percentile within V domain",median,0.31 (n=29),0.51 (n=44),-0.2003065858226722,3.8913489873241403e-08,1.1674046961972421e-06
+unbuilt residues within the window +-5,binary,31% (9/29),24% (11/45),1.3909090909090909,0.5969560286757934,1.0
+A: SEQRES N-terminal residues not built,binary,38% (3/8),33% (5/15),1.2,1.0,1.0
+indel / atypical length in the run region (SEQRES-based),binary,34% (10/29),22% (10/45),1.8421052631578947,0.2897767359529966,0.8125262970169675
+run explained by a high-res-confirmed gap-placement artifact,binary,7% (2/29),0% (0/45),inf,0.1503146982599037,0.7423050246311622
+"clashes per residue, site minus rest of V",median,-0.00 (n=29),-0.04 (n=44),0.0372691334598355,0.11066413213925622,0.7423050246311622
+B-factor z of the site within the V domain,median,0.66 (n=29),0.00 (n=44),0.6615248153152165,0.0010155612708092918,0.015233419062139377
+"local resolution, site minus V domain (A)",median,0.00 (n=11),0.01 (n=19),-0.005130357142857367,0.7306268857145148,1.0
+site contacts a non-antibody chain,binary,41% (12/29),41% (18/44),1.0196078431372548,1.0,1.0
+site contacts the partner chain,binary,52% (15/29),34% (15/44),2.0714285714285716,0.15215424383273404,0.7423050246311622
+V domain contacts a non-antibody chain,binary,93% (27/29),89% (39/44),1.7307692307692308,0.6955629075651737,1.0
+"antibody template named (paper or PDB record), full text available",binary,71% (10/14),67% (22/33),1.25,1.0,1.0
+a different antibody named as template,binary,48% (14/29),40% (18/45),1.4,0.6312029812960659,1.0
+named different-antibody template differs in length at the site,binary,24% (7/29),18% (8/45),1.4715909090909092,0.5615178436306301,1.0
+methods mention: homology_tool,binary,21% (3/14),15% (5/33),1.5272727272727273,0.6794839060840322,1.0
+methods mention: alphafold,binary,7% (1/14),24% (8/33),0.2403846153846154,0.24449777862664712,0.8125262970169675
+methods mention: rigid_body,binary,7% (1/14),27% (9/33),0.20512820512820512,0.24157809760919396,0.8125262970169675
+methods mention: mutated,binary,0% (0/14),3% (1/33),0.0,1.0,1.0
+methods mention: isolde,binary,14% (2/14),6% (2/33),2.5833333333333335,0.5717545482577859,1.0
+methods mention: rosetta,binary,7% (1/14),12% (4/33),0.5576923076923077,1.0,1.0
+methods mention: local_refine,binary,50% (7/14),52% (17/33),0.9411764705882353,1.0,1.0
+methods mention: fv_only,binary,21% (3/14),24% (8/33),0.8522727272727273,1.0,1.0
+methods mention: poor_density,binary,7% (1/14),6% (2/33),1.1923076923076923,1.0,1.0
+methods mention: icosahedral,binary,29% (4/14),9% (3/33),4.0,0.1732045057472712,0.7423050246311622
+methods mention: own_crystal,binary,0% (0/14),6% (2/33),0.0,1.0,1.0
+same V region solved before at <3 A,binary,14% (4/29),20% (9/45),0.64,0.549437179294033,1.0
+>=5 other-lab same-antigen entries in the scan within +-6 months,binary,21% (6/29),31% (14/45),0.577639751552795,0.42435837507342733,1.0
+first antibody structure of the antigen,binary,48% (14/29),30% (13/43),2.1538461538461537,0.14228607708476027,0.7423050246311622
+germline identity,median,0.90 (n=29),0.90 (n=45),-0.004214729370008996,0.5062369790153829,1.0
+identity to nearest earlier V (different antibody),median,0.86 (n=29),0.87 (n=45),-0.010721266269683838,0.2979263089062214,0.8125262970169675

@@ -1,0 +1,11 @@
+test,n,observed,expected,p,papers_obs,papers_expected,p_papers,effect,ci,p_mw,q_bh
+expected flagged AL entries | y ~ C(ybin) + res + l2v,15,15,0.7718941949786661,2.654425093920732e-20,7.0,0.7279619794327611,2.7372284257560097e-08,,,,1.3272125469603659e-19
+expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + sars2,15,15,0.8783185807966497,1.6914810754048084e-19,7.0,0.8232202327182556,6.686096312905389e-08,,,,5.638270251349362e-19
+expected flagged AL entries | y ~ C(ybin) + res + l2v + has_L + no_H + sars2,15,15,2.6384937817092133,3.025782768064235e-12,7.0,2.1783369059094086,9.398455413891921e-05,,,,6.05156553612847e-12
+lambda units EM 2018+ 3.0-3.95A: AL fibril vs other,402,12/12,9/390 (2.3%),9.329537378151297e-18,,,,,,,2.332384344537824e-17
+"entry lq_z: AL vs clean (EM 2018+), adj res+year, cluster paper",15 vs 2523,0.9,0.4,5.344070531136772e-09,,,,0.62,0.41..0.82,0.00011939567044708338,7.634386473052532e-09
+"entry lq_z: error vs clean (EM 2018+), adj res+year, cluster paper",174 vs 2523,0.13,0.4,0.017330708664689828,,,,-0.27,-0.49..-0.05,1.5874785582911064e-06,0.021663385830862282
+chains with >50% V residues SAbR!=ANARCI: AL vs non-AL EM error chains,77 vs 322,77/77,4/322,3.300236715222216e-78,,,,,,,3.300236715222216e-77
+"CA-cloud thickness (3rd PC SD, A): AL fibril entries vs non-AL EM chains",15 vs 351,median 1.3 (max 3.0),median 6.0 (min 5.0),5.413329656124697e-11,,,,,,,9.022216093541162e-11
+"lambda vs kappa unit error rate, EM 2018+ (with AL)",1809,L 24/473 (5.1%),K 43/1336 (3.2%),0.08778655341832796,,,,1.61,,,0.09754061490925328
+"lambda vs kappa unit error rate, EM 2018+ (without AL)",1797,L 12/461 (2.6%),K 43/1336 (3.2%),0.638073639450236,,,,0.8,,,0.638073639450236

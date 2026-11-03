@@ -1,0 +1,48 @@
+institution scan within nanobody studies (top 6 of 79):
+                          institution   n  n_err  expected    OR_MH  p_upper       q
+31         vrije universiteit brussel   9      4    1.0323   7.0329   0.0119  0.7978
+74                 harvard university   3      2    0.3206  18.2740   0.0307  0.7978
+38                  university oxford  20      5    2.1376   3.4191   0.0470  0.7978
+32  vib vub center structural biology  15      4    1.4840   3.7022   0.0494  0.7978
+71     duke university medical center   4      2    0.3938   9.7162   0.0505  0.7978
+23    case western reserve university   5      2    0.5346   6.6121   0.0893  1.0000
+
+nanobody units: VUB-co-authored vs other
+         n    err  n_err    aux  L2_med  L3_med   v_id  llama
+vub                                                          
+False  505  0.053     27  0.414     8.0    17.0  0.753    0.0
+True    62  0.177     11  0.177     8.0    17.0  0.735    0.0
+L2      5.0    6.0    7.0    8.0    9.0    10.0   11.0
+vub                                                   
+False  0.006  0.004  0.289  0.685  0.006  0.006  0.004
+True   0.000  0.000  0.371  0.597  0.016  0.000  0.016
+aux_reagent=False: [[273, 23], [42, 9]]
+aux_reagent=True: [[205, 4], [9, 2]]
+
+modes among erroneous nanobody units:
+vub              False  True 
+m                            
+A_FR1Nterm           7      3
+B_CDR2FR3            3      4
+C_FR3                3      0
+D0                   2      0
+Dminus_CDR3long      6      2
+Dplus_CDR3short      4      1
+E_FR4bulge           2      0
+F_CDR1               2      0
+other                2      1
+
+VUB error studies: distinct last-author labs 8 years [2019, 2019, 2021, 2021, 2021, 2023, 2024, 2024, 2025]
+                                                                    test    n  n_exposed   err_exposed err_unexposed  expected       OR       p       q
+0     nanobody studies: VUB/VIB co-author vs not (year-stratified exact)  384       31.0          9/31        26/353    3.1930   4.9982  0.0016  0.0187
+1          ... last author not in Belgium (supplier-type collaborations)  375       26.0          7/26        25/349    2.6421   4.5017  0.0082  0.0197
+2                         non-nanobody studies: VUB/VIB co-author vs not  918        2.0           0/2        92/916    0.2353   0.0000  1.0000  1.0000
+3                nanobody studies: logit adj. year, resolution, V chains  384        NaN           NaN           NaN       NaN   3.8171  0.0067  0.0197
+4                                     ... + new-to-antibody-cryo-EM team  384        NaN           NaN           NaN       NaN   3.8223  0.0066  0.0197
+5                         nanobody units: L1 VUB vs other (Mann-Whitney)  567        NaN   median 8.00   median 8.00       NaN      NaN  0.7422  0.8096
+6                         nanobody units: L2 VUB vs other (Mann-Whitney)  567        NaN   median 8.00   median 8.00       NaN      NaN  0.3791  0.5054
+7                         nanobody units: L3 VUB vs other (Mann-Whitney)  567        NaN  median 17.00  median 17.00       NaN      NaN  0.5232  0.6279
+8                       nanobody units: v_id VUB vs other (Mann-Whitney)  567        NaN   median 0.73   median 0.75       NaN      NaN  0.0799  0.1199
+9   nanobody units (aux_reagent=False): error rate VUB vs other (Fisher)  347        NaN          9/51        23/296       NaN   2.5435  0.0345  0.0591
+10   nanobody units (aux_reagent=True): error rate VUB vs other (Fisher)  220        NaN          2/11         4/209       NaN  11.3889  0.0306  0.0591
+11        nanobody units: CDR2/FR3 (mode B) error, VUB vs other (Fisher)  567        NaN          4/62         3/505       NaN  11.5402  0.0035  0.0197

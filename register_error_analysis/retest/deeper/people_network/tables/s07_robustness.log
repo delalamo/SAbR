@@ -1,0 +1,72 @@
+seq_novelty columns: ['novel_target']
+share of studies flagged new team: na-flag 0.346 all-keys flag 0.137
+                                                                                           test     n  n_err      OR      lo      hi       p       q
+0                                                      new-to-antibody-cryo-EM team: base model  1302    127  1.9974  1.3665  2.9196  0.0004  0.0038
+1   new-to-antibody-cryo-EM team: + antigen class, nanobody, mouse, SARS-CoV-2, first-of-family  1302    127  1.9197  1.2848  2.8685  0.0015  0.0055
+2                                                      ... + last-author prior antibody entries  1302    127  1.8745  1.2113  2.9007  0.0048  0.0103
+3                                                                    ... published studies only  1149    115  2.1219  1.3885  3.2428  0.0005  0.0038
+4                              new-team flag from all name keys (collisions inflate experience)  1302    127  2.0485  1.2586  3.3342  0.0039  0.0098
+5                                                ... teams with >=2 non-collision-prone authors   834     82  1.9252  1.0939  3.3881  0.0231  0.0386
+6                              ... + number of audit authors + last-author country (China, USA)  1302    127  2.0572  1.3345  3.1713  0.0011  0.0054
+7                                                       ... excluding capsid and enzyme targets  1188     94  1.9436  1.2428  3.0394  0.0036  0.0098
+8                                                                   lab persistence: base model   842     77  2.1892  1.2409  3.8620  0.0068  0.0128
+9                lab persistence: + antigen class, nanobody, mouse, SARS-CoV-2, first-of-family   842     77  1.6861  0.9314  3.0522  0.0845  0.1152
+10                                                             lab persistence: + new-team flag   842     77  1.5659  0.8588  2.8554  0.1434  0.1655
+11                                                              lab persistence: published only   739     69  1.9937  1.0564  3.7625  0.0332  0.0498
+12                                               lab persistence: earlier error >= 180 d before   842     77  1.3867  0.7539  2.5504  0.2930  0.3140
+13                                        lab persistence: earlier error on a different antigen   842     77  1.0408  0.5416  1.9999  0.9046  0.9046
+14                                           lab persistence: error <=2021 predicts 2022+ study   617     50  1.9633  0.8313  4.6367  0.1239  0.1549
+
+persistence descriptive: error rate if lab had an earlier error study vs not (labs with earlier studies):
+exp_own {0: {'size': 546, 'sum': 41, 'mean': 0.075}, 1: {'size': 296, 'sum': 36, 'mean': 0.122}}
+exp_own_180 {0: {'size': 565, 'sum': 45, 'mean': 0.08}, 1: {'size': 277, 'sum': 32, 'mean': 0.116}}
+exp_own_diffag {0: {'size': 588, 'sum': 50, 'mean': 0.085}, 1: {'size': 254, 'sum': 27, 'mean': 0.106}}
+2022+ studies, by lab error <=2021: {0: {'size': 467, 'sum': 35, 'mean': 0.075}, 1: {'size': 150, 'sum': 15, 'mean': 0.1}}
+
+mode concordance: {'test': 'same-lab pairs of error studies sharing an error mode', 'pairs': 73, 'observed': 15, 'null_mean': np.float64(19.8502), 'p_upper': np.float64(0.873625274945011), 'labs_with_2plus': 15}
+mode mix of error studies in labs with >=2 error studies vs others:
+multi            False  True 
+modes                        
+A_FR1Nterm        0.28   0.18
+B_CDR2FR3         0.12   0.16
+C_FR3             0.16   0.07
+D0                0.03   0.07
+Dminus_CDR3long   0.12   0.11
+Dplus_CDR3short   0.14   0.23
+E_FR4bulge        0.11   0.09
+F_CDR1            0.04   0.09
+other             0.01   0.00
+
+outcome = any run (first-occurrence or copied/artifact), all-keys new-team flag: OR 1.73 (1.11-2.69) p=0.016 n=1335 n_any=160
+excluded (copied/artifact-only) studies by new-team flag: {0: 32, 1: 1}
+
+connectedness vs inexperience:
+                                                                         model                term      OR      lo      hi       p
+0                                  y ~ connected_x + C(ycat) + res_med + l2_nv         connected_x  0.6757  0.4635  0.9850  0.0415
+1             y ~ connected_x + first_abem_team_na + C(ycat) + res_med + l2_nv         connected_x  0.7429  0.5063  1.0900  0.1287
+2             y ~ connected_x + first_abem_team_na + C(ycat) + res_med + l2_nv  first_abem_team_na  1.9102  1.3008  2.8050  0.0010
+3  y ~ connected_x + first_abem_team_na + l_n_auth + C(ycat) + res_med + l2_nv         connected_x  0.7085  0.4686  1.0710  0.1021
+4  y ~ connected_x + first_abem_team_na + l_n_auth + C(ycat) + res_med + l2_nv  first_abem_team_na  1.9316  1.3127  2.8425  0.0008
+cross-tab connected_x x new team: [[269, 210], [583, 240]]
+
+error rate by team experience category:
+                                size  sum   mean
+exp3                                            
+1 no cryo-EM                     291   38  0.131
+2 cryo-EM, no antibody cryo-EM   159   22  0.138
+3 antibody cryo-EM               852   67  0.079
+                                                                         term      OR      lo      hi       p
+0                    C(exp3, Treatment('3 antibody cryo-EM'))[T.1 no cryo-EM]  2.0177  1.3055  3.1183  0.0016
+1  C(exp3, Treatment('3 antibody cryo-EM'))[T.2 cryo-EM, no antibody cryo-EM]  1.9633  1.1572  3.3309  0.0124
+
+X-ray: team with no prior antibody PDB entry (all keys): OR 2.11 (0.70-6.38) p=0.187; n=928, err=33; rates [[853, 29], [75, 4]]
+
+new-team effect adjusted for local map fit and modelling route:
+                                                                         model                term     n      OR      lo      hi       p
+0                    y ~ first_abem_team_na + lq_z + C(ycat) + res_med + l2_nv  first_abem_team_na  1295  1.9462  1.3286  2.8510  0.0006
+1                    y ~ first_abem_team_na + lq_z + C(ycat) + res_med + l2_nv                lq_z  1295  0.8474  0.6921  1.0376  0.1090
+2  y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv  first_abem_team_na  1295  1.9363  1.3193  2.8420  0.0007
+3  y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv                lq_z  1295  0.8481  0.6928  1.0382  0.1103
+4  y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv            af_start  1295  0.5477  0.1637  1.8321  0.3285
+5  y ~ first_abem_team_na + lq_z + af_start + flex + C(ycat) + res_med + l2_nv                flex  1295  1.0499  0.5320  2.0721  0.8883
+new teams vs others: median lq_z {0: 0.398, 1: 0.368} AlphaFold-type start {0: 0.055, 1: 0.038} flexible fit {0: 0.106, 1: 0.058}

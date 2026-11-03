@@ -1,0 +1,11 @@
+paper level, null = year+res+size: dispersion ratio 1.35, p=0.016
+paper level, null = year+res+size+capsid/enzyme: dispersion ratio 1.18, p=0.138
+paper level non-SARS2, null = year+res+size+capsid/enzyme: dispersion ratio 1.12, p=0.218
+y ~ zero + C(ycat)+res+ln zero OR 7.31 [2.31, 23.1] p 0.0007
+y ~ zero + capenz + lexp + C(ycat)+res+ln zero OR 8.31 [2.24, 30.9] p 0.0016
+              mean  size  sum
+zero capenz                  
+0    0       0.022    92    2
+     1       0.250     8    2
+1    0       0.125    72    9
+     1       0.588    17   10

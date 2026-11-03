@@ -1,0 +1,41 @@
+{'test': 'investigator filter (regex D|E_FR4 on modes)', 'err_val': '12.5% (3/24)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.07937375724521499), 'p': np.float64(0.02561885313430713), 'n_err_papers': 8, 'n_err_units': 11, 'paper_level': '1/8 vs 61.9%', 'paper_level_p': np.float64(0.00661386035842963)}
+{'test': 'position filter: no run overlapping IMGT>=104', 'err_val': '14.3% (4/28)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.09613682404227729), 'p': np.float64(0.011675407256315499), 'n_err_papers': 12, 'n_err_units': 15, 'paper_level': '2/12 vs 61.9%', 'paper_level_p': np.float64(0.002037055089166558)}
+{'test': 'position filter, drop Zhou', 'err_val': '25.0% (4/16)', 'ctrl_val': '62.2% (1269/2040)', 'OR': np.float64(0.1764660906779293), 'p': np.float64(0.05648549232998698), 'n_err_papers': 11, 'n_err_units': 13, 'paper_level': '2/11 vs 62.0%', 'paper_level_p': np.float64(0.004319810616490434)}
+{'test': 'position filter, FR1-mode (A) chains only as errors', 'err_val': '13.6% (3/22)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.08522046036094606), 'p': np.float64(0.03415181906269447), 'n_err_papers': 6, 'n_err_units': 9, 'paper_level': '1/6 vs 61.9%', 'paper_level_p': np.float64(0.0339478729121424)}
+{'test': 'position filter, non-A chains only as errors', 'err_val': '16.7% (1/6)', 'ctrl_val': '62.1% (1269/2045)', 'OR': np.float64(0.1570960585158761), 'p': np.float64(0.09585473280529648), 'n_err_papers': 6, 'n_err_units': 6, 'paper_level': '1/6 vs 61.9%', 'paper_level_p': np.float64(0.0339478729121424)}
+Pro115 omega vs annotation (error chains):
+omega_cis   False  True 
+ann_cis115              
+False          24      0
+True            0      4
+reference kappa chains 25
+     pdb chain        mode  imgt0  imgt1  min_CA_dist_to_115_median
+0   6ad0     L  A_FR1Nterm      1     32                   7.341888
+1   7e23     C       C_FR3     76     93                  17.302404
+2   7e3c     C  A_FR1Nterm      3      8                  10.235450
+3   7e3c     C   B_CDR2FR3     57     89                  17.302404
+4   7czr     K  A_FR1Nterm      1      9                   7.341888
+5   7czr     N  A_FR1Nterm      1      9                   7.341888
+6   7czu     K  A_FR1Nterm      1      9                   7.341888
+7   7czu     N  A_FR1Nterm      1      9                   7.341888
+8   7czs     K  A_FR1Nterm      1      9                   7.341888
+9   7czs     M  A_FR1Nterm      1      9                   7.341888
+10  7czs     N  A_FR1Nterm      1      9                   7.341888
+11  7d00     K  A_FR1Nterm      1      9                   7.341888
+12  7d00     N  A_FR1Nterm      1      9                   7.341888
+13  7czv     K  A_FR1Nterm      1      9                   7.341888
+14  7czv     M  A_FR1Nterm      1      9                   7.341888
+15  7czv     N  A_FR1Nterm      1      9                   7.341888
+16  7jhh     L  A_FR1Nterm      3      9                  10.235450
+17  7jhg     L  A_FR1Nterm      3     10                  10.235450
+18  7m74     L  A_FR1Nterm      3     10                  10.235450
+19  7stf     L       C_FR3     86     93                  19.315290
+20  7t6x     D      F_CDR1     44     47                  20.962800
+21  8t4d     L  A_FR1Nterm      2      9                   7.965604
+22  8t4d     Q  A_FR1Nterm      2      9                   7.965604
+23  8t4d     R  A_FR1Nterm      2      9                   7.965604
+24  8w5t     L  A_FR1Nterm      3      8                  10.235450
+25  8w5q     L  A_FR1Nterm      4     36                  12.082701
+26  9cv7     L       other     16     29                  12.842426
+27  9pyh     L   B_CDR2FR3     67     69                  23.013028
+28  9pv3     L      F_CDR1     32     99                  13.265096

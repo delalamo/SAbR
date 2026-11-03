@@ -1,0 +1,46 @@
+case_pdb,mode,case_chain,ctype,ctrl_pdb,why,method,res,year,deposit,last_author,doi,tgt_name,tgt_cls,lab
+6ad0,A_FR1Nterm,L,K,6aj7,period/class,EM,3.6,2018,2018-08-27,"Li, S.W.",10.1038/s41564-018-0275-7,Genome polyprotein,viral capsid,li_s
+6ad0,A_FR1Nterm,L,K,6mjz,near-miss (L),EM,4.3,2018,2018-09-24,"Kwong, P.D.",10.1073/pnas.1811980115,Fusion glycoprotein F0,viral surface glycoprotein,kwong_p
+7czu,A_FR1Nterm,K,K,7cyp,same antigen,EM,3.5,2020,2020-09-04,"Zhu, L.",10.1093/nsr/nwaa297,Spike glycoprotein,viral surface glycoprotein,zhu_l
+7jhg,A_FR1Nterm,L,K,7chh,period/class,EM,3.49,2020,2020-07-05,"Wang, G.",10.1016/j.cell.2020.09.035,Spike glycoprotein,viral surface glycoprotein,wang_g
+7jhg,A_FR1Nterm,L,K,6ww5,near-miss (D),EM,3.15,2020,2020-05-07,"Wang, D.N.",10.7554/elife.61350,"Transporter, NadC family",channel/transporter,wang_d
+7tz5,A_FR1Nterm,N,L,7whz,period/class,EM,3.42,2022,2022-01-01,"Wang, S.",10.1016/j.celrep.2022.110862,Spike glycoprotein,viral surface glycoprotein,wang_s
+7tz5,A_FR1Nterm,N,L,7wti,near-miss (J),EM,3.8,2022,2022-02-04,"Fu, W.",10.1038/s41422-022-00677-z,Spike glycoprotein,viral surface glycoprotein,fu_w
+8e8l,A_FR1Nterm,H,H,7x49,period/class,EM,3.13,2022,2022-03-02,"Xia, N.",10.1016/j.chom.2022.08.001,Genome polyprotein,viral capsid,xia_n
+8e8l,A_FR1Nterm,H,H,7yub,near-miss (N),EM,3.22,2022,2022-08-17,"Duan, Y.",10.1038/s41422-023-00913-0,Sphingosine-1-phosphate transporter SPNS2,channel/transporter,duan_y
+8rvn,A_FR1Nterm,L,K,9cin,same antigen,EM,3.03,2024,2024-07-03,"Bajic, G.",10.1126/scitranslmed.adw8573,Fusion glycoprotein F0,viral surface glycoprotein,bajic_g
+8rvn,A_FR1Nterm,L,K,8vr9,near-miss (D),EM,3.06,2024,2024-01-20,"Koide, S.",10.1073/pnas.2319029121,"HLA class I histocompatibility antigen, A alpha chain",receptor/membrane protein,koide_s
+9mnb,A_FR1Nterm,E,H,8rla,period/class,EM,3.03,2024,2024-01-02,"Gilbert, R.J.C.",10.1038/s41589-025-01972-7,ATP-dependent DNA helicase Q5,enzyme,gilbert_r
+9mnb,A_FR1Nterm,E,H,9ml7,near-miss (H),EM,3.2,2024,2024-12-18,"Bjorkman, P.J.",10.1073/pnas.2501637122,Spike glycoprotein,viral surface glycoprotein,bjorkman_p
+6bpe,A_FR1Nterm,F,K,6b0e,period/class,X-ray,3.3,2017,2017-09-14,"Julien, J.P.",10.1038/s41467-017-01924-3,25 kDa ookinete surface antigen,receptor/membrane protein,julien_j
+6bpe,A_FR1Nterm,F,K,6bkd,near-miss (L),X-ray,3.25,2017,2017-11-08,"Law, M.",10.1126/sciadv.aav1882,Genome polyprotein,viral capsid,law_m
+7e39,B_CDR2FR3,C,H,7e3l,same antigen,EM,3.6,2021,2021-02-09,"Yang, H.",10.1038/s41467-021-26539-7,Spike glycoprotein,viral surface glycoprotein,yang_h
+7e39,B_CDR2FR3,C,H,7nka,near-miss (F),EM,4.07,2021,2021-02-17,"Grimes, J.M.",10.1038/s41467-021-27950-w,Polymerase basic protein 2,viral surface glycoprotein,grimes_j
+12iu,B_CDR2FR3,Y,K,10gh,period/class,EM,3.06,2026,2026-01-19,"Klein, D.",10.1038/s41467-026-69630-7,Proto-oncogene tyrosine-protein kinase ROS,receptor/membrane protein,klein_d
+12iu,B_CDR2FR3,Y,K,9zrt,near-miss (L),EM,3.3,2025,2025-12-20,"Schmidt, H.R.",10.1126/scitranslmed.aef7084,Invasin IpaD,other protein,schmidt_h
+8cr9,B_CDR2FR3,A,H,8i0z,period/class,EM,4.33,2023,2023-01-12,"Shukla, A.K.",10.1016/j.molcel.2023.04.025,Beta-arrestin-2,other protein,shukla_a
+7oh0,B_CDR2FR3,C,H,7m8l,period/class,EM,3.9,2021,2021-03-30,"Ward, A.B.",10.1016/j.cell.2021.09.035,Envelope glycoprotein,viral surface glycoprotein,ward_a
+7oh0,B_CDR2FR3,C,H,7r7n,near-miss (H),EM,3.95,2021,2021-06-25,Seattle Structural Genomics Center for Infectious Disease (SSGCID),10.1038/s41586-021-03807-6,Spike glycoprotein,viral surface glycoprotein,seattlestructuralgenomicscenterforinfectiousdiseasessgcid_
+7mkl,B_CDR2FR3,H,H,7mjj,same antigen,EM,3.32,2021,2021-04-20,"Subramaniam, S.",10.1371/journal.pbio.3001237,Spike glycoprotein,viral surface glycoprotein,subramaniam_s
+8dg8,B_CDR2FR3,L,L,7xmx,period/class,EM,3.62,2022,2022-04-27,"Li, X.",10.1038/s41421-022-00449-4,Spike glycoprotein,viral surface glycoprotein,li_x
+7wvl,B_CDR2FR3,H,H,7wue,same antigen,X-ray,3.2,2022,2022-02-08,"Mohapatra, A.",10.1126/scitranslmed.abm0899,Spike glycoprotein,viral surface glycoprotein,mohapatra_a
+7wvl,B_CDR2FR3,H,H,7u0c,near-miss (C),X-ray,3.3,2022,2022-02-17,"Bjorkman, P.J.",10.1038/s41467-022-30865-9,,none,bjorkman_p
+9dm7,C_FR3,H,H,9l1l,period/class,EM,3.09,2024,2024-12-15,"Yonekura, K.",,Lysozyme C,enzyme,yonekura_k
+9dm7,C_FR3,H,H,9jrt,near-miss (N),EM,3.28,2024,2024-09-29,"Xu, E.H.",10.1038/s44318-025-00611-0,Soluble cytochrome b562; Prostaglandin E2 receptor EP2 subtype,GPCR,xu_e
+7e23,C_FR3,C,K,7nda,period/class,EM,3.3,2021,2021-01-30,"Stuart, D.",10.1016/j.cell.2021.02.032,Spike glycoprotein,viral surface glycoprotein,stuart_d
+8w5e,C_FR3,H,H,8wnu,period/class,EM,3.8,2023,2023-10-06,"Luo, D.",10.1038/s44298-024-00024-6,Genome polyprotein,viral capsid,luo_d
+8w5e,C_FR3,H,H,8tzy,near-miss (D),EM,3.8,2023,2023-08-28,"Mariuzza, R.A.",10.1038/s42003-025-08239-w,Genome polyprotein,viral surface glycoprotein,mariuzza_r
+7kra,C_FR3,I,H,6x87,period/class,EM,3.2,2020,2020-06-01,"Julien, J.P.",10.7554/elife.59018,Circumsporozoite protein,receptor/membrane protein,julien_j
+7mhz,C_FR3,O,H,7q6z,same antigen,EM,3.59,2021,2021-11-09,"Siebold, C.",10.1016/j.molcel.2021.11.018,Protein-cysteine N-palmitoyltransferase HHAT,enzyme,siebold_c
+9yfu,C_FR3,N,H,9lyc,period/class,EM,3.06,2025,2025-02-19,"Chang, H.",10.1016/j.celrep.2025.115478,G protein-coupled receptor 3,GPCR,chang_h
+9yfu,C_FR3,N,H,9ot6,near-miss (C),EM,3.54,2025,2025-05-26,"Burke, J.E.",10.1016/j.jbc.2025.110886,Tetratricopeptide repeat protein 7B,other protein,burke_j
+2x7l,C_FR3,A,H,3q6f,period/class,X-ray,3.192,2010,2010-12-31,"Kong, X.P.",10.1016/j.str.2011.02.012,,none,kong_x
+6lht,F_CDR1,L,K,6jhr,period/class,EM,3.68,2019,2019-02-18,"Wang, X.",10.1371/journal.pbio.3000229,Genome polyprotein,viral capsid,wang_x
+6lht,F_CDR1,L,K,7jic,near-miss (L),EM,3.8,2020,2020-07-23,"Blacklow, S.C.",10.1126/science.abd9836,B-lymphocyte antigen CD19,receptor/membrane protein,blacklow_s
+7t6x,F_CDR1,D,K,7m30,period/class,EM,3.81,2021,2021-03-17,"McLellan, J.S.",10.1126/sciadv.abm2546,Envelope glycoprotein L,viral surface glycoprotein,mclellan_j
+8gse,F_CDR1,H,H,7x2t,period/class,EM,3.69,2022,2022-02-26,"Xia, N.",10.1016/j.chom.2022.08.001,Genome polyprotein,viral capsid,xia_n
+9ml5,F_CDR1,M,H,9l6c,same antigen,EM,3.33,2024,2024-12-24,"Bing, Z.",10.1128/jvi.01844-24,Spike glycoprotein,viral surface glycoprotein,bing_z
+9ml5,F_CDR1,M,H,9kvd,near-miss (E),EM,3.44,2024,2024-12-05,"Zheng, Q.",10.1073/pnas.2503254122,Surface glycoprotein,viral surface glycoprotein,zheng_q
+9yc6,F_CDR1,L,K,9uhq,period/class,EM,4.62,2025,2025-04-14,"Mao, X.",,Spike glycoprotein,viral surface glycoprotein,mao_x
+7e5y,F_CDR1,B,L,7lq7,same antigen,X-ray,3.4,2021,2021-02-13,"Wilson, I.A.",10.1126/scitranslmed.abj5413,Spike glycoprotein,viral surface glycoprotein,wilson_i
+7e5y,F_CDR1,B,L,7pi3,near-miss (E),X-ray,3.269,2021,2021-08-19,"Higgins, M.K.",10.1038/s41467-022-28601-4,Cysteine-rich protective antigen,receptor/membrane protein,higgins_m

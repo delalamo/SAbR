@@ -1,0 +1,12 @@
+                              n  nt_runs      rate
+cat                                               
+SEQRES starts >8              9        0  0.000000
+SEQRES starts IMGT 2-8       16        2  0.125000
+full SEQRES, IMGT1 unbuilt  180        1  0.005556
+full SEQRES, built from 1   793        1  0.001261
+      pdb chain  seq_first_imgt  built_first_anarci  nt_run_imgt0  nt_run_imgt1  nt_run_delta   deposit
+165  6c9u     L             1.0                   1           1.0           8.0          -1.0  01/28/18
+193  1rhh     B             1.0                   3           3.0           4.0          -1.0  11/14/03
+648  8e8r     H             4.0                   4           4.0          16.0          -1.0  08/25/22
+657  8e8s     H             4.0                   4           4.0          16.0          -1.0  08/25/22
+templates: N-terminal run in truncated SEQRES 2/16 vs full SEQRES 2/973; Fisher p=0.00145

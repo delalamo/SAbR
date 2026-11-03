@@ -1,0 +1,4 @@
+test,stratum,OR,lo,hi,p,n,n_err,niche_rate,contested_rate
+"niche antigen (0 other labs +-12m), paper level, non-SARS2, <=2019, adj capsid/enzyme+lab experience",<=2019,0.2908830682504232,0.029104690216659172,2.907193265584009,0.2930980389983586,107,11,0.119,0.083
+"niche antigen (0 other labs +-12m), paper level, non-SARS2, 2020-21, adj capsid/enzyme+lab experience",2020-21,8.310896123275876,2.2355379731771414,30.896811058735207,0.0015735493874526124,189,23,0.213,0.04
+"niche antigen (0 other labs +-12m), paper level, non-SARS2, 2022+, adj capsid/enzyme+lab experience",2022+,1.0620048490751894,0.6117673920339645,1.8435998945765957,0.830724808132745,735,66,0.1,0.077

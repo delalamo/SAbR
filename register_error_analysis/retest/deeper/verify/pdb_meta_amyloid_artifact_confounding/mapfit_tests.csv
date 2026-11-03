@@ -1,0 +1,4 @@
+test,err_val,ctrl_val,n_err,n_ctrl,p
+entry median lq_z: amyloid vs clean (EM),0.895,0.379,15,2751,8.35420691591937e-05
+entry median lq_z: error (non-amyloid) vs clean (EM),0.097,0.379,177,2751,1.6120016100143044e-07
+"entry median lq_z: amyloid vs clean, clean restricted to 3.0-3.9 A",0.895,0.407,15,2287,7.804895009579733e-05

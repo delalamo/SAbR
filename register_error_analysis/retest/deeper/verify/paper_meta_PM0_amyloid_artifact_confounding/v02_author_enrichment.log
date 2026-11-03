@@ -1,0 +1,23 @@
+papers (incl amyloid): 1104 error: 114  amyloid published papers: 5
+== WITH amyloid papers as error
+                         entity           name  n_papers  n_err  n_amy  expected   p_upper         q  include_amyloid
+1134  orcid:0000-0002-6610-0907    Radamaker L         3      3      3  0.178993  0.000205  0.055530             True
+153                    n:huhn_s         Huhn S         3      3      3  0.178993  0.000205  0.055530             True
+1406  orcid:0000-0003-2123-6816     Fändrich M         3      3      3  0.178993  0.000205  0.055530             True
+1057  orcid:0000-0002-4853-5579   Schönland SO         3      3      3  0.178993  0.000205  0.055530             True
+1268  orcid:0000-0002-9442-460X      Schmidt M         3      3      3  0.178993  0.000205  0.055530             True
+1397  orcid:0000-0003-1917-6746    Hegenbart U         3      3      3  0.178993  0.000205  0.055530             True
+357                    n:wang_k         Wang K        12      7      0  1.665115  0.000251  0.058289             True
+1417  orcid:0000-0003-2609-4036  Hafenstein SL         5      4      0  0.549508  0.000591  0.118189             True
+1344  orcid:0000-0003-0913-9589        Zheng B         5      4      0  0.569918  0.000655  0.118189             True
+1104  orcid:0000-0002-6052-7141  Goetschius DJ         3      3      0  0.336523  0.001374  0.223259             True
+375                  n:wilson_r       Wilson R         3      3      0  0.442853  0.003186  0.464866             True
+15                   n:bator_cm       Bator CM         4      3      0  0.398332  0.003433  0.464866             True
+== WITHOUT (as in network.py)
+                         entity           name  n_papers  n_err  n_amy  expected   p_upper         q  include_amyloid
+354                    n:wang_k         Wang K        12      7      0  1.656955  0.000222  0.286917            False
+1409  orcid:0000-0003-2609-4036  Hafenstein SL         5      4      0  0.518307  0.000453  0.286917            False
+1338  orcid:0000-0003-0913-9589        Zheng B         5      4      0  0.541361  0.000532  0.286917            False
+1100  orcid:0000-0002-6052-7141  Goetschius DJ         3      3      0  0.311342  0.001063  0.430172            False
+15                   n:bator_cm       Bator CM         4      3      0  0.367417  0.002669  0.759118            False
+372                  n:wilson_r       Wilson R         3      3      0  0.424929  0.002815  0.759118            False

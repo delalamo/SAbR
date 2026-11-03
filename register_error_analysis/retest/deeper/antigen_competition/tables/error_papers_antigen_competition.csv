@@ -1,0 +1,159 @@
+paper,method,first_deposit,last_author,n_error_entries,pdbs,modes,antigen,antigen_desc,target_class,organism,binding,sars2,other_labs_same_antigen_6m,other_labs_same_antigen_12m,other_labs_same_family_12m,first_ab_structure_of_antigen,first_ab_structure_of_family,ab_entries_same_antigen_prev12m,all_pdb_entries_antigen_prev12m,lab_prior_antibody_entries
+10.1006/viro.2001.1320,X-ray,2001-11-16,"Knossow, M.",1,1ken,B_CDR2FR3,Hemagglutinin,hemagglutinin HA1,viral surface glycoprotein,viral,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,17
+10.1126/science.1175868,X-ray,2009-07-22,"Kwong, P.D.",1,3idy,Dplus_CDR3short,Envelope glycoprotein gp160,HIV-1 HxBc2 gp120 core,viral surface glycoprotein,viral,bound,False,0.0,1.0,6.0,0.0,0.0,0.0,0.0,30
+10.1073/pnas.0914946107,X-ray,2010-03-01,"Grimes, J.M.",1,2x7l,C_FR3,Protein Rev,PROTEIN REV,viral other,viral,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1038/nature08201,X-ray,2010-06-06,"Miller, C.",1,3ncy,B_CDR2FR3,Arginine/agmatine antiporter,AdiC,channel/transporter,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,9
+10.4161/mabs.28786,X-ray,2014-03-20,"Zhou, L.J.",1,3wsq,Dplus_CDR3short,Receptor tyrosine-protein kinase erbB-2,Receptor tyrosine-protein kinase erbB-2,receptor/membrane protein,human,bound,False,1.0,1.0,1.0,0.0,0.0,1.0,2.0,0
+10.1016/j.cell.2015.03.004,X-ray,2015-01-16,"Kwong, P.D.",1,4xnz,C_FR3,Envelope glycoprotein gp160,"Envelope glycoprotein gp160,Envelope glycoprotein gp160",viral surface glycoprotein,viral,bound,False,1.0,2.0,17.0,0.0,0.0,11.0,11.0,104
+10.1128/jvi.03017-15,EM,2015-08-26,"Hogle, J.M.",1,3jbf,F_CDR1,Genome polyprotein,Capsid protein VP1,viral capsid,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,2.0,1
+10.1038/ncomms9855,X-ray,2015-09-19,"Wang, X.",1,5dum,F_CDR1,Hemagglutinin,Hemagglutinin,viral surface glycoprotein,viral,bound,False,1.0,1.0,9.0,1.0,0.0,0.0,0.0,1
+10.1128/jvi.01112-16,EM,2016-03-21,"Hafenstein, S.",1,3jcx,A_FR1Nterm,Capsid protein 2,Capsid protein 2,viral capsid,viral,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,7
+10.1038/nmicrobiol.2016.128,EM,2016-06-09,"Ward, A.B.",1,5ken,Dplus_CDR3short,Envelope glycoprotein,"Ebola surface glycoprotein, GP2",viral surface glycoprotein,viral,bound,False,2.0,2.0,2.0,0.0,0.0,2.0,5.0,4
+10.1007/s13238-017-0405-7,X-ray,2017-03-20,"Zhang, L.",1,5xbm,B_CDR2FR3,Lysosome membrane protein 2,Lysosome membrane protein 2,receptor/membrane protein,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,1.0,2
+10.1038/s41586-018-0249-1,X-ray,2017-11-22,"Tham, W.H.",1,6bpe,A_FR1Nterm,Reticulocyte-binding protein 2b,"Reticulocyte binding protein 2, putative",receptor/membrane protein,other eukaryote,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,1.0,0
+10.3390/v9120374,EM,2017-12-04,"Hafenstein, S.",1,6bsp,A_FR1Nterm,Major capsid protein L1,Major capsid protein L1,viral capsid,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,0.0,8
+10.1038/s41586-018-0215-y,EM,2018-03-05,"Xu, H.E.",1,6cmo,A_FR1Nterm,Rhodopsin; Soluble cytochrome b562,chimera protein of Soluble cytochrome b562 and Rhodopsin,GPCR,human,fiducial-only,False,3.0,5.0,5.0,0.0,0.0,4.0,34.0,0
+"Yang, F.L._2018",X-ray,2018-04-26,"Yang, F.L.",1,5zs0,Dplus_CDR3short,Envelope glycoprotein B,"Envelope glycoprotein B,Envelope glycoprotein B",viral surface glycoprotein,viral,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,1
+10.1126/sciadv.aat7459,EM,2018-07-28,"Cheng, T.",1,6ad0,A_FR1Nterm,Genome polyprotein,VP1,viral capsid,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,2.0,1
+10.1038/s41586-019-1530-7,X-ray,2019-02-13,"Grimes, J.M.",3,6qpg 6qx3 6qxe,Dplus_CDR3short,Polymerase acidic protein,Polymerase acidic protein,viral other,viral,bound,False,0.0,0.0,0.0,1.0,1.0,1.0,1.0,4
+10.1038/s41594-019-0237-7,EM,2019-03-13,"Nureki, O.",1,6jmr,Dminus_CDR3long,,,none,none,unbound,False,,,,,,,,2
+10.1038/s41586-019-1250-z,EM,2019-04-30,"Bjorkman, P.J.",1,6orp,A_FR1Nterm;B_CDR2FR3;Dminus_CDR3long,Envelope glycoprotein gp160,RC1 variant of HIV-1 Env glycoprotein gp120,viral surface glycoprotein,viral,bound,False,4.0,6.0,18.0,0.0,0.0,23.0,23.0,52
+10.1016/j.immuni.2019.10.008,EM,2019-05-31,"Ward, A.B.",1,6p65,B_CDR2FR3,Envelope glycoprotein gp160,HIV Env 16055 NFL TD 2CC+,viral surface glycoprotein,viral,bound,False,0.0,1.0,18.0,0.0,0.0,0.0,0.0,37
+10.1038/s41467-020-14943-4,EM,2019-10-05,"Sprang, S.R.",1,6ukt,A_FR1Nterm,Chaperone Ric-8A,Resistance to inhibitors of cholinesterase 8 homolog A (C. elegans),other protein,other vertebrate,bound,False,0.0,0.0,0.0,0.0,0.0,1.0,3.0,1
+10.1016/j.chom.2020.01.003,EM,2019-12-10,"Li, S.W.",1,6lht,Dminus_CDR3long;F_CDR1,Genome polyprotein,VP1 protein,viral capsid,viral,bound,False,0.0,0.0,4.0,1.0,0.0,2.0,8.0,3
+10.1038/s41467-020-19884-6,X-ray,2020-05-15,"Schwartz, T.U.",1,6x06,Dplus_CDR3short,Nucleoporin NUP120,Nucleoporin NUP120,other protein,other eukaryote,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,7
+10.1038/s41467-020-18250-w,EM,2020-05-28,"Wang, X.",1,7c80,D0;F_CDR1,Genome polyprotein,VP2,viral capsid,viral,bound,False,0.0,0.0,7.0,1.0,0.0,0.0,0.0,11
+10.1038/s41467-020-19887-3,EM,2020-06-23,"Zheng, H.",1,6xja,Dminus_CDR3long,,,none,none,unbound,False,,,,,,,,0
+10.1126/science.abe7565,EM,2020-07-20,"Melcher, K.",3,7jhg 7jhh 7m74,A_FR1Nterm,5'-AMP-activated protein kinase catalytic subunit alpha-1,5'-AMP-activated protein kinase catalytic subunit alpha-1,enzyme,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1038/s41541-020-00236-w,EM,2020-07-29,"Li, S.W.",1,7cn2,Dplus_CDR3short,Major capsid protein L1,Major capsid protein L1,viral capsid,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,0.0,6
+"Law, M._2020",X-ray,2020-08-17,"Law, M.",1,7jtf,B_CDR2FR3,Genome polyprotein,Envelope glycoprotein E2,viral surface glycoprotein,viral,bound,False,0.0,1.0,3.0,0.0,0.0,4.0,4.0,17
+10.1038/s41422-020-00446-w,EM,2020-08-31,"Wang, X.",3,7cws 7cwt 7cwu,A_FR1Nterm,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,67.0,105.0,105.0,0.0,0.0,77.0,135.0,2
+10.1126/science.abe7070,X-ray,2020-09-06,"Rossjohn, J.",1,7k0x,Dminus_CDR3long,,T cell receptor gamma chain,TCR,other eukaryote,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,,5
+10.7554/elife.61056,EM,2020-09-08,"Hafenstein, S.L.",2,7k22 7k23,Dplus_CDR3short,Capsid protein VP1,Capsid protein VP1,viral capsid,viral,bound,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,10
+10.1038/s41422-021-00487-9,EM,2020-09-09,"Zhou, Q.",7,7czr 7czs 7czu 7czv 7czy 7czz 7d00,A_FR1Nterm;Dplus_CDR3short;E_FR4bulge,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,70.0,105.0,105.0,0.0,0.0,83.0,153.0,1
+10.1182/blood.2020008940,X-ray,2020-09-18,"Spiegel, P.C.",1,7k66,Dminus_CDR3long,Coagulation factor VIII; Coagulation factor VIII,"Coagulation factor VIII,Coagulation factor VIII,Coagulation factor VIII,Coagulation factor VIII",other protein,human,bound,False,1.0,1.0,1.0,0.0,0.0,0.0,0.0,1
+10.1371/journal.ppat.1009507,EM,2020-09-19,"Lou, Z.",4,7d3k 7d3l 7d3m 7d3r,D0;Dminus_CDR3long;Dplus_CDR3short,Genome polyprotein,O/TIBET/99 VP2,viral capsid,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,3
+10.1038/s41586-020-2852-1,EM,2020-09-27,"Bjorkman, P.J.",2,7k8x 7k8y,Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,73.0,105.0,105.0,0.0,0.0,105.0,176.0,68
+10.3389/fimmu.2021.697602,X-ray,2020-10-02,"Childers, K.C.",1,7kbt,C_FR3,Coagulation factor VIII; Coagulation factor VIII,"Coagulation factor VIII,Coagulation factor VIII,Coagulation factor VIII,Coagulation factor VIII,Coagulation factor VIII",other protein,human,bound,False,1.0,1.0,1.0,0.0,0.0,1.0,2.0,0
+10.3389/fimmu.2021.662909,EM,2020-10-04,"Kwong, P.D.",1,7kc1,E_FR4bulge,Hemagglutinin,Fusion protein of Hemagglutinin and Envelope glycoprotein,viral surface glycoprotein,viral,bound,False,0.0,0.0,15.0,1.0,0.0,0.0,0.0,239
+10.7554/elife.62611,EM,2020-11-19,"Frost, A.",2,7kra 7ktx,C_FR3,ER membrane protein complex subunit 1,ER membrane protein complex subunit 1,receptor/membrane protein,other eukaryote,bound,False,0.0,0.0,0.0,1.0,1.0,0.5,1.5,0
+10.1016/j.celrep.2021.108950,X-ray,2020-12-21,"Shapiro, L.",1,7l5b,Dplus_CDR3short,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,82.0,120.0,120.0,0.0,0.0,180.0,289.0,2
+10.1038/s42003-021-02029-w,EM,2021-02-04,"Dou, C.",1,7e23,C_FR3;Dplus_CDR3short,,CA521 Heavy Chain,unmapped/peptide,human,bound,True,0.0,0.0,0.0,1.0,1.0,0.0,,0
+10.1038/s41421-021-00292-z,EM,2021-02-08,"Liu, C.",2,7e39 7e3c,A_FR1Nterm;B_CDR2FR3;C_FR3;E_FR4bulge,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,89.0,137.0,137.0,0.0,0.0,220.0,350.0,6
+10.1038/s41467-021-27950-w,EM,2021-02-16,"Grimes, J.M.",2,7nj5 7nk2,B_CDR2FR3;Dminus_CDR3long,RNA-directed RNA polymerase catalytic subunit,RNA-directed RNA polymerase catalytic subunit,viral other,viral,no contact,False,0.0,0.0,0.0,1.0,0.0,6.5,10.5,7
+10.1038/s41421-021-00295-w,X-ray,2021-02-21,"Yang, X.M.",1,7e5y,Dplus_CDR3short;F_CDR1,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,90.0,140.0,140.0,0.0,0.0,238.0,365.0,1
+10.1126/sciadv.abh3355,EM,2021-03-01,"Newstead, S.",1,7nqk,A_FR1Nterm,Solute carrier family 15 member 2,Solute carrier family 15 member 2,channel/transporter,other vertebrate,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,3
+10.1038/s41421-021-00264-3,EM,2021-03-07,"Feng, R.",2,7eaj 7eak,F_CDR1,Genome polyprotein,VP1,viral capsid,viral,bound,False,0.0,0.0,6.0,1.0,0.0,0.0,0.5,0
+10.1038/s41594-022-00755-1,EM,2021-03-15,"Yue, W.",1,7nvn,other,T-complex protein 1 subunit epsilon,T-complex protein 1 subunit epsilon,enzyme,human,bound,False,1.0,1.0,1.0,1.0,1.0,0.0,2.0,0
+10.1073/pnas.2025452118,EM,2021-03-18,"Hafenstein, S.L.",1,7m3l,C_FR3,Capsid protein 2,Capsid protein 2,viral capsid,viral,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,12
+10.1016/j.cell.2021.04.032,EM,2021-03-25,"Bjorkman, P.J.",1,7m6h,Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,88.0,150.0,150.0,0.0,0.0,272.0,435.0,89
+10.1038/s41467-021-24963-3,EM,2021-04-06,"Taylor, D.J.",1,7mej,A_FR1Nterm;Dminus_CDR3long,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,85.0,154.0,154.0,0.0,0.0,288.0,462.0,0
+10.1107/s2059798321007816,EM,2021-04-14,"Frank, G.A.",1,7o85,E_FR4bulge,Protective antigen,Protective antigen PA-63,toxin,bacterial,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,4.0,0
+10.1126/science.abg4998,EM,2021-04-16,"Jiang, Y.",1,7mhz,C_FR3,Protein-cysteine N-palmitoyltransferase HHAT,Protein-cysteine N-palmitoyltransferase HHAT,enzyme,human,bound,False,0.0,1.0,1.0,1.0,1.0,0.0,0.0,1
+10.1016/j.immuni.2021.08.016,EM,2021-04-24,Center for Structural Genomics of Infectious Diseases (CSGID),2,7mkl 7mkm,B_CDR2FR3;E_FR4bulge,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,87.0,157.0,157.0,0.0,0.0,302.0,480.0,18
+10.1038/s41586-021-04022-z,EM,2021-04-29,"Gouaux, E.",1,7mlv,Dplus_CDR3short,Glycine receptor alpha 1,Glycine receptor alpha 1,channel/transporter,other vertebrate,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,42
+10.1172/jci151676,EM,2021-05-07,"Zanotti, G.",1,7oh0,B_CDR2FR3,Tetanus toxin,Tetanus toxin,toxin,bacterial,bound,False,0.0,0.0,4.0,1.0,0.0,0.0,0.0,0
+10.1038/s41422-021-00555-0,EM,2021-05-29,"Zhang, Z.Y.",1,7ey5,E_FR4bulge,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,85.0,160.0,161.0,0.0,0.0,319.0,508.0,2
+10.1093/abt/tbad002,EM,2021-06-16,"Wang, K.",1,7f3q,A_FR1Nterm,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,85.0,162.0,163.0,0.0,0.0,320.0,502.0,3
+10.3389/fmicb.2022.875840,X-ray,2021-06-22,"Li, D.",1,7f5h,B_CDR2FR3,Spike glycoprotein,SARS-CoV-2 Spike Receptor-Binding Domain (RBD),viral surface glycoprotein,viral,bound,True,88.0,162.0,163.0,0.0,0.0,323.0,503.0,8
+10.1128/jvi.01308-21,EM,2021-07-20,"Lou, Z.",2,7fei 7fej,D0,Genome polyprotein,Capsid protein VP0,viral capsid,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.5,0.5,7
+10.1007/s13238-021-00871-6,EM,2021-08-07,"Pan, L.",1,7v2a,Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,98.0,160.0,161.0,0.0,0.0,346.0,528.0,0
+10.1038/s41392-021-00810-1,EM,2021-10-10,"Ying, T.",1,7vne,Dminus_CDR3long,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,113.0,163.0,164.0,0.0,0.0,325.0,550.0,1
+10.1038/s41586-022-04534-2,EM,2021-11-02,"Zimmer, J.",2,7sp6 7sp7,B_CDR2FR3,,Hyaluronan synthase,viral other,viral,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1038/s41467-023-40821-w,EM,2021-11-12,"Miller, M.",1,7stf,A_FR1Nterm;C_FR3;Dplus_CDR3short,"HLA class I histocompatibility antigen, A alpha chain","HLA class I histocompatibility antigen, A alpha chain",receptor/membrane protein,human,bound,False,0.0,0.0,8.0,0.0,0.0,0.0,8.0,0
+10.1016/j.cell.2022.06.025,EM,2021-11-30,"Pruss, H.",1,7t0w,E_FR4bulge,Gamma-aminobutyric acid receptor subunit alpha-1,Gamma-aminobutyric acid receptor subunit alpha-1,channel/transporter,human,bound,False,3.0,4.0,5.0,0.0,0.0,3.0,3.0,0
+10.1038/s41586-021-04356-8,EM,2021-12-07,"Ward, A.B.",1,7t3d,Dplus_CDR3short,Hemagglutinin,Hemagglutinin HA1 chain,viral surface glycoprotein,viral,bound,False,1.0,1.0,12.0,0.0,0.0,2.0,2.0,85
+10.1126/science.abn9884,EM,2021-12-14,"Lander, G.C.",1,7t6x,A_FR1Nterm;F_CDR1,Genome polyprotein,Envelope glycoprotein E2,viral surface glycoprotein,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,0
+10.7554/elife.74589,EM,2021-12-14,"Manatschal, C.",4,7qia 7qic 7qji 7qjj,A_FR1Nterm,Natural resistance-associated macrophage protein,Divalent metal cation transporter,channel/transporter,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,1.0,1.0,0
+10.1038/s41586-022-04466-x,EM,2021-12-23,"Wang, L.",2,7we8 7wee,Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,113.0,163.0,164.0,0.0,0.0,336.0,585.0,1
+10.1038/s41467-022-28559-3,EM,2022-01-04,"Furukawa, H.",2,7te9 7teb,C_FR3,"Glutamate receptor ionotropic, NMDA 2B","Glutamate receptor ionotropic, NMDA 2B",channel/transporter,other vertebrate,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,4.0,4
+10.1016/j.chom.2022.10.011,EM,2022-01-23,"Xia, N.",2,7wp6 7wp8,A_FR1Nterm;E_FR4bulge,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,109.0,166.0,167.0,0.0,0.0,381.0,659.0,4
+10.1038/s41422-022-00677-z,EM,2022-02-04,"Fu, W.",2,7wtf 7wtg,Dplus_CDR3short;E_FR4bulge,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,105.0,165.0,166.0,0.0,0.0,394.0,715.0,0
+10.1038/s41586-022-04590-8,EM,2022-02-08,"Yu, X.",1,7wuj,D0,Adhesion G protein-coupled receptor G4,"Adhesion G-protein coupled receptor G4,Uncharacterized protein",GPCR,human,fiducial-only,False,0.0,0.0,2.0,1.0,1.0,0.0,0.0,0
+10.1371/journal.ppat.1010994,X-ray,2022-02-10,"Nair, D.T.",1,7wvl,B_CDR2FR3,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,105.0,164.0,165.0,0.0,0.0,399.0,718.0,0
+10.1126/science.abm5561,EM,2022-02-10,"Veesler, D.",1,7ty0,B_CDR2FR3,Glycoprotein G,Glycoprotein G,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,0.0,19
+10.1128/jvi.00896-22,EM,2022-02-15,"Mousa, J.J.",1,7tz5,A_FR1Nterm,Hemagglutinin,Hemagglutinin,viral surface glycoprotein,viral,bound,False,0.0,0.0,13.0,1.0,0.0,0.0,0.0,1
+10.1038/s41594-022-00859-8,EM,2022-04-03,"Skiniotis, G.",1,7ul5,C_FR3;other,Somatostatin receptor type 2,Somatostatin receptor type 2,GPCR,human,bound,False,6.0,6.0,69.0,0.0,0.0,8.0,8.0,13
+10.1016/j.str.2023.04.010,EM,2022-04-14,"Ortlund, E.",1,7uow,B_CDR2FR3,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,False,112.0,159.0,160.0,0.0,0.0,420.0,719.0,3
+"Wilson, I.A._2022",X-ray,2022-06-03,"Wilson, I.A.",1,8d50,B_CDR2FR3,,Envelope glycoprotein gp120,viral surface glycoprotein,viral,bound,False,0.0,0.0,17.0,1.0,0.0,0.0,,361
+"Wang, L._2022",EM,2022-06-05,"Wang, L.",1,7y0o,C_FR3,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,114.0,157.0,159.0,0.0,0.0,425.0,740.0,15
+10.15252/embj.2023113418,EM,2022-06-16,"Majumder, P.",1,7y58,A_FR1Nterm,Antiseptic resistance protein,Antiseptic resistance protein,channel/transporter,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1038/s41467-022-34923-0,X-ray,2022-06-18,"McGuire, J.",1,8ddk,A_FR1Nterm,Envelopment polyprotein,Envelopment polyprotein,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0
+10.1038/s41467-023-36459-3,EM,2022-06-23,"Pancera, M.",1,8dg8,B_CDR2FR3,Fusion glycoprotein F0,Fusion glycoprotein F0,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,33
+10.1016/j.ijbiomac.2022.12.120,EM,2022-08-23,"Su, X.D.",1,8gnh,Dminus_CDR3long;Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,99.0,144.0,146.0,0.0,0.0,444.0,750.0,5
+10.1038/s41467-023-41052-9,EM,2022-08-25,"Charnesky, A.J.",1,8e8l,A_FR1Nterm,Genome polyprotein,Capsid protein VP1,viral capsid,viral,bound,False,0.0,0.0,3.0,0.0,0.0,0.0,0.0,0
+10.1371/journal.ppat.1011811,EM,2022-09-02,"Kun, L.",1,8grr,Dplus_CDR3short,RNA-directed RNA polymerase,A/WH/CHA/09 VP2,viral capsid,viral,bound,False,1.0,1.0,2.0,0.0,0.0,0.0,0.0,0
+10.3390/v14112322,EM,2022-09-06,"Fu, W.",4,8gsc 8gsd 8gse 8gsf,F_CDR1,Genome polyprotein,VP1,viral capsid,viral,bound,False,0.0,0.0,3.0,0.0,0.0,0.0,0.0,6
+10.1016/j.celrep.2023.112524,EM,2022-09-16,"Ward, A.B.",1,8ejh,A_FR1Nterm,Pre-glycoprotein polyprotein GP complex,Glycoprotein G1,viral surface glycoprotein,viral,bound,False,1.0,4.0,5.0,0.0,0.0,5.0,8.0,106
+10.1038/s41467-024-50349-2,X-ray,2022-10-21,"Steyaert, J.",1,8be5,A_FR1Nterm,Son of sevenless homolog 1,Son of sevenless homolog 1,other protein,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,2.0,8
+"Joyce, G.M._2022",X-ray,2022-11-08,"Joyce, G.M.",1,8f2x,A_FR1Nterm;Dplus_CDR3short,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,86.0,142.0,144.0,0.0,0.0,451.0,742.0,0
+10.1038/s41467-023-35949-8,EM,2022-11-17,"Wu, Y.-M.",1,8hhx,C_FR3,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,84.0,142.0,144.0,0.0,0.0,451.0,733.0,6
+10.1038/s41467-024-53746-9,EM,2022-12-06,"Rak, A.",1,8bw0,B_CDR2FR3,Cell adhesion molecule CEACAM5,Carcinoembryonic antigen-related cell adhesion molecule 5,receptor/membrane protein,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,2
+10.1038/s41467-023-39659-z,EM,2023-01-10,"Ofek, G.",1,8fsj,A_FR1Nterm,Genome polyprotein,"HCV E2 ectodomain, SYNZIP2 scaffold fusion",viral surface glycoprotein,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,4
+10.1016/j.chom.2023.06.006,EM,2023-01-21,"Mouquet, H.",1,8c8t,C_FR3,Envelope glycoprotein gp160,Envelope glycoprotein gp160,viral surface glycoprotein,viral,bound,False,0.0,4.0,16.0,0.0,0.0,3.0,3.0,0
+"Tian, L._2023",X-ray,2023-02-13,"Tian, L.",1,8idm,F_CDR1,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,no interface data,False,2.0,3.0,4.0,0.0,0.0,8.0,9.0,0
+10.1182/blood.2023020181,EM,2023-02-15,"Spiegel, P.C.",1,8g6i,C_FR3,Coagulation factor VIII; Coagulation factor VIII,Coagulation factor VIII chimera from human and pig,other protein,human,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2
+10.1016/j.cell.2023.10.002,EM,2023-03-08,"Marlovits, T.C.",1,8cr9,B_CDR2FR3;C_FR3,Type III secretion protein PcrV; Maltose/maltodextrin-binding periplasmic protein,"Maltose/maltodextrin-binding periplasmic protein,Type III secretion protein PcrV",other protein,bacterial,bound,False,2.0,3.0,3.0,0.0,0.0,1.0,31.0,0
+10.1002/pro.4887,X-ray,2023-03-22,"Cendron, L.",1,8oi2,Dplus_CDR3short,Albumin,Albumin,other protein,human,no contact,False,0.0,1.0,1.0,0.0,0.0,0.0,8.0,3
+10.1038/s41594-024-01389-1,EM,2023-04-27,"Zimmer, J.",2,8snc 8snd,B_CDR2FR3,,Hyaluronan synthase,viral other,viral,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5
+10.1038/s41467-024-54746-5,EM,2023-05-06,"Li, Y.J.",3,8jag 8jam 8jap,B_CDR2FR3;Dminus_CDR3long;Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,2.0,4.0,116.0,1.0,1.0,1.0,225.0,1
+10.1126/science.adj8321,EM,2023-06-09,"Ward, A.B.",1,8t4d,A_FR1Nterm,Envelope glycoprotein gp160,MD65 N332-GT5 SOSIP gp120,viral surface glycoprotein,viral,bound,False,8.0,9.0,18.0,0.0,0.0,29.0,36.0,115
+10.1016/j.jinf.2023.10.008,EM,2023-07-10,"Lau, K.",1,8pq2,Dplus_CDR3short,Spike glycoprotein,Spike protein S2',viral surface glycoprotein,viral,bound,True,51.0,105.0,108.0,0.0,0.0,212.0,309.0,0
+10.1038/s41589-024-01620-6,EM,2023-07-13,"Kruse, A.C.",1,8th4,A_FR1Nterm,Soluble cytochrome b562; Type-1 angiotensin II receptor,Type-1 angiotensin II receptor Soluble cytochrome b562 complex,GPCR,human,bound,False,22.0,30.0,106.0,0.0,0.0,45.0,93.0,9
+10.1002/advs.202309268,EM,2023-08-01,"Xu, J.",1,8tng,B_CDR2FR3,Envelope glycoprotein gp160,HIV-1 BG505 DS-SOSIP gp120,viral surface glycoprotein,viral,bound,False,8.0,9.0,18.0,0.0,0.0,39.0,48.0,0
+10.1038/s41564-024-01722-w,EM,2023-08-07,"Jardetzky, T.S.",1,8tqi,Dplus_CDR3short,Hemagglutinin-neuraminidase,Hemagglutinin-neuraminidase,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,1.0,1.0,0.0,0.0,10
+10.1016/j.xcrm.2024.101573,EM,2023-08-22,"Liu, Z.",1,8khr,A_FR1Nterm;Dplus_CDR3short,Glycoprotein 42,Soluble gp42,viral surface glycoprotein,viral,bound,False,0.0,1.0,2.0,0.0,0.0,0.0,0.0,6
+10.1016/j.ijbiomac.2023.128191,EM,2023-08-24,"Huang, Q.",1,8w4f,Dminus_CDR3long,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,50.0,96.0,99.0,0.0,0.0,199.0,279.0,0
+10.1016/j.celrep.2025.115334,EM,2023-08-26,"Zhu, P.",6,8w5d 8w5e 8w5m 8w5p 8w5q 8w5t,A_FR1Nterm;C_FR3;D0;Dminus_CDR3long;Dplus_CDR3short;E_FR4bulge,Capsid protein,Minor capsid protein A1,viral capsid,viral,bound,False,1.0,1.0,1.0,1.0,1.0,6.0,6.0,0
+10.1038/s41467-024-50827-7,EM,2023-09-12,"Masiulis, S.",1,8qj2,A_FR1Nterm,Soluble cytochrome b562; Melanocortin receptor 4; Red fluorescent protein drFP583,"Soluble cytochrome b562,Melanocortin receptor 4,Red fluorescent protein drFP583",GPCR,human,bound,False,21.0,34.0,114.0,0.0,0.0,53.0,94.0,0
+10.1182/blood.2023022942,EM,2023-10-03,"Pozzi, N.",1,8uf7,A_FR1Nterm,Prothrombin,Prothrombin,enzyme,human,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,3.0,0
+10.1038/s41590-025-02286-5,EM,2023-10-16,"Bjorkman, P.J.",1,8ulu,Dminus_CDR3long,Envelope glycoprotein gp160,Envelope glycoprotein gp120,viral surface glycoprotein,viral,bound,False,8.0,10.0,20.0,0.0,0.0,45.0,54.0,134
+10.7554/elife.94503,EM,2023-11-13,"Versees, W.",2,8r4b 8r4d,B_CDR2FR3,non-specific serine/threonine protein kinase,Rab family protein,enzyme,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,2
+"Feng, L.L._2023",EM,2023-12-11,"Feng, L.L.",1,8xef,A_FR1Nterm,Spike glycoprotein,Spike protein S2',viral surface glycoprotein,viral,bound,True,52.0,84.0,87.0,0.0,0.0,144.0,267.0,3
+10.1016/j.cell.2025.01.004,EM,2023-12-26,"Zhu, S.",1,8xlk,C_FR3,"Glutamate receptor ionotropic, NMDA 1","Glutamate receptor ionotropic, NMDA 1",channel/transporter,other vertebrate,bound,False,1.0,1.0,2.0,0.0,0.0,1.0,1.0,8
+10.7554/elife.96138,EM,2024-01-08,"Dutzler, R.",2,8rmk 8rmm,E_FR4bulge,Calcium homeostasis modulator protein 2,Calcium homeostasis modulator protein 2,channel/transporter,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,13
+10.1038/s41392-024-02114-6,EM,2024-01-09,"Feng, L.L.",2,8xsd 8z86,Dplus_CDR3short,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,53.0,82.5,85.5,0.0,0.0,133.5,295.0,3
+10.1128/jvi.00638-24,EM,2024-02-01,"Bowden, T.A.",1,8rvn,A_FR1Nterm,Fusion glycoprotein F0,Fusion glycoprotein F0,viral surface glycoprotein,viral,bound,False,2.0,3.0,7.0,0.0,0.0,0.0,0.0,10
+10.1038/s41467-025-59088-4,EM,2024-03-27,"McKenna, R.",1,9b7u,A_FR1Nterm,Capsid protein VP1,Capsid protein VP1,viral capsid,viral,bound,False,0.0,0.0,0.0,1.0,0.0,7.0,9.0,0
+10.1038/s41586-024-08273-4,EM,2024-04-23,"Deshpande, I.",1,9bia,D0;Dplus_CDR3short,Ninjurin-1,Ninjurin-1,receptor/membrane protein,other vertebrate,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1038/s44298-026-00192-7,EM,2024-05-05,"Draper, S.J.",1,9bop,C_FR3,Envelope glycoprotein,Virion spike glycoprotein GP1,viral surface glycoprotein,viral,bound,False,0.0,0.0,3.0,1.0,0.0,0.0,0.0,2
+10.1038/s41467-025-58340-1,EM,2024-05-31,"Arnold, P.",1,9fjf,A_FR1Nterm,Lysosomal acid glucosylceramidase,Lysosomal acid glucosylceramidase,enzyme,human,bound,False,1.0,1.0,1.0,0.0,0.0,1.0,10.0,0
+10.1038/s41564-026-02282-x,EM,2024-06-11,"Crowe, J.E.",1,9c7s,A_FR1Nterm,Spike glycoprotein,Spike protein S2',viral surface glycoprotein,viral,bound,True,49.0,79.0,81.0,0.0,0.0,156.0,347.0,31
+10.1186/s12951-025-03243-y,EM,2024-06-18,"Hurdiss, D.L.",2,9fr3 9fr4,other,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,False,49.0,79.0,81.0,0.0,0.0,159.0,353.0,10
+10.1016/j.str.2025.08.008,EM,2024-06-21,"Noinaj, N.",1,9ccg,A_FR1Nterm,POTRA domain-containing protein,POTRA domain-containing protein,other protein,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,2
+"Wolff, N._2024",EM,2024-06-24,"Wolff, N.",1,9fte,A_FR1Nterm;Dplus_CDR3short,Adhesion G protein-coupled receptor V1,Adhesion G protein-coupled receptor V1,GPCR,other vertebrate,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0
+10.1016/j.celrep.2024.114708,EM,2024-07-05,"Ward, A.B.",1,9cj7,D0,Pre-glycoprotein polyprotein GP complex,Glycoprotein G1,viral surface glycoprotein,viral,bound,False,1.0,1.0,3.0,0.0,0.0,0.0,4.0,149
+10.1016/j.immuni.2025.04.010,EM,2024-07-28,"Ward, A.B.",1,9cv7,other,,ZM233 NFL TD CC3+ gp140,viral surface glycoprotein,viral,bound,False,0.0,0.0,16.0,1.0,0.0,0.0,,149
+10.1038/s41467-025-57843-1,EM,2024-09-12,"Liu, Y.",1,9dm7,C_FR3;E_FR4bulge,Mannosyltransferase,Mannosyltransferase,enzyme,bacterial,bound,False,1.0,1.0,1.0,1.0,1.0,0.0,0.0,4
+10.1128/jvi.00453-25,EM,2024-09-16,"Mousa, J.",1,9dn2,Dplus_CDR3short;E_FR4bulge,Hemagglutinin,Hemagglutinin,viral surface glycoprotein,viral,bound,False,0.0,0.0,29.0,1.0,0.0,0.0,0.0,4
+10.1073/pnas.2423460122,EM,2024-11-05,"Hafenstein, S.",1,9e89,C_FR3,Capsid protein VP1,Capsid protein,viral capsid,viral,bound,False,0.0,0.0,0.0,1.0,0.0,0.0,0.0,14
+10.1016/j.str.2025.09.003,EM,2024-11-14,"Efremov, R.G.",1,9heo,B_CDR2FR3,Ryanodine receptor 1,Ryanodine receptor 1,channel/transporter,other vertebrate,bound,False,0.0,0.0,0.0,0.0,0.0,6.0,32.0,7
+10.1073/pnas.2501637122,EM,2024-12-18,"Bjorkman, P.J.",1,9ml5,C_FR3;F_CDR1,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,37.0,73.0,78.0,0.0,0.0,148.0,299.0,145
+10.1038/s41467-026-70491-3,EM,2024-12-20,"Rohou, A.L.",1,9mnb,A_FR1Nterm,Tryptase alpha/beta-1,Tryptase alpha/beta-1,enzyme,human,bound,False,0.0,1.0,1.0,0.0,0.0,4.0,4.0,0
+"Zhang, H._2025",EM,2025-01-08,"Zhang, H.",2,9lfa 9lfc,C_FR3;Dminus_CDR3long,B1 bradykinin receptor,"B1 bradykinin receptor,Kappa-type opioid receptor",GPCR,human,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,10
+"Guo, F._2025",X-ray,2025-01-08,"Guo, F.",1,9lfp,A_FR1Nterm,Spike glycoprotein,Spike protein S1,viral surface glycoprotein,viral,bound,True,33.0,71.0,76.0,0.0,0.0,157.0,294.0,1
+10.1038/s41541-025-01319-2,EM,2025-02-08,"Zhao, H.",1,9lue,E_FR4bulge,Glycoprotein G,Glycoprotein G,viral surface glycoprotein,viral,bound,False,1.0,1.0,2.0,0.0,0.0,1.0,1.0,1
+"Ohlin, M._2025",EM,2025-02-11,"Ohlin, M.",2,9ib1 9ib3,A_FR1Nterm,Spike glycoprotein,Spike glycoprotein,viral surface glycoprotein,viral,bound,True,34.0,68.0,73.0,0.0,0.0,151.0,250.0,1
+10.1073/pnas.2532336123,EM,2025-03-06,"Gonen, S.",2,9nnz 9nyx,A_FR1Nterm;Dminus_CDR3long,Rhodopsin,Rhodopsin,GPCR,other vertebrate,bound,False,1.0,1.0,10.0,0.0,0.0,1.0,1.0,0
+"Sun, C._2025",EM,2025-03-13,"Sun, C.",1,9ma0,C_FR3;Dminus_CDR3long,Envelope glycoprotein GP350,Envelope glycoprotein GP350,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1
+"Southworth, D._2025",EM,2025-04-15,"Southworth, D.",2,9o7h 9o7i,A_FR1Nterm,E3 ubiquitin-protein ligase CHIP,E3 ubiquitin-protein ligase CHIP,enzyme,human,bound,False,0.0,0.0,0.0,0.0,0.0,1.0,7.0,1
+10.1002/advs.77172,EM,2025-05-13,"Zhou, T.",1,9om5,B_CDR2FR3,Hemagglutinin,Hemagglutinin,viral surface glycoprotein,viral,bound,False,0.0,0.0,26.0,0.0,0.0,0.0,0.0,11
+10.1016/j.xcrm.2026.102618,X-ray,2025-07-03,"Pancera, M.",1,9pf9,C_FR3,BLLF1,BLLF1,viral other,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,52
+"Dedi, N._2025",X-ray,2025-07-09,"Dedi, N.",1,9rwi,C_FR3,"HLA class I histocompatibility antigen, alpha chain G","HLA class I histocompatibility antigen, alpha chain G",receptor/membrane protein,human,bound,False,0.0,0.0,15.0,1.0,0.0,0.0,0.0,0
+"McLellan, J.S._2025",EM,2025-07-31,"McLellan, J.S.",1,9pur,Dminus_CDR3long;F_CDR1,Hemagglutinin-neuraminidase,Hemagglutinin-neuraminidase,viral surface glycoprotein,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,88
+"Ward, A.B._2025",EM,2025-08-01,"Ward, A.B.",2,9pv3 9pv5,B_CDR2FR3;E_FR4bulge;F_CDR1,,10E8-GT12 immunogen,unmapped/peptide,synthetic,bound,False,0.0,0.0,0.0,1.0,0.0,0.0,,204
+"Naismith, J.H._2025",EM,2025-08-05,"Naismith, J.H.",1,9s7s,Dminus_CDR3long,UDP-Gal::undecaprenolphosphate Gal-1-P transferase WbaP,UDP-Gal::undecaprenolphosphate Gal-1-P transferase WbaP,enzyme,bacterial,bound,False,0.0,0.0,0.0,1.0,1.0,0.0,0.0,20
+10.1038/s41586-026-10429-3,EM,2025-08-07,"Ward, A.B.",1,9pyh,B_CDR2FR3,,BG505 NFL TD CC3+ gp140,viral surface glycoprotein,viral,bound,False,0.0,0.0,12.0,1.0,0.0,0.0,,206
+10.1002/pro.70473,EM,2025-09-18,"Ploug, M.",1,9yc6,E_FR4bulge;F_CDR1,Urokinase plasminogen activator surface receptor,Urokinase plasminogen activator surface receptor,receptor/membrane protein,human,bound,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2
+10.1021/acs.jmedchem.6c00081,EM,2025-09-26,"Han, S.",1,9yfu,C_FR3,G protein-coupled receptor 61,"G-protein coupled receptor 61,Soluble cytochrome b562",GPCR,human,bound,False,0.0,0.0,63.0,0.0,0.0,0.0,0.0,9
+10.1126/science.aec6396,EM,2025-10-01,"Bjorkman, P.J.",1,9yie,A_FR1Nterm,Envelope glycoprotein gp160,Envelope glycoprotein gp160,viral surface glycoprotein,viral,bound,False,4.0,4.0,10.0,0.0,0.0,28.0,29.0,157
+10.1073/pnas.2602538123,EM,2026-01-03,"Kruse, A.C.",1,9zxd,E_FR4bulge,Type-1 angiotensin II receptor,"AT118-R nanobody,Type-1 angiotensin II receptor with Soluble cytochrome b562 insertion",GPCR,human,bound,False,1.0,1.0,56.0,0.0,0.0,1.0,1.0,16
+10.1371/journal.pone.0338127,EM,2026-01-09,"Xu, Y.",1,22ge,A_FR1Nterm;B_CDR2FR3,Receptor tyrosine-protein kinase erbB-2,Receptor tyrosine-protein kinase erbB-2,receptor/membrane protein,human,bound,False,2.0,3.0,3.0,0.0,0.0,4.0,7.0,9
+10.21203/rs.3.rs-9077120/v1,X-ray,2026-02-23,"DuBois, R.M.",1,11hb,E_FR4bulge,Major capsid protein VP1,Major capsid protein VP1,viral surface glycoprotein,viral,bound,False,0.0,0.0,2.0,1.0,0.0,0.0,0.0,21
+10.1016/j.celrep.2026.117993,EM,2026-02-26,"Saphire, E.O.",1,11iw,other,Glycoprotein,Glycoprotein,viral surface glycoprotein,viral,bound,False,0.0,0.0,2.0,0.0,0.0,0.0,0.0,40
+"Ward, A.B._2026",EM,2026-04-07,"Ward, A.B.",1,12iu,B_CDR2FR3,Hemagglutinin,Hemagglutinin HA1,receptor/membrane protein,human,bound,False,1.0,1.0,11.0,0.0,0.0,1.0,1.0,226
+10.1073/pnas.2613091123,X-ray,2026-04-16,"McDonnell, J.M.",1,30ad,C_FR3,,,none,none,unbound,False,,,,,,,,5
+10.21203/rs.3.rs-9488000/v1,EM,2026-04-18,"Prasad, B.V.V.",4,12ty 12ua 12ub 12ud,Dplus_CDR3short,VP1,VP1,viral surface glycoprotein,viral,bound,False,0.0,1.0,2.0,0.0,0.0,2.0,4.0,3
+10.1371/journal.ppat.1014651,X-ray,2026-04-19,"Tzarum, N.",1,30bg,C_FR3,,HCV E2 envelope protein,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,0.0,0.0,0.0,,0
+10.1007/s1142702531027,EM,2026-05-09,"Zeng, M.S.",1,26pf,A_FR1Nterm;Dminus_CDR3long;Dplus_CDR3short,BLLF1,BLLF1,viral surface glycoprotein,viral,bound,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,4
+"Naismith, J.H._2026",EM,2026-05-13,"Naismith, J.H.",1,30us,Dplus_CDR3short,UDP-Gal::undecaprenolphosphate Gal-1-P transferase WbaP,UDP-Gal::undecaprenolphosphate Gal-1-P transferase WbaP,enzyme,bacterial,bound,False,0.0,0.0,0.0,0.0,0.0,2.0,2.0,22

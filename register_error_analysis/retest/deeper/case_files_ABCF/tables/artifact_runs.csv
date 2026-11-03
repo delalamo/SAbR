@@ -1,0 +1,20 @@
+pdb,chain,mode,imgt0,imgt1,delta,method,year,last_author,artifact,origin
+7eaj,F,F_CDR1,27,35,,EM,2021,"Feng, R.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+2x7l,A,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+2x7l,C,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+2x7l,E,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+2x7l,G,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+2x7l,H,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+2x7l,J,C_FR3,81,83,1.0,X-ray,2010,"Grimes, J.M.",FR3 gap 80+84,9 FR3 / other (still unexplained)
+7eak,F,F_CDR1,27,35,,EM,2021,"Feng, R.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+8gsd,H,F_CDR1,27,35,,EM,2022,"Fu, W.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+8gsc,H,F_CDR1,27,35,,EM,2022,"Fu, W.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+8gsf,E,F_CDR1,27,35,,EM,2022,"Fu, W.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+8gsf,H,F_CDR1,27,35,,EM,2022,"Fu, W.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+8gse,H,F_CDR1,27,35,,EM,2022,"Fu, W.",FR1 gap 26,"8 CDR1/CDR2 boundary, typical length"
+9bop,M,C_FR3,81,83,1.0,EM,2024,"Draper, S.J.",FR3 gap 84,9 FR3 / other (still unexplained)
+9bop,O,C_FR3,81,83,1.0,EM,2024,"Draper, S.J.",FR3 gap 84,9 FR3 / other (still unexplained)
+9e89,H,C_FR3,81,83,2.0,EM,2024,"Hafenstein, S.",FR3 gap 84+85,9 FR3 / other (still unexplained)
+30bg,H,C_FR3,81,83,2.0,X-ray,2026,"Tzarum, N.",FR3 gap 84+85,9 FR3 / other (still unexplained)
+30ad,H,C_FR3,81,83,1.0,X-ray,2026,"McDonnell, J.M.",FR3 gap 84,9 FR3 / other (still unexplained)
+9pf9,H,C_FR3,81,83,1.0,X-ray,2025,"Pancera, M.",FR3 gap 84,9 FR3 / other (still unexplained)

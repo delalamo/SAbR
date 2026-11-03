@@ -1,0 +1,4 @@
+test,observed,null_mean,null_sd,ratio,p_perm,n_pairs_sharing,n_papers,n_error
+error-paper pairs from different labs sharing >=1 author,275,324.552,58.24592085288033,0.847321846730262,0.8015992003998001,25043,1099,109
+... sharing >=1 non-last author (middle-author link),265,303.3755,54.70813010650245,0.8735049468398075,0.7571214392803598,23462,1099,109
+"error-paper pairs within the SAME lab (PDB last author), for comparison",45,66.3875,21.621825634067072,0.6778384485031067,0.8535732133933034,4122,1099,109
