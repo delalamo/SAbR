@@ -73,6 +73,7 @@ def test_cli_maps_the_complete_compact_interface(monkeypatch, tmp_path):
         "mode": "softalign",
         "residue_range": (2, 127),
         "scfv": False,
+        "auto_detect_gaps": False,
     }
     assert "pipeline details" in result.output
 
@@ -99,6 +100,7 @@ def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):
     assert captured["mode"] == "sabr"
     assert captured["residue_range"] is None
     assert captured["scfv"] is False
+    assert captured["auto_detect_gaps"] is False
     assert "pipeline details" not in result.output
     assert "Numerical backend:" not in result.output
     assert list(tmp_path.iterdir()) == [output]
@@ -746,3 +748,23 @@ def test_help_and_version_are_available():
     assert "--mode" in help_result.output
     assert "--no-mmcif" in help_result.output
     assert version_result.exit_code == 0
+
+
+@pytest.mark.parametrize("flag", ["--auto-detect-gaps", "--auto_detect_gaps"])
+def test_cli_forces_geometry_gap_handling(monkeypatch, tmp_path, flag):
+    captured = {}
+    monkeypatch.setattr(cli, "renumber_structure", _passthrough(captured))
+    result = CliRunner().invoke(
+        cli.main,
+        [
+            "-i",
+            str(DATA / "test_heavy_chain.pdb"),
+            "-c",
+            "F",
+            "-o",
+            str(tmp_path / "numbered.pdb"),
+            flag,
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert captured["auto_detect_gaps"] is True
