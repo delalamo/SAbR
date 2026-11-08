@@ -160,7 +160,8 @@ residues occupy sequence positions through scheme conversion, including
 insertion codes, but no atoms are created. Author-number jumps alone are
 never treated as missing sequence. Regions with missing anchors or breaks
 not explained by metadata retain the existing alignment fallback; numbering
-in those regions can still be inaccurate.
+in those regions can still be inaccurate. SAbR warns about a structural gap
+only when it keeps this fallback, not when metadata completes the region.
 
 The CLI reads this metadata automatically with Biopython's `MMCIF2Dict`.
 For in-memory mmCIF inputs, use the standard `MMCIFParser` and supply the

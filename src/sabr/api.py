@@ -4,11 +4,17 @@ import logging
 from dataclasses import dataclass
 
 from sabr import constants
-from sabr.alignment import align, load_references
+from sabr.alignment import load_references, select_alignment
+from sabr.corrections import report_correction
 from sabr.model import encode
 from sabr.numbering import number_alignment
 from sabr.structure import apply_numbering, extract_chain
-from sabr.unresolved import expand_loop_alignment, missing_between
+from sabr.types import CorrectionStatus
+from sabr.unresolved import (
+    expand_loop_alignment,
+    metadata_regions,
+    missing_between,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -172,7 +178,7 @@ def renumber_structure(
     )
     data = extract_chain(structure, chain, options.residue_range)
     embeddings = encode(data.coords, options.mode)
-    imgt_alignment, selected_type, score = align(
+    candidate = select_alignment(
         embeddings,
         data.gap_indices,
         options.chain_type,
@@ -180,21 +186,34 @@ def renumber_structure(
         mode=options.mode,
         scfv=options.scfv,
     )
+    missing = missing_between(structure, chain, data.residue_ids, mmcif_dict)
+    # A structural-gap skip is provisional: expand_loop_alignment completes
+    # every region in ``completed``, so only the other skips are final.
+    completed = metadata_regions(
+        candidate.corrected_alignment, data.gap_indices, missing
+    )
+    for domain_index, corrections in enumerate(candidate.corrections):
+        for correction in corrections:
+            if (
+                correction.status is not CorrectionStatus.STRUCTURAL_GAP
+                or (domain_index, correction.region) not in completed
+            ):
+                report_correction(correction, stacklevel=2)
     LOGGER.info(
         "Selected %s reference with alignment score %.4f.",
-        selected_type,
-        score,
+        candidate.reference_type,
+        candidate.raw_score,
     )
     numbering_type = (
         options.chain_type
         if options.chain_type in constants.TCR_CHAIN_TYPES
-        else selected_type
+        else candidate.reference_type
     )
     numbering_alignment, sequence, observed_rows = expand_loop_alignment(
-        imgt_alignment,
+        candidate.corrected_alignment,
         data.sequence,
         data.gap_indices,
-        missing_between(structure, chain, data.residue_ids, mmcif_dict),
+        missing,
     )
     numbered = number_alignment(
         numbering_alignment,

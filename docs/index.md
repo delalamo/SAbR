@@ -231,7 +231,9 @@ observed and unresolved residues. Virtual residues remain present through
 scheme conversion to preserve insertion codes, then are omitted from output.
 DE-loop residues fill 80 first, then 84 back through 81; additional residues
 are inserted after 82. Gaps without metadata retain the learned alignment
-fallback for that region, so numbering there can still be inaccurate.
+fallback for that region, so numbering there can still be inaccurate. SAbR
+warns about a structural gap only when it keeps this fallback, not when
+metadata completes the region.
 
 The CLI reads metadata automatically using Biopython’s `MMCIF2Dict`. For
 the Python API, `Bio.PDB.PDBParser` retains PDB missing-residue records.

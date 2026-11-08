@@ -349,8 +349,8 @@ def test_auto_reference_ties_resolve_in_h_k_l_order(monkeypatch):
         ),
     )
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
-        lambda alignment, gap_indices: alignment,
+        "sabr.alignment.correct_regions",
+        lambda alignment, gap_indices: (),
     )
     _, selected, _ = align(np.zeros((1, 64)), frozenset(), "auto", 0.0)
     assert selected == "H"
@@ -422,8 +422,8 @@ def test_explicit_chain_type_aligns_only_its_reference(monkeypatch, chain_type):
     )
     monkeypatch.setattr("sabr.alignment._align_reference", fake_align)
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
-        lambda alignment, gap_indices: alignment,
+        "sabr.alignment.correct_regions",
+        lambda alignment, gap_indices: (),
     )
     _, selected, _ = align(np.zeros((1, 64)), frozenset(), chain_type, 0.0)
     assert selected == chain_type
@@ -448,8 +448,8 @@ def test_tcr_chain_type_aligns_only_kappa_reference(monkeypatch, chain_type):
     )
     monkeypatch.setattr("sabr.alignment._align_reference", fake_align)
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
-        lambda alignment, gap_indices: alignment,
+        "sabr.alignment.correct_regions",
+        lambda alignment, gap_indices: (),
     )
 
     _, selected, _ = align(np.zeros((1, 64)), frozenset(), chain_type, 0.0)
@@ -492,9 +492,9 @@ def test_scfv_mode_selects_and_corrects_a_composite_reference(monkeypatch):
     )
     monkeypatch.setattr("sabr.alignment._align_reference", fake_align)
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
+        "sabr.alignment.correct_regions",
         lambda alignment, gap_indices: (
-            corrected_shapes.append(alignment.shape) or alignment
+            corrected_shapes.append(alignment.shape) or ()
         ),
     )
 
@@ -535,8 +535,8 @@ def test_requested_candidates_and_higher_order_boundaries_are_exact(
     )
     monkeypatch.setattr("sabr.alignment._align_reference", fake_align)
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
-        lambda alignment, gap_indices: alignment,
+        "sabr.alignment.correct_regions",
+        lambda alignment, gap_indices: (),
     )
 
     alignment, selected, _ = align(
@@ -584,8 +584,8 @@ def test_multidomain_terminal_penalty_is_used_only_for_candidate_selection(
     )
     monkeypatch.setattr("sabr.alignment._align_reference", fake_align)
     monkeypatch.setattr(
-        "sabr.alignment.apply_corrections",
-        lambda alignment, gap_indices: alignment,
+        "sabr.alignment.correct_regions",
+        lambda alignment, gap_indices: (),
     )
 
     alignment, selected, score = align(

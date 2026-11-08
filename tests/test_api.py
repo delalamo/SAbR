@@ -9,8 +9,20 @@ from Bio.PDB.Structure import Structure
 import sabr.api as api
 from sabr import constants, renumber_structure
 from sabr.structure import extract_chain
+from sabr.types import AlignmentCandidate
 
 DATA = Path(__file__).parent / "data"
+
+
+def _accepted(alignment, reference_type):
+    return AlignmentCandidate(
+        reference_type=reference_type,
+        reference_positions=(),
+        raw_score=0.0,
+        selection_score=0.0,
+        raw_alignment=alignment,
+        corrected_alignment=alignment,
+    )
 
 
 def _bio_ids(structure, chain):
@@ -32,10 +44,9 @@ def _stub_pipeline(monkeypatch, captured_modes=None, captured_options=None):
             captured_modes["alignment"] = mode
         if captured_options is not None:
             captured_options.update({"chain_type": chain_type, "scfv": scfv})
-        return (
+        return _accepted(
             np.zeros((len(embeddings), 128), dtype=int),
             "H" if chain_type == "auto" else chain_type,
-            0.0,
         )
 
     monkeypatch.setattr(
@@ -45,7 +56,7 @@ def _stub_pipeline(monkeypatch, captured_modes=None, captured_options=None):
     )
     monkeypatch.setattr(
         api,
-        "align",
+        "select_alignment",
         fake_align,
     )
     monkeypatch.setattr(
@@ -273,7 +284,7 @@ def test_tcr_chain_uses_k_reference_and_actual_numbering_type(
 
     def fake_align(embeddings, gaps, requested_type, noise, mode, scfv):
         captured["alignment_type"] = requested_type
-        return np.zeros((len(embeddings), 128), dtype=int), "K", 0.0
+        return _accepted(np.zeros((len(embeddings), 128), dtype=int), "K")
 
     def fake_number(alignment, sequence, scheme, numbering_type):
         captured["numbering_type"] = numbering_type
@@ -282,7 +293,7 @@ def test_tcr_chain_uses_k_reference_and_actual_numbering_type(
             for index, amino_acid in enumerate(sequence)
         ]
 
-    monkeypatch.setattr(api, "align", fake_align)
+    monkeypatch.setattr(api, "select_alignment", fake_align)
     monkeypatch.setattr(api, "number_alignment", fake_number)
 
     renumber_structure(structure, "F", chain_type=chain_type.lower())

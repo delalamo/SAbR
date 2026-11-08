@@ -3,6 +3,7 @@
 import logging
 import os
 import uuid
+import warnings
 from pathlib import Path
 
 import click
@@ -14,6 +15,11 @@ from sabr.io import AnisouMMCIFIO, AnisouMMCIFParser, AnisouPDBIO
 from sabr.unresolved import missing_residues_from_mmcif
 
 LOGGER = logging.getLogger(__name__)
+
+
+def _log_warning(message, category, filename, lineno, file=None, line=None):
+    """Show a library warning in the CLI log format, without source lines."""
+    LOGGER.warning("%s", message)
 
 
 def _read_structure(path: Path):
@@ -189,16 +195,18 @@ def main(
                 "with Biopython."
             )
         LOGGER.info("Numerical backend: NumPy/SciPy (CPU)")
-        result = renumber_structure(
-            structure,
-            chain,
-            scheme=scheme,
-            chain_type=chain_type,
-            noise_level=float(noise_level),
-            mode=mode,
-            residue_range=residue_range,
-            scfv=scfv,
-        )
+        with warnings.catch_warnings():
+            warnings.showwarning = _log_warning
+            result = renumber_structure(
+                structure,
+                chain,
+                scheme=scheme,
+                chain_type=chain_type,
+                noise_level=float(noise_level),
+                mode=mode,
+                residue_range=residue_range,
+                scfv=scfv,
+            )
         resolved_output_path = _resolve_output_path(
             result, output_path, no_mmcif=no_mmcif
         )

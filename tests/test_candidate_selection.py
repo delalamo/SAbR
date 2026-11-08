@@ -1,9 +1,12 @@
 """Candidate selection must consider the corrected alignment's validity."""
 
+import warnings
+
 import numpy as np
 import pytest
 
 from sabr import alignment
+from sabr.types import CorrectionStatus, RegionCorrection
 
 
 def _mock_candidates(monkeypatch, candidates):
@@ -25,7 +28,7 @@ def _mock_candidates(monkeypatch, candidates):
         alignment, "load_references", lambda *a, **k: references
     )
     monkeypatch.setattr(alignment, "_align_reference", align_reference)
-    monkeypatch.setattr(alignment, "apply_corrections", lambda a, **k: a)
+    monkeypatch.setattr(alignment, "correct_regions", lambda a, **k: ())
     return traced
 
 
@@ -103,8 +106,38 @@ def test_selection_validates_after_corrections(monkeypatch):
         assert gap_indices == gaps
         if matrix[0, 0]:
             matrix[0, 1] = 1
-        return matrix
+        return ()
 
-    monkeypatch.setattr(alignment, "apply_corrections", correct)
+    monkeypatch.setattr(alignment, "correct_regions", correct)
     _, name, score = alignment.align(np.zeros((2, 64)), gaps, "H,K", 0)
     assert (name, score) == ("K", 9)
+
+
+def test_only_the_selected_candidate_reports_corrections(monkeypatch):
+    _mock_candidates(
+        monkeypatch,
+        {
+            "H": (np.ones((2, 2)), 10, (1, 2)),
+            "K": (np.eye(2), 9, (1, 2)),
+        },
+    )
+
+    def correct(matrix, *, gap_indices):
+        name = "H" if matrix.sum() > 2 else "K"
+        status = CorrectionStatus.STRUCTURAL_GAP
+        return (RegionCorrection("CDR1", status, f"{name} gap"),)
+
+    monkeypatch.setattr(alignment, "correct_regions", correct)
+    query = np.zeros((2, 64))
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always")
+        selected = alignment.select_alignment(query, frozenset(), "H,K", 0)
+    assert captured == []
+    assert selected.reference_type == "K"
+    assert [
+        [item.message for item in domain] for domain in selected.corrections
+    ] == [["K gap"]]
+    with pytest.warns(UserWarning) as captured:
+        _, name, _ = alignment.align(query, frozenset(), "H,K", 0)
+    assert name == "K"
+    assert [str(item.message) for item in captured] == ["K gap"]

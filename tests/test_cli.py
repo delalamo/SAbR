@@ -1,6 +1,7 @@
 import json
 import logging
 import shutil
+import warnings
 from pathlib import Path
 
 import click
@@ -75,6 +76,29 @@ def test_cli_maps_the_complete_compact_interface(monkeypatch, tmp_path):
         "scfv": False,
     }
     assert "pipeline details" in result.output
+
+
+def test_cli_reports_library_warnings_in_its_log_format(monkeypatch, tmp_path):
+    def fake(structure, chain, **kwargs):
+        warnings.warn("planned structural note", UserWarning, stacklevel=2)
+        return structure
+
+    monkeypatch.setattr(cli, "renumber_structure", fake)
+    result = CliRunner().invoke(
+        cli.main,
+        [
+            "-i",
+            str(DATA / "test_heavy_chain.pdb"),
+            "-c",
+            "F",
+            "-o",
+            str(tmp_path / "numbered.pdb"),
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert "WARNING: planned structural note" in result.output
+    assert "UserWarning" not in result.output
+    assert "warnings.warn" not in result.output
 
 
 def test_cli_defaults_are_deterministic_and_quiet(monkeypatch, tmp_path):

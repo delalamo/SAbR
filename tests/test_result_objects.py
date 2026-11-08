@@ -18,7 +18,7 @@ def test_candidate_evaluation_keeps_scores_and_diagnostics_separate(
         raw_score=12.5,
         selection_score=10.0,
     )
-    monkeypatch.setattr(alignment, "apply_corrections", lambda a, **k: a)
+    monkeypatch.setattr(alignment, "correct_regions", lambda a, **k: ())
     evaluated = alignment._evaluate_candidate(
         candidate, np.zeros((2, 64)), np.zeros((2, 64)), frozenset(), "sabr"
     )
@@ -29,12 +29,69 @@ def test_candidate_evaluation_keeps_scores_and_diagnostics_separate(
     np.testing.assert_array_equal(evaluated.raw_alignment, raw)
     assert candidate.corrected_alignment is None
     assert candidate.rejection_reason is None
+    assert candidate.state is types.CandidateState.TRACED
     if valid:
+        assert evaluated.state is types.CandidateState.ACCEPTED
         assert evaluated.rejection_reason is None
         np.testing.assert_array_equal(evaluated.corrected_alignment[:, :2], raw)
     else:
+        assert evaluated.state is types.CandidateState.REJECTED
         assert "query row more than once" in evaluated.rejection_reason
         assert evaluated.corrected_alignment is None
+
+
+def _candidate(**fields):
+    return types.AlignmentCandidate(
+        reference_type="H",
+        reference_positions=(1, 2),
+        raw_score=1.0,
+        selection_score=1.0,
+        **{"raw_alignment": None, **fields},
+    )
+
+
+def test_candidate_moves_follow_the_transition_table():
+    states = types.CandidateState
+    scored = _candidate()
+    traced = scored.traced(np.eye(2))
+    accepted = traced.accepted(np.eye(2, dtype=int), ((),))
+    rejected = traced.rejected("invalid")
+    candidates = (scored, traced, accepted, rejected)
+    assert [candidate.state for candidate in candidates] == list(states)
+    assert set(types.CANDIDATE_TRANSITIONS) == set(states)
+    moves = {
+        states.TRACED: lambda candidate: candidate.traced(np.eye(2)),
+        states.ACCEPTED: lambda candidate: candidate.accepted(
+            np.eye(2, dtype=int), ((),)
+        ),
+        states.REJECTED: lambda candidate: candidate.rejected("invalid"),
+    }
+    for candidate in candidates:
+        for target, move in moves.items():
+            if target in types.CANDIDATE_TRANSITIONS[candidate.state]:
+                assert move(candidate).state is target
+            else:
+                with pytest.raises(ValueError, match="cannot move"):
+                    move(candidate)
+    with pytest.raises(ValueError, match="did not reach"):
+        scored.traced(None)
+
+
+@pytest.mark.parametrize(
+    "fields",
+    [
+        {"corrected_alignment": np.eye(2, dtype=int)},
+        {
+            "raw_alignment": np.eye(2),
+            "corrected_alignment": np.eye(2, dtype=int),
+            "rejection_reason": "invalid",
+        },
+        {"raw_alignment": np.eye(2), "corrections": ((),)},
+    ],
+)
+def test_candidate_rejects_fields_that_match_no_state(fields):
+    with pytest.raises(ValueError):
+        _candidate(**fields)
 
 
 def test_domain_metadata_distinguishes_columns_rows_and_output_offsets():
