@@ -1,6 +1,7 @@
 """Metadata-backed loops keep numbering from their complete sequence."""
 
 import io
+import warnings
 
 import numpy as np
 import pytest
@@ -210,8 +211,11 @@ def test_public_api_with_unresolved_metadata(positions, format, tmp_path):
         parsed = MMCIFParser(QUIET=True).get_structure("test", path)
         options["mmcif_dict"] = MMCIF2Dict(path)
         assert "missing_residues" not in parsed.header
-    with pytest.warns(UserWarning, match="Skipping"):
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
         output = renumber_structure(parsed, case["chain"], **options)
+    # Metadata completes the loop, so its provisional gap skip is not final.
+    assert [str(item.message) for item in caught] == []
     assert [(r.id[1], r.id[2].strip()) for r in output[0][case["chain"]]] == [
         (e["imgt_position"], e["insertion_code"])
         for e in labels
@@ -263,3 +267,43 @@ def test_ambiguous_metadata_does_not_expand_a_gap():
     assert missing_between(structure, "F", ((28, ""), (26, ""))) == {}
     # Explicit mmCIF data takes precedence, even with no missing category.
     assert missing_between(structure, "F", ((26, ""), (28, "")), {}) == {}
+
+
+def test_only_gap_skips_without_metadata_are_reported():
+    from antibody_cases import load_case, load_cases
+
+    from sabr import renumber_structure
+
+    case = next(c for c in load_cases() if c["id"] == "1mel_A")
+    structure, labels = load_case(case)
+    chain = structure[0][case["chain"]]
+    residues = list(chain)
+    declared = [e["row"] for e in labels if e["imgt_position"] in (28, 29)]
+    undeclared = next(e["row"] for e in labels if e["imgt_position"] == 81)
+    structure.header["missing_residues"] = [
+        {
+            "chain": chain.id,
+            "model": None,
+            "ssseq": residues[row].id[1],
+            "insertion": residues[row].id[2].strip() or None,
+            "res_name": residues[row].resname,
+        }
+        for row in declared
+    ]
+    for row in (*declared, undeclared):
+        chain.detach_child(residues[row].id)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        output = renumber_structure(structure, case["chain"])
+    # Metadata completes CDR1; the DE break has none. Rows count observed
+    # residues, so the two CDR1 deletions shift IMGT 79 and 85 down by two.
+    assert [str(item.message) for item in caught] == [
+        "Skipping DE loop (79-85) deterministic correction: structural gap "
+        f"detected between rows {undeclared - 4} and {undeclared + 1}; using "
+        "the raw embedding alignment for this region."
+    ]
+    assert [(r.id[1], r.id[2].strip()) for r in output[0][case["chain"]]] == [
+        (e["imgt_position"], e["insertion_code"])
+        for e in labels
+        if e["row"] not in (*declared, undeclared)
+    ]

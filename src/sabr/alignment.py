@@ -8,14 +8,16 @@ from importlib.resources import files
 import numpy as np
 
 from sabr import constants
-from sabr.corrections import apply_corrections
+from sabr.corrections import correct_regions, report_correction
 from sabr.types import (
     AlignmentCandidate,
     AlignmentResult,
+    CandidateState,
     FloatArray,
     IntArray,
     Reference,
     ReferenceAlignmentResult,
+    RegionCorrection,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -429,6 +431,37 @@ def align(
     The other results are the selected domain string and raw soft score;
     terminal gap penalties affect selection only. Candidates are corrected
     and validated in descending score order, preserving input order on ties.
+
+    This tuple form reports the selected candidate's region corrections at
+    once. ``renumber_structure`` calls ``select_alignment`` instead, so that
+    unresolved-residue metadata can complete structural-gap skips first.
+    """
+    candidate = select_alignment(
+        query, gap_indices, chain_type, noise_level, mode=mode, scfv=scfv
+    )
+    for corrections in candidate.corrections:
+        for correction in corrections:
+            report_correction(correction, stacklevel=2)
+    return (
+        candidate.corrected_alignment,
+        candidate.reference_type,
+        candidate.raw_score,
+    )
+
+
+def select_alignment(
+    query: FloatArray,
+    gap_indices: frozenset[int],
+    chain_type: str,
+    noise_level: float,
+    mode: str = "sabr",
+    scfv: bool = False,
+) -> AlignmentCandidate:
+    """Return the candidate ``align`` selects, without reporting corrections.
+
+    ``align`` documents the selection order. Rejected candidates are logged
+    and never report region corrections; the ACCEPTED candidate keeps one
+    tuple of unreported region outcomes per domain.
     """
     references = dict(load_references(noise_level, mode, scfv=scfv))
     if chain_type == "auto":
@@ -495,7 +528,7 @@ def align(
             try:
                 terminal_penalty = _terminal_gap_penalty(reduced, mode)
             except ValueError as error:
-                ranked.append(replace(result, rejection_reason=str(error)))
+                ranked.append(result.rejected(str(error)))
                 continue
             result = replace(result, selection_score=score + terminal_penalty)
             LOGGER.info(
@@ -521,7 +554,7 @@ def align(
             gap_indices,
             mode,
         )
-        if evaluated.rejection_reason is not None:
+        if evaluated.state is CandidateState.REJECTED:
             failures[evaluated.reference_type] = evaluated.rejection_reason
             LOGGER.info(
                 "Rejecting %s reference: %s",
@@ -529,11 +562,7 @@ def align(
                 evaluated.rejection_reason,
             )
             continue
-        return (
-            evaluated.corrected_alignment,
-            evaluated.reference_type,
-            evaluated.raw_score,
-        )
+        return evaluated
 
     reasons = "; ".join(f"{name}: {failures[name]}" for name in candidates)
     raise ValueError(
@@ -549,9 +578,9 @@ def _evaluate_candidate(
     mode: str,
 ) -> AlignmentCandidate:
     """Trace if needed, then correct/validate while retaining diagnostics."""
-    if candidate.rejection_reason is not None:
+    if candidate.state is CandidateState.REJECTED:
         return candidate
-    if candidate.raw_alignment is None:
+    if candidate.state is CandidateState.SCORED:
         reduced, _, _ = _align_reference(
             query,
             reference,
@@ -563,17 +592,17 @@ def _evaluate_candidate(
                 f"{candidate.reference_type} reference produced "
                 "a non-finite alignment."
             )
-        candidate = replace(candidate, raw_alignment=reduced)
+        candidate = candidate.traced(reduced)
     try:
-        corrected = _correct_alignment(
+        corrected, corrections = _correct_alignment(
             candidate.raw_alignment,
             candidate.reference_positions,
             candidate.reference_type,
             gap_indices,
         )
     except ValueError as error:
-        return replace(candidate, rejection_reason=str(error))
-    return replace(candidate, corrected_alignment=corrected)
+        return candidate.rejected(str(error))
+    return candidate.accepted(corrected, corrections)
 
 
 def _correct_alignment(
@@ -581,26 +610,29 @@ def _correct_alignment(
     positions: tuple[int, ...],
     selected_type: str,
     gap_indices: frozenset[int],
-) -> IntArray:
-    """Expand into IMGT columns, correct and validate a candidate's path."""
+) -> tuple[IntArray, tuple[tuple[RegionCorrection, ...], ...]]:
+    """Expand into IMGT columns, correct and validate a candidate's path.
+
+    Returns the corrected [Q, 128 * D] matrix and, for each domain, its
+    unreported region-correction outcomes.
+    """
     domain_count = len(selected_type)
     full_alignment = np.zeros(
         (reduced.shape[0], domain_count * constants.IMGT_MAX_POSITION),
         dtype=reduced.dtype,
     )
     full_alignment[:, np.asarray(positions) - 1] = reduced
-    full_alignment = np.round(full_alignment).astype(int)
-    if len(selected_type) > 1:
-        corrected = full_alignment.copy()
-        for domain_index, _ in enumerate(selected_type):
-            start = domain_index * constants.IMGT_MAX_POSITION
-            end = start + constants.IMGT_MAX_POSITION
-            corrected[:, start:end] = apply_corrections(
-                corrected[:, start:end],
-                gap_indices=gap_indices,
-            )
+    corrected = np.round(full_alignment).astype(int)
+    # Each IMGT block is a view, so corrections update ``corrected`` in place.
+    corrections = tuple(
+        correct_regions(
+            corrected[:, start : start + constants.IMGT_MAX_POSITION],
+            gap_indices=gap_indices,
+        )
+        for start in range(0, corrected.shape[1], constants.IMGT_MAX_POSITION)
+    )
+    if domain_count > 1:
         _validate_multidomain_alignment(corrected, selected_type)
     else:
-        corrected = apply_corrections(full_alignment, gap_indices=gap_indices)
         _alignment_path(corrected)
-    return corrected
+    return corrected, corrections

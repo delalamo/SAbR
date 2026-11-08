@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import numpy as np
@@ -9,9 +10,12 @@ from sabr.corrections import (
     cdr_columns,
     correct_cdr_loop,
     correct_de_loop,
+    correct_regions,
     de_loop_positions,
+    report_correction,
 )
 from sabr.numbering import alignment_to_states, number_alignment
+from sabr.types import CorrectionStatus, RegionCorrection
 
 
 @pytest.mark.parametrize(
@@ -238,3 +242,67 @@ def test_nearby_residue_is_not_used_as_exact_anchor(
     np.testing.assert_array_equal(corrected, original)
     _alignment_path(corrected)
     assert "missing anchor" in caplog.text
+
+
+def test_correct_regions_returns_each_outcome_without_reporting(caplog):
+    caplog.set_level(logging.DEBUG)
+    alignment = np.eye(128, dtype=int)
+    alignment[:, 22] = 0
+    gaps = frozenset({58})
+    unreported = alignment.copy()
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always")
+        corrections = correct_regions(unreported, gap_indices=gaps)
+    assert captured == []
+    assert caplog.records == []
+    assert [(item.region, item.status) for item in corrections] == [
+        ("CDR1", CorrectionStatus.MISSING_ANCHOR),
+        ("CDR2", CorrectionStatus.STRUCTURAL_GAP),
+        ("CDR3", CorrectionStatus.APPLIED),
+        ("DE", CorrectionStatus.APPLIED),
+    ]
+    with pytest.warns(UserWarning, match="Skipping CDR2"):
+        reported = apply_corrections(alignment, gap_indices=gaps)
+    np.testing.assert_array_equal(unreported, reported)
+
+
+def test_report_correction_uses_one_channel_per_status(caplog):
+    caplog.set_level(logging.INFO, logger="sabr.corrections")
+    for status, message in [
+        (CorrectionStatus.APPLIED, "applied"),
+        (CorrectionStatus.APPLIED, None),
+        (CorrectionStatus.MISSING_ANCHOR, "missing"),
+        (CorrectionStatus.ANCHORS_OUT_OF_ORDER, "order"),
+        (CorrectionStatus.TOO_FEW_RESIDUES, "short"),
+    ]:
+        report_correction(RegionCorrection("CDR1", status, message))
+    with pytest.warns(UserWarning, match="^gap$"):
+        report_correction(
+            RegionCorrection("CDR1", CorrectionStatus.STRUCTURAL_GAP, "gap")
+        )
+    assert [(item.levelname, item.getMessage()) for item in caplog.records] == [
+        ("INFO", "applied"),
+        ("WARNING", "missing"),
+        ("WARNING", "order"),
+        ("WARNING", "short"),
+    ]
+
+
+@pytest.mark.parametrize(
+    ("region", "anchors", "rows", "status"),
+    [
+        ("CDR1", (23, 40), (10, 5), CorrectionStatus.ANCHORS_OUT_OF_ORDER),
+        ("DE", (79, 85), (10, 5), CorrectionStatus.ANCHORS_OUT_OF_ORDER),
+        ("CDR1", (23, 40), (2, 5), CorrectionStatus.TOO_FEW_RESIDUES),
+    ],
+)
+def test_unusable_anchor_rows_keep_the_learned_alignment(
+    region, anchors, rows, status
+):
+    alignment = np.zeros((20, 128), dtype=int)
+    for anchor, row in zip(anchors, rows, strict=True):
+        alignment[row, anchor - 1] = 1
+    original = alignment.copy()
+    outcomes = {item.region: item.status for item in correct_regions(alignment)}
+    assert outcomes[region] is status
+    np.testing.assert_array_equal(alignment, original)

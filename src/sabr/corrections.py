@@ -4,6 +4,11 @@ Alignment matrices are binary [query residues, 128] arrays for one IMGT
 domain. Columns are zero-based (IMGT position minus one); gap indices mark
 the query row before a peptide break. Corrections mutate and return the
 same matrix, leaving central insertion rows unassigned where appropriate.
+
+Each region correction ends in one ``CorrectionStatus``. ``correct_regions``
+returns those outcomes without reporting them, so the pipeline can report a
+region once its outcome is final. The other public functions report each
+outcome immediately through ``report_correction``.
 """
 
 import logging
@@ -12,6 +17,7 @@ import warnings
 import numpy as np
 
 from sabr import constants
+from sabr.types import CorrectionStatus, RegionCorrection
 
 LOGGER = logging.getLogger(__name__)
 
@@ -36,65 +42,59 @@ def cdr_columns(residue_count: int, position_count: int) -> list[int | None]:
     return columns
 
 
-def _skip_for_structural_gap(
+def _structural_gap(
     gap_indices: frozenset[int] | None,
     start_row: int,
     end_row: int,
+    region: str,
     region_name: str,
-) -> bool:
-    """Warn and return true when a regional correction crosses a gap."""
+) -> RegionCorrection | None:
+    """Return the skip outcome when a regional correction crosses a gap."""
     if gap_indices and any(
         index in gap_indices for index in range(start_row, end_row)
     ):
-        message = (
+        return RegionCorrection(
+            region,
+            CorrectionStatus.STRUCTURAL_GAP,
             f"Skipping {region_name} deterministic correction: structural "
             f"gap detected between rows {start_row} and {end_row}; using "
-            "the raw embedding alignment for this region."
+            "the raw embedding alignment for this region.",
         )
-        warnings.warn(message, UserWarning, stacklevel=3)
-        return True
-    return False
+    return None
 
 
-def correct_cdr_loop(
+def _correct_cdr(
     aln: np.ndarray,
     loop_name: str,
     cdr_start: int,
     cdr_end: int,
-    gap_indices: frozenset[int] | None = None,
-) -> np.ndarray:
-    """Place framework and CDR residues between two exact IMGT anchors.
-
-    Missing anchors leave the learned alignment intact: treating a nearby
-    match as the requested position can overwrite or duplicate assignments.
-    """
+    gap_indices: frozenset[int] | None,
+) -> RegionCorrection:
+    """Correct one CDR in place and return its unreported outcome."""
     anchor_start, anchor_end = constants.CDR_ANCHORS[loop_name]
-    anchor_start_col = anchor_start - 1
-    anchor_end_col = anchor_end - 1
-
-    anchor_start_row = _aligned_row(aln, anchor_start_col)
-    anchor_end_row = _aligned_row(aln, anchor_end_col)
+    anchor_start_row = _aligned_row(aln, anchor_start - 1)
+    anchor_end_row = _aligned_row(aln, anchor_end - 1)
     if anchor_start_row is None or anchor_end_row is None:
-        LOGGER.warning(
-            "Skipping %s; missing anchor at IMGT %d or %d; "
-            "preserving the learned alignment.",
+        return RegionCorrection(
             loop_name,
-            anchor_start,
-            anchor_end,
+            CorrectionStatus.MISSING_ANCHOR,
+            f"Skipping {loop_name}; missing anchor at IMGT {anchor_start} "
+            f"or {anchor_end}; preserving the learned alignment.",
         )
-        return aln
 
     if anchor_start_row >= anchor_end_row:
-        LOGGER.warning(
+        return RegionCorrection(
+            loop_name,
+            CorrectionStatus.ANCHORS_OUT_OF_ORDER,
             f"Skipping {loop_name}; anchor start row "
-            f"({anchor_start_row}) >= end row ({anchor_end_row})"
+            f"({anchor_start_row}) >= end row ({anchor_end_row})",
         )
-        return aln
 
-    if _skip_for_structural_gap(
-        gap_indices, anchor_start_row, anchor_end_row, loop_name
-    ):
-        return aln
+    gap = _structural_gap(
+        gap_indices, anchor_start_row, anchor_end_row, loop_name, loop_name
+    )
+    if gap is not None:
+        return gap
 
     fw_before_cdr = list(range(anchor_start + 1, cdr_start))
     fw_after_cdr = list(range(cdr_end + 1, anchor_end))
@@ -105,21 +105,15 @@ def correct_cdr_loop(
     n_residues = len(intermediate_rows)
 
     if n_residues < n_fw_before + n_fw_after:
-        LOGGER.warning(
+        return RegionCorrection(
+            loop_name,
+            CorrectionStatus.TOO_FEW_RESIDUES,
             f"Skipping {loop_name}; not enough residues "
             f"({n_residues}) between anchors for FW positions "
-            f"({n_fw_before} + {n_fw_after})"
+            f"({n_fw_before} + {n_fw_after})",
         )
-        return aln
 
     n_cdr_residues = n_residues - n_fw_before - n_fw_after
-
-    LOGGER.info(
-        f"{loop_name}: anchors at {anchor_start} (row "
-        f"{anchor_start_row}) and {anchor_end} (row "
-        f"{anchor_end_row}). {n_residues} residues: "
-        f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW"
-    )
 
     aln[intermediate_rows, :] = 0
 
@@ -141,7 +135,14 @@ def correct_cdr_loop(
         if column is not None:
             aln[row, cdr_start - 1 + column] = 1
 
-    return aln
+    return RegionCorrection(
+        loop_name,
+        CorrectionStatus.APPLIED,
+        f"{loop_name}: anchors at {anchor_start} (row "
+        f"{anchor_start_row}) and {anchor_end} (row "
+        f"{anchor_end_row}). {n_residues} residues: "
+        f"{n_fw_before} FW, {n_cdr_residues} CDR, {n_fw_after} FW",
+    )
 
 
 def de_loop_positions(n_residues: int) -> list[int]:
@@ -158,32 +159,32 @@ def de_loop_positions(n_residues: int) -> list[int]:
     return [80, 81, 82, *([82] * (n_residues - 5)), 83, 84]
 
 
-def correct_de_loop(
-    aln: np.ndarray,
-    gap_indices: frozenset[int] | None = None,
-) -> np.ndarray:
-    """Assign the residues between IMGT 79 and 85 by loop length."""
+def _correct_de(
+    aln: np.ndarray, gap_indices: frozenset[int] | None
+) -> RegionCorrection:
+    """Correct the DE loop in place and return its unreported outcome."""
     anchor_79_row = _aligned_row(aln, 78)
     anchor_85_row = _aligned_row(aln, 84)
 
     if anchor_79_row is None or anchor_85_row is None:
-        LOGGER.warning(
+        return RegionCorrection(
+            "DE",
+            CorrectionStatus.MISSING_ANCHOR,
             "Skipping DE loop correction; missing anchor at IMGT 79 or 85; "
-            "preserving the learned alignment."
+            "preserving the learned alignment.",
         )
-        return aln
     if anchor_79_row >= anchor_85_row:
-        LOGGER.warning(
-            "Skipping DE loop correction; anchor 79 row (%d) is not before "
-            "anchor 85 row (%d).",
-            anchor_79_row,
-            anchor_85_row,
+        return RegionCorrection(
+            "DE",
+            CorrectionStatus.ANCHORS_OUT_OF_ORDER,
+            f"Skipping DE loop correction; anchor 79 row ({anchor_79_row}) "
+            f"is not before anchor 85 row ({anchor_85_row}).",
         )
-        return aln
-    if _skip_for_structural_gap(
-        gap_indices, anchor_79_row, anchor_85_row, "DE loop (79-85)"
-    ):
-        return aln
+    gap = _structural_gap(
+        gap_indices, anchor_79_row, anchor_85_row, "DE", "DE loop (79-85)"
+    )
+    if gap is not None:
+        return gap
 
     intermediate_rows = list(range(anchor_79_row + 1, anchor_85_row))
     positions = de_loop_positions(len(intermediate_rows))
@@ -199,12 +200,78 @@ def correct_de_loop(
         aln[row, position - 1] = 1
         assigned_positions.add(position)
 
-    if intermediate_rows:
-        LOGGER.info(
-            "DE loop correction: assigned %d residue(s) to %s.",
-            len(intermediate_rows),
-            positions,
+    return RegionCorrection(
+        "DE",
+        CorrectionStatus.APPLIED,
+        (
+            f"DE loop correction: assigned {len(intermediate_rows)} "
+            f"residue(s) to {positions}."
+            if intermediate_rows
+            else None
+        ),
+    )
+
+
+def correct_regions(
+    aln: np.ndarray,
+    gap_indices: frozenset[int] | None = None,
+) -> tuple[RegionCorrection, ...]:
+    """Correct CDR1-3, then the DE loop, in place; return each outcome.
+
+    Nothing is reported, so a caller can decide which outcomes are final.
+    """
+    cdrs = tuple(
+        _correct_cdr(aln, loop_name, cdr_start, cdr_end, gap_indices)
+        for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items()
+    )
+    return (*cdrs, _correct_de(aln, gap_indices))
+
+
+def report_correction(
+    correction: RegionCorrection, *, stacklevel: int = 1
+) -> None:
+    """Log an outcome, warning with UserWarning for a structural-gap skip.
+
+    Applied corrections log at INFO and other skips at WARNING. As in
+    ``warnings.warn``, ``stacklevel`` is counted from the caller.
+    """
+    if correction.message is None:
+        return
+    if correction.status is CorrectionStatus.APPLIED:
+        LOGGER.info("%s", correction.message)
+    elif correction.status is CorrectionStatus.STRUCTURAL_GAP:
+        warnings.warn(
+            correction.message, UserWarning, stacklevel=stacklevel + 1
         )
+    else:
+        LOGGER.warning("%s", correction.message)
+
+
+def correct_cdr_loop(
+    aln: np.ndarray,
+    loop_name: str,
+    cdr_start: int,
+    cdr_end: int,
+    gap_indices: frozenset[int] | None = None,
+) -> np.ndarray:
+    """Place framework and CDR residues between two exact IMGT anchors.
+
+    Missing anchors leave the learned alignment intact: treating a nearby
+    match as the requested position can overwrite or duplicate assignments.
+    """
+    report_correction(
+        _correct_cdr(aln, loop_name, cdr_start, cdr_end, gap_indices),
+        stacklevel=2,
+    )
+    return aln
+
+
+def correct_de_loop(
+    aln: np.ndarray,
+    gap_indices: frozenset[int] | None = None,
+) -> np.ndarray:
+    """Assign the residues between IMGT 79 and 85 by loop length."""
+    report_correction(_correct_de(aln, gap_indices), stacklevel=2)
     return aln
 
 
@@ -212,11 +279,7 @@ def apply_corrections(
     aln: np.ndarray,
     gap_indices: frozenset[int] | None = None,
 ) -> np.ndarray:
-    """Apply deterministic CDR and DE-loop corrections."""
-    for loop_name, (cdr_start, cdr_end) in constants.IMGT_LOOPS.items():
-        aln = correct_cdr_loop(
-            aln, loop_name, cdr_start, cdr_end, gap_indices=gap_indices
-        )
-
-    correct_de_loop(aln, gap_indices=gap_indices)
+    """Apply deterministic CDR and DE-loop corrections, reporting each."""
+    for correction in correct_regions(aln, gap_indices):
+        report_correction(correction, stacklevel=2)
     return aln

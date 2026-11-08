@@ -106,19 +106,19 @@ def missing_between(structure, chain, residue_ids, mmcif_dict=None):
     return result
 
 
-def expand_loop_alignment(alignment, sequence, gaps, missing):
-    """Correct eligible loops on virtual sequence, returning observed row map.
+def metadata_regions(alignment, gaps, missing):
+    """Map each (domain index, region) that metadata completes to its rows.
 
-    Both exact anchors must exist. Every detected break in a region must be
-    explained by metadata; otherwise preserve that region's learned alignment.
-    Only anchored regions are expanded, so terminal metadata and linkers do
-    not extend domain spans or alter candidate selection.
+    A region qualifies when both exact anchors exist in order, metadata
+    declares residues after at least one row between them, and every
+    detected break between them is explained by metadata. The rows are the
+    region's metadata keys. Region names match ``RegionCorrection.region``.
     """
-    regions = []
-    used = set()
-    for start in range(0, alignment.shape[1], constants.IMGT_MAX_POSITION):
+    regions = {}
+    anchors = {**constants.CDR_ANCHORS, "DE": (79, 85)}
+    starts = range(0, alignment.shape[1], constants.IMGT_MAX_POSITION)
+    for domain_index, start in enumerate(starts):
         domain = alignment[:, start : start + constants.IMGT_MAX_POSITION]
-        anchors = {**constants.CDR_ANCHORS, "DE": (79, 85)}
         for name, (left, right) in anchors.items():
             first = _aligned_row(domain, left - 1)
             last = _aligned_row(domain, right - 1)
@@ -128,10 +128,22 @@ def expand_loop_alignment(alignment, sequence, gaps, missing):
             relevant = boundaries.intersection(missing)
             if not relevant or (boundaries.intersection(gaps) - missing.keys()):
                 continue
-            regions.append((start, name))
-            used.update(relevant)
-    if not used:
+            regions[domain_index, name] = frozenset(relevant)
+    return regions
+
+
+def expand_loop_alignment(alignment, sequence, gaps, missing):
+    """Correct eligible loops on virtual sequence, returning observed row map.
+
+    Both exact anchors must exist. Every detected break in a region must be
+    explained by metadata; otherwise preserve that region's learned alignment.
+    Only anchored regions are expanded, so terminal metadata and linkers do
+    not extend domain spans or alter candidate selection.
+    """
+    regions = metadata_regions(alignment, gaps, missing)
+    if not regions:
         return alignment, sequence, tuple(range(len(sequence)))
+    used = set().union(*regions.values())
     rows = []
     letters = []
     observed_rows = []
@@ -145,13 +157,14 @@ def expand_loop_alignment(alignment, sequence, gaps, missing):
                 letters.append(amino_acid)
                 observed_rows.append(None)
     expanded = np.asarray(rows)
-    for start, name in regions:
+    for domain_index, name in regions:
         LOGGER.info(
             "Applying %s correction with unresolved-residue metadata "
             "in domain %d.",
             name,
-            start // constants.IMGT_MAX_POSITION + 1,
+            domain_index + 1,
         )
+        start = domain_index * constants.IMGT_MAX_POSITION
         domain = expanded[:, start : start + constants.IMGT_MAX_POSITION]
         if name == "DE":
             correct_de_loop(domain)
